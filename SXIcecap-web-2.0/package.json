@@ -1,0 +1,42 @@
+{
+	"dependencies": {
+		"@clayui/css": "^3.121.0",
+		"@clayui/icon": "^3.111.0",
+		"@clayui/form": "^3.125.0",
+		"@clayui/button": "^3.116.0",
+		"@clayui/toolbar": "^3.125.0",
+		"@clayui/drop-down": "^3.127.0",
+		"@clayui/localized-input": "^3.127.0",
+		"@clayui/tooltip": "^3.119.0",
+		"@clayui/core": "^3.127.0",
+		"@clayui/panel": "^3.119.0",
+		"@clayui/label": "^3.111.0",
+		"@clayui/layout": "^3.111.0",
+		"@clayui/modal": "^3.122.0",
+		"@clayui/management-toolbar": "^3.111.0",
+		"@clayui/pagination-bar": "^3.127.0",
+		"@clayui/multi-step-nav": "^3.127.0",
+		"@clayui/multi-select": "^3.127.0",
+		"@tanstack/react-query": "^4.22.0",
+		"react": "18.3.1",
+		"react-dom": "18.3.1"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.0.0",
+		"@babel/core": "^7.0.0",
+		"@babel/preset-env": "^7.0.0",
+		"@babel/preset-react": "^7.0.0",
+		"liferay-npm-bundler": "2.18.2",
+		"liferay-npm-bundler-loader-style-loader": "^2.14.1"
+	},
+	"main": "lib/index.js",
+	"name": "sx-icecap-web",
+	"scripts": {
+		"build": "babel --source-maps -d build/resources/main/META-INF/resources src/main/resources/META-INF/resources && liferay-npm-bundler"
+	},
+	"version": "2.0.0",
+	"presets": [
+		"@babel/preset-env ",
+		"@babel/preset-react"
+	]
+}
