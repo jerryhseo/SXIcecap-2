@@ -58,7 +58,6 @@ public class DataTypeEditorPortlet extends MVCPortlet {
 		
 		long dataTypeId = ParamUtil.getLong(renderRequest, WebKey.DATATYPE_ID, 0);
 		System.out.println("DataTypeEditorPortlet - dataTypeId: " + dataTypeId);
-		System.out.println("DataTypeEditorPortlet - dataTypeId: " + dataTypeId);
 		
 		DataType dataType = null;
 		if( dataTypeId > 0 ) {
@@ -68,24 +67,6 @@ public class DataTypeEditorPortlet extends MVCPortlet {
 				renderRequest.setAttribute(WebKey.DATATYPE, jsonDataType);
 			} catch (Exception e) {
 				throw new PortletException( "Cannot find data type: " + dataTypeId );
-			}
-		}
-		
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
-
-		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-		
-		List<ResourceAction> resourceActions = _resouceActionLocalService.getResourceActions(Constant.DATATYPE_RESOURCE_NAME);
-		
-		JSONArray permissions = JSONFactoryUtil.createJSONArray();
-		for (ResourceAction resourceAction : resourceActions) {
-			String actionId = resourceAction.getActionId();
-
-			// Check if the user has the permission for the action
-			boolean hasPermission = DataTypeResourcePermissionHelper.contains(permissionChecker, themeDisplay.getScopeGroupId(), actionId);
-
-			if (hasPermission) {
-				permissions.put(actionId);
 			}
 		}
 		
@@ -103,5 +84,4 @@ public class DataTypeEditorPortlet extends MVCPortlet {
 	
 	@Reference
 	private DataTypeLocalService _dataTypeLocalService;
-
 }
