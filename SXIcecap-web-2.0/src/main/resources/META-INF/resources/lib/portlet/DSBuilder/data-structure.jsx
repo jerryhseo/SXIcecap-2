@@ -111,24 +111,35 @@ export class DataStructure {
 	getMemberParameters(groupId) {}
 
 	parse(json) {
-		this.paramDelimiter = json.paramDelimiter;
-		this.paramDelimiterPosition = json.paramDelimiterPosition;
-		this.paramValueDelimiter = json.paramValueDelimiter;
-		this.matrixBracketType = json.matrixBracketType;
-		this.matrixElementDelimiter = json.matrixElementDelimiter;
-		this.commentChar = json.commentChar;
+		this.paramDelimiter = json.paramDelimiter ?? this.paramDelimiter;
+		this.paramDelimiterPosition = json.paramDelimiterPosition ?? this.paramDelimiterPosition;
+		this.paramValueDelimiter = json.paramValueDelimiter ?? this.paramValueDelimiter;
+		this.matrixBracketType = json.matrixBracketType ?? this.matrixBracketType;
+		this.matrixElementDelimiter = json.matrixElementDelimiter ?? this.matrixElementDelimiter;
+		this.commentChar = json.commentChar ?? this.commentChar;
 
-		for (const paramName in json.parameters) {
-			const parameter = json.parameters[paramName];
-			this.parameters[paramName] = DataStructure.createParameter(parameter.paramType);
-		}
+		json.parameters.forEach((paramJSONObj) => {
+			this.parameters.push(DataStructure.createParameter(paramJSONObj.paramType, paramJSONObj));
+		});
 
-		this.enableInputStatus = json.enableInputStatus;
-		this.enableGoTo = json.enableGoTo;
+		this.enableInputStatus = json.enableInputStatus ?? this.enableInputStatus;
+		this.enableGoTo = json.enableGoTo ?? this.enableGoTo;
 	}
 
 	toJSON() {
 		let json = {};
+
+		json.paramDelimiter = this.paramDelimiter;
+		json.paramDelimiterPosition = this.paramDelimiterPosition;
+		json.paramValueDelimiter = this.paramValueDelimiter;
+		json.matrixBracketType = this.matrixBracketType;
+		json.matrixElementDelimiter = this.matrixElementDelimiter;
+		json.commentChar = this.commentChar;
+
+		json.parameters = this.parameters.map((parameter) => parameter.toJSON());
+
+		json.enableInputStatus = json.enableInputStatus;
+		json.enableGoTo = this.enableGoTo;
 
 		return json;
 	}

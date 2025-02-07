@@ -1,4 +1,4 @@
-package com.sx.icecap.web.command.resource.datatype;
+package com.sx.icecap.web.command.resource.datatype.builder;
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;

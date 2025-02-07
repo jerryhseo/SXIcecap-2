@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import ClayModal, { useModal } from "@clayui/modal";
 import ClayButton from "@clayui/button";
+import ClayIcon from "@clayui/icon";
 
 export const SXConfirmDialog = ({
 	show = true,
@@ -9,7 +10,7 @@ export const SXConfirmDialog = ({
 	spritemap,
 	header = "",
 	message,
-	buttons,
+	buttons
 }) => {
 	const { observer, onOpenChange, open } = useModal();
 	return (
@@ -80,12 +81,12 @@ export const SXNoticeDialog = ({ size, spritemap, header, body }) => {
 	);
 };
 
-export const getConfirmModal = (props) => {
+export const openConfirmModal = (props) => {
 	const { title, modalType, content, buttons, size, spritemap } = props;
 
 	return {
 		payload: {
-			body: <div>{body}</div>,
+			body: <div>{content}</div>,
 			footer: buttons.map((button, index) => {
 				return (
 					<ClayButton
@@ -104,14 +105,14 @@ export const getConfirmModal = (props) => {
 						style={{
 							display: "inline-block",
 							color: "#e4a24c",
-							marginRight: "5px",
+							marginRight: "5px"
 						}}
 					></ClayIcon>
 					{title}
 				</>
 			),
-			size: size,
+			size: size
 		},
-		type: "OPEN",
+		type: "OPEN"
 	};
 };

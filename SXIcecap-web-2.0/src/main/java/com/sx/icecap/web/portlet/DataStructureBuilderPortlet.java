@@ -23,9 +23,10 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.display-category=category.sx.icecap",
 		"com.liferay.portlet.header-portlet-css=/css/index.css",
 		"com.liferay.portlet.instanceable=true",
+		"com.liferay.portlet.add-default-resource=true",
 		"javax.portlet.display-name=Data Structure Bulder",
 		"javax.portlet.init-param.template-path=/",
-		"javax.portlet.init-param.view-template=/html/DSBuilder/data-structure-builder.jsp",
+		"javax.portlet.init-param.view-template=/jsp/DSBuilder/data-structure-builder.jsp",
 		"javax.portlet.name=" + WebPortletKey.DATA_STRUCTURE_BUILDER,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
@@ -39,7 +40,7 @@ public class DataStructureBuilderPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
-		System.out.println("SxIcecapDataStructureBuilderPortlet");
+		System.out.println("DataStructureBuilderPortlet");
 		renderRequest.setAttribute(
 			"mainRequire",
 			_npmResolver.resolveModuleName("sx-icecap-web") + " as main");

@@ -114,21 +114,22 @@ const DataStructureBuilder = ({ portletParameters }) => {
 		dataStructureRef;
 	};
 
+	const renderCount = useRef(0);
+	renderCount.current++;
+	console.log("DataStructureBuilder renderCount: " + renderCount.current);
+
 	if (loadingStatus === LoadingStatus.PENDING) {
 		return <h3>Loading....</h3>;
 	} else if (loadingStatus === LoadingStatus.FAIL) {
 		return <h3>Loading data structure failed...</h3>;
 	}
 
-	const renderCount = useRef(0);
-	renderCount.current++;
-	console.log("DataStructureBuilder renderCount: " + renderCount.current);
-
+	console.log("DataType: ", dataTypeRef.current);
 	return (
 		<>
 			<DataTypeInfo
-				title={dataTypeRef.current.displayName[languageId]}
-				abstract={dataTypeRef.current.description[languageId]}
+				title={dataTypeRef.current.displayName}
+				abstract={dataTypeRef.current.description}
 				items={[
 					{
 						label: Util.translate("id"),

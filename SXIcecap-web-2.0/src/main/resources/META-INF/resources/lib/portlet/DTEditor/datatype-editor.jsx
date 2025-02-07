@@ -251,7 +251,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 								message: "Invalid data type version"
 							}
 						},
-						defaultValue: "",
+						defaultValue: "1.0.0",
 						order: 2
 					},
 					{

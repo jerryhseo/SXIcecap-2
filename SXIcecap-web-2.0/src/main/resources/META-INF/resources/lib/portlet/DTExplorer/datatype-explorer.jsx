@@ -12,7 +12,7 @@ import {
 } from "../../common/station-x";
 import { Util } from "../../common/util";
 import { Context } from "@clayui/modal";
-import { getConfirmModal } from "../../modal/sxmodal";
+import { openConfirmModal } from "../../modal/sxmodal";
 import ClayManagementToolbar from "@clayui/management-toolbar";
 import ClayPaginationBar, { ClayPaginationBarWithBasicItems } from "@clayui/pagination-bar";
 import { Body, Cell, Head, Row, Table } from "@clayui/core";
@@ -224,7 +224,7 @@ const DataTypeExplorer = ({ portletParameters }) => {
 		console.log("deleteDataType: " + dataTypeId);
 
 		dispatchConfirmDialog(
-			getConfirmModal({
+			openConfirmModal({
 				title: Util.translate("warning"),
 				modalType: "warning",
 				content: Util.translate("if-you-do-this-it-will-be-never-recovered"),
@@ -390,6 +390,7 @@ const DataTypeExplorer = ({ portletParameters }) => {
 				</Head>
 				<Body defaultItems={dataTypesRef.current}>
 					{(row, index) => {
+						console.log("Explorer row: ", row);
 						return (
 							<Row key={row.id}>
 								{columns.map((column, index) => {
@@ -585,19 +586,21 @@ const DataTypeExplorer = ({ portletParameters }) => {
 				</ClayManagementToolbar.Search>
 
 				<ClayManagementToolbar.ItemList>
-					<ClayManagementToolbar.Item>
-						<ClayButtonWithIcon
-							aria-label={Util.translate("delete-selected")}
-							className="nav-link nav-link-monospaced"
-							displayType="unstyled"
-							onClick={() => {
-								handleDeleteSelectedAll();
-							}}
-							spritemap={spritemapPath}
-							symbol="trash"
-							title={Util.translate("delete-selected-datatypes")}
-						/>
-					</ClayManagementToolbar.Item>
+					{permissions.includes(ActionKeys.UPDATE_DATATYPE) ? (
+						<ClayManagementToolbar.Item>
+							<ClayButtonWithIcon
+								aria-label={Util.translate("delete-selected")}
+								className="nav-link nav-link-monospaced"
+								displayType="unstyled"
+								onClick={() => {
+									handleDeleteSelectedAll();
+								}}
+								spritemap={spritemapPath}
+								symbol="trash"
+								title={Util.translate("delete-selected-datatypes")}
+							/>
+						</ClayManagementToolbar.Item>
+					) : null}
 
 					<ClayManagementToolbar.Item>
 						<ClayDropDownWithItems
@@ -614,28 +617,30 @@ const DataTypeExplorer = ({ portletParameters }) => {
 							}
 						/>
 					</ClayManagementToolbar.Item>
-
-					<ClayManagementToolbar.Item>
-						<ClayButtonWithIcon
-							aria-label="Add"
-							monospaced={true}
-							spritemap={spritemapPath}
-							symbol="plus"
-							onClick={() => {
-								Util.redirectTo(
-									workbenchURL,
-									{
-										namespace: workbenchNamespace,
-										portletId: workbenchId,
-										windowState: WindowState.NORMAL
-									},
-									{
-										workingPortletName: PortletKeys.DATATYPE_EDITOR
-									}
-								);
-							}}
-						/>
-					</ClayManagementToolbar.Item>
+					{permissions.includes(ActionKeys.ADD_DATATYPE) ? (
+						<ClayManagementToolbar.Item>
+							<ClayButtonWithIcon
+								aria-label="Add"
+								monospaced={true}
+								spritemap={spritemapPath}
+								symbol="plus"
+								title={Util.translate("new-datatype")}
+								onClick={() => {
+									Util.redirectTo(
+										workbenchURL,
+										{
+											namespace: workbenchNamespace,
+											portletId: workbenchId,
+											windowState: WindowState.NORMAL
+										},
+										{
+											workingPortletName: PortletKeys.DATATYPE_EDITOR
+										}
+									);
+								}}
+							/>
+						</ClayManagementToolbar.Item>
+					) : null}
 				</ClayManagementToolbar.ItemList>
 			</ClayManagementToolbar>
 			{dataTable}

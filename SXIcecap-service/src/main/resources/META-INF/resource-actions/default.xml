@@ -22,6 +22,15 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 				<action-key>ADD_PARAMETER</action-key>
 				<action-key>ADD_DATATYPE</action-key>
 				<action-key>ADD_STRUCTURED_DATA</action-key>
+				<action-key>UPDATE_PARAMETER</action-key>
+				<action-key>UPDATE_DATATYPE</action-key>
+				<action-key>UPDATE_STRUCTURED_DATA</action-key>
+				<action-key>DELETE_PARAMETER</action-key>
+				<action-key>DELETE_DATATYPE</action-key>
+				<action-key>DELETE_STRUCTURED_DATA</action-key>
+				<action-key>REVIEW_PARAMETER</action-key>
+				<action-key>REVIEW_DATATYPE</action-key>
+				<action-key>REVIEW_STRUCTURED_DATA</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>SUBSCRIBE</action-key>
 				<action-key>VIEW</action-key>
@@ -30,6 +39,15 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 				<action-key>ADD_PARAMETER</action-key>
 				<action-key>ADD_DATATYPE</action-key>
 				<action-key>ADD_STRUCTURED_DATA</action-key>
+				<action-key>UPDATE_PARAMETER</action-key>
+				<action-key>UPDATE_DATATYPE</action-key>
+				<action-key>UPDATE_STRUCTURED_DATA</action-key>
+				<action-key>DELETE_PARAMETER</action-key>
+				<action-key>DELETE_DATATYPE</action-key>
+				<action-key>DELETE_STRUCTURED_DATA</action-key>
+				<action-key>REVIEW_PARAMETER</action-key>
+				<action-key>REVIEW_DATATYPE</action-key>
+				<action-key>REVIEW_STRUCTURED_DATA</action-key>
 				<action-key>VIEW</action-key>
 				<action-key>SUBSCRIBE</action-key>
 			</site-member-defaults>
@@ -40,6 +58,15 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 				<action-key>ADD_PARAMETER</action-key>
 				<action-key>ADD_DATATYPE</action-key>
 				<action-key>ADD_STRUCTURED_DATA</action-key>
+				<action-key>UPDATE_PARAMETER</action-key>
+				<action-key>UPDATE_DATATYPE</action-key>
+				<action-key>UPDATE_STRUCTURED_DATA</action-key>
+				<action-key>DELETE_PARAMETER</action-key>
+				<action-key>DELETE_DATATYPE</action-key>
+				<action-key>DELETE_STRUCTURED_DATA</action-key>
+				<action-key>REVIEW_PARAMETER</action-key>
+				<action-key>REVIEW_DATATYPE</action-key>
+				<action-key>REVIEW_STRUCTURED_DATA</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>SUBSCRIBE</action-key>
 			</guest-unsupported>

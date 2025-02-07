@@ -52,7 +52,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
 	},
-	service = Portlet.class
+	service = Portlet.class 
 )
 public class DataTypeExplorerPortlet extends MVCPortlet {
 
@@ -74,7 +74,7 @@ public class DataTypeExplorerPortlet extends MVCPortlet {
 
 			// Check if the user has the permission for the action
 			boolean hasPermission = DataTypeResourcePermissionHelper.contains(permissionChecker, themeDisplay.getScopeGroupId(), actionId);
-
+ 
 			if (hasPermission) {
 				permissions.put(actionId);
 			}

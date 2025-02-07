@@ -182,7 +182,6 @@ const BasicParameterProperties = ({
 					formId={formId}
 					properties={field}
 					style={style}
-					formData={parameter}
 					spritemap={spritemap}
 				/>
 			))}
@@ -370,9 +369,7 @@ const SXDSBuilderPropertiesPanel = ({
 		}
 	}, [panelStepState]);
 
-	useLayoutEffect(() => {
-		panelContentRef.current = panelContentCallback();
-	}, [panelStepState]);
+	panelContentRef.current = panelContentCallback();
 
 	const renderCount = useRef(0);
 	renderCount.current++;
@@ -395,12 +392,12 @@ const SXDSBuilderPropertiesPanel = ({
 					placeholder: "Select a type",
 					tooltip: Util.translate("select-param-type-tooltip"),
 					ariaLabel: "Select Parameter Type",
+					initValue: parameter.value ?? parameter.defaultValue,
 					events: {
 						fire: [Event.SX_FORM_FIELD_CHANGED],
 						on: [Event.SX_PARAM_ERROR_FOUND]
 					}
 				}}
-				formData={paramData}
 				style={{
 					marginBottom: "20px"
 				}}

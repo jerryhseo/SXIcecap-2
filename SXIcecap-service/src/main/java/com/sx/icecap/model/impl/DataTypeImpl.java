@@ -14,10 +14,11 @@
 
 package com.sx.icecap.model.impl;
 
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.sx.icecap.constant.DataTypeProperty;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Locale;
 import java.util.Map;
@@ -62,13 +63,15 @@ public class DataTypeImpl extends DataTypeBaseImpl {
 		localizedObj = _mapToJSON( field );
 		dataType.put("tooltip", localizedObj);
 		
-		String str = this.getVisualizers();
-		try {
-			localizedObj = JSONFactoryUtil.createJSONObject(str);
-			dataType.put("visualizers", localizedObj);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String strVisualizers = this.getVisualizers();
+		if( Validator.isBlank(strVisualizers)) {
+			try {
+				JSONArray visualizers = JSONFactoryUtil.createJSONArray(strVisualizers);
+				dataType.put("visualizers", visualizers);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return dataType;
@@ -95,13 +98,15 @@ public class DataTypeImpl extends DataTypeBaseImpl {
 		dataType.put("description", this.getDescription(locale));
 		dataType.put("tooltip", this.getTooltip(locale));
 		
-		String str = this.getVisualizers();
-		try {
-			JSONObject localizedObj = JSONFactoryUtil.createJSONObject(str);
-			dataType.put("visualizers", localizedObj);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String strVisualizers = this.getVisualizers();
+		if( Validator.isBlank(strVisualizers)) {
+			try {
+				JSONArray visualizers = JSONFactoryUtil.createJSONArray(strVisualizers);
+				dataType.put("visualizers", visualizers);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return dataType;
