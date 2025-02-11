@@ -56,7 +56,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
 	},
-	service = Portlet.class
+	service = Portlet.class  
 )
 public class DataWorkbenchPortlet extends MVCPortlet {
 

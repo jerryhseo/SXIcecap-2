@@ -1,13 +1,5 @@
-import React, {
-	useState,
-	useEffect,
-	useLayoutEffect,
-	useCallback,
-	useContext,
-	useRef,
-	forwardRef
-} from 'react';
-import {Text} from '@clayui/core';
+import React, { useState, useEffect, useLayoutEffect, useCallback, useContext, useRef, forwardRef } from "react";
+import { Text } from "@clayui/core";
 import ClayForm, {
 	ClayInput,
 	ClayCheckbox,
@@ -18,35 +10,35 @@ import ClayForm, {
 	ClayToggle,
 	ClayPanel,
 	ClaySelectBox
-} from '@clayui/form';
-import ClayTooltip, {ClayTooltipProvider} from '@clayui/tooltip';
-import ClayIcon, {ClayIconSpriteContext} from '@clayui/icon';
-import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
-import ClayDropDown from '@clayui/drop-down';
-import ClayLabel from '@clayui/label';
-import {Util} from '../common/util';
+} from "@clayui/form";
+import ClayTooltip, { ClayTooltipProvider } from "@clayui/tooltip";
+import ClayIcon, { ClayIconSpriteContext } from "@clayui/icon";
+import ClayButton, { ClayButtonWithIcon } from "@clayui/button";
+import ClayDropDown from "@clayui/drop-down";
+import ClayLabel from "@clayui/label";
+import { Util } from "../common/util";
 
-import {ParamType, DisplayType, Event, ViewTypes} from '../common/station-x';
+import { ParamType, DisplayType, Event, ViewTypes } from "../common/station-x";
 
 export const SelectDisplayStyle = {
-	DUAL_LISTBOX: 'DUAL_LISTBOX',
-	DROP_LIST: 'DROP_LIST',
-	CHECKBOX: 'CHECKBOX',
-	RADIO_BUTTON: 'RADIO_BUTTON',
-	MULTI_SELECT: 'MULTI_SELECT'
+	DUAL_LISTBOX: "DUAL_LISTBOX",
+	DROP_LIST: "DROP_LIST",
+	CHECKBOX: "CHECKBOX",
+	RADIO_BUTTON: "RADIO_BUTTON",
+	MULTI_SELECT: "MULTI_SELECT"
 };
 
 export const validateFormField = (fieldType, value, validation) => {
-	let errorMsg = '';
+	let errorMsg = "";
 
 	for (const validationType in validation) {
-		if (validationType === 'required') {
+		if (validationType === "required") {
 			if (validation.required.value && Util.isEmptyObject(value)) {
 				return validation.required.message;
 			}
 		}
 
-		if (validationType === 'pattern') {
+		if (validationType === "pattern") {
 			const regExpr = new RegExp(validation.pattern.value);
 			switch (fieldType) {
 				case ParamType.LOCALIZED_STRING: {
@@ -66,7 +58,7 @@ export const validateFormField = (fieldType, value, validation) => {
 			}
 		}
 
-		if (validationType === 'min') {
+		if (validationType === "min") {
 			switch (fieldType) {
 				case ParamType.LOCALIZED_STRING:
 				case ParamType.STRING: {
@@ -83,7 +75,7 @@ export const validateFormField = (fieldType, value, validation) => {
 			}
 		}
 
-		if (validationType === 'max') {
+		if (validationType === "max") {
 			switch (fieldType) {
 				case ParamType.LOCALIZED_STRING:
 				case ParamType.STRING: {
@@ -100,7 +92,7 @@ export const validateFormField = (fieldType, value, validation) => {
 			}
 		}
 
-		if (validationType === 'validate') {
+		if (validationType === "validate") {
 			return validation.validate(value);
 		}
 	}
@@ -109,15 +101,12 @@ export const validateFormField = (fieldType, value, validation) => {
 };
 
 export const validateForm = (formFields, formData, formErrors) => {
-	let errorFields = formFields.filter(
-		(field) =>
-			field.required && Util.isEmptyObject(formData[field.paramName])
-	);
+	let errorFields = formFields.filter((field) => field.required && Util.isEmptyObject(formData[field.paramName]));
 
 	if (errorFields.length > 0) {
 		return {
 			fieldName: errorFields[0].paramName,
-			message: errorFields[0].paramName + ' is required'
+			message: errorFields[0].paramName + " is required"
 		};
 	}
 
@@ -125,24 +114,14 @@ export const validateForm = (formFields, formData, formErrors) => {
 	if (errorFields.length > 0) {
 		return {
 			fieldName: errorFields[0].paramName,
-			message:
-				errorFields[0].paramName + ': ' + formErrors[field.paramName]
+			message: errorFields[0].paramName + ": " + formErrors[field.paramName]
 		};
 	}
 
-	return '';
+	return "";
 };
 
-export const SXCheckbox = ({
-	namespace,
-	id,
-	name,
-	label,
-	checked,
-	disabled,
-	style,
-	handleClick
-}) => {
+export const SXCheckbox = ({ namespace, id, name, label, checked, disabled, style, handleClick }) => {
 	const [value, setValue] = useState(checked);
 
 	const handleOnClick = (e) => {
@@ -163,15 +142,15 @@ export const SXCheckbox = ({
 	);
 };
 
-export const SXRequiredMark = ({spritemap}) => {
+export const SXRequiredMark = ({ spritemap }) => {
 	return (
 		<sup>
 			<ClayIcon
 				symbol="asterisk"
 				style={{
-					fontSize: '0.5rem',
-					margin: '0 3px 3px 3px',
-					color: 'red'
+					fontSize: "0.5rem",
+					margin: "0 3px 3px 3px",
+					color: "red"
 				}}
 				spritemap={spritemap}
 			/>
@@ -179,62 +158,63 @@ export const SXRequiredMark = ({spritemap}) => {
 	);
 };
 
-export const SXTooltip = ({tooltip, spritemap}) => {
+export const SXTooltip = ({ tooltip, spritemap }) => {
 	return (
 		<ClayTooltipProvider>
 			<span
 				data-tooltip-align="top"
 				title={tooltip}
-				style={{marginLeft: '3px'}}
+				style={{ marginLeft: "3px" }}
 			>
-				<ClayIcon spritemap={spritemap} symbol="question-circle-full" />
+				<ClayIcon
+					spritemap={spritemap}
+					symbol="question-circle-full"
+				/>
 			</span>
 		</ClayTooltipProvider>
 	);
 };
 
-export const SXLabel = ({
-	label,
-	forHtml = '',
-	required = false,
-	tooltip = '',
-	style,
-	spritemap
-}) => {
+export const SXLabel = ({ label, forHtml = "", required = false, tooltip = "", style, spritemap }) => {
 	return (
 		<div style={style}>
-			<label htmlFor={forHtml} className="control-label">
+			<label
+				htmlFor={forHtml}
+				className="control-label"
+			>
 				{label}
-				{required ? (
-					<SXRequiredMark spritemap={spritemap} />
-				) : undefined}
+				{required ? <SXRequiredMark spritemap={spritemap} /> : undefined}
 				{tooltip ? (
-					<SXTooltip tooltip={tooltip} spritemap={spritemap} />
+					<SXTooltip
+						tooltip={tooltip}
+						spritemap={spritemap}
+					/>
 				) : undefined}
 			</label>
 		</div>
 	);
 };
 
-export const SXLabeledText = ({label, text, viewType = 'INLINE_ATTACH'}) => {
+export const SXLabeledText = ({ label, text, viewType = "INLINE_ATTACH" }) => {
 	const labelStyle = {
-		backgroundColor: '#e7e7ed',
-		marginBottom: '5px'
+		backgroundColor: "#e7e7ed",
+		marginBottom: "5px"
 	};
 
 	const textStyle = {
-		backgroundColor: '#f1f2f5',
-		marginBottom: '5px'
+		backgroundColor: "#f1f2f5",
+		marginBottom: "5px"
 	};
 
 	switch (viewType) {
-		case 'INLINE_ATTACH': {
+		case "INLINE_ATTACH": {
 			return (
 				<ClayInput.Group>
-					<ClayInput.GroupItem shrink prepend>
-						<ClayInput.GroupText style={labelStyle}>
-							{label}
-						</ClayInput.GroupText>
+					<ClayInput.GroupItem
+						shrink
+						prepend
+					>
+						<ClayInput.GroupText style={labelStyle}>{label}</ClayInput.GroupText>
 					</ClayInput.GroupItem>
 					<ClayInput.GroupItem append>
 						<ClayInput.GroupText
@@ -247,7 +227,7 @@ export const SXLabeledText = ({label, text, viewType = 'INLINE_ATTACH'}) => {
 				</ClayInput.Group>
 			);
 		}
-		case 'INLINE_SPACE': {
+		case "INLINE_SPACE": {
 			return <></>;
 		}
 		default: {
@@ -256,13 +236,7 @@ export const SXLabeledText = ({label, text, viewType = 'INLINE_ATTACH'}) => {
 	}
 };
 
-export const SXFileInput = ({
-	id,
-	name,
-	value,
-	placeholder,
-	disabled = false
-}) => {
+export const SXFileInput = ({ id, name, value, placeholder, disabled = false }) => {
 	return (
 		<ClayInput
 			id={id}
@@ -275,48 +249,48 @@ export const SXFileInput = ({
 	);
 };
 
-const valueChangedEvent = 'SX_PARAM_PROPERTY_CHANGED';
+const valueChangedEvent = "SX_PARAM_PROPERTY_CHANGED";
 
 const getDisplayClassNames = (errorState) => {
-	let errorClass = errorState ? ' has-error' : ' has-success';
+	let errorClass = errorState ? " has-error" : " has-success";
 
 	switch (displayType) {
 		case DisplayType.INLINE: {
 			return {
-				group: 'sx-inline' + errorClass
+				group: "sx-inline" + errorClass
 			};
 		}
 		case DisplayType.INLINE_NO_SPACE: {
 			return {
-				group: 'sx-inline nonspace' + errorClass
+				group: "sx-inline nonspace" + errorClass
 			};
 		}
 		case DisplayType.INLINE_FLAT: {
 			return {
-				group: 'sx-inline' + errorClass,
-				label: 'sx-inline',
-				control: 'sx-inline'
+				group: "sx-inline" + errorClass,
+				label: "sx-inline",
+				control: "sx-inline"
 			};
 		}
 		case DisplayType.INLINE_NONSPACE_FLAT: {
 			return {
-				group: 'sx-inline nonspace' + errorClass,
-				label: 'sx-inline',
-				control: 'sx-inline'
+				group: "sx-inline nonspace" + errorClass,
+				label: "sx-inline",
+				control: "sx-inline"
 			};
 		}
 		case DisplayType.INLINE_NONSPACE_FLAT_NONSPACE: {
 			return {
-				group: 'sx-inline nonspace' + errorClass,
-				label: 'sx-inline nonspace',
-				control: 'sx-inline nonspace'
+				group: "sx-inline nonspace" + errorClass,
+				label: "sx-inline nonspace",
+				control: "sx-inline nonspace"
 			};
 		}
 		case DisplayType.INLINE_NONSPACE_FLAT_NONSPACE: {
 			return {
-				group: 'sx-inline nonspace' + errorClass,
-				label: 'sx-inline nonspace',
-				control: 'sx-inline nonspace'
+				group: "sx-inline nonspace" + errorClass,
+				label: "sx-inline nonspace",
+				control: "sx-inline nonspace"
 			};
 		}
 	}
@@ -326,7 +300,7 @@ const getDisplayClassNames = (errorState) => {
 	};
 };
 
-export const SXRow = ({children}) => {
+export const SXRow = ({ children }) => {
 	return <div className="sx-row">{children}</div>;
 };
 
@@ -334,30 +308,26 @@ export const SXRow = ({children}) => {
  *  01. The type of Parametrer is String and
  * 		localized property is false
  ****************************************************/
-export const SXInput = ({
-	namespace = '',
-	formId = '',
-	properties,
-	className = '',
-	style = {},
-	spritemap
-}) => {
-	const [errorState, setErrorState] = useState('');
+export const SXInput = ({ namespace = "", formId = "", properties, className = "", style = {}, spritemap }) => {
+	const [errorState, setErrorState] = useState("");
 	const [propertiesState, setPropertiesState] = useState(properties);
 
 	const {
 		paramName,
+		paramVersion,
+		parentId,
 		tagId = namespace + properties.paramName,
 		tagName = namespace + properties.paramName,
-		label = '',
+		label = "",
 		required = false,
-		tooltip = '',
-		initValue = properties.defaultValue ? properties.defaultValue : '',
-		placeholder = '',
+		tooltip = "",
+		initValue = properties.defaultValue ? properties.defaultValue : "",
+		placeholder = "",
 		multiLine = false,
 		disabled = false,
 		validation = {},
-		events = {}
+		events = {},
+		viewType = ViewTypes.NORMAL
 	} = propertiesState ?? {};
 
 	const id = namespace + tagId;
@@ -370,11 +340,7 @@ export const SXInput = ({
 
 	useLayoutEffect(() => {
 		if (initializedRef.current) {
-			const checkedError = validateFormField(
-				ParamType.STRING,
-				textState,
-				validation
-			);
+			const checkedError = validateFormField(ParamType.STRING, textState, validation);
 			setErrorState(checkedError);
 		}
 
@@ -382,7 +348,7 @@ export const SXInput = ({
 		 * Default on event
 		 */
 		Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
-			const {dataPacket} = e;
+			const { dataPacket } = e;
 
 			if (
 				!Event.validateMine(dataPacket, {
@@ -396,7 +362,7 @@ export const SXInput = ({
 				return;
 			}
 
-			setTextState('');
+			setTextState("");
 			setErrorState(dataPacket.error);
 		});
 
@@ -431,15 +397,16 @@ export const SXInput = ({
 	renderCount.current++;
 	console.log(`${tagId} renderCount: ${renderCount.current}`);
 
-	const sxLabel = label ? (
-		<SXLabel
-			label={label}
-			forHtml={id}
-			required={required}
-			tooltip={tooltip}
-			spritemap={spritemap}
-		/>
-	) : undefined;
+	const sxLabel =
+		viewType === ViewTypes.NORMAL ? (
+			<SXLabel
+				label={label}
+				forHtml={id}
+				required={required}
+				tooltip={tooltip}
+				spritemap={spritemap}
+			/>
+		) : undefined;
 
 	const handleBlur = (e) => {
 		const value = e.target.value;
@@ -459,7 +426,11 @@ export const SXInput = ({
 					Event.createEventDataPacket(namespace, namespace, {
 						formId: formId,
 						error: errorMsg,
-						fieldName: tagId
+						parentId: parentId,
+						paramId: {
+							name: paramName,
+							version: paramVersion
+						}
 					})
 				);
 			} else {
@@ -468,24 +439,27 @@ export const SXInput = ({
 					Event.createEventDataPacket(namespace, namespace, {
 						formId: formId,
 						value: value,
-						fieldName: tagId
+						parentId: parentId,
+						paramId: {
+							name: paramName,
+							version: paramVersion
+						}
 					})
 				);
 			}
 		}
 	};
 
-	const errorClass = initializedRef.current
-		? errorState
-			? ' has-error'
-			: ' has-success'
-		: '';
+	const errorClass = initializedRef.current ? (errorState ? " has-error" : " has-success") : "";
 
 	return (
-		<ClayForm.Group className={className + errorClass} style={{style}}>
+		<ClayForm.Group
+			className={className + errorClass}
+			style={{ style }}
+		>
 			{sxLabel}
 			<ClayInput
-				component={multiLine ? 'textarea' : 'input'}
+				component={multiLine ? "textarea" : "input"}
 				key={id}
 				id={id}
 				name={name}
@@ -515,10 +489,10 @@ export const SXInput = ({
  * 		localized property is true
  ****************************************************/
 export const SXLocalizedInput = ({
-	namespace = '',
-	formId = '',
+	namespace = "",
+	formId = "",
 	properties,
-	className = '',
+	className = "",
 	style = {},
 	spritemap
 }) => {
@@ -526,9 +500,11 @@ export const SXLocalizedInput = ({
 
 	const {
 		paramName,
+		paramVersion,
+		parentId,
 		tagId = propertiesState.paramName,
 		tagName = propertiesState.paramName,
-		label = '',
+		label = "",
 		multiLine = false,
 		tooltip = {},
 		required = false,
@@ -545,12 +521,10 @@ export const SXLocalizedInput = ({
 	const id = namespace + tagId;
 	const name = namespace + tagName;
 
-	const [errorState, setErrorState] = useState('');
+	const [errorState, setErrorState] = useState("");
 
 	const [selectedLangState, setSelectedLangState] = useState(languageId);
-	const [translationState, setTranslationState] = useState(
-		initValue[languageId] ?? ''
-	);
+	const [translationState, setTranslationState] = useState(initValue[languageId] ?? "");
 	const initializedRef = useRef(Util.isEmptyObject(initValue) ? false : true);
 
 	const translationsRef = useRef(initValue);
@@ -560,15 +534,12 @@ export const SXLocalizedInput = ({
 
 	useLayoutEffect(() => {
 		Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
-			const {dataPacket} = e;
-			if (
-				dataPacket.isNotMine(namespace) ||
-				dataPacket.paramName !== tagId
-			) {
+			const { dataPacket } = e;
+			if (dataPacket.isNotMine(namespace) || dataPacket.paramName !== tagId) {
 				return;
 			}
 
-			setTextState('');
+			setTextState("");
 			setErrorState(dataPacket.error);
 		});
 
@@ -591,19 +562,12 @@ export const SXLocalizedInput = ({
 		});
 
 		if (initializedRef.current) {
-			setErrorState(
-				validateFormField(
-					ParamType.STRING,
-					translationsRef.current,
-					validation
-				)
-			);
+			setErrorState(validateFormField(ParamType.STRING, translationsRef.current, validation));
 		}
 	}, []);
 
 	useEffect(() => {
-		inputRef.current.value =
-			translationsRef.current[selectedLangState] ?? '';
+		inputRef.current.value = translationsRef.current[selectedLangState] ?? "";
 	}, [selectedLangState]);
 
 	const handleBlur = (e) => {
@@ -613,43 +577,41 @@ export const SXLocalizedInput = ({
 		translationsRef.current[selectedLangState] = value;
 		initializedRef.current = true;
 
-		const errorMsg = validateFormField(
-			ParamType.LOCALIZED_STRING,
-			translationsRef.current,
-			validation
-		);
+		const errorMsg = validateFormField(ParamType.LOCALIZED_STRING, translationsRef.current, validation);
 
 		if (errorState !== errorMsg) {
 			setErrorState(errorMsg);
 		}
 
 		if (errorMsg) {
-			if (
-				events.fire &&
-				events.fire.includes(Event.SX_FORM_FIELD_CHANGED)
-			) {
+			if (events.fire && events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
 				Event.fire(
 					Event.SX_FORM_FIELD_FAILED,
 					Event.createEventDataPacket(namespace, namespace, {
 						formId: formId,
 						error: errorMsg,
-						fieldName: paramName
+						parentId: parentId,
+						paramId: {
+							name: paramName,
+							version: paramVersion
+						}
 					})
 				);
 			}
 		} else {
 			translationsRef.current[selectedLangState] = value;
 
-			if (
-				events.fire &&
-				events.fire.includes(Event.SX_FORM_FIELD_CHANGED)
-			) {
+			if (events.fire && events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
 				Event.fire(
 					Event.SX_FORM_FIELD_CHANGED,
 					Event.createEventDataPacket(namespace, namespace, {
 						formId: formId,
 						value: translationsRef.current,
-						fieldName: paramName
+						parentId: parentId,
+						paramId: {
+							name: paramName,
+							version: paramVersion
+						}
 					})
 				);
 			}
@@ -664,11 +626,7 @@ export const SXLocalizedInput = ({
 		};
 	});
 
-	const errorClass = initializedRef.current
-		? errorState
-			? ' has-error'
-			: ' has-success'
-		: '';
+	const errorClass = initializedRef.current ? (errorState ? " has-error" : " has-success") : "";
 
 	const sxLabel =
 		displayType === DisplayType.COLUMN ? null : (
@@ -686,12 +644,15 @@ export const SXLocalizedInput = ({
 	console.log(`${tagId} renderCount: ${renderCount.current}`);
 
 	return (
-		<ClayForm.Group className={className + errorClass} style={style}>
+		<ClayForm.Group
+			className={className + errorClass}
+			style={style}
+		>
 			{sxLabel}
 			<ClayInput.Group>
 				<ClayInput.GroupItem>
 					<ClayInput
-						component={multiLine ? 'textarea' : 'input'}
+						component={multiLine ? "textarea" : "input"}
 						type="text"
 						id={id}
 						name={name}
@@ -712,9 +673,7 @@ export const SXLocalizedInput = ({
 									symbol={selectedLangState.toLowerCase()}
 									spritemap={spritemap}
 								/>
-								<span className="btn-section">
-									{selectedLangState}
-								</span>
+								<span className="btn-section">{selectedLangState}</span>
 							</ClayButton>
 						}
 						active={dropDownActiveState}
@@ -725,27 +684,24 @@ export const SXLocalizedInput = ({
 							{(flag) => {
 								let displayType, label;
 								if (translationsRef.current[flag.name]) {
-									displayType = 'success';
-									label = Liferay.Language.get('translated');
+									displayType = "success";
+									label = Liferay.Language.get("translated");
 								} else {
-									displayType = 'warning';
-									label =
-										Liferay.Language.get('not-translated');
+									displayType = "warning";
+									label = Liferay.Language.get("not-translated");
 								}
 
 								return (
 									<ClayDropDown.Item
 										key={flag.name}
-										onClick={() =>
-											setSelectedLangState(flag.name)
-										}
+										onClick={() => setSelectedLangState(flag.name)}
 										active={selectedLangState === flag.name}
 									>
 										<ClayIcon
 											spritemap={spritemap}
 											symbol={flag.symbol}
 											style={{
-												marginRight: '5px'
+												marginRight: "5px"
 											}}
 										/>
 										{flag.name}
@@ -753,7 +709,7 @@ export const SXLocalizedInput = ({
 											displayType={displayType}
 											spritemap={spritemap}
 											style={{
-												float: 'right'
+												float: "right"
 											}}
 										>
 											{label}
@@ -801,28 +757,23 @@ export const SXInteger = () => {
  *
  * - viewTypes: dropdown, radio, toogle
  ****************************************************/
-export const SXBoolean = ({
-	namespace = '',
-	formId,
-	properties,
-	className = '',
-	style = {},
-	spritemap
-}) => {
+export const SXBoolean = ({ namespace = "", formId, properties, className = "", style = {}, spritemap }) => {
 	const [propertiesState, setPropertiesState] = useState(properties);
 	const {
 		paramName,
+		paramVersion,
+		parentId,
 		tagId = propertiesState.paramName,
 		tagName = propertiesState.paramName,
 		label = propertiesState.label,
-		truelabel = Util.translate('true'),
-		falselabel = Util.translate('false'),
-		tooltip = '',
+		truelabel = Util.translate("true"),
+		falselabel = Util.translate("false"),
+		tooltip = "",
 		required = false,
 		placeholder = false,
-		initValue = '',
+		initValue = "",
 		disabled = false,
-		viewType = 'radio',
+		viewType = "radio",
 		validation = {},
 		events = {}
 	} = propertiesState ?? {};
@@ -831,13 +782,13 @@ export const SXBoolean = ({
 	const name = namespace + tagName;
 
 	const [valueState, setValueState] = useState(initValue);
-	const [errorState, setErrorState] = useState('');
+	const [errorState, setErrorState] = useState("");
 
 	useLayoutEffect(() => {
 		if (events.on) {
 			if (events.on.includes(Event.SX_PARAM_ERROR_FOUND)) {
 				Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
-					const {dataPacket} = e;
+					const { dataPacket } = e;
 
 					if (
 						!Event.validateMine(dataPacket, {
@@ -878,8 +829,6 @@ export const SXBoolean = ({
 	});
 
 	const handleSelect = (e) => {
-		console.log('SXBoolean handleSelect: ', e);
-
 		if (events.fire && events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
 			if (errorState) {
 				Event.fire(
@@ -887,7 +836,11 @@ export const SXBoolean = ({
 					Event.createEventDataPacket(namespace, namespace, {
 						formId: formId,
 						error: errorState,
-						fieldName: paramName
+						parentId: parentId,
+						paramId: {
+							name: paramName,
+							version: paramVersion
+						}
 					})
 				);
 			} else {
@@ -896,7 +849,11 @@ export const SXBoolean = ({
 					Event.createEventDataPacket(namespace, namespace, {
 						formId: formId,
 						value: valueState,
-						fieldName: paramName
+						parentId: parentId,
+						paramId: {
+							name: paramName,
+							version: paramVersion
+						}
 					})
 				);
 			}
@@ -906,7 +863,10 @@ export const SXBoolean = ({
 	switch (viewType) {
 		case ViewTypes.DROPDOWN: {
 			return (
-				<div className={className} style={style}>
+				<div
+					className={className}
+					style={style}
+				>
 					<SXLabel
 						label={label}
 						forHtml={id}
@@ -919,15 +879,24 @@ export const SXBoolean = ({
 						defaultValue={valueState}
 						onSelect={handleSelect}
 					>
-						<ClalySelect.Option label={truelabel} value={true} />
-						<ClalySelect.Option label={falselabel} value={false} />
+						<ClalySelect.Option
+							label={truelabel}
+							value={true}
+						/>
+						<ClalySelect.Option
+							label={falselabel}
+							value={false}
+						/>
 					</ClaySelect>
 				</div>
 			);
 		}
 		case ViewTypes.RADIO: {
 			return (
-				<div className={className} style={style}>
+				<div
+					className={className}
+					style={style}
+				>
 					<SXLabel
 						label={label}
 						forHtml={id}
@@ -941,15 +910,24 @@ export const SXBoolean = ({
 						onChange={handleSelect}
 						inline
 					>
-						<ClayRadio label={truelabel} value={true} />
-						<ClayRadio label={falselabel} value={false} />
+						<ClayRadio
+							label={truelabel}
+							value={true}
+						/>
+						<ClayRadio
+							label={falselabel}
+							value={false}
+						/>
 					</ClayRadioGroup>
 				</div>
 			);
 		}
 		case ViewTypes.TOGGLE: {
 			return (
-				<div className={className} style={style}>
+				<div
+					className={className}
+					style={style}
+				>
 					<ClayToggle
 						id={id}
 						name={name}
@@ -957,8 +935,8 @@ export const SXBoolean = ({
 						onToggle={handleSelect}
 						spritemap={spritemap}
 						symbol={{
-							off: 'times',
-							on: 'check'
+							off: "times",
+							on: "check"
 						}}
 						toggled={valueState}
 					/>
@@ -976,27 +954,21 @@ export const SXBoolean = ({
  * 		displayStyle property is DualListBox
  * 	viewTypes: dropdown, radio
  ****************************************************/
-export const SXSelect = ({
-	namespace = '',
-	formId,
-	properties,
-	className = '',
-	style = {},
-	spritemap
-}) => {
+export const SXSelect = ({ namespace = "", formId, properties, className = "", style = {}, spritemap }) => {
 	const [propertiesState, setPropertiesState] = useState(properties);
-	console.log('propertiesState: ', propertiesState);
 	const {
 		paramName,
+		paramVersion,
+		parentId,
 		tagId = propertiesState.paramName,
 		tagName = propertiesState.paramName,
-		label = '',
-		tooltip = '',
+		label = "",
+		tooltip = "",
 		required = false,
-		placeholder = '',
-		initValue = '',
+		placeholder = "",
+		initValue = "",
 		disabled = false,
-		viewType = 'dropdown',
+		viewType = "dropdown",
 		options = [],
 		validation = {},
 		events = {}
@@ -1007,10 +979,8 @@ export const SXSelect = ({
 
 	const initializedRef = useRef(initValue ? true : false);
 	const [selectedState, setSelectedState] = useState(initValue);
-	const [errorState, setErrorState] = useState('');
+	const [errorState, setErrorState] = useState("");
 	const [viewTypeState, setViewTypeState] = useState(viewType);
-
-	const inputRef = useRef(null);
 
 	useLayoutEffect(() => {
 		/*
@@ -1020,7 +990,7 @@ export const SXSelect = ({
 		if (events.on) {
 			if (events.on.includes(Event.SX_PARAM_ERROR_FOUND)) {
 				Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
-					const {dataPacket} = e;
+					const { dataPacket } = e;
 
 					if (
 						!Event.validateMine(dataPacket, {
@@ -1034,7 +1004,7 @@ export const SXSelect = ({
 						return;
 					}
 
-					setSelectedState('');
+					setSelectedState("");
 					setErrorState(dataPacket.error);
 				});
 			}
@@ -1070,15 +1040,11 @@ export const SXSelect = ({
 
 	useEffect(() => {
 		//inputRef.current.value = selectedState;
-		console.log(
-			'SXSelect: ',
-			inputRef.current.querySelector('select'),
-			propertiesState
-		);
+		console.log("SXSelect: ", inputRef.current.querySelector("select"), propertiesState);
 	}, []);
 
 	const handleChange = (e) => {
-		console.log('SXSelect handleChange: ', e, events);
+		console.log("SXSelect handleChange: ", e, events);
 		setSelectedState(e.target.value);
 
 		if (events.fire && events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
@@ -1087,27 +1053,34 @@ export const SXSelect = ({
 				Event.createEventDataPacket(namespace, namespace, {
 					formId: formId,
 					value: e.target.value,
-					fieldName: paramName
+					parentId: parentId,
+					paramId: {
+						name: paramName,
+						version: paramVersion
+					}
 				})
 			);
 		}
 	};
 
 	const handleBlur = (e) => {
-		console.log('SXSelect handleBlur: ', e);
+		console.log("SXSelect handleBlur: ", e);
 	};
 
 	const handdleClick = (e) => {
-		console.log('SXSelect clicked: ' + e.target.value);
+		console.log("SXSelect clicked: " + e.target.value);
 	};
 
 	const renderCount = useRef(0);
 	renderCount.current++;
 	console.log(`${tagId} renderCount: ${renderCount.current}`);
 
-	if (viewType === 'dropdown') {
+	if (viewType === "dropdown") {
 		return (
-			<div ref={inputRef} className={className} style={style}>
+			<div
+				className={className}
+				style={style}
+			>
 				<SXLabel
 					label={label}
 					forHtml={id}
@@ -1145,28 +1118,23 @@ export const SXSelect = ({
  * 		displayStyle property is DualListBox
  ****************************************************/
 // 04.1. when displayStyle is dual list box
-export const SXDualListBox = ({
-	namespace = '',
-	formId,
-	properties,
-	className = '',
-	style = {},
-	spritemap
-}) => {
+export const SXDualListBox = ({ namespace = "", formId, properties, className = "", style = {}, spritemap }) => {
 	const [propertiesState, setPropertiesState] = useState(properties);
 
 	const {
 		paramName,
+		paramVersion,
+		parentId,
 		tagId = namespace + propertiesState.paramName,
 		tagName = namespace + propertiesState.paramName,
-		label = '',
+		label = "",
 		leftOptions = [],
 		rightOptions = [],
-		tooltip = '',
+		tooltip = "",
 		required = false,
 		disabled = false,
-		displayType = '',
-		viewType = 'horizontal',
+		displayType = "",
+		viewType = "horizontal",
 		validation = {},
 		events = {}
 	} = propertiesState ?? {};
@@ -1174,7 +1142,7 @@ export const SXDualListBox = ({
 	const id = namespace + tagId;
 	const name = namespace + tagName;
 
-	const [errorState, setErrorState] = useState('');
+	const [errorState, setErrorState] = useState("");
 	const [leftItems, setLeftItems] = useState(leftOptions);
 	const [rightItems, setRightItems] = useState(rightOptions);
 	const initializedRef = useRef(leftOptions.length > 0);
@@ -1184,22 +1152,19 @@ export const SXDualListBox = ({
 
 	useLayoutEffect(() => {
 		Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
-			const {dataPacket} = e;
+			const { dataPacket } = e;
 			console.log(
-				'SX_PARAM_ERROR_FOUND RECEIVED: ',
+				"SX_PARAM_ERROR_FOUND RECEIVED: ",
 				dataPacket,
 				namespace,
 				paramName,
 				dataPacket.isNotMine(namespace)
 			);
-			if (
-				dataPacket.isNotMine(namespace) ||
-				dataPacket.paramName !== tagId
-			) {
+			if (dataPacket.isNotMine(namespace) || dataPacket.paramName !== tagId) {
 				return;
 			}
 
-			setTextState('');
+			setTextState("");
 			setErrorState(dataPacket.error);
 		});
 
@@ -1226,9 +1191,7 @@ export const SXDualListBox = ({
 		}
 
 		if (initializedRef.current) {
-			setErrorState(
-				validateFormField(ParamType.DUALLIST, leftOptions, validation)
-			);
+			setErrorState(validateFormField(ParamType.DUALLIST, leftOptions, validation));
 		}
 	}, []);
 
@@ -1249,21 +1212,13 @@ export const SXDualListBox = ({
 	};
 
 	const handleRemoveBtnClick = (e) => {
-		const left = leftItems.filter(
-			(item) => !leftSelected.includes(item.value)
-		);
-		const leave = leftItems.filter((item) =>
-			leftSelected.includes(item.value)
-		);
+		const left = leftItems.filter((item) => !leftSelected.includes(item.value));
+		const leave = leftItems.filter((item) => leftSelected.includes(item.value));
 
 		setLeftItems(left);
 		setRightItems([...rightItems, ...leave]);
 
-		const errorMsg = validateFormField(
-			ParamType.DUAL_LISTBOX,
-			left,
-			validation
-		);
+		const errorMsg = validateFormField(ParamType.DUAL_LISTBOX, left, validation);
 		if (errorState !== errorMsg) {
 			setErrorState(errorMsg);
 		}
@@ -1275,7 +1230,11 @@ export const SXDualListBox = ({
 					Event.createEventDataPacket(namespace, namespace, {
 						formId: formId,
 						error: errorMsg,
-						fieldName: tagId
+						parentId: parentId,
+						paramId: {
+							name: paramName,
+							version: paramVersion
+						}
 					})
 				);
 			} else {
@@ -1284,7 +1243,11 @@ export const SXDualListBox = ({
 					Event.createEventDataPacket(namespace, namespace, {
 						formId: formId,
 						value: left,
-						fieldName: paramName
+						parentId: parentId,
+						paramId: {
+							name: paramName,
+							version: paramVersion
+						}
 					})
 				);
 			}
@@ -1292,12 +1255,8 @@ export const SXDualListBox = ({
 	};
 
 	const handleAddBtnClick = (e) => {
-		const left = rightItems.filter(
-			(item) => !rightSelected.includes(item.value)
-		);
-		const leave = rightItems.filter((item) =>
-			rightSelected.includes(item.value)
-		);
+		const left = rightItems.filter((item) => !rightSelected.includes(item.value));
+		const leave = rightItems.filter((item) => rightSelected.includes(item.value));
 
 		setRightItems(left);
 
@@ -1306,11 +1265,7 @@ export const SXDualListBox = ({
 
 		initializedRef.current = true;
 
-		const errorMsg = validateFormField(
-			ParamType.DUAL_LISTBOX,
-			left,
-			validation
-		);
+		const errorMsg = validateFormField(ParamType.DUAL_LISTBOX, left, validation);
 		if (errorState !== errorMsg) {
 			setErrorState(errorMsg);
 		}
@@ -1322,7 +1277,11 @@ export const SXDualListBox = ({
 					Event.createEventDataPacket(namespace, namespace, {
 						formId: formId,
 						error: errorMsg,
-						fieldName: tagId
+						parentId: parentId,
+						paramId: {
+							name: paramName,
+							version: paramVersion
+						}
 					})
 				);
 			} else {
@@ -1331,25 +1290,28 @@ export const SXDualListBox = ({
 					Event.createEventDataPacket(namespace, namespace, {
 						formId: formId,
 						value: newItems,
-						fieldName: paramName
+						parentId: parentId,
+						paramId: {
+							name: paramName,
+							version: paramVersion
+						}
 					})
 				);
 			}
 		}
 	};
 
-	const errorClass = initializedRef.current
-		? errorState
-			? ' has-error'
-			: ' has-success'
-		: '';
+	const errorClass = initializedRef.current ? (errorState ? " has-error" : " has-success") : "";
 
 	const renderCount = useRef(0);
 	renderCount.current++;
 	console.log(`${tagId} renderCount: ${renderCount.current}`);
 
 	return (
-		<ClayForm.Group className={className} style={style}>
+		<ClayForm.Group
+			className={className}
+			style={style}
+		>
 			{displayType === DisplayType.COLUMN ? null : (
 				<SXLabel
 					label={label}
@@ -1361,10 +1323,7 @@ export const SXDualListBox = ({
 			)}
 			<div className="sx-dual-listbox">
 				<div
-					className={
-						'sx-dual-listbox-item sx-dual-listbox-item-expand listbox-left form-group ' +
-						errorClass
-					}
+					className={"sx-dual-listbox-item sx-dual-listbox-item-expand listbox-left form-group " + errorClass}
 				>
 					<ClaySelectBox
 						items={leftItems}
@@ -1375,7 +1334,7 @@ export const SXDualListBox = ({
 						spritemap={spritemap}
 						value={leftSelected}
 						disabled={disabled}
-						style={{marginBottom: '5px'}}
+						style={{ marginBottom: "5px" }}
 					/>
 					{initializedRef.current && errorState && (
 						<ClayForm.FeedbackGroup>
@@ -1478,21 +1437,15 @@ export const SXEMail = () => {
 };
 
 /*13. Group */
-export const SXGroup = ({
-	namespace = '',
-	formId,
-	properties,
-	className = '',
-	style = {},
-	spritemap
-}) => {
-	console.log('SXGroup spritemap: ', spritemap);
+export const SXGroup = ({ namespace = "", formId, properties, className = "", style = {}, spritemap }) => {
 	const [propertiesState, setPropertiesState] = useState(properties);
 	const {
 		paramName, //
+		paramVersion,
+		parentId,
 		tagId = propertiesState.paramName,
 		tagName = propertiesState.paramName,
-		label = '',
+		label = "",
 		viewType = ViewTypes.VERTICAL,
 		members = [],
 		fieldsPerRow = 1,
@@ -1500,6 +1453,7 @@ export const SXGroup = ({
 	} = propertiesState ?? {};
 
 	const id = namespace + tagId;
+	className = className ? className : "";
 
 	const renderCount = useRef(0);
 	renderCount.current++;
@@ -1511,7 +1465,7 @@ export const SXGroup = ({
 			content = (
 				<ClayPanel
 					id={id}
-					className={classNames}
+					className={className}
 					style={style}
 				></ClayPanel>
 			);
@@ -1524,31 +1478,26 @@ export const SXGroup = ({
 			content = (
 				<div
 					id={id}
-					className={'form-group ' + className}
+					className={"form-group form-group-autofit" + className}
 					style={style}
 				>
-					{rows.map((row, rowIndex) => (
-						<div
-							key={paramName + '_' + rowIndex}
-							className="form-group-autofit"
-							style={{marginBottom: '5px'}}
-						>
-							{row.map((col) => (
-								<span
-									key={col.paramName}
-									className="form-group-item"
-								>
-									<SXFormField
-										namespace={namespace}
-										formId={formId}
-										properties={col}
-										formData={initValues[col.paramName]}
-										spritemap={spritemap}
-									/>
-								</span>
-							))}
-						</div>
-					))}
+					{rows.map((row, rowIndex) =>
+						row.map((col) => (
+							<span
+								key={col.paramName}
+								className="form-group-item"
+								style={{ marginBottom: "5px" }}
+							>
+								<SXFormField
+									namespace={namespace}
+									formId={formId}
+									properties={col}
+									formData={initValues[col.paramName]}
+									spritemap={spritemap}
+								/>
+							</span>
+						))
+					)}
 				</div>
 			);
 		}
@@ -1597,7 +1546,7 @@ export const SXButtonWithIcon = ({
 	displayType,
 	href,
 	style,
-	size = 'md',
+	size = "md",
 	spritemap,
 	onClick
 }) => {
@@ -1614,14 +1563,14 @@ export const SXButtonWithIcon = ({
 			<ClayIcon
 				spritemap={spritemap}
 				symbol={symbol}
-				style={{marginRight: '5px'}}
+				style={{ marginRight: "5px" }}
 			/>
 			{label}
 		</ClayButton>
 	);
 };
 
-export const SXInlineInputGroup = ({items, displayStyle = 'justify'}) => {
+export const SXInlineInputGroup = ({ items, displayStyle = "justify" }) => {
 	return (
 		<div className="sx-inline-input-group">
 			{items.map((item) => {
@@ -1689,33 +1638,7 @@ export const SXInlineInputGroup = ({items, displayStyle = 'justify'}) => {
 	);
 };
 
-const SXFormField = ({
-	namespace,
-	formId,
-	properties,
-	className,
-	style,
-	spritemap
-}) => {
-	/*
-	let value = formData;
-	if (typeof formData === "object") {
-		console.log("formData is object: ", formData);
-		value = Util.isEmpty(formData) ? undefined : formData[properties.paramName];
-	}
-
-	if (Util.isEmpty(value)) {
-		value = properties.defaultValue;
-	}
-		*/
-
-	console.log(
-		'SXFormField spritemap: ',
-		properties.paramName,
-		properties.paramType,
-		spritemap
-	);
-
+const SXFormField = ({ namespace, formId, properties, className, style, spritemap }) => {
 	switch (properties.paramType) {
 		case ParamType.STRING: {
 			if (properties.localized) {
@@ -1723,13 +1646,7 @@ const SXFormField = ({
 					<SXLocalizedInput
 						namespace={namespace}
 						formId={formId}
-						properties={{
-							...properties,
-							tagId: properties.paramName,
-							tagName: properties.paramName,
-							label: properties.displayName,
-							initValue: properties.value
-						}}
+						properties={properties}
 						className={className}
 						style={style}
 						spritemap={spritemap}
@@ -1740,13 +1657,7 @@ const SXFormField = ({
 					<SXInput
 						namespace={namespace}
 						formId={formId}
-						properties={{
-							...properties,
-							tagId: properties.paramName,
-							tagName: properties.paramName,
-							label: properties.displayName,
-							initValue: properties.value
-						}}
+						properties={properties}
 						className={className}
 						style={style}
 						spritemap={spritemap}
@@ -1759,13 +1670,7 @@ const SXFormField = ({
 				<SXBoolean
 					namespace={namespace}
 					formId={formId}
-					properties={{
-						...properties,
-						tagId: properties.paramName,
-						tagName: properties.paramName,
-						label: properties.displayName,
-						initValue: properties.value
-					}}
+					properties={properties}
 					className={className}
 					style={style}
 					spritemap={spritemap}
@@ -1777,13 +1682,7 @@ const SXFormField = ({
 				<SXSelect
 					namespace={namespace}
 					formId={formId}
-					properties={{
-						...properties,
-						tagId: properties.paramName,
-						tagName: properties.paramName,
-						label: properties.displayName,
-						initValue: properties.value
-					}}
+					properties={properties}
 					className={className}
 					style={style}
 					spritemap={spritemap}
@@ -1795,13 +1694,7 @@ const SXFormField = ({
 				<SXDualListBox
 					namespace={namespace}
 					formId={formId}
-					properties={{
-						...properties,
-						tagId: properties.paramName,
-						tagName: properties.paramName,
-						label: properties.displayName,
-						initValue: properties.value
-					}}
+					properties={properties}
 					className={className}
 					style={style}
 					spritemap={spritemap}
@@ -1813,12 +1706,7 @@ const SXFormField = ({
 				<SXGroup
 					namespace={namespace}
 					formId={formId}
-					properties={{
-						...properties,
-						tagId: properties.paramName,
-						tagName: properties.paramName,
-						label: properties.displayName
-					}}
+					properties={properties}
 					className={className}
 					style={style}
 					spritemap={spritemap}
@@ -1828,6 +1716,58 @@ const SXFormField = ({
 	}
 
 	return <></>;
+};
+
+export const SXForm = ({
+	namespace,
+	formTag = "div",
+	formName,
+	action,
+	method = "post",
+	encType = "application/x-www-form-urlencoded",
+	formFields,
+	className,
+	style,
+	spritemap
+}) => {
+	const formId = namespace + formName;
+	const formContent = formFields.map((formField) => {
+		return (
+			<SXFormField
+				namespace={namespace}
+				formId={formId}
+				properties={formField}
+				spritemap
+			/>
+		);
+	});
+
+	if (formTag === "form") {
+		return (
+			<form
+				name={formName}
+				action={action}
+				method={method}
+				encType={encType}
+				className={className}
+				style={style}
+				spritemap={spritemap}
+			>
+				{formContent}
+			</form>
+		);
+	} else {
+		return (
+			<div
+				id={formId}
+				className={className}
+				style={style}
+				spritemap={spritemap}
+			>
+				{formContent}
+			</div>
+		);
+	}
 };
 
 export const SXMemoizedInput = React.memo(SXInput);

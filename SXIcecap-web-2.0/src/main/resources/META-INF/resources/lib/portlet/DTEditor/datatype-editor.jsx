@@ -126,8 +126,6 @@ const DataTypeEditor = ({ portletParameters }) => {
 
 	const [loadingStatus, setLoadingStatus] = useState(LoadingStatus.PENDING);
 
-	const formData = useRef({});
-	const formErrors = useRef({});
 	const formFields = useRef([]);
 	const dataTypeLoaded = useRef(dataTypeIdState > 0 ? LoadingStatus.PENDING : LoadingStatus.COMPLETE);
 	const visualizersLoaded = useRef(LoadingStatus.PENDING);
@@ -151,11 +149,9 @@ const DataTypeEditor = ({ portletParameters }) => {
 				return;
 			}
 
-			formData.current[dataPacket.fieldName] = dataPacket.value;
+			const { parentId, paramId, value } = dataPacket;
 
-			delete formErrors.current[dataPacket.fieldName];
-
-			console.log("formData: ", formData, formErrors);
+			DataStructure.setFormData(formFields.current, parentId, paramId, value);
 		});
 
 		Event.on(Event.SX_FORM_FIELD_FAILED, (e) => {
@@ -168,255 +164,288 @@ const DataTypeEditor = ({ portletParameters }) => {
 			)
 				return;
 
-			formErrors.current[dataPacket.fieldName] = dataPacket.error;
-
-			console.log("formErrors: ", formErrors);
+			const { parentId, paramId, error } = dataPacket;
+			DataStructure.setFormData(formFields.current, parentId, paramId, error);
 		});
 
-		formFields.current = [
-			{
-				paramName: "baseGroup",
-				paramVersion: "1.0.0",
-				paramType: ParamType.GROUP,
-				viewType: ViewTypes.HORIZONTAL,
-				fieldsPerRow: 3,
-				members: [
-					{
-						paramName: DataTypeProperty.NAME,
-						paramVersion: "1.0.0",
-						parent: {
-							name: "baseGroup",
-							version: "1.0.0"
-						},
-						paramType: ParamType.STRING,
-						displayName: Util.translate("datatype-name"),
-						required: true,
-						localized: false,
-						placeholder: Util.translate("code-name-of-the-datatype"),
-						tooltip: Util.translate("datatype-name-tooltip"),
-						multiLine: false,
-						disabled: false,
-						events: {
-							fire: [Event.SX_FORM_FIELD_CHANGED],
-							on: [Event.SX_PARAM_PROPERTY_CHANGED]
-						},
-						validation: {
-							required: {
-								value: true,
-								message: `${DataTypeProperty.NAME} is required`
+		formFields.current = DataStructure.parse(
+			[
+				{
+					paramName: "baseGroup",
+					paramVersion: "1.0.0",
+					paramType: ParamType.GROUP,
+					viewType: ViewTypes.HORIZONTAL,
+					fieldsPerRow: 3,
+					members: [
+						{
+							paramName: DataTypeProperty.NAME,
+							paramVersion: "1.0.0",
+							parent: {
+								name: "baseGroup",
+								version: "1.0.0"
 							},
-							pattern: {
-								value: ValidationRule.VARIABLE,
-								message: "Invalid data type name"
+							paramType: ParamType.STRING,
+							displayName: {
+								"en-US": "Display Name"
 							},
-							min: {
-								value: 3,
-								message: "Should be at least 3"
+							required: true,
+							viewType: ViewTypes.NORMAL,
+							placeholder: {
+								"en-US": "Code name"
 							},
-							max: {
-								value: 32,
-								message: "Should be shorter than 33"
-							}
+							tooltip: {
+								"en-US": "Code name tooltip"
+							},
+							events: {
+								fire: [Event.SX_FORM_FIELD_CHANGED],
+								on: [Event.SX_PARAM_PROPERTY_CHANGED]
+							},
+							validation: {
+								required: {
+									value: true,
+									message: `${DataTypeProperty.NAME} is required`
+								},
+								pattern: {
+									value: ValidationRule.VARIABLE,
+									message: "Invalid data type name"
+								},
+								min: {
+									value: 3,
+									message: "Should be at least 3"
+								},
+								max: {
+									value: 32,
+									message: "Should be shorter than 33"
+								}
+							},
+							defaultValue: "",
+							order: 1
 						},
-						defaultValue: "",
-						order: 1
+						{
+							paramName: DataTypeProperty.VERSION,
+							paramVersion: "1.0.0",
+							parent: {
+								name: "baseGroup",
+								version: "1.0.0"
+							},
+							paramType: ParamType.STRING,
+							displayName: {
+								"en-US": "Version"
+							},
+							required: true,
+							localized: false,
+							placeholder: {
+								"en-US": "Version"
+							},
+							tooltip: {
+								"en-US": "Version tooltip"
+							},
+							multiLine: false,
+							disabled: false,
+							events: {
+								fire: [Event.SX_FORM_FIELD_CHANGED],
+								on: [Event.SX_PARAM_PROPERTY_CHANGED]
+							},
+
+							validation: {
+								required: {
+									value: true,
+									message: `${DataTypeProperty.VERSION} is required`
+								},
+								pattern: {
+									value: ValidationRule.VERSION,
+									message: "Invalid data type version"
+								}
+							},
+							defaultValue: "1.0.0",
+							order: 2
+						},
+						{
+							paramName: DataTypeProperty.EXTENSION,
+							paramVersion: "1.0.0",
+							parent: {
+								name: "baseGroup",
+								version: "1.0.0"
+							},
+							paramType: ParamType.STRING,
+							displayName: {
+								"en-US": "Extension"
+							},
+							required: true,
+							localized: false,
+							placeholder: {
+								"en-US": "ext"
+							},
+							tooltip: {
+								"en-US": "Extension tooltip"
+							},
+							multiLine: false,
+							disabled: false,
+							events: {
+								fire: [Event.SX_FORM_FIELD_CHANGED],
+								on: [Event.SX_PARAM_PROPERTY_CHANGED]
+							},
+
+							validation: {
+								required: {
+									value: true,
+									message: `${DataTypeProperty.EXTENSION}-is-required`
+								},
+								pattern: {
+									value: ValidationRule.EXTENSION,
+									message: "Invalid data type extension"
+								},
+								min: {
+									value: 2,
+									message: "Should be at least 2"
+								},
+								max: {
+									value: 16,
+									message: "Should be shorter than 17"
+								}
+							},
+							defaultValue: "",
+							order: 3
+						}
+					],
+					order: 1
+				},
+				{
+					paramName: DataTypeProperty.DISPLAY_NAME,
+					paramVersion: "1.0.0",
+					paramType: ParamType.STRING,
+					displayName: {
+						"en-US": "Display Name"
 					},
-					{
-						paramName: DataTypeProperty.VERSION,
-						paramVersion: "1.0.0",
-						parent: {
-							name: "baseGroup",
-							version: "1.0.0"
-						},
-						paramType: ParamType.STRING,
-						displayName: Util.translate("datatype-version"),
-						required: true,
-						localized: false,
-						placeholder: Util.translate("version-of-the-datatype"),
-						tooltip: Util.translate("datatype-version-tooltip"),
-						multiLine: false,
-						disabled: false,
-						events: {
-							fire: [Event.SX_FORM_FIELD_CHANGED],
-							on: [Event.SX_PARAM_PROPERTY_CHANGED]
-						},
-
-						validation: {
-							required: {
-								value: true,
-								message: `${DataTypeProperty.VERSION} is required`
-							},
-							pattern: {
-								value: ValidationRule.VERSION,
-								message: "Invalid data type version"
-							}
-						},
-						defaultValue: "1.0.0",
-						order: 2
+					required: true,
+					localized: true,
+					placeholder: {
+						"en-US": "Display Name"
 					},
-					{
-						paramName: DataTypeProperty.EXTENSION,
-						paramVersion: "1.0.0",
-						parent: {
-							name: "baseGroup",
-							version: "1.0.0"
-						},
-						paramType: ParamType.STRING,
-						displayName: Util.translate("datatype-extension"),
-						required: true,
-						localized: false,
-						placeholder: Util.translate("extension-of-the-datatype"),
-						tooltip: Util.translate("datatype-extension-tooltip"),
-						multiLine: false,
-						disabled: false,
-						events: {
-							fire: [Event.SX_FORM_FIELD_CHANGED],
-							on: [Event.SX_PARAM_PROPERTY_CHANGED]
-						},
-
-						validation: {
-							required: {
-								value: true,
-								message: `${DataTypeProperty.EXTENSION}-is-required`
-							},
-							pattern: {
-								value: ValidationRule.EXTENSION,
-								message: "Invalid data type extension"
-							},
-							min: {
-								value: 2,
-								message: "Should be at least 2"
-							},
-							max: {
-								value: 16,
-								message: "Should be shorter than 17"
-							}
-						},
-						defaultValue: "",
-						order: 3
-					}
-				],
-				order: 1
-			},
-			{
-				paramName: DataTypeProperty.DISPLAY_NAME,
-				paramVersion: "1.0.0",
-				paramType: ParamType.STRING,
-				displayName: Util.translate("display-name"),
-				required: true,
-				localized: true,
-				languageId: languageId,
-				availableLanguageIds: availableLanguageIds.split(","),
-				placeholder: Util.translate("display-name-of-the-datatype"),
-				tooltip: Util.translate("display-name-tooltip"),
-				multiLine: false,
-				disabled: false,
-				events: {
-					fire: [Event.SX_FORM_FIELD_CHANGED],
-					on: [Event.SX_PARAM_PROPERTY_CHANGED]
-				},
-
-				validation: {
-					required: {
-						value: true,
-						message: `${DataTypeProperty.DISPLAY_NAME}-is-required`
+					tooltip: {
+						"en-US": "Display Name Tooltip"
 					},
-					min: {
-						value: 3,
-						message: "Must longer than 3"
+					multiLine: false,
+					disabled: false,
+					events: {
+						fire: [Event.SX_FORM_FIELD_CHANGED],
+						on: [Event.SX_PARAM_PROPERTY_CHANGED]
 					},
-					max: {
-						value: 64,
-						message: "Must shorter than 64"
-					}
-				},
-				defaultValue: {},
-				order: 2
-			},
-			{
-				paramName: DataTypeProperty.DESCRIPTION,
-				paramVersion: "1.0.0",
-				paramType: ParamType.STRING,
-				displayName: Util.translate("description"),
-				required: false,
-				localized: true,
-				languageId: languageId,
-				availableLanguageIds: availableLanguageIds.split(","),
-				placeholder: Util.translate("description-of-the-datatype"),
-				tooltip: Util.translate("description-tooltip"),
-				multiLine: true,
-				disabled: false,
-				events: {
-					fire: [Event.SX_FORM_FIELD_CHANGED],
-					on: [Event.SX_PARAM_PROPERTY_CHANGED]
-				},
 
-				validation: {},
-				defaultValue: {},
-				order: 3
-			},
-			{
-				paramName: DataTypeProperty.TOOLTIP,
-				paramVersion: "1.0.0",
-				paramType: ParamType.STRING,
-				displayName: Util.translate("tooltip"),
-				required: false,
-				localized: true,
-				languageId: languageId,
-				availableLanguageIds: availableLanguageIds.split(","),
-				placeholder: Util.translate("tooltip-of-the-datatype"),
-				tooltip: Util.translate("tooltip-tooltip"),
-				multiLine: false,
-				disabled: false,
-				events: {
-					fire: [Event.SX_FORM_FIELD_CHANGED],
-					on: [Event.SX_PARAM_PROPERTY_CHANGED]
+					validation: {
+						required: {
+							value: true,
+							message: `${DataTypeProperty.DISPLAY_NAME}-is-required`
+						},
+						min: {
+							value: 3,
+							message: "Must longer than 3"
+						},
+						max: {
+							value: 64,
+							message: "Must shorter than 64"
+						}
+					},
+					defaultValue: {},
+					order: 2
 				},
+				{
+					paramName: DataTypeProperty.DESCRIPTION,
+					paramVersion: "1.0.0",
+					paramType: ParamType.STRING,
+					displayName: {
+						"en-US": "Description"
+					},
+					required: false,
+					localized: true,
+					placeholder: {
+						"en-US": "Description"
+					},
+					tooltip: {
+						"en-US": "Description Tooltip"
+					},
+					multiLine: true,
+					disabled: false,
+					events: {
+						fire: [Event.SX_FORM_FIELD_CHANGED],
+						on: [Event.SX_PARAM_PROPERTY_CHANGED]
+					},
 
-				validation: {
-					max: {
-						value: 64,
-						message: "Should be shorter than 65 bytes"
-					}
+					validation: {},
+					defaultValue: {},
+					order: 3
 				},
-				defaultValue: {},
-				order: 4
-			},
-			{
-				paramName: DataTypeProperty.VISUALIZERS,
-				paramVersion: "1.0.0",
-				paramType: ParamType.DUALLIST,
-				displayName: Util.translate("associated-visualisers"),
-				required: true,
-				placeholder: Util.translate("tooltip-of-the-datatype"),
-				tooltip: Util.translate("tooltip-tooltip"),
-				disabled: false,
-				viewType: "horizontal",
-				events: {
-					fire: [Event.SX_FORM_FIELD_CHANGED],
-					on: [Event.SX_PARAM_PROPERTY_CHANGED]
-				},
+				{
+					paramName: DataTypeProperty.TOOLTIP,
+					paramVersion: "1.0.0",
+					paramType: ParamType.STRING,
+					displayName: {
+						"en-US": "Tooltip"
+					},
+					required: false,
+					localized: true,
+					placeholder: {
+						"en-US": "Tooltip"
+					},
+					tooltip: {
+						"en-US": "Tooltip tooltip"
+					},
+					multiLine: false,
+					disabled: false,
+					events: {
+						fire: [Event.SX_FORM_FIELD_CHANGED],
+						on: [Event.SX_PARAM_PROPERTY_CHANGED]
+					},
 
-				validation: {
-					required: {
-						value: true,
-						message: `${DataTypeProperty.VISUALIZERS}-is-required`
-					}
+					validation: {
+						max: {
+							value: 64,
+							message: "Should be shorter than 65 bytes"
+						}
+					},
+					defaultValue: {},
+					order: 4
 				},
-				defaultValue: [],
-				leftOptions: inUseVisualizers.current,
-				rightOptions: availableVisualizers.current,
-				order: 5
-			}
-		].sort((a, b) => a.order - b.order);
+				{
+					paramName: DataTypeProperty.VISUALIZERS,
+					paramVersion: "1.0.0",
+					paramType: ParamType.DUALLIST,
+					displayName: {
+						"en-US": "Associated Visualizers"
+					},
+					required: true,
+					tooltip: {
+						"en-US": "Associated visualizers tooltip"
+					},
+					disabled: false,
+					viewType: "horizontal",
+					events: {
+						fire: [Event.SX_FORM_FIELD_CHANGED],
+						on: [Event.SX_PARAM_PROPERTY_CHANGED]
+					},
+					validation: {
+						required: {
+							value: true,
+							message: `${DataTypeProperty.VISUALIZERS}-is-required`
+						}
+					},
+					defaultValue: [],
+					leftOptions: inUseVisualizers.current,
+					rightOptions: availableVisualizers.current,
+					order: 5
+				}
+			].sort((a, b) => a.order - b.order)
+		);
 
-		formFields.current.forEach((field) => {
-			if (!Util.isEmpty(field.defaultValue)) {
+		formFields.current = formFields.current.map((field) => {
+			if (Util.isNotEmpty(field.defaultValue)) {
 				field.value = field.defaultValue;
 			}
 
-			//parametersRef.current.push(DataStructure.createParameter(field.paramType, field));
+			return field;
 		});
+
+		console.log("formFields: ", formFields.current);
 
 		//Loading dataType
 		if (dataTypeIdState > 0 && loadingStatus === LoadingStatus.PENDING) {
@@ -431,15 +460,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 				},
 				successFunc: (result) => {
 					console.log("Data type: ", result);
-					formFields.current.forEach((field) => {
-						if (!Util.isEmpty(result[field.paramName])) {
-							field.value = result[field.paramName];
-						} else {
-							field.value = Util.isEmpty(field.defaultValue) ? field.defaultValue : null;
-						}
-					});
-
-					formData.current = result;
+					DataStructure.loadData(formFields.current, result);
 
 					if (visualizersLoaded.current === LoadingStatus.PENDING) {
 						dataTypeLoaded.current = LoadingStatus.COMPLETE;
@@ -495,7 +516,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 	} else if (loadingStatus === LoadingStatus.FAIL) {
 		return <h1>Data Loading Failed......</h1>;
 	} else if (loadingStatus === LoadingStatus.COMPLETE) {
-		console.log("Start rendering: ", formData.current, inUseVisualizers, availableVisualizers);
+		console.log("Start rendering: ", inUseVisualizers, availableVisualizers);
 		const saveButtonLabel = Util.translate(editStatus.current === EditStatus.UPDATE ? "update" : "create");
 		const saveResourceId =
 			editStatus.current === EditStatus.UPDATE ? ResourceIds.UPDATE_DATATYPE : ResourceIds.ADD_DATATYPE;
@@ -553,7 +574,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 		};
 
 		const handleBtnSaveClick = (e) => {
-			const checkError = validateForm(formFields.current, formData.current, formErrors.current);
+			const checkError = DataStructure.checkFormDataErrors(formFields.current);
 
 			if (checkError) {
 				Event.fire(
@@ -658,7 +679,9 @@ const DataTypeEditor = ({ portletParameters }) => {
 			paramName: "testString",
 			paramVersion: "1.0.0",
 			paramType: ParamType.STRING,
-			displayName: "Test String",
+			displayName: {
+				"en-US": "Test String"
+			},
 			required: true,
 			localized: false,
 			placeholder: "Test string",
@@ -694,7 +717,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 		const formId = namespace + "dataTypePropertiesForm";
 		return (
 			<ClayIconSpriteContext.Provider value={spritemapPath}>
-				{stringParam.render(namespace, formId, languageId, null, null, "", {}, spritemapPath)}
+				{stringParam.render(namespace, formId, languageId, null, null, null, "", {}, spritemapPath)}
 				{header}
 				{dataTypeIdState > 0 && (
 					<div className="form-group">
@@ -729,6 +752,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 							console.log("visualizers: ", field.leftOptions, field.rightOptions);
 						}
 
+						/*
 						let value;
 						if (field.paramType !== ParamType.GROUP) {
 							value = formData.current[field.paramName];
@@ -738,16 +762,17 @@ const DataTypeEditor = ({ portletParameters }) => {
 						} else {
 							const members = field.members;
 						}
-
-						return (
-							<SXFormField
-								key={field.order}
-								formId={formId}
-								namespace={namespace}
-								properties={field}
-								value={value}
-								spritemap={spritemapPath}
-							/>
+*/
+						return field.render(
+							namespace,
+							formId,
+							languageId,
+							availableLanguageIds.split(","),
+							null,
+							null,
+							"",
+							null,
+							spritemapPath
 						);
 					})}
 				</ClayForm>

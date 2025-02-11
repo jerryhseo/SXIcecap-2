@@ -1,19 +1,6 @@
 import React from "react";
 import { Constant, ParamType } from "../../common/station-x";
-import {
-	AddressParameter,
-	BooleanParameter,
-	DateParameter,
-	DualListParameter,
-	FileParameter,
-	GroupParameter,
-	MatrixParameter,
-	NumericParameter,
-	PhoneParameter,
-	SelectGroupParameter,
-	SelectParameter,
-	StringParameter
-} from "../../parameter/parameter";
+import { Parameter } from "../../parameter/parameter";
 
 export class DataStructure {
 	#paramDelimiter = ";";
@@ -23,12 +10,99 @@ export class DataStructure {
 	#matrixElementDelimiter = " ";
 	#commentChar = "#";
 	#parameters = [];
-	#enableInputStatus = "";
+	#enableInputStatus = false;
 	#enableGoTo = false;
+	#hierarchicalData = false;
 
-	static getGroupMembers(groupId, flat = true) {}
+	static parse(fields) {
+		return fields.map((field) => {
+			return Parameter.createParameter(field.paramType, field);
+		});
+	}
 
-	constructor(json) {}
+	static loadData(parameters, data) {
+		if (Util.isEmpty(parameters) || !(parameters instanceof Array)) return;
+
+		parameters.forEach((param) => {
+			param.loadData(data);
+		});
+	}
+
+	static findFormField(fields, fieldName, fieldVersion) {
+		let found = null;
+
+		fields.every((field) => {
+			if (field.equalTo(fieldName, fieldVersion)) {
+				found = field;
+				return Constant.STOP_EVERY;
+			}
+			return Constant.CONTINUE_EVERY;
+		});
+
+		return found;
+	}
+
+	static setFormData(fields, parentId, paramId, value) {
+		let parameter = null;
+
+		if (Util.isEmpty(parentId)) {
+			parameter = DataStructure.findFormField(fields, paramId.name, paramId.version);
+		} else {
+			let parentParam = DataStructure.findFormField(fields, parentId.name, parentId.version);
+			if (Util.isEmpty(parentParam)) return;
+
+			parameter = DataStructure.findFormField(parentParam.members, paramId.name, paramId.version);
+		}
+
+		if (Util.isEmpty(parameter)) return;
+
+		parameter.setValue(value);
+	}
+
+	static setFormError(fields, parentId, paramId, error) {
+		let parameter = null;
+
+		if (Util.isEmpty(parentId)) {
+			parameter = DataStructure.findFormField(fields, paramId.name, paramId.version);
+		} else {
+			let parentParam = DataStructure.findFormField(fields, parentId.name, parentId.version);
+			if (Util.isEmpty(parentParam)) return;
+
+			parameter = DataStructure.findFormField(parentParam.members, paramId.name, paramId.version);
+		}
+
+		if (Util.isEmpty(parameter)) return;
+
+		parameter.setError(error);
+	}
+
+	static checkFormDataErrors(fields) {
+		let error = "";
+
+		fields.every((field) => {
+			if (field.isAssembly()) {
+				error = DataStructure.checkFormDataErrors(fields.members);
+				if (error) {
+					return Constant.STOP_EVERY;
+				}
+			} else {
+				if (field.hasError()) {
+					error = field.error;
+					return Constant.STOP_EVERY;
+				}
+			}
+
+			return Constant.CONTINUE_EVERY;
+		});
+
+		return error;
+	}
+
+	constructor(json) {
+		if (json) {
+			this.parse(json);
+		}
+	}
 
 	get paramDelimiter() {
 		return this.#paramDelimiter;
@@ -56,6 +130,9 @@ export class DataStructure {
 	}
 	get enableGoTo() {
 		return this.#enableGoTo;
+	}
+	get hierarchicalData() {
+		return this.#hierarchicalData;
 	}
 
 	set paramDelimiter(val) {
@@ -85,8 +162,11 @@ export class DataStructure {
 	set enableGoTo(val) {
 		this.#enableGoTo = val;
 	}
+	set hierarchicalData(val) {
+		this.#hierarchicalData = val;
+	}
 
-	getParameterByOrder(parentId, order) {
+	getParameterByOrder(groupId, order) {
 		let retrieved = null;
 
 		this.parameters.every((param) => {
@@ -100,15 +180,47 @@ export class DataStructure {
 		return retrieved;
 	}
 
-	getParameterByName(parameters, name) {
-		return parameters[name];
+	/**
+	 *
+	 * @param {*} parameters
+	 * @param {*} name
+	 * @param {*} version
+	 * @returns
+	 */
+	getParameter(name, version) {
+		function search(parameters) {
+			let retrieved = null;
+			params.every((param) => {
+				if (param.equalTo(name, version)) {
+					retrieved = param;
+					return Constant.STOP_EVERY;
+				}
+
+				if (param.isAssembly()) {
+					retrieved = search(param.members);
+
+					if (Util.isNotEmpty(retrieved)) {
+						return Constant.STOP_EVERY;
+					}
+				}
+
+				return CONTINUE_EVERY;
+			});
+
+			return retrieved;
+		}
+
+		return search(this.parameters);
 	}
 
-	getParameterByNameVersion(parameters, name, version) {
-		return parameters[paramName];
+	getParameters(groupId) {
+		if (Util.isEmpty(groupId)) {
+			return this.parameters;
+		} else {
+			let param = this.getParameter(this.parameters, groupId.name, groupId.version);
+			return param.members;
+		}
 	}
-
-	getMemberParameters(groupId) {}
 
 	parse(json) {
 		this.paramDelimiter = json.paramDelimiter ?? this.paramDelimiter;
@@ -124,22 +236,23 @@ export class DataStructure {
 
 		this.enableInputStatus = json.enableInputStatus ?? this.enableInputStatus;
 		this.enableGoTo = json.enableGoTo ?? this.enableGoTo;
+		this.hierarchicalData = json.hierarchicalData ?? this.hierarchicalData;
 	}
 
 	toJSON() {
 		let json = {};
 
-		json.paramDelimiter = this.paramDelimiter;
-		json.paramDelimiterPosition = this.paramDelimiterPosition;
-		json.paramValueDelimiter = this.paramValueDelimiter;
-		json.matrixBracketType = this.matrixBracketType;
-		json.matrixElementDelimiter = this.matrixElementDelimiter;
-		json.commentChar = this.commentChar;
+		if (this.paramDelimiter !== ";") json.paramDelimiter = this.paramDelimiter;
+		if (this.paramDelimiterPosition !== "end") json.paramDelimiterPosition = this.paramDelimiterPosition;
+		if (this.paramValueDelimiter !== "=") json.paramValueDelimiter = this.paramValueDelimiter;
+		if (this.matrixBracketType !== "[]") json.matrixBracketType = this.matrixBracketType;
+		if (this.matrixElementDelimiter !== " ") json.matrixElementDelimiter = this.matrixElementDelimiter;
+		if (this.commentChar !== "#") json.commentChar = this.commentChar;
 
 		json.parameters = this.parameters.map((parameter) => parameter.toJSON());
 
-		json.enableInputStatus = json.enableInputStatus;
-		json.enableGoTo = this.enableGoTo;
+		if (this.enableInputStatus) json.enableInputStatus = this.enableInputStatus;
+		if (this.enableGoTo) json.enableGoTo = this.enableGoTo;
 
 		return json;
 	}

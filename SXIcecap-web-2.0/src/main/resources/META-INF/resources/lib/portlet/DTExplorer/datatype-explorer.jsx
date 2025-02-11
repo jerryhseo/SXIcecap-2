@@ -23,6 +23,7 @@ import { NotFound } from "../../common/common";
 import ClayIcon from "@clayui/icon";
 
 const DataTypeExplorer = ({ portletParameters }) => {
+	console.log("DataTypeExplorer: ", portletParameters);
 	const { namespace, baseRenderURL, baseResourceURL, permissions, spritemapPath } = portletParameters;
 	const {
 		groupId,

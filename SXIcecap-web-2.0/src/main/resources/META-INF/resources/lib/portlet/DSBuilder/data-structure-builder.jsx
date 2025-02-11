@@ -21,7 +21,7 @@ import { DataTypeInfo } from "../DTEditor/datatype-editor";
 import { StringParameter } from "../../parameter/parameter";
 
 const DataStructureBuilder = ({ portletParameters }) => {
-	console.log("DataStructureBuilder", portletParameters);
+	console.log("DataStructureBuilder--recompile", portletParameters);
 	const { namespace, baseRenderURL, baseResourceURL, languageId, availableLanguageIds, permissions, spritemapPath } =
 		portletParameters;
 	const { workbenchURL, workbenchId, workbenchNamespace, dataTypeId } = portletParameters.params;

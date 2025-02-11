@@ -2,7 +2,15 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { DataStructure } from "./data-structure";
 import { Util } from "../../common/util";
 import ClayMultiStepNav from "@clayui/multi-step-nav";
-import { Event, ParamProperty, ParamType, ValidationRule, ViewTypes } from "../../common/station-x";
+import {
+	DataStructureProperty,
+	DataTypeProperty,
+	Event,
+	ParamProperty,
+	ParamType,
+	ValidationRule,
+	ViewTypes
+} from "../../common/station-x";
 import SXFormField from "../../form/sxform";
 import { ClayToggle } from "@clayui/form";
 

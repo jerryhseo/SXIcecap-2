@@ -43,7 +43,7 @@ public class AddDataTypeActionCommand extends BaseMVCActionCommand {
 	@Override
 	public void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
 		
-		System.out.println("AddDataTypeActionCommand");
+		System.out.println("AddDataTypeActionCommand"); 
 		
 		long dataTypeId = ParamUtil.getLong(actionRequest, DataTypeProperty.DATATYPE_ID, 0);
 		String strDataType = ParamUtil.getString(actionRequest, "dataType", "{}");

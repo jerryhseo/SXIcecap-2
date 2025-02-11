@@ -61,6 +61,10 @@ export const Util = {
 		return copiedObj;
 	},
 
+	isNotEmpty: (obj) => {
+		return !Util.isEmptyObject(obj);
+	},
+
 	isEmpty: function (obj) {
 		return Util.isEmptyObject(obj);
 	},
