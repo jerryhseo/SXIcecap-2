@@ -29,7 +29,7 @@ import {
 	ViewTypes
 } from "../../common/station-x";
 import { DataStructure } from "../DSBuilder/data-structure";
-import { StringParameter } from "../../parameter/parameter";
+import { GroupParameter, StringParameter } from "../../parameter/parameter";
 
 export const DataTypeInfo = ({ title, abstract, items, colsPerRow = 1 }) => {
 	let sectionContent;
@@ -126,7 +126,6 @@ const DataTypeEditor = ({ portletParameters }) => {
 
 	const [loadingStatus, setLoadingStatus] = useState(LoadingStatus.PENDING);
 
-	const formFields = useRef([]);
 	const dataTypeLoaded = useRef(dataTypeIdState > 0 ? LoadingStatus.PENDING : LoadingStatus.COMPLETE);
 	const visualizersLoaded = useRef(LoadingStatus.PENDING);
 
@@ -136,46 +135,15 @@ const DataTypeEditor = ({ portletParameters }) => {
 
 	const renderCount = useRef(0);
 	const parametersRef = useRef({});
-
-	useLayoutEffect(() => {
-		Event.on(Event.SX_FORM_FIELD_CHANGED, (e) => {
-			console.log("SX_FORM_FIELD_CHANGED RECEIVED: ", e);
-			const { dataPacket } = e;
-			if (
-				!Event.validateMine(dataPacket, {
-					namespace: namespace
-				})
-			) {
-				return;
-			}
-
-			const { parentId, paramId, value } = dataPacket;
-
-			DataStructure.setFormData(formFields.current, parentId, paramId, value);
-		});
-
-		Event.on(Event.SX_FORM_FIELD_FAILED, (e) => {
-			console.log("SX_FORM_FIELD_FAILED RECEIVED: ", e);
-			const { dataPacket } = e;
-			if (
-				!Event.validateMine(dataPacket, {
-					namespace: namespace
-				})
-			)
-				return;
-
-			const { parentId, paramId, error } = dataPacket;
-			DataStructure.setFormData(formFields.current, parentId, paramId, error);
-		});
-
-		formFields.current = DataStructure.parse(
+	const formFields = useRef(
+		DataStructure.parse(
 			[
 				{
 					paramName: "baseGroup",
 					paramVersion: "1.0.0",
 					paramType: ParamType.GROUP,
-					viewType: ViewTypes.HORIZONTAL,
-					fieldsPerRow: 3,
+					viewType: GroupParameter.ViewTypes.HORIZONTAL,
+					membersPerRow: 3,
 					members: [
 						{
 							paramName: DataTypeProperty.NAME,
@@ -195,10 +163,6 @@ const DataTypeEditor = ({ portletParameters }) => {
 							},
 							tooltip: {
 								"en-US": "Code name tooltip"
-							},
-							events: {
-								fire: [Event.SX_FORM_FIELD_CHANGED],
-								on: [Event.SX_PARAM_PROPERTY_CHANGED]
 							},
 							validation: {
 								required: {
@@ -242,11 +206,6 @@ const DataTypeEditor = ({ portletParameters }) => {
 							},
 							multiLine: false,
 							disabled: false,
-							events: {
-								fire: [Event.SX_FORM_FIELD_CHANGED],
-								on: [Event.SX_PARAM_PROPERTY_CHANGED]
-							},
-
 							validation: {
 								required: {
 									value: true,
@@ -281,11 +240,6 @@ const DataTypeEditor = ({ portletParameters }) => {
 							},
 							multiLine: false,
 							disabled: false,
-							events: {
-								fire: [Event.SX_FORM_FIELD_CHANGED],
-								on: [Event.SX_PARAM_PROPERTY_CHANGED]
-							},
-
 							validation: {
 								required: {
 									value: true,
@@ -327,11 +281,6 @@ const DataTypeEditor = ({ portletParameters }) => {
 					},
 					multiLine: false,
 					disabled: false,
-					events: {
-						fire: [Event.SX_FORM_FIELD_CHANGED],
-						on: [Event.SX_PARAM_PROPERTY_CHANGED]
-					},
-
 					validation: {
 						required: {
 							value: true,
@@ -366,11 +315,6 @@ const DataTypeEditor = ({ portletParameters }) => {
 					},
 					multiLine: true,
 					disabled: false,
-					events: {
-						fire: [Event.SX_FORM_FIELD_CHANGED],
-						on: [Event.SX_PARAM_PROPERTY_CHANGED]
-					},
-
 					validation: {},
 					defaultValue: {},
 					order: 3
@@ -392,11 +336,6 @@ const DataTypeEditor = ({ portletParameters }) => {
 					},
 					multiLine: false,
 					disabled: false,
-					events: {
-						fire: [Event.SX_FORM_FIELD_CHANGED],
-						on: [Event.SX_PARAM_PROPERTY_CHANGED]
-					},
-
 					validation: {
 						max: {
 							value: 64,
@@ -419,10 +358,6 @@ const DataTypeEditor = ({ portletParameters }) => {
 					},
 					disabled: false,
 					viewType: "horizontal",
-					events: {
-						fire: [Event.SX_FORM_FIELD_CHANGED],
-						on: [Event.SX_PARAM_PROPERTY_CHANGED]
-					},
 					validation: {
 						required: {
 							value: true,
@@ -435,17 +370,31 @@ const DataTypeEditor = ({ portletParameters }) => {
 					order: 5
 				}
 			].sort((a, b) => a.order - b.order)
-		);
+		)
+	);
 
-		formFields.current = formFields.current.map((field) => {
-			if (Util.isNotEmpty(field.defaultValue)) {
-				field.value = field.defaultValue;
-			}
+	useLayoutEffect(() => {
+		Event.on(Event.SX_FORM_FIELD_CHANGED, (e) => {
+			console.log("SX_FORM_FIELD_CHANGED RECEIVED: ", e);
+			const { dataPacket } = e;
+			if (dataPacket.targetPortlet !== namespace) return;
 
-			return field;
+			const { paramId, value } = dataPacket;
+
+			DataStructure.setFormData(formFields.current, paramId, value);
+			DataStructure.clearFormFieldError(formFields.current, paramId.name, paramId.version);
+			console.log("formFields: ", formFields.current);
 		});
 
-		console.log("formFields: ", formFields.current);
+		Event.on(Event.SX_FORM_FIELD_FAILED, (e) => {
+			console.log("SX_FORM_FIELD_FAILED RECEIVED: ", e);
+			const dataPacket = Event.pickUpNamesapceDataPacket(e, namespace);
+			if (Util.isEmpty(dataPacket)) return;
+
+			const { paramId, error } = dataPacket;
+			DataStructure.setFormError(formFields.current, paramId, error);
+			console.log("formFields: ", formFields.current);
+		});
 
 		//Loading dataType
 		if (dataTypeIdState > 0 && loadingStatus === LoadingStatus.PENDING) {
@@ -460,7 +409,23 @@ const DataTypeEditor = ({ portletParameters }) => {
 				},
 				successFunc: (result) => {
 					console.log("Data type: ", result);
-					DataStructure.loadData(formFields.current, result);
+
+					for (const paramName in result) {
+						if (
+							[
+								DataTypeProperty.NAME,
+								DataTypeProperty.VERSION,
+								DataTypeProperty.EXTENSION,
+								DataTypeProperty.DISPLAY_NAME,
+								DataTypeProperty.DESCRIPTION,
+								DataTypeProperty.TOOLTIP,
+								DataTypeProperty.VISUALIZERS
+							].includes(paramName)
+						) {
+							let param = DataStructure.findFormField(formFields.current, paramName, "1.0.0");
+							param.setValue(result[paramName]);
+						}
+					}
 
 					if (visualizersLoaded.current === LoadingStatus.PENDING) {
 						dataTypeLoaded.current = LoadingStatus.COMPLETE;
@@ -516,18 +481,15 @@ const DataTypeEditor = ({ portletParameters }) => {
 	} else if (loadingStatus === LoadingStatus.FAIL) {
 		return <h1>Data Loading Failed......</h1>;
 	} else if (loadingStatus === LoadingStatus.COMPLETE) {
-		console.log("Start rendering: ", inUseVisualizers, availableVisualizers);
+		console.log("Start rendering: ", formFields.current);
 		const saveButtonLabel = Util.translate(editStatus.current === EditStatus.UPDATE ? "update" : "create");
 		const saveResourceId =
 			editStatus.current === EditStatus.UPDATE ? ResourceIds.UPDATE_DATATYPE : ResourceIds.ADD_DATATYPE;
 
 		const handleMoveToExplorer = (e) => {
-			Event.fire(
-				Event.SX_REPLACE_PORTLET,
-				Event.createEventDataPacket(namespace, workspaceNamespace, {
-					portletName: PortletKeys.DATATYPE_EXPLORER
-				})
-			);
+			Event.fire(Event.SX_REPLACE_PORTLET, namespace, workspaceNamespace, {
+				portletName: PortletKeys.DATATYPE_EXPLORER
+			});
 		};
 		const header = (
 			<div className="form-group">
@@ -576,24 +538,24 @@ const DataTypeEditor = ({ portletParameters }) => {
 		const handleBtnSaveClick = (e) => {
 			const checkError = DataStructure.checkFormDataErrors(formFields.current);
 
-			if (checkError) {
-				Event.fire(
-					Event.SX_PARAM_ERROR_FOUND,
-					Event.createEventDataPacket(namespace, namespace, {
-						formId: formId,
-						paramName: checkError.fieldName,
-						tagName: checkError.fieldName,
-						tagId: checkError.fieldName,
-						error: checkError.message
-					})
-				);
+			if (Util.isNotEmpty(checkError)) {
+				console.log("checkError: ", checkError);
+				Event.fire(Event.SX_PARAM_ERROR_FOUND, namespace, namespace, {
+					formId: formId,
+					paramName: checkError.fieldName,
+					paramVersion: checkError.fieldVersion,
+					error: checkError.message
+				});
 				return;
 			}
 
-			console.log("Form Data: ", formData.current, formErrors.current);
+			console.log(
+				"handleBtnSaveClick: ",
+				JSON.stringify(DataStructure.toStructuredData(formFields.current), null, 4)
+			);
 			let params = {
 				dataTypeId: dataTypeIdState,
-				formData: JSON.stringify(formData.current)
+				formData: JSON.stringify(DataStructure.toStructuredData(formFields.current))
 			};
 
 			Util.ajax({
@@ -675,49 +637,9 @@ const DataTypeEditor = ({ portletParameters }) => {
 		renderCount.current++;
 		console.log("Render Count of the form: " + renderCount.current);
 
-		const stringParam = new StringParameter({
-			paramName: "testString",
-			paramVersion: "1.0.0",
-			paramType: ParamType.STRING,
-			displayName: {
-				"en-US": "Test String"
-			},
-			required: true,
-			localized: false,
-			placeholder: "Test string",
-			tooltip: "Test String Tooltip",
-			multiLine: false,
-			disabled: false,
-			events: {
-				fire: [Event.SX_FORM_FIELD_CHANGED],
-				on: [Event.SX_PARAM_PROPERTY_CHANGED]
-			},
-			validation: {
-				required: {
-					value: true,
-					message: `${DataTypeProperty.NAME} is required`
-				},
-				pattern: {
-					value: ValidationRule.VARIABLE,
-					message: "Invalid data type name"
-				},
-				min: {
-					value: 3,
-					message: "Should be at least 3"
-				},
-				max: {
-					value: 32,
-					message: "Should be shorter than 33"
-				}
-			},
-			defaultValue: "",
-			order: 1
-		});
-
 		const formId = namespace + "dataTypePropertiesForm";
 		return (
 			<ClayIconSpriteContext.Provider value={spritemapPath}>
-				{stringParam.render(namespace, formId, languageId, null, null, null, "", {}, spritemapPath)}
 				{header}
 				{dataTypeIdState > 0 && (
 					<div className="form-group">
@@ -731,7 +653,6 @@ const DataTypeEditor = ({ portletParameters }) => {
 				<ClayForm id={formId}>
 					{formFields.current.map((field) => {
 						if (field.paramName === DataTypeProperty.VISUALIZERS) {
-							field.leftOptions = formData.current[field.paramName];
 							if (field.leftOptions && field.leftOptions.length > 0) {
 								field.rightOptions = availableVisualizers.current.filter((item) => {
 									let included = false;
@@ -752,24 +673,30 @@ const DataTypeEditor = ({ portletParameters }) => {
 							console.log("visualizers: ", field.leftOptions, field.rightOptions);
 						}
 
-						/*
-						let value;
-						if (field.paramType !== ParamType.GROUP) {
-							value = formData.current[field.paramName];
-							if (Util.isEmpty(value)) {
-								value = field.defaultValue;
-							}
-						} else {
-							const members = field.members;
-						}
-*/
 						return field.render(
 							namespace,
-							formId,
 							languageId,
-							availableLanguageIds.split(","),
+							availableLanguageIds,
 							null,
 							null,
+							{
+								fire: [
+									{
+										traget: formId,
+										event: Event.SX_FORM_FIELD_CHANGED
+									}
+								],
+								on: [
+									{
+										source: formId,
+										event: Event.SX_PARAM_PROPERTY_CHANGED
+									},
+									{
+										source: formId,
+										event: Event.SX_PARAM_ERROR_FOUND
+									}
+								]
+							},
 							"",
 							null,
 							spritemapPath
@@ -781,7 +708,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 						<SXButtonWithIcon
 							type="button"
 							id={Util.namespace(namespace, "btnSave")}
-							label={Util.translate("save")}
+							label={saveButtonLabel}
 							symbol={"disk"}
 							onClick={handleBtnSaveClick}
 							displayType={"secondary"}

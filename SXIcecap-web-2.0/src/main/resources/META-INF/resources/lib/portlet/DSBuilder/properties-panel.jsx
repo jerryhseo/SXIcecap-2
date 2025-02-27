@@ -46,10 +46,6 @@ const BasicParameterProperties = ({
 					required: true,
 					placeholder: Util.translate("code-name-of-the-parameter"),
 					tooltip: Util.translate("parameter-name-tooltip"),
-					events: {
-						fire: [Event.SX_FORM_FIELD_CHANGED],
-						on: [Event.SX_PARAM_PROPERTY_CHANGED]
-					},
 					validation: {
 						required: {
 							value: true,
@@ -82,10 +78,6 @@ const BasicParameterProperties = ({
 					required: true,
 					placeholder: Util.translate("version-of-the-parameter"),
 					tooltip: Util.translate("parameter-version-tooltip"),
-					events: {
-						fire: [Event.SX_FORM_FIELD_CHANGED],
-						on: [Event.SX_PARAM_PROPERTY_CHANGED]
-					},
 					validation: {
 						required: {
 							value: true,
@@ -113,10 +105,6 @@ const BasicParameterProperties = ({
 			availableLanguageIds: availableLanguageIds,
 			placeholder: Util.translate("display-name-of-the-parameter"),
 			tooltip: Util.translate("display-name-tooltip"),
-			events: {
-				fire: [Event.SX_FORM_FIELD_CHANGED],
-				on: [Event.SX_PARAM_PROPERTY_CHANGED]
-			},
 			validation: {
 				required: {
 					value: true,
@@ -144,10 +132,6 @@ const BasicParameterProperties = ({
 			availableLanguageIds: availableLanguageIds,
 			placeholder: Util.translate("definition-of-the-parameter"),
 			tooltip: Util.translate("definition-tooltip"),
-			events: {
-				fire: [Event.SX_FORM_FIELD_CHANGED],
-				on: [Event.SX_PARAM_PROPERTY_CHANGED]
-			},
 			order: 3
 		},
 		{
@@ -160,10 +144,6 @@ const BasicParameterProperties = ({
 			availableLanguageIds: availableLanguageIds,
 			placeholder: Util.translate("tooltip-of-the-parameter"),
 			tooltip: Util.translate("tooltip-tooltip"),
-			events: {
-				fire: [Event.SX_FORM_FIELD_CHANGED],
-				on: [Event.SX_PARAM_PROPERTY_CHANGED]
-			},
 			order: 4
 		},
 		{
@@ -173,10 +153,6 @@ const BasicParameterProperties = ({
 			displayName: Util.translate("synonims"),
 			placeholder: Util.translate("synonims-of-the-parameter"),
 			tooltip: Util.translate("synonyms-tooltip"),
-			events: {
-				fire: [Event.SX_FORM_FIELD_CHANGED],
-				on: [Event.SX_PARAM_PROPERTY_CHANGED]
-			},
 			order: 5
 		}
 	]);
@@ -400,11 +376,11 @@ const SXDSBuilderPropertiesPanel = ({
 					placeholder: "Select a type",
 					tooltip: Util.translate("select-param-type-tooltip"),
 					ariaLabel: "Select Parameter Type",
-					initValue: parameter.value ?? parameter.defaultValue,
-					events: {
-						fire: [Event.SX_FORM_FIELD_CHANGED],
-						on: [Event.SX_PARAM_ERROR_FOUND]
-					}
+					initValue: parameter.value ?? parameter.defaultValue
+				}}
+				events={{
+					fire: [Event.SX_FORM_FIELD_CHANGED],
+					on: [Event.SX_PARAM_ERROR_FOUND]
 				}}
 				style={{
 					marginBottom: "20px"

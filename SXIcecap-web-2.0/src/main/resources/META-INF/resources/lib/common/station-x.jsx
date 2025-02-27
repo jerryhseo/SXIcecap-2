@@ -1,5 +1,6 @@
 import ClayDropDown from "@clayui/drop-down";
 import { Component } from "react";
+import { Util } from "./util";
 
 export const EditStatus = {
 	UPDATE: "update",
@@ -62,6 +63,14 @@ export const ValidationRule = {
 	INT_POSITIVE: "^[+]?d+$",
 	INT_NEGATIVE: "^-d+$",
 	NO_SPECIAL_CHARACTERS: "[^!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+"
+};
+
+export const ValidationKeys = {
+	REQUIRED: "required",
+	MIN: "min",
+	MAX: "max",
+	PATTERN: "pattern",
+	VALIDATE: "validate"
 };
 
 export const ACTION_NAME = "javax.portlet.action";
@@ -136,14 +145,18 @@ export const ParamProperty = {
 	ID: "id",
 	INPUT_SIZE: "inputSize",
 	ITEM_DISPLAY_NAME: "itemDisplayName",
+	LABEL_POSITION: "labelPosition",
 	LINE_BREAK: "lineBreak",
 	LIST_ITEM: "listItem",
 	LIST_ITEM_VALUE: "listItemValue",
 	LIST_ITEMS: "listItems",
+	LOCALIZED: "localized",
 	MASTER_TERM: "masterParameter",
+	MAX: "max",
 	MAX_BOUNDARY: "maxBoundary",
 	MAX_LENGTH: "maxLength",
 	MAX_VALUE: "maxValue",
+	MIN: "min",
 	MIN_BOUNDARY: "minBoundary",
 	MIN_LENGTH: "minLength",
 	MIN_VALUE: "minValue",
@@ -156,13 +169,14 @@ export const ParamProperty = {
 	OPTIONS: "options",
 	OPTION_SELECTED: "optionSelected",
 	ORDER: "order",
-	PARAM_NAME: "paramterName",
-	PARAM_TYPE: "parameterType",
+	PARAM_NAME: "paramName",
+	PARAM_TYPE: "paramType",
 	PATH: "path",
 	PATH_TYPE: "pathType",
 	PATTERN: "pattern",
 	PLACE_HOLDER: "placeHolder",
 	RANGE: "range",
+	READ_ONLY: "readOnly",
 	REF_DATATYPES: "refDataTypes",
 	REF_DATABASES: "refDatabases",
 	REQUIRED: "required",
@@ -186,7 +200,8 @@ export const ParamProperty = {
 	VALIDATION_RULE: "validationRule",
 	VALUE: "value",
 	VALUE_DELIMITER: "valueDelimiter",
-	VERSION: "version"
+	VERSION: "version",
+	VIEW_TYPE: "viewType"
 };
 
 export const WebKeys = {
@@ -596,9 +611,16 @@ export const Event = {
 	SX_VISUALIZER_DATA_CHANGED: "SX_VISUALIZER_DATA_CHANGED",
 	SX_VISUALIZER_DATA_LOADED: "SX_VISUALIZER_DATA_LOADED",
 	SX_VISUALIZER_WAITING: "SX_VISUALIZER_WAITING",
+	/*
 	fire: (event, dataPacket) => {
 		Liferay.fire(event, {
 			dataPacket: dataPacket
+		});
+	},
+	*/
+	fire: (event, sourcePortletId, targetPortletId, payload) => {
+		Liferay.fire(event, {
+			dataPacket: Event.createEventDataPacket(sourcePortletId, targetPortletId, payload)
 		});
 	},
 	uniqueOn: (event, handler) => {
@@ -611,44 +633,31 @@ export const Event = {
 		return {
 			sourcePortlet: sourcePortlet,
 			targetPortlet: targetPortlet,
-			isNotMine: (myId) => {
-				return !targetPortlet || targetPortlet !== myId;
-			},
 			...params
 		};
 	},
-	validateMine: (dataPacket, args) => {
-		if (dataPacket.targetPortlet !== args.namespace) {
-			return false;
+	pickUpDataPacket: (event, namespace, formId, paramName, paramVersion) => {
+		if (Util.isEmpty(event.dataPacket)) return;
+
+		if (
+			event.dataPacket.targetPortlet !== namespace ||
+			event.dataPacket.formId !== formId ||
+			event.dataPacket.paramName !== paramName ||
+			event.dataPacket.paramVersion !== paramVersion
+		) {
+			return;
 		}
 
-		if (args.formId) {
-			if (dataPacket.formId !== args.formId) {
-				return false;
-			}
-		}
-		if (args.paramName) {
-			if (dataPacket.paramName !== args.paramName) {
-				return false;
-			}
-		}
-		if (args.tagId) {
-			if (dataPacket.tagId !== args.tagId) {
-				return false;
-			}
-		}
-		if (args.tagName) {
-			if (dataPacket.tagName !== args.tagName) {
-				return false;
-			}
-		}
-		if (args.containerId) {
-			if (dataPacket.containerId !== args.containerId) {
-				return false;
-			}
+		return event.dataPacket;
+	},
+	pickUpNamesapceDataPacket: (event, namespace) => {
+		if (!event.dataPacket) return;
+
+		if (event.dataPacket.targetPortlet !== namespace) {
+			return;
 		}
 
-		return true;
+		return event.dataPacket;
 	}
 };
 

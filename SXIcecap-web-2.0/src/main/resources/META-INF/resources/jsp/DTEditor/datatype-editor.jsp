@@ -44,7 +44,7 @@
 			namespace: '<portlet:namespace/>',
 			dafaultLanguageId: '<%= defaultLocale.toLanguageTag() %>',
 			languageId: '<%= locale.toLanguageTag() %>',
-			availableLanguageIds: '<%= String.join( ",", locales.toArray(new String[0]) ) %>', 
+			availableLanguageIds: '<%= String.join( ",", locales.toArray(new String[0]) ) %>'.split(','), 
 			portalURL: '<%= portalURL %>', 
 			contextPath: '<%= contextPath %>',
 			spritemapPath: '<%= contextPath %>/asset/images/icons.svg',

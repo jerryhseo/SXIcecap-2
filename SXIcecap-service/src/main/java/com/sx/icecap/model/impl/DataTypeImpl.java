@@ -64,7 +64,7 @@ public class DataTypeImpl extends DataTypeBaseImpl {
 		dataType.put("tooltip", localizedObj);
 		
 		String strVisualizers = this.getVisualizers();
-		if( Validator.isBlank(strVisualizers)) {
+		if( !Validator.isBlank(strVisualizers)) {
 			try {
 				JSONArray visualizers = JSONFactoryUtil.createJSONArray(strVisualizers);
 				dataType.put("visualizers", visualizers);

@@ -3,7 +3,60 @@ import { Constant, ViewTypes, ParamType } from "../common/station-x";
 import { Util } from "../common/util";
 import SXFormField, { SXInput, SXLocalizedInput } from "../form/sxform";
 
+export class Translations {
+	constructor(json) {
+		if (json) {
+			this.parse(json);
+		}
+	}
+
+	addTranslation(key, translation) {
+		this[key] = translation;
+	}
+
+	removeTranslation(key) {
+		delete this[key];
+	}
+
+	parse(json) {
+		for (const key in json) {
+			this[key] = json[key];
+		}
+	}
+
+	toJSON() {
+		return { ...this };
+	}
+}
+
+export class SelectOption {
+	label = new Translations();
+	value;
+
+	constructor(json) {}
+}
+
+export class ParamId {}
+
 export class Parameter {
+	static ViewTypes = {
+		REQULAR_LABEL: "regularLabel",
+		INLINE_LABEL: "inlineLabel",
+		ROW: "row",
+		COLUMN: "column",
+		CELL: "cell"
+	};
+
+	static LabelPosition = {
+		UPPER_LEFT: "upperLeft",
+		UPPER_RIGHT: "upperRight",
+		INLINE_LEFT: "inlineLeft",
+		INLINE_RIGHT: "inlineRight",
+		BOTTOM_LEFT: "bottomLeft",
+		BOTTOM_RIGHT: "bottomRight",
+		NONE: "none"
+	};
+
 	static createParameter(paramType, json) {
 		switch (paramType) {
 			case ParamType.STRING: {
@@ -87,7 +140,7 @@ export class Parameter {
 	#abstractKey = false;
 	#searchable = true;
 	#downloadable = true;
-	#synonyms = [];
+	#synonyms = "";
 	#required = false;
 	#disabled = false;
 	#definition = {};
@@ -100,18 +153,13 @@ export class Parameter {
 	#status = 0;
 	#state = 0;
 	#active = true;
+	#readOnly = false;
+	#labelPosition = Parameter.LabelPosition.UPPER_LEFT;
 
 	#validation = {};
-	#viewType = ViewTypes.NORMAL;
-	#events = {
-		fire: [],
-		on: []
-	};
-
 	#renderImage = null;
 	#pdf = null;
 	#namespace;
-	#formId;
 
 	#value;
 	#error;
@@ -186,8 +234,8 @@ export class Parameter {
 	get validation() {
 		return this.#validation;
 	}
-	get viewType() {
-		return this.#viewType;
+	get readOnly() {
+		return this.#readOnly;
 	}
 	get active() {
 		return this.#active;
@@ -198,8 +246,8 @@ export class Parameter {
 	get error() {
 		return this.#error;
 	}
-	get events() {
-		return this.#events;
+	get labelPosition() {
+		return this.#labelPosition;
 	}
 
 	set paramType(val) {
@@ -268,8 +316,8 @@ export class Parameter {
 	set validation(val) {
 		this.#validation = val;
 	}
-	set viewType(val) {
-		this.#viewType = val;
+	set readOnly(val) {
+		this.#readOnly = val;
 	}
 	set active(val) {
 		this.#active = val;
@@ -280,8 +328,8 @@ export class Parameter {
 	set error(val) {
 		this.#error = val;
 	}
-	set events(val) {
-		this.#events = val;
+	set labelPosition(val) {
+		this.#labelPosition = val;
 	}
 
 	setParent(parentName, parentVersion) {
@@ -321,14 +369,6 @@ export class Parameter {
 		this.tooltip = Parameter.removeLocalized(this.tooltip, languageId);
 	}
 
-	addEvent(event, fire) {
-		if (fire) {
-			this.events.fire.push(event);
-		} else {
-			this.events.on.push(event);
-		}
-	}
-
 	equalTo(name, version) {
 		return name === this.paramName && version === this.paramVersion;
 	}
@@ -337,7 +377,7 @@ export class Parameter {
 		return assembly.name === this.parent.name && assembly.version === this.parent.version;
 	}
 
-	isAssemply() {
+	isAssembly() {
 		return (
 			this.paramType === ParamType.GROUP ||
 			this.paramType === ParamType.GRID ||
@@ -366,20 +406,26 @@ export class Parameter {
 		this.error = val;
 	}
 
+	clearError() {
+		this.error = "";
+	}
+
+	isRendered() {
+		return !!this.renderImage;
+	}
+
 	getOutput() {
 		let out = {};
 
 		if (this.hasValue()) {
-			out[this.paramName] = this.#value;
+			out[this.paramName] = this.value;
 		}
 
 		return out;
 	}
 
 	loadData(data) {
-		if (Util.isNotEmpty(data[this.paramName])) {
-			this.value = data[this.paramName];
-		}
+		this.value = data;
 	}
 
 	/**
@@ -394,9 +440,15 @@ export class Parameter {
 		}
 	}
 
+	validate(key = "") {}
+
 	parse(json) {
 		for (const key in json) {
 			this[key] = json[key];
+		}
+
+		if (this.defaultValue && !this.hasValue()) {
+			this.value = this.defaultValue;
 		}
 	}
 
@@ -413,7 +465,8 @@ export class Parameter {
 		if (Util.isNotEmpty(this.defaultValue)) json.defaultValue = this.defaultValue;
 		if (Util.isNotEmpty(this.parent)) json.parent = this.parent;
 		if (Util.isNotEmpty(this.validation)) json.validation = this.validation;
-		if (Util.isNotEmpty(this.viewType)) json.viewType = this.viewType;
+		if (Util.isNotEmpty(this.validation)) json.validation = this.validation;
+		if (this.readOnly) json.readOnly = this.readOnly;
 		if (this.abstractKey) json.abstractKey = this.abstractKey;
 		if (this.required) json.required = this.required;
 		if (this.disabled) json.disabled = this.disabled;
@@ -438,12 +491,13 @@ export class Parameter {
 			tagId: this.paramName,
 			tagName: this.paramName,
 			label: this.getDisplayName(languageId),
+			labelPosition: this.labelPosition,
 			required: this.required,
 			disabled: this.disabled,
 			tooltip: this.getTooltip(languageId),
 			initValue: this.hasValue() ? this.value : this.defaultValue,
 			validation: this.validation,
-			viewType: this.viewType
+			readOnly: this.readOnly
 		};
 	}
 }
@@ -457,14 +511,17 @@ export class StringParameter extends Parameter {
 	#minLength = 1;
 	#maxLength = 72;
 	#multiLine = false;
+	#placeholder = {};
 
 	constructor(json) {
 		super(ParamType.STRING);
 
 		if (Util.isNotEmpty(json)) {
 			this.parse(json);
-		} else {
-			this.viewType = ViewTypes.NORMAL;
+		}
+
+		if (Util.isEmpty(this.viewType)) {
+			this.viewType = StringParameter.ViewTypes.REGULAR;
 		}
 	}
 
@@ -480,6 +537,9 @@ export class StringParameter extends Parameter {
 	get multiLine() {
 		return this.#multiLine;
 	}
+	get placeholder() {
+		return this.#placeholder;
+	}
 
 	set localized(val) {
 		this.#localized = val;
@@ -493,6 +553,13 @@ export class StringParameter extends Parameter {
 	set multiLine(val) {
 		this.#multiLine = val;
 	}
+	set placeholder(val) {
+		this.#placeholder = val;
+	}
+
+	getPlaceholder(languageId) {
+		return this.placeholder[languageId];
+	}
 
 	parse(json) {
 		super.parse(json);
@@ -501,6 +568,7 @@ export class StringParameter extends Parameter {
 		this.minLength = json.minLength ?? 1;
 		this.maxLength = json.maxLength ?? 72;
 		this.multiLine = json.multiLine ?? false;
+		this.placeholder = json.placeholder ?? "";
 	}
 
 	toJSON() {
@@ -510,32 +578,39 @@ export class StringParameter extends Parameter {
 		if (this.minLength > 1) json.minLength = this.minLength;
 		if (this.maxLength !== 72) json.maxLength = this.maxLength;
 		if (this.mutilLine === true) json.multiLine = this.multiLine;
+		if (Util.isNotEmpty(this.placeholder)) json.placeholder = this.placeholder;
 
 		return json;
 	}
 
-	toProperties(languageId) {
+	toProperties(languageId, availableLanguageIds, tagId, tagName) {
 		let json = super.toProperties(languageId);
 
 		json.localized = this.localized;
+		json.placeholder = this.getPlaceholder(languageId);
+		json.multiLine = this.multiLine;
+		json.initValue = this.hasValue() ? this.value : this.defaultValue;
 
-		return json;
-	}
-
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
-		const properties = this.toProperties(languageId);
-		properties.languageId = languageId;
-		properties.availableLanguageIds = availableLanguageIds;
+		if (this.localized) {
+			json.languageId = languageId;
+			json.availableLanguageIds = availableLanguageIds;
+		}
 
 		if (tagId) properties.tagId = tagId;
 		if (tagName) properties.tagName = tagName;
 
+		return json;
+	}
+
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -553,7 +628,11 @@ export class StringParameter extends Parameter {
 export class NumericParameter extends Parameter {
 	#min = null;
 	#max = null;
+	#validMin;
+	#validMax;
 	#uncertainty = false;
+	#validMinBoundary = false;
+	#validMaxBoundary = false;
 	#minBoundary = false;
 	#maxBoundary = false;
 	#isInteger = false;
@@ -572,6 +651,12 @@ export class NumericParameter extends Parameter {
 	get max() {
 		return this.#max;
 	}
+	get validMin() {
+		return this.#validMin;
+	}
+	get validMax() {
+		return this.#validMax;
+	}
 	get uncertainty() {
 		return this.#uncertainty;
 	}
@@ -580,6 +665,12 @@ export class NumericParameter extends Parameter {
 	}
 	get maxBoundary() {
 		return this.#maxBoundary;
+	}
+	get validMinBoundary() {
+		return this.#validMinBoundary;
+	}
+	get validMaxBoundary() {
+		return this.#validMaxBoundary;
 	}
 	get isInteger() {
 		return this.#isInteger;
@@ -591,6 +682,12 @@ export class NumericParameter extends Parameter {
 	set max(val) {
 		this.#max = val;
 	}
+	set validMin(val) {
+		this.#validMin = val;
+	}
+	set validMax(val) {
+		this.#validMax = val;
+	}
 	set uncertainty(val) {
 		this.#uncertainty = val;
 	}
@@ -599,6 +696,12 @@ export class NumericParameter extends Parameter {
 	}
 	set maxBoundary(val) {
 		this.#maxBoundary = val;
+	}
+	set validMinBoundary(val) {
+		this.#validMinBoundary = val;
+	}
+	set validMaxBoundary(val) {
+		this.#validMaxBoundary = val;
 	}
 	set isInteger(val) {
 		this.#isInteger = val;
@@ -631,8 +734,12 @@ export class NumericParameter extends Parameter {
 
 		if (Util.isNotEmpty(json.min)) this.min = json.min;
 		if (Util.isNotEmpty(json.max)) this.max = json.max;
+		if (Util.isNotEmpty(json.validMin)) this.validMin = json.validMin;
+		if (Util.isNotEmpty(json.validMax)) this.validMax = json.validMax;
 		if (Util.isNotEmpty(json.minBoundary)) this.minBoundary = json.minBoundary;
 		if (Util.isNotEmpty(json.maxBoundary)) this.maxBoundary = json.maxBoundary;
+		if (Util.isNotEmpty(json.validMinBoundary)) this.validMinBoundary = json.validMinBoundary;
+		if (Util.isNotEmpty(json.validMaxBoundary)) this.validMaxBoundary = json.validMaxBoundary;
 		if (Util.isNotEmpty(json.uncertainty)) this.uncertainty = json.uncertainty;
 		if (json.isInteger === true) this.isInteger = json.isInteger;
 	}
@@ -642,42 +749,48 @@ export class NumericParameter extends Parameter {
 
 		if (Util.isNotEmpty(this.min)) json.min = this.min;
 		if (Util.isNotEmpty(this.max)) json.max = this.max;
+		if (Util.isNotEmpty(this.validMin)) json.validMin = this.validMin;
+		if (Util.isNotEmpty(this.validMax)) json.validMax = this.validMax;
 		if (this.minBoundary === true) json.minBoundary = this.minBoundary;
 		if (this.maxBoundary === true) json.maxBoundary = this.maxBoundary;
+		if (this.validMinBoundary === true) json.validMinBoundary = this.validMinBoundary;
+		if (this.validMaxBoundary === true) json.validMaxBoundary = this.validMaxBoundary;
 		if (this.uncertainty === true) json.uncertainty = this.uncertainty;
 		if (this.isInteger === true) json.isInteger = this.isInteger;
 
 		return json;
 	}
 
-	toProperties(languageId) {
+	toProperties(languageId, tagId, tagName) {
 		let json = super.toProperties(languageId);
 
 		json.min = this.min;
 		json.max = this.max;
 		json.minBoundary = this.minBoundary;
 		json.maxBoundary = this.maxBoundary;
+		json.validMin = this.validMin;
+		json.validMax = this.validMax;
+		json.validMinBoundary = this.validMinBoundary;
+		json.validMaxBoundary = this.validMaxBoundary;
 		json.uncertainty = this.uncertainty;
 		json.isInteger = this.isInteger;
-		json.defaultValue = this.defaultValue;
-
-		return json;
-	}
-
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
-		const properties = this.toProperties(languageId);
-		properties.languageId = languageId;
-		properties.availableLanguageIds = availableLanguageIds;
+		json.initValue = this.defaultValue;
 
 		if (tagId) properties.tagId = tagId;
 		if (tagName) properties.tagName = tagName;
 
+		return json;
+	}
+
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(languageId, tagId, tagName);
+
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -694,9 +807,16 @@ export class NumericParameter extends Parameter {
  * 			<SXRadioGroup/> if viewType is radio
  */
 export class SelectParameter extends Parameter {
-	#viewType = "dropdown";
-	#options = {};
+	static ViewTypes = {
+		DROPDOWN: "dropdown",
+		RADIO: "radio",
+		CHECKBOX: "checkbox",
+		LISTBOX: "listbox"
+	};
+
+	#options = [];
 	#multiple = false;
+	#optionsPerRow = 0;
 
 	constructor(json) {
 		super(ParamType.SELECT);
@@ -706,21 +826,21 @@ export class SelectParameter extends Parameter {
 		}
 	}
 
-	get viewType() {
-		return this.#viewType;
-	}
 	get options() {
 		return this.#options;
+	}
+	get optionsPerRow() {
+		return this.#optionsPerRow;
 	}
 	get multiple() {
 		return this.#multiple;
 	}
 
-	set viewType(val) {
-		this.#viewType = val;
-	}
 	set options(val) {
 		this.#options = val;
+	}
+	set optionsPerRow(val) {
+		this.#optionsPerRow = val;
 	}
 	set multiple(val) {
 		this.#multiple = val;
@@ -728,9 +848,16 @@ export class SelectParameter extends Parameter {
 
 	parse(json) {
 		super.parse(json);
-		this.viewType = json.viewType ?? ViewTypes.DROPDOWN;
 		this.options = json.options ?? [];
 		this.multiple = json.multiple ?? false;
+
+		this.viewType = json.viewType ?? SelectParameter.ViewTypes.DROPDOWN;
+
+		if (this.viewType === SelectParameter.ViewTypes.RADIO || this.viewType === SelectParameter.ViewTypes.CHECKBOX) {
+			if (json.optionsPerRow > 0) {
+				this.optionsPerRow = json.optionsPerRow;
+			}
+		}
 	}
 
 	toJSON() {
@@ -740,33 +867,38 @@ export class SelectParameter extends Parameter {
 		if (Util.isNotEmpty(this.options)) json.options = this.options;
 		if (this.multiple) json.multiple = this.multiple;
 
+		if (this.viewType === SelectParameter.ViewTypes.RADIO || this.viewType === SelectParameter.ViewTypes.CHECKBOX) {
+			if (this.optionsPerRow > 0) {
+				json.optionsPerRow = this.optionsPerRow;
+			}
+		}
+
 		return json;
 	}
 
-	toProperties(languageId) {
+	toProperties(languageId, tagId, tagName) {
 		let json = super.toProperties(languageId);
 
 		json.viewType = this.viewType;
 		json.options = this.options;
+		json.optionsPerRow = this.optionsPerRow;
 		json.multiple = this.multiple;
-
-		return json;
-	}
-
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
-		const properties = this.toProperties(languageId);
-		properties.languageId = languageId;
-		properties.availableLanguageIds = availableLanguageIds;
 
 		if (tagId) properties.tagId = tagId;
 		if (tagName) properties.tagName = tagName;
 
+		return json;
+	}
+
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(languageId, tagId, tagName);
+
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -835,27 +967,31 @@ export class DualListParameter extends Parameter {
 	toProperties(languageId) {
 		let json = super.toProperties(languageId);
 
+		return json;
+	}
+
+	toProperties(languageId, tagId, tagName) {
+		let json = super.toProperties(languageId);
+
 		json.viewType = this.viewType;
 		json.leftOptions = this.leftOptions;
 		json.rightOptions = this.rightOptions;
 
+		if (tagId) properties.tagId = tagId;
+		if (tagName) properties.tagName = tagName;
+
 		return json;
 	}
 
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
-		const properties = this.toProperties(languageId);
-		properties.languageId = languageId;
-		properties.availableLanguageIds = availableLanguageIds;
-
-		if (tagId) properties.tagId = tagId;
-		if (tagName) properties.tagName = tagName;
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(languageId, tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -871,16 +1007,22 @@ export class DualListParameter extends Parameter {
  *
  */
 export class BooleanParameter extends SelectParameter {
-	#trueLabel = {};
-	#falseLabel = {};
+	static ViewTypes = {
+		CHECKBOX: "checkbox",
+		TOGGLE: "toggle",
+		RADIO: "radio",
+		DROPDOWN: "dropdown"
+	};
 
 	constructor(json) {
-		super(BooleanParameter);
+		super(json);
+
+		this.paramType = ParamType.BOOLEAN;
 
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
 		} else {
-			this.viewType = "radio";
+			this.viewType = BooleanParameter.ViewTypes.CHECKBOX;
 		}
 	}
 
@@ -896,6 +1038,14 @@ export class BooleanParameter extends SelectParameter {
 	}
 	set falseLabel(val) {
 		this.options[0] = val;
+	}
+
+	getTrueLabel(languageId) {
+		return this.option[1][languageId];
+	}
+
+	getFalseLabel(languageId) {
+		return this.option[0][languageId];
 	}
 
 	setValue(val) {
@@ -914,7 +1064,7 @@ export class BooleanParameter extends SelectParameter {
 		return super.toProperties(languageId);
 	}
 
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(languageId);
 		properties.languageId = languageId;
 		properties.availableLanguageIds = availableLanguageIds;
@@ -925,9 +1075,9 @@ export class BooleanParameter extends SelectParameter {
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -1003,24 +1153,29 @@ export class MatrixParameter extends Parameter {
 		return json;
 	}
 
-	toProperties(languageId) {
-		return super.toProperties(languageId);
-	}
-
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
-		const properties = this.toProperties(languageId);
-		properties.languageId = languageId;
-		properties.availableLanguageIds = availableLanguageIds;
+	toProperties(languageId, tagId, tagName) {
+		let properties = super.toProperties(languageId);
 
 		if (tagId) properties.tagId = tagId;
 		if (tagName) properties.tagName = tagName;
 
+		properties.rowCount = json.rowCount;
+		properties.colCount = json.colCount;
+		properties.bracket = json.bracket ?? "[]";
+		properties.delimiter = json.delimiter ?? " ";
+
+		return properties;
+	}
+
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(languageId, tagId, tagName);
+
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -1064,7 +1219,7 @@ export class FileParameter extends Parameter {
 		return super.toProperties(languageId);
 	}
 
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(languageId);
 		properties.languageId = languageId;
 		properties.availableLanguageIds = availableLanguageIds;
@@ -1075,9 +1230,9 @@ export class FileParameter extends Parameter {
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -1139,7 +1294,7 @@ export class AddressParameter extends Parameter {
 		return super.toProperties(languageId);
 	}
 
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(languageId);
 		properties.languageId = languageId;
 		properties.availableLanguageIds = availableLanguageIds;
@@ -1150,9 +1305,9 @@ export class AddressParameter extends Parameter {
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -1214,7 +1369,7 @@ export class DateParameter extends Parameter {
 		return json;
 	}
 
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(languageId);
 		properties.languageId = languageId;
 		properties.availableLanguageIds = availableLanguageIds;
@@ -1225,9 +1380,9 @@ export class DateParameter extends Parameter {
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -1307,7 +1462,7 @@ export class PhoneParameter extends Parameter {
 		return json;
 	}
 
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(languageId);
 		properties.languageId = languageId;
 		properties.availableLanguageIds = availableLanguageIds;
@@ -1318,9 +1473,9 @@ export class PhoneParameter extends Parameter {
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -1372,7 +1527,7 @@ export class EMailParameter extends Parameter {
 		return super.toProperties(languageId);
 	}
 
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(languageId);
 		properties.languageId = languageId;
 		properties.availableLanguageIds = availableLanguageIds;
@@ -1383,9 +1538,9 @@ export class EMailParameter extends Parameter {
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -1402,14 +1557,17 @@ export class EMailParameter extends Parameter {
  */
 export class GroupParameter extends Parameter {
 	static ViewTypes = {
+		HORIZONTAL: "horizontal",
 		HORIZONTAL_LIST: "horizontalList",
 		HORIZONTAL_PANEL: "horizontalPanel",
+		VERTICAL: "vertical",
 		VERTICAL_LIST: "verticalList",
 		VERTICAL_PANEL: "verticalPanel"
 	};
 
 	#members = [];
 	#decorative = false;
+	#membersPerRow = 1;
 
 	constructor(json) {
 		super(ParamType.GROUP);
@@ -1425,12 +1583,18 @@ export class GroupParameter extends Parameter {
 	get decorative() {
 		return this.#decorative;
 	}
+	get membersPerRow() {
+		return this.#membersPerRow;
+	}
 
 	set members(val) {
 		this.#members = val;
 	}
 	set decorative(val) {
 		this.#decorative = val;
+	}
+	set membersPerRow(val) {
+		this.#membersPerRow = val;
 	}
 
 	addMember(member) {
@@ -1464,11 +1628,7 @@ export class GroupParameter extends Parameter {
 	getOutput() {
 		let output = {};
 		this.members.forEach((member) => {
-			if (this.decorative) {
-				output = { ...output, ...member.getOutput() };
-			} else {
-				output[member.paramName] = member.getOutput();
-			}
+			output = { ...output, ...member.getOutput() };
 		});
 
 		if (this.decorative) {
@@ -1482,17 +1642,20 @@ export class GroupParameter extends Parameter {
 	}
 
 	loadData(data) {
-		let values = this.decorative ? data : data[this.paramName];
-
 		this.members.forEach((member) => {
-			member.loadData(values);
+			const value = data[member.paramName];
+			if (Util.isNotEmpty(vaue)) {
+				member.loadData(values);
+			}
 		});
 	}
 
 	parse(json) {
 		super.parse(json);
 
+		this.viewType = this.viewType ?? GroupParameter.ViewTypes.HORIZONTAL_LIST;
 		this.decorative = json.decorative ?? false;
+		this.membersPerRow = json.membersPerRow ?? 1;
 
 		if (Util.isNotEmpty(json.members)) {
 			this.members = json.members.map((member) => {
@@ -1506,6 +1669,7 @@ export class GroupParameter extends Parameter {
 
 		if (this.viewType !== GroupParameter.ViewTypes.VERTICAL_PANEL) json.viewType = this.viewType;
 		if (this.decorative === true) json.decorative = this.decorative;
+		if (this.membersPerRow > 1) json.membersPerRow = this.membersPerRow;
 
 		let jsonMembers = [];
 		this.members.forEach((member) => {
@@ -1517,36 +1681,51 @@ export class GroupParameter extends Parameter {
 		return json;
 	}
 
-	toProperties(languageId) {
+	toProperties(languageId, availableLanguageIds, tagId, tagName) {
 		let json = super.toProperties(languageId);
 
-		if (this.viewType !== GroupParameter.ViewTypes.VERTICAL_PANEL) json.viewType = this.viewType;
-		if (this.decorative === true) json.decorative = this.decorative;
+		json.viewType = this.viewType;
+		json.decorative = this.decorative;
+		json.fieldsPerRow = this.membersPerRow;
+		json.languageId = languageId;
+		json.availableLanguageIds = availableLanguageIds;
 
+		json.tagId = tagId;
+		json.tagName = tagName;
 		let jsonMembers = [];
 		this.members.forEach((member) => {
 			jsonMembers.push(member.toProperties(languageId));
 		});
 
-		json.members = jsonMembers;
+		json.members = this.members.map((member) => member.toProperties(languageId));
 
 		return json;
 	}
 
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
-		const properties = this.toProperties(languageId);
-		properties.languageId = languageId;
-		properties.availableLanguageIds = availableLanguageIds;
-
-		if (tagId) properties.tagId = tagId;
-		if (tagName) properties.tagName = tagName;
+	render(
+		namespace, //
+		languageId,
+		availableLanguageIds,
+		tagId,
+		tagName,
+		events,
+		className,
+		style,
+		spritemap
+	) {
+		const properties = this.toProperties(
+			languageId, //
+			availableLanguageIds,
+			tagId,
+			tagName
+		);
 
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
@@ -1580,7 +1759,7 @@ export class SelectGroupParameter extends Parameter {
 
 	toJSON() {}
 
-	render(namespace, formId, languageId, availableLanguageIds, tagId, tagName, className, style, spritemap) {
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(languageId);
 		properties.languageId = languageId;
 		properties.availableLanguageIds = availableLanguageIds;
@@ -1591,9 +1770,9 @@ export class SelectGroupParameter extends Parameter {
 		this.renderImage = (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				key={this.paramName}
 				properties={properties}
+				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}

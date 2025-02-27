@@ -181,15 +181,11 @@ export const Util = {
 			let quotient = Math.floor(ary.length / colsPerRow);
 			let remainder = ary.length % colsPerRow;
 
-			console.log("convertToRows: ", ary, colsPerRow, quotient, remainder);
-
 			for (let i = 0; i < quotient; i++) {
-				console.log("slice: ", i * colsPerRow, (i + 1) * colsPerRow);
 				rows.push(ary.slice([i * colsPerRow], (i + 1) * colsPerRow));
 			}
 
 			if (remainder > 0) {
-				console.log("remainder slice: ", quotient * colsPerRow, quotient * colsPerRow + remainder);
 				rows.push(ary.slice([quotient * colsPerRow], quotient * colsPerRow + remainder));
 			}
 		}
