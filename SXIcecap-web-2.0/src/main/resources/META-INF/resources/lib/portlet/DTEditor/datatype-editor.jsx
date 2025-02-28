@@ -379,10 +379,10 @@ const DataTypeEditor = ({ portletParameters }) => {
 			const { dataPacket } = e;
 			if (dataPacket.targetPortlet !== namespace) return;
 
-			const { paramId, value } = dataPacket;
+			const { paramName, paramVersion, value } = dataPacket;
 
-			DataStructure.setFormData(formFields.current, paramId, value);
-			DataStructure.clearFormFieldError(formFields.current, paramId.name, paramId.version);
+			DataStructure.setFormData(formFields.current, paramName, paramVersion, value);
+			DataStructure.clearFormFieldError(formFields.current, paramName, paramVersion);
 			console.log("formFields: ", formFields.current);
 		});
 
@@ -391,8 +391,8 @@ const DataTypeEditor = ({ portletParameters }) => {
 			const dataPacket = Event.pickUpNamesapceDataPacket(e, namespace);
 			if (Util.isEmpty(dataPacket)) return;
 
-			const { paramId, error } = dataPacket;
-			DataStructure.setFormError(formFields.current, paramId, error);
+			const { paramName, paramVersion, error } = dataPacket;
+			DataStructure.setFormError(formFields.current, paramName, paramVersion, error);
 			console.log("formFields: ", formFields.current);
 		});
 
@@ -541,7 +541,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 			if (Util.isNotEmpty(checkError)) {
 				console.log("checkError: ", checkError);
 				Event.fire(Event.SX_PARAM_ERROR_FOUND, namespace, namespace, {
-					formId: formId,
+					target: formId,
 					paramName: checkError.fieldName,
 					paramVersion: checkError.fieldVersion,
 					error: checkError.message
@@ -688,11 +688,11 @@ const DataTypeEditor = ({ portletParameters }) => {
 								],
 								on: [
 									{
-										source: formId,
+										target: formId,
 										event: Event.SX_PARAM_PROPERTY_CHANGED
 									},
 									{
-										source: formId,
+										target: formId,
 										event: Event.SX_PARAM_ERROR_FOUND
 									}
 								]

@@ -61,16 +61,16 @@ export class DataStructure {
 		return found;
 	}
 
-	static setFormData(fields, paramId, value) {
-		let parameter = DataStructure.findFormField(fields, paramId.name, paramId.version);
+	static setFormData(fields, paramName, paramVersion, value) {
+		let parameter = DataStructure.findFormField(fields, paramName, paramVersion);
 
 		if (parameter === null || parameter === undefined) return;
 
 		parameter.setValue(value);
 	}
 
-	static setFormError(fields, paramId, error) {
-		let parameter = DataStructure.findFormField(fields, paramId.name, paramId.version);
+	static setFormError(fields, paramName, paramVersion, error) {
+		let parameter = DataStructure.findFormField(fields, paramName, paramVersion);
 
 		if (parameter === null || parameter === undefined) return;
 

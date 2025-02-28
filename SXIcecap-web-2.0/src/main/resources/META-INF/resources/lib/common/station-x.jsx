@@ -636,12 +636,12 @@ export const Event = {
 			...params
 		};
 	},
-	pickUpDataPacket: (event, namespace, formId, paramName, paramVersion) => {
+	pickUpDataPacket: (event, namespace, target, paramName, paramVersion) => {
 		if (Util.isEmpty(event.dataPacket)) return;
 
 		if (
 			event.dataPacket.targetPortlet !== namespace ||
-			event.dataPacket.formId !== formId ||
+			event.dataPacket.target !== target ||
 			event.dataPacket.paramName !== paramName ||
 			event.dataPacket.paramVersion !== paramVersion
 		) {

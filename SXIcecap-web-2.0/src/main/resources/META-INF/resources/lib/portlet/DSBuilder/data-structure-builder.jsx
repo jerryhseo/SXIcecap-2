@@ -62,8 +62,9 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 		}
 
 		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-			formId: formId,
-			paramId: { name: "validation", version: "1.0.0" },
+			target: formId,
+			paramName: "validation",
+			paramVersion: "1.0.0",
 			value: validationRef.current
 		});
 
@@ -79,8 +80,9 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 		};
 
 		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-			formId: formId,
-			paramId: { name: "validation", version: "1.0.0" },
+			target: formId,
+			paramName: "validation",
+			paramVersion: "1.0.0",
 			value: validationRef.current
 		});
 	};
@@ -102,8 +104,9 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 		validationRef.current.pattern.value = e.target.value;
 
 		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-			formId: formId,
-			paramId: { name: "validation", version: "1.0.0" },
+			target: formId,
+			paramName: "validation",
+			paramVersion: "1.0.0",
 			value: validationRef.current
 		});
 	};
@@ -112,8 +115,9 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 		validationRef.current.pattern.message = e.target.value;
 
 		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-			formId: formId,
-			paramId: { name: "validation", version: "1.0.0" },
+			target: formId,
+			paramName: "validation",
+			paramVersion: "1.0.0",
 			value: validationRef.current
 		});
 	};
@@ -135,8 +139,9 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 		validationRef.current.min.value = e.target.value;
 
 		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-			formId: formId,
-			paramId: { name: "validation", version: "1.0.0" },
+			target: formId,
+			paramName: "validation",
+			paramVersion: "1.0.0",
 			value: validationRef.current
 		});
 	};
@@ -145,8 +150,9 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 		validationRef.current.min.message = e.target.value;
 
 		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-			formId: formId,
-			paramId: { name: "validation", version: "1.0.0" },
+			target: formId,
+			paramName: "validation",
+			paramVersion: "1.0.0",
 			value: validationRef.current
 		});
 	};
@@ -168,8 +174,9 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 		validationRef.current.max.value = e.target.value;
 
 		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-			formId: formId,
-			paramId: { name: "validation", version: "1.0.0" },
+			target: formId,
+			paramName: "validation",
+			paramVersion: "1.0.0",
 			value: validationRef.current
 		});
 	};
@@ -178,8 +185,9 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 		validationRef.current.max.message = e.target.value;
 
 		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-			formId: formId,
-			paramId: { name: "validation", version: "1.0.0" },
+			target: formId,
+			paramName: "validation",
+			paramVersion: "1.0.0",
 			value: validationRef.current
 		});
 	};
@@ -200,8 +208,9 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 		validationRef.current.validate = e.target.value;
 
 		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-			formId: formId,
-			paramId: { name: "validation", version: "1.0.0" },
+			target: formId,
+			paramName: "validation",
+			paramVersion: "1.0.0",
 			value: validationRef.current
 		});
 	};
@@ -787,31 +796,27 @@ const DataStructureBuilder = ({ portletParameters }) => {
 			const dataPacket = Event.pickUpNamesapceDataPacket(e, namespace);
 			if (Util.isEmpty(dataPacket)) return;
 
-			if (dataPacket.paramId.name === ParamProperty.DISABLED) {
-				if (dataPacket.value === true) {
-					workingParamRef.current.readOnly = false;
-					Event.fire(Event.SX_PARAM_PROPERTY_CHANGED, namespace, namespace, {
-						formId: propertyPanelId,
-						paramName: ParamProperty.READ_ONLY,
-						paramVersion: "1.0.0",
-						property: ParamProperty.VALUE,
-						value: workingParamRef.current.readOnly
-					});
-				}
-			} else if (dataPacket.paramId.name === ParamProperty.READ_ONLY) {
-				if (dataPacket.value === true) {
-					workingParamRef.current.disabled = false;
-					Event.fire(Event.SX_PARAM_PROPERTY_CHANGED, namespace, namespace, {
-						formId: propertyPanelId,
-						paramName: ParamProperty.DISABLED,
-						paramVersion: "1.0.0",
-						property: ParamProperty.VALUE,
-						value: workingParamRef.current.disabled
-					});
-				}
+			if (dataPacket.paramName === ParamProperty.DISABLED && dataPacket.value === true) {
+				workingParamRef.current.readOnly = false;
+				Event.fire(Event.SX_PARAM_PROPERTY_CHANGED, namespace, namespace, {
+					target: propertyPanelId,
+					paramName: ParamProperty.READ_ONLY,
+					paramVersion: "1.0.0",
+					property: ParamProperty.VALUE,
+					value: workingParamRef.current.readOnly
+				});
+			} else if (dataPacket.paramName === ParamProperty.READ_ONLY && dataPacket.value === true) {
+				workingParamRef.current.disabled = false;
+				Event.fire(Event.SX_PARAM_PROPERTY_CHANGED, namespace, namespace, {
+					target: propertyPanelId,
+					paramName: ParamProperty.DISABLED,
+					paramVersion: "1.0.0",
+					property: ParamProperty.VALUE,
+					value: workingParamRef.current.disabled
+				});
 			}
 
-			workingParamRef.current[dataPacket.paramId.name] = dataPacket.value;
+			workingParamRef.current[dataPacket.paramName] = dataPacket.value;
 			workingParamRef.current.clearError();
 
 			console.log("DataStructureBuilder SX_FORM_FIELD_CHANGED RECEIVED: ", e, workingParamRef.current);
@@ -863,10 +868,14 @@ const DataStructureBuilder = ({ portletParameters }) => {
 									<SXFormField
 										key={field.paramName + "_" + field.paramVersion}
 										namespace={namespace}
-										formId={propertyPanelId}
 										properties={field}
 										events={{
-											fire: [Event.SX_FORM_FIELD_CHANGED]
+											fire: [
+												{
+													target: propertyPanelId,
+													event: Event.SX_FORM_FIELD_CHANGED
+												}
+											]
 										}}
 										spritemap={spritemapPath}
 									/>
@@ -881,7 +890,6 @@ const DataStructureBuilder = ({ portletParameters }) => {
 							return (
 								<SXFormField
 									namespace={namespace}
-									formId={propertyPanelId}
 									properties={{
 										paramType: ParamType.BOOLEAN,
 										paramName: ParamProperty.LOCALIZED,
@@ -892,7 +900,12 @@ const DataStructureBuilder = ({ portletParameters }) => {
 										trueLabel: Util.translate("localized")
 									}}
 									events={{
-										fire: [Event.SX_FORM_FIELD_CHANGED]
+										fire: [
+											{
+												target: propertyPanelId,
+												event: Event.SX_FORM_FIELD_CHANGED
+											}
+										]
 									}}
 									spritemap={spritemapPath}
 								/>
@@ -903,7 +916,6 @@ const DataStructureBuilder = ({ portletParameters }) => {
 								<>
 									<SXFormField
 										namespace={namespace}
-										formId={propertyPanelId}
 										properties={{
 											paramType: ParamType.SELECT,
 											paramName: ParamProperty.VIEW_TYPE,
@@ -932,7 +944,12 @@ const DataStructureBuilder = ({ portletParameters }) => {
 											initValue: SelectParameter.ViewTypes.DROPDOWN
 										}}
 										events={{
-											fire: [Event.SX_FORM_FIELD_CHANGED]
+											fire: [
+												{
+													target: propertyPanelId,
+													event: Event.SX_FORM_FIELD_CHANGED
+												}
+											]
 										}}
 										spritemap={spritemapPath}
 									/>
@@ -972,10 +989,14 @@ const DataStructureBuilder = ({ portletParameters }) => {
 											<SXFormField
 												key={field.paramName + "_" + field.paramVersion}
 												namespace={namespace}
-												formId={propertyPanelId}
 												properties={field}
 												events={{
-													fire: [Event.SX_FORM_FIELD_CHANGED]
+													fire: [
+														{
+															target: propertyPanelId,
+															event: Event.SX_FORM_FIELD_CHANGED
+														}
+													]
 												}}
 												spritemap={spritemapPath}
 											/>
@@ -994,7 +1015,6 @@ const DataStructureBuilder = ({ portletParameters }) => {
 								<div className="sheet-subtitle">{Util.translate("label-position")}</div>
 								<SXFormField
 									namespace={namespace}
-									formId={propertyPanelId}
 									properties={{
 										paramType: ParamType.SELECT,
 										paramName: ParamProperty.LABEL_POSITION,
@@ -1033,8 +1053,22 @@ const DataStructureBuilder = ({ portletParameters }) => {
 										initValue: SelectParameter.LabelPosition.UPPER_LEFT
 									}}
 									events={{
-										fire: [Event.SX_FORM_FIELD_CHANGED, Event.SX_PARAM_PROPERTY_CHANGED],
-										on: [Event.SX_PARAM_PROPERTY_CHANGED]
+										fire: [
+											{
+												target: propertyPanelId,
+												event: Event.SX_FORM_FIELD_CHANGED
+											},
+											{
+												target: propertyPanelId,
+												event: Event.SX_PARAM_PROPERTY_CHANGED
+											}
+										],
+										on: [
+											{
+												target: propertyPanelId,
+												event: Event.SX_PARAM_PROPERTY_CHANGED
+											}
+										]
 									}}
 									spritemap={spritemapPath}
 								/>
@@ -1044,11 +1078,24 @@ const DataStructureBuilder = ({ portletParameters }) => {
 									<SXFormField
 										key={field.paramName + "_" + field.paramVersion}
 										namespace={namespace}
-										formId={propertyPanelId}
 										properties={field}
 										events={{
-											fire: [Event.SX_FORM_FIELD_CHANGED, Event.SX_PARAM_PROPERTY_CHANGED],
-											on: [Event.SX_PARAM_PROPERTY_CHANGED]
+											fire: [
+												{
+													target: propertyPanelId,
+													event: Event.SX_FORM_FIELD_CHANGED
+												},
+												{
+													target: propertyPanelId,
+													event: Event.SX_PARAM_PROPERTY_CHANGED
+												}
+											],
+											on: [
+												{
+													target: propertyPanelId,
+													event: Event.SX_PARAM_PROPERTY_CHANGED
+												}
+											]
 										}}
 										spritemap={spritemapPath}
 									/>
@@ -1109,7 +1156,7 @@ const DataStructureBuilder = ({ portletParameters }) => {
 	function validateParameter() {
 		if (Util.isEmpty(workingParamRef.current.paramName)) {
 			Event.fire(Event.SX_PARAM_ERROR_FOUND, namespace, namespace, {
-				formId: propertyPanelId,
+				target: propertyPanelId,
 				paramName: "paramName",
 				paramVersion: "1.0.0",
 				error: "Parameter name is required"
@@ -1120,7 +1167,7 @@ const DataStructureBuilder = ({ portletParameters }) => {
 
 		if (Util.isEmpty(workingParamRef.current.displayName)) {
 			Event.fire(Event.SX_PARAM_ERROR_FOUND, namespace, namespace, {
-				formId: propertyPanelId,
+				target: propertyPanelId,
 				paramName: "displayName",
 				paramVersion: "1.0.0",
 				error: "Display name is required"

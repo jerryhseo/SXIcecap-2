@@ -18,7 +18,7 @@ import DropDown from "@clayui/drop-down";
 import ClayLabel from "@clayui/label";
 import { Util } from "../common/util";
 
-import { ParamType, DisplayType, Event, ViewTypes } from "../common/station-x";
+import { ParamType, DisplayType, Event, ViewTypes, ParamProperty } from "../common/station-x";
 import { BooleanParameter, Parameter, SelectParameter, StringParameter } from "../parameter/parameter";
 
 export const SelectDisplayStyle = {
@@ -366,7 +366,6 @@ export const SXInput = ({ namespace = "", properties, events = {}, className = "
 	const {
 		paramName,
 		paramVersion = "1.0.0",
-		parentId = null,
 		tagId = namespace + properties.paramName,
 		tagName = namespace + properties.paramName,
 		label = "",
@@ -396,38 +395,24 @@ export const SXInput = ({ namespace = "", properties, events = {}, className = "
 			setErrorState(checkedError);
 		}
 
-		/*
-		 * Default on event
-		 */
-		if (events.on) {
+		if (Util.isNotEmpty(events.on)) {
 			events.on.forEach((event) => {
 				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
-					Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
+					Event.on(event.event, (e) => {
 						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
-						console.log("SXInput SX_PARAM_ERROR_FOUND: ", dataPacket);
-
 						if (Util.isEmpty(dataPacket)) return;
 
 						initializedRef.current = true;
 						setErrorState(dataPacket.error);
 					});
+				} else if (event.target === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
 
-					if (event.target === Event.SX_PARAM_PROPERTY_CHANGED) {
-						Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
-							const dataPacket = Event.pickUpDataPacket(
-								e,
-								namespace,
-								event.target,
-								paramName,
-								paramVersion
-							);
-
-							if (Util.isEmpty(dataPacket)) return;
-
-							propertiesState[dataPacket.property] = dataPacket.value;
-							setPropertiesState(propertiesState);
-						});
-					}
+						propertiesState[dataPacket.property] = dataPacket.value;
+						setPropertiesState(propertiesState);
+					});
 				}
 			});
 		}
@@ -464,28 +449,26 @@ export const SXInput = ({ namespace = "", properties, events = {}, className = "
 			setErrorState(errorMsg);
 		}
 
-		if (events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
-			if (errorMsg) {
-				Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
-					formId: formId,
-					error: errorMsg,
-					parentId: parentId,
-					paramId: {
-						name: paramName,
-						version: paramVersion
+		if (Util.isNotEmpty(events.fire)) {
+			events.fire.forEach((event) => {
+				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+					if (errorMsg) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
+							traget: event.target,
+							error: errorMsg,
+							paramName: paramName,
+							paramVersion: paramVersion
+						});
+					} else {
+						Event.fire(event.event, namespace, namespace, {
+							traget: event.target,
+							error: errorMsg,
+							paramName: paramName,
+							paramVersion: paramVersion
+						});
 					}
-				});
-			} else {
-				Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-					formId: formId,
-					value: value,
-					parentId: parentId,
-					paramId: {
-						name: paramName,
-						version: paramVersion
-					}
-				});
-			}
+				}
+			});
 		}
 	};
 
@@ -534,7 +517,6 @@ export const SXInput = ({ namespace = "", properties, events = {}, className = "
  ****************************************************/
 export const SXLocalizedInput = ({
 	namespace = "",
-	formId = "",
 	properties,
 	events = {},
 	className = "",
@@ -546,7 +528,6 @@ export const SXLocalizedInput = ({
 	const {
 		paramName,
 		paramVersion = "1.0.0",
-		parentId = null,
 		tagId = propertiesState.paramName,
 		tagName = propertiesState.paramName,
 		label = "",
@@ -577,26 +558,26 @@ export const SXLocalizedInput = ({
 	const inputRef = useRef(null);
 
 	useLayoutEffect(() => {
-		Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
-			const dataPacket = Event.pickUpDataPacket(e, namespace, formId, paramName, paramVersion);
+		if (Util.isNotEmpty(events.on)) {
+			events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
 
-			if (Util.isEmpty(dataPacket)) return;
+						initializedRef.current = true;
+						setErrorState(dataPacket.error);
+					});
+				} else if (event.target === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
 
-			initializedRef.current = true;
-			setErrorState(dataPacket.error);
-		});
-
-		Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
-			const dataPacket = Event.pickUpDataPacket(e, namespace, formId, paramName, paramVersion);
-
-			if (Util.isEmpty(dataPacket)) return;
-
-			propertiesState[dataPacket.property] = dataPacket.value;
-			setPropertiesState(propertiesState);
-		});
-
-		if (initializedRef.current) {
-			setErrorState(validateFormField(ParamType.STRING, translationsRef.current, validation));
+						propertiesState[dataPacket.property] = dataPacket.value;
+						setPropertiesState(propertiesState);
+					});
+				}
+			});
 		}
 	}, []);
 
@@ -617,32 +598,30 @@ export const SXLocalizedInput = ({
 			setErrorState(errorMsg);
 		}
 
-		if (errorMsg) {
-			if (events.fire && events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
-				Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
-					formId: formId,
-					error: errorMsg,
-					parentId: parentId,
-					paramId: {
-						name: paramName,
-						version: paramVersion
+		if (Util.isNotEmpty(events.fire)) {
+			events.fire.forEach((event) => {
+				if (errorMsg) {
+					if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
+							traget: event.target,
+							error: errorMsg,
+							paramName: paramName,
+							paramVersion: paramVersion
+						});
 					}
-				});
-			}
-		} else {
-			translationsRef.current[selectedLangState] = value;
+				} else {
+					translationsRef.current[selectedLangState] = value;
 
-			if (events.fire && events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
-				Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-					formId: formId,
-					value: translationsRef.current,
-					parentId: parentId,
-					paramId: {
-						name: paramName,
-						version: paramVersion
+					if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+						Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
+							traget: event.target,
+							value: translationsRef.current,
+							paramName: paramName,
+							paramVersion: paramVersion
+						});
 					}
-				});
-			}
+				}
+			});
 		}
 	};
 
@@ -787,8 +766,7 @@ export const SXInteger = () => {
  * - viewTypes: dropdown, radio, toogle
  ****************************************************/
 export const SXBoolean = ({
-	namespace = "",
-	formId,
+	namespace = "", //
 	properties,
 	events = {},
 	className = "",
@@ -799,7 +777,6 @@ export const SXBoolean = ({
 	const {
 		paramName,
 		paramVersion = "1.0.0",
-		parentId,
 		tagId = propertiesState.paramName,
 		tagName = propertiesState.paramName,
 		label = propertiesState.label,
@@ -825,49 +802,54 @@ export const SXBoolean = ({
 	const [errorState, setErrorState] = useState("");
 
 	useLayoutEffect(() => {
-		if (events.on) {
-			if (events.on.includes(Event.SX_PARAM_ERROR_FOUND)) {
-				Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
-					const dataPacket = Event.pickUpDataPacket(e, namespace, formId, paramName, paramVersion);
+		if (Util.isNotEmpty(events.on)) {
+			events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
 
-					if (Util.isEmpty(dataPacket)) return;
+						setErrorState(dataPacket.error);
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(event.event, (e) => {
+						console.log(
+							"SXBoolean Event.SX_PARAM_PROPERTY_CHANGED: ",
+							paramName,
+							paramVersion,
+							e.dataPacket,
+							event
+						);
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
 
-					setErrorState(dataPacket.error);
-				});
-			}
-
-			if (events.on.includes(Event.SX_PARAM_PROPERTY_CHANGED)) {
-				Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
-					console.log("SXBoolean SX_PARAM_PROPERTY_CHANGED: ", e.dataPacket, formId, paramName, paramVersion);
-					const dataPacket = Event.pickUpDataPacket(e, namespace, formId, paramName, paramVersion);
-
-					console.log("dataPacket: ", dataPacket);
-					if (Util.isEmpty(dataPacket)) return;
-
-					if (dataPacket.property === "value") {
-						setValueState(dataPacket.value);
-					} else {
-						const props = { ...propertiesState };
-						props[dataPacket.property] = dataPacket.value;
-						setPropertiesState({ ...propertiesState });
-					}
-				});
-			}
+						console.log("SXBoolean datapacket: ", dataPacket);
+						if (dataPacket.property === ParamProperty.VALUE) {
+							setValueState(dataPacket.value);
+						} else {
+							const props = { ...propertiesState };
+							props[dataPacket.property] = dataPacket.value;
+							setPropertiesState({ ...propertiesState });
+						}
+					});
+				}
+			});
 		}
-	});
+	}, []);
 
 	const handleSelect = (val) => {
 		console.log("SXBoolean handleSelect: ", val);
 		setValueState(val);
 
-		if (events.fire && events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
-			Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-				formId: formId,
-				value: valueState,
-				parentId: parentId,
-				paramId: {
-					name: paramName,
-					version: paramVersion
+		if (Util.isNotEmpty(events.fire)) {
+			events.fire.forEach((event) => {
+				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+					Event.fire(event.event, namespace, namespace, {
+						traget: event.target,
+						value: val,
+						paramName: paramName,
+						paramVersion: paramVersion
+					});
 				}
 			});
 		}
@@ -876,14 +858,15 @@ export const SXBoolean = ({
 	const handleOnChange = (e) => {
 		setValueState(!valueState);
 
-		if (events.fire && events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
-			Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-				formId: formId,
-				value: !valueState,
-				parentId: parentId,
-				paramId: {
-					name: paramName,
-					version: paramVersion
+		if (Util.isNotEmpty(events.fire)) {
+			events.fire.forEach((event) => {
+				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+					Event.fire(event.event, namespace, namespace, {
+						traget: event.target,
+						value: !valueState,
+						paramName: paramName,
+						paramVersion: paramVersion
+					});
 				}
 			});
 		}
@@ -1010,20 +993,11 @@ export const SXBoolean = ({
  * 		displayStyle property is DualListBox
  * 	viewTypes: dropdown, radio
  ****************************************************/
-export const SXSelect = ({
-	namespace = "",
-	formId,
-	properties,
-	events = {},
-	className = "",
-	style = {},
-	spritemap
-}) => {
+export const SXSelect = ({ namespace = "", properties, events = {}, className = "", style = {}, spritemap }) => {
 	const [propertiesState, setPropertiesState] = useState(properties);
 	const {
 		paramName,
 		paramVersion,
-		parentId,
 		tagId = propertiesState.paramName,
 		tagName = propertiesState.paramName,
 		label = "",
@@ -1048,32 +1022,26 @@ export const SXSelect = ({
 	const [viewTypeState, setViewTypeState] = useState(viewType);
 
 	useLayoutEffect(() => {
-		/*
-		 * Default on event
-		 */
+		if (Util.isNotEmpty(events.on)) {
+			events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
 
-		if (events.on) {
-			if (events.on.includes(Event.SX_PARAM_ERROR_FOUND)) {
-				Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
-					const dataPacket = Event.pickUpDataPacket(e, namespace, formId, paramName, paramVersion);
+						setSelectedState("");
+						setErrorState(dataPacket.error);
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
 
-					if (Util.isEmpty(dataPacket)) return;
-
-					setSelectedState("");
-					setErrorState(dataPacket.error);
-				});
-			}
-
-			if (events.on.includes(Event.SX_PARAM_PROPERTY_CHANGED)) {
-				Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
-					const dataPacket = Event.pickUpDataPacket(e, namespace, formId, paramName, paramVersion);
-
-					if (Util.isEmpty(dataPacket)) return;
-
-					propertiesState[dataPacket.property] = dataPacket.value;
-					setPropertiesState(propertiesState);
-				});
-			}
+						propertiesState[dataPacket.property] = dataPacket.value;
+						setPropertiesState(propertiesState);
+					});
+				}
+			});
 		}
 
 		if (placeholder && this.viewType === SelectParameter.ViewTypes.DROPDOWN) {
@@ -1092,31 +1060,32 @@ export const SXSelect = ({
 		console.log("SXSelect handleChange: ", e, events);
 		setSelectedState(e.target.value);
 
-		if (events.fire && events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
-			Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-				formId: formId,
-				value: e.target.value,
-				parentId: parentId,
-				paramId: {
-					name: paramName,
-					version: paramVersion
+		if (Util.isNotEmpty(events.fire)) {
+			events.fire.forEach((event) => {
+				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+					Event.fire(event.event, namespace, namespace, {
+						traget: event.target,
+						value: e.target.value,
+						paramName: paramName,
+						paramVersion: paramVersion
+					});
 				}
 			});
 		}
 	};
 
 	const handleValueChange = (val) => {
-		console.log("SXSelect handleValueChange: ", val);
 		setSelectedState(val);
 
-		if (events.fire && events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
-			Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-				formId: formId,
-				value: val,
-				parentId: parentId,
-				paramId: {
-					name: paramName,
-					version: paramVersion
+		if (Util.isNotEmpty(events.fire)) {
+			events.fire.forEach((event) => {
+				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+					Event.fire(event.event, namespace, namespace, {
+						traget: event.target,
+						value: val,
+						paramName: paramName,
+						paramVersion: paramVersion
+					});
 				}
 			});
 		}
@@ -1206,21 +1175,12 @@ export const SXSelect = ({
  * 		displayStyle property is DualListBox
  ****************************************************/
 // 04.1. when displayStyle is dual list box
-export const SXDualListBox = ({
-	namespace = "",
-	formId,
-	properties,
-	events = {},
-	className = "",
-	style = {},
-	spritemap
-}) => {
+export const SXDualListBox = ({ namespace = "", properties, events = {}, className = "", style = {}, spritemap }) => {
 	const [propertiesState, setPropertiesState] = useState(properties);
 
 	const {
 		paramName,
 		paramVersion,
-		parentId,
 		tagId = namespace + propertiesState.paramName,
 		tagName = namespace + propertiesState.paramName,
 		label = "",
@@ -1246,26 +1206,26 @@ export const SXDualListBox = ({
 	const [rightSelected, setRightSelected] = useState([]);
 
 	useLayoutEffect(() => {
-		Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
-			const dataPacket = Event.pickUpDataPacket(e, namespace, formId, paramName, paramVersion);
+		if (Util.isNotEmpty(events.on)) {
+			events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
 
-			if (Util.isEmpty(dataPacket)) return;
+						initializedRef.current = true;
+						setErrorState(dataPacket.error);
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
 
-			initializedRef.current = true;
-			setErrorState(dataPacket.error);
-		});
-
-		if (events.on) {
-			if (events.on.includes(Event.SX_PARAM_PROPERTY_CHANGED)) {
-				Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
-					const dataPacket = Event.pickUpDataPacket(e, namespace, formId, paramName, paramVersion);
-
-					if (Util.isEmpty(dataPacket)) return;
-
-					propertiesState[dataPacket.property] = dataPacket.value;
-					setPropertiesState(propertiesState);
-				});
-			}
+						propertiesState[dataPacket.property] = dataPacket.value;
+						setPropertiesState(propertiesState);
+					});
+				}
+			});
 		}
 
 		if (initializedRef.current) {
@@ -1301,28 +1261,26 @@ export const SXDualListBox = ({
 			setErrorState(errorMsg);
 		}
 
-		if (events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
-			if (errorMsg) {
-				Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
-					formId: formId,
-					error: errorMsg,
-					parentId: parentId,
-					paramId: {
-						name: paramName,
-						version: paramVersion
+		if (Util.isNotEmpty(events.fire)) {
+			events.fire.forEach((event) => {
+				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+					if (errorMsg) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
+							traget: event.target,
+							error: errorMsg,
+							paramName: paramName,
+							paramVersion: paramVersion
+						});
+					} else {
+						Event.fire(event.event, namespace, namespace, {
+							traget: event.target,
+							value: left,
+							paramName: paramName,
+							paramVersion: paramVersion
+						});
 					}
-				});
-			} else {
-				Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-					formId: formId,
-					value: left,
-					parentId: parentId,
-					paramId: {
-						name: paramName,
-						version: paramVersion
-					}
-				});
-			}
+				}
+			});
 		}
 	};
 
@@ -1342,28 +1300,26 @@ export const SXDualListBox = ({
 			setErrorState(errorMsg);
 		}
 
-		if (events.fire.includes(Event.SX_FORM_FIELD_CHANGED)) {
-			if (errorMsg) {
-				Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
-					formId: formId,
-					error: errorMsg,
-					parentId: parentId,
-					paramId: {
-						name: paramName,
-						version: paramVersion
+		if (Util.isNotEmpty(events.fire)) {
+			events.fire.forEach((event) => {
+				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+					if (errorMsg) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
+							traget: event.target,
+							error: errorMsg,
+							paramName: paramName,
+							paramVersion: paramVersion
+						});
+					} else {
+						Event.fire(event.event, namespace, namespace, {
+							traget: event.target,
+							value: newItems,
+							paramName: paramName,
+							paramVersion: paramVersion
+						});
 					}
-				});
-			} else {
-				Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
-					formId: formId,
-					value: newItems,
-					parentId: parentId,
-					paramId: {
-						name: paramName,
-						version: paramVersion
-					}
-				});
-			}
+				}
+			});
 		}
 	};
 
@@ -1503,12 +1459,11 @@ export const SXEMail = () => {
 };
 
 /*13. Group */
-export const SXGroup = ({ namespace = "", formId, properties, events = {}, className = "", style = {}, spritemap }) => {
+export const SXGroup = ({ namespace = "", properties, events = {}, className = "", style = {}, spritemap }) => {
 	const [propertiesState, setPropertiesState] = useState(properties);
 	const {
 		paramName, //
 		paramVersion,
-		parentId,
 		tagId = propertiesState.paramName,
 		tagName = propertiesState.paramName,
 		label = "",
@@ -1520,6 +1475,22 @@ export const SXGroup = ({ namespace = "", formId, properties, events = {}, class
 
 	const id = namespace + tagId;
 	className = className ? className : "";
+
+	useLayoutEffect(() => {
+		if (Util.isNotEmpty(events.on)) {
+			events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
+
+						propertiesState[dataPacket.property] = dataPacket.value;
+						setPropertiesState(propertiesState);
+					});
+				}
+			});
+		}
+	}, []);
 
 	const renderCount = useRef(0);
 	renderCount.current++;
@@ -1564,7 +1535,6 @@ export const SXGroup = ({ namespace = "", formId, properties, events = {}, class
 								>
 									<SXFormField
 										namespace={namespace}
-										formId={formId}
 										properties={col}
 										events={events}
 										formData={initValues[col.paramName]}
@@ -1714,14 +1684,13 @@ export const SXInlineInputGroup = ({ items, displayStyle = "justify" }) => {
 	);
 };
 
-const SXFormField = ({ namespace, formId, properties, events, className, style, spritemap }) => {
+const SXFormField = ({ namespace, properties, events, className, style, spritemap }) => {
 	switch (properties.paramType) {
 		case ParamType.STRING: {
 			if (properties.localized) {
 				return (
 					<SXLocalizedInput
 						namespace={namespace}
-						formId={formId}
 						properties={properties}
 						events={events}
 						className={className}
@@ -1733,7 +1702,6 @@ const SXFormField = ({ namespace, formId, properties, events, className, style, 
 				return (
 					<SXInput
 						namespace={namespace}
-						formId={formId}
 						properties={properties}
 						events={events}
 						className={className}
@@ -1747,7 +1715,6 @@ const SXFormField = ({ namespace, formId, properties, events, className, style, 
 			return (
 				<SXBoolean
 					namespace={namespace}
-					formId={formId}
 					properties={properties}
 					events={events}
 					className={className}
@@ -1760,7 +1727,6 @@ const SXFormField = ({ namespace, formId, properties, events, className, style, 
 			return (
 				<SXSelect
 					namespace={namespace}
-					formId={formId}
 					properties={properties}
 					events={events}
 					className={className}
@@ -1773,7 +1739,6 @@ const SXFormField = ({ namespace, formId, properties, events, className, style, 
 			return (
 				<SXDualListBox
 					namespace={namespace}
-					formId={formId}
 					properties={properties}
 					events={events}
 					className={className}
@@ -1786,7 +1751,6 @@ const SXFormField = ({ namespace, formId, properties, events, className, style, 
 			return (
 				<SXGroup
 					namespace={namespace}
-					formId={formId}
 					properties={properties}
 					events={events}
 					className={className}
@@ -1802,7 +1766,7 @@ const SXFormField = ({ namespace, formId, properties, events, className, style, 
 
 export const SXForm = ({
 	namespace,
-	formTag = "div",
+	formTag = "form",
 	formName,
 	action,
 	method = "post",
@@ -1817,7 +1781,6 @@ export const SXForm = ({
 		return (
 			<SXFormField
 				namespace={namespace}
-				formId={formId}
 				properties={formField}
 				spritemap
 			/>
