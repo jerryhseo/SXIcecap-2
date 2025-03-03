@@ -29,6 +29,9 @@ import SXFormField, { SXInput, SXLabel, SXLocalizedInput } from "../../form/sxfo
 import ClayMultiStepNav from "@clayui/multi-step-nav";
 import ClayPanel from "@clayui/panel";
 import Label from "@clayui/label";
+import { Body, Button, Cell, Head, Row, Table } from "@clayui/core";
+import DropDown from "@clayui/drop-down";
+import LocalizedInput from "@clayui/localized-input";
 
 const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) => {
 	const [requiredState, setRequiredState] = useState(
@@ -61,7 +64,7 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 			delete validationRef.current.required;
 		}
 
-		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
 			target: formId,
 			paramName: "validation",
 			paramVersion: "1.0.0",
@@ -79,7 +82,7 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 			message: message
 		};
 
-		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
 			target: formId,
 			paramName: "validation",
 			paramVersion: "1.0.0",
@@ -103,7 +106,7 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 	const handlePatternValueChanged = (e) => {
 		validationRef.current.pattern.value = e.target.value;
 
-		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
 			target: formId,
 			paramName: "validation",
 			paramVersion: "1.0.0",
@@ -114,7 +117,7 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 	const handlePatternMsgChanged = (e) => {
 		validationRef.current.pattern.message = e.target.value;
 
-		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
 			target: formId,
 			paramName: "validation",
 			paramVersion: "1.0.0",
@@ -138,7 +141,7 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 	const handleMinValueChanged = (e) => {
 		validationRef.current.min.value = e.target.value;
 
-		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
 			target: formId,
 			paramName: "validation",
 			paramVersion: "1.0.0",
@@ -149,7 +152,7 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 	const handleMinMsgChanged = (e) => {
 		validationRef.current.min.message = e.target.value;
 
-		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
 			target: formId,
 			paramName: "validation",
 			paramVersion: "1.0.0",
@@ -173,7 +176,7 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 	const handleMaxValueChanged = (e) => {
 		validationRef.current.max.value = e.target.value;
 
-		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
 			target: formId,
 			paramName: "validation",
 			paramVersion: "1.0.0",
@@ -184,7 +187,7 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 	const handleMaxMsgChanged = (e) => {
 		validationRef.current.max.message = e.target.value;
 
-		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
 			target: formId,
 			paramName: "validation",
 			paramVersion: "1.0.0",
@@ -207,7 +210,7 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 	const handleValidateChanged = (e) => {
 		validationRef.current.validate = e.target.value;
 
-		Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
 			target: formId,
 			paramName: "validation",
 			paramVersion: "1.0.0",
@@ -589,6 +592,78 @@ const ValidationBuilder = ({ namespace, formId, validation = {}, spritemap }) =>
 	);
 };
 
+const SelectOptionBuilder = ({ namespace, formId, options = [], languageId, availableLanguageIds, spritemap }) => {
+	const [optionsState, setOptionsState] = useState(options);
+	const builderFormId = namespace + "optionBuilder";
+
+	useLayoutEffect(() => {}, []);
+
+	return (
+		<>
+			<Table>
+				<Head
+					items={[
+						{
+							id: "1",
+							name: Util.translate("label")
+						},
+						{
+							id: "2",
+							name: Util.translate("value")
+						},
+						{
+							id: "3",
+							name: Util.translate("actions")
+						}
+					]}
+				>
+					{(column) => <Cell key={column.id}>{column.name}</Cell>}
+				</Head>
+				<Body
+					items={optionsState}
+					onItemsChange={(e) => {
+						console.log("onItemsChange: ", e);
+					}}
+				>
+					{(row) => (
+						<Row>
+							<Cell>{row.label[languageId]}</Cell>
+							<Cell>{row.value}</Cell>
+							<Cell>
+								<DropDown
+									trigger={
+										<ClayButtonWithIcon
+											aria-label="Actions"
+											symbol="ellipsis-v"
+											title="Actions"
+										/>
+									}
+								>
+									<DropDown.ItemList
+										items={[
+											{ name: Util.translate("delete") },
+											{ name: Util.translate("moveUp") },
+											{ name: Util.translate("moveDown") }
+										]}
+									>
+										{(action) => <DropDown.Item key={action.name}>{action.name}</DropDown.Item>}
+									</DropDown.ItemList>
+								</DropDown>
+							</Cell>
+						</Row>
+					)}
+				</Body>
+			</Table>
+
+			<div>{Util.translate("label")}</div>
+			<LocalizedInput
+				id={namespace + "label"}
+				locales={availableLanguageIds.map((locale) => ({ label: locale, symbol: locale.toLowerCase() }))}
+			/>
+		</>
+	);
+};
+
 const DataStructureBuilder = ({ portletParameters }) => {
 	const { namespace, baseRenderURL, baseResourceURL, languageId, availableLanguageIds, permissions, spritemapPath } =
 		portletParameters;
@@ -601,6 +676,17 @@ const DataStructureBuilder = ({ portletParameters }) => {
 
 	const dataTypeRef = useRef(null);
 	const dataStructureRef = useRef(null);
+
+	const rerenderProperties = [
+		ParamProperty.DISPLAY_NAME,
+		ParamProperty.TOOLTIP,
+		ParamProperty.LABEL_POSITION,
+		ParamProperty.DISABLED,
+		ParamProperty.READ_ONLY,
+		ParamProperty.VALIDATION,
+		ParamProperty.TRUE_LABEL,
+		ParamProperty.FALSE_LABEL
+	];
 
 	const propertyPanelId = namespace + "propertyPanel";
 	const previewCanvasId = namespace + "previewCanvas";
@@ -792,13 +878,13 @@ const DataStructureBuilder = ({ portletParameters }) => {
 		Attach event handlers only once when the conponent is rendered.
 	*/
 	useLayoutEffect(() => {
-		Event.on(Event.SX_FORM_FIELD_CHANGED, (e) => {
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = Event.pickUpNamesapceDataPacket(e, namespace);
 			if (Util.isEmpty(dataPacket)) return;
 
 			if (dataPacket.paramName === ParamProperty.DISABLED && dataPacket.value === true) {
 				workingParamRef.current.readOnly = false;
-				Event.fire(Event.SX_PARAM_PROPERTY_CHANGED, namespace, namespace, {
+				Event.fire(Event.SX_PARAM_VALUE_CHANGED, namespace, namespace, {
 					target: propertyPanelId,
 					paramName: ParamProperty.READ_ONLY,
 					paramVersion: "1.0.0",
@@ -807,7 +893,7 @@ const DataStructureBuilder = ({ portletParameters }) => {
 				});
 			} else if (dataPacket.paramName === ParamProperty.READ_ONLY && dataPacket.value === true) {
 				workingParamRef.current.disabled = false;
-				Event.fire(Event.SX_PARAM_PROPERTY_CHANGED, namespace, namespace, {
+				Event.fire(Event.SX_PARAM_VALUE_CHANGED, namespace, namespace, {
 					target: propertyPanelId,
 					paramName: ParamProperty.DISABLED,
 					paramVersion: "1.0.0",
@@ -819,7 +905,25 @@ const DataStructureBuilder = ({ portletParameters }) => {
 			workingParamRef.current[dataPacket.paramName] = dataPacket.value;
 			workingParamRef.current.clearError();
 
-			console.log("DataStructureBuilder SX_FORM_FIELD_CHANGED RECEIVED: ", e, workingParamRef.current);
+			console.log("DataStructureBuilder SX_FIELD_VALUE_CHANGED RECEIVED: ", e, workingParamRef.current);
+			if (rerenderProperties.includes(dataPacket.paramName)) {
+				let property;
+				let value;
+				switch (dataPacket.paramName) {
+					case ParamProperty.DISPLAY_NAME: {
+						property = ParamProperty.LABEL;
+						value = workingParamRef.current[dataPacket.paramName][languageId];
+					}
+				}
+
+				Event.fire(Event.SX_PARAM_PROPERTY_CHANGED, namespace, namespace, {
+					target: previewCanvasId,
+					paramName: workingParamRef.current.paramName,
+					paramVersion: workingParamRef.current.paramVersion,
+					property: property,
+					value: value
+				});
+			}
 		});
 
 		Event.on(Event.SX_FORM_FIELD_FAILED, (e) => {
@@ -873,7 +977,7 @@ const DataStructureBuilder = ({ portletParameters }) => {
 											fire: [
 												{
 													target: propertyPanelId,
-													event: Event.SX_FORM_FIELD_CHANGED
+													event: Event.SX_FIELD_VALUE_CHANGED
 												}
 											]
 										}}
@@ -903,7 +1007,7 @@ const DataStructureBuilder = ({ portletParameters }) => {
 										fire: [
 											{
 												target: propertyPanelId,
-												event: Event.SX_FORM_FIELD_CHANGED
+												event: Event.SX_FIELD_VALUE_CHANGED
 											}
 										]
 									}}
@@ -947,7 +1051,7 @@ const DataStructureBuilder = ({ portletParameters }) => {
 											fire: [
 												{
 													target: propertyPanelId,
-													event: Event.SX_FORM_FIELD_CHANGED
+													event: Event.SX_FIELD_VALUE_CHANGED
 												}
 											]
 										}}
@@ -994,7 +1098,7 @@ const DataStructureBuilder = ({ portletParameters }) => {
 													fire: [
 														{
 															target: propertyPanelId,
-															event: Event.SX_FORM_FIELD_CHANGED
+															event: Event.SX_FIELD_VALUE_CHANGED
 														}
 													]
 												}}
@@ -1056,17 +1160,17 @@ const DataStructureBuilder = ({ portletParameters }) => {
 										fire: [
 											{
 												target: propertyPanelId,
-												event: Event.SX_FORM_FIELD_CHANGED
+												event: Event.SX_FIELD_VALUE_CHANGED
 											},
 											{
-												target: propertyPanelId,
+												target: previewCanvasId,
 												event: Event.SX_PARAM_PROPERTY_CHANGED
 											}
 										],
 										on: [
 											{
 												target: propertyPanelId,
-												event: Event.SX_PARAM_PROPERTY_CHANGED
+												event: Event.SX_PARAM_VALUE_CHANGED
 											}
 										]
 									}}
@@ -1083,17 +1187,17 @@ const DataStructureBuilder = ({ portletParameters }) => {
 											fire: [
 												{
 													target: propertyPanelId,
-													event: Event.SX_FORM_FIELD_CHANGED
+													event: Event.SX_FIELD_VALUE_CHANGED
 												},
 												{
-													target: propertyPanelId,
+													target: previewCanvasId,
 													event: Event.SX_PARAM_PROPERTY_CHANGED
 												}
 											],
 											on: [
 												{
 													target: propertyPanelId,
-													event: Event.SX_PARAM_PROPERTY_CHANGED
+													event: Event.SX_PARAM_VALUE_CHANGED
 												}
 											]
 										}}
@@ -1193,13 +1297,26 @@ const DataStructureBuilder = ({ portletParameters }) => {
 
 		if (noError) {
 			dataStructureRef.current.addParameter(workingParamRef.current);
-			dataStructureRef.current.appendPreview({
-				paramInstance: workingParamRef.current,
-				namespace,
-				propertyPanelId,
+			dataStructureRef.current.appendPreview(
+				workingParamRef.current,
 				previewCanvasId,
-				spritemap: spritemapPath
-			});
+				namespace,
+				languageId,
+				availableLanguageIds,
+				"",
+				"",
+				{
+					on: [
+						{
+							target: previewCanvasId,
+							event: Event.SX_PARAM_PROPERTY_CHANGED
+						}
+					]
+				},
+				"",
+				{},
+				spritemapPath
+			);
 		}
 	};
 
@@ -1267,6 +1384,49 @@ const DataStructureBuilder = ({ portletParameters }) => {
 						size={5}
 						style={propertyPanelStyles}
 					>
+						<Button.Group
+							spaced
+							style={{
+								backgroundColor: "#f7edab",
+								background: "rgba(247, 237, 171, 0.8)",
+								padding: "10px 5px",
+								justifyContent: "center",
+								marginBottom: "20px"
+							}}
+						>
+							<ClayButtonWithIcon
+								aria-label={Util.translate("new")}
+								symbol="plus"
+								title={Util.translate("new")}
+								spritemap={spritemapPath}
+								size="sm"
+							/>
+							<ClayButtonWithIcon
+								aria-label={Util.translate("duplicate")}
+								symbol="copy"
+								title={Util.translate("duplicate")}
+								spritemap={spritemapPath}
+								displayType="secondary"
+								size="sm"
+							/>
+							<ClayButtonWithIcon
+								aria-label={Util.translate("delete")}
+								symbol="trash"
+								title={Util.translate("delete")}
+								spritemap={spritemapPath}
+								displayType="danger"
+								size="sm"
+							/>
+							<ClayButtonWithIcon
+								aria-label={Util.translate("import")}
+								symbol="import"
+								title={Util.translate("import")}
+								spritemap={spritemapPath}
+								displayType="secondary"
+								size="sm"
+								className="float-right"
+							/>
+						</Button.Group>
 						<Form>
 							<Form.Group className="form-group-sm">
 								<SXLabel
@@ -1360,7 +1520,28 @@ const DataStructureBuilder = ({ portletParameters }) => {
 							previewCanvasId,
 							languageId,
 							availableLanguageIds,
-							{},
+							{
+								fire: [
+									{
+										target: propertyPanelId,
+										event: Event.SX_FIELD_VALUE_CHANGED
+									}
+								],
+								on: [
+									{
+										target: previewCanvasId,
+										event: Event.SX_PARAM_PROPERTY_CHANGED
+									},
+									{
+										target: previewCanvasId,
+										event: Event.SX_PARAM_ERROR_FOUND
+									},
+									{
+										target: previewCanvasId,
+										event: Event.SX_PARAM_VALUE_CHANGED
+									}
+								]
+							},
 							"",
 							{},
 							spritemapPath

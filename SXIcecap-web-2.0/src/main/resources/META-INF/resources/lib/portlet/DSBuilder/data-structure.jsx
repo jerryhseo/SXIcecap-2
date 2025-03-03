@@ -9,6 +9,7 @@ import ClayAutocompleteDropDown from "@clayui/autocomplete/lib/DropDown";
 import ClayDropDownItemList from "@clayui/drop-down/lib/ItemList";
 import ClayDropDownItem from "@clayui/drop-down/lib/Item";
 import { SXAutoComplete } from "../../form/sxform";
+import { createRoot } from "react-dom/client";
 
 export class DataStructure {
 	#paramDelimiter = ";";
@@ -212,16 +213,40 @@ export class DataStructure {
 		this.parameters[parameter.order - 1] = parameter;
 	}
 
-	appendPreview(paramInstance, namespace, propertyPanelId, previewCanvasId, spritemap) {
+	appendPreview(
+		paramInstance,
+		previewCanvasId,
+		namespace,
+		languageId,
+		availableLanguageIds,
+		tagId,
+		tagName,
+		events,
+		className,
+		style,
+		spritemap
+	) {
 		console.log("appendPreview: ", paramInstance);
-		console.log("--- ", namespace, propertyPanelId, previewCanvasId, spritemap);
+		console.log("--- ", namespace, previewCanvasId, spritemap);
 
-		const canvas = document.getElementById(previewCanvasId);
+		const canvas = createRoot(document.getElementById(previewCanvasId));
 
+		let renderImage = paramInstance.renderImage;
 		if (!paramInstance.isRendered()) {
-			paramInstance.render(namespace, previewCanvasId, propertyPanelId);
+			renderImage = paramInstance.renderPreview(
+				namespace,
+				languageId,
+				availableLanguageIds,
+				tagId,
+				tagName,
+				events,
+				className,
+				style,
+				spritemap
+			);
 		}
-		canvas.appendChild(param.renderImage);
+
+		canvas.render(renderImage);
 	}
 
 	removeParameter() {}
@@ -316,7 +341,7 @@ export class DataStructure {
 		return json;
 	}
 
-	render(namespace, formId, languageId, availableLanguageIds, events, className, style, spritemap) {
+	render(namespace, canvasId, languageId, availableLanguageIds, events, className, style, spritemap) {
 		let goTo;
 		this.enableGoTo = true;
 		const items = ["Apple", "Banana", "Orange", "Pineapple", "Strawberry"];
@@ -325,7 +350,6 @@ export class DataStructure {
 			goTo = (
 				<SXAutoComplete
 					namespace={namespace}
-					formId={formId}
 					languageId={languageId}
 					availableLanguageIds={availableLanguageIds}
 					events={events}
@@ -335,6 +359,25 @@ export class DataStructure {
 				/>
 			);
 		}
-		return <>{goTo}</>;
+		return (
+			<>
+				{/*goTo*/}
+				<div id={canvasId}>
+					{this.parameters.map((parameter) =>
+						parameter.render(
+							namespace,
+							languageId,
+							availableLanguageIds,
+							tagId,
+							tagName,
+							events,
+							className,
+							style,
+							spritemap
+						)
+					)}
+				</div>
+			</>
+		);
 	}
 }

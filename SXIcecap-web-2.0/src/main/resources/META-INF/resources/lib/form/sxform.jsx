@@ -12,7 +12,7 @@ import ClayForm, {
 	ClaySelectBox
 } from "@clayui/form";
 import ClayTooltip, { ClayTooltipProvider } from "@clayui/tooltip";
-import ClayIcon, { ClayIconSpriteContext } from "@clayui/icon";
+import ClayIcon from "@clayui/icon";
 import ClayButton, { ClayButtonWithIcon } from "@clayui/button";
 import DropDown from "@clayui/drop-down";
 import ClayLabel from "@clayui/label";
@@ -306,8 +306,55 @@ export const SXAutoComplete = ({ namespace, items, labelPosition, events, sprite
 	);
 };
 
-export const SXRow = ({ children }) => {
-	return <div className="sx-row">{children}</div>;
+export const SXPreview = ({ content, spritemap }) => {
+	const preview = (
+		<div
+			className="autofit autofit-row"
+			style={{ alignItems: "center" }}
+		>
+			<div
+				className="autofit-col autofit-col-expand"
+				style={{ marginRight: "10px" }}
+			>
+				{content}
+			</div>
+			<div className="autofit-col autofit-col-shrink">
+				<DropDown
+					trigger={
+						<ClayButtonWithIcon
+							aria-label="Actions"
+							symbol="ellipsis-v"
+							title="Actions"
+							className="btn-secondary"
+							spritemap={spritemap}
+						/>
+					}
+					menuWidth="shrink"
+				>
+					<DropDown.ItemList
+						items={[
+							{ name: Util.translate("delete"), symbol: "times" },
+							{ name: Util.translate("move-up"), symbol: "order-arrow-up" },
+							{ name: Util.translate("move-down"), symbol: "order-arrow-down" }
+						]}
+					>
+						{(action) => (
+							<DropDown.Item key={action.name}>
+								<ClayIcon
+									spritemap={spritemap}
+									symbol={action.symbol}
+									style={{ marginRight: "5px" }}
+								/>
+								{action.name}
+							</DropDown.Item>
+						)}
+					</DropDown.ItemList>
+				</DropDown>
+			</div>
+		</div>
+	);
+
+	return preview;
 };
 
 export const SXControlWrapper = ({ labelPosition, label, control }) => {
@@ -405,13 +452,22 @@ export const SXInput = ({ namespace = "", properties, events = {}, className = "
 						initializedRef.current = true;
 						setErrorState(dataPacket.error);
 					});
-				} else if (event.target === Event.SX_PARAM_PROPERTY_CHANGED) {
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(event.event, (e) => {
+						console.log("SXInput Event.SX_PARAM_PROPERTY_CHANGED: ", e, event.target);
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
+						console.log("SXInput Event.SX_PARAM_PROPERTY_CHANGED dataPacket: ", dataPacket);
+
+						propertiesState[dataPacket.property] = dataPacket.value;
+						setPropertiesState({ ...propertiesState });
+					});
+				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
 					Event.on(event.event, (e) => {
 						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
 						if (Util.isEmpty(dataPacket)) return;
 
-						propertiesState[dataPacket.property] = dataPacket.value;
-						setPropertiesState(propertiesState);
+						setTextState(dataPacket.value);
 					});
 				}
 			});
@@ -451,7 +507,7 @@ export const SXInput = ({ namespace = "", properties, events = {}, className = "
 
 		if (Util.isNotEmpty(events.fire)) {
 			events.fire.forEach((event) => {
-				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 					if (errorMsg) {
 						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
 							traget: event.target,
@@ -462,7 +518,7 @@ export const SXInput = ({ namespace = "", properties, events = {}, className = "
 					} else {
 						Event.fire(event.event, namespace, namespace, {
 							traget: event.target,
-							error: errorMsg,
+							value: value,
 							paramName: paramName,
 							paramVersion: paramVersion
 						});
@@ -568,13 +624,21 @@ export const SXLocalizedInput = ({
 						initializedRef.current = true;
 						setErrorState(dataPacket.error);
 					});
-				} else if (event.target === Event.SX_PARAM_PROPERTY_CHANGED) {
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
 					Event.on(event.event, (e) => {
 						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
 						if (Util.isEmpty(dataPacket)) return;
 
 						propertiesState[dataPacket.property] = dataPacket.value;
 						setPropertiesState(propertiesState);
+					});
+				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
+
+						translationsRef.current = dataPacket.value;
+						setTranslationState(translationsRef.current[selectedLangState]);
 					});
 				}
 			});
@@ -601,7 +665,7 @@ export const SXLocalizedInput = ({
 		if (Util.isNotEmpty(events.fire)) {
 			events.fire.forEach((event) => {
 				if (errorMsg) {
-					if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+					if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
 							traget: event.target,
 							error: errorMsg,
@@ -612,8 +676,8 @@ export const SXLocalizedInput = ({
 				} else {
 					translationsRef.current[selectedLangState] = value;
 
-					if (event.event === Event.SX_FORM_FIELD_CHANGED) {
-						Event.fire(Event.SX_FORM_FIELD_CHANGED, namespace, namespace, {
+					if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+						Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
 							traget: event.target,
 							value: translationsRef.current,
 							paramName: paramName,
@@ -824,13 +888,16 @@ export const SXBoolean = ({
 						if (Util.isEmpty(dataPacket)) return;
 
 						console.log("SXBoolean datapacket: ", dataPacket);
-						if (dataPacket.property === ParamProperty.VALUE) {
-							setValueState(dataPacket.value);
-						} else {
-							const props = { ...propertiesState };
-							props[dataPacket.property] = dataPacket.value;
-							setPropertiesState({ ...propertiesState });
-						}
+						const props = { ...propertiesState };
+						props[dataPacket.property] = dataPacket.value;
+						setPropertiesState({ ...propertiesState });
+					});
+				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
+
+						setValueState(dataPacket.value);
 					});
 				}
 			});
@@ -843,7 +910,7 @@ export const SXBoolean = ({
 
 		if (Util.isNotEmpty(events.fire)) {
 			events.fire.forEach((event) => {
-				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 					Event.fire(event.event, namespace, namespace, {
 						traget: event.target,
 						value: val,
@@ -860,7 +927,7 @@ export const SXBoolean = ({
 
 		if (Util.isNotEmpty(events.fire)) {
 			events.fire.forEach((event) => {
-				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 					Event.fire(event.event, namespace, namespace, {
 						traget: event.target,
 						value: !valueState,
@@ -1040,6 +1107,13 @@ export const SXSelect = ({ namespace = "", properties, events = {}, className = 
 						propertiesState[dataPacket.property] = dataPacket.value;
 						setPropertiesState(propertiesState);
 					});
+				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
+
+						setSelectedState(dataPacket.value);
+					});
 				}
 			});
 		}
@@ -1062,7 +1136,7 @@ export const SXSelect = ({ namespace = "", properties, events = {}, className = 
 
 		if (Util.isNotEmpty(events.fire)) {
 			events.fire.forEach((event) => {
-				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 					Event.fire(event.event, namespace, namespace, {
 						traget: event.target,
 						value: e.target.value,
@@ -1079,7 +1153,7 @@ export const SXSelect = ({ namespace = "", properties, events = {}, className = 
 
 		if (Util.isNotEmpty(events.fire)) {
 			events.fire.forEach((event) => {
-				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 					Event.fire(event.event, namespace, namespace, {
 						traget: event.target,
 						value: val,
@@ -1224,6 +1298,17 @@ export const SXDualListBox = ({ namespace = "", properties, events = {}, classNa
 						propertiesState[dataPacket.property] = dataPacket.value;
 						setPropertiesState(propertiesState);
 					});
+				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						if (Util.isEmpty(dataPacket)) return;
+
+						const allItems = leftItems.concat(rightItems);
+						setLeftItems(dataPacket.value);
+						setRightItems(
+							allItems.filter((item) => !dataPacket.value.some((val) => val.value === item.value))
+						);
+					});
 				}
 			});
 		}
@@ -1263,7 +1348,7 @@ export const SXDualListBox = ({ namespace = "", properties, events = {}, classNa
 
 		if (Util.isNotEmpty(events.fire)) {
 			events.fire.forEach((event) => {
-				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 					if (errorMsg) {
 						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
 							traget: event.target,
@@ -1302,7 +1387,7 @@ export const SXDualListBox = ({ namespace = "", properties, events = {}, classNa
 
 		if (Util.isNotEmpty(events.fire)) {
 			events.fire.forEach((event) => {
-				if (event.event === Event.SX_FORM_FIELD_CHANGED) {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 					if (errorMsg) {
 						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
 							traget: event.target,

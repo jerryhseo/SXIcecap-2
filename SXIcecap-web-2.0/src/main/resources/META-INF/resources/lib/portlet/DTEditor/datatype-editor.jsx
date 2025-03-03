@@ -4,16 +4,7 @@ import ClayButton from "@clayui/button";
 import { ClayIconSpriteContext } from "@clayui/icon";
 import ClayForm, { Form } from "@clayui/form";
 import { Context } from "@clayui/modal";
-import SXFormField, {
-	SXRow,
-	SXDualListBox,
-	SXInput,
-	SXLocalizedInput,
-	SXButtonWithIcon,
-	SXLabeledText,
-	validateForm,
-	SelectDisplayStyle
-} from "../../form/sxform";
+import SXFormField, { SXButtonWithIcon, SXLabeledText, validateForm, SelectDisplayStyle } from "../../form/sxform";
 import { Util } from "../../common/util";
 import {
 	EditStatus,
@@ -154,7 +145,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 							},
 							paramType: ParamType.STRING,
 							displayName: {
-								"en-US": "Display Name"
+								"en-US": "Parameter Code"
 							},
 							required: true,
 							viewType: ViewTypes.NORMAL,
@@ -374,8 +365,8 @@ const DataTypeEditor = ({ portletParameters }) => {
 	);
 
 	useLayoutEffect(() => {
-		Event.on(Event.SX_FORM_FIELD_CHANGED, (e) => {
-			console.log("SX_FORM_FIELD_CHANGED RECEIVED: ", e);
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+			console.log("SX_FIELD_VALUE_CHANGED RECEIVED: ", e);
 			const { dataPacket } = e;
 			if (dataPacket.targetPortlet !== namespace) return;
 
@@ -683,7 +674,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 								fire: [
 									{
 										traget: formId,
-										event: Event.SX_FORM_FIELD_CHANGED
+										event: Event.SX_FIELD_VALUE_CHANGED
 									}
 								],
 								on: [
@@ -703,7 +694,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 						);
 					})}
 				</ClayForm>
-				<SXRow>
+				<div className="sx-row">
 					<ClayButton.Group spaced>
 						<SXButtonWithIcon
 							type="button"
@@ -732,7 +723,7 @@ const DataTypeEditor = ({ portletParameters }) => {
 							</>
 						) : undefined}
 					</ClayButton.Group>
-				</SXRow>
+				</div>
 			</ClayIconSpriteContext.Provider>
 		);
 	}

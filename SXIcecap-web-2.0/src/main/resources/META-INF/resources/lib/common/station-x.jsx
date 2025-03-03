@@ -145,6 +145,7 @@ export const ParamProperty = {
 	ID: "id",
 	INPUT_SIZE: "inputSize",
 	ITEM_DISPLAY_NAME: "itemDisplayName",
+	LABEL: "label",
 	LABEL_POSITION: "labelPosition",
 	LINE_BREAK: "lineBreak",
 	LIST_ITEM: "listItem",
@@ -456,9 +457,9 @@ export const Event = {
 	SX_REMOVE_SLAVE_PARAMS: "SX_REMOVE_SLAVE_PARAMS",
 	SX_PARAM_PROPERTY_CHANGED: "SX_PARAM_PROPERTY_CHANGED",
 	SX_PARAM_ERROR_FOUND: "SX_PARAM_ERROR_FOUND",
-	SX_PARAM_VALUE_CHANGED: "SX_PARAM_PROPERTY_CHANGED",
+	SX_PARAM_VALUE_CHANGED: "SX_PARAM_VALUE_CHANGED",
 	SX_FORM_FIELD_FAILED: "SX_FORM_FIELD_FAILED",
-	SX_FORM_FIELD_CHANGED: "SX_FORM_FIELD_CHANGED",
+	SX_FIELD_VALUE_CHANGED: "SX_FIELD_VALUE_CHANGED",
 	SX_VIEW_TYPE_CHANGED: "SX_VIEW_TYPE_CHANGED",
 
 	LIST_OPTION_PREVIEW_REMOVED: "LIST_OPTION_PREVIEW_REMOVED",
@@ -639,6 +640,14 @@ export const Event = {
 	pickUpDataPacket: (event, namespace, target, paramName, paramVersion) => {
 		if (Util.isEmpty(event.dataPacket)) return;
 
+		console.log(
+			"pickUpDataPacket: ",
+			event.dataPacket.targetPortlet,
+			event.dataPacket.target,
+			event.dataPacket.paramName,
+			event.dataPacket.paramVersion
+		);
+		console.log("pickUpDataPacket: ", namespace, target, paramName, paramVersion);
 		if (
 			event.dataPacket.targetPortlet !== namespace ||
 			event.dataPacket.target !== target ||

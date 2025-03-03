@@ -1,7 +1,7 @@
 import React from "react";
 import { Constant, ViewTypes, ParamType } from "../common/station-x";
 import { Util } from "../common/util";
-import SXFormField, { SXInput, SXLocalizedInput } from "../form/sxform";
+import SXFormField, { SXInput, SXLocalizedInput, SXPreview } from "../form/sxform";
 
 export class Translations {
 	constructor(json) {
@@ -600,6 +600,29 @@ export class StringParameter extends Parameter {
 		if (tagName) properties.tagName = tagName;
 
 		return json;
+	}
+
+	renderPreview(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
+		const content = this.render(
+			namespace,
+			languageId,
+			availableLanguageIds,
+			tagId,
+			tagName,
+			events,
+			className,
+			style,
+			spritemap
+		);
+
+		this.renderImage = (
+			<SXPreview
+				content={content}
+				spritemap={spritemap}
+			/>
+		);
+
+		return this.renderImage;
 	}
 
 	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
