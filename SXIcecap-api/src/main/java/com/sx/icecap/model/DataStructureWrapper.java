@@ -41,7 +41,9 @@ public class DataStructureWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("dataStructureId", getDataStructureId());
 		attributes.put("dataTypeId", getDataTypeId());
+		attributes.put("version", getVersion());
 		attributes.put("structure", getStructure());
 
 		return attributes;
@@ -49,10 +51,22 @@ public class DataStructureWrapper
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		Long dataStructureId = (Long)attributes.get("dataStructureId");
+
+		if (dataStructureId != null) {
+			setDataStructureId(dataStructureId);
+		}
+
 		Long dataTypeId = (Long)attributes.get("dataTypeId");
 
 		if (dataTypeId != null) {
 			setDataTypeId(dataTypeId);
+		}
+
+		String version = (String)attributes.get("version");
+
+		if (version != null) {
+			setVersion(version);
 		}
 
 		String structure = (String)attributes.get("structure");
@@ -60,6 +74,16 @@ public class DataStructureWrapper
 		if (structure != null) {
 			setStructure(structure);
 		}
+	}
+
+	/**
+	 * Returns the data structure ID of this data structure.
+	 *
+	 * @return the data structure ID of this data structure
+	 */
+	@Override
+	public long getDataStructureId() {
+		return model.getDataStructureId();
 	}
 
 	/**
@@ -92,9 +116,29 @@ public class DataStructureWrapper
 		return model.getStructure();
 	}
 
+	/**
+	 * Returns the version of this data structure.
+	 *
+	 * @return the version of this data structure
+	 */
+	@Override
+	public String getVersion() {
+		return model.getVersion();
+	}
+
 	@Override
 	public void persist() {
 		model.persist();
+	}
+
+	/**
+	 * Sets the data structure ID of this data structure.
+	 *
+	 * @param dataStructureId the data structure ID of this data structure
+	 */
+	@Override
+	public void setDataStructureId(long dataStructureId) {
+		model.setDataStructureId(dataStructureId);
 	}
 
 	/**
@@ -125,6 +169,16 @@ public class DataStructureWrapper
 	@Override
 	public void setStructure(String structure) {
 		model.setStructure(structure);
+	}
+
+	/**
+	 * Sets the version of this data structure.
+	 *
+	 * @param version the version of this data structure
+	 */
+	@Override
+	public void setVersion(String version) {
+		model.setVersion(version);
 	}
 
 	@Override

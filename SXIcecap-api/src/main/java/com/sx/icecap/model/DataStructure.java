@@ -36,12 +36,12 @@ public interface DataStructure extends DataStructureModel, PersistedModel {
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.sx.icecap.model.impl.DataStructureImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<DataStructure, Long> DATA_TYPE_ID_ACCESSOR =
-		new Accessor<DataStructure, Long>() {
+	public static final Accessor<DataStructure, Long>
+		DATA_STRUCTURE_ID_ACCESSOR = new Accessor<DataStructure, Long>() {
 
 			@Override
 			public Long get(DataStructure dataStructure) {
-				return dataStructure.getDataTypeId();
+				return dataStructure.getDataStructureId();
 			}
 
 			@Override

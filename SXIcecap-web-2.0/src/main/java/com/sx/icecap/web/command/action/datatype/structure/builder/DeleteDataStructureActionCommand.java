@@ -30,7 +30,7 @@ public class DeleteDataStructureActionCommand implements MVCActionCommand {
 		
 		long dataTypeId = ParamUtil.getLong(actionRequest, DataTypeProperty.DATATYPE_ID, 0);
 		
-		_dataTypeLocalService.removeDataStructure(dataTypeId);
+		_dataTypeLocalService.deleteDataStructures(dataTypeId);
 		
 		return false;
 	}

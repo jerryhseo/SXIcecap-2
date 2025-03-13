@@ -101,13 +101,13 @@ public abstract class DataStructureLocalServiceBaseImpl
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
-	 * @param dataTypeId the primary key for the new data structure
+	 * @param dataStructureId the primary key for the new data structure
 	 * @return the new data structure
 	 */
 	@Override
 	@Transactional(enabled = false)
-	public DataStructure createDataStructure(long dataTypeId) {
-		return dataStructurePersistence.create(dataTypeId);
+	public DataStructure createDataStructure(long dataStructureId) {
+		return dataStructurePersistence.create(dataStructureId);
 	}
 
 	/**
@@ -117,16 +117,16 @@ public abstract class DataStructureLocalServiceBaseImpl
 	 * <strong>Important:</strong> Inspect DataStructureLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param dataTypeId the primary key of the data structure
+	 * @param dataStructureId the primary key of the data structure
 	 * @return the data structure that was removed
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public DataStructure deleteDataStructure(long dataTypeId)
+	public DataStructure deleteDataStructure(long dataStructureId)
 		throws PortalException {
 
-		return dataStructurePersistence.remove(dataTypeId);
+		return dataStructurePersistence.remove(dataStructureId);
 	}
 
 	/**
@@ -233,22 +233,22 @@ public abstract class DataStructureLocalServiceBaseImpl
 	}
 
 	@Override
-	public DataStructure fetchDataStructure(long dataTypeId) {
-		return dataStructurePersistence.fetchByPrimaryKey(dataTypeId);
+	public DataStructure fetchDataStructure(long dataStructureId) {
+		return dataStructurePersistence.fetchByPrimaryKey(dataStructureId);
 	}
 
 	/**
 	 * Returns the data structure with the primary key.
 	 *
-	 * @param dataTypeId the primary key of the data structure
+	 * @param dataStructureId the primary key of the data structure
 	 * @return the data structure
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Override
-	public DataStructure getDataStructure(long dataTypeId)
+	public DataStructure getDataStructure(long dataStructureId)
 		throws PortalException {
 
-		return dataStructurePersistence.findByPrimaryKey(dataTypeId);
+		return dataStructurePersistence.findByPrimaryKey(dataStructureId);
 	}
 
 	@Override
@@ -260,7 +260,7 @@ public abstract class DataStructureLocalServiceBaseImpl
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(DataStructure.class);
 
-		actionableDynamicQuery.setPrimaryKeyPropertyName("dataTypeId");
+		actionableDynamicQuery.setPrimaryKeyPropertyName("dataStructureId");
 
 		return actionableDynamicQuery;
 	}
@@ -277,7 +277,8 @@ public abstract class DataStructureLocalServiceBaseImpl
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(DataStructure.class);
 
-		indexableActionableDynamicQuery.setPrimaryKeyPropertyName("dataTypeId");
+		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
+			"dataStructureId");
 
 		return indexableActionableDynamicQuery;
 	}
@@ -289,7 +290,7 @@ public abstract class DataStructureLocalServiceBaseImpl
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(DataStructure.class);
 
-		actionableDynamicQuery.setPrimaryKeyPropertyName("dataTypeId");
+		actionableDynamicQuery.setPrimaryKeyPropertyName("dataStructureId");
 	}
 
 	/**

@@ -6,6 +6,8 @@ create index IX_1746A8E0 on SX_ICECAP_DataSet (userId, status);
 create index IX_B4507DB4 on SX_ICECAP_DataSet (uuid_[$COLUMN_LENGTH:75$], companyId);
 create unique index IX_BB84E136 on SX_ICECAP_DataSet (uuid_[$COLUMN_LENGTH:75$], groupId);
 
+create index IX_A10C1C84 on SX_ICECAP_DataStructure (dataTypeId, version[$COLUMN_LENGTH:75$]);
+
 create index IX_9AC2FB79 on SX_ICECAP_DataType (dataTypeName[$COLUMN_LENGTH:75$], dataTypeVersion[$COLUMN_LENGTH:75$]);
 create index IX_ABFFB328 on SX_ICECAP_DataType (groupId, status);
 create index IX_D156CF62 on SX_ICECAP_DataType (groupId, userId, status);

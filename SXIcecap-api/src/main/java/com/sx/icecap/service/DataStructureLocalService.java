@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import com.sx.icecap.exception.NoSuchDataStructureException;
 import com.sx.icecap.model.DataStructure;
 
 import java.io.Serializable;
@@ -75,14 +76,16 @@ public interface DataStructureLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public DataStructure addDataStructure(DataStructure dataStructure);
 
+	public int countByDataTypeId(long dataTypeId);
+
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
-	 * @param dataTypeId the primary key for the new data structure
+	 * @param dataStructureId the primary key for the new data structure
 	 * @return the new data structure
 	 */
 	@Transactional(enabled = false)
-	public DataStructure createDataStructure(long dataTypeId);
+	public DataStructure createDataStructure(long dataStructureId);
 
 	/**
 	 * Deletes the data structure from the database. Also notifies the appropriate model listeners.
@@ -104,13 +107,18 @@ public interface DataStructureLocalService
 	 * <strong>Important:</strong> Inspect DataStructureLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param dataTypeId the primary key of the data structure
+	 * @param dataStructureId the primary key of the data structure
 	 * @return the data structure that was removed
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public DataStructure deleteDataStructure(long dataTypeId)
+	public DataStructure deleteDataStructure(long dataStructureId)
 		throws PortalException;
+
+	public void deleteDataStructure(long dataTypeId, String version)
+		throws NoSuchDataStructureException;
+
+	public void deleteDataStructures(long dataTypeId);
 
 	/**
 	 * @throws PortalException
@@ -186,7 +194,7 @@ public interface DataStructureLocalService
 		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DataStructure fetchDataStructure(long dataTypeId);
+	public DataStructure fetchDataStructure(long dataStructureId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -194,13 +202,17 @@ public interface DataStructureLocalService
 	/**
 	 * Returns the data structure with the primary key.
 	 *
-	 * @param dataTypeId the primary key of the data structure
+	 * @param dataStructureId the primary key of the data structure
 	 * @return the data structure
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DataStructure getDataStructure(long dataTypeId)
+	public DataStructure getDataStructure(long dataStructureId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DataStructure getDataStructure(long dataTypeId, String version)
+		throws NoSuchDataStructureException;
 
 	/**
 	 * Returns a range of all the data structures.
@@ -215,6 +227,9 @@ public interface DataStructureLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DataStructure> getDataStructures(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataStructure> getDataStructures(long dataTypeId);
 
 	/**
 	 * Returns the number of data structures.
@@ -254,5 +269,8 @@ public interface DataStructureLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public DataStructure updateDataStructure(DataStructure dataStructure);
+
+	public DataStructure updateDataStructure(
+		long dataTypeId, String version, String structure);
 
 }

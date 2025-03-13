@@ -143,6 +143,16 @@ public class DataTypeLocalServiceUtil {
 		return getService().createDataType(dataTypeId);
 	}
 
+	public static void deleteDataStructure(long dataTypeId, String version)
+		throws com.sx.icecap.exception.NoSuchDataStructureException {
+
+		getService().deleteDataStructure(dataTypeId, version);
+	}
+
+	public static void deleteDataStructures(long dataTypeId) {
+		getService().deleteDataStructures(dataTypeId);
+	}
+
 	/**
 	 * Deletes the data type from the database. Also notifies the appropriate model listeners.
 	 *
@@ -704,10 +714,6 @@ public class DataTypeLocalServiceUtil {
 			dataTypeId, advancedQuery, start, end);
 	}
 
-	public static void removeDataStructure(long dataTypeId) {
-		getService().removeDataStructure(dataTypeId);
-	}
-
 	public static DataType removeDataType(long dataTypeId)
 		throws PortalException {
 
@@ -739,8 +745,11 @@ public class DataTypeLocalServiceUtil {
 	 * @throws void
 	 * @return void
 	 */
-	public static void setDataStructure(long dataTypeId, String dataStructure) {
-		getService().setDataStructure(dataTypeId, dataStructure);
+	public static com.sx.icecap.model.DataStructure updateDataStructure(
+		long dataTypeId, String version, String strDataStructure) {
+
+		return getService().updateDataStructure(
+			dataTypeId, version, strDataStructure);
 	}
 
 	/**

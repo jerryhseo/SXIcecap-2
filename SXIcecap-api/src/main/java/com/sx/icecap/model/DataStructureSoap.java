@@ -30,7 +30,9 @@ public class DataStructureSoap implements Serializable {
 	public static DataStructureSoap toSoapModel(DataStructure model) {
 		DataStructureSoap soapModel = new DataStructureSoap();
 
+		soapModel.setDataStructureId(model.getDataStructureId());
 		soapModel.setDataTypeId(model.getDataTypeId());
+		soapModel.setVersion(model.getVersion());
 		soapModel.setStructure(model.getStructure());
 
 		return soapModel;
@@ -78,11 +80,19 @@ public class DataStructureSoap implements Serializable {
 	}
 
 	public long getPrimaryKey() {
-		return _dataTypeId;
+		return _dataStructureId;
 	}
 
 	public void setPrimaryKey(long pk) {
-		setDataTypeId(pk);
+		setDataStructureId(pk);
+	}
+
+	public long getDataStructureId() {
+		return _dataStructureId;
+	}
+
+	public void setDataStructureId(long dataStructureId) {
+		_dataStructureId = dataStructureId;
 	}
 
 	public long getDataTypeId() {
@@ -93,6 +103,14 @@ public class DataStructureSoap implements Serializable {
 		_dataTypeId = dataTypeId;
 	}
 
+	public String getVersion() {
+		return _version;
+	}
+
+	public void setVersion(String version) {
+		_version = version;
+	}
+
 	public String getStructure() {
 		return _structure;
 	}
@@ -101,7 +119,9 @@ public class DataStructureSoap implements Serializable {
 		_structure = structure;
 	}
 
+	private long _dataStructureId;
 	private long _dataTypeId;
+	private String _version;
 	private String _structure;
 
 }

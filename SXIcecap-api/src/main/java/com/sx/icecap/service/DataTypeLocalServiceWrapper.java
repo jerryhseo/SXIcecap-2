@@ -145,6 +145,18 @@ public class DataTypeLocalServiceWrapper
 		return _dataTypeLocalService.createDataType(dataTypeId);
 	}
 
+	@Override
+	public void deleteDataStructure(long dataTypeId, String version)
+		throws com.sx.icecap.exception.NoSuchDataStructureException {
+
+		_dataTypeLocalService.deleteDataStructure(dataTypeId, version);
+	}
+
+	@Override
+	public void deleteDataStructures(long dataTypeId) {
+		_dataTypeLocalService.deleteDataStructures(dataTypeId);
+	}
+
 	/**
 	 * Deletes the data type from the database. Also notifies the appropriate model listeners.
 	 *
@@ -830,11 +842,6 @@ public class DataTypeLocalServiceWrapper
 	}
 
 	@Override
-	public void removeDataStructure(long dataTypeId) {
-		_dataTypeLocalService.removeDataStructure(dataTypeId);
-	}
-
-	@Override
 	public com.sx.icecap.model.DataType removeDataType(long dataTypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -869,8 +876,11 @@ public class DataTypeLocalServiceWrapper
 	 * @return void
 	 */
 	@Override
-	public void setDataStructure(long dataTypeId, String dataStructure) {
-		_dataTypeLocalService.setDataStructure(dataTypeId, dataStructure);
+	public com.sx.icecap.model.DataStructure updateDataStructure(
+		long dataTypeId, String version, String strDataStructure) {
+
+		return _dataTypeLocalService.updateDataStructure(
+			dataTypeId, version, strDataStructure);
 	}
 
 	/**

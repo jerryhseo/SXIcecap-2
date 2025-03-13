@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import com.sx.icecap.exception.NoSuchDataStructureException;
 import com.sx.icecap.exception.NoSuchDataTypeException;
+import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.model.StructuredData;
 
@@ -133,6 +134,11 @@ public interface DataTypeLocalService
 	 */
 	@Transactional(enabled = false)
 	public DataType createDataType(long dataTypeId);
+
+	public void deleteDataStructure(long dataTypeId, String version)
+		throws NoSuchDataStructureException;
+
+	public void deleteDataStructures(long dataTypeId);
 
 	/**
 	 * Deletes the data type from the database. Also notifies the appropriate model listeners.
@@ -533,8 +539,6 @@ public interface DataTypeLocalService
 			long dataTypeId, String advancedQuery, int start, int end)
 		throws JSONException;
 
-	public void removeDataStructure(long dataTypeId);
-
 	@Indexable(type = IndexableType.DELETE)
 	public DataType removeDataType(long dataTypeId) throws PortalException;
 
@@ -555,7 +559,8 @@ public interface DataTypeLocalService
 	 * @throws void
 	 * @return void
 	 */
-	public void setDataStructure(long dataTypeId, String dataStructure);
+	public DataStructure updateDataStructure(
+		long dataTypeId, String version, String strDataStructure);
 
 	/**
 	 * Updates the data type in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

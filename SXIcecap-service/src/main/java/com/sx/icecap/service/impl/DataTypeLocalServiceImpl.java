@@ -55,6 +55,7 @@ import com.sx.icecap.exception.NoSuchDataTypeException;
 import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.model.StructuredData;
+import com.sx.icecap.service.DataStructureLocalService;
 import com.sx.icecap.service.StructuredDataLocalServiceUtil;
 import com.sx.icecap.service.base.DataTypeLocalServiceBaseImpl;
 import com.sx.icecap.util.comparator.GroupIdComparator;
@@ -310,11 +311,8 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	public DataType removeDataType( long dataTypeId ) throws PortalException {
 		DataType dataType = super.dataTypePersistence.remove(dataTypeId);
 		
-		try {
-			super.dataStructurePersistence.remove(dataTypeId);
-		}
-		catch( NoSuchDataStructureException e) {
-		}
+		_dataStructureLocalService.deleteDataStructures(dataTypeId);
+		_updateHasDataStructure(dataTypeId, false);
 		
 		super.assetEntryLocalService.deleteEntry(DataType.class.getName(), dataType.getPrimaryKey());
 
@@ -344,20 +342,15 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		}
 		
 		DataType copiedDataType = this.addDataType(
-																				dataType.getDataTypeName() + "_copied", 
-																				"1.0.0", 
-																				dataType.getExtension(), 
-																				dataType.getDisplayNameMap(), 
-																				dataType.getDescriptionMap(), 
-																				dataType.getTooltipMap(),
-																				dataType.getVisualizers(),
-																				WorkflowConstants.STATUS_DRAFT, 
-																				sc);
-		
-		if( dataType.isHasDataStructure() ) {
-			DataStructure structure = super.dataStructurePersistence.fetchByPrimaryKey(dataTypeId);
-			this.setDataStructure( copiedDataType.getPrimaryKey(), structure.getStructure() );
-		}
+							dataType.getDataTypeName() + "_copied", 
+							"1.0.0", 
+							dataType.getExtension(), 
+							dataType.getDisplayNameMap(), 
+							dataType.getDescriptionMap(), 
+							dataType.getTooltipMap(),
+							dataType.getVisualizers(),
+							WorkflowConstants.STATUS_DRAFT, 
+							sc);
 		
 		return copiedDataType;
 	}
@@ -376,23 +369,27 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	 *  @return
 	 *  	void
 	 */
-	public void setDataStructure( long dataTypeId, String dataStructure ) {
+	public DataStructure updateDataStructure( long dataTypeId, String version, String strDataStructure ) {
 		
 		// Set data structure and update the table
-		_setDataStructure(dataTypeId, dataStructure);
-		
+		DataStructure dataStructure = _dataStructureLocalService.updateDataStructure(dataTypeId, version, strDataStructure);
 		// Update the property, hasDataStructure,  of the data type as true
 		_updateHasDataStructure( dataTypeId, true );
+		
+		return dataStructure;
 	}
 	
-	public void removeDataStructure( long dataTypeId ) {
-		try {
-			super.dataStructurePersistence.remove(dataTypeId);
-		} catch (NoSuchDataStructureException e) {
-			System.out.println("Cannot find datatype structure of the datatype, [" + dataTypeId + "], while removing");
-		}
-		
+	public void deleteDataStructures( long dataTypeId ) {
+		_dataStructureLocalService.deleteDataStructures(dataTypeId);
 		_updateHasDataStructure( dataTypeId, false );
+	}
+	
+	public void deleteDataStructure( long dataTypeId, String version) throws NoSuchDataStructureException {
+		_dataStructureLocalService.deleteDataStructure(dataTypeId, version);
+		
+		if( _dataStructureLocalService.countByDataTypeId(dataTypeId) < 1 ) {
+			_updateHasDataStructure(dataTypeId, false);
+		}
 	}
 	
 	public List<DataType> getDataTypes( 
@@ -1062,19 +1059,11 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		return Validator.isNotNull(str) && !str.isEmpty();
 	}
 	
-	private DataStructure _setDataStructure( long dataTypeId, String strDataStructure ) {
+	private DataStructure _updateDataStructure( long dataTypeId, String version, String strDataStructure ) {
+		DataStructure dataStructure = _dataStructureLocalService.updateDataStructure(dataTypeId, version, strDataStructure);
+		this._updateHasDataStructure(dataTypeId, true);
 		
-		DataStructure dataStructure = null;
-		
-		try {
-			dataStructure = super.dataStructurePersistence.findByPrimaryKey(dataTypeId);
-		} catch (NoSuchDataStructureException e) {
-			dataStructure = super.dataStructurePersistence.create(dataTypeId);
-		}
-		
-		dataStructure.setStructure(strDataStructure);
-		
-		return super.dataStructurePersistence.update(dataStructure);
+		return dataStructure;
 	}
 	
 	private DataType _updateHasDataStructure( long dataTypeId, boolean has ) {
@@ -1085,4 +1074,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		return dataType;
 	}
 
+	@Reference
+	private DataStructureLocalService _dataStructureLocalService;
 }

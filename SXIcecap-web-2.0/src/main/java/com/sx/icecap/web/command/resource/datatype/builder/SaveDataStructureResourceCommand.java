@@ -3,22 +3,19 @@ package com.sx.icecap.web.command.resource.datatype.builder;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.sx.icecap.constant.ParameterType;
 import com.sx.icecap.constant.MVCCommand;
+import com.sx.icecap.constant.ParameterType;
 import com.sx.icecap.constant.WebPortletKey;
+import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.service.DataTypeLocalService;
 import com.sx.icecap.service.ParameterLocalService;
 
-import java.util.Date;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -44,117 +41,20 @@ public class SaveDataStructureResourceCommand extends BaseMVCResourceCommand {
 			throws Exception {
 		
 		long dataTypeId = ParamUtil.getLong(resourceRequest, "dataTypeId");
-		String dataStructure = ParamUtil.getString(resourceRequest, "dataStructure");
+		String version = ParamUtil.getString(resourceRequest, "version");
+		String strDataStructure = ParamUtil.getString(resourceRequest, "dataStructure");
 
-/************************************************************************************************
- *	Block out for future use of  param management 
- *
-//		System.out.println("dataStructure: " + dataStructure);
-		
-		JSONObject jsonDataStructure = JSONFactoryUtil.createJSONObject(dataStructure);
-		if( jsonDataStructure.length() == 0 ) {
-			return;
-		}
-		
-		JSONArray params = jsonDataStructure.getJSONArray(DataStructureProperty.PARAMS);
-		
-//		System.out.println(params.toString());
-//		System.out.println("Parameter Count: "+params.length());
-		
-		ServiceContext sc = ServiceContextFactory.getInstance(Parameter.class.getName(), resourceRequest);
-		Date now = new Date();
-		sc.setCreateDate(now);
-		sc.setModifiedDate(now);
-		
-		for( int i=0; i<params.length(); i++ ) {
-			JSONObject param = params.getJSONObject(i);
-			if( Validator.isNull(param) ) {
-				System.out.println("What happen to the param? : " + i );
-			}
-			System.out.println( "Dirty: " + param.getBoolean("dirty") );
-			if( ! param.getBoolean("dirty") ) {
-				continue;
-			}
-			
-			String paramType = param.getString("paramType");
-			String paramName = param.getString("paramName");
-			String paramVersion = param.getString("paramVersion");
-			System.out.println("Parameter Version: " + paramVersion);
-			if( paramVersion.isEmpty() ) {
-				paramVersion = "1.0.0";
-			}
-			
-			Map<Locale, String> displayNameMap = _jsonObject2LocaleMap( param.getJSONObject("displayName") );
-			JSONObject jsonDefinition = param.getJSONObject("definition");
-			Map<Locale, String> definitionMap = Validator.isNotNull(jsonDefinition) ? _jsonObject2LocaleMap( jsonDefinition ) : null;
-			JSONObject jsonTooltip = param.getJSONObject("tooltip");
-			Map<Locale, String> tooltipMap = Validator.isNotNull(jsonDefinition) ? _jsonObject2LocaleMap( jsonTooltip) : null ;
-			
-			String synonyms = param.getString("synonyms");
-			boolean mandatory = param.getBoolean("mandatory");
-			boolean abstractKey = param.getBoolean("abstractKey");
-			boolean disabled = param.getBoolean("disabled");
-			boolean searchable = param.getBoolean("searchable");
-			boolean downloadable = param.getBoolean("downloadable");
-			String value = param.getString("value");
-			int status = param.getInt("status", WorkflowConstants.STATUS_DRAFT);
-			
-			JSONObject jsonGroupParameterId = param.getJSONObject("groupParameterId");
-			String groupParameterId = "";
-			if( jsonGroupParameterId != null ) {
-				groupParameterId = jsonGroupParameterId.toJSONString();
-			}
-			
-			String typeAttributes = _extractParameterTypeAttributes(param, paramType);
-			
-			boolean standard = param.getBoolean(IcecapSSSParameterAttributes.STANDARD);
-			
-			boolean dirty = param.getBoolean("dirty");
-			
-			_printOutParameterAttributes(paramType, paramName, paramVersion, displayNameMap, definitionMap, tooltipMap, synonyms, mandatory, searchable, downloadable, value, typeAttributes, groupParameterId, status);
-			
-			Parameter existParameter = null;
-			try{
-				existParameter = _paramLocalService.getParameter(paramName, paramVersion);
-			} catch( NoSuchParameterException e ) {
-				System.out.println("There is no saved param  to be added in DB...");
-			}
-
-			if( Validator.isNotNull(existParameter) && dirty == true ) {
-				_paramLocalService.updateParameter(
-						existParameter.getParameterId(),
-						paramName, 
-						paramVersion, 
-						paramType, 
-						displayNameMap, 
-						definitionMap, 
-						tooltipMap, 
-						synonyms, 
-						typeAttributes, 
-						groupParameterId, 
-						status,
-						standard,
-						sc);
-			}
-			else if( Validator.isNull(existParameter) ){
-				_paramLocalService.addParameter(
-						paramName, 
-						paramVersion, 
-						paramType, 
-						displayNameMap, 
-						definitionMap, 
-						tooltipMap, 
-						synonyms, 
-						typeAttributes, 
-						groupParameterId, 
-						status,
-						standard,
-						sc);
-			}
-		}
- */
-		
-		_dataTypeLocalService.setDataStructure(dataTypeId, dataStructure);
+		System.out.println("dataStructure: " + strDataStructure);
+		/*
+		DataStructure dataStructure = _dataTypeLocalService.updateDataStructure(dataTypeId, version, strDataStructure);
+		*/
+		JSONObject result = JSONFactoryUtil.createJSONObject();
+		//result.put("dataStructureId", dataStructure.getDataStructureId());
+		result.put("dataStructureId", 12345);
+		PrintWriter pw = resourceResponse.getWriter();
+		pw.write(result.toJSONString());
+		pw.flush();
+		pw.close();
 	}
 	
 	private void _printOutParameterAttributes( 

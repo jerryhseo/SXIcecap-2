@@ -38,7 +38,7 @@ public class DeleteDataStructureResourceCommand extends BaseMVCResourceCommand {
 		
 		long dataTypeId = ParamUtil.getLong(resourceRequest, DataTypeProperty.DATATYPE_ID, 0);
 		
-		_dataTypeLocalService.removeDataStructure(dataTypeId);
+		_dataTypeLocalService.deleteDataStructures(dataTypeId);
 		
 		JSONObject response = JSONFactoryUtil.createJSONObject();
 		response.put( "DataType ID" , dataTypeId );

@@ -27,7 +27,9 @@
 		<field name="multiEntryLevel" type="int" />
 	</model>
 	<model name="com.sx.icecap.model.DataStructure">
+		<field name="dataStructureId" type="long" />
 		<field name="dataTypeId" type="long" />
+		<field name="version" type="String" />
 		<field name="structure" type="String">
 			<hint name="max-length">40960</hint>
 		</field>

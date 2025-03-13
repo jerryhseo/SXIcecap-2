@@ -47,7 +47,7 @@ public class DataStructureCacheModel
 		DataStructureCacheModel dataStructureCacheModel =
 			(DataStructureCacheModel)object;
 
-		if (dataTypeId == dataStructureCacheModel.dataTypeId) {
+		if (dataStructureId == dataStructureCacheModel.dataStructureId) {
 			return true;
 		}
 
@@ -56,15 +56,19 @@ public class DataStructureCacheModel
 
 	@Override
 	public int hashCode() {
-		return HashUtil.hash(0, dataTypeId);
+		return HashUtil.hash(0, dataStructureId);
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(9);
 
-		sb.append("{dataTypeId=");
+		sb.append("{dataStructureId=");
+		sb.append(dataStructureId);
+		sb.append(", dataTypeId=");
 		sb.append(dataTypeId);
+		sb.append(", version=");
+		sb.append(version);
 		sb.append(", structure=");
 		sb.append(structure);
 		sb.append("}");
@@ -76,7 +80,15 @@ public class DataStructureCacheModel
 	public DataStructure toEntityModel() {
 		DataStructureImpl dataStructureImpl = new DataStructureImpl();
 
+		dataStructureImpl.setDataStructureId(dataStructureId);
 		dataStructureImpl.setDataTypeId(dataTypeId);
+
+		if (version == null) {
+			dataStructureImpl.setVersion("");
+		}
+		else {
+			dataStructureImpl.setVersion(version);
+		}
 
 		if (structure == null) {
 			dataStructureImpl.setStructure("");
@@ -92,13 +104,25 @@ public class DataStructureCacheModel
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
+		dataStructureId = objectInput.readLong();
+
 		dataTypeId = objectInput.readLong();
+		version = objectInput.readUTF();
 		structure = objectInput.readUTF();
 	}
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+		objectOutput.writeLong(dataStructureId);
+
 		objectOutput.writeLong(dataTypeId);
+
+		if (version == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(version);
+		}
 
 		if (structure == null) {
 			objectOutput.writeUTF("");
@@ -108,7 +132,9 @@ public class DataStructureCacheModel
 		}
 	}
 
+	public long dataStructureId;
 	public long dataTypeId;
+	public String version;
 	public String structure;
 
 }

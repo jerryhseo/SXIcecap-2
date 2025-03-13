@@ -23,7 +23,9 @@ create table SX_ICECAP_DataSet (
 );
 
 create table SX_ICECAP_DataStructure (
-	dataTypeId LONG not null primary key,
+	dataStructureId LONG not null primary key,
+	dataTypeId LONG,
+	version VARCHAR(75) null,
 	structure TEXT null
 );
 
