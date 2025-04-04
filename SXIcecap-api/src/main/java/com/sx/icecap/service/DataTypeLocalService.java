@@ -135,10 +135,8 @@ public interface DataTypeLocalService
 	@Transactional(enabled = false)
 	public DataType createDataType(long dataTypeId);
 
-	public void deleteDataStructure(long dataTypeId, String version)
+	public DataStructure deleteDataStructure(long dataTypeId)
 		throws NoSuchDataStructureException;
-
-	public void deleteDataStructures(long dataTypeId);
 
 	/**
 	 * Deletes the data type from the database. Also notifies the appropriate model listeners.
@@ -549,8 +547,8 @@ public interface DataTypeLocalService
 		throws PortalException;
 
 	/**
-	 * Set the data structure for the dataType specified by dataTypeId.
-	 *
+	 * @throws NoSuchDataStructureException
+	 Set the data structure for the dataType specified by dataTypeId.
 	 * @since 1.0
 	 * @see com.sx.icecap.datatype.service
 	 * @author Jerry H. Seo
@@ -560,7 +558,7 @@ public interface DataTypeLocalService
 	 * @return void
 	 */
 	public DataStructure updateDataStructure(
-		long dataTypeId, String version, String strDataStructure);
+		long dataTypeId, String strDataStructure);
 
 	/**
 	 * Updates the data type in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

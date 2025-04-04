@@ -311,8 +311,9 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	public DataType removeDataType( long dataTypeId ) throws PortalException {
 		DataType dataType = super.dataTypePersistence.remove(dataTypeId);
 		
-		_dataStructureLocalService.deleteDataStructures(dataTypeId);
-		_updateHasDataStructure(dataTypeId, false);
+		if( dataType.getHasDataStructure() ) {
+			dataStructurePersistence.remove(dataTypeId);
+		}
 		
 		super.assetEntryLocalService.deleteEntry(DataType.class.getName(), dataType.getPrimaryKey());
 
@@ -356,6 +357,7 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	}
 	
 	/**
+	 * @throws NoSuchDataStructureException 
 	 *  Set the data structure for the dataType specified by dataTypeId.
 	 *  
 	 *  @since 1.0
@@ -369,27 +371,29 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	 *  @return
 	 *  	void
 	 */
-	public DataStructure updateDataStructure( long dataTypeId, String version, String strDataStructure ) {
+	public DataStructure updateDataStructure( long dataTypeId, String strDataStructure ){
 		
 		// Set data structure and update the table
-		DataStructure dataStructure = _dataStructureLocalService.updateDataStructure(dataTypeId, version, strDataStructure);
+		DataStructure dataStructure = null;
+		
+		try{
+			dataStructure = dataStructurePersistence.findByPrimaryKey(dataTypeId);
+		} catch( NoSuchDataStructureException e ) {
+			dataStructure = _dataStructureLocalService.createDataStructure(dataTypeId);
+		}
+		dataStructure.setStructure(strDataStructure);
 		// Update the property, hasDataStructure,  of the data type as true
+		dataStructure = dataStructurePersistence.update(dataStructure);
 		_updateHasDataStructure( dataTypeId, true );
 		
 		return dataStructure;
 	}
 	
-	public void deleteDataStructures( long dataTypeId ) {
-		_dataStructureLocalService.deleteDataStructures(dataTypeId);
+	public DataStructure deleteDataStructure( long dataTypeId ) throws NoSuchDataStructureException {
+		DataStructure dataStructure =  dataStructurePersistence.remove(dataTypeId);
 		_updateHasDataStructure( dataTypeId, false );
-	}
-	
-	public void deleteDataStructure( long dataTypeId, String version) throws NoSuchDataStructureException {
-		_dataStructureLocalService.deleteDataStructure(dataTypeId, version);
 		
-		if( _dataStructureLocalService.countByDataTypeId(dataTypeId) < 1 ) {
-			_updateHasDataStructure(dataTypeId, false);
-		}
+		return dataStructure;
 	}
 	
 	public List<DataType> getDataTypes( 
@@ -1057,13 +1061,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	
 	private boolean _isNotEmpty( String str ) {
 		return Validator.isNotNull(str) && !str.isEmpty();
-	}
-	
-	private DataStructure _updateDataStructure( long dataTypeId, String version, String strDataStructure ) {
-		DataStructure dataStructure = _dataStructureLocalService.updateDataStructure(dataTypeId, version, strDataStructure);
-		this._updateHasDataStructure(dataTypeId, true);
-		
-		return dataStructure;
 	}
 	
 	private DataType _updateHasDataStructure( long dataTypeId, boolean has ) {

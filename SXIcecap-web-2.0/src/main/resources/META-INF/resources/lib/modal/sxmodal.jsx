@@ -1,35 +1,27 @@
 import React, { useContext } from "react";
-import ClayModal, { useModal } from "@clayui/modal";
+import ClayModal, { Modal, useModal } from "@clayui/modal";
 import ClayButton from "@clayui/button";
 import ClayIcon from "@clayui/icon";
+import Button from "@clayui/button";
 
-export const SXConfirmDialog = ({
-	show = true,
-	size = "md",
-	status = "secondary",
-	spritemap,
-	header = "",
-	message,
-	buttons
-}) => {
+export const SXModalDialog = ({ size, status = "secondary", spritemap, header = "", body, buttons }) => {
 	const { observer, onOpenChange, open } = useModal();
 	return (
-		<ClayModal
+		<Modal
 			observer={observer}
 			size={size}
 			spritemap={spritemap}
 			status={status}
+			center
 		>
-			<ClayModal.Header>{header}</ClayModal.Header>
-			<ClayModal.Body>
-				<p>{message}</p>
-			</ClayModal.Body>
-			<ClayModal.Footer
+			<Modal.Header>{header}</Modal.Header>
+			<Modal.Body>{body}</Modal.Body>
+			<Modal.Footer
 				last={
-					<ClayButton.Group spaced>
+					<Button.Group spaced>
 						{buttons.map((button, index) => {
 							return (
-								<ClayButton
+								<Button
 									key={index + 1}
 									displayType={button.displayType}
 									onClick={() => {
@@ -38,13 +30,13 @@ export const SXConfirmDialog = ({
 									}}
 								>
 									{button.label}
-								</ClayButton>
+								</Button>
 							);
 						})}
-					</ClayButton.Group>
+					</Button.Group>
 				}
 			/>
-		</ClayModal>
+		</Modal>
 	);
 };
 

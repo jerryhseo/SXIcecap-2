@@ -48,10 +48,9 @@ public class UpdateDataTypeResourceCommand extends BaseMVCResourceCommand{
 		JSONObject jsonDataType = JSONFactoryUtil.createJSONObject(strFormData);
 		System.out.println("JSON DataType: " + jsonDataType.toJSONString());
 		
-		JSONObject baseGroup = jsonDataType.getJSONObject("baseGroup");
-		String name = baseGroup.getString(DataTypeProperty.DATATYPE_NAME);
-		String version = baseGroup.getString(DataTypeProperty.DATATYPE_VERSION);
-		String extension = baseGroup.getString(DataTypeProperty.EXTENSION);
+		String name = jsonDataType.getString(DataTypeProperty.DATATYPE_NAME);
+		String version = jsonDataType.getString(DataTypeProperty.DATATYPE_VERSION);
+		String extension = jsonDataType.getString(DataTypeProperty.EXTENSION);
 		JSONObject displayName =jsonDataType.getJSONObject((DataTypeProperty.DISPLAY_NAME));
 		JSONObject description =jsonDataType.getJSONObject((DataTypeProperty.DESCRIPTION));
 		JSONObject tooltip =jsonDataType.getJSONObject((DataTypeProperty.TOOLTIP));

@@ -10,22 +10,8 @@ import { Event, ParamProperty, ParamType } from "../../common/station-x";
 import { SXLabel } from "../../form/sxform";
 import { Parameter } from "../../parameter/parameter";
 
-const SXDSBuilderPropertiesPanel = ({
-	namespace, //
-	dsbuilderId,
-	propertyPanelId,
-	previewCanvasId,
-	languageId,
-	availableLanguageIds,
-	parameter,
-	spritemap
-}) => {
-	console.log("SXDSBuilderPropertiesPanel: ", parameter);
-	const [panelStepState, setPanelStepState] = useState(0);
-	const [render, forceRender] = useState(true);
-	const [parameterState, setParameterState] = useState(parameter);
-
-	const stepsRef = useRef([
+class SXDSBuilderPropertiesPanel extends React.Component {
+	panelSteps = [
 		{
 			title: Util.translate("basic")
 		},
@@ -38,148 +24,168 @@ const SXDSBuilderPropertiesPanel = ({
 		{
 			title: Util.translate("validation")
 		}
-	]);
+	];
 
-	let panelContent;
-	switch (panelStepState) {
-		case 0: {
-			panelContent = (
-				<SXDSBuilderBasicPropertiesPanel
-					namespace={namespace}
-					dsbuilderId={dsbuilderId}
-					propertyPanelId={propertyPanelId}
-					previewCanvasId={previewCanvasId}
-					languageId={languageId}
-					availableLanguageIds={availableLanguageIds}
-					parameter={parameterState}
-					spritemap={spritemap}
-				/>
-			);
-			break;
-		}
-		case 1: {
-			panelContent = (
-				<SXDSBuilderTypeSpecificPanel
-					namespace={namespace}
-					dsbuilderId={dsbuilderId}
-					propertyPanelId={propertyPanelId}
-					previewCanvasId={previewCanvasId}
-					languageId={languageId}
-					availableLanguageIds={availableLanguageIds}
-					parameter={parameterState}
-					spritemap={spritemap}
-				/>
-			);
-			break;
-		}
-		case 2: {
-			panelContent = (
-				<SXDSBuilderOptionPropertiesPanel
-					namespace={namespace}
-					dsbuilderId={dsbuilderId}
-					propertyPanelId={propertyPanelId}
-					previewCanvasId={previewCanvasId}
-					languageId={languageId}
-					availableLanguageIds={availableLanguageIds}
-					parameter={parameterState}
-					spritemap={spritemap}
-				/>
-			);
-			break;
-		}
-		case 3: {
-			panelContent = (
-				<SXDSBuilderValidationPanel
-					namespace={namespace}
-					dsbuilderId={dsbuilderId}
-					propertyPanelId={propertyPanelId}
-					previewCanvasId={previewCanvasId}
-					languageId={languageId}
-					availableLanguageIds={availableLanguageIds}
-					parameter={parameterState}
-					spritemap={spritemap}
-				/>
-			);
-			break;
+	constructor(props) {
+		super(props);
+
+		this.namespace = props.namespace;
+		this.dsbuilderId = props.dsbuilderId;
+		this.propertyPanelId = props.propertyPanelId;
+		this.previewCanvasId = props.previewCanvasId;
+		this.languageId = props.languageId;
+		this.availableLanguageIds = props.availableLanguageIds;
+		this.spritemap = props.spritemap;
+
+		this.state = {
+			parameter: props.parameter,
+			panelStep: 0
+		};
+
+		Event.on(Event.SX_PARAMETER_CHANGED, (e) => {
+			const dataPacket = e.dataPacket;
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.propertyPanelId) return;
+
+			this.setState({
+				parameter: dataPacket.parameter,
+				panelStep: 0
+			});
+		});
+	}
+
+	handlePanelStepChange(step) {
+		this.setState({ panelStep: step });
+	}
+
+	handleParamTypeSelect(e) {
+		Event.fire(Event.SX_PARAM_TYPE_CHANGED, this.namespace, this.namespace, {
+			target: this.dsbuilderId,
+			paramType: e.target.value
+		});
+	}
+
+	renderPanelContent() {
+		switch (this.state.panelStep) {
+			case 0: {
+				return (
+					<SXDSBuilderBasicPropertiesPanel
+						key={this.state.parameter.key}
+						namespace={this.namespace}
+						dsbuilderId={this.dsbuilderId}
+						propertyPanelId={this.propertyPanelId}
+						previewCanvasId={this.previewCanvasId}
+						languageId={this.languageId}
+						availableLanguageIds={this.availableLanguageIds}
+						parameter={this.state.parameter}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case 1: {
+				return (
+					<SXDSBuilderTypeSpecificPanel
+						key={this.state.parameter.key}
+						namespace={this.namespace}
+						dsbuilderId={this.dsbuilderId}
+						propertyPanelId={this.propertyPanelId}
+						previewCanvasId={this.previewCanvasId}
+						languageId={this.languageId}
+						availableLanguageIds={this.availableLanguageIds}
+						parameter={this.state.parameter}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case 2: {
+				return (
+					<SXDSBuilderOptionPropertiesPanel
+						key={this.state.parameter.key}
+						namespace={this.namespace}
+						dsbuilderId={this.dsbuilderId}
+						propertyPanelId={this.propertyPanelId}
+						previewCanvasId={this.previewCanvasId}
+						languageId={this.languageId}
+						availableLanguageIds={this.availableLanguageIds}
+						parameter={this.state.parameter}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case 3: {
+				return (
+					<SXDSBuilderValidationPanel
+						key={this.state.parameter.key}
+						namespace={this.namespace}
+						dsbuilderId={this.dsbuilderId}
+						propertyPanelId={this.propertyPanelId}
+						previewCanvasId={this.previewCanvasId}
+						languageId={this.languageId}
+						availableLanguageIds={this.availableLanguageIds}
+						parameter={this.state.parameter}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
 		}
 	}
 
-	useLayoutEffect(() => {
-		Event.on(Event.SX_PARAMETER_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== namespace || dataPacket.target !== propertyPanelId) return;
+	render() {
+		console.log("Render Parameter: ", this.state.parameter);
 
-			console.log("SX_PARAMETER_CHANGED received: ", dataPacket);
-			setParameterState(dataPacket.parameter);
-			setPanelStepState(0);
-		});
-	}, []);
+		return (
+			<>
+				<Form.Group className="form-group-sm">
+					<SXLabel
+						label={Util.translate("parameter-type")}
+						forHtml={this.namespace + ParamProperty.PARAM_TYPE}
+						required={true}
+						tooltip={Util.translate("parameter-type-tooltip")}
+						spritemap={this.spritemap}
+						style={{ marginRight: "20px" }}
+					/>
+					<ClaySelectWithOption
+						aria-label={Util.translate("parameter-type")}
+						id={this.namespace + ParamProperty.PARAM_TYPE}
+						options={Object.keys(ParamType).map((key) => ({
+							label: ParamType[key],
+							value: ParamType[key]
+						}))}
+						value={this.state.parameter.paramType}
+						onChange={(e) => {
+							this.handleParamTypeSelect(e);
+						}}
+						disabled={this.state.parameter.order > 0}
+						spritemap={this.spritemap}
+					/>
+				</Form.Group>
+				<ClayMultiStepNav>
+					{this.panelSteps.map(({ subTitle, title }, i) => {
+						let panelStep = this.state.panelStep < 0 ? 0 : this.state.panelStep;
+						const complete = i < this.state.panelStep;
 
-	const handlePanelStepChange = (step) => {
-		setPanelStepState(step);
-	};
-
-	const handleParamTypeSelect = (e) => {
-		console.log("handleParamTypeSelect: ", e);
-		Event.fire(Event.SX_PARAM_TYPE_CHANGED, namespace, namespace, {
-			target: dsbuilderId,
-			paramType: e.target.value
-		});
-	};
-
-	const renderCount = useRef(0);
-	renderCount.current++;
-	console.log("SXDSBuilderPropertiesPanel renderCount: " + renderCount.current);
-
-	return (
-		<>
-			<Form.Group className="form-group-sm">
-				<SXLabel
-					label={Util.translate("parameter-type")}
-					forHtml={namespace + ParamProperty.PARAM_TYPE}
-					required={true}
-					tooltip={Util.translate("parameter-type-tooltip")}
-					spritemap={spritemap}
-					style={{ marginRight: "20px" }}
-				/>
-				<ClaySelectWithOption
-					aria-label={Util.translate("parameter-type")}
-					id={namespace + ParamProperty.PARAM_TYPE}
-					options={Object.keys(ParamType).map((key) => ({
-						label: ParamType[key],
-						value: ParamType[key]
-					}))}
-					value={parameterState.paramType}
-					onChange={handleParamTypeSelect}
-					spritemap={spritemap}
-				/>
-			</Form.Group>
-			<ClayMultiStepNav>
-				{stepsRef.current.map(({ subTitle, title }, i) => {
-					const complete = i < panelStepState;
-
-					return (
-						<ClayMultiStepNav.Item
-							active={panelStepState === i}
-							expand={i + 1 !== stepsRef.current.length}
-							key={i}
-							state={complete ? "complete" : undefined}
-						>
-							<ClayMultiStepNav.Title>{title}</ClayMultiStepNav.Title>
-							<ClayMultiStepNav.Divider />
-							<ClayMultiStepNav.Indicator
-								complete={complete}
-								label={i + 1}
-								onClick={() => handlePanelStepChange(i)}
-								subTitle={subTitle}
-							/>
-						</ClayMultiStepNav.Item>
-					);
-				})}
-			</ClayMultiStepNav>
-			{panelContent}
-		</>
-	);
-};
+						return (
+							<ClayMultiStepNav.Item
+								active={panelStep === i}
+								expand={i + 1 !== this.panelSteps.length}
+								key={i}
+								state={complete ? "complete" : undefined}
+							>
+								<ClayMultiStepNav.Title>{title}</ClayMultiStepNav.Title>
+								<ClayMultiStepNav.Divider />
+								<ClayMultiStepNav.Indicator
+									complete={complete}
+									label={i + 1}
+									onClick={() => this.handlePanelStepChange(i)}
+									subTitle={subTitle}
+								/>
+							</ClayMultiStepNav.Item>
+						);
+					})}
+				</ClayMultiStepNav>
+				{this.renderPanelContent()}
+			</>
+		);
+	}
+}
 
 export default SXDSBuilderPropertiesPanel;

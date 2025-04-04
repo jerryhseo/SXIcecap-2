@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -32,7 +31,6 @@ import com.sx.icecap.model.DataStructureModel;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 
 import java.sql.Blob;
@@ -68,43 +66,34 @@ public class DataStructureModelImpl
 	public static final String TABLE_NAME = "SX_ICECAP_DataStructure";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"dataStructureId", Types.BIGINT}, {"dataTypeId", Types.BIGINT},
-		{"version", Types.VARCHAR}, {"structure", Types.VARCHAR}
+		{"dataTypeId", Types.BIGINT}, {"structure", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
 		new HashMap<String, Integer>();
 
 	static {
-		TABLE_COLUMNS_MAP.put("dataStructureId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataTypeId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("version", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("structure", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataStructure (dataStructureId LONG not null primary key,dataTypeId LONG,version VARCHAR(75) null,structure TEXT null)";
+		"create table SX_ICECAP_DataStructure (dataTypeId LONG not null primary key,structure TEXT null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_DataStructure";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY dataStructure.dataStructureId ASC";
+		" ORDER BY dataStructure.dataTypeId ASC";
 
 	public static final String ORDER_BY_SQL =
-		" ORDER BY SX_ICECAP_DataStructure.dataStructureId ASC";
+		" ORDER BY SX_ICECAP_DataStructure.dataTypeId ASC";
 
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
-
-	public static final long DATATYPEID_COLUMN_BITMASK = 1L;
-
-	public static final long VERSION_COLUMN_BITMASK = 2L;
-
-	public static final long DATASTRUCTUREID_COLUMN_BITMASK = 4L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -119,17 +108,17 @@ public class DataStructureModelImpl
 
 	@Override
 	public long getPrimaryKey() {
-		return _dataStructureId;
+		return _dataTypeId;
 	}
 
 	@Override
 	public void setPrimaryKey(long primaryKey) {
-		setDataStructureId(primaryKey);
+		setDataTypeId(primaryKey);
 	}
 
 	@Override
 	public Serializable getPrimaryKeyObj() {
-		return _dataStructureId;
+		return _dataTypeId;
 	}
 
 	@Override
@@ -202,34 +191,6 @@ public class DataStructureModelImpl
 		return _attributeSetterBiConsumers;
 	}
 
-	private static Function<InvocationHandler, DataStructure>
-		_getProxyProviderFunction() {
-
-		Class<?> proxyClass = ProxyUtil.getProxyClass(
-			DataStructure.class.getClassLoader(), DataStructure.class,
-			ModelWrapper.class);
-
-		try {
-			Constructor<DataStructure> constructor =
-				(Constructor<DataStructure>)proxyClass.getConstructor(
-					InvocationHandler.class);
-
-			return invocationHandler -> {
-				try {
-					return constructor.newInstance(invocationHandler);
-				}
-				catch (ReflectiveOperationException
-							reflectiveOperationException) {
-
-					throw new InternalError(reflectiveOperationException);
-				}
-			};
-		}
-		catch (NoSuchMethodException noSuchMethodException) {
-			throw new InternalError(noSuchMethodException);
-		}
-	}
-
 	private static final Map<String, Function<DataStructure, Object>>
 		_attributeGetterFunctions;
 	private static final Map<String, BiConsumer<DataStructure, Object>>
@@ -242,19 +203,10 @@ public class DataStructureModelImpl
 			new LinkedHashMap<String, BiConsumer<DataStructure, ?>>();
 
 		attributeGetterFunctions.put(
-			"dataStructureId", DataStructure::getDataStructureId);
-		attributeSetterBiConsumers.put(
-			"dataStructureId",
-			(BiConsumer<DataStructure, Long>)DataStructure::setDataStructureId);
-		attributeGetterFunctions.put(
 			"dataTypeId", DataStructure::getDataTypeId);
 		attributeSetterBiConsumers.put(
 			"dataTypeId",
 			(BiConsumer<DataStructure, Long>)DataStructure::setDataTypeId);
-		attributeGetterFunctions.put("version", DataStructure::getVersion);
-		attributeSetterBiConsumers.put(
-			"version",
-			(BiConsumer<DataStructure, String>)DataStructure::setVersion);
 		attributeGetterFunctions.put("structure", DataStructure::getStructure);
 		attributeSetterBiConsumers.put(
 			"structure",
@@ -267,60 +219,13 @@ public class DataStructureModelImpl
 	}
 
 	@Override
-	public long getDataStructureId() {
-		return _dataStructureId;
-	}
-
-	@Override
-	public void setDataStructureId(long dataStructureId) {
-		_dataStructureId = dataStructureId;
-	}
-
-	@Override
 	public long getDataTypeId() {
 		return _dataTypeId;
 	}
 
 	@Override
 	public void setDataTypeId(long dataTypeId) {
-		_columnBitmask |= DATATYPEID_COLUMN_BITMASK;
-
-		if (!_setOriginalDataTypeId) {
-			_setOriginalDataTypeId = true;
-
-			_originalDataTypeId = _dataTypeId;
-		}
-
 		_dataTypeId = dataTypeId;
-	}
-
-	public long getOriginalDataTypeId() {
-		return _originalDataTypeId;
-	}
-
-	@Override
-	public String getVersion() {
-		if (_version == null) {
-			return "";
-		}
-		else {
-			return _version;
-		}
-	}
-
-	@Override
-	public void setVersion(String version) {
-		_columnBitmask |= VERSION_COLUMN_BITMASK;
-
-		if (_originalVersion == null) {
-			_originalVersion = _version;
-		}
-
-		_version = version;
-	}
-
-	public String getOriginalVersion() {
-		return GetterUtil.getString(_originalVersion);
 	}
 
 	@JSON
@@ -337,10 +242,6 @@ public class DataStructureModelImpl
 	@Override
 	public void setStructure(String structure) {
 		_structure = structure;
-	}
-
-	public long getColumnBitmask() {
-		return _columnBitmask;
 	}
 
 	@Override
@@ -375,9 +276,7 @@ public class DataStructureModelImpl
 	public Object clone() {
 		DataStructureImpl dataStructureImpl = new DataStructureImpl();
 
-		dataStructureImpl.setDataStructureId(getDataStructureId());
 		dataStructureImpl.setDataTypeId(getDataTypeId());
-		dataStructureImpl.setVersion(getVersion());
 		dataStructureImpl.setStructure(getStructure());
 
 		dataStructureImpl.resetOriginalValues();
@@ -439,13 +338,6 @@ public class DataStructureModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		_originalDataTypeId = _dataTypeId;
-
-		_setOriginalDataTypeId = false;
-
-		_originalVersion = _version;
-
-		_columnBitmask = 0;
 	}
 
 	@Override
@@ -453,17 +345,7 @@ public class DataStructureModelImpl
 		DataStructureCacheModel dataStructureCacheModel =
 			new DataStructureCacheModel();
 
-		dataStructureCacheModel.dataStructureId = getDataStructureId();
-
 		dataStructureCacheModel.dataTypeId = getDataTypeId();
-
-		dataStructureCacheModel.version = getVersion();
-
-		String version = dataStructureCacheModel.version;
-
-		if ((version != null) && (version.length() == 0)) {
-			dataStructureCacheModel.version = null;
-		}
 
 		dataStructureCacheModel.structure = getStructure();
 
@@ -559,21 +441,17 @@ public class DataStructureModelImpl
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, DataStructure>
-			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+			_escapedModelProxyProviderFunction =
+				ProxyUtil.getProxyProviderFunction(
+					DataStructure.class, ModelWrapper.class);
 
 	}
 
 	private static boolean _entityCacheEnabled;
 	private static boolean _finderCacheEnabled;
 
-	private long _dataStructureId;
 	private long _dataTypeId;
-	private long _originalDataTypeId;
-	private boolean _setOriginalDataTypeId;
-	private String _version;
-	private String _originalVersion;
 	private String _structure;
-	private long _columnBitmask;
 	private DataStructure _escapedModel;
 
 }

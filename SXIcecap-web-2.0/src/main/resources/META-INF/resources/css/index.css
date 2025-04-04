@@ -1,4 +1,15 @@
+@property --gradient-angle {
+	syntax: "<angle>";
+	initial-value: 0deg;
+	inherits: false;
+}
+
 :root {
+	--clr-1: #dfdfdf;
+	--clr-2: #dfdfdf;
+	--clr-3: #0e4b50;
+	--clr-4: #2d8f85;
+	--clr-5: #58bb1f;
 	--sx-normal-label-text-color: #272833;
 	--sx-normal-input-text-color: #272833;
 	--sx-error-label-text-color: #e81264;
@@ -13,6 +24,48 @@
 	--sx-title-font-weight: 600;
 	--sx-caption-font-size: 0.75rem;
 	--sx-highlight-border: 2px solid #7ff47d;
+}
+
+.sx-glore-border {
+	border: none;
+}
+
+.sx-glore-border::before,
+.sx-glore-border::after {
+	content: "";
+	position: absolute;
+	inset: -0.5rem;
+	z-index: -1;
+	background: conic-gradient(
+		from var(--gradient-angle),
+		var(--clr-3),
+		var(--clr-4),
+		var(--clr-5),
+		var(--clr-4),
+		var(--clr-3)
+	);
+	border-radius: inherit;
+	animation: rotation 20s linear infinite;
+}
+
+.sx-glore-border::after {
+	filter: blur(3.5rem);
+}
+
+.sx-preview-row {
+	align-content: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-bottom: 5px;
+}
+
+.sx-preview-row {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.custom-control-label-text {
+	font-weight: 600;
 }
 
 div .not-found {
@@ -38,9 +91,52 @@ div .not-found span {
 	text-align: center;
 }
 
+div .under-construction {
+	display: flex;
+	align-items: center;
+	justify-items: center;
+	border: 1px solid #aaaaaa;
+	width: 500px;
+	height: 350px;
+	background-image: url("../asset/images/under-construction.jpg");
+	background-size: contain;
+	background-position: center;
+	opacity: 0.8;
+}
+
 .localized-flag-btn {
 	padding-top: 0.1em;
 	padding-bottom: 0.1em;
+}
+
+.sx-validation-section {
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.sx-validation-section .toggle-switch-check-bar {
+	margin-right: 0px;
+}
+
+.sx-validation-section-enabled {
+	margin-left: 2rem;
+}
+
+.sx-validation-section-enabled .form-group {
+	margin-bottom: 0;
+}
+
+.sx-validation-label {
+	font-size: 0.875rem;
+	font-weight: 600;
+	margin-right: 10px;
+	margin-bottom: 5px;
+}
+
+.sx-center {
+	display: flex;
+	justify-items: center;
+	align-items: center;
 }
 
 .sx-dual-listbox {
@@ -153,6 +249,10 @@ div .not-found span {
 	border: 2px solid #7ff47d;
 }
 
+.modal.show .modal-dialog {
+	justify-self: anchor-center;
+}
+
 .clay-reorder {
 	padding: 2px;
 	position: relative;
@@ -211,7 +311,7 @@ div .not-found span {
 }
 
 .toggle-switch-check-bar {
-	margin-right: 5px;
+	margin-right: 20px;
 }
 
 .simple-toggle-switch.toggle-switch {
@@ -827,4 +927,8 @@ div .not-found span {
 
 .nav-tabs {
 	border-bottom: 1px solid #ccc;
+}
+
+.autofit-row {
+	align-items: center;
 }

@@ -121,245 +121,6 @@ public class DataStructureUtil {
 	}
 
 	/**
-	 * Returns all the data structures where dataTypeId = &#63;.
-	 *
-	 * @param dataTypeId the data type ID
-	 * @return the matching data structures
-	 */
-	public static List<DataStructure> findByDataTypeId(long dataTypeId) {
-		return getPersistence().findByDataTypeId(dataTypeId);
-	}
-
-	/**
-	 * Returns a range of all the data structures where dataTypeId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataStructureModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param start the lower bound of the range of data structures
-	 * @param end the upper bound of the range of data structures (not inclusive)
-	 * @return the range of matching data structures
-	 */
-	public static List<DataStructure> findByDataTypeId(
-		long dataTypeId, int start, int end) {
-
-		return getPersistence().findByDataTypeId(dataTypeId, start, end);
-	}
-
-	/**
-	 * Returns an ordered range of all the data structures where dataTypeId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataStructureModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param start the lower bound of the range of data structures
-	 * @param end the upper bound of the range of data structures (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching data structures
-	 */
-	public static List<DataStructure> findByDataTypeId(
-		long dataTypeId, int start, int end,
-		OrderByComparator<DataStructure> orderByComparator) {
-
-		return getPersistence().findByDataTypeId(
-			dataTypeId, start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns an ordered range of all the data structures where dataTypeId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataStructureModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param start the lower bound of the range of data structures
-	 * @param end the upper bound of the range of data structures (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching data structures
-	 */
-	public static List<DataStructure> findByDataTypeId(
-		long dataTypeId, int start, int end,
-		OrderByComparator<DataStructure> orderByComparator,
-		boolean useFinderCache) {
-
-		return getPersistence().findByDataTypeId(
-			dataTypeId, start, end, orderByComparator, useFinderCache);
-	}
-
-	/**
-	 * Returns the first data structure in the ordered set where dataTypeId = &#63;.
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching data structure
-	 * @throws NoSuchDataStructureException if a matching data structure could not be found
-	 */
-	public static DataStructure findByDataTypeId_First(
-			long dataTypeId, OrderByComparator<DataStructure> orderByComparator)
-		throws com.sx.icecap.exception.NoSuchDataStructureException {
-
-		return getPersistence().findByDataTypeId_First(
-			dataTypeId, orderByComparator);
-	}
-
-	/**
-	 * Returns the first data structure in the ordered set where dataTypeId = &#63;.
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching data structure, or <code>null</code> if a matching data structure could not be found
-	 */
-	public static DataStructure fetchByDataTypeId_First(
-		long dataTypeId, OrderByComparator<DataStructure> orderByComparator) {
-
-		return getPersistence().fetchByDataTypeId_First(
-			dataTypeId, orderByComparator);
-	}
-
-	/**
-	 * Returns the last data structure in the ordered set where dataTypeId = &#63;.
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching data structure
-	 * @throws NoSuchDataStructureException if a matching data structure could not be found
-	 */
-	public static DataStructure findByDataTypeId_Last(
-			long dataTypeId, OrderByComparator<DataStructure> orderByComparator)
-		throws com.sx.icecap.exception.NoSuchDataStructureException {
-
-		return getPersistence().findByDataTypeId_Last(
-			dataTypeId, orderByComparator);
-	}
-
-	/**
-	 * Returns the last data structure in the ordered set where dataTypeId = &#63;.
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching data structure, or <code>null</code> if a matching data structure could not be found
-	 */
-	public static DataStructure fetchByDataTypeId_Last(
-		long dataTypeId, OrderByComparator<DataStructure> orderByComparator) {
-
-		return getPersistence().fetchByDataTypeId_Last(
-			dataTypeId, orderByComparator);
-	}
-
-	/**
-	 * Returns the data structures before and after the current data structure in the ordered set where dataTypeId = &#63;.
-	 *
-	 * @param dataStructureId the primary key of the current data structure
-	 * @param dataTypeId the data type ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next data structure
-	 * @throws NoSuchDataStructureException if a data structure with the primary key could not be found
-	 */
-	public static DataStructure[] findByDataTypeId_PrevAndNext(
-			long dataStructureId, long dataTypeId,
-			OrderByComparator<DataStructure> orderByComparator)
-		throws com.sx.icecap.exception.NoSuchDataStructureException {
-
-		return getPersistence().findByDataTypeId_PrevAndNext(
-			dataStructureId, dataTypeId, orderByComparator);
-	}
-
-	/**
-	 * Removes all the data structures where dataTypeId = &#63; from the database.
-	 *
-	 * @param dataTypeId the data type ID
-	 */
-	public static void removeByDataTypeId(long dataTypeId) {
-		getPersistence().removeByDataTypeId(dataTypeId);
-	}
-
-	/**
-	 * Returns the number of data structures where dataTypeId = &#63;.
-	 *
-	 * @param dataTypeId the data type ID
-	 * @return the number of matching data structures
-	 */
-	public static int countByDataTypeId(long dataTypeId) {
-		return getPersistence().countByDataTypeId(dataTypeId);
-	}
-
-	/**
-	 * Returns the data structure where dataTypeId = &#63; and version = &#63; or throws a <code>NoSuchDataStructureException</code> if it could not be found.
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param version the version
-	 * @return the matching data structure
-	 * @throws NoSuchDataStructureException if a matching data structure could not be found
-	 */
-	public static DataStructure findByDataTypeIdVersion(
-			long dataTypeId, String version)
-		throws com.sx.icecap.exception.NoSuchDataStructureException {
-
-		return getPersistence().findByDataTypeIdVersion(dataTypeId, version);
-	}
-
-	/**
-	 * Returns the data structure where dataTypeId = &#63; and version = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param version the version
-	 * @return the matching data structure, or <code>null</code> if a matching data structure could not be found
-	 */
-	public static DataStructure fetchByDataTypeIdVersion(
-		long dataTypeId, String version) {
-
-		return getPersistence().fetchByDataTypeIdVersion(dataTypeId, version);
-	}
-
-	/**
-	 * Returns the data structure where dataTypeId = &#63; and version = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param version the version
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching data structure, or <code>null</code> if a matching data structure could not be found
-	 */
-	public static DataStructure fetchByDataTypeIdVersion(
-		long dataTypeId, String version, boolean useFinderCache) {
-
-		return getPersistence().fetchByDataTypeIdVersion(
-			dataTypeId, version, useFinderCache);
-	}
-
-	/**
-	 * Removes the data structure where dataTypeId = &#63; and version = &#63; from the database.
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param version the version
-	 * @return the data structure that was removed
-	 */
-	public static DataStructure removeByDataTypeIdVersion(
-			long dataTypeId, String version)
-		throws com.sx.icecap.exception.NoSuchDataStructureException {
-
-		return getPersistence().removeByDataTypeIdVersion(dataTypeId, version);
-	}
-
-	/**
-	 * Returns the number of data structures where dataTypeId = &#63; and version = &#63;.
-	 *
-	 * @param dataTypeId the data type ID
-	 * @param version the version
-	 * @return the number of matching data structures
-	 */
-	public static int countByDataTypeIdVersion(
-		long dataTypeId, String version) {
-
-		return getPersistence().countByDataTypeIdVersion(dataTypeId, version);
-	}
-
-	/**
 	 * Caches the data structure in the entity cache if it is enabled.
 	 *
 	 * @param dataStructure the data structure
@@ -380,24 +141,24 @@ public class DataStructureUtil {
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
-	 * @param dataStructureId the primary key for the new data structure
+	 * @param dataTypeId the primary key for the new data structure
 	 * @return the new data structure
 	 */
-	public static DataStructure create(long dataStructureId) {
-		return getPersistence().create(dataStructureId);
+	public static DataStructure create(long dataTypeId) {
+		return getPersistence().create(dataTypeId);
 	}
 
 	/**
 	 * Removes the data structure with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param dataStructureId the primary key of the data structure
+	 * @param dataTypeId the primary key of the data structure
 	 * @return the data structure that was removed
 	 * @throws NoSuchDataStructureException if a data structure with the primary key could not be found
 	 */
-	public static DataStructure remove(long dataStructureId)
+	public static DataStructure remove(long dataTypeId)
 		throws com.sx.icecap.exception.NoSuchDataStructureException {
 
-		return getPersistence().remove(dataStructureId);
+		return getPersistence().remove(dataTypeId);
 	}
 
 	public static DataStructure updateImpl(DataStructure dataStructure) {
@@ -407,24 +168,24 @@ public class DataStructureUtil {
 	/**
 	 * Returns the data structure with the primary key or throws a <code>NoSuchDataStructureException</code> if it could not be found.
 	 *
-	 * @param dataStructureId the primary key of the data structure
+	 * @param dataTypeId the primary key of the data structure
 	 * @return the data structure
 	 * @throws NoSuchDataStructureException if a data structure with the primary key could not be found
 	 */
-	public static DataStructure findByPrimaryKey(long dataStructureId)
+	public static DataStructure findByPrimaryKey(long dataTypeId)
 		throws com.sx.icecap.exception.NoSuchDataStructureException {
 
-		return getPersistence().findByPrimaryKey(dataStructureId);
+		return getPersistence().findByPrimaryKey(dataTypeId);
 	}
 
 	/**
 	 * Returns the data structure with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param dataStructureId the primary key of the data structure
+	 * @param dataTypeId the primary key of the data structure
 	 * @return the data structure, or <code>null</code> if a data structure with the primary key could not be found
 	 */
-	public static DataStructure fetchByPrimaryKey(long dataStructureId) {
-		return getPersistence().fetchByPrimaryKey(dataStructureId);
+	public static DataStructure fetchByPrimaryKey(long dataTypeId) {
+		return getPersistence().fetchByPrimaryKey(dataTypeId);
 	}
 
 	/**

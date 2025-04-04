@@ -56,7 +56,6 @@ public class LoadAvailableVisualizersResourceCommand extends BaseMVCResourceComm
 		
 		availables.put(item);
 		
-		
 		item = JSONFactoryUtil.createJSONObject();
 		item.put( "id", 345678);
 		item.put( "portletName", "com_sx_visualizer_ImageViewer");

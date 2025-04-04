@@ -44,13 +44,15 @@ public class SaveDataStructureResourceCommand extends BaseMVCResourceCommand {
 		String version = ParamUtil.getString(resourceRequest, "version");
 		String strDataStructure = ParamUtil.getString(resourceRequest, "dataStructure");
 
+		System.out.println("dataTypeId: " + dataTypeId);
+		System.out.println("version: " + version);
 		System.out.println("dataStructure: " + strDataStructure);
-		/*
-		DataStructure dataStructure = _dataTypeLocalService.updateDataStructure(dataTypeId, version, strDataStructure);
-		*/
+		
+		DataStructure dataStructure = _dataTypeLocalService.updateDataStructure(dataTypeId, strDataStructure);
+		
 		JSONObject result = JSONFactoryUtil.createJSONObject();
-		//result.put("dataStructureId", dataStructure.getDataStructureId());
-		result.put("dataStructureId", 12345);
+		result.put("dataTypeId", dataStructure.getDataTypeId());
+		//result.put("dataStructureId", 12345);
 		PrintWriter pw = resourceResponse.getWriter();
 		pw.write(result.toJSONString());
 		pw.flush();

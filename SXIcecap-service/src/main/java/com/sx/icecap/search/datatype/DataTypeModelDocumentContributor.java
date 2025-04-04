@@ -42,26 +42,6 @@ public class DataTypeModelDocumentContributor implements ModelDocumentContributo
 			document.addLocalizedText(DataTypeProperty.DESCRIPTION, dataType.getDescriptionMap());
 			document.addLocalizedKeyword(DataTypeProperty.DISPLAY_NAME, dataType.getDisplayNameMap(), true);
 			
-			try {
-				JSONObject jsonDataStructure = _dataTypeLocalService.getDataStructureJSONObject( dataType.getPrimaryKey() );
-				
-				if( Validator.isNotNull(jsonDataStructure) ) {
-					StringBuilder paramNames = new StringBuilder();
-					JSONArray jsonParams = jsonDataStructure.getJSONArray(DataStructureProperty.PARAMS);
-					if( Validator.isNotNull(jsonParams) ) {
-						for( int i=0; i< jsonParams.length(); i++) {
-							paramNames.append(  (jsonParams.getJSONObject(i)).getString( ParameterProperty.NAME ) );
-							paramNames.append( StringPool.SPACE );
-						};
-						
-						document.addText("params", paramNames.toString());
-					}
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
 			//Debug.printFooter("DataTypeModelDocumentContributor");
 	}
 	

@@ -177,18 +177,8 @@
 	</entity>
 	
 	<entity name="DataStructure" local-service="true" remote-service="false" uuid="false">
-		<column name="dataStructureId" primary="true" type="long"></column>
-		<column name="dataTypeId" type="long"></column>
-		<column name="version" type="String"></column>
+		<column name="dataTypeId" primary="true" type="long"></column>
 		<column name="structure" type="String" json-enabled="true"></column><!--  typeContent: JSON -->
-		
-		<finder name="DataTypeId" return-type="Collection">
-			<finder-column name="dataTypeId" ></finder-column>
-		</finder>
-		<finder name="DataTypeIdVersion" return-type="DataStructure">
-			<finder-column name="dataTypeId" ></finder-column>
-			<finder-column name="version" ></finder-column>
-		</finder>
 	</entity>
 	
 	<entity name="StructuredData" local-service="true" 

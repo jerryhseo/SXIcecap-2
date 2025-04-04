@@ -26,11 +26,7 @@ export default function (elementId, portletName, portletParameters) {
 			break;
 		}
 		case PortletKeys.DATATYPE_EDITOR: {
-			root.render(
-				<ClayModalProvider spritemap={portletParameters.spritemapPath}>
-					<DataTypeEditor portletParameters={portletParameters} />
-				</ClayModalProvider>
-			);
+			root.render(<DataTypeEditor portletParameters={portletParameters} />);
 			break;
 		}
 		case PortletKeys.DATATYPE_VIEWER: {

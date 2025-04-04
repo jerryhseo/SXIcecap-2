@@ -1,48 +1,57 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React from "react";
 import { Event } from "../../common/station-x";
 import { DataStructure } from "./data-structure";
 
-const SXDataStructurePreviewer = ({
-	namespace,
-	dsbuilderId,
-	propertyPanelId,
-	previewCanvasId,
-	languageId,
-	availableLanguageIds,
-	dataStructure,
-	spritemap
-}) => {
-	const [render, forceRender] = useState(true);
+class SXDataStructurePreviewer extends React.Component {
+	constructor(props) {
+		super(props);
 
-	const [dataStructureState, setDataStructureState] = useState(dataStructure);
+		this.namespace = props.namespace;
+		this.dsbuilderId = props.dsbuilderId;
+		this.propertyPanelId = props.propertyPanelId;
+		this.previewCanvasId = props.previewCanvasId;
+		this.languageId = props.languageId;
+		this.availableLanguageIds = props.availableLanguageIds;
+		this.spritemap = props.spritemap;
 
-	useLayoutEffect(() => {
+		this.state = {
+			dataStructure: props.dataStructure,
+			workingParamOrder: props.workingParamOrder
+		};
+
+		console.log("SXDataStructurePreviewer: ", props);
+		/*
 		Event.on(Event.SX_PARAMETERS_CHANGED, (e) => {
 			console.log("SXDataStructurePreviewer SX_PARAMETERS_CHANGED: ", e.dataPacket);
-			if (e.dataPacket.targetPortlet !== namespace || e.dataPacket.target !== previewCanvasId) {
-				console.log("Not for SXDataStructurePreviewer: ", e.dataPacket, namespace, previewCanvasId);
+			if (e.dataPacket.targetPortlet !== this.namespace || e.dataPacket.target !== this.previewCanvasId) {
+				console.log("Not for SXDataStructurePreviewer: ", e.dataPacket, this.namespace, this.previewCanvasId);
 				return;
 			}
 
-			setDataStructureState(new DataStructure(e.dataPacket.dataStructure));
+			this.setState({ dataStructure: new DataStructure(e.dataPacket.dataStructure) });
 		});
-	}, []);
+		*/
+	}
 
-	return (
-		<>
-			{dataStructureState.renderPreview(
-				namespace, //
-				dsbuilderId,
-				propertyPanelId,
-				previewCanvasId,
-				languageId,
-				availableLanguageIds,
-				"",
-				{},
-				spritemap
-			)}
-		</>
-	);
-};
+	render() {
+		console.log("SXDataStructurePreviewer render: ", this.state.DataStructure);
+		return (
+			<>
+				{this.state.dataStructure.renderPreview(
+					this.namespace, //
+					this.dsbuilderId,
+					this.propertyPanelId,
+					this.previewCanvasId,
+					this.languageId,
+					this.availableLanguageIds,
+					"",
+					{},
+					this.spritemap,
+					this.state.workingParamOrder
+				)}
+			</>
+		);
+	}
+}
 
 export default SXDataStructurePreviewer;

@@ -71,11 +71,13 @@ public class StructuredDataAdvancedSearchRenderCommand implements MVCRenderComma
 				structuredDataList.put( jsonData );
 			}
 			
+			/*
 			List<String> abstractFieldList = _dataTypeLocalService.getAbstractFields( dataTypeId, true );
 			JSONArray jsonAbstractFields = JSONFactoryUtil.createJSONArray();
 			abstractFieldList.forEach(abstractField ->{
 				jsonAbstractFields.put(abstractField);
 			});
+			*/
 			
 			renderRequest.setAttribute(
 					StationXWebKeys.DATATYPE, 
@@ -83,9 +85,11 @@ public class StructuredDataAdvancedSearchRenderCommand implements MVCRenderComma
 			renderRequest.setAttribute(
 					WebKey.DATA_STRUCTURE, 
 					dataStructure );
+			/*
 			renderRequest.setAttribute(
 					StationXWebKeys.ABSTRACT_FIELDS, 
 					jsonAbstractFields );
+			*/
 			renderRequest.setAttribute(
 					"structuredDataList",
 					structuredDataList);

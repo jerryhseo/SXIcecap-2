@@ -54,20 +54,6 @@ public interface DataStructureModel extends BaseModel<DataStructure> {
 	public void setPrimaryKey(long primaryKey);
 
 	/**
-	 * Returns the data structure ID of this data structure.
-	 *
-	 * @return the data structure ID of this data structure
-	 */
-	public long getDataStructureId();
-
-	/**
-	 * Sets the data structure ID of this data structure.
-	 *
-	 * @param dataStructureId the data structure ID of this data structure
-	 */
-	public void setDataStructureId(long dataStructureId);
-
-	/**
 	 * Returns the data type ID of this data structure.
 	 *
 	 * @return the data type ID of this data structure
@@ -80,21 +66,6 @@ public interface DataStructureModel extends BaseModel<DataStructure> {
 	 * @param dataTypeId the data type ID of this data structure
 	 */
 	public void setDataTypeId(long dataTypeId);
-
-	/**
-	 * Returns the version of this data structure.
-	 *
-	 * @return the version of this data structure
-	 */
-	@AutoEscape
-	public String getVersion();
-
-	/**
-	 * Sets the version of this data structure.
-	 *
-	 * @param version the version of this data structure
-	 */
-	public void setVersion(String version);
 
 	/**
 	 * Returns the structure of this data structure.

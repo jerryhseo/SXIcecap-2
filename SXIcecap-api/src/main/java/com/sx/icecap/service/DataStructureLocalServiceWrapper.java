@@ -50,22 +50,17 @@ public class DataStructureLocalServiceWrapper
 		return _dataStructureLocalService.addDataStructure(dataStructure);
 	}
 
-	@Override
-	public int countByDataTypeId(long dataTypeId) {
-		return _dataStructureLocalService.countByDataTypeId(dataTypeId);
-	}
-
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
-	 * @param dataStructureId the primary key for the new data structure
+	 * @param dataTypeId the primary key for the new data structure
 	 * @return the new data structure
 	 */
 	@Override
 	public com.sx.icecap.model.DataStructure createDataStructure(
-		long dataStructureId) {
+		long dataTypeId) {
 
-		return _dataStructureLocalService.createDataStructure(dataStructureId);
+		return _dataStructureLocalService.createDataStructure(dataTypeId);
 	}
 
 	/**
@@ -92,28 +87,16 @@ public class DataStructureLocalServiceWrapper
 	 * <strong>Important:</strong> Inspect DataStructureLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param dataStructureId the primary key of the data structure
+	 * @param dataTypeId the primary key of the data structure
 	 * @return the data structure that was removed
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Override
 	public com.sx.icecap.model.DataStructure deleteDataStructure(
-			long dataStructureId)
+			long dataTypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _dataStructureLocalService.deleteDataStructure(dataStructureId);
-	}
-
-	@Override
-	public void deleteDataStructure(long dataTypeId, String version)
-		throws com.sx.icecap.exception.NoSuchDataStructureException {
-
-		_dataStructureLocalService.deleteDataStructure(dataTypeId, version);
-	}
-
-	@Override
-	public void deleteDataStructures(long dataTypeId) {
-		_dataStructureLocalService.deleteDataStructures(dataTypeId);
+		return _dataStructureLocalService.deleteDataStructure(dataTypeId);
 	}
 
 	/**
@@ -220,9 +203,9 @@ public class DataStructureLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataStructure fetchDataStructure(
-		long dataStructureId) {
+		long dataTypeId) {
 
-		return _dataStructureLocalService.fetchDataStructure(dataStructureId);
+		return _dataStructureLocalService.fetchDataStructure(dataTypeId);
 	}
 
 	@Override
@@ -235,24 +218,15 @@ public class DataStructureLocalServiceWrapper
 	/**
 	 * Returns the data structure with the primary key.
 	 *
-	 * @param dataStructureId the primary key of the data structure
+	 * @param dataTypeId the primary key of the data structure
 	 * @return the data structure
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Override
-	public com.sx.icecap.model.DataStructure getDataStructure(
-			long dataStructureId)
+	public com.sx.icecap.model.DataStructure getDataStructure(long dataTypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _dataStructureLocalService.getDataStructure(dataStructureId);
-	}
-
-	@Override
-	public com.sx.icecap.model.DataStructure getDataStructure(
-			long dataTypeId, String version)
-		throws com.sx.icecap.exception.NoSuchDataStructureException {
-
-		return _dataStructureLocalService.getDataStructure(dataTypeId, version);
+		return _dataStructureLocalService.getDataStructure(dataTypeId);
 	}
 
 	/**
@@ -271,13 +245,6 @@ public class DataStructureLocalServiceWrapper
 		int start, int end) {
 
 		return _dataStructureLocalService.getDataStructures(start, end);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.DataStructure> getDataStructures(
-		long dataTypeId) {
-
-		return _dataStructureLocalService.getDataStructures(dataTypeId);
 	}
 
 	/**
@@ -333,14 +300,6 @@ public class DataStructureLocalServiceWrapper
 		com.sx.icecap.model.DataStructure dataStructure) {
 
 		return _dataStructureLocalService.updateDataStructure(dataStructure);
-	}
-
-	@Override
-	public com.sx.icecap.model.DataStructure updateDataStructure(
-		long dataTypeId, String version, String structure) {
-
-		return _dataStructureLocalService.updateDataStructure(
-			dataTypeId, version, structure);
 	}
 
 	@Override

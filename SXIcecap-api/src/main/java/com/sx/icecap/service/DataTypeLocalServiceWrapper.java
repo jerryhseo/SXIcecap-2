@@ -146,15 +146,11 @@ public class DataTypeLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteDataStructure(long dataTypeId, String version)
+	public com.sx.icecap.model.DataStructure deleteDataStructure(
+			long dataTypeId)
 		throws com.sx.icecap.exception.NoSuchDataStructureException {
 
-		_dataTypeLocalService.deleteDataStructure(dataTypeId, version);
-	}
-
-	@Override
-	public void deleteDataStructures(long dataTypeId) {
-		_dataTypeLocalService.deleteDataStructures(dataTypeId);
+		return _dataTypeLocalService.deleteDataStructure(dataTypeId);
 	}
 
 	/**
@@ -865,8 +861,8 @@ public class DataTypeLocalServiceWrapper
 	}
 
 	/**
-	 * Set the data structure for the dataType specified by dataTypeId.
-	 *
+	 * @throws NoSuchDataStructureException
+	 Set the data structure for the dataType specified by dataTypeId.
 	 * @since 1.0
 	 * @see com.sx.icecap.datatype.service
 	 * @author Jerry H. Seo
@@ -877,10 +873,10 @@ public class DataTypeLocalServiceWrapper
 	 */
 	@Override
 	public com.sx.icecap.model.DataStructure updateDataStructure(
-		long dataTypeId, String version, String strDataStructure) {
+		long dataTypeId, String strDataStructure) {
 
 		return _dataTypeLocalService.updateDataStructure(
-			dataTypeId, version, strDataStructure);
+			dataTypeId, strDataStructure);
 	}
 
 	/**

@@ -12,6 +12,9 @@ import { SXAutoComplete, SXPreviewRow } from "../../form/sxform";
 import { createRoot } from "react-dom/client";
 
 export class DataStructure {
+	#key = Util.randomKey();
+	#namespace = "";
+	#formId = "";
 	#paramDelimiter = ";";
 	#paramDelimiterPosition = "end";
 	#paramValueDelimiter = "=";
@@ -22,106 +25,11 @@ export class DataStructure {
 	#enableInputStatus = false;
 	#enableGoTo = false;
 	#hierarchicalData = false;
-	#version = "1.0.0";
 
 	static parse(fields) {
 		return fields.map((field) => {
 			return Parameter.createParameter(field.paramType, field);
 		});
-	}
-
-	static loadFormData(parameters, formData) {
-		if (Util.isEmpty(parameters) || !(parameters instanceof Array)) return;
-
-		parameters.forEach((param) => {
-			const value = formData[param.paramName];
-			if (Util.isNotEmpty(value)) {
-				param.loadData(value);
-			}
-		});
-	}
-
-	static findFormField(fields, fieldName, fieldVersion) {
-		let found = null;
-
-		fields.every((field) => {
-			if (field.equalTo(fieldName, fieldVersion)) {
-				found = field;
-				return Constant.STOP_EVERY;
-			}
-
-			if (field.isAssembly()) {
-				found = DataStructure.findFormField(field.members, fieldName, fieldVersion);
-				if (found) {
-					return Constant.STOP_EVERY;
-				}
-			}
-
-			return Constant.CONTINUE_EVERY;
-		});
-
-		return found;
-	}
-
-	static setFormData(fields, paramName, paramVersion, value) {
-		let parameter = DataStructure.findFormField(fields, paramName, paramVersion);
-
-		if (parameter === null || parameter === undefined) return;
-
-		parameter.setValue(value);
-	}
-
-	static setFormError(fields, paramName, paramVersion, error) {
-		let parameter = DataStructure.findFormField(fields, paramName, paramVersion);
-
-		if (parameter === null || parameter === undefined) return;
-
-		parameter.setError(error);
-	}
-
-	static clearFormFieldError(formFields, paramName, paramVersion) {
-		const parameter = DataStructure.findFormField(formFields, paramName, paramVersion);
-		if (parameter === null || parameter === undefined) return;
-
-		parameter.setError();
-
-		console.log("clearFormFieldError: ", parameter);
-	}
-
-	static checkFormDataErrors(fields) {
-		let error = {};
-
-		fields.every((field) => {
-			if (field.isAssembly()) {
-				error = DataStructure.checkFormDataErrors(field.members);
-				if (Util.isNotEmpty(error)) {
-					return Constant.STOP_EVERY;
-				}
-			} else {
-				if (field.hasError()) {
-					error = {
-						fieldName: field.paramName,
-						fieldVersion: field.paramVersion,
-						parentId: field.parent,
-						message: field.error
-					};
-
-					return Constant.STOP_EVERY;
-				} else if (field.required && !field.hasValue()) {
-					error = {
-						fieldName: field.paramName,
-						fieldVersion: field.paramVersion,
-						parentId: field.parent,
-						message: field.validation.required.message
-					};
-					return Constant.STOP_EVERY;
-				}
-			}
-
-			return Constant.CONTINUE_EVERY;
-		});
-
-		return error;
 	}
 
 	static toStructuredData(fields) {
@@ -138,12 +46,24 @@ export class DataStructure {
 		return json;
 	}
 
-	constructor(json) {
+	constructor(namespace, formId, json) {
+		this.#namespace = namespace;
+		this.#formId = formId;
+
 		if (json) {
-			this.parse(json);
+			this.parse(namespace, formId, json);
 		}
 	}
 
+	get key() {
+		return this.#key;
+	}
+	get namespace() {
+		return this.#namespace;
+	}
+	get formId() {
+		return this.#formId;
+	}
 	get paramDelimiter() {
 		return this.#paramDelimiter;
 	}
@@ -174,12 +94,15 @@ export class DataStructure {
 	get hierarchicalData() {
 		return this.#hierarchicalData;
 	}
-	get version() {
-		return this.#version;
-	}
 
 	set paramDelimiter(val) {
 		this.#paramDelimiter = val;
+	}
+	set namespace(val) {
+		this.#namespace = val;
+	}
+	set formId(val) {
+		this.#formId = val;
 	}
 	set paramDelimiterPosition(val) {
 		this.#paramDelimiterPosition = val;
@@ -208,8 +131,118 @@ export class DataStructure {
 	set hierarchicalData(val) {
 		this.#hierarchicalData = val;
 	}
-	set version(val) {
-		this.#version = val;
+
+	loadParameterValues(values) {
+		if (Util.isEmpty(this.parameters)) return;
+
+		this.parameters.forEach((param) => {
+			const value = values[param.paramName];
+			if (Util.isNotEmpty(value)) {
+				param.loadData(value);
+			}
+		});
+	}
+
+	findParameter(paramName, paramVersion) {
+		function getParam(params, name, version) {
+			let found = null;
+
+			params.every((field) => {
+				if (field.equalTo(name, version)) {
+					found = field;
+					return Constant.STOP_EVERY;
+				}
+
+				if (field.isAssembly()) {
+					found = getParam(field.members, field.paramName, field.paramVersion);
+					if (found) {
+						return Constant.STOP_EVERY;
+					}
+				}
+
+				return Constant.CONTINUE_EVERY;
+			});
+
+			return found;
+		}
+
+		return getParam(this.parameters, paramName, paramVersion);
+	}
+
+	setParameterValue(paramName, paramVersion, value) {
+		let parameter = this.findFormField(paramName, paramVersion);
+
+		if (parameter === null || parameter === undefined) return;
+
+		parameter.setValue(value);
+	}
+
+	clearParameterValues() {
+		this.parameters.forEach((field) => {
+			if (field.isAssembly()) {
+				this.clearParameterValues(field.members);
+			} else {
+				field.clearValue();
+			}
+		});
+		console.log("clearParameterValues: ", this.parameters);
+	}
+
+	setParameterError(paramName, paramVersion, error) {
+		let parameter = this.findFormField(paramName, paramVersion);
+
+		if (parameter === null || parameter === undefined) return;
+
+		parameter.setError(error);
+	}
+
+	clearParameterError(paramName, paramVersion) {
+		const parameter = this.findParameter(paramName, paramVersion);
+		if (parameter === null || parameter === undefined) return;
+
+		parameter.clearError();
+
+		console.log("clearFormFieldError: ", parameter);
+	}
+
+	checkParameterErrors() {
+		function checkParamErrors(params) {
+			let error;
+
+			params.every((field) => {
+				if (field.isAssembly()) {
+					error = checkParamErrors(field.members);
+					if (Util.isNotEmpty(error)) {
+						return Constant.STOP_EVERY;
+					}
+				} else {
+					if (field.hasError()) {
+						error = {
+							fieldName: field.paramName,
+							fieldVersion: field.paramVersion,
+							parentId: field.parent,
+							message: field.error
+						};
+
+						return Constant.STOP_EVERY;
+					} else if (field.required && !field.hasValue()) {
+						error = {
+							fieldName: field.paramName,
+							fieldVersion: field.paramVersion,
+							parentId: field.parent,
+							message: field.validation.required.message
+						};
+						return Constant.STOP_EVERY;
+					}
+				}
+
+				return Constant.CONTINUE_EVERY;
+			});
+
+			return error;
+		}
+
+		return checkParamErrors(this.parameters);
 	}
 
 	addParameter(parameter) {
@@ -219,9 +252,13 @@ export class DataStructure {
 		}
 
 		this.parameters.push(parameter);
+
+		this.#key = Util.randomKey();
 	}
 
-	removeParameter() {}
+	removeParameter() {
+		this.#key = Util.randomKey();
+	}
 
 	getParameterByOrder(groupId, order) {
 		let retrieved = null;
@@ -235,6 +272,10 @@ export class DataStructure {
 		});
 
 		return retrieved;
+	}
+
+	countParameters() {
+		return this.parameters.length;
 	}
 
 	/**
@@ -278,7 +319,7 @@ export class DataStructure {
 		}
 	}
 
-	parse(json) {
+	parse(namespace, formId, json) {
 		this.paramDelimiter = json.paramDelimiter ?? this.paramDelimiter;
 		this.paramDelimiterPosition = json.paramDelimiterPosition ?? this.paramDelimiterPosition;
 		this.paramValueDelimiter = json.paramValueDelimiter ?? this.paramValueDelimiter;
@@ -287,12 +328,11 @@ export class DataStructure {
 		this.commentChar = json.commentChar ?? this.commentChar;
 
 		json.parameters.forEach((paramJSONObj) => {
-			this.parameters.push(Parameter.createParameter(paramJSONObj.paramType, paramJSONObj));
+			this.parameters.push(Parameter.createParameter(namespace, formId, paramJSONObj.paramType, paramJSONObj));
 		});
 
 		this.enableInputStatus = json.enableInputStatus ?? false;
 		this.enableGoTo = json.enableGoTo ?? false;
-		this.version = json.version ?? "1.0.0";
 	}
 
 	toJSON() {
@@ -310,8 +350,6 @@ export class DataStructure {
 		if (this.enableInputStatus) json.enableInputStatus = this.enableInputStatus;
 		if (this.enableGoTo) json.enableGoTo = this.enableGoTo;
 
-		json.version = this.version;
-
 		return json;
 	}
 
@@ -324,7 +362,8 @@ export class DataStructure {
 		availableLanguageIds,
 		className,
 		style,
-		spritemap
+		spritemap,
+		workingParamOrder
 	) {
 		let goTo;
 		this.enableGoTo = true;
@@ -333,6 +372,7 @@ export class DataStructure {
 		if (this.enableGoTo) {
 			goTo = (
 				<SXAutoComplete
+					key={this.key}
 					namespace={namespace}
 					languageId={languageId}
 					availableLanguageIds={availableLanguageIds}
@@ -343,17 +383,15 @@ export class DataStructure {
 			);
 		}
 
-		const parameters = this.parameters;
-
 		return (
 			<>
 				{/*goTo*/}
 				<div id={previewCanvasId}>
-					{parameters.map((parameter) => {
+					{this.parameters.map((parameter, i) => {
 						console.log("parameter: ", parameter);
 						return (
 							<SXPreviewRow
-								key={parameter.paramName}
+								key={parameter.key}
 								namespace={namespace}
 								dsbuilderId={dsbuilderId}
 								propertyPanelId={propertyPanelId}
@@ -361,6 +399,7 @@ export class DataStructure {
 								languageId={languageId}
 								availableLanguageIds={availableLanguageIds}
 								parameter={parameter}
+								focus={i + 1 === workingParamOrder ? true : false}
 								spritemap={spritemap}
 							/>
 						);
@@ -378,6 +417,7 @@ export class DataStructure {
 		if (this.enableGoTo) {
 			goTo = (
 				<SXAutoComplete
+					key={this.key}
 					namespace={namespace}
 					languageId={languageId}
 					availableLanguageIds={availableLanguageIds}
@@ -391,7 +431,10 @@ export class DataStructure {
 		return (
 			<>
 				{/*goTo*/}
-				<div id={canvasId}>
+				<div
+					id={canvasId}
+					style={{ zIndex: "-10" }}
+				>
 					{this.parameters.map((parameter) =>
 						parameter.render(
 							namespace,

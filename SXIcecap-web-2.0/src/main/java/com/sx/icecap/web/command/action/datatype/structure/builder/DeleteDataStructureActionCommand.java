@@ -5,6 +5,8 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.sx.icecap.constant.DataTypeProperty;
 import com.sx.icecap.constant.MVCCommand;
 import com.sx.icecap.constant.WebPortletKey;
+import com.sx.icecap.exception.NoSuchDataStructureException;
+import com.sx.icecap.exception.NoSuchDataTypeException;
 import com.sx.icecap.service.DataTypeLocalService;
 
 import javax.portlet.ActionRequest;
@@ -30,7 +32,12 @@ public class DeleteDataStructureActionCommand implements MVCActionCommand {
 		
 		long dataTypeId = ParamUtil.getLong(actionRequest, DataTypeProperty.DATATYPE_ID, 0);
 		
-		_dataTypeLocalService.deleteDataStructures(dataTypeId);
+			try {
+				_dataTypeLocalService.deleteDataStructure(dataTypeId);
+			} catch (NoSuchDataStructureException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		
 		return false;
 	}

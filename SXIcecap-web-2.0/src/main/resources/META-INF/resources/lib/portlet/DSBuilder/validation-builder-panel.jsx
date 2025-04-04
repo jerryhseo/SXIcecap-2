@@ -1,455 +1,617 @@
 import React, { useContext, useRef, useState } from "react";
 import { Util } from "../../common/util";
-import { Event } from "../../common/station-x";
-import { ClayToggle } from "@clayui/form";
+import { Event, ParamType, ValidationKeys } from "../../common/station-x";
+import { ClayCheckbox, ClayInput, ClayToggle } from "@clayui/form";
 import LocalizedInput from "@clayui/localized-input";
 import { Context } from "@clayui/modal";
 import { openConfirmModal } from "../../modal/sxmodal";
+import { Parameter } from "../../parameter/parameter";
 
-const SXDSBuilderValidationPanel = ({
-	namespace,
-	dsbuilderId,
-	propertyPanelId,
-	previewCanvasId,
-	languageId,
-	availableLanguageIds,
-	parameter,
-	spritemap
-}) => {
-	const [validationState, setValidationState] = useState(parameter.validation);
+class SXDSBuilderValidationPanel extends React.Component {
+	constructor(props) {
+		super(props);
 
-	const locales = availableLanguageIds.map((locale) => ({
-		label: locale,
-		symbol: locale.toLowerCase()
-	}));
+		this.namespace = props.namespace;
+		this.dsbuilderId = props.dsbuilderId;
+		this.propertyPanelId = props.propertyPanelId;
+		this.previewCanvasId = props.previewCanvasId;
+		this.languageId = props.languageId;
+		this.availableLanguageIds = props.availableLanguageIds;
+		this.spritemap = props.spritemap;
 
-	const [selectedLang, setSelectedLang] = useState({
-		required: { label: languageId, symbol: languageId.toLowerCase() },
-		pattern: { label: languageId, symbol: languageId.toLowerCase() },
-		min: { label: languageId, symbol: languageId.toLowerCase() },
-		max: { label: languageId, symbol: languageId.toLowerCase() }
-	});
+		this.locales = props.availableLanguageIds.map((locale) => ({
+			label: locale,
+			symbol: locale.toLowerCase()
+		}));
 
-	const [warningDialogContext, dispatchWarningDialog] = useContext(Context);
+		this.state = {
+			parameter: props.parameter,
+			validation: props.parameter.validation ?? {},
+			selectedLang: {
+				required: { label: props.languageId, symbol: props.languageId.toLowerCase() },
+				pattern: { label: props.languageId, symbol: props.languageId.toLowerCase() },
+				minLength: { label: props.languageId, symbol: props.languageId.toLowerCase() },
+				maxLength: { label: props.languageId, symbol: props.languageId.toLowerCase() },
+				min: { label: props.languageId, symbol: props.languageId.toLowerCase() },
+				max: { label: props.languageId, symbol: props.languageId.toLowerCase() },
+				normalMin: { label: props.languageId, symbol: props.languageId.toLowerCase() },
+				normalMax: { label: props.languageId, symbol: props.languageId.toLowerCase() }
+			},
+			waringDlg: false
+		};
+	}
 
-	const validationEnabled = (section) => {
-		return !!validationState[section];
-	};
+	validationEnabled(section) {
+		return Parameter.checkValidationEnabled(this.state.validation, section);
+	}
 
-	const getTranslations = (section) => {
-		return validationEnabled(section) ? validationState[section].message ?? {} : {};
-	};
+	getTranslations(section) {
+		return Parameter.getValidationValue(this.state.validation, section, "message") ?? {};
+	}
 
-	const getValue = (section) => {
-		if (section === "validate") {
-			return validationEnabled(section) ? validationState[section] : "";
+	getValue(section) {
+		return Parameter.getValidationValue(
+			this.state.validation,
+			section,
+			section === ValidationKeys.CUSTOM ? null : "value"
+		);
+	}
+
+	setValue(section, value) {
+		Parameter.setValidationValue(this.state.validation, section, "value", value);
+
+		if (section === ValidationKeys.REQUIRED) {
+			if (value) {
+				for (let i = 0; i < this.availableLanguageIds.length; i++) {
+					const lang = this.availableLanguageIds[i];
+					Parameter.setValidationValue(
+						this.state.validation,
+						ValidationKeys.REQUIRED,
+						"message",
+						"This field is required",
+						lang
+					);
+				}
+			}
 		}
 
-		return validationEnabled(section) ? validationState[section].value ?? "" : "";
-	};
-	const setValue = (section, value) => {
-		if (section === "validate") {
-			if (Util.isEmpty(value)) {
-				delete validationState.validate;
-			} else {
-				validationState.validate = value;
-			}
-		} else {
-			if (Util.isEmpty(value)) {
-				delete validationState[section].value;
-			} else {
-				validationState[section].value = value;
-			}
-		}
-
-		setValidationState({ ...validationState });
-
-		Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
-			target: dsbuilderId,
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
+			target: this.dsbuilderId,
 			paramName: "validation",
 			paramVersion: "1.0.0",
-			value: validationState
+			value: this.state.validation
 		});
-	};
-	const setTranslations = (section, translations) => {
-		if (Util.isEmpty(translations)) {
-			delete validationState[section].message;
-		} else {
-			validationState[section].message = translations;
+
+		this.setState({ validation: { ...this.state.validation } });
+	}
+
+	setTranslations(section, translations) {
+		Parameter.setValidationValue(this.state.validation, ValidationKeys.REQUIRED, "message", translations);
+
+		if (Util.isNotEmpty(this.state.validation[section])) {
+			Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
+				target: this.dsbuilderId,
+				paramName: "validation",
+				paramVersion: "1.0.0",
+				value: this.state.validation
+			});
 		}
 
-		setValidationState({ ...validationState });
+		this.setState({ validation: { ...this.state.validation } });
+	}
 
-		Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
-			target: dsbuilderId,
+	handleToggle(section) {
+		Parameter.toggleValidationSection(this.state.validation, section);
+
+		if (section === ValidationKeys.REQUIRED) {
+			this.setValue(section, Parameter.checkValidationEnabled(this.state.validation, section));
+		}
+
+		this.setState({ validation: { ...this.state.validation } });
+	}
+
+	toggleBoundary(section) {
+		const newValidation = { ...this.state.validation };
+
+		Parameter.setValidationValue(newValidation, section, "boundary", !this.state.validation[section].boundary);
+
+		this.setState({ validation: newValidation });
+
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
+			target: this.dsbuilderId,
 			paramName: "validation",
 			paramVersion: "1.0.0",
-			value: validationState
+			value: newValidation
 		});
-	};
+	}
 
-	const handleToggle = (section) => {
+	handleValueChanged(section, value) {
 		switch (section) {
-			case "required": {
-				if (validationEnabled("required")) {
-					delete validationState.required;
-				} else {
-					validationState.required = { value: true, message: {} };
-				}
-
-				handleValueChanged("required", Util.isNotEmpty(validationState.required));
-				setValidationState({ ...validationState });
+			case ValidationKeys.PATTERN:
+			case ValidationKeys.CUSTOM:
+				this.setValue(section, value);
 				break;
-			}
-			case "pattern": {
-				if (validationEnabled("pattern")) {
-					delete validationState.pattern;
+			case ValidationKeys.MIN_LENGTH:
+			case ValidationKeys.MAX_LENGTH:
+				if (isNaN(value)) {
+					this.setValue(section, "");
 				} else {
-					validationState.pattern = {};
+					this.setValue(section, Util.isNotEmpty(value) ? Math.floor(Number(value)) : "");
 				}
-
-				setValidationState({ ...validationState });
-				break;
-			}
-			case "min": {
-				if (validationEnabled("min")) {
-					delete validationState.min;
-				} else {
-					validationState.min = {};
-				}
-
-				setValidationState({ ...validationState });
-				break;
-			}
-			case "max": {
-				if (validationEnabled("max")) {
-					delete validationState.max;
-				} else {
-					validationState.max = {};
-				}
-
-				setValidationState({ ...validationState });
-				break;
-			}
-			case "validate": {
-				if (validationEnabled("validate")) {
-					delete validationState.validate;
-				} else {
-					validationState.validate = "function(value){\n}";
-				}
-
-				setValidationState({ ...validationState });
-				break;
-			}
-		}
-	};
-
-	const handleValueChanged = (section, value) => {
-		switch (section) {
-			case "required":
-			case "pattern":
-			case "validate":
-				setValue(section, value);
 				break;
 			case "min":
-			case "max":
+			case ValidationKeys.MAX:
+			case ValidationKeys.NORMAL_MIN:
+			case ValidationKeys.NORMAL_MAX:
 				if (isNaN(value)) {
-					dispatchWarningDialog(
-						openConfirmModal({
-							title: Util.translate("warning"),
-							modalType: "warning",
-							content: Util.translate("the-value-of-the-field-requires-only-numbers"),
-							buttons: [
-								{
-									label: Util.translate("ok"),
-									onClick: warningDialogContext.onClose
-								}
-							],
-							size: "sm",
-							spritemap: spritemap
-						})
-					);
-
-					setValue(section, "");
+					this.setValue(section, "");
 				} else {
-					setValue(section, Number(value));
+					this.setValue(section, Util.isNotEmpty(value) ? Number(value) : "");
 				}
 
 				break;
 		}
-	};
+	}
 
-	const handleMessageChanged = (section, translations) => {
-		setTranslations(section, translations);
+	handleMessageChanged(section, translations) {
+		this.setTranslations(section, translations);
+	}
 
-		setValidationState({ ...validationState });
-	};
-
-	const handleLanguageChanged = (section, locale) => {
+	handleLanguageChanged(section, locale) {
 		console.log("handleLanguageChanged locale: ", locale);
-		selectedLang[section] = locale;
+		this.state.selectedLang[section] = locale;
 
-		setSelectedLang({ ...selectedLang });
-	};
+		this.setState({ ...this.state.selectedLang });
+	}
 
-	const requiredMessageId = namespace + "requiredMessage";
-	const patternValueId = namespace + "patternValue";
-	const patternMessageId = namespace + "patternMessage";
-	const minValueId = namespace + "minValue";
-	const minMessageId = namespace + "minMessage";
-	const maxValueId = namespace + "maxValue";
-	const maxMessageId = namespace + "maxMessage";
-	const validateId = namespace + "validate";
+	render() {
+		return (
+			<>
+				<div className="border sx-validation-section">
+					<div className="autofit-row">
+						<span className="autifit-col autofit-col-expand">
+							<h4>{"Required"}</h4>
+						</span>
+						<span className="autofit-col">
+							<ClayToggle
+								onToggle={() => this.handleToggle(ValidationKeys.REQUIRED)}
+								spritemap={this.spritemap}
+								symbol={{
+									off: "times",
+									on: "check"
+								}}
+								toggled={this.validationEnabled(ValidationKeys.REQUIRED)}
+								className="form-control-sm"
+							/>
+						</span>
+					</div>
+					{this.validationEnabled(ValidationKeys.REQUIRED) && (
+						<div className="sx-validation-section-enabled">
+							<LocalizedInput
+								id={this.namespace + "requiredMessage"}
+								locales={this.locales}
+								label={Util.translate("message")}
+								onSelectedLocaleChange={(locale) =>
+									this.handleLanguageChanged(ValidationKeys.REQUIRED, locale)
+								}
+								selectedLocale={this.state.selectedLang.required}
+								translations={this.getTranslations(ValidationKeys.REQUIRED)}
+								onTranslationsChange={(translations) =>
+									this.handleMessageChanged(ValidationKeys.REQUIRED, translations)
+								}
+								spritemap={this.spritemap}
+							/>
+						</div>
+					)}
+				</div>
+				{(this.state.parameter.paramType === ParamType.STRING ||
+					this.state.parameter.paramType === ParamType.LOCALIZED_STRING) && (
+					<>
+						<div className="border sx-validation-section">
+							<div className="autofit-row">
+								<span className="autifit-col autofit-col-expand">
+									<h4>{"Pattern"}</h4>
+								</span>
+								<span className="autofit-col">
+									<ClayToggle
+										onToggle={() => this.handleToggle(ValidationKeys.PATTERN)}
+										spritemap={this.spritemap}
+										symbol={{
+											off: "times",
+											on: "check"
+										}}
+										toggled={this.validationEnabled(ValidationKeys.PATTERN)}
+										className="form-control-sm"
+									/>
+								</span>
+							</div>
+							{this.validationEnabled(ValidationKeys.PATTERN) && (
+								<div className="sx-validation-section-enabled">
+									<span className="sx-validation-label">{Util.translate("value")}</span>
+									<input
+										id={this.namespace + "patternValue"}
+										defaultValue={this.getValue(ValidationKeys.PATTERN)}
+										onBlur={(e) => this.handleValueChanged(ValidationKeys.PATTERN, e.target.value)}
+										className="form-control form-control-sm"
+									/>
 
-	return (
-		<>
-			<div
-				className="border"
-				style={{ padding: "10px", marginBottom: "10px" }}
-			>
-				<div className="autofit-row">
-					<span className="autifit-col autofit-col-expand">
-						<h4>{"Required"}</h4>
-					</span>
-					<span className="autofit-col">
-						<ClayToggle
-							onToggle={() => handleToggle("required")}
-							spritemap={spritemap}
-							symbol={{
-								off: "times",
-								on: "check"
-							}}
-							toggled={validationEnabled("required")}
-							className="form-control-sm"
-						/>
-					</span>
-				</div>
-				<div
-					style={{
-						display: validationEnabled("required") ? "block" : "none",
-						marginLeft: "2rem"
-					}}
-				>
-					<LocalizedInput
-						id={requiredMessageId}
-						locales={locales}
-						label={Util.translate("message")}
-						onSelectedLocaleChange={(locale) => handleLanguageChanged("required", locale)}
-						selectedLocale={selectedLang.required}
-						translations={getTranslations("required")}
-						onTranslationsChange={(translations) => handleMessageChanged("required", translations)}
-						spritemap={spritemap}
-					/>
-				</div>
-			</div>
-			<div
-				className="border"
-				style={{ padding: "10px", marginBottom: "10px" }}
-			>
-				<div className="autofit-row">
-					<span className="autifit-col autofit-col-expand">
-						<h4>{"Pattern"}</h4>
-					</span>
-					<span className="autofit-col">
-						<ClayToggle
-							onToggle={() => handleToggle("pattern")}
-							spritemap={spritemap}
-							symbol={{
-								off: "times",
-								on: "check"
-							}}
-							toggled={validationEnabled("pattern")}
-							className="form-control-sm"
-						/>
-					</span>
-				</div>
-				<div
-					style={{
-						display: validationEnabled("pattern") ? "block" : "none",
-						marginLeft: "2rem"
-					}}
-				>
-					<span
-						style={{
-							fontSize: "0.875rem",
-							fontWeight: "600",
-							marginRight: "10px",
-							marginBottom: "5px"
-						}}
-					>
-						{Util.translate("value")}
-					</span>
-					<input
-						id={patternValueId}
-						defaultValue={getValue("pattern")}
-						onBlur={(e) => handleValueChanged("pattern", e.target.value)}
-						className="form-control form-control-sm"
-					/>
-
-					<LocalizedInput
-						id={patternMessageId}
-						locales={locales}
-						label={Util.translate("message")}
-						onSelectedLocaleChange={(locale) => handleLanguageChanged("pattern", locale)}
-						selectedLocale={selectedLang.pattern}
-						translations={getTranslations("pattern")}
-						onTranslationsChange={(translations) => handleMessageChanged("pattern", translations)}
-						spritemap={spritemap}
-					/>
-				</div>
-			</div>
-			<div
-				className="border"
-				style={{ padding: "10px", marginBottom: "10px" }}
-			>
-				<div className="autofit-row">
-					<span className="autifit-col autofit-col-expand">
-						<h4>{"Min"}</h4>
-					</span>
-					<span className="autofit-col">
-						<ClayToggle
-							onToggle={() => handleToggle("min")}
-							spritemap={spritemap}
-							symbol={{
-								off: "times",
-								on: "check"
-							}}
-							toggled={validationEnabled("min")}
-							className="form-control-sm"
-						/>
-					</span>
-				</div>
-				<div
-					style={{
-						display: validationEnabled("min") ? "block" : "none",
-						marginLeft: "2rem"
-					}}
-				>
-					<span
-						style={{
-							fontSize: "0.875rem",
-							fontWeight: "600",
-							marginRight: "10px",
-							marginBottom: "5px"
-						}}
-					>
-						{Util.translate("value")}
-					</span>
-					<input
-						id={minValueId}
-						defaultValue={getValue("min")}
-						onBlur={(e) => handleValueChanged("min", e.target.value)}
-						className="form-control form-control-sm"
-					/>
-					<LocalizedInput
-						id={minMessageId}
-						locales={locales}
-						label={Util.translate("message")}
-						onSelectedLocaleChange={(locale) => handleLanguageChanged("min", locale)}
-						selectedLocale={selectedLang.min}
-						translations={getTranslations("min")}
-						onTranslationsChange={(translations) => handleMessageChanged("min", translations)}
-						spritemap={spritemap}
-					/>
-				</div>
-			</div>
-			<div
-				className="border"
-				style={{ padding: "10px", marginBottom: "10px" }}
-			>
-				<div className="autofit-row">
-					<span className="autifit-col autofit-col-expand">
-						<h4>{"Max"}</h4>
-					</span>
-					<span className="autofit-col">
-						<ClayToggle
-							onToggle={() => handleToggle("max")}
-							spritemap={spritemap}
-							symbol={{
-								off: "times",
-								on: "check"
-							}}
-							toggled={validationEnabled("max")}
-							className="form-control-sm"
-						/>
-					</span>
-				</div>
-				<div
-					style={{
-						display: validationEnabled("max") ? "block" : "none",
-						marginLeft: "2rem",
-						marginTop: "10px"
-					}}
-				>
-					<span
-						style={{
-							fontSize: "0.875rem",
-							fontWeight: "600",
-							marginRight: "10px",
-							marginBottom: "5px"
-						}}
-					>
-						{Util.translate("value")}
-					</span>
-					<input
-						id={maxValueId}
-						defaultValue={getValue("max")}
-						onBlur={(e) => handleValueChanged("max", e.target.value)}
-						className="form-control form-control-sm"
-					/>
-					<LocalizedInput
-						id={maxMessageId}
-						locales={locales}
-						label={Util.translate("message")}
-						onSelectedLocaleChange={(locale) => handleLanguageChanged("max", locale)}
-						selectedLocale={selectedLang.max}
-						translations={getTranslations("max")}
-						onTranslationsChange={(translations) => handleMessageChanged("max", translations)}
-						spritemap={spritemap}
-					/>
-				</div>
-			</div>
-			<div
-				className="border"
-				style={{ padding: "10px", marginBottom: "10px" }}
-			>
-				<div className="autofit-row">
-					<span className="autifit-col autofit-col-expand">
-						<h4>{"Validate"}</h4>
-					</span>
-					<span className="autofit-col">
-						<ClayToggle
-							onToggle={() => handleToggle("validate")}
-							spritemap={spritemap}
-							symbol={{
-								off: "times",
-								on: "check"
-							}}
-							toggled={validationEnabled("validate")}
-							className="form-control-sm"
-						/>
-					</span>
-				</div>
-				<div
-					style={{
-						display: validationEnabled("validate") ? "block" : "none",
-						marginLeft: "2rem",
-						marginTop: "10px"
-					}}
-				>
-					<span style={{ fontSize: "0.875rem", fontWeight: "600", marginRight: "10px", width: "60px" }}>
-						{Util.translate("function")}
-					</span>
-					<textarea
-						id={validateId}
-						defaultValue={getValue("validate")}
-						onBlur={(e) => handleValueChanged("validate", e.target.value)}
-						className="form-control form-control-sm"
-					/>
-				</div>
-			</div>
-		</>
-	);
-};
+									<LocalizedInput
+										id={this.namespace + "patternMessage"}
+										locales={this.locales}
+										label={Util.translate("message")}
+										onSelectedLocaleChange={(locale) =>
+											this.handleLanguageChanged(ValidationKeys.PATTERN, locale)
+										}
+										selectedLocale={this.state.selectedLang.pattern}
+										translations={this.getTranslations(ValidationKeys.PATTERN)}
+										onTranslationsChange={(translations) =>
+											this.handleMessageChanged(ValidationKeys.PATTERN, translations)
+										}
+										spritemap={this.spritemap}
+									/>
+								</div>
+							)}
+						</div>
+						<div className="border sx-validation-section">
+							<div className="autofit-row">
+								<span className="autifit-col autofit-col-expand">
+									<h4>{Util.translate("min-length")}</h4>
+								</span>
+								<span className="autofit-col">
+									<ClayToggle
+										onToggle={() => this.handleToggle(ValidationKeys.MIN_LENGTH)}
+										spritemap={this.spritemap}
+										symbol={{
+											off: "times",
+											on: "check"
+										}}
+										toggled={this.validationEnabled(ValidationKeys.MIN_LENGTH)}
+										className="form-control-sm"
+									/>
+								</span>
+							</div>
+							{this.validationEnabled(ValidationKeys.MIN_LENGTH) && (
+								<div className="sx-validation-section-enabled">
+									<span className="sx-validation-label">{Util.translate("value")}</span>
+									<input
+										id={this.namespace + "minLengthValue"}
+										defaultValue={this.getValue(ValidationKeys.MIN_LENGTH)}
+										onBlur={(e) =>
+											this.handleValueChanged(ValidationKeys.MIN_LENGTH, e.target.value)
+										}
+										className="form-control form-control-sm"
+									/>
+									<LocalizedInput
+										id={this.namespace + "minLengthMessage"}
+										locales={this.locales}
+										label={Util.translate("message")}
+										onSelectedLocaleChange={(locale) =>
+											this.handleLanguageChanged(ValidationKeys.MIN_LENGTH, locale)
+										}
+										selectedLocale={this.state.selectedLang.minLength}
+										translations={this.getTranslations(ValidationKeys.MIN_LENGTH)}
+										onTranslationsChange={(translations) =>
+											this.handleMessageChanged(ValidationKeys.MIN_LENGTH, translations)
+										}
+										spritemap={this.spritemap}
+									/>
+								</div>
+							)}
+						</div>
+						<div className="border sx-validation-section">
+							<div className="autofit-row">
+								<span className="autifit-col autofit-col-expand">
+									<h4>{Util.translate("max-length")}</h4>
+								</span>
+								<span className="autofit-col">
+									<ClayToggle
+										onToggle={() => this.handleToggle(ValidationKeys.MAX_LENGTH)}
+										spritemap={this.spritemap}
+										symbol={{
+											off: "times",
+											on: "check"
+										}}
+										toggled={this.validationEnabled(ValidationKeys.MAX_LENGTH)}
+										className="form-control-sm"
+									/>
+								</span>
+							</div>
+							{this.validationEnabled(ValidationKeys.MAX_LENGTH) && (
+								<div className="sx-validation-section-enabled">
+									<span className="sx-validation-label">{Util.translate("value")}</span>
+									<input
+										id={this.namespace + "maxLengthValue"}
+										defaultValue={this.getValue(ValidationKeys.MAX_LENGTH)}
+										onBlur={(e) =>
+											this.handleValueChanged(ValidationKeys.MAX_LENGTH, e.target.value)
+										}
+										className="form-control form-control-sm"
+									/>
+									<LocalizedInput
+										id={this.namespace + "maxLengthMessage"}
+										locales={this.locales}
+										label={Util.translate("message")}
+										onSelectedLocaleChange={(locale) =>
+											this.handleLanguageChanged(ValidationKeys.MAX_LENGTH, locale)
+										}
+										selectedLocale={this.state.selectedLang.maxLength}
+										translations={this.getTranslations(ValidationKeys.MAX_LENGTH)}
+										onTranslationsChange={(translations) =>
+											this.handleMessageChanged(ValidationKeys.MAX_LENGTH, translations)
+										}
+										spritemap={this.spritemap}
+									/>
+								</div>
+							)}
+						</div>
+					</>
+				)}
+				{(this.state.parameter.paramType === ParamType.NUMERIC ||
+					this.state.parameter.paramType === ParamType.INTEGER) && (
+					<>
+						<div className="border sx-validation-section">
+							<div className="autofit-row">
+								<span className="autifit-col autofit-col-expand">
+									<h4>{"Min"}</h4>
+								</span>
+								<span className="autofit-col">
+									<ClayToggle
+										onToggle={() => this.handleToggle("min")}
+										spritemap={this.spritemap}
+										symbol={{
+											off: "times",
+											on: "check"
+										}}
+										toggled={this.validationEnabled("min")}
+										className="form-control-sm"
+									/>
+								</span>
+							</div>
+							{this.validationEnabled("min") && (
+								<div className="sx-validation-section-enabled">
+									<span className="sx-validation-label">{Util.translate("value")}</span>
+									<ClayInput.Group>
+										<ClayInput.GroupItem>
+											<input
+												id={this.namespace + "minValue"}
+												defaultValue={this.getValue("min")}
+												onBlur={(e) => this.handleValueChanged("min", e.target.value)}
+												className="form-control form-control-sm"
+											/>
+										</ClayInput.GroupItem>
+										<ClayInput.GroupItem
+											prepend
+											shrink
+										>
+											<ClayCheckbox
+												aria-label={Util.translate("min-boundary")}
+												checked={this.state.validation.min.boundary ?? false}
+												onChange={() => this.toggleBoundary("min")}
+												label={Util.translate("boundary")}
+											/>
+										</ClayInput.GroupItem>
+									</ClayInput.Group>
+									<LocalizedInput
+										id={this.namespace + "minMessage"}
+										locales={this.locales}
+										label={Util.translate("message")}
+										onSelectedLocaleChange={(locale) => this.handleLanguageChanged("min", locale)}
+										selectedLocale={this.state.selectedLang.min}
+										translations={this.getTranslations("min")}
+										onTranslationsChange={(translations) =>
+											this.handleMessageChanged("min", translations)
+										}
+										spritemap={this.spritemap}
+									/>
+								</div>
+							)}
+						</div>
+						<div className="border sx-validation-section">
+							<div className="autofit-row">
+								<span className="autifit-col autofit-col-expand">
+									<h4>{"Max"}</h4>
+								</span>
+								<span className="autofit-col">
+									<ClayToggle
+										onToggle={() => this.handleToggle(ValidationKeys.MAX)}
+										spritemap={this.spritemap}
+										symbol={{
+											off: "times",
+											on: "check"
+										}}
+										toggled={this.validationEnabled(ValidationKeys.MAX)}
+										className="form-control-sm"
+									/>
+								</span>
+							</div>
+							{this.validationEnabled(ValidationKeys.MAX) && (
+								<div className="sx-validation-section-enabled">
+									<span className="sx-validation-label">{Util.translate("value")}</span>
+									<ClayInput.Group>
+										<ClayInput.GroupItem>
+											<input
+												id={this.namespace + "maxValue"}
+												defaultValue={this.getValue(ValidationKeys.MAX)}
+												onBlur={(e) =>
+													this.handleValueChanged(ValidationKeys.MAX, e.target.value)
+												}
+												className="form-control form-control-sm"
+											/>
+										</ClayInput.GroupItem>
+										<ClayInput.GroupItem
+											prepend
+											shrink
+										>
+											<ClayCheckbox
+												aria-label={Util.translate("max-boundary")}
+												checked={this.state.validation.max.boundary ?? false}
+												onChange={() => this.toggleBoundary(ValidationKeys.MAX)}
+												label={Util.translate("boundary")}
+											/>
+										</ClayInput.GroupItem>
+									</ClayInput.Group>
+									<LocalizedInput
+										id={this.namespace + "maxMessage"}
+										locales={this.locales}
+										label={Util.translate("message")}
+										onSelectedLocaleChange={(locale) =>
+											this.handleLanguageChanged(ValidationKeys.MAX, locale)
+										}
+										selectedLocale={this.state.selectedLang.max}
+										translations={this.getTranslations(ValidationKeys.MAX)}
+										onTranslationsChange={(translations) =>
+											this.handleMessageChanged(ValidationKeys.MAX, translations)
+										}
+										spritemap={this.spritemap}
+									/>
+								</div>
+							)}
+						</div>
+						<div className="border sx-validation-section">
+							<div className="autofit-row">
+								<span className="autifit-col autofit-col-expand">
+									<h4>{Util.translate("normal-min")}</h4>
+								</span>
+								<span className="autofit-col">
+									<ClayToggle
+										onToggle={() => this.handleToggle(ValidationKeys.NORMAL_MIN)}
+										spritemap={this.spritemap}
+										symbol={{
+											off: "times",
+											on: "check"
+										}}
+										toggled={this.validationEnabled(ValidationKeys.NORMAL_MIN)}
+										className="form-control-sm"
+									/>
+								</span>
+							</div>
+							{this.validationEnabled(ValidationKeys.NORMAL_MIN) && (
+								<div className="sx-validation-section-enabled">
+									<span className="sx-validation-label">{Util.translate("value")}</span>
+									<input
+										id={this.namespace + ValidationKeys.NORMAL_MIN}
+										defaultValue={this.getValue(ValidationKeys.NORMAL_MIN)}
+										onBlur={(e) =>
+											this.handleValueChanged(ValidationKeys.NORMAL_MIN, e.target.value)
+										}
+										className="form-control form-control-sm"
+									/>
+									<ClayCheckbox
+										aria-label={Util.translate("normal-min-boundary")}
+										checked={this.state.validation.normalMin.boundary}
+										onChange={() => this.toggleBoundary(ValidationKeys.NORMAL_MIN)}
+										label={Util.translate("boundary")}
+									/>
+									<LocalizedInput
+										id={this.namespace + "normalMinMessage"}
+										locales={this.locales}
+										label={Util.translate("message")}
+										onSelectedLocaleChange={(locale) =>
+											this.handleLanguageChanged(ValidationKeys.NORMAL_MIN, locale)
+										}
+										selectedLocale={this.state.selectedLang.normalMin}
+										translations={this.getTranslations(ValidationKeys.NORMAL_MIN)}
+										onTranslationsChange={(translations) =>
+											this.handleMessageChanged(ValidationKeys.NORMAL_MIN, translations)
+										}
+										spritemap={this.spritemap}
+									/>
+								</div>
+							)}
+						</div>
+						<div className="border sx-validation-section">
+							<div className="autofit-row">
+								<span className="autifit-col autofit-col-expand">
+									<h4>{Util.translate("normal-max")}</h4>
+								</span>
+								<span className="autofit-col">
+									<ClayToggle
+										onToggle={() => this.handleToggle(ValidationKeys.NORMAL_MAX)}
+										spritemap={this.spritemap}
+										symbol={{
+											off: "times",
+											on: "check"
+										}}
+										toggled={this.validationEnabled(ValidationKeys.NORMAL_MAX)}
+										className="form-control-sm"
+									/>
+								</span>
+							</div>
+							{this.validationEnabled(ValidationKeys.NORMAL_MAX) && (
+								<div className="sx-validation-section-enabled">
+									<span className="sx-validation-label">{Util.translate("value")}</span>
+									<input
+										id={this.namespace + ValidationKeys.NORMAL_MAX}
+										defaultValue={this.getValue(ValidationKeys.NORMAL_MAX)}
+										onBlur={(e) =>
+											this.handleValueChanged(ValidationKeys.NORMAL_MAX, e.target.value)
+										}
+										className="form-control form-control-sm"
+									/>
+									<ClayCheckbox
+										aria-label={Util.translate("normal-max-boundary")}
+										checked={this.state.validation.normalMax.boundary}
+										onChange={() => this.toggleBoundary(ValidationKeys.NORMAL_MAX)}
+										label={Util.translate("boundary")}
+									/>
+									<LocalizedInput
+										id={this.namespace + "normalMaxMessage"}
+										locales={this.locales}
+										label={Util.translate("message")}
+										onSelectedLocaleChange={(locale) =>
+											this.handleLanguageChanged(ValidationKeys.NORMAL_MAX, locale)
+										}
+										selectedLocale={this.state.selectedLang.normalMax}
+										translations={this.getTranslations(ValidationKeys.NORMAL_MAX)}
+										onTranslationsChange={(translations) =>
+											this.handleMessageChanged(ValidationKeys.NORMAL_MAX, translations)
+										}
+										spritemap={this.spritemap}
+									/>
+								</div>
+							)}
+						</div>
+					</>
+				)}
+				{(this.state.parameter.paramType === ParamType.STRING ||
+					this.state.parameter.paramType === ParamType.LOCALIZED_STRING ||
+					this.state.parameter.paramType === ParamType.NUMERIC ||
+					this.state.parameter.paramType === ParamType.INTEGER ||
+					this.state.parameter.paramType === ParamType.MATRIX) && (
+					<div className="border sx-validation-section">
+						<div className="autofit-row">
+							<span className="autifit-col autofit-col-expand">
+								<h4>{"Custom"}</h4>
+							</span>
+							<span className="autofit-col">
+								<ClayToggle
+									onToggle={() => this.handleToggle(ValidationKeys.CUSTOM)}
+									spritemap={this.spritemap}
+									symbol={{
+										off: "times",
+										on: "check"
+									}}
+									toggled={this.validationEnabled(ValidationKeys.CUSTOM)}
+									className="form-control-sm"
+								/>
+							</span>
+						</div>
+						{this.validationEnabled(ValidationKeys.CUSTOM) && (
+							<div className="sx-validation-section-enabled">
+								<span className="sx-validation-label">{Util.translate("function")}</span>
+								<textarea
+									id={this.namespace + ValidationKeys.CUSTOM}
+									defaultValue={this.getValue(ValidationKeys.CUSTOM)}
+									onBlur={(e) => this.handleValueChanged(ValidationKeys.CUSTOM, e.target.value)}
+									className="form-control form-control-sm"
+								/>
+							</div>
+						)}
+					</div>
+				)}
+			</>
+		);
+	}
+}
 
 export default SXDSBuilderValidationPanel;

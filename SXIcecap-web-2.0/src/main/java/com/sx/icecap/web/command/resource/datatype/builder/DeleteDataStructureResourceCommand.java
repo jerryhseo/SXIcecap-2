@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.sx.icecap.constant.DataTypeProperty;
 import com.sx.icecap.constant.MVCCommand;
 import com.sx.icecap.constant.WebPortletKey;
+import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.service.DataTypeLocalService;
 
 import java.io.PrintWriter;
@@ -38,10 +39,10 @@ public class DeleteDataStructureResourceCommand extends BaseMVCResourceCommand {
 		
 		long dataTypeId = ParamUtil.getLong(resourceRequest, DataTypeProperty.DATATYPE_ID, 0);
 		
-		_dataTypeLocalService.deleteDataStructures(dataTypeId);
+		DataStructure dataStructure = _dataTypeLocalService.deleteDataStructure(dataTypeId);
 		
 		JSONObject response = JSONFactoryUtil.createJSONObject();
-		response.put( "DataType ID" , dataTypeId );
+		response.put( "dataTypeId" , dataStructure.getPrimaryKey() );
 		response.put( "action", "delete");
 		response.put( "result", "success" );
 		

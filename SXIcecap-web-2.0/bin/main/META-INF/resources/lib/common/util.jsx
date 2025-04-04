@@ -151,8 +151,6 @@ export const Util = {
 			let resourceURL = Liferay.PortletURL.createURL(baseResourceURL);
 			resourceURL.setResourceId(resourceId);
 
-			console.log("resourceURL: ", resourceURL, Util.toNamespacedParams(namespace, params ?? {}));
-
 			$.ajax({
 				url: resourceURL.toString(),
 				type: type ?? "post",
@@ -203,5 +201,16 @@ export const Util = {
 		return Liferay.ThemeDisplay.getAvailableLocales();
 
 		//return ids;
+	},
+
+	randomKey: () => {
+		let mask = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+		let result = "";
+		for (let i = 32; i > 0; --i) {
+			result += mask[Math.floor(Math.random() * mask.length)];
+		}
+
+		return result;
 	}
 };

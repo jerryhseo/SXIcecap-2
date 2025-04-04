@@ -16,10 +16,12 @@ import com.sx.icecap.constant.WebKey;
 import com.sx.constant.StationXConstants;
 import com.sx.constant.StationXWebKeys;
 import com.sx.icecap.constant.WebPortletKey;
+import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.service.DataTypeLocalService;
 
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.portlet.ResourceRequest;
@@ -53,9 +55,8 @@ public class LoadDataStructureResourceCommand extends BaseMVCResourceCommand{
 		result.put("dataType", jsonDataType); 
 		
 		if( dataType.getHasDataStructure() ) {
-			String dataStructure = _dataTypeLocalService.getDataStructure(dataTypeId);
-			JSONObject jsonDataStructure = JSONFactoryUtil.createJSONObject(dataStructure);
-			result.put("dataStructure", jsonDataStructure);
+			JSONObject dataStructure = _dataTypeLocalService.getDataStructureJSONObject(dataTypeId);
+			result.put("dataStructure", dataStructure);
 		}
 		
 		System.out.println("Result: " + result.toJSONString());

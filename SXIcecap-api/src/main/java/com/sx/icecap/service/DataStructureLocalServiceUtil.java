@@ -59,18 +59,14 @@ public class DataStructureLocalServiceUtil {
 		return getService().addDataStructure(dataStructure);
 	}
 
-	public static int countByDataTypeId(long dataTypeId) {
-		return getService().countByDataTypeId(dataTypeId);
-	}
-
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
-	 * @param dataStructureId the primary key for the new data structure
+	 * @param dataTypeId the primary key for the new data structure
 	 * @return the new data structure
 	 */
-	public static DataStructure createDataStructure(long dataStructureId) {
-		return getService().createDataStructure(dataStructureId);
+	public static DataStructure createDataStructure(long dataTypeId) {
+		return getService().createDataStructure(dataTypeId);
 	}
 
 	/**
@@ -96,24 +92,14 @@ public class DataStructureLocalServiceUtil {
 	 * <strong>Important:</strong> Inspect DataStructureLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param dataStructureId the primary key of the data structure
+	 * @param dataTypeId the primary key of the data structure
 	 * @return the data structure that was removed
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
-	public static DataStructure deleteDataStructure(long dataStructureId)
+	public static DataStructure deleteDataStructure(long dataTypeId)
 		throws PortalException {
 
-		return getService().deleteDataStructure(dataStructureId);
-	}
-
-	public static void deleteDataStructure(long dataTypeId, String version)
-		throws com.sx.icecap.exception.NoSuchDataStructureException {
-
-		getService().deleteDataStructure(dataTypeId, version);
-	}
-
-	public static void deleteDataStructures(long dataTypeId) {
-		getService().deleteDataStructures(dataTypeId);
+		return getService().deleteDataStructure(dataTypeId);
 	}
 
 	/**
@@ -203,8 +189,8 @@ public class DataStructureLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static DataStructure fetchDataStructure(long dataStructureId) {
-		return getService().fetchDataStructure(dataStructureId);
+	public static DataStructure fetchDataStructure(long dataTypeId) {
+		return getService().fetchDataStructure(dataTypeId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
@@ -216,21 +202,14 @@ public class DataStructureLocalServiceUtil {
 	/**
 	 * Returns the data structure with the primary key.
 	 *
-	 * @param dataStructureId the primary key of the data structure
+	 * @param dataTypeId the primary key of the data structure
 	 * @return the data structure
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
-	public static DataStructure getDataStructure(long dataStructureId)
+	public static DataStructure getDataStructure(long dataTypeId)
 		throws PortalException {
 
-		return getService().getDataStructure(dataStructureId);
-	}
-
-	public static DataStructure getDataStructure(
-			long dataTypeId, String version)
-		throws com.sx.icecap.exception.NoSuchDataStructureException {
-
-		return getService().getDataStructure(dataTypeId, version);
+		return getService().getDataStructure(dataTypeId);
 	}
 
 	/**
@@ -246,10 +225,6 @@ public class DataStructureLocalServiceUtil {
 	 */
 	public static List<DataStructure> getDataStructures(int start, int end) {
 		return getService().getDataStructures(start, end);
-	}
-
-	public static List<DataStructure> getDataStructures(long dataTypeId) {
-		return getService().getDataStructures(dataTypeId);
 	}
 
 	/**
@@ -300,12 +275,6 @@ public class DataStructureLocalServiceUtil {
 		DataStructure dataStructure) {
 
 		return getService().updateDataStructure(dataStructure);
-	}
-
-	public static DataStructure updateDataStructure(
-		long dataTypeId, String version, String structure) {
-
-		return getService().updateDataStructure(dataTypeId, version, structure);
 	}
 
 	public static DataStructureLocalService getService() {

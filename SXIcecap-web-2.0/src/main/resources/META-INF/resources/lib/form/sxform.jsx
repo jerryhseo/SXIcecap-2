@@ -18,8 +18,26 @@ import DropDown from "@clayui/drop-down";
 import ClayLabel from "@clayui/label";
 import { Util } from "../common/util";
 
-import { ParamType, DisplayType, Event, ViewTypes, ParamProperty } from "../common/station-x";
-import { BooleanParameter, Parameter, SelectParameter, StringParameter } from "../parameter/parameter";
+import {
+	ParamType,
+	DisplayType,
+	Event,
+	ViewTypes,
+	ParamProperty,
+	ErrorClass,
+	ValidationKeys,
+	ValidationSectionProperty
+} from "../common/station-x";
+import {
+	BooleanParameter,
+	DualListParameter,
+	GroupParameter,
+	Parameter,
+	SelectParameter,
+	StringParameter
+} from "../parameter/parameter";
+import { UnderConstruction } from "../common/common";
+import { SXModalDialog } from "../modal/sxmodal";
 
 export const SelectDisplayStyle = {
 	DUAL_LISTBOX: "DUAL_LISTBOX",
@@ -29,13 +47,12 @@ export const SelectDisplayStyle = {
 	MULTI_SELECT: "MULTI_SELECT"
 };
 
-export const validateFormField = (fieldType, value, validation) => {
-	let errorMsg = "";
-
+export const validateFormField = (fieldType, value, validation, languageId) => {
+	console.log("validation: ", fieldType, value, validation, languageId);
 	for (const validationType in validation) {
 		if (validationType === "required") {
-			if (validation.required.value && Util.isEmptyObject(value)) {
-				return validation.required.message;
+			if (validation.required.value && Util.isEmpty(value)) {
+				return validation.required.message[languageId];
 			}
 		}
 
@@ -45,14 +62,14 @@ export const validateFormField = (fieldType, value, validation) => {
 				case ParamType.LOCALIZED_STRING: {
 					for (const key in value) {
 						if (value[key] && !regExpr.test(value)) {
-							return validation.pattern.message;
+							return validation.pattern.message[languageId];
 						}
 					}
 					break;
 				}
 				case ParamType.STRING: {
 					if (!regExpr.test(value)) {
-						return validation.pattern.message;
+						return validation.pattern.message[languageId];
 					}
 					break;
 				}
@@ -64,13 +81,13 @@ export const validateFormField = (fieldType, value, validation) => {
 				case ParamType.LOCALIZED_STRING:
 				case ParamType.STRING: {
 					if (value.length < validation.min.value) {
-						return validation.min.message;
+						return validation.min.message[languageId];
 					}
 				}
 				case ParamType.NUMERIC:
 				case ParamType.INTEGER: {
 					if (value < validation.min.value) {
-						return validation.min.message;
+						return validation.min.message[languageId];
 					}
 				}
 			}
@@ -81,13 +98,13 @@ export const validateFormField = (fieldType, value, validation) => {
 				case ParamType.LOCALIZED_STRING:
 				case ParamType.STRING: {
 					if (value.length > validation.max.value) {
-						return validation.max.message;
+						return validation.max.message[languageId];
 					}
 				}
 				case ParamType.NUMERIC:
 				case ParamType.INTEGER: {
 					if (value > validation.max.value) {
-						return validation.max.message;
+						return validation.max.message[languageId];
 					}
 				}
 			}
@@ -98,7 +115,7 @@ export const validateFormField = (fieldType, value, validation) => {
 		}
 	}
 
-	return errorMsg;
+	return "";
 };
 
 export const validateForm = (formFields, formData, formErrors) => {
@@ -306,132 +323,188 @@ export const SXAutoComplete = ({ namespace, items, labelPosition, events, sprite
 	);
 };
 
-export const SXPreviewRow = ({
-	namespace,
-	dsbuilderId,
-	propertyPanelId,
-	previewCanvasId,
-	languageId,
-	availableLanguageIds,
-	parameter,
-	spritemap
-}) => {
-	const [focus, setFocus] = useState(true);
+export class SXPreviewRow extends React.Component {
+	constructor(props) {
+		super(props);
 
-	const events = {
-		fire: [
-			{
-				target: propertyPanelId,
-				event: Event.SX_FIELD_VALUE_CHANGED
-			}
-		],
-		on: [
-			{
-				target: previewCanvasId,
-				event: Event.SX_PARAM_PROPERTY_CHANGED
-			},
-			{
-				target: previewCanvasId,
-				event: Event.SX_PARAM_ERROR_FOUND
-			},
-			{
-				target: previewCanvasId,
-				event: Event.SX_PARAM_VALUE_CHANGED
-			}
-		]
-	};
+		this.namespace = props.namespace;
+		this.dsbuilderId = props.dsbuilderId;
+		this.propertyPanelId = props.propertyPanelId;
+		this.previewCanvasId = props.previewCanvasId;
+		this.languageId = props.languageId;
+		this.availableLanguageIds = props.availableLanguageIds;
+		this.parameter = props.parameter;
+		this.spritemap = props.spritemap;
 
-	useLayoutEffect(() => {
+		this.state = {
+			focus: props.focus,
+			rendered: false,
+			underConstruction: false
+		};
+
+		this.events = {
+			fire: [
+				{
+					target: props.previewCanvasId,
+					event: Event.SX_FIELD_VALUE_CHANGED
+				}
+			],
+			on: [
+				{
+					target: props.previewCanvasId,
+					event: Event.SX_PARAM_PROPERTY_CHANGED
+				},
+				{
+					target: props.previewCanvasId,
+					event: Event.SX_PARAM_ERROR_FOUND
+				},
+				{
+					target: props.previewCanvasId,
+					event: Event.SX_PARAM_VALUE_CHANGED
+				}
+			]
+		};
+
+		Event.on(Event.SX_DISTRACT_ALL, (e) => {
+			const dataPacket = e.dataPacket;
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.previewCanvasId) {
+				console.log("SX_DISTRACT_ALL rejected: ", dataPacket);
+				return;
+			}
+			console.log("SX_DISTRACT_ALL received: ", dataPacket);
+
+			this.setState({ focus: false });
+		});
+
 		Event.on(Event.SX_FOCUS, (e) => {
 			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== namespace || dataPacket.target !== previewCanvasId) {
+			if (
+				dataPacket.targetPortlet !== this.namespace ||
+				dataPacket.target !== this.previewCanvasId ||
+				dataPacket.paramName !== this.parameter.paramName ||
+				dataPacket.paramVersion !== dataPacket.paramVersion
+			) {
 				console.log("SX_FOCUS rejected: ", dataPacket);
 				return;
 			}
 			console.log("SX_FOCUS received: ", dataPacket);
-			if (dataPacket.paramName === parameter.paramName && dataPacket.paramVersion === parameter.paramVersion) {
-				if (!focus) {
-					setFocus(true);
-				}
-			} else {
-				if (focus) {
-					setFocus(false);
-				}
-			}
+
+			this.setState({ focus: true });
 		});
-	}, []);
+	}
 
-	const handleClick = (e) => {
-		Event.fire(Event.SX_FOCUS, namespace, namespace, { target: previewCanvasId, focus: false });
+	handleClick(e) {
+		Event.fire(Event.SX_DISTRACT_ALL, this.namespace, this.namespace, { target: this.previewCanvasId });
 
-		setFocus(true);
+		this.setState({ focus: true });
 
-		Event.fire(Event.SX_PARAMETER_SELECTED, namespace, namespace, {
-			target: dsbuilderId,
-			paramName: parameter.paramName,
-			paramVersion: parameter.paramVersion
+		Event.fire(Event.SX_PARAMETER_SELECTED, this.namespace, this.namespace, {
+			target: this.dsbuilderId,
+			paramName: this.parameter.paramName,
+			paramVersion: this.parameter.paramVersion
 		});
-	};
+	}
 
-	const preview = (
-		<div
-			className={focus ? "autofit autofit-row sx-focused" : "autofit autofit-row"}
-			style={{ alignContent: "center" }}
-			onClick={handleClick}
-		>
-			<div
-				className="autofit-col autofit-col-expand"
-				style={{ marginRight: "10px" }}
-			>
-				{parameter.render(namespace, languageId, availableLanguageIds, null, null, events, "", {}, spritemap)}
-			</div>
-			<div
-				className="autofit-col autofit-col-shrink"
-				style={{ alignSelf: "center" }}
-			>
-				<DropDown
-					trigger={
-						<ClayButtonWithIcon
-							aria-label="Actions"
-							symbol="ellipsis-v"
-							title="Actions"
-							className="btn-secondary"
-							spritemap={spritemap}
-						/>
-					}
-					menuWidth="shrink"
+	render() {
+		let className = this.state.focus ? "autofit autofit-row sx-focused" : "autofit autofit-row";
+		if (!this.state.rendered) {
+			className += " sx-glore-border";
+
+			let gloringTimer = setTimeout(() => {
+				className = this.state.focus ? "autofit autofit-row sx-focused" : "autofit autofit-row";
+
+				clearTimeout(gloringTimer);
+
+				this.setState({ rendered: true });
+			}, 2000);
+		}
+
+		return (
+			<>
+				<div
+					className={className + " sx-preview-row"}
+					onClick={(e) => this.handleClick(e)}
 				>
-					<DropDown.ItemList
-						items={[
-							{ name: Util.translate("delete"), symbol: "times" },
-							{ name: Util.translate("move-up"), symbol: "order-arrow-up" },
-							{ name: Util.translate("move-down"), symbol: "order-arrow-down" }
-						]}
+					<div
+						className="autofit-col autofit-col-expand"
+						style={{ marginRight: "10px" }}
 					>
-						{(actionItem) => (
-							<DropDown.Item key={actionItem.name}>
-								<ClayIcon
-									spritemap={spritemap}
-									symbol={actionItem.symbol}
-									style={{ marginRight: "5px" }}
-								/>
-								{actionItem.name}
-							</DropDown.Item>
+						{this.parameter.render(
+							this.namespace,
+							this.languageId,
+							this.availableLanguageIds,
+							null,
+							null,
+							this.events,
+							"",
+							{},
+							this.spritemap
 						)}
-					</DropDown.ItemList>
-				</DropDown>
-			</div>
-		</div>
-	);
-
-	return preview;
-};
+					</div>
+					<div
+						className="autofit-col autofit-col-shrink"
+						style={{ alignSelf: "center" }}
+					>
+						<DropDown
+							trigger={
+								<ClayButtonWithIcon
+									aria-label="Actions"
+									symbol="ellipsis-v"
+									title="Actions"
+									className="btn-secondary"
+									spritemap={this.spritemap}
+								/>
+							}
+							menuWidth="shrink"
+						>
+							<DropDown.ItemList
+								items={[
+									{ name: Util.translate("delete"), symbol: "times" },
+									{ name: Util.translate("move-up"), symbol: "order-arrow-up" },
+									{ name: Util.translate("move-down"), symbol: "order-arrow-down" }
+								]}
+							>
+								{(actionItem) => (
+									<DropDown.Item
+										key={actionItem.name}
+										onClick={() => this.setState({ underConstruction: true })}
+									>
+										<ClayIcon
+											spritemap={this.spritemap}
+											symbol={actionItem.symbol}
+											style={{ marginRight: "5px" }}
+										/>
+										{actionItem.name}
+									</DropDown.Item>
+								)}
+							</DropDown.ItemList>
+						</DropDown>
+					</div>
+				</div>
+				{this.state.underConstruction && (
+					<SXModalDialog
+						header={Util.translate("sorry")}
+						body={<UnderConstruction />}
+						buttons={[
+							{
+								label: Util.translate("ok"),
+								onClick: () => {
+									this.setState({ underConstruction: false });
+								}
+							}
+						]}
+					/>
+				)}
+			</>
+		);
+	}
+}
 
 export const SXControlWrapper = ({ labelPosition, label, control }) => {
 	switch (labelPosition) {
 		case Parameter.LabelPosition.INLINE_LEFT: {
 			return (
-				<div style={{ display: "inline-flex", width: "100%" }}>
+				<div style={{ display: "inline-flex", maxWidth: "100%" }}>
 					{label}
 					{control}
 				</div>
@@ -439,7 +512,7 @@ export const SXControlWrapper = ({ labelPosition, label, control }) => {
 		}
 		case Parameter.LabelPosition.INLINE_RIGHT: {
 			return (
-				<div style={{ display: "inline-flex", width: "100%" }}>
+				<div style={{ display: "inline-flex", maxWidth: "100%" }}>
 					{control}
 					{label}
 				</div>
@@ -474,1095 +547,1494 @@ export const SXFormFieldFeedback = ({ content, level, symbol, spritemap }) => {
  *  01. The type of Parametrer is String and
  * 		localized property is false
  ****************************************************/
-export const SXInput = ({ namespace = "", properties, events = {}, className = "", style = {}, spritemap }) => {
-	const [errorState, setErrorState] = useState("");
-	const [propertiesState, setPropertiesState] = useState(properties);
+export class SXInput extends React.Component {
+	constructor(props) {
+		super(props);
 
-	const {
-		paramName,
-		paramVersion = "1.0.0",
-		tagId = namespace + propertiesState.paramName,
-		tagName = namespace + propertiesState.paramName,
-		label = "",
-		labelPosition = Parameter.LabelPosition.UPPER_LEFT,
-		labelWidth = "30%",
-		required = false,
-		tooltip = "",
-		initValue = properties.defaultValue ? properties.defaultValue : "",
-		placeholder = "",
-		multipleLine = false,
-		disabled = false,
-		readOnly = false,
-		validation = {},
-		viewType = StringParameter.ViewTypes.REGULAR
-	} = propertiesState ?? {};
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.languageId = props.languageId;
+		this.spritemap = props.spritemap ?? "";
 
-	const initializedRef = useRef(initValue ? true : false);
-	const [textState, setTextState] = useState(initValue);
+		this.dirty = false;
 
-	const inputRef = useRef(null);
+		this.state = {
+			error: {},
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			component: props.multipleLine ? "textarea" : "input",
+			tooltip: props.tooltip ?? "",
+			required: props.required ?? false,
+			placeholder: props.placeholder ?? "",
+			disabled: props.disabled ?? false,
+			validation: props.validation ?? {},
+			viewType: props.viewType ?? StringParameter.ViewTypes.REGULAR,
+			index: props.index,
+			value: props.value ?? ""
+		};
 
-	useLayoutEffect(() => {
-		if (initializedRef.current) {
-			const checkedError = validateFormField(ParamType.STRING, textState, validation);
-			setErrorState(checkedError);
-		}
-
-		if (Util.isNotEmpty(events.on)) {
-			events.on.forEach((event) => {
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
 				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
 					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
 						if (Util.isEmpty(dataPacket)) return;
 
-						initializedRef.current = true;
-						setErrorState(dataPacket.error);
+						this.dirty = true;
+						this.setState({ error: dataPacket.error });
 					});
 				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
 					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
 						if (Util.isEmpty(dataPacket)) return;
 
-						if (dataPacket.property === ParamProperty.DISABLED && dataPacket.value === true) {
-							propertiesState.readOnly = false;
-						} else if (dataPacket.property === ParamProperty.READ_ONLY && dataPacket.value === true) {
-							propertiesState.disabled = false;
+						let stateObj = {};
+						if (dataPacket.property === ParamProperty.MULTIPLE_LINE) {
+							stateObj.component = dataPacket.value ? "textarea" : "input";
+						} else {
+							stateObj[dataPacket.property] = dataPacket.value;
 						}
 
-						propertiesState[dataPacket.property] = dataPacket.value;
-						setPropertiesState({ ...propertiesState });
+						this.setState(stateObj);
 					});
 				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
 					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
 						if (Util.isEmpty(dataPacket)) return;
 
-						setTextState(dataPacket.value);
+						this.setState({ value: dataPacket.value });
+						if (!this.dirty) {
+							this.dirty = true;
+						}
 					});
 				}
 			});
 		}
-	}, []);
+	}
 
-	useLayoutEffect(() => {
-		setPropertiesState(properties);
-		initializedRef.current = properties.initValue ? true : false;
-	}, [properties]);
-
-	useEffect(() => {
-		inputRef.current.value = properties.initValue ? properties.initValue : "";
-	}, [properties]);
-
-	const renderCount = useRef(0);
-	renderCount.current++;
-	console.log(`${tagId} renderCount: ${renderCount.current}`);
-
-	const sxLabel =
-		labelPosition !== Parameter.LabelPosition.NONE ? (
+	renderLabel(forHtml) {
+		return this.state.labelPosition !== Parameter.LabelPosition.NONE ? (
 			<SXLabel
-				label={label}
-				forHtml={tagId}
-				required={required}
-				tooltip={tooltip}
-				spritemap={spritemap}
+				label={this.state.label}
+				forHtml={forHtml}
+				required={this.state.required}
+				tooltip={this.state.tooltip}
+				spritemap={this.spritemap}
 				style={
-					labelPosition === Parameter.LabelPosition.INLINE_LEFT
-						? { width: labelWidth, alignContent: "center" }
+					this.state.labelPosition === Parameter.LabelPosition.INLINE_LEFT
+						? { width: this.state.labelWidth, alignContent: "center" }
 						: null
 				}
 			/>
 		) : undefined;
+	}
 
-	const handleBlur = (e) => {
+	handleBlur(e) {
 		const value = e.target.value;
-		setTextState(value);
-		initializedRef.current = true;
-
-		const errorMsg = validateFormField(ParamType.STRING, value, validation);
-
-		if (errorState !== errorMsg) {
-			setErrorState(errorMsg);
+		if (value === this.state.value) {
+			return;
 		}
 
-		if (Util.isNotEmpty(events.fire)) {
-			events.fire.forEach((event) => {
+		if (!this.dirty) {
+			this.dirty = true;
+		}
+
+		const error = Parameter.validateValue(ParamType.STRING, this.state.validation, value, this.languageId);
+		this.setState({ value: value, error: error });
+
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
 				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-					if (errorMsg) {
-						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
+					if (error.errorClass === ErrorClass.ERROR) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
 							target: event.target,
-							error: errorMsg,
-							paramName: paramName,
-							paramVersion: paramVersion
+							error: error,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
 						});
 					} else {
-						Event.fire(event.event, namespace, namespace, {
+						Event.fire(event.event, this.namespace, this.namespace, {
 							target: event.target,
 							value: value,
-							paramName: paramName,
-							paramVersion: paramVersion
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
 						});
 					}
 				}
 			});
 		}
-	};
-
-	const errorClass = initializedRef.current ? (errorState ? " has-error" : " has-success") : "";
-
-	style.marginBottom = style.marginBottom ?? "15px";
-
-	if (viewType === StringParameter.ViewTypes.REGULAR) {
-		return (
-			<ClayForm.Group
-				className={className + errorClass}
-				style={{ style }}
-			>
-				<SXControlWrapper
-					labelPosition={labelPosition}
-					label={sxLabel}
-					control={
-						<ClayInput
-							component={multipleLine ? "textarea" : "input"}
-							key={tagId}
-							id={tagId}
-							name={name}
-							placeholder={placeholder}
-							type="text"
-							disabled={disabled}
-							readOnly={readOnly}
-							onBlur={handleBlur}
-							ref={inputRef}
-						/>
-					}
-				/>
-				{initializedRef.current && errorState && (
-					<SXFormFieldFeedback
-						content={errorState}
-						spritemap={spritemap}
-						symbol="exclamation-full"
-					/>
-				)}
-			</ClayForm.Group>
-		);
-	} else {
-		return <h3>{`SXInput View Type: ${viewType}`}</h3>;
 	}
-};
+
+	render() {
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
+
+		const style = { ...this.style };
+		style.marginBottom = this.style.marginBottom ?? "15px";
+
+		const tagId = this.namespace + this.state.paramName;
+		const tagName = tagId;
+
+		if (this.state.viewType === StringParameter.ViewTypes.REGULAR) {
+			return (
+				<ClayForm.Group
+					className={className}
+					style={style}
+				>
+					<SXControlWrapper
+						labelPosition={this.state.labelPosition}
+						label={this.renderLabel(tagId)}
+						control={
+							<ClayInput
+								component={this.state.component}
+								id={tagId}
+								name={tagName}
+								placeholder={this.state.placeholder}
+								type="text"
+								defaultValue={this.state.value}
+								disabled={this.state.disabled}
+								onBlur={(e) => this.handleBlur(e)}
+							/>
+						}
+					/>
+					{this.dirty && this.state.error.message && (
+						<SXFormFieldFeedback
+							content={this.state.error.message}
+							spritemap={this.spritemap}
+							symbol="exclamation-full"
+						/>
+					)}
+				</ClayForm.Group>
+			);
+		} else {
+			return <h3>{`Underconstruction: SXInput View Type: ${this.state.viewType}`}</h3>;
+		}
+	}
+}
 
 /****************************************************
  *  02. The type of Parametrer is String and
  * 		localized property is true
  ****************************************************/
-export const SXLocalizedInput = ({
-	namespace = "",
-	properties,
-	events = {},
-	className = "",
-	style = {},
-	spritemap
-}) => {
-	const [propertiesState, setPropertiesState] = useState(properties);
+export class SXLocalizedInput extends React.Component {
+	constructor(props) {
+		super(props);
 
-	const {
-		paramName,
-		paramVersion = "1.0.0",
-		tagId = namespace + propertiesState.paramName,
-		tagName = namespace + propertiesState.paramName,
-		label = "",
-		labelPosition = Parameter.LabelPosition.UPPER_LEFT,
-		multipleLine = false,
-		tooltip = "",
-		required = false,
-		placeholder = "",
-		initValue = {},
-		disabled = false,
-		readOnly = false,
-		languageId,
-		availableLanguageIds,
-		validation = {}
-	} = propertiesState ?? {};
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
+		this.availableLanguageIds = props.availableLanguageIds;
+		this.dirty = false;
 
-	const [errorState, setErrorState] = useState("");
+		this.state = {
+			error: {},
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			component: props.multipleLine ? "textarea" : "input",
+			tooltip: props.tooltip ?? "",
+			required: props.required ?? false,
+			placeholder: props.placeholder ?? "",
+			disabled: props.disabled ?? false,
+			selectedLang: props.languageId,
+			validation: props.validation ?? {},
+			selectedLang: props.languageId,
+			index: props.index ?? 0,
+			translations: Util.isNotEmpty(props.value) ? props.value : {},
+			translation: Util.isNotEmpty(props.value) ? props.value[props.languageId] : ""
+		};
 
-	const [selectedLangState, setSelectedLangState] = useState(languageId);
-	const [translationState, setTranslationState] = useState(
-		Util.isNotEmpty(initValue) ? initValue[languageId] ?? "" : ""
-	);
-	const initializedRef = useRef(Util.isEmpty(initValue) ? false : true);
-
-	const translationsRef = useRef(Util.isNotEmpty(initValue) ? initValue : {});
-	const [dropDownActiveState, setDropDownActiveState] = useState(false);
-
-	const inputRef = useRef(null);
-
-	useLayoutEffect(() => {
-		if (Util.isNotEmpty(events.on)) {
-			events.on.forEach((event) => {
-				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
-					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
-						if (Util.isEmpty(dataPacket)) return;
-
-						initializedRef.current = true;
-						setErrorState(dataPacket.error);
-					});
-				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
-					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
-						if (Util.isEmpty(dataPacket)) return;
-
-						propertiesState[dataPacket.property] = dataPacket.value;
-						setPropertiesState({ ...propertiesState });
-					});
-				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
-					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
-						if (Util.isEmpty(dataPacket)) return;
-
-						translationsRef.current = dataPacket.value;
-						setTranslationState(translationsRef.current[selectedLangState]);
-					});
-				}
-			});
-		}
-	}, []);
-
-	useLayoutEffect(() => {
-		setPropertiesState(properties);
-		initializedRef.current = Util.isNotEmpty(properties.initValue);
-		translationsRef.current = Util.isNotEmpty(properties.initValue) ? properties.initValue : {};
-		setTranslationState(translationsRef.current[selectedLangState]);
-	}, [properties]);
-
-	useEffect(() => {
-		inputRef.current.value = translationsRef.current[selectedLangState] ?? "";
-	}, [selectedLangState, properties]);
-
-	const handleBlur = (e) => {
-		const value = e.target.value;
-
-		setTranslationState(value);
-		translationsRef.current[selectedLangState] = value;
-		initializedRef.current = true;
-
-		const errorMsg = validateFormField(ParamType.LOCALIZED_STRING, translationsRef.current, validation);
-
-		if (errorState !== errorMsg) {
-			setErrorState(errorMsg);
-		}
-
-		if (Util.isNotEmpty(events.fire)) {
-			events.fire.forEach((event) => {
-				if (errorMsg) {
-					if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
-							target: event.target,
-							error: errorMsg,
-							paramName: paramName,
-							paramVersion: paramVersion
-						});
-					}
-				} else {
-					translationsRef.current[selectedLangState] = value;
-
-					if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-						Event.fire(Event.SX_FIELD_VALUE_CHANGED, namespace, namespace, {
-							target: event.target,
-							value: translationsRef.current,
-							paramName: paramName,
-							paramVersion: paramVersion
-						});
-					}
-				}
-			});
-		}
-	};
-
-	let dropDownFlags = availableLanguageIds.map((lang) => {
-		return {
+		this.languageFlags = this.availableLanguageIds.map((lang) => ({
 			id: lang,
 			name: lang,
 			symbol: lang.toLowerCase()
-		};
-	});
+		}));
 
-	const errorClass = initializedRef.current ? (errorState ? " has-error" : " has-success") : "";
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
 
-	const sxLabel =
-		labelPosition === Parameter.LabelPosition.NONE ? null : (
-			<SXLabel
-				label={label}
-				forHtml={tagId}
-				required={required}
-				tooltip={tooltip}
-				spritemap={spritemap}
-			/>
+						this.setState({ error: dataPacket.error });
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					console.log("SXLocalizedInput event register: SX_PARAM_PROPERTY_CHANGED");
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						let stateObj = {};
+						if (dataPacket.property === ParamProperty.MULTIPLE_LINE) {
+							stateObj.component = dataPacket.value ? "textarea" : "input";
+						} else {
+							stateObj[dataPacket.property] = dataPacket.value;
+						}
+
+						this.setState(stateObj);
+					});
+				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.setState({
+							translations: dataPacket.value,
+							translation: dataPacket.value[this.state.selectedLang]
+						});
+					});
+				}
+			});
+		}
+	}
+
+	handleBlur(e) {
+		const newValue = e.target.value;
+
+		const translation = this.state.translations[this.state.selectedLang];
+		if (translation === newValue) {
+			return;
+		}
+
+		let newTranslations = { ...this.state.translations };
+		newTranslations[this.state.selectedLang] = newValue;
+
+		this.dirty = true;
+
+		const error = Parameter.validateValue(
+			ParamType.LOCALIZED_STRING,
+			this.state.validation,
+			newTranslations,
+			this.languageId
 		);
 
-	const renderCount = useRef(0);
-	renderCount.current++;
-	console.log(`${tagId} renderCount: ${renderCount.current}`);
-
-	return (
-		<ClayForm.Group
-			className={className + errorClass}
-			style={style}
-		>
-			<SXControlWrapper
-				labelPosition={labelPosition}
-				label={sxLabel}
-				control={
-					<ClayInput.Group>
-						<ClayInput.GroupItem>
-							<ClayInput
-								component={multipleLine ? "textarea" : "input"}
-								type="text"
-								id={tagId}
-								name={tagName}
-								defaultValue={translationState}
-								placeholder={placeholder}
-								disabled={disabled}
-								readOnly={readOnly}
-								onBlur={handleBlur}
-								ref={inputRef}
-							/>
-						</ClayInput.GroupItem>
-						<ClayInput.GroupItem shrink>
-							<DropDown
-								trigger={
-									<ClayButton
-										displayType="secondary"
-										className="btn-monospaced btn-md"
-									>
-										<ClayIcon
-											symbol={selectedLangState.toLowerCase()}
-											spritemap={spritemap}
-										/>
-										<span className="btn-section">{selectedLangState}</span>
-									</ClayButton>
-								}
-								closeOnClick={true}
-							>
-								<DropDown.ItemList items={dropDownFlags}>
-									{(flag) => {
-										let displayType, label;
-										if (translationsRef.current[flag.name]) {
-											displayType = "success";
-											label = Util.translate("translated");
-										} else {
-											displayType = "warning";
-											label = Util.translate("not-translated");
-										}
-
-										return (
-											<DropDown.Item
-												key={flag.name}
-												onClick={() => {
-													setSelectedLangState(flag.name);
-												}}
-												active={selectedLangState === flag.name}
-											>
-												<ClayIcon
-													spritemap={spritemap}
-													symbol={flag.symbol}
-													style={{
-														marginRight: "5px"
-													}}
-												/>
-												{flag.name}
-												<ClayLabel
-													displayType={displayType}
-													spritemap={spritemap}
-													style={{
-														float: "right"
-													}}
-												>
-													{label}
-												</ClayLabel>
-											</DropDown.Item>
-										);
-									}}
-								</DropDown.ItemList>
-							</DropDown>
-						</ClayInput.GroupItem>
-					</ClayInput.Group>
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
+				if (error.errorClass === ErrorClass.ERROR) {
+					if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
+							target: event.target,
+							error: error.message,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
+						});
+					}
+				} else {
+					if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+						Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
+							target: event.target,
+							value: newTranslations,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
+						});
+					}
 				}
+			});
+		}
+
+		this.setState({
+			translations: newTranslations,
+			translation: newValue,
+			error: error
+		});
+	}
+
+	renderLabel(forHtml) {
+		return this.state.labelPosition === Parameter.LabelPosition.NONE ? null : (
+			<SXLabel
+				key={Util.randomKey()}
+				label={this.state.label}
+				forHtml={forHtml}
+				required={this.state.required}
+				tooltip={this.state.tooltip}
+				spritemap={this.spritemap}
 			/>
-			{initializedRef.current && errorState && (
-				<SXFormFieldFeedback
-					content={errorState}
-					spritemap={spritemap}
-					symbol="exclamation-full"
+		);
+	}
+
+	get translation() {
+		return this.state.translations[this.state.selectedLang];
+	}
+
+	render() {
+		const className = this.dirty ? this.state.error.errorClass : "";
+
+		const tagId = this.namespace + this.state.paramName;
+		const tagName = tagId;
+
+		return (
+			<ClayForm.Group
+				className={className}
+				style={this.style}
+			>
+				<SXControlWrapper
+					labelPosition={this.state.labelPosition}
+					label={this.renderLabel(tagId)}
+					control={
+						<ClayInput.Group>
+							<ClayInput.GroupItem>
+								<ClayInput
+									component={this.state.component}
+									type="text"
+									id={tagId}
+									name={tagName}
+									defaultValue={this.state.translation}
+									placeholder={this.state.placeholder}
+									disabled={this.state.disabled}
+									onBlur={(e) => this.handleBlur(e)}
+								/>
+							</ClayInput.GroupItem>
+							<ClayInput.GroupItem shrink>
+								<DropDown
+									trigger={
+										<ClayButton
+											displayType="secondary"
+											className="btn-monospaced btn-md"
+										>
+											<ClayIcon
+												symbol={this.state.selectedLang.toLowerCase()}
+												spritemap={this.spritemap}
+											/>
+											<span className="btn-section">{this.state.selectedLang}</span>
+										</ClayButton>
+									}
+									closeOnClick={true}
+								>
+									<DropDown.ItemList items={this.languageFlags}>
+										{(flag) => {
+											let displayType, label;
+											if (this.state.translations[flag.name]) {
+												displayType = "success";
+												label = Util.translate("translated");
+											} else {
+												displayType = "warning";
+												label = Util.translate("not-translated");
+											}
+
+											return (
+												<DropDown.Item
+													key={flag.name}
+													onClick={() => {
+														this.setState({
+															selectedLang: flag.name,
+															translation: this.state.translations[flag.name]
+														});
+													}}
+													active={this.state.selectedLang === flag.name}
+												>
+													<ClayIcon
+														spritemap={this.spritemap}
+														symbol={flag.symbol}
+														style={{
+															marginRight: "5px"
+														}}
+													/>
+													{flag.name}
+													<ClayLabel
+														displayType={displayType}
+														spritemap={this.spritemap}
+														style={{
+															float: "right"
+														}}
+													>
+														{label}
+													</ClayLabel>
+												</DropDown.Item>
+											);
+										}}
+									</DropDown.ItemList>
+								</DropDown>
+							</ClayInput.GroupItem>
+						</ClayInput.Group>
+					}
 				/>
-			)}
-		</ClayForm.Group>
-	);
-};
+				{this.dirty && this.state.error.message && (
+					<SXFormFieldFeedback
+						content={this.state.error.message}
+						spritemap={this.spritemap}
+						symbol="exclamation-full"
+					/>
+				)}
+			</ClayForm.Group>
+		);
+	}
+}
 
 /****************************************************
  *  03. The type of Parametrer is Numeric and
  * 		integer property is false
  ****************************************************/
-export const SXNumeric = () => {
-	return <></>;
-};
+export class SXNumeric extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
+		this.availableLanguageIds = props.availableLanguageIds;
+		this.languageId = props.languageId;
+
+		this.dirty = false;
+
+		this.state = {
+			error: {},
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			tooltip: props.tooltip ?? "",
+			required: props.required ?? false,
+			disabled: props.disabled ?? false,
+			uncertainty: props.uncertainty ?? false,
+			validation: props.validation ?? {},
+			isInteger: props.isInteger ?? false,
+			index: props.index ?? 0,
+			unit: props.unit ?? "",
+			decimalPlaces: props.decimalPlaces ?? 1,
+			value: props.value ?? (props.uncertainty ? {} : undefined)
+		};
+
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.setState({ error: dataPacket.error });
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					console.log("SXNumeric event register: SX_PARAM_PROPERTY_CHANGED");
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						let stateObj = {};
+						stateObj[dataPacket.property] = dataPacket.value;
+
+						this.setState(stateObj);
+					});
+				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.setState({ value: dataPacket.value });
+					});
+				}
+			});
+		}
+	}
+
+	handleValueChanged(val) {
+		const error = Parameter.validateValue(ParamType.NUMERIC, this.state.validation, val, this.languageId);
+
+		if (this.state.error.message === error.message) {
+			return;
+		}
+
+		const fixedVal = this.state.isInteger ? val : val.toFixed(this.state.decimalPlaces);
+		let value = this.state.uncertainty ? { ...this.state.value, value: fixedVal } : fixedVal;
+
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+					if (error.errorClass === ErrorClass.ERROR) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
+							target: event.target,
+							error: error,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
+						});
+					} else {
+						Event.fire(event.event, this.namespace, this.namespace, {
+							target: event.target,
+							value: value,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
+						});
+					}
+				}
+			});
+		}
+
+		this.setState({ value: value });
+	}
+
+	handleUncertaintyChanged(val) {
+		const error = Parameter.validateValue(ParamType.NUMERIC, this.state.validation, val, this.languageId);
+
+		if (this.state.error.message === error.message) {
+			return;
+		}
+
+		const fixedVal = this.state.isInteger ? val : val.toFixed(this.state.decimalPlaces + 1);
+		let value = { ...this.state.value, uncertainty: fixedVal };
+
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+					if (error.errorClass === ErrorClass.ERROR) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
+							target: event.target,
+							error: error,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
+						});
+					} else {
+						Event.fire(event.event, this.namespace, this.namespace, {
+							target: event.target,
+							value: value,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
+						});
+					}
+				}
+			});
+		}
+
+		this.setState({ value: value });
+	}
+
+	renderLabel(forHtml) {
+		return this.state.labelPosition === Parameter.LabelPosition.NONE ? null : (
+			<SXLabel
+				key={Util.randomKey()}
+				label={this.state.label}
+				forHtml={forHtml}
+				required={this.state.required}
+				tooltip={this.state.tooltip}
+				spritemap={this.spritemap}
+			/>
+		);
+	}
+
+	render() {
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
+
+		const tagId = this.namespace + this.state.paramName;
+		const tagName = tagId;
+
+		console.log(
+			"SXNumeric validation: ",
+			this.state.validation,
+			Parameter.checkValidationEnabled(this.state.validation, ValidationKeys.MAX)
+		);
+
+		return (
+			<ClayForm.Group
+				className={className}
+				style={this.style}
+			>
+				<SXControlWrapper
+					labelPosition={this.state.labelPosition}
+					label={this.renderLabel(tagId)}
+					control={
+						<ClayInput.Group stacked>
+							{Parameter.checkValidationEnabled(this.state.validation, ValidationKeys.MIN) && (
+								<>
+									<ClayInput.GroupItem
+										prepend
+										shrink
+									>
+										<ClayInput.GroupText>
+											{Parameter.getValidationValue(
+												this.state.validation,
+												ValidationKeys.MIN,
+												ValidationSectionProperty.VALUE
+											)}
+										</ClayInput.GroupText>
+									</ClayInput.GroupItem>
+									<ClayInput.GroupItem
+										append
+										shrink
+									>
+										{Parameter.getValidationValue(
+											this.state.validation,
+											ValidationKeys.MIN,
+											ValidationSectionProperty.BOUNDARY
+										) ? (
+											<ClayInput.GroupText>&#8804;</ClayInput.GroupText>
+										) : (
+											<ClayInput.GroupText>{"<"}</ClayInput.GroupText>
+										)}
+									</ClayInput.GroupItem>
+								</>
+							)}
+							<ClayInput.GroupItem append>
+								<ClayInput
+									type="text"
+									defaultValue={this.state.uncertainty ? this.state.value.value : this.state.value}
+									onBlur={(e) => this.handleValueChanged(Number(e.target.value))}
+								/>
+							</ClayInput.GroupItem>
+							{this.state.unit && (
+								<ClayInput.GroupItem
+									append
+									shrink
+								>
+									<ClayInput.GroupText>{this.state.unit}</ClayInput.GroupText>
+								</ClayInput.GroupItem>
+							)}
+							{this.state.uncertainty && (
+								<>
+									<ClayInput.GroupItem
+										append
+										shrink
+									>
+										<ClayInput.GroupText>&#177;</ClayInput.GroupText>
+									</ClayInput.GroupItem>
+									<ClayInput.GroupItem
+										append
+										shrink
+										style={{ maxWidth: "200px", width: "120px" }}
+									>
+										<ClayInput
+											type="text"
+											defaultValue={
+												this.state.uncertainty ? this.state.value.uncertainty : this.state.value
+											}
+											onBlur={(e) => this.handleUncertaintyChanged(Number(e.target.value))}
+										/>
+									</ClayInput.GroupItem>
+								</>
+							)}
+							{Parameter.checkValidationEnabled(this.state.validation, ValidationKeys.MAX) && (
+								<>
+									<ClayInput.GroupItem
+										append
+										shrink
+									>
+										{Parameter.getValidationValue(
+											this.state.validation,
+											ValidationKeys.MAX,
+											ValidationSectionProperty.BOUNDARY
+										) ? (
+											<ClayInput.GroupText>&#8804;</ClayInput.GroupText>
+										) : (
+											<ClayInput.GroupText>{"<"}</ClayInput.GroupText>
+										)}
+									</ClayInput.GroupItem>
+									<ClayInput.GroupItem
+										append
+										shrink
+									>
+										<ClayInput.GroupText>
+											{Parameter.getValidationValue(
+												this.state.validation,
+												ValidationKeys.MAX,
+												ValidationSectionProperty.VALUE
+											)}
+										</ClayInput.GroupText>
+									</ClayInput.GroupItem>
+								</>
+							)}
+						</ClayInput.Group>
+					}
+				/>
+				{this.dirty && this.state.error.message && (
+					<SXFormFieldFeedback
+						content={this.state.error.message}
+						spritemap={this.spritemap}
+						symbol="exclamation-full"
+					/>
+				)}
+			</ClayForm.Group>
+		);
+	}
+}
 
 /****************************************************
  *  04. The type of Parametrer is Numeric and
  * 		integer property is true
  ****************************************************/
-export const SXInteger = () => {
-	return <></>;
-};
+export class SXInteger extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return <></>;
+	}
+}
 
 /****************************************************
  *  05. Boolean
  *
  * - viewTypes: dropdown, radio, toogle
  ****************************************************/
-export const SXBoolean = ({
-	namespace = "", //
-	properties,
-	events = {},
-	className = "",
-	style = {},
-	spritemap
-}) => {
-	const [propertiesState, setPropertiesState] = useState(properties);
-	const {
-		paramName,
-		paramVersion = "1.0.0",
-		tagId = namespace + propertiesState.paramName,
-		tagName = namespace + propertiesState.paramName,
-		label = propertiesState.label,
-		labelPosition = Parameter.LabelPosition.INLINE_RIGHT,
-		trueLabel = Util.translate("true"),
-		falseLabel = Util.translate("false"),
-		tooltip = "",
-		required = false,
-		placeholder = false,
-		initValue = false,
-		disabled = false,
-		readOnly = false,
-		viewType = BooleanParameter.CHECKBOX,
-		validation = {}
-	} = propertiesState ?? {};
+export class SXBoolean extends React.Component {
+	constructor(props) {
+		super(props);
 
-	const [valueState, setValueState] = useState(initValue);
-	const [errorState, setErrorState] = useState("");
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
 
-	useLayoutEffect(() => {
-		if (Util.isNotEmpty(events.on)) {
-			events.on.forEach((event) => {
-				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+		this.dirty = false;
+
+		this.state = {
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			trueLabel: props.trueLabel ?? "",
+			falseLabel: props.falseLabel ?? "",
+			required: props.required ?? false,
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			tooltip: props.tooltip ?? "",
+			disabled: props.disabled ?? false,
+			value: props.value,
+			viewType: props.viewType
+		};
+
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
 					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
 						if (Util.isEmpty(dataPacket)) return;
 
-						setErrorState(dataPacket.error);
-					});
-				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
-					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
-						if (Util.isEmpty(dataPacket)) return;
+						console.log(
+							"SXBoolean property changed " + this.state.paramName + ": ",
+							dataPacket.property,
+							dataPacket.value
+						);
 
-						const props = { ...propertiesState };
-						props[dataPacket.property] = dataPacket.value;
-						setPropertiesState({ ...propertiesState });
+						let stateObj = {};
+						stateObj[dataPacket.property] = dataPacket.value;
+
+						this.setState(stateObj);
 					});
 				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
 					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.paramName,
+							this.paramVersion
+						);
 						if (Util.isEmpty(dataPacket)) return;
 
-						setValueState(dataPacket.value);
+						this.setState({ value: dataPacket.value });
 					});
 				}
 			});
-		}
-	}, []);
-
-	const handleSelect = (val) => {
-		console.log("SXBoolean handleSelect: ", val);
-		setValueState(val);
-
-		if (Util.isNotEmpty(events.fire)) {
-			events.fire.forEach((event) => {
-				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-					Event.fire(event.event, namespace, namespace, {
-						target: event.target,
-						value: val,
-						paramName: paramName,
-						paramVersion: paramVersion
-					});
-				}
-			});
-		}
-	};
-
-	const handleOnChange = (e) => {
-		setValueState(!valueState);
-
-		if (Util.isNotEmpty(events.fire)) {
-			events.fire.forEach((event) => {
-				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-					Event.fire(event.event, namespace, namespace, {
-						target: event.target,
-						value: !valueState,
-						paramName: paramName,
-						paramVersion: paramVersion
-					});
-				}
-			});
-		}
-	};
-
-	switch (viewType) {
-		case BooleanParameter.ViewTypes.CHECKBOX: {
-			return (
-				<div
-					className={className}
-					style={style}
-				>
-					<ClayCheckbox
-						id={tagId}
-						name={tagName}
-						label={trueLabel}
-						aria-label={trueLabel}
-						checked={valueState}
-						onChange={handleOnChange}
-						disabled={disabled}
-						readOnly={readOnly}
-					/>
-				</div>
-			);
-		}
-		case BooleanParameter.ViewTypes.DROPDOWN: {
-			return (
-				<div
-					className={className}
-					style={style}
-				>
-					<SXLabel
-						label={label}
-						forHtml={tagId}
-						required={required}
-						tooltip={tooltip}
-					/>
-					<ClaySelectWithOption
-						id={tagId}
-						name={tagName}
-						defaultValue={valueState}
-						onSelect={handleSelect}
-						disabled={disabled}
-						readOnly={readOnly}
-					>
-						<ClaySelect.Option
-							label={trueLabel}
-							value={true}
-						/>
-						<ClaySelect.Option
-							label={falseLabel}
-							value={false}
-						/>
-					</ClaySelectWithOption>
-				</div>
-			);
-		}
-		case BooleanParameter.ViewTypes.RADIO: {
-			return (
-				<div
-					className={className}
-					style={style}
-				>
-					<SXLabel
-						label={label}
-						forHtml={tagId}
-						required={required}
-						tooltip={tooltip}
-					/>
-					<ClayRadioGroup
-						id={tagId}
-						name={tagName}
-						value={valueState}
-						onChange={handleSelect}
-						inline
-						disabled={disabled}
-						readOnly={readOnly}
-					>
-						<ClayRadio
-							label={trueLabel}
-							value={true}
-						/>
-						<ClayRadio
-							label={falseLabel}
-							value={false}
-						/>
-					</ClayRadioGroup>
-				</div>
-			);
-		}
-		case BooleanParameter.ViewTypes.TOGGLE: {
-			return (
-				<div
-					className={className}
-					style={style}
-				>
-					<ClayToggle
-						id={tagId}
-						name={tagName}
-						label={trueLabel}
-						onToggle={handleOnChange}
-						spritemap={spritemap}
-						symbol={{
-							off: "times",
-							on: "check"
-						}}
-						toggled={valueState}
-						disabled={disabled}
-						readOnly={readOnly}
-					/>
-				</div>
-			);
-		}
-		default: {
-			return <></>;
 		}
 	}
-};
+
+	handleSelect(val) {
+		console.log("SXBoolean handleSelect: ", val);
+		this.setState({ value: val });
+
+		if (!this.dirty) this.dirty = true;
+
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+					Event.fire(event.event, this.namespace, this.namespace, {
+						target: event.target,
+						value: val,
+						paramName: this.state.paramName,
+						paramVersion: this.state.paramVersion
+					});
+				}
+			});
+		}
+	}
+
+	handleOnChange(e) {
+		this.setState({ value: !this.state.value });
+
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+					Event.fire(event.event, this.namespace, this.namespace, {
+						target: event.target,
+						value: !this.state.value,
+						paramName: this.state.paramName,
+						paramVersion: this.state.paramVersion
+					});
+				}
+			});
+		}
+	}
+
+	render() {
+		const tagId = this.namespace + this.state.paramName;
+		const tagName = tagId;
+
+		switch (this.state.viewType) {
+			case BooleanParameter.ViewTypes.CHECKBOX: {
+				return (
+					<div
+						className={this.className}
+						style={{ ...this.style, marginBottom: "15px" }}
+					>
+						<ClayCheckbox
+							id={tagId}
+							name={tagName}
+							label={this.state.label}
+							aria-label={this.state.label}
+							checked={this.state.value}
+							onChange={(e) => this.handleOnChange(e)}
+							disabled={this.state.disabled}
+						/>
+					</div>
+				);
+			}
+			case BooleanParameter.ViewTypes.DROPDOWN: {
+				return (
+					<div
+						className={this.className}
+						style={this.style}
+					>
+						<SXLabel
+							label={this.state.label}
+							forHtml={tagId}
+							required={this.state.required}
+							tooltip={this.state.tooltip}
+						/>
+						<ClaySelectWithOption
+							id={tagId}
+							name={tagName}
+							defaultValue={this.state.value}
+							onSelect={(val) => this.handleSelect(val)}
+							disabled={this.state.disabled}
+						>
+							<ClaySelect.Option
+								label={this.state.trueLabel}
+								value={true}
+							/>
+							<ClaySelect.Option
+								label={this.state.falseLabel}
+								value={false}
+							/>
+						</ClaySelectWithOption>
+					</div>
+				);
+			}
+			case BooleanParameter.ViewTypes.RADIO: {
+				return (
+					<div
+						className={this.className}
+						style={this.style}
+					>
+						<SXLabel
+							label={this.state.label}
+							forHtml={tagId}
+							required={this.state.required}
+							tooltip={this.state.tooltip}
+						/>
+						<ClayRadioGroup
+							id={tagId}
+							name={tagName}
+							value={this.state.value}
+							onChange={(val) => this.handleSelect(val)}
+							inline
+							disabled={this.state.disabled}
+						>
+							<ClayRadio
+								label={this.state.trueLabel}
+								value={true}
+							/>
+							<ClayRadio
+								label={this.state.falseLabel}
+								value={false}
+							/>
+						</ClayRadioGroup>
+					</div>
+				);
+			}
+			case BooleanParameter.ViewTypes.TOGGLE: {
+				return (
+					<div
+						className={this.className}
+						style={this.style}
+					>
+						<ClayToggle
+							id={tagId}
+							name={tagName}
+							label={this.state.label}
+							onToggle={(e) => this.handleOnChange(e)}
+							spritemap={this.spritemap}
+							symbol={{
+								off: "times",
+								on: "check"
+							}}
+							toggled={this.state.value}
+							disabled={this.state.disabled}
+							sizing="md"
+						/>
+					</div>
+				);
+			}
+			default: {
+				return <></>;
+			}
+		}
+	}
+}
 
 /****************************************************
  *  06. The type of Parametrer is Select and
  * 		displayStyle property is DualListBox
  * 	viewTypes: dropdown, radio
  ****************************************************/
-export const SXSelect = ({ namespace = "", properties, events = {}, className = "", style = {}, spritemap }) => {
-	const [propertiesState, setPropertiesState] = useState(properties);
-	const {
-		paramName,
-		paramVersion,
-		tagId = namespace + propertiesState.paramName,
-		tagName = namespace + propertiesState.paramName,
-		label = "",
-		labelPosition = Parameter.LabelPosition.UPPER_LEFT,
-		tooltip = "",
-		required = false,
-		placeholder = "",
-		initValue = "",
-		disabled = false,
-		viewType = "dropdown",
-		options = [],
-		optionsPerRow = 0,
-		validation = {}
-	} = propertiesState ?? {};
+export class SXSelect extends React.Component {
+	constructor(props) {
+		super(props);
 
-	const initializedRef = useRef(initValue ? true : false);
-	const [selectedState, setSelectedState] = useState(initValue);
-	const [errorState, setErrorState] = useState("");
-	const [viewTypeState, setViewTypeState] = useState(viewType);
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
 
-	useLayoutEffect(() => {
-		if (Util.isNotEmpty(events.on)) {
-			events.on.forEach((event) => {
-				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
-					Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
-						if (Util.isEmpty(dataPacket)) return;
+		this.dirty = false;
 
-						setSelectedState("");
-						setErrorState(dataPacket.error);
-					});
-				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
-					Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
-						if (Util.isEmpty(dataPacket)) return;
-
-						propertiesState[dataPacket.property] = dataPacket.value;
-						setPropertiesState(propertiesState);
-					});
-				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
-					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
-						if (Util.isEmpty(dataPacket)) return;
-
-						setSelectedState(dataPacket.value);
-					});
-				}
-			});
-		}
-
-		if (placeholder && this.viewType === SelectParameter.ViewTypes.DROPDOWN) {
+		let options = [...props.options];
+		if (props.placeholder && props.viewType === SelectParameter.ViewTypes.DROPDOWN) {
 			options.unshift({
-				label: placeholder,
+				label: props.placeholder,
 				value: undefined
 			});
 		}
-	}, []);
 
-	useEffect(() => {
-		//inputRef.current.value = selectedState;
-	}, []);
+		this.state = {
+			error: "",
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			placeholder: props.placeholder ?? "",
+			required: props.required ?? false,
+			value: props.value ?? "",
+			tooltip: props.tooltip ?? "",
+			options: options,
+			optionsPerRow: props.optionsPerRow ?? 0,
+			disabled: props.disabled ?? false,
+			viewType: props.viewType ?? SelectParameter.ViewTypes.DROPDOWN,
+			validation: props.validation ?? {}
+		};
 
-	const handleChange = (e) => {
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.paramName,
+							this.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.setState({ value: "", error: dataPacket.error });
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.state[dataPacket.property] = dataPacket.value;
+						this.setState({ ...this.state });
+					});
+				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
+					Event.on(event.event, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.paramName,
+							this.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.setState({ value: dataPacket.value });
+					});
+				}
+			});
+		}
+	}
+
+	handleChange(e) {
 		console.log("SXSelect handleChange: ", e, events);
-		setSelectedState(e.target.value);
+		this.setState({ value: e.target.value });
 
-		if (Util.isNotEmpty(events.fire)) {
-			events.fire.forEach((event) => {
+		if (Util.isNotEmpty(this.state.events.fire)) {
+			this.events.fire.forEach((event) => {
 				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-					Event.fire(event.event, namespace, namespace, {
+					Event.fire(event.event, this.namespace, this.namespace, {
 						target: event.target,
 						value: e.target.value,
-						paramName: paramName,
-						paramVersion: paramVersion
+						paramName: this.state.paramName,
+						paramVersion: this.state.paramVersion
 					});
 				}
 			});
 		}
-	};
+	}
 
-	const handleValueChange = (val) => {
-		setSelectedState(val);
+	handleValueChange(val) {
+		this.setState({ value: val });
 
-		if (Util.isNotEmpty(events.fire)) {
-			events.fire.forEach((event) => {
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
 				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-					Event.fire(event.event, namespace, namespace, {
+					Event.fire(event.event, this.namespace, this.namespace, {
 						target: event.target,
 						value: val,
-						paramName: paramName,
-						paramVersion: paramVersion
+						paramName: this.state.paramName,
+						paramVersion: this.state.paramVersion
 					});
 				}
 			});
 		}
-	};
+	}
 
-	const renderCount = useRef(0);
-	renderCount.current++;
-	console.log(`${tagId} renderCount: ${renderCount.current}`);
+	render() {
+		let componentLabel;
 
-	let componentLabel;
+		let componentBody;
 
-	let componentBody;
+		const component = null;
+		const tagId = this.namespace + this.state.paramName;
+		const tagName = tagId;
 
-	const component = null;
-
-	if (viewType === SelectParameter.ViewTypes.DROPDOWN) {
-		return (
-			<div
-				className={className}
-				style={style}
-			>
-				<SXLabel
-					label={label}
-					forHtml={tagId}
-					required={required}
-					tooltip={tooltip}
-					spritemap={spritemap}
-				/>
-				<ClaySelect
-					id={tagId}
-					name={tagName}
-					value={selectedState}
-					disabled={disabled}
-					onChange={handleChange}
-					onBlur={handleBlur}
+		if (this.state.viewType === SelectParameter.ViewTypes.DROPDOWN) {
+			return (
+				<div
+					className={this.className}
+					style={this.style}
 				>
-					{options.map((option, index) => {
-						return (
-							<ClaySelect.Option
-								key={index}
+					<SXLabel
+						label={this.state.label}
+						forHtml={tagId}
+						required={this.state.required}
+						tooltip={this.state.tooltip}
+						spritemap={this.spritemap}
+					/>
+					<ClaySelect
+						id={tagId}
+						name={tagName}
+						value={this.state.value}
+						disabled={this.state.disabled}
+						onChange={(e) => handleChange(e)}
+						onBlur={(e) => handleBlur(e)}
+					>
+						{this.state.options.map((option, index) => {
+							return (
+								<ClaySelect.Option
+									key={index}
+									label={option.label}
+									value={option.value}
+								/>
+							);
+						})}
+					</ClaySelect>
+				</div>
+			);
+		} else if (this.state.viewType === SelectParameter.ViewTypes.RADIO) {
+			const optionRows = Util.convertArrayToRows(this.state.options, this.state.optionsPerRow);
+			return (
+				<div
+					className={this.className}
+					style={this.style}
+				>
+					<SXLabel
+						label={this.state.label}
+						forHtml={tagId}
+						required={this.state.required}
+						tooltip={this.state.tooltip}
+						spritemap={this.spritemap}
+					/>
+					<ClayRadioGroup
+						inline
+						name={tagName}
+						value={this.state.value}
+						onChange={(e) => this.handleValueChange(e)}
+						style={{ marginLeft: "10px" }}
+					>
+						{this.state.options.map((option) => (
+							<ClayRadio
+								key={option.value}
 								label={option.label}
 								value={option.value}
 							/>
-						);
-					})}
-				</ClaySelect>
-			</div>
-		);
-	} else if (viewType === SelectParameter.ViewTypes.RADIO) {
-		const optionRows = Util.convertArrayToRows(options, optionsPerRow);
-		return (
-			<div
-				className={className}
-				style={{ style }}
-			>
-				<SXLabel
-					label={label}
-					forHtml={tagId}
-					required={required}
-					tooltip={tooltip}
-					spritemap={spritemap}
-				/>
-				<ClayRadioGroup
-					inline
-					name={tagName}
-					value={selectedState}
-					onChange={handleValueChange}
-					style={{ marginLeft: "10px" }}
-				>
-					{options.map((option) => (
-						<ClayRadio
-							key={option.value}
-							label={option.label}
-							value={option.value}
-						/>
-					))}
-				</ClayRadioGroup>
-			</div>
-		);
-	} else {
-		return <h3>SXSelect viewType: {viewType}</h3>;
+						))}
+					</ClayRadioGroup>
+				</div>
+			);
+		} else {
+			return <h3>{"SXSelect viewType: " + this.state.viewType}</h3>;
+		}
 	}
-};
+}
 
 /****************************************************
  *  07. The type of Parametrer is Select and
  * 		displayStyle property is DualListBox
  ****************************************************/
 // 04.1. when displayStyle is dual list box
-export const SXDualListBox = ({ namespace = "", properties, events = {}, className = "", style = {}, spritemap }) => {
-	const [propertiesState, setPropertiesState] = useState(properties);
+export class SXDualListBox extends React.Component {
+	constructor(props) {
+		super(props);
 
-	const {
-		paramName,
-		paramVersion,
-		tagId = namespace + propertiesState.paramName,
-		tagName = namespace + propertiesState.paramName,
-		label = "",
-		leftOptions = [],
-		rightOptions = [],
-		tooltip = "",
-		required = false,
-		disabled = false,
-		displayType = "",
-		viewType = "horizontal",
-		validation = {}
-	} = propertiesState ?? {};
+		console.log("SXDualListBox: ", props);
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
 
-	const [errorState, setErrorState] = useState("");
-	const [leftItems, setLeftItems] = useState(leftOptions);
-	const [rightItems, setRightItems] = useState(rightOptions);
-	const initializedRef = useRef(leftOptions.length > 0);
+		this.dirty = false;
 
-	const [leftSelected, setLeftSelected] = useState([]);
-	const [rightSelected, setRightSelected] = useState([]);
+		this.state = {
+			error: "",
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			required: props.required ?? false,
+			tooltip: props.tooltip ?? "",
+			disabled: props.disabled ?? false,
+			viewType: props.viewType ?? DualListParameter.ViewTypes.HORIZONTAL,
+			validation: props.validation ?? {},
+			leftOptions: props.leftOptions ?? [],
+			leftSelected: [],
+			rightOptions: props.rightOptions ?? [],
+			rightSelected: []
+		};
 
-	useLayoutEffect(() => {
-		if (Util.isNotEmpty(events.on)) {
-			events.on.forEach((event) => {
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
 				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
 					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
 						if (Util.isEmpty(dataPacket)) return;
 
-						initializedRef.current = true;
-						setErrorState(dataPacket.error);
+						this.setState({ error: dataPacket.error });
 					});
 				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
 					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
 						if (Util.isEmpty(dataPacket)) return;
 
-						propertiesState[dataPacket.property] = dataPacket.value;
-						setPropertiesState(propertiesState);
+						let newState = {};
+						newState[dataPacket.property] = dataPacket.value;
+						this.setState(newState);
 					});
 				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
 					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
 						if (Util.isEmpty(dataPacket)) return;
 
-						const allItems = leftItems.concat(rightItems);
-						setLeftItems(dataPacket.value);
-						setRightItems(
-							allItems.filter((item) => !dataPacket.value.some((val) => val.value === item.value))
+						const allItems = this.state.leftOptions.concat(this.state.rightOptions);
+						const rightOptions = allItems.filter(
+							(item) => !dataPacket.value.some((val) => val.value === item.value)
 						);
+						this.setState({ leftOptions: dataPacket.value, rightOptions: rightOptions });
+
+						this.dirty = true;
 					});
 				}
 			});
 		}
+	}
 
-		if (initializedRef.current) {
-			setErrorState(validateFormField(ParamType.DUALLIST, leftOptions, validation));
+	handleLeftOptionsChange(options, a) {
+		this.setState({ leftOptions: options });
+		this.dirty = true;
+	}
+
+	handleLeftSelectChange(selects, a) {
+		this.setState({ leftSelected: selects });
+	}
+
+	handleRightOptionsChange = (options, a) => {
+		this.setState({ rightOptions: options });
+		this.dirty = true;
+	};
+
+	handleRightSelectChange(selects, a) {
+		this.setState({ rightSelected: selects });
+	}
+
+	handleRemoveBtnClick(e) {
+		const left = this.state.leftOptions.filter((item) => !this.state.leftSelected.includes(item.value));
+		const leave = this.state.leftOptions.filter((item) => this.state.leftSelected.includes(item.value));
+
+		this.setState({
+			leftOptions: left,
+			rightOptions: [...this.state.rightOptions, ...leave]
+		});
+
+		const errorMsg = validateFormField(ParamType.DUALLIST, left, this.state.validation, this.languageId);
+		if (this.state.error !== errorMsg) {
+			this.setState({ error: errorMsg });
 		}
-	}, []);
 
-	const handleLeftItemsChange = (items, a) => {
-		setLeftItems(items);
-	};
-
-	const handleLeftSelectChange = (selects, a) => {
-		setLeftSelected(selects);
-	};
-
-	const handleRightItemsChange = (items, a) => {
-		setRightItems(items);
-	};
-
-	const handleRightSelectChange = (selects, a) => {
-		setRightSelected(selects);
-	};
-
-	const handleRemoveBtnClick = (e) => {
-		const left = leftItems.filter((item) => !leftSelected.includes(item.value));
-		const leave = leftItems.filter((item) => leftSelected.includes(item.value));
-
-		setLeftItems(left);
-		setRightItems([...rightItems, ...leave]);
-
-		const errorMsg = validateFormField(ParamType.DUAL_LISTBOX, left, validation);
-		if (errorState !== errorMsg) {
-			setErrorState(errorMsg);
-		}
-
-		if (Util.isNotEmpty(events.fire)) {
-			events.fire.forEach((event) => {
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
 				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 					if (errorMsg) {
-						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
 							target: event.target,
 							error: errorMsg,
-							paramName: paramName,
-							paramVersion: paramVersion
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion
 						});
 					} else {
-						Event.fire(event.event, namespace, namespace, {
+						Event.fire(event.event, this.namespace, this.namespace, {
 							target: event.target,
 							value: left,
-							paramName: paramName,
-							paramVersion: paramVersion
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion
 						});
 					}
 				}
 			});
 		}
-	};
 
-	const handleAddBtnClick = (e) => {
-		const left = rightItems.filter((item) => !rightSelected.includes(item.value));
-		const leave = rightItems.filter((item) => rightSelected.includes(item.value));
+		this.dirty = true;
+	}
 
-		setRightItems(left);
+	handleAddBtnClick(e) {
+		const left = this.state.rightOptions.filter((item) => !this.state.rightSelected.includes(item.value));
+		const leave = this.state.rightOptions.filter((item) => this.state.rightSelected.includes(item.value));
 
-		const newItems = [...leftItems, ...leave];
-		setLeftItems(newItems);
+		const newItems = [...this.state.leftOptions, ...leave];
+		this.setState({
+			leftOptions: newItems,
+			rightOptions: left
+		});
 
-		initializedRef.current = true;
-
-		const errorMsg = validateFormField(ParamType.DUAL_LISTBOX, left, validation);
-		if (errorState !== errorMsg) {
-			setErrorState(errorMsg);
+		const errorMsg = validateFormField(ParamType.DUALLIST, left, this.state.validation, this.languageId);
+		if (this.state.error !== errorMsg) {
+			this.setState({ error: errorMsg });
 		}
 
-		if (Util.isNotEmpty(events.fire)) {
-			events.fire.forEach((event) => {
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
 				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 					if (errorMsg) {
-						Event.fire(Event.SX_FORM_FIELD_FAILED, namespace, namespace, {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
 							target: event.target,
 							error: errorMsg,
-							paramName: paramName,
-							paramVersion: paramVersion
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion
 						});
 					} else {
-						Event.fire(event.event, namespace, namespace, {
+						Event.fire(event.event, this.namespace, this.namespace, {
 							target: event.target,
 							value: newItems,
-							paramName: paramName,
-							paramVersion: paramVersion
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion
 						});
 					}
 				}
 			});
 		}
-	};
 
-	const errorClass = initializedRef.current ? (errorState ? " has-error" : " has-success") : "";
+		this.dirty = true;
+	}
 
-	const renderCount = useRef(0);
-	renderCount.current++;
-	console.log(`${tagId} renderCount: ${renderCount.current}`);
+	render() {
+		const className = this.className + (this.dirty ? (this.state.error ? " has-error" : " has-success") : "");
 
-	return (
-		<ClayForm.Group
-			className={className}
-			style={style}
-		>
-			{displayType === DisplayType.COLUMN ? null : (
-				<SXLabel
-					label={label}
-					forHtml={tagId}
-					required={required}
-					tooltip={tooltip}
-					spritemap={spritemap}
-				/>
-			)}
-			<div className="sx-dual-listbox">
-				<div
-					className={"sx-dual-listbox-item sx-dual-listbox-item-expand listbox-left form-group " + errorClass}
-				>
-					<ClaySelectBox
-						items={leftItems}
-						label="In Use"
-						multiple
-						onItemsChange={handleLeftItemsChange}
-						onSelectChange={handleLeftSelectChange}
-						spritemap={spritemap}
-						value={leftSelected}
-						disabled={disabled}
-						style={{ marginBottom: "5px" }}
+		const tagId = this.namespace + this.state.paramName;
+		const tagName = tagId;
+
+		console.log("+++++ ", this.state.leftOptions, this.state.rightOptions);
+		return (
+			<ClayForm.Group
+				className={className}
+				style={this.style}
+			>
+				{this.state.labelPosition === Parameter.LabelPosition.NONE ? null : (
+					<SXLabel
+						label={this.state.label}
+						forHtml={tagId}
+						required={this.state.required}
+						tooltip={this.state.tooltip}
+						spritemap={this.spritemap}
 					/>
-					{initializedRef.current && errorState && (
-						<ClayForm.FeedbackGroup>
-							<ClayForm.FeedbackItem>
-								<ClayForm.FeedbackIndicator
-									spritemap={spritemap}
-									symbol="exclamation-full"
-								/>
-								{errorState}
-							</ClayForm.FeedbackItem>
-						</ClayForm.FeedbackGroup>
-					)}
+				)}
+				<div className="sx-dual-listbox">
+					<div
+						className={
+							"sx-dual-listbox-item sx-dual-listbox-item-expand listbox-left form-group " + className
+						}
+					>
+						<ClaySelectBox
+							key={Util.randomKey()}
+							items={this.state.leftOptions}
+							label="In Use"
+							multiple
+							onItemsChange={(e) => this.handleLeftOptionsChange(e)}
+							onSelectChange={(selected) => this.handleLeftSelectChange(selected)}
+							spritemap={this.spritemap}
+							value={this.state.leftSelected}
+							disabled={this.state.disabled}
+							style={{ marginBottom: "5px" }}
+						/>
+						{this.dirty && this.state.error && (
+							<ClayForm.FeedbackGroup>
+								<ClayForm.FeedbackItem>
+									<ClayForm.FeedbackIndicator
+										spritemap={this.spritemap}
+										symbol="exclamation-full"
+									/>
+									{this.state.error}
+								</ClayForm.FeedbackItem>
+							</ClayForm.FeedbackGroup>
+						)}
+					</div>
+					<div className="btn-group-vertical sx-dual-listbox-actions sx-dual-listbox-item">
+						<ClayButtonWithIcon
+							aria-label="Remove"
+							spritemap={this.spritemap}
+							symbol="caret-right"
+							displayType="secondary"
+							title="Remove"
+							className="transfer-button-ltr btn btn-monospaced btn-sm btn-secondary"
+							disabled={this.state.disabled}
+							onClick={(e) => this.handleRemoveBtnClick(e)}
+						/>
+						<ClayButtonWithIcon
+							aria-label="Add"
+							spritemap={this.spritemap}
+							symbol="caret-left"
+							displayType="secondary"
+							title="Add"
+							className="transfer-button-ltr btn btn-monospaced btn-sm btn-secondary"
+							disabled={this.state.disabled}
+							onClick={(e) => this.handleAddBtnClick(e)}
+						/>
+					</div>
+					<div className="sx-dual-listbox-item sx-dual-listbox-item-expand listbox-right form-group">
+						<ClaySelectBox
+							key={Util.randomKey()}
+							items={this.state.rightOptions}
+							label="Availables"
+							multiple
+							onItemsChange={(e) => this.handleRightOptionsChange(e)}
+							onSelectChange={(selected) => this.handleRightSelectChange(selected)}
+							spritemap={this.spritemap}
+							value={this.state.rightSelected}
+							disabled={this.state.disabled}
+						/>
+					</div>
 				</div>
-				<div className="btn-group-vertical sx-dual-listbox-actions sx-dual-listbox-item">
-					<ClayButtonWithIcon
-						aria-label="Remove"
-						spritemap={spritemap}
-						symbol="caret-right"
-						displayType="secondary"
-						title="Remove"
-						className="transfer-button-ltr btn btn-monospaced btn-sm btn-secondary"
-						disabled={disabled}
-						onClick={handleRemoveBtnClick}
-					/>
-					<ClayButtonWithIcon
-						aria-label="Add"
-						spritemap={spritemap}
-						symbol="caret-left"
-						displayType="secondary"
-						title="Add"
-						className="transfer-button-ltr btn btn-monospaced btn-sm btn-secondary"
-						disabled={disabled}
-						onClick={handleAddBtnClick}
-					/>
-				</div>
-				<div className="sx-dual-listbox-item sx-dual-listbox-item-expand listbox-right form-group">
-					<ClaySelectBox
-						items={rightItems}
-						label="Availables"
-						multiple
-						onItemsChange={handleRightItemsChange}
-						onSelectChange={handleRightSelectChange}
-						spritemap={spritemap}
-						value={rightSelected}
-						disabled={disabled}
-					/>
-				</div>
-			</div>
-		</ClayForm.Group>
-	);
-};
+			</ClayForm.Group>
+		);
+	}
+}
 
 // 04.3. when displayStyle is multi list
 export const SXDropMultiSelect = () => {
@@ -1614,97 +2086,103 @@ export const SXEMail = () => {
 };
 
 /*13. Group */
-export const SXGroup = ({ namespace = "", properties, events = {}, className = "", style = {}, spritemap }) => {
-	const [propertiesState, setPropertiesState] = useState(properties);
-	const {
-		paramName, //
-		paramVersion,
-		tagId = namespace + propertiesState.paramName,
-		tagName = namespace + propertiesState.paramName,
-		label = "",
-		viewType = ViewTypes.VERTICAL,
-		members = [],
-		fieldsPerRow = 1,
-		initValues = {}
-	} = propertiesState ?? {};
+export class SXGroup extends React.Component {
+	constructor(props) {
+		super(props);
 
-	useLayoutEffect(() => {
-		if (Util.isNotEmpty(events.on)) {
-			events.on.forEach((event) => {
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
+
+		this.dirty = false;
+
+		this.state = {
+			error: "",
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			tooltip: props.tooltip ?? "",
+			disabled: props.disabled ?? false,
+			viewType: props.viewType ?? GroupParameter.ViewTypes.HORIZONTAL,
+			members: props.members ?? [],
+			membersPerRow: props.membersPerRow ?? 1
+		};
+
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
 				if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
 					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(e, namespace, event.target, paramName, paramVersion);
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
 						if (Util.isEmpty(dataPacket)) return;
 
-						propertiesState[dataPacket.property] = dataPacket.value;
-						setPropertiesState(propertiesState);
+						let newState = {};
+						newState[dataPacket.property] = dataPacket.value;
+
+						this.setState(newState);
 					});
 				}
 			});
 		}
-	}, []);
-
-	const renderCount = useRef(0);
-	renderCount.current++;
-	console.log(`${tagId} renderCount: ${renderCount.current}`, propertiesState);
-
-	let content;
-	if (viewType === ViewTypes.HORIZONTAL) {
-		if (label) {
-			content = (
-				<ClayPanel
-					id={tagId}
-					className={className}
-					style={style}
-				></ClayPanel>
-			);
-		} else {
-			console.log("SXGroup fieldsPerGroup: " + fieldsPerRow);
-			const rows = Util.convertArrayToRows(
-				members.sort((a, b) => a.order - b.order),
-				fieldsPerRow
-			);
-
-			console.log("SXGroup: ", rows);
-
-			content = (
-				<div
-					id={tagId}
-					className={className}
-					style={style}
-				>
-					{rows.map((row, rowIndex) => (
-						<div
-							key={rowIndex}
-							className="form-group form-group-autofit"
-							style={{ marginBottom: "5px" }}
-						>
-							{row.map((col) => (
-								<div
-									key={col.paramName}
-									className="form-group-item"
-									style={{ marginBottom: "0" }}
-								>
-									<SXFormField
-										namespace={namespace}
-										properties={col}
-										events={events}
-										formData={initValues[col.paramName]}
-										spritemap={spritemap}
-									/>
-								</div>
-							))}
-						</div>
-					))}
-				</div>
-			);
-		}
-	} else {
-		content = <></>;
 	}
 
-	return content;
-};
+	render() {
+		const tagId = this.namespace + this.state.paramName;
+		const tagName = tagId;
+
+		let content;
+		switch (this.state.viewType) {
+			case GroupParameter.ViewTypes.HORIZONTAL: {
+				const rows = Util.convertArrayToRows(this.state.members, this.state.membersPerRow);
+
+				content = (
+					<div
+						id={tagId}
+						className={this.className}
+						style={this.style}
+					>
+						{rows.map((row, rowIndex) => (
+							<div
+								key={Util.randomKey()}
+								className="form-group form-group-autofit"
+								style={{ marginBottom: "5px" }}
+							>
+								{row.map((col) => (
+									<div
+										key={Util.randomKey()}
+										className="form-group-item"
+										style={{ marginBottom: "0" }}
+									>
+										<SXFormField
+											namespace={this.namespace}
+											properties={col}
+											events={this.events}
+											spritemap={this.spritemap}
+										/>
+									</div>
+								))}
+							</div>
+						))}
+					</div>
+				);
+
+				break;
+			}
+			default: {
+				content = <></>;
+			}
+		}
+
+		return content;
+	}
+}
 
 /*14. SelectGroup */
 export const SXSelectGroup = () => {
@@ -1836,84 +2314,109 @@ export const SXInlineInputGroup = ({ items, displayStyle = "justify" }) => {
 	);
 };
 
-const SXFormField = ({ namespace, properties, events, className, style, spritemap }) => {
-	switch (properties.paramType) {
-		case ParamType.STRING: {
-			return (
-				<SXInput
-					namespace={namespace}
-					properties={properties}
-					events={events}
-					className={className}
-					style={style}
-					spritemap={spritemap}
-				/>
-			);
-		}
-		case ParamType.LOCALIZED_STRING: {
-			return (
-				<SXLocalizedInput
-					namespace={namespace}
-					properties={properties}
-					events={events}
-					className={className}
-					style={style}
-					spritemap={spritemap}
-				/>
-			);
-		}
-		case ParamType.BOOLEAN: {
-			return (
-				<SXBoolean
-					namespace={namespace}
-					properties={properties}
-					events={events}
-					className={className}
-					style={style}
-					spritemap={spritemap}
-				/>
-			);
-		}
-		case ParamType.SELECT: {
-			return (
-				<SXSelect
-					namespace={namespace}
-					properties={properties}
-					events={events}
-					className={className}
-					style={style}
-					spritemap={spritemap}
-				/>
-			);
-		}
-		case ParamType.DUALLIST: {
-			return (
-				<SXDualListBox
-					namespace={namespace}
-					properties={properties}
-					events={events}
-					className={className}
-					style={style}
-					spritemap={spritemap}
-				/>
-			);
-		}
-		case ParamType.GROUP: {
-			return (
-				<SXGroup
-					namespace={namespace}
-					properties={properties}
-					events={events}
-					className={className}
-					style={style}
-					spritemap={spritemap}
-				/>
-			);
-		}
+class SXFormField extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.namespace = props.namespace;
+		this.properties = props.properties;
+		this.events = props.events;
+		this.className = props.className;
+		this.style = props.style;
+		this.spritemap = props.spritemap;
 	}
 
-	return <></>;
-};
+	render() {
+		switch (this.properties.paramType) {
+			case ParamType.STRING: {
+				return (
+					<SXInput
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.LOCALIZED_STRING: {
+				return (
+					<SXLocalizedInput
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.NUMERIC: {
+				return (
+					<SXNumeric
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.BOOLEAN: {
+				return (
+					<SXBoolean
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.SELECT: {
+				return (
+					<SXSelect
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.DUALLIST: {
+				return (
+					<SXDualListBox
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.GROUP: {
+				return (
+					<SXGroup
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+		}
+
+		return <></>;
+	}
+}
 
 export const SXForm = ({
 	namespace,

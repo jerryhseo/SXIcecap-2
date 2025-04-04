@@ -20,14 +20,14 @@ const SXDSBuilderOptionPropertiesPanel = ({
 			paramType: ParamType.GROUP,
 			paramName: "groupOptions",
 			viewType: GroupParameter.ViewTypes.HORIZONTAL,
-			fieldsPerRow: 2,
+			membersPerRow: 2,
 			members: [
 				{
 					paramType: ParamType.BOOLEAN,
 					paramName: ParamProperty.ABSTRACT_KEY,
 					viewType: BooleanParameter.ViewTypes.TOGGLE,
 					labelPosition: Parameter.LabelPosition.INLINE_LEFT,
-					trueLabel: Util.translate("abstract-key"),
+					label: Util.translate("abstract-key"),
 					tooltip: Util.translate("abstract-key-of-the-parameter-tooltip"),
 					ariaLabel: Util.translate("abstract-key"),
 					initValue: false
@@ -36,7 +36,7 @@ const SXDSBuilderOptionPropertiesPanel = ({
 					paramType: ParamType.BOOLEAN,
 					paramName: ParamProperty.DOWNLOADABLE,
 					viewType: BooleanParameter.ViewTypes.TOGGLE,
-					trueLabel: Util.translate("downloadable"),
+					label: Util.translate("downloadable"),
 					tooltip: Util.translate("downloadable-of-the-parameter-tooltip"),
 					ariaLabel: Util.translate("downloadable"),
 					initValue: true
@@ -45,7 +45,7 @@ const SXDSBuilderOptionPropertiesPanel = ({
 					paramType: ParamType.BOOLEAN,
 					paramName: ParamProperty.SEARCHABLE,
 					viewType: BooleanParameter.ViewTypes.TOGGLE,
-					trueLabel: Util.translate("searchable"),
+					label: Util.translate("searchable"),
 					tooltip: Util.translate("searchable-of-the-parameter-tooltip"),
 					ariaLabel: Util.translate("searchable"),
 					initValue: true
@@ -54,18 +54,9 @@ const SXDSBuilderOptionPropertiesPanel = ({
 					paramType: ParamType.BOOLEAN,
 					paramName: ParamProperty.DISABLED,
 					viewType: BooleanParameter.ViewTypes.TOGGLE,
-					trueLabel: Util.translate("disabled"),
+					label: Util.translate("disabled"),
 					tooltip: Util.translate("disabled-of-the-parameter-tooltip"),
 					ariaLabel: Util.translate("disabled"),
-					initValue: false
-				},
-				{
-					paramType: ParamType.BOOLEAN,
-					paramName: ParamProperty.READ_ONLY,
-					viewType: BooleanParameter.ViewTypes.TOGGLE,
-					trueLabel: Util.translate("read-only"),
-					tooltip: Util.translate("read-only-of-the-parameter-tooltip"),
-					ariaLabel: Util.translate("read-only"),
 					initValue: false
 				}
 			]
@@ -137,16 +128,6 @@ const SXDSBuilderOptionPropertiesPanel = ({
 								{
 									target: dsbuilderId,
 									event: Event.SX_FIELD_VALUE_CHANGED
-								}
-							],
-							on: [
-								{
-									target: dsbuilderId,
-									event: Event.SX_PARAM_PROPERTY_CHANGED
-								},
-								{
-									target: dsbuilderId,
-									event: Event.SX_PARAM_VALUE_CHANGED
 								}
 							]
 						}}

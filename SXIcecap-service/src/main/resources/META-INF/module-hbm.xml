@@ -34,11 +34,9 @@
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="multiEntryLevel" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.sx.icecap.model.impl.DataStructureImpl" table="SX_ICECAP_DataStructure">
-		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="dataStructureId" type="long">
+		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="dataTypeId" type="long">
 			<generator class="assigned" />
 		</id>
-		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="dataTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="version" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="structure" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.sx.icecap.model.impl.DataTypeImpl" table="SX_ICECAP_DataType">

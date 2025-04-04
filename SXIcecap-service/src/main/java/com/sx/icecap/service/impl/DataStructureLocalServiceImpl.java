@@ -32,40 +32,4 @@ import org.osgi.service.component.annotations.Component;
 )
 public class DataStructureLocalServiceImpl
 	extends DataStructureLocalServiceBaseImpl {
-	
-	public DataStructure updateDataStructure(long dataTypeId, String version, String structure) {
-		DataStructure dataStructure = null;
-		try {
-			dataStructure = dataStructurePersistence.findByDataTypeIdVersion(dataTypeId, version);
-		} catch (NoSuchDataStructureException e) {
-			long dataStructureId =  counterLocalService.increment();
-			dataStructure = dataStructurePersistence.create(dataStructureId);
-		}
-		
-		dataStructure.setDataTypeId(dataTypeId);
-		dataStructure.setVersion(version);
-		dataStructure.setStructure(structure);
-		
-		return dataStructurePersistence.update(dataStructure);
-	}
-	
-	public void deleteDataStructures( long dataTypeId ) {
-		dataStructurePersistence.removeByDataTypeId(dataTypeId);
-	}
-	
-	public void deleteDataStructure( long dataTypeId, String version) throws NoSuchDataStructureException {
-		dataStructurePersistence.removeByDataTypeIdVersion(dataTypeId, version);
-	}
-	
-	public int countByDataTypeId(long dataTypeId) {
-		return dataStructurePersistence.countByDataTypeId(dataTypeId);
-	}
-	
-	public DataStructure getDataStructure(long dataTypeId, String version) throws NoSuchDataStructureException {
-		return dataStructurePersistence.findByDataTypeIdVersion(dataTypeId, version);
-	}
-	
-	public List<DataStructure> getDataStructures(long dataTypeId){
-		return dataStructurePersistence.findByDataTypeId(dataTypeId);
-	}
 }

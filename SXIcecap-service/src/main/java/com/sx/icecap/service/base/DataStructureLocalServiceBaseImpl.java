@@ -27,6 +27,8 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.search.Indexable;
@@ -101,13 +103,13 @@ public abstract class DataStructureLocalServiceBaseImpl
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
-	 * @param dataStructureId the primary key for the new data structure
+	 * @param dataTypeId the primary key for the new data structure
 	 * @return the new data structure
 	 */
 	@Override
 	@Transactional(enabled = false)
-	public DataStructure createDataStructure(long dataStructureId) {
-		return dataStructurePersistence.create(dataStructureId);
+	public DataStructure createDataStructure(long dataTypeId) {
+		return dataStructurePersistence.create(dataTypeId);
 	}
 
 	/**
@@ -117,16 +119,16 @@ public abstract class DataStructureLocalServiceBaseImpl
 	 * <strong>Important:</strong> Inspect DataStructureLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param dataStructureId the primary key of the data structure
+	 * @param dataTypeId the primary key of the data structure
 	 * @return the data structure that was removed
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public DataStructure deleteDataStructure(long dataStructureId)
+	public DataStructure deleteDataStructure(long dataTypeId)
 		throws PortalException {
 
-		return dataStructurePersistence.remove(dataStructureId);
+		return dataStructurePersistence.remove(dataTypeId);
 	}
 
 	/**
@@ -233,22 +235,22 @@ public abstract class DataStructureLocalServiceBaseImpl
 	}
 
 	@Override
-	public DataStructure fetchDataStructure(long dataStructureId) {
-		return dataStructurePersistence.fetchByPrimaryKey(dataStructureId);
+	public DataStructure fetchDataStructure(long dataTypeId) {
+		return dataStructurePersistence.fetchByPrimaryKey(dataTypeId);
 	}
 
 	/**
 	 * Returns the data structure with the primary key.
 	 *
-	 * @param dataStructureId the primary key of the data structure
+	 * @param dataTypeId the primary key of the data structure
 	 * @return the data structure
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Override
-	public DataStructure getDataStructure(long dataStructureId)
+	public DataStructure getDataStructure(long dataTypeId)
 		throws PortalException {
 
-		return dataStructurePersistence.findByPrimaryKey(dataStructureId);
+		return dataStructurePersistence.findByPrimaryKey(dataTypeId);
 	}
 
 	@Override
@@ -260,7 +262,7 @@ public abstract class DataStructureLocalServiceBaseImpl
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(DataStructure.class);
 
-		actionableDynamicQuery.setPrimaryKeyPropertyName("dataStructureId");
+		actionableDynamicQuery.setPrimaryKeyPropertyName("dataTypeId");
 
 		return actionableDynamicQuery;
 	}
@@ -277,8 +279,7 @@ public abstract class DataStructureLocalServiceBaseImpl
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(DataStructure.class);
 
-		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
-			"dataStructureId");
+		indexableActionableDynamicQuery.setPrimaryKeyPropertyName("dataTypeId");
 
 		return indexableActionableDynamicQuery;
 	}
@@ -290,7 +291,7 @@ public abstract class DataStructureLocalServiceBaseImpl
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(DataStructure.class);
 
-		actionableDynamicQuery.setPrimaryKeyPropertyName("dataStructureId");
+		actionableDynamicQuery.setPrimaryKeyPropertyName("dataTypeId");
 	}
 
 	/**
@@ -473,5 +474,8 @@ public abstract class DataStructureLocalServiceBaseImpl
 	@Reference
 	protected com.liferay.portal.kernel.service.UserLocalService
 		userLocalService;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DataStructureLocalServiceBaseImpl.class);
 
 }

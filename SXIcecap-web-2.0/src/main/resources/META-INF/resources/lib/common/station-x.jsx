@@ -4,7 +4,8 @@ import { Util } from "./util";
 
 export const EditStatus = {
 	UPDATE: "update",
-	ADD: "add"
+	ADD: "add",
+	UPGRADE: "upgrade"
 };
 
 export const LiferayProperty = {
@@ -67,10 +68,27 @@ export const ValidationRule = {
 
 export const ValidationKeys = {
 	REQUIRED: "required",
+	MIN_LENGTH: "minLength",
+	MAX_LENGTH: "maxLength",
+	NORMAL_MIN: "normalMin",
+	NORMAL_MAX: "normalMax",
 	MIN: "min",
 	MAX: "max",
 	PATTERN: "pattern",
-	VALIDATE: "validate"
+	CUSTOM: "custom"
+};
+
+export const ValidationSectionProperty = {
+	VALUE: "value",
+	MESSAGE: "message",
+	BOUNDARY: "boundary",
+	ERROR_LEVEL: "errorLevel"
+};
+
+export const ErrorClass = {
+	ERROR: "has-error",
+	WARNING: "has-warning",
+	SUCCESS: "has-success"
 };
 
 export const ACTION_NAME = "javax.portlet.action";
@@ -143,10 +161,13 @@ export const ParamProperty = {
 	FORMAT: "format",
 	GRID_COLUMNS: "gridColumns",
 	ID: "id",
+	INIT_VALUE: "initValue",
 	INPUT_SIZE: "inputSize",
+	IS_INTEGER: "isInteger",
 	ITEM_DISPLAY_NAME: "itemDisplayName",
 	LABEL: "label",
 	LABEL_POSITION: "labelPosition",
+	LABEL_WIDTH: "labelWidth",
 	LINE_BREAK: "lineBreak",
 	LIST_ITEM: "listItem",
 	LIST_ITEM_VALUE: "listItemValue",
@@ -187,6 +208,8 @@ export const ParamProperty = {
 	START_YEAR: "startYear",
 	SWEEPABLE: "sweepable",
 	SYNONYMS: "synonyms",
+	TAG_ID: "tagId",
+	TAG_NAME: "tagName",
 	TEXT: "text",
 	TOOLTIP: "tooltip",
 	TRUE_LABEL: "trueLabel",
@@ -466,6 +489,7 @@ export const Event = {
 	SX_ENABLE_INPUT_STATUS: "SX_ENABLE_INPUT_STATUS",
 	SX_ENABLE_GOTO: "SX_ENABLE_GOTO",
 	SX_FOCUS: "SX_FOCUS",
+	SX_DISTRACT_ALL: "SX_DISTRACT_ALL",
 	SX_PARAM_TYPE_CHANGED: "SX_PARAM_TYPE_CHANGED",
 
 	LIST_OPTION_PREVIEW_REMOVED: "LIST_OPTION_PREVIEW_REMOVED",
@@ -672,25 +696,24 @@ export const ParamType = {
 	/*01.*/ STRING: "String",
 	/*02.*/ LOCALIZED_STRING: "LocalizedString",
 	/*03.*/ NUMERIC: "Numeric",
-	/*04.*/ INTEGER: "Integer",
-	/*05.*/ BOOLEAN: "Boolean",
-	/*06.*/ SELECT: "Select",
-	/*07.*/ DUALLIST: "DualList",
-	/*08.*/ MATRIX: "Matrix",
-	/*09.*/ FILE: "File",
-	/*010.*/ ADDRESS: "Address",
-	/*11.*/ DATE: "Date",
-	/*12.*/ PHONE: "Phone",
-	/*13.*/ EMAIL: "EMail",
-	/*14.*/ GROUP: "Group",
-	/*15.*/ SELECT_GROUP: "SelectGroup",
-	/*16.*/ GRID: "Grid",
-	/*17.*/ TABLE: "Table",
-	/*18.*/ CALCULATOR: "Calculator",
-	/*19.*/ REFERENCE: "Reference",
-	/*20.*/ LINKER: "Linker",
-	/*21.*/ IMAGE: "Image",
-	/*22.*/ COMMENT: "Comment"
+	/*04.*/ BOOLEAN: "Boolean",
+	/*05.*/ SELECT: "Select",
+	/*06.*/ DUALLIST: "DualList",
+	/*07.*/ MATRIX: "Matrix",
+	/*08.*/ FILE: "File",
+	/*09.*/ ADDRESS: "Address",
+	/*10.*/ DATE: "Date",
+	/*11.*/ PHONE: "Phone",
+	/*12.*/ EMAIL: "EMail",
+	/*13.*/ GROUP: "Group",
+	/*14.*/ SELECT_GROUP: "SelectGroup",
+	/*15.*/ GRID: "Grid",
+	/*16.*/ TABLE: "Table",
+	/*17.*/ CALCULATOR: "Calculator",
+	/*18.*/ REFERENCE: "Reference",
+	/*19.*/ LINKER: "Linker",
+	/*20.*/ IMAGE: "Image",
+	/*21.*/ COMMENT: "Comment"
 };
 
 export const WindowState = {
