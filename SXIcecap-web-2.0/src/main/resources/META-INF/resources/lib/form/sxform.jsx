@@ -1186,12 +1186,6 @@ export class SXNumeric extends React.Component {
 		const tagId = this.namespace + this.state.paramName;
 		const tagName = tagId;
 
-		console.log(
-			"SXNumeric validation: ",
-			this.state.validation,
-			Parameter.checkValidationEnabled(this.state.validation, ValidationKeys.MAX)
-		);
-
 		return (
 			<ClayForm.Group
 				className={className}
@@ -1463,6 +1457,7 @@ export class SXBoolean extends React.Component {
 				);
 			}
 			case BooleanParameter.ViewTypes.DROPDOWN: {
+				console.log("SXBoolean: ", this.state.trueLabel, this.state.falseLabel);
 				return (
 					<div
 						className={this.className}
@@ -1474,7 +1469,7 @@ export class SXBoolean extends React.Component {
 							required={this.state.required}
 							tooltip={this.state.tooltip}
 						/>
-						<ClaySelectWithOption
+						<ClaySelect
 							id={tagId}
 							name={tagName}
 							defaultValue={this.state.value}
@@ -1483,17 +1478,18 @@ export class SXBoolean extends React.Component {
 						>
 							<ClaySelect.Option
 								label={this.state.trueLabel}
-								value={true}
+								value="true"
 							/>
 							<ClaySelect.Option
 								label={this.state.falseLabel}
-								value={false}
+								value="false"
 							/>
-						</ClaySelectWithOption>
+						</ClaySelect>
 					</div>
 				);
 			}
 			case BooleanParameter.ViewTypes.RADIO: {
+				console.log("SXBoolean: ", this.state.value);
 				return (
 					<div
 						className={this.className}
@@ -1511,15 +1507,17 @@ export class SXBoolean extends React.Component {
 							value={this.state.value}
 							onChange={(val) => this.handleSelect(val)}
 							inline
-							disabled={this.state.disabled}
+							style={{ marginLeft: "15px" }}
 						>
 							<ClayRadio
 								label={this.state.trueLabel}
 								value={true}
+								disabled={this.state.disabled}
 							/>
 							<ClayRadio
 								label={this.state.falseLabel}
 								value={false}
+								disabled={this.state.disabled}
 							/>
 						</ClayRadioGroup>
 					</div>
@@ -1580,6 +1578,8 @@ export class SXSelect extends React.Component {
 			});
 		}
 
+		console.log("prop.value: ", props.value);
+
 		this.state = {
 			error: "",
 			paramName: props.paramName ?? "",
@@ -1591,7 +1591,7 @@ export class SXSelect extends React.Component {
 			value: props.value ?? "",
 			tooltip: props.tooltip ?? "",
 			options: options,
-			optionsPerRow: props.optionsPerRow ?? 0,
+			optionsPerRow: props.optionsPerRow ?? 1,
 			disabled: props.disabled ?? false,
 			viewType: props.viewType ?? SelectParameter.ViewTypes.DROPDOWN,
 			validation: props.validation ?? {}
@@ -1663,6 +1663,7 @@ export class SXSelect extends React.Component {
 	}
 
 	handleValueChange(val) {
+		console.log("handleValueChange: ", val);
 		this.setState({ value: val });
 
 		if (Util.isNotEmpty(this.events.fire)) {
@@ -1691,7 +1692,7 @@ export class SXSelect extends React.Component {
 		if (this.state.viewType === SelectParameter.ViewTypes.DROPDOWN) {
 			return (
 				<div
-					className={this.className}
+					className={"form-grorp " + this.className}
 					style={this.style}
 				>
 					<SXLabel
@@ -1712,7 +1713,7 @@ export class SXSelect extends React.Component {
 						{this.state.options.map((option, index) => {
 							return (
 								<ClaySelect.Option
-									key={index}
+									key={option.value}
 									label={option.label}
 									value={option.value}
 								/>
@@ -1723,9 +1724,10 @@ export class SXSelect extends React.Component {
 			);
 		} else if (this.state.viewType === SelectParameter.ViewTypes.RADIO) {
 			const optionRows = Util.convertArrayToRows(this.state.options, this.state.optionsPerRow);
+			console.log("Select value: ", this.state.value);
 			return (
 				<div
-					className={this.className}
+					className={"form-group " + this.className}
 					style={this.style}
 				>
 					<SXLabel
@@ -1736,24 +1738,40 @@ export class SXSelect extends React.Component {
 						spritemap={this.spritemap}
 					/>
 					<ClayRadioGroup
-						inline
 						name={tagName}
-						value={this.state.value}
-						onChange={(e) => this.handleValueChange(e)}
 						style={{ marginLeft: "10px" }}
 					>
-						{this.state.options.map((option) => (
-							<ClayRadio
-								key={option.value}
-								label={option.label}
-								value={option.value}
-							/>
+						{optionRows.map((row) => (
+							<div
+								key={Util.randomKey()}
+								className="form-group form-group-autofit"
+								style={{ marginBottom: "5px" }}
+							>
+								{row.map((option) => (
+									<div
+										key={Util.randomKey()}
+										className="form-group-item"
+										style={{ marginBottom: "0" }}
+									>
+										<ClayRadio
+											key={option.value}
+											label={option.label}
+											value={option.value}
+											checked={this.state.value === option.value}
+											onChange={(e) => this.handleValueChange(option.value)}
+											disabled={this.state.disabled}
+										/>
+									</div>
+								))}
+							</div>
 						))}
 					</ClayRadioGroup>
 				</div>
 			);
-		} else {
-			return <h3>{"SXSelect viewType: " + this.state.viewType}</h3>;
+		} else if (this.state.viewType === SelectParameter.ViewTypes.CHECKBOX) {
+			return <UnderConstruction />;
+		} else if (this.state.viewType === SelectParameter.ViewTypes.LISTBOX) {
+			return <UnderConstruction />;
 		}
 	}
 }
@@ -2377,6 +2395,8 @@ class SXFormField extends React.Component {
 				);
 			}
 			case ParamType.SELECT: {
+				console.log("SXFormField Properties: ", this.properties);
+
 				return (
 					<SXSelect
 						namespace={this.namespace}

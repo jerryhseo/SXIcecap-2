@@ -30,7 +30,7 @@ const SXDSBuilderOptionPropertiesPanel = ({
 					label: Util.translate("abstract-key"),
 					tooltip: Util.translate("abstract-key-of-the-parameter-tooltip"),
 					ariaLabel: Util.translate("abstract-key"),
-					initValue: false
+					value: false
 				},
 				{
 					paramType: ParamType.BOOLEAN,
@@ -39,7 +39,7 @@ const SXDSBuilderOptionPropertiesPanel = ({
 					label: Util.translate("downloadable"),
 					tooltip: Util.translate("downloadable-of-the-parameter-tooltip"),
 					ariaLabel: Util.translate("downloadable"),
-					initValue: true
+					value: true
 				},
 				{
 					paramType: ParamType.BOOLEAN,
@@ -48,7 +48,7 @@ const SXDSBuilderOptionPropertiesPanel = ({
 					label: Util.translate("searchable"),
 					tooltip: Util.translate("searchable-of-the-parameter-tooltip"),
 					ariaLabel: Util.translate("searchable"),
-					initValue: true
+					value: true
 				},
 				{
 					paramType: ParamType.BOOLEAN,
@@ -57,7 +57,7 @@ const SXDSBuilderOptionPropertiesPanel = ({
 					label: Util.translate("disabled"),
 					tooltip: Util.translate("disabled-of-the-parameter-tooltip"),
 					ariaLabel: Util.translate("disabled"),
-					initValue: false
+					value: false
 				}
 			]
 		}
@@ -74,6 +74,7 @@ const SXDSBuilderOptionPropertiesPanel = ({
 						paramName: ParamProperty.LABEL_POSITION,
 						paramVersion: "1.0.0",
 						viewType: SelectParameter.ViewTypes.RADIO,
+						optionsPerRow: 2,
 						label: Util.translate("label-position"),
 						tooltip: Util.translate("label-position-tooltip"),
 						options: [
@@ -104,7 +105,7 @@ const SXDSBuilderOptionPropertiesPanel = ({
 											}
 											*/
 						],
-						initValue: SelectParameter.LabelPosition.UPPER_LEFT
+						value: SelectParameter.LabelPosition.UPPER_LEFT
 					}}
 					events={{
 						fire: [
@@ -120,7 +121,7 @@ const SXDSBuilderOptionPropertiesPanel = ({
 			{optionFields.map((field) => {
 				return (
 					<SXFormField
-						key={field.paramName + "_" + field.paramVersion}
+						key={field.namespace + "_" + field.paramName}
 						namespace={namespace}
 						properties={field}
 						events={{

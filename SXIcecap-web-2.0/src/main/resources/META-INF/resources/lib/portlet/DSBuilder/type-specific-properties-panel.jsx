@@ -145,44 +145,71 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 				];
 
 				return (
-					<>
-						<SXFormField
-							namespace={this.namespace}
-							properties={{
-								paramType: ParamType.SELECT,
-								paramName: ParamProperty.VIEW_TYPE,
-								paramVersion: "1.0.0",
-								viewType: SelectParameter.ViewTypes.RADIO,
-								label: Util.translate("view-type"),
-								tooltip: Util.translate("select-view-type-tooltip"),
-								options: [
-									{
-										label: "Dropdown",
-										value: SelectParameter.ViewTypes.DROPDOWN
-									},
-									{
-										label: "Radio",
-										value: SelectParameter.ViewTypes.RADIO
-									},
-									{
-										label: "Checkbox",
-										value: SelectParameter.ViewTypes.CHECKBOX
-									},
-									{
-										label: "Listbox",
-										value: SelectParameter.ViewTypes.LISTBOX
-									}
-								],
-								value: SelectParameter.ViewTypes.DROPDOWN
-							}}
-							events={events}
-							spritemap={this.spritemap}
-						/>
-					</>
+					<SXFormField
+						namespace={this.namespace}
+						properties={{
+							paramType: ParamType.SELECT,
+							paramName: ParamProperty.VIEW_TYPE,
+							paramVersion: "1.0.0",
+							viewType: SelectParameter.ViewTypes.RADIO,
+							label: Util.translate("view-type"),
+							tooltip: Util.translate("select-view-type-tooltip"),
+							options: [
+								{
+									label: "Dropdown",
+									value: SelectParameter.ViewTypes.DROPDOWN
+								},
+								{
+									label: "Radio",
+									value: SelectParameter.ViewTypes.RADIO
+								},
+								{
+									label: "Checkbox",
+									value: SelectParameter.ViewTypes.CHECKBOX
+								},
+								{
+									label: "Listbox",
+									value: SelectParameter.ViewTypes.LISTBOX
+								}
+							],
+							value: SelectParameter.ViewTypes.DROPDOWN
+						}}
+						events={events}
+						spritemap={this.spritemap}
+					/>
 				);
 			}
 			case ParamType.BOOLEAN: {
 				const fields = [
+					{
+						paramType: ParamType.SELECT,
+						paramName: ParamProperty.VIEW_TYPE,
+						paramVersion: "1.0.0",
+						viewType: SelectParameter.ViewTypes.RADIO,
+						label: Util.translate("view-type"),
+						options: [
+							{
+								label: "Checkbox",
+								value: BooleanParameter.ViewTypes.CHECKBOX
+							},
+							{
+								label: "Toggle",
+								value: BooleanParameter.ViewTypes.TOGGLE
+							},
+							{
+								label: "Dropdown",
+								value: BooleanParameter.ViewTypes.DROPDOWN
+							},
+							{
+								label: "Radio",
+								value: BooleanParameter.ViewTypes.RADIO
+							}
+						],
+						optionsPerRow: 2,
+						languageId: this.languageId,
+						tooltip: Util.translate("view-type-tooltip"),
+						value: BooleanParameter.ViewTypes.CHECKBOX
+					},
 					{
 						paramType: ParamType.LOCALIZED_STRING,
 						paramName: ParamProperty.TRUE_LABEL,
@@ -191,7 +218,8 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 						languageId: this.languageId,
 						availableLanguageIds: this.availableLanguageIds,
 						placeholder: Util.translate("label-for-true-option"),
-						tooltip: Util.translate("label-for-true-option-tooltip")
+						tooltip: Util.translate("label-for-true-option-tooltip"),
+						value: this.state.parameter.getTrueLabel(this.availableLanguageIds)
 					},
 					{
 						paramType: ParamType.LOCALIZED_STRING,
@@ -201,15 +229,26 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 						languageId: this.languageId,
 						availableLanguageIds: this.availableLanguageIds,
 						placeholder: Util.translate("label-for-false-option"),
-						tooltip: Util.translate("label-for-false-option-tooltip")
+						tooltip: Util.translate("label-for-false-option-tooltip"),
+						value: this.state.parameter.getFalseLabel(this.availableLanguageIds)
 					}
 				];
+
+				console.log(
+					"this.state.parameter.trueLabel: ",
+					this.state.parameter.getTrueLabel(this.availableLanguageIds)
+				);
+				console.log(
+					"this.state.parameter.falseLabel: ",
+					this.state.parameter.getFalseLabel(this.availableLanguageIds)
+				);
 
 				return (
 					<div>
 						{fields.map((field) => {
 							return (
 								<SXFormField
+									key={Util.randomKey()}
 									namespace={this.namespace}
 									properties={field}
 									events={events}

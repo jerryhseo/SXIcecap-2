@@ -1057,7 +1057,7 @@ export class NumericParameter extends Parameter {
 		return json;
 	}
 
-	toProperties(languageId, tagId, tagName) {
+	toProperties(languageId, availableLanguageIds, tagId, tagName) {
 		let json = super.toProperties(languageId);
 
 		json.uncertainty = this.uncertainty;
@@ -1074,7 +1074,7 @@ export class NumericParameter extends Parameter {
 	}
 
 	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, tagId, tagName);
+		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
@@ -1109,8 +1109,8 @@ export class SelectParameter extends Parameter {
 	#multiple = false;
 	#optionsPerRow = 0;
 
-	constructor(json) {
-		super(ParamType.SELECT);
+	constructor(namespace, formId, json) {
+		super(namespace, formId, ParamType.SELECT);
 
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
@@ -1167,7 +1167,7 @@ export class SelectParameter extends Parameter {
 		return json;
 	}
 
-	toProperties(languageId, tagId, tagName) {
+	toProperties(languageId, availableLanguageIds, tagId, tagName) {
 		let json = super.toProperties(languageId);
 
 		json.viewType = this.viewType;
@@ -1182,7 +1182,7 @@ export class SelectParameter extends Parameter {
 	}
 
 	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, tagId, tagName);
+		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
@@ -1211,8 +1211,8 @@ export class DualListParameter extends Parameter {
 	};
 	#rightOptions;
 
-	constructor(json) {
-		super(ParamType.DUALLIST);
+	constructor(namespace, formId, json) {
+		super(namespace, formId, ParamType.DUALLIST);
 
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
@@ -1259,12 +1259,6 @@ export class DualListParameter extends Parameter {
 		return super.toJSON();
 	}
 
-	toProperties(languageId) {
-		let json = super.toProperties(languageId);
-
-		return json;
-	}
-
 	toProperties(languageId, availableLanguageIds, tagId, tagName) {
 		let json = super.toProperties(languageId);
 
@@ -1309,8 +1303,8 @@ export class BooleanParameter extends SelectParameter {
 		DROPDOWN: "dropdown"
 	};
 
-	constructor(json) {
-		super(json);
+	constructor(namespace, formId, json) {
+		super(namespace, formId, json);
 
 		this.paramType = ParamType.BOOLEAN;
 
@@ -1319,28 +1313,69 @@ export class BooleanParameter extends SelectParameter {
 		} else {
 			this.viewType = BooleanParameter.ViewTypes.CHECKBOX;
 		}
+
+		if (Util.isEmpty(this.options)) {
+			this.options = [
+				{
+					label: {},
+					value: false
+				},
+				{
+					label: {},
+					value: true
+				}
+			];
+		}
 	}
 
-	get trueLabel() {
+	get trueOption() {
 		return this.options[1];
 	}
-	get falseLabel() {
+	get trueLabel() {
+		return this.trueOption.label;
+	}
+	get falseOption() {
 		return this.options[0];
 	}
-
-	set trueLabel(val) {
-		this.options[1] = val;
-	}
-	set falseLabel(val) {
-		this.options[0] = val;
+	get falseLabel() {
+		return this.falseOption.label;
 	}
 
-	getTrueLabel(languageId) {
-		return this.option[1][languageId];
+	set trueOption(option) {
+		this.options[1] = option;
+	}
+	set trueLabel(label) {
+		this.trueOption.label = label;
+	}
+	set falseOption(option) {
+		this.options[0] = option;
+	}
+	set falseLabel(label) {
+		this.falseOption.label = label;
 	}
 
-	getFalseLabel(languageId) {
-		return this.option[0][languageId];
+	getTrueLabel(availableLanguageIds) {
+		if (Util.isEmpty(this.trueLabel)) {
+			let label = {};
+			availableLanguageIds.forEach((locale) => {
+				label[locale] = Util.translate("yes");
+			});
+			this.trueLabel = label;
+		}
+
+		return this.trueLabel;
+	}
+
+	getFalseLabel(availableLanguageIds) {
+		if (Util.isEmpty(this.falseLabel)) {
+			let label = {};
+			availableLanguageIds.forEach((locale) => {
+				label[locale] = Util.translate("no");
+			});
+			this.falseLabel = label;
+		}
+
+		return this.falseLabel;
 	}
 
 	setValue(val) {
@@ -1355,17 +1390,22 @@ export class BooleanParameter extends SelectParameter {
 		return super.toJSON();
 	}
 
-	toProperties(languageId) {
-		return super.toProperties(languageId);
-	}
+	toProperties(languageId, availableLanguageIds, tagId, tagName) {
+		let properties = super.toProperties(languageId, availableLanguageIds, tagId, tagName);
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId);
-		properties.languageId = languageId;
-		properties.availableLanguageIds = availableLanguageIds;
+		properties.trueLabel = this.getTrueLabel(availableLanguageIds)[languageId];
+		properties.falseLabel = this.getFalseLabel(availableLanguageIds)[languageId];
+
+		properties.value = this.value ?? !!this.defaultValue;
 
 		if (tagId) properties.tagId = tagId;
 		if (tagName) properties.tagName = tagName;
+
+		return properties;
+	}
+
+	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField

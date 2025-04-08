@@ -94,6 +94,7 @@ class DataStructureBuilder extends React.Component {
 		ParamProperty.REQUIRED,
 		ParamProperty.TOOLTIP,
 		ParamProperty.LABEL_POSITION,
+		ParamProperty.VIEW_TYPE,
 		ParamProperty.DISABLED,
 		ParamProperty.READ_ONLY,
 		ParamProperty.VALIDATION,
@@ -286,7 +287,8 @@ class DataStructureBuilder extends React.Component {
 			if (
 				dataPacket.paramType !== ParamType.STRING &&
 				dataPacket.paramType !== ParamType.LOCALIZED_STRING &&
-				dataPacket.paramType !== ParamType.NUMERIC
+				dataPacket.paramType !== ParamType.NUMERIC &&
+				dataPacket.paramType !== ParamType.BOOLEAN
 			) {
 				this.setState({ underConstruction: true });
 				return;
