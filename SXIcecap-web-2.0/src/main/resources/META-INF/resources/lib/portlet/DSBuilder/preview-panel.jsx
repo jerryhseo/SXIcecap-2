@@ -34,16 +34,13 @@ class SXDataStructurePreviewer extends React.Component {
 	}
 
 	render() {
-		console.log("SXDataStructurePreviewer render: ", this.state.DataStructure);
+		console.log("SXDataStructurePreviewer render: ", this.state.dataStructure);
 		return (
 			<>
 				{this.state.dataStructure.renderPreview(
-					this.namespace, //
 					this.dsbuilderId,
 					this.propertyPanelId,
 					this.previewCanvasId,
-					this.languageId,
-					this.availableLanguageIds,
 					"",
 					{},
 					this.spritemap,

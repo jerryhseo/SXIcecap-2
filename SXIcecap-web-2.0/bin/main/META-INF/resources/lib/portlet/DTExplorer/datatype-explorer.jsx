@@ -1,15 +1,6 @@
 import React, { useState, useLayoutEffect, useContext, useRef, useCallback } from "react";
 
-import {
-	ActionKeys,
-	viewType,
-	Event,
-	LoadingStatus,
-	PortletKeys,
-	ResourceIds,
-	WindowState,
-	ViewTypes
-} from "../../common/station-x";
+import { ActionKeys, LoadingStatus, PortletKeys, ResourceIds, WindowState, ViewTypes } from "../../common/station-x";
 import { Util } from "../../common/util";
 import { Context } from "@clayui/modal";
 import { openConfirmModal } from "../../modal/sxmodal";

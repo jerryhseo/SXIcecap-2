@@ -1,92 +1,16 @@
-import React, { useState, useRef, useLayoutEffect, useContext } from "react";
+import React from "react";
 import { ClayToggle } from "@clayui/form";
-import ClayLayout from "@clayui/layout";
 import { DataTypeProperty, Event, LoadingStatus, ParamProperty, ParamType, ResourceIds } from "../../common/station-x";
-import ClayButtonGroup from "@clayui/button/lib/Group";
 import { Util } from "../../common/util";
 import { DataStructure } from "./data-structure";
 import { DataTypeInfo } from "../DTEditor/datatype-editor";
 import { Parameter } from "../../parameter/parameter";
-import { Body, Cell, Head, Row, Table, Button, Icon } from "@clayui/core";
-import DropDown from "@clayui/drop-down";
+import { Button, Icon } from "@clayui/core";
 import { ClayButtonWithIcon } from "@clayui/button";
-import LocalizedInput from "@clayui/localized-input";
 import SXDSBuilderPropertiesPanel from "./properties-panel";
 import SXDataStructurePreviewer from "./preview-panel";
 import { SXModalDialog } from "../../modal/sxmodal";
 import { UnderConstruction } from "../../common/common";
-
-const SelectOptionBuilder = ({ namespace, formId, options = [], languageId, availableLanguageIds, spritemap }) => {
-	const [optionsState, setOptionsState] = useState(options);
-	const builderFormId = namespace + "optionBuilder";
-
-	useLayoutEffect(() => {}, []);
-
-	return (
-		<>
-			<Table>
-				<Head
-					items={[
-						{
-							id: "1",
-							name: Util.translate("label")
-						},
-						{
-							id: "2",
-							name: Util.translate("value")
-						},
-						{
-							id: "3",
-							name: Util.translate("actions")
-						}
-					]}
-				>
-					{(column) => <Cell key={column.id}>{column.name}</Cell>}
-				</Head>
-				<Body
-					items={optionsState}
-					onItemsChange={(e) => {
-						console.log("onItemsChange: ", e);
-					}}
-				>
-					{(row) => (
-						<Row>
-							<Cell>{row.label[languageId]}</Cell>
-							<Cell>{row.value}</Cell>
-							<Cell>
-								<DropDown
-									trigger={
-										<ClayButtonWithIcon
-											aria-label="Actions"
-											symbol="ellipsis-v"
-											title="Actions"
-										/>
-									}
-								>
-									<DropDown.ItemList
-										items={[
-											{ name: Util.translate("delete") },
-											{ name: Util.translate("moveUp") },
-											{ name: Util.translate("moveDown") }
-										]}
-									>
-										{(action) => <DropDown.Item key={action.name}>{action.name}</DropDown.Item>}
-									</DropDown.ItemList>
-								</DropDown>
-							</Cell>
-						</Row>
-					)}
-				</Body>
-			</Table>
-
-			<div>{Util.translate("label")}</div>
-			<LocalizedInput
-				id={namespace + "label"}
-				locales={availableLanguageIds.map((locale) => ({ label: locale, symbol: locale.toLowerCase() }))}
-			/>
-		</>
-	);
-};
 
 class DataStructureBuilder extends React.Component {
 	rerenderProperties = [
@@ -103,7 +27,8 @@ class DataStructureBuilder extends React.Component {
 		ParamProperty.TRUE_LABEL,
 		ParamProperty.FALSE_LABEL,
 		ParamProperty.UNIT,
-		ParamProperty.UNCERTAINTY
+		ParamProperty.UNCERTAINTY,
+		ParamProperty.OPTIONS
 	];
 
 	propertyPanelStyles = {
@@ -156,12 +81,16 @@ class DataStructureBuilder extends React.Component {
 		this.loadingFailMessage = "";
 		this.state = {
 			paramType: ParamType.STRING,
-			//workingParam: Parameter.createParameter(this.namespace, this.previewCanvasId, ParamType.STRING),
 			workingParam: null,
 			loadingStatus: LoadingStatus.PENDING,
 			dataTypeId: props.portletParameters.params.dataTypeId,
 			dataType: {},
-			dataStructure: new DataStructure(this.namespace, this.previewCanvasId),
+			dataStructure: new DataStructure(
+				this.namespace,
+				this.previewCanvasId,
+				this.languageId,
+				this.availableLanguageIds
+			),
 			confirmDlgState: false,
 			confirmDlgBody: "",
 			paramOrder: 0,
@@ -215,6 +144,27 @@ class DataStructureBuilder extends React.Component {
 						});
 						break;
 					}
+					case ParamProperty.OPTIONS: {
+						property = dataPacket.paramName;
+						value = this.state.workingParam.options.map((option) => ({
+							label: option.label[this.languageId],
+							value: option.value
+						}));
+
+						break;
+					}
+					case ParamProperty.VIEW_TYPE: {
+						property = dataPacket.paramName;
+						value = this.state.workingParam[dataPacket.paramName];
+
+						Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
+							target: this.propertyPanelId,
+							paramName: ParamProperty.VIEW_TYPE,
+							paramVersion: "1.0.0",
+							value: value
+						});
+						break;
+					}
 					default: {
 						property = dataPacket.paramName;
 						value = this.state.workingParam[dataPacket.paramName];
@@ -250,6 +200,8 @@ class DataStructureBuilder extends React.Component {
 				workingParam: Parameter.createParameter(
 					this.namespace,
 					this.previewCanvasId,
+					this.languageId,
+					this.availableLanguageIds,
 					dataPacket.parameter.paramType,
 					dataPacket.parameter.toJSON()
 				)
@@ -288,13 +240,20 @@ class DataStructureBuilder extends React.Component {
 				dataPacket.paramType !== ParamType.STRING &&
 				dataPacket.paramType !== ParamType.LOCALIZED_STRING &&
 				dataPacket.paramType !== ParamType.NUMERIC &&
-				dataPacket.paramType !== ParamType.BOOLEAN
+				dataPacket.paramType !== ParamType.BOOLEAN &&
+				dataPacket.paramType !== ParamType.SELECT
 			) {
 				this.setState({ underConstruction: true });
 				return;
 			}
 
-			const newParam = Parameter.createParameter(this.namespace, this.previewCanvasId, dataPacket.paramType);
+			const newParam = Parameter.createParameter(
+				this.namespace,
+				this.previewCanvasId,
+				this.languageId,
+				this.availableLanguageIds,
+				dataPacket.paramType
+			);
 			this.setState({ workingParam: newParam });
 
 			Event.fire(Event.SX_PARAMETER_CHANGED, this.namespace, this.namespace, {
@@ -320,8 +279,19 @@ class DataStructureBuilder extends React.Component {
 			successFunc: (result) => {
 				console.log("Load data structure result: ", result, Util.isNotEmpty(result.dataStructure));
 				let dataStructure = Util.isNotEmpty(result.dataStructure)
-					? new DataStructure(this.namespace, this.previewCanvasId, result.dataStructure)
-					: new DataStructure(this.namespace, this.previewCanvasId);
+					? new DataStructure(
+							this.namespace,
+							this.previewCanvasId,
+							this.languageId,
+							this.availableLanguageIds,
+							result.dataStructure
+					  )
+					: new DataStructure(
+							this.namespace,
+							this.previewCanvasId,
+							this.languageId,
+							this.availableLanguageIds
+					  );
 
 				this.setState({
 					dataType: result.dataType,
@@ -329,7 +299,13 @@ class DataStructureBuilder extends React.Component {
 					workingParam:
 						dataStructure.parameters.length > 0
 							? dataStructure.parameters[0]
-							: Parameter.createParameter(this.namespace, this.previewCanvasId, ParamType.STRING),
+							: Parameter.createParameter(
+									this.namespace,
+									this.previewCanvasId,
+									this.languageId,
+									this.availableLanguageIds,
+									ParamType.STRING
+							  ),
 					loadingStatus: LoadingStatus.COMPLETE
 				});
 			},
@@ -366,7 +342,13 @@ class DataStructureBuilder extends React.Component {
 
 	handleNewParameter() {
 		console.log("handleNewParameter: ");
-		const newParam = Parameter.createParameter(this.namespace, this.previewCanvasId, ParamType.STRING);
+		const newParam = Parameter.createParameter(
+			this.namespace,
+			this.previewCanvasId,
+			this.languageId,
+			this.availableLanguageIds,
+			ParamType.STRING
+		);
 		this.setState({ workingParam: newParam });
 
 		Event.fire(Event.SX_PARAMETER_CHANGED, this.namespace, this.namespace, {
@@ -521,7 +503,6 @@ class DataStructureBuilder extends React.Component {
 						<Button.Group
 							spaced
 							style={{
-								backgroundColor: "#f7edab",
 								background: "rgba(247, 237, 171, 0.8)",
 								padding: "10px 5px",
 								justifyContent: "center",
@@ -601,6 +582,7 @@ class DataStructureBuilder extends React.Component {
 								onClick={() => {}}
 								borderless
 								size="md"
+								disabled={this.state.workingParam.order > 0}
 								spritemap={this.spritemap}
 							></ClayButtonWithIcon>
 							<ClayButtonWithIcon
@@ -612,6 +594,7 @@ class DataStructureBuilder extends React.Component {
 								}}
 								displayType="secondary"
 								size="md"
+								disabled={this.state.workingParam.order > 0}
 								spritemap={this.spritemap}
 							></ClayButtonWithIcon>
 							<ClayButtonWithIcon
@@ -621,6 +604,7 @@ class DataStructureBuilder extends React.Component {
 								onClick={() => {}}
 								borderless
 								size="md"
+								disabled={this.state.workingParam.order > 0}
 								spritemap={this.spritemap}
 							></ClayButtonWithIcon>
 						</div>

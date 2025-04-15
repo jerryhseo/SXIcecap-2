@@ -327,12 +327,12 @@ export class SXPreviewRow extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.namespace = props.namespace;
+		this.namespace = props.parameter.namespace;
 		this.dsbuilderId = props.dsbuilderId;
 		this.propertyPanelId = props.propertyPanelId;
 		this.previewCanvasId = props.previewCanvasId;
-		this.languageId = props.languageId;
-		this.availableLanguageIds = props.availableLanguageIds;
+		this.languageId = props.parameter.languageId;
+		this.availableLanguageIds = props.parameter.availableLanguageIds;
 		this.parameter = props.parameter;
 		this.spritemap = props.spritemap;
 
@@ -372,6 +372,9 @@ export class SXPreviewRow extends React.Component {
 				return;
 			}
 			console.log("SX_DISTRACT_ALL received: ", dataPacket);
+			if (!this.state.focus) {
+				return;
+			}
 
 			this.setState({ focus: false });
 		});
@@ -394,6 +397,10 @@ export class SXPreviewRow extends React.Component {
 	}
 
 	handleClick(e) {
+		if (this.state.focus) {
+			return;
+		}
+
 		Event.fire(Event.SX_DISTRACT_ALL, this.namespace, this.namespace, { target: this.previewCanvasId });
 
 		this.setState({ focus: true });
@@ -429,17 +436,7 @@ export class SXPreviewRow extends React.Component {
 						className="autofit-col autofit-col-expand"
 						style={{ marginRight: "10px" }}
 					>
-						{this.parameter.render(
-							this.namespace,
-							this.languageId,
-							this.availableLanguageIds,
-							null,
-							null,
-							this.events,
-							"",
-							{},
-							this.spritemap
-						)}
+						{this.parameter.render(null, null, this.events, "", {}, this.spritemap)}
 					</div>
 					<div
 						className="autofit-col autofit-col-shrink"
@@ -451,6 +448,7 @@ export class SXPreviewRow extends React.Component {
 									aria-label="Actions"
 									symbol="ellipsis-v"
 									title="Actions"
+									borderless="true"
 									className="btn-secondary"
 									spritemap={this.spritemap}
 								/>
@@ -556,6 +554,7 @@ export class SXInput extends React.Component {
 		this.className = props.className ?? "";
 		this.style = props.style ?? {};
 		this.languageId = props.languageId;
+		this.availableLanguageIds = props.availableLanguageIds;
 		this.spritemap = props.spritemap ?? "";
 
 		this.dirty = false;
@@ -748,6 +747,7 @@ export class SXLocalizedInput extends React.Component {
 		this.className = props.className ?? "";
 		this.style = props.style ?? {};
 		this.spritemap = props.spritemap ?? "";
+		this.languageId = props.languageId;
 		this.availableLanguageIds = props.availableLanguageIds;
 		this.dirty = false;
 
@@ -850,7 +850,7 @@ export class SXLocalizedInput extends React.Component {
 			ParamType.LOCALIZED_STRING,
 			this.state.validation,
 			newTranslations,
-			this.languageId
+			this.state.selectedLang
 		);
 
 		if (Util.isNotEmpty(this.events.fire)) {
@@ -1025,6 +1025,16 @@ export class SXNumeric extends React.Component {
 
 		this.dirty = false;
 
+		let textValue = props.value;
+		let textUncertainty;
+		if (Util.isNotEmpty(props.value)) {
+			if (props.uncertainty) {
+				textValue = Util.isEmpty(props.value.value) ? "" : props.value.value.toString();
+			} else {
+				textValue = props.value.toString();
+			}
+		}
+
 		this.state = {
 			error: {},
 			paramName: props.paramName ?? "",
@@ -1040,8 +1050,11 @@ export class SXNumeric extends React.Component {
 			index: props.index ?? 0,
 			unit: props.unit ?? "",
 			decimalPlaces: props.decimalPlaces ?? 1,
-			value: props.value ?? (props.uncertainty ? {} : undefined)
+			textValue: "",
+			textUncertainty: ""
 		};
+
+		this.convertValueToText(props.value);
 
 		if (Util.isNotEmpty(this.events.on)) {
 			this.events.on.forEach((event) => {
@@ -1070,38 +1083,59 @@ export class SXNumeric extends React.Component {
 						);
 						if (Util.isEmpty(dataPacket)) return;
 
-						let stateObj = {};
-						stateObj[dataPacket.property] = dataPacket.value;
+						if (dataPacket.property === ParamProperty.VALUE) {
+							this.convertValueToText(dataPacket.value);
+						} else {
+							let stateObj = {};
+							stateObj[dataPacket.property] = dataPacket.value;
 
-						this.setState(stateObj);
-					});
-				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
-					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(
-							e,
-							this.namespace,
-							event.target,
-							this.state.paramName,
-							this.state.paramVersion
-						);
-						if (Util.isEmpty(dataPacket)) return;
-
-						this.setState({ value: dataPacket.value });
+							this.setState(stateObj);
+						}
 					});
 				}
 			});
 		}
+	}
+
+	convertValueToText(value) {
+		if (this.state.uncertainty) {
+			if (Util.isNotEmpty(value)) {
+				this.state.textValue = Util.isEmpty(value.value) ? "" : value.value.toString();
+				this.state.textUncertainty = Util.isEmpty(value.uncertainty) ? "" : value.uncertainty.toString();
+			}
+		} else {
+			this.state.textValue = Util.isEmpty(value) ? "" : value.toString();
+		}
+	}
+
+	convertTextToValue(textValue, textUncertainty) {
+		return this.state.uncertainty
+			? {
+					value: Util.isNotEmpty(textValue) ? Number(textValue).toFixed(this.state.decimalPlaces) : undefined,
+					uncertainty: Util.isNotEmpty(textUncertainty)
+						? Number(textUncertainty).toFixed(this.state.decimalPlaces)
+						: undefined
+			  }
+			: Util.isNotEmpty(textValue)
+			? Number(textValue).toFixed(this.state.decimalPlaces)
+			: undefined;
 	}
 
 	handleValueChanged(val) {
-		const error = Parameter.validateValue(ParamType.NUMERIC, this.state.validation, val, this.languageId);
-
-		if (this.state.error.message === error.message) {
+		if (this.state.textValue === val) {
 			return;
 		}
 
-		const fixedVal = this.state.isInteger ? val : val.toFixed(this.state.decimalPlaces);
-		let value = this.state.uncertainty ? { ...this.state.value, value: fixedVal } : fixedVal;
+		let error = {};
+		let textValue = "";
+		let fixedVal;
+		if (Util.isNotEmpty(val)) {
+			fixedVal = this.state.isInteger ? Math.trunc(Number(val)) : Number(val).toFixed(this.state.decimalPlaces);
+
+			error = Parameter.validateValue(ParamType.NUMERIC, this.state.validation, fixedVal, this.languageId);
+
+			textValue = fixedVal.toString();
+		}
 
 		if (Util.isNotEmpty(this.events.fire)) {
 			this.events.fire.forEach((event) => {
@@ -1117,7 +1151,10 @@ export class SXNumeric extends React.Component {
 					} else {
 						Event.fire(event.event, this.namespace, this.namespace, {
 							target: event.target,
-							value: value,
+							value: this.convertTextToValue(
+								isNaN(textValue) ? this.state.textValue : textValue,
+								this.state.textUncertainty
+							),
 							paramName: this.state.paramName,
 							paramVersion: this.state.paramVersion,
 							index: this.state.index
@@ -1127,18 +1164,39 @@ export class SXNumeric extends React.Component {
 			});
 		}
 
-		this.setState({ value: value });
+		this.dirty = true;
+
+		this.setState((prevState) => {
+			console.log("handleValueChanged prevState: ", prevState, textValue, error);
+			return { textValue: isNaN(textValue) ? prevState.textValue : textValue, error: error };
+		});
 	}
 
 	handleUncertaintyChanged(val) {
-		const error = Parameter.validateValue(ParamType.NUMERIC, this.state.validation, val, this.languageId);
-
-		if (this.state.error.message === error.message) {
+		if (val === this.state.textUncertainty) {
 			return;
 		}
 
-		const fixedVal = this.state.isInteger ? val : val.toFixed(this.state.decimalPlaces + 1);
-		let value = { ...this.state.value, uncertainty: fixedVal };
+		const fixedVal = this.state.isInteger ? Math.trunc(Number(val)) : Number(val).toFixed(this.state.decimalPlaces);
+
+		let error;
+		if (isNaN(fixedVal)) {
+			error = { errorClass: ErrorClass.ERROR, message: Util.translate("only-numbers-allowed-for-this-field") };
+		} else {
+			error = { errorClass: ErrorClass.SUCCESS, message: "" };
+		}
+
+		let textUncertainty = fixedVal.toString();
+
+		this.setState((prevState) => {
+			console.log("handleUncertaintyChanged prevState: ", prevState, textUncertainty, error);
+			return {
+				textUncertainty: isNaN(textUncertainty) ? prevState.textUncertainty : textUncertainty,
+				error: error
+			};
+		});
+
+		this.dirty = true;
 
 		if (Util.isNotEmpty(this.events.fire)) {
 			this.events.fire.forEach((event) => {
@@ -1154,7 +1212,10 @@ export class SXNumeric extends React.Component {
 					} else {
 						Event.fire(event.event, this.namespace, this.namespace, {
 							target: event.target,
-							value: value,
+							value: this.convertTextToValue(
+								this.state.textValue,
+								isNaN(textUncertainty) ? this.state.textUncertainty : textUncertainty
+							),
 							paramName: this.state.paramName,
 							paramVersion: this.state.paramVersion,
 							index: this.state.index
@@ -1163,8 +1224,6 @@ export class SXNumeric extends React.Component {
 				}
 			});
 		}
-
-		this.setState({ value: value });
 	}
 
 	renderLabel(forHtml) {
@@ -1186,6 +1245,7 @@ export class SXNumeric extends React.Component {
 		const tagId = this.namespace + this.state.paramName;
 		const tagName = tagId;
 
+		console.log("SXNumeric render: ", this.state);
 		return (
 			<ClayForm.Group
 				className={className}
@@ -1229,8 +1289,8 @@ export class SXNumeric extends React.Component {
 							<ClayInput.GroupItem append>
 								<ClayInput
 									type="text"
-									defaultValue={this.state.uncertainty ? this.state.value.value : this.state.value}
-									onBlur={(e) => this.handleValueChanged(Number(e.target.value))}
+									defaultValue={this.state.textValue}
+									onBlur={(e) => this.handleValueChanged(e.target.value)}
 								/>
 							</ClayInput.GroupItem>
 							{this.state.unit && (
@@ -1256,10 +1316,8 @@ export class SXNumeric extends React.Component {
 									>
 										<ClayInput
 											type="text"
-											defaultValue={
-												this.state.uncertainty ? this.state.value.uncertainty : this.state.value
-											}
-											onBlur={(e) => this.handleUncertaintyChanged(Number(e.target.value))}
+											defaultValue={this.state.textUncertainty}
+											onBlur={(e) => this.handleUncertaintyChanged(e.target.value)}
 										/>
 									</ClayInput.GroupItem>
 								</>
@@ -1442,13 +1500,21 @@ export class SXBoolean extends React.Component {
 				return (
 					<div
 						className={this.className}
-						style={{ ...this.style, marginBottom: "15px" }}
+						style={this.style}
 					>
 						<ClayCheckbox
 							id={tagId}
 							name={tagName}
-							label={this.state.label}
 							aria-label={this.state.label}
+							label={
+								<SXLabel
+									label={this.state.label}
+									forHtml={tagId}
+									required={this.state.required}
+									tooltip={this.state.tooltip}
+									spritemap={this.spritemap}
+								/>
+							}
 							checked={this.state.value}
 							onChange={(e) => this.handleOnChange(e)}
 							disabled={this.state.disabled}
@@ -1532,7 +1598,15 @@ export class SXBoolean extends React.Component {
 						<ClayToggle
 							id={tagId}
 							name={tagName}
-							label={this.state.label}
+							label={
+								<SXLabel
+									label={this.state.label}
+									forHtml={tagId}
+									required={this.state.required}
+									tooltip={this.state.tooltip}
+									spritemap={this.spritemap}
+								/>
+							}
 							onToggle={(e) => this.handleOnChange(e)}
 							spritemap={this.spritemap}
 							symbol={{
@@ -1570,7 +1644,7 @@ export class SXSelect extends React.Component {
 
 		this.dirty = false;
 
-		let options = [...props.options];
+		let options = props.options ?? [];
 		if (props.placeholder && props.viewType === SelectParameter.ViewTypes.DROPDOWN) {
 			options.unshift({
 				label: props.placeholder,
@@ -1578,7 +1652,7 @@ export class SXSelect extends React.Component {
 			});
 		}
 
-		console.log("prop.value: ", props.value);
+		console.log("SXSelect events: ", this.events);
 
 		this.state = {
 			error: "",
@@ -1623,6 +1697,7 @@ export class SXSelect extends React.Component {
 						);
 						if (Util.isEmpty(dataPacket)) return;
 
+						console.log("SXSelect: ", dataPacket);
 						this.state[dataPacket.property] = dataPacket.value;
 						this.setState({ ...this.state });
 					});
@@ -1645,10 +1720,10 @@ export class SXSelect extends React.Component {
 	}
 
 	handleChange(e) {
-		console.log("SXSelect handleChange: ", e, events);
+		console.log("SXSelect handleChange: ", e);
 		this.setState({ value: e.target.value });
 
-		if (Util.isNotEmpty(this.state.events.fire)) {
+		if (Util.isNotEmpty(this.events.fire)) {
 			this.events.fire.forEach((event) => {
 				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 					Event.fire(event.event, this.namespace, this.namespace, {
@@ -1690,6 +1765,7 @@ export class SXSelect extends React.Component {
 		const tagName = tagId;
 
 		if (this.state.viewType === SelectParameter.ViewTypes.DROPDOWN) {
+			console.log("SXSelect Dropdown: ", this.state.options);
 			return (
 				<div
 					className={"form-grorp " + this.className}
@@ -1707,8 +1783,9 @@ export class SXSelect extends React.Component {
 						name={tagName}
 						value={this.state.value}
 						disabled={this.state.disabled}
-						onChange={(e) => handleChange(e)}
-						onBlur={(e) => handleBlur(e)}
+						onChange={(e) => {
+							this.handleValueChange(e.target.value);
+						}}
 					>
 						{this.state.options.map((option, index) => {
 							return (
@@ -1758,7 +1835,10 @@ export class SXSelect extends React.Component {
 											label={option.label}
 											value={option.value}
 											checked={this.state.value === option.value}
-											onChange={(e) => this.handleValueChange(option.value)}
+											onChange={(e) => {
+												e.stopPropagation();
+												this.handleValueChange(option.value);
+											}}
 											disabled={this.state.disabled}
 										/>
 									</div>
@@ -1791,6 +1871,8 @@ export class SXDualListBox extends React.Component {
 		this.className = props.className ?? "";
 		this.style = props.style ?? {};
 		this.spritemap = props.spritemap ?? "";
+		this.languageId = props.languageId;
+		this.availableLanguageIds = props.availableLanguageIds;
 
 		this.dirty = false;
 

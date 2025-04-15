@@ -53,15 +53,28 @@
 }
 
 .sx-preview-row {
-	align-content: center;
 	padding-left: 5px;
 	padding-right: 5px;
-	margin-bottom: 5px;
 }
 
-.sx-preview-row {
-	padding-left: 5px;
-	padding-right: 5px;
+.sx-option-preview {
+	margin-bottom: 15px;
+}
+
+.sx-option-preview-row {
+	display: inline-flex;
+	border: 1px solid #dfdfdf;
+	padding: 5px;
+	width: 100%;
+	align-items: center;
+}
+
+.sx-option-preview-cell {
+	padding: 5px;
+}
+
+.sx-option-focused {
+	border: 2px solid #f495da;
 }
 
 .custom-control-label-text {

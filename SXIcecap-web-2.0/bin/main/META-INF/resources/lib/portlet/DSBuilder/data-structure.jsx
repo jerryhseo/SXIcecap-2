@@ -15,6 +15,8 @@ export class DataStructure {
 	#key = Util.randomKey();
 	#namespace = "";
 	#formId = "";
+	#languageId;
+	#availableLanguageIds;
 	#paramDelimiter = ";";
 	#paramDelimiterPosition = "end";
 	#paramValueDelimiter = "=";
@@ -46,12 +48,14 @@ export class DataStructure {
 		return json;
 	}
 
-	constructor(namespace, formId, json) {
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
 		this.#namespace = namespace;
 		this.#formId = formId;
+		this.#languageId = languageId;
+		this.#availableLanguageIds = availableLanguageIds;
 
 		if (json) {
-			this.parse(namespace, formId, json);
+			this.parse(json);
 		}
 	}
 
@@ -63,6 +67,12 @@ export class DataStructure {
 	}
 	get formId() {
 		return this.#formId;
+	}
+	get languageId() {
+		return this.#languageId;
+	}
+	get availableLanguageIds() {
+		return this.#availableLanguageIds;
 	}
 	get paramDelimiter() {
 		return this.#paramDelimiter;
@@ -319,7 +329,7 @@ export class DataStructure {
 		}
 	}
 
-	parse(namespace, formId, json) {
+	parse(json) {
 		this.paramDelimiter = json.paramDelimiter ?? this.paramDelimiter;
 		this.paramDelimiterPosition = json.paramDelimiterPosition ?? this.paramDelimiterPosition;
 		this.paramValueDelimiter = json.paramValueDelimiter ?? this.paramValueDelimiter;
@@ -328,7 +338,16 @@ export class DataStructure {
 		this.commentChar = json.commentChar ?? this.commentChar;
 
 		json.parameters.forEach((paramJSONObj) => {
-			this.parameters.push(Parameter.createParameter(namespace, formId, paramJSONObj.paramType, paramJSONObj));
+			this.parameters.push(
+				Parameter.createParameter(
+					this.namespace,
+					this.formId,
+					this.languageId,
+					this.availableLanguageIds,
+					paramJSONObj.paramType,
+					paramJSONObj
+				)
+			);
 		});
 
 		this.enableInputStatus = json.enableInputStatus ?? false;
@@ -353,18 +372,7 @@ export class DataStructure {
 		return json;
 	}
 
-	renderPreview(
-		namespace, //
-		dsbuilderId,
-		propertyPanelId,
-		previewCanvasId,
-		languageId,
-		availableLanguageIds,
-		className,
-		style,
-		spritemap,
-		workingParamOrder
-	) {
+	renderPreview(dsbuilderId, propertyPanelId, previewCanvasId, className, style, spritemap, workingParamOrder) {
 		let goTo;
 		this.enableGoTo = true;
 		const items = ["Apple", "Banana", "Orange", "Pineapple", "Strawberry"];
@@ -373,9 +381,9 @@ export class DataStructure {
 			goTo = (
 				<SXAutoComplete
 					key={this.key}
-					namespace={namespace}
-					languageId={languageId}
-					availableLanguageIds={availableLanguageIds}
+					namespace={this.namespace}
+					languageId={this.languageId}
+					availableLanguageIds={this.availableLanguageIds}
 					className={className}
 					style={style}
 					spritemap={spritemap}
@@ -392,12 +400,9 @@ export class DataStructure {
 						return (
 							<SXPreviewRow
 								key={parameter.key}
-								namespace={namespace}
 								dsbuilderId={dsbuilderId}
 								propertyPanelId={propertyPanelId}
 								previewCanvasId={previewCanvasId}
-								languageId={languageId}
-								availableLanguageIds={availableLanguageIds}
 								parameter={parameter}
 								focus={i + 1 === workingParamOrder ? true : false}
 								spritemap={spritemap}
@@ -409,7 +414,7 @@ export class DataStructure {
 		);
 	}
 
-	render(namespace, canvasId, languageId, availableLanguageIds, events, className, style, spritemap) {
+	render(canvasId, events, className, style, spritemap) {
 		let goTo;
 		this.enableGoTo = true;
 		const items = ["Apple", "Banana", "Orange", "Pineapple", "Strawberry"];
@@ -418,9 +423,9 @@ export class DataStructure {
 			goTo = (
 				<SXAutoComplete
 					key={this.key}
-					namespace={namespace}
-					languageId={languageId}
-					availableLanguageIds={availableLanguageIds}
+					namespace={this.namespace}
+					languageId={this.languageId}
+					availableLanguageIds={this.availableLanguageIds}
 					events={events}
 					className={className}
 					style={style}
@@ -437,11 +442,11 @@ export class DataStructure {
 				>
 					{this.parameters.map((parameter) =>
 						parameter.render(
-							namespace,
-							languageId,
-							availableLanguageIds,
-							tagId,
-							tagName,
+							this.namespace,
+							this.languageId,
+							this.availableLanguageIds,
+							null,
+							null,
 							events,
 							className,
 							style,

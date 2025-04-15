@@ -34,7 +34,6 @@ export default function (elementId, portletName, portletParameters) {
 			break;
 		}
 		case PortletKeys.DATA_STRUCTURE_BUILDER: {
-			console.log("PortletKeys.DATA_STRUCTURE_BUILDER rendering");
 			root.render(
 				<ClayModalProvider spritemap={portletParameters.spritemapPath}>
 					<DataStructureBuilder portletParameters={portletParameters} />

@@ -140,6 +140,7 @@ class SXDSBuilderValidationPanel extends React.Component {
 				}
 				break;
 			case "min":
+			case ValidationKeys.MIN:
 			case ValidationKeys.MAX:
 			case ValidationKeys.NORMAL_MIN:
 			case ValidationKeys.NORMAL_MAX:

@@ -57,68 +57,68 @@ export class Parameter {
 		NONE: "none"
 	};
 
-	static createParameter(namespace, formId, paramType, json) {
+	static createParameter(namespace, formId, languageId, availableLanguageIds, paramType, json) {
 		switch (paramType) {
 			case ParamType.STRING: {
-				return new StringParameter(namespace, formId, json);
+				return new StringParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.LOCALIZED_STRING: {
-				return new LocalizedStringParameter(namespace, formId, json);
+				return new LocalizedStringParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.NUMERIC: {
-				return new NumericParameter(namespace, formId, json);
+				return new NumericParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.BOOLEAN: {
-				return new BooleanParameter(namespace, formId, json);
+				return new BooleanParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.SELECT: {
-				return new SelectParameter(namespace, formId, json);
+				return new SelectParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.DUALLIST: {
-				return new DualListParameter(namespace, formId, json);
+				return new DualListParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.MATRIX: {
-				return new MatrixParameter(namespace, formId, json);
+				return new MatrixParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.FILE: {
-				return new FileParameter(namespace, formId, json);
+				return new FileParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.ADDRESS: {
-				return new AddressParameter(namespace, formId, json);
+				return new AddressParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.DATE: {
-				return new DateParameter(namespace, formId, json);
+				return new DateParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.PHONE: {
-				return new PhoneParameter(namespace, formId, json);
+				return new PhoneParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.GROUP: {
-				return new GroupParameter(namespace, formId, json);
+				return new GroupParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.SELECT_GROUP: {
-				return new SelectGroupParameter(namespace, formId, json);
+				return new SelectGroupParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			/*
 			case ParamType.GRID: {
-				return new GridParameter(namespace, formId, json);
+				return new GridParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.TABLE: {
-				return new TableParameter(namespace, formId, json);
+				return new TableParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.CALCULATOR: {
-				return new CalculatorParameter(namespace, formId, json);
+				return new CalculatorParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.REFERENCE: {
-				return new ReferenceParameter(namespace, formId, json);
+				return new ReferenceParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.LINKER: {
-				return new LinkerParameter(namespace, formId, json);
+				return new LinkerParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.IMAGE: {
-				return new ImageParameter(namespace, formId, json);
+				return new ImageParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.COMMENT: {
-				return new CommentParameter(namespace, formId, json);
+				return new CommentParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 				*/
 		}
@@ -231,10 +231,10 @@ export class Parameter {
 	}
 
 	static validateValue(fieldType, validation, value, languageId) {
-		console.log("validation: ", fieldType, value, validation, languageId);
+		console.log("validation: ", fieldType, isNaN(value), validation, languageId);
 		switch (fieldType) {
 			case ParamType.NUMERIC: {
-				if (value === NaN) {
+				if (isNaN(value)) {
 					return {
 						message: Util.translate("only-numbers-allowed-for-this-field"),
 						errorClass: ErrorClass.ERROR
@@ -361,6 +361,8 @@ export class Parameter {
 
 	#namespace;
 	#formId;
+	#languageId;
+	#availableLanguageIds;
 	#paramType;
 	#paramName = "";
 	#paramVersion = "1.0.0";
@@ -393,9 +395,11 @@ export class Parameter {
 	#key = Util.randomKey();
 	#dirty = false;
 
-	constructor(namespace, formId, paramType) {
+	constructor(namespace, formId, languageId, availableLanguageIds, paramType) {
 		this.#namespace = namespace;
 		this.#formId = formId;
+		this.#languageId = languageId;
+		this.#availableLanguageIds = availableLanguageIds;
 		this.#paramType = paramType;
 
 		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
@@ -433,6 +437,12 @@ export class Parameter {
 	}
 	get formId() {
 		return this.#formId;
+	}
+	get languageId() {
+		return this.#languageId;
+	}
+	get availableLanguageIds() {
+		return this.#availableLanguageIds;
 	}
 	get paramType() {
 		return this.#paramType;
@@ -634,6 +644,12 @@ export class Parameter {
 		this.#dirty = val;
 	}
 
+	refreshKey() {
+		this.#key = Util.randomKey();
+
+		return this.#key;
+	}
+
 	setRequiredMessage(msg) {
 		this.#validation.required.message = msg;
 	}
@@ -787,7 +803,7 @@ export class Parameter {
 		return json;
 	}
 
-	toProperties(languageId) {
+	toProperties() {
 		return {
 			key: this.key,
 			paramType: this.paramType,
@@ -796,15 +812,16 @@ export class Parameter {
 			parentId: this.parent,
 			tagId: this.paramName,
 			tagName: this.paramName,
-			label: this.getDisplayName(languageId),
+			label: this.getDisplayName(this.languageId),
 			labelPosition: this.labelPosition,
 			required: this.required,
 			disabled: this.disabled,
-			tooltip: this.getTooltip(languageId),
+			tooltip: this.getTooltip(this.languageId),
 			validation: this.validation,
 			readOnly: this.readOnly,
 			index: this.order,
-			languageId: languageId
+			languageId: this.languageId,
+			availableLanguageIds: this.availableLanguageIds
 		};
 	}
 }
@@ -819,8 +836,8 @@ export class StringParameter extends Parameter {
 	#multipleLine = false;
 	#placeholder = {};
 
-	constructor(namespace, formId, json) {
-		super(namespace, formId, ParamType.STRING);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, ParamType.STRING);
 
 		if (Util.isNotEmpty(json)) {
 			this.parse(json);
@@ -881,10 +898,10 @@ export class StringParameter extends Parameter {
 		return json;
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId);
+	toProperties(tagId, tagName) {
+		let json = super.toProperties();
 
-		json.placeholder = this.getPlaceholder(languageId);
+		json.placeholder = this.getPlaceholder(this.languageId);
 		json.multipleLine = this.multipleLine;
 		json.value = this.hasValue() ? this.value : this.defaultValue;
 
@@ -898,8 +915,6 @@ export class StringParameter extends Parameter {
 		namespace, //
 		propertyPanelId,
 		previewCanvasId,
-		languageId,
-		availableLanguageIds,
 		tagId,
 		tagName,
 		events,
@@ -908,23 +923,11 @@ export class StringParameter extends Parameter {
 		spritemap
 	) {
 		if (!this.isRendered()) {
-			const content = this.render(
-				namespace,
-				languageId,
-				availableLanguageIds,
-				tagId,
-				tagName,
-				events,
-				className,
-				style,
-				spritemap
-			);
-
 			this.renderImage = (
 				<SXPreviewRow
 					propertyPanelId={propertyPanelId}
 					previewCanvasId={previewCanvasId}
-					content={content}
+					content={this.render(tagId, tagName, events, className, style, spritemap)}
 					spritemap={spritemap}
 				/>
 			);
@@ -933,13 +936,13 @@ export class StringParameter extends Parameter {
 		return this.renderImage;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -953,19 +956,14 @@ export class StringParameter extends Parameter {
 }
 
 export class LocalizedStringParameter extends StringParameter {
-	constructor(namespace, formId, json) {
-		super(namespace, formId, json);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, json);
 
 		this.paramType = ParamType.LOCALIZED_STRING;
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId, availableLanguageIds, tagId, tagName);
-
-		json.languageId = languageId;
-		json.availableLanguageIds = availableLanguageIds;
-
-		return json;
+	toProperties(tagId, tagName) {
+		return super.toProperties(tagId, tagName);
 	}
 }
 
@@ -979,8 +977,8 @@ export class NumericParameter extends Parameter {
 	#isInteger = false;
 	#unit = "";
 
-	constructor(namespace, formId, json) {
-		super(namespace, formId, ParamType.NUMERIC);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, ParamType.NUMERIC);
 
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
@@ -1053,15 +1051,17 @@ export class NumericParameter extends Parameter {
 		if (this.uncertainty === true) json.uncertainty = this.uncertainty;
 		if (this.isInteger === true) json.isInteger = this.isInteger;
 		if (this.decimalPlaces !== 2) json.decimalPlaces = this.decimalPlaces;
+		if (this.unit) json.unit = this.unit;
 
 		return json;
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId);
+	toProperties(tagId, tagName) {
+		let json = super.toProperties();
 
 		json.uncertainty = this.uncertainty;
 		json.isInteger = this.isInteger;
+		json.unit = this.unit;
 		json.value = this.defaultValue;
 		if (Util.isNotEmpty(this.decimalPlaces)) {
 			json.decimalPlaces = this.decimalPlaces;
@@ -1073,13 +1073,13 @@ export class NumericParameter extends Parameter {
 		return json;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -1106,11 +1106,10 @@ export class SelectParameter extends Parameter {
 	};
 
 	#options = [];
-	#multiple = false;
 	#optionsPerRow = 0;
 
-	constructor(namespace, formId, json) {
-		super(namespace, formId, ParamType.SELECT);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, ParamType.SELECT);
 
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
@@ -1123,8 +1122,9 @@ export class SelectParameter extends Parameter {
 	get optionsPerRow() {
 		return this.#optionsPerRow;
 	}
-	get multiple() {
-		return this.#multiple;
+
+	get optionCount() {
+		return this.#options.length;
 	}
 
 	set options(val) {
@@ -1133,14 +1133,71 @@ export class SelectParameter extends Parameter {
 	set optionsPerRow(val) {
 		this.#optionsPerRow = val;
 	}
-	set multiple(val) {
-		this.#multiple = val;
+
+	addOption(option) {
+		let duplicated = false;
+		this.options.every((opt) => {
+			if (opt.value === option.value) {
+				duplicated = true;
+				return Constant.STOP_EVERY;
+			}
+
+			return Constant.CONTINUE_EVERY;
+		});
+
+		if (duplicated) {
+			return 0;
+		}
+
+		this.#options.push(option);
+
+		this.refreshKey();
+
+		return this.options.length;
+	}
+
+	getOption(index) {
+		return this.options[index];
+	}
+
+	removeOption(index) {
+		this.#options.splice(index, 1);
+
+		this.refreshKey();
+		return this.options.length;
+	}
+
+	switchOptions(index1, index2) {
+		let elem1 = this.#options[index1];
+		this.#options[index1] = this.#options[index2];
+		this.#options[index2] = elem1;
+
+		this.refreshKey();
+	}
+
+	moveUpOption(index) {
+		if (index === 0) {
+			return 0;
+		}
+
+		this.switchOptions(index - 1, index);
+
+		return index - 1;
+	}
+
+	moveDownOption(index) {
+		if (index >= this.options.length - 1) {
+			return index;
+		}
+
+		this.switchOptions(index, index + 1);
+
+		return index + 1;
 	}
 
 	parse(json) {
 		super.parse(json);
 		this.options = json.options ?? [];
-		this.multiple = json.multiple ?? false;
 
 		this.viewType = json.viewType ?? SelectParameter.ViewTypes.DROPDOWN;
 
@@ -1156,7 +1213,6 @@ export class SelectParameter extends Parameter {
 
 		json.viewType = this.viewType;
 		if (Util.isNotEmpty(this.options)) json.options = this.options;
-		if (this.multiple) json.multiple = this.multiple;
 
 		if (this.viewType === SelectParameter.ViewTypes.RADIO || this.viewType === SelectParameter.ViewTypes.CHECKBOX) {
 			if (this.optionsPerRow > 0) {
@@ -1167,13 +1223,12 @@ export class SelectParameter extends Parameter {
 		return json;
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId);
+	toProperties(tagId, tagName) {
+		let json = super.toProperties();
 
 		json.viewType = this.viewType;
-		json.options = this.options;
+		json.options = this.options.map((option) => ({ label: option.label[this.languageId], value: option.value }));
 		json.optionsPerRow = this.optionsPerRow;
-		json.multiple = this.multiple;
 
 		if (tagId) properties.tagId = tagId;
 		if (tagName) properties.tagName = tagName;
@@ -1181,13 +1236,13 @@ export class SelectParameter extends Parameter {
 		return json;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -1211,8 +1266,8 @@ export class DualListParameter extends Parameter {
 	};
 	#rightOptions;
 
-	constructor(namespace, formId, json) {
-		super(namespace, formId, ParamType.DUALLIST);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, ParamType.DUALLIST);
 
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
@@ -1259,8 +1314,8 @@ export class DualListParameter extends Parameter {
 		return super.toJSON();
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId);
+	toProperties(tagId, tagName) {
+		let json = super.toProperties();
 
 		json.viewType = this.viewType;
 		json.leftOptions = this.leftOptions;
@@ -1272,13 +1327,13 @@ export class DualListParameter extends Parameter {
 		return json;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -1303,8 +1358,8 @@ export class BooleanParameter extends SelectParameter {
 		DROPDOWN: "dropdown"
 	};
 
-	constructor(namespace, formId, json) {
-		super(namespace, formId, json);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, json);
 
 		this.paramType = ParamType.BOOLEAN;
 
@@ -1354,10 +1409,10 @@ export class BooleanParameter extends SelectParameter {
 		this.falseOption.label = label;
 	}
 
-	getTrueLabel(availableLanguageIds) {
+	getTrueLabel() {
 		if (Util.isEmpty(this.trueLabel)) {
 			let label = {};
-			availableLanguageIds.forEach((locale) => {
+			this.availableLanguageIds.forEach((locale) => {
 				label[locale] = Util.translate("yes");
 			});
 			this.trueLabel = label;
@@ -1366,10 +1421,10 @@ export class BooleanParameter extends SelectParameter {
 		return this.trueLabel;
 	}
 
-	getFalseLabel(availableLanguageIds) {
+	getFalseLabel() {
 		if (Util.isEmpty(this.falseLabel)) {
 			let label = {};
-			availableLanguageIds.forEach((locale) => {
+			this.availableLanguageIds.forEach((locale) => {
 				label[locale] = Util.translate("no");
 			});
 			this.falseLabel = label;
@@ -1390,11 +1445,11 @@ export class BooleanParameter extends SelectParameter {
 		return super.toJSON();
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let properties = super.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	toProperties(tagId, tagName) {
+		let properties = super.toProperties(tagId, tagName);
 
-		properties.trueLabel = this.getTrueLabel(availableLanguageIds)[languageId];
-		properties.falseLabel = this.getFalseLabel(availableLanguageIds)[languageId];
+		properties.trueLabel = this.getTrueLabel()[this.languageId];
+		properties.falseLabel = this.getFalseLabel()[this.languageId];
 
 		properties.value = this.value ?? !!this.defaultValue;
 
@@ -1404,13 +1459,13 @@ export class BooleanParameter extends SelectParameter {
 		return properties;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -1433,8 +1488,8 @@ export class MatrixParameter extends Parameter {
 	#delimiter = " ";
 	#bracket = "[]";
 
-	constructor(json) {
-		super(BooleanParameter);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, BooleanParameter);
 
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
@@ -1488,8 +1543,8 @@ export class MatrixParameter extends Parameter {
 		return json;
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let properties = super.toProperties(languageId);
+	toProperties(tagId, tagName) {
+		let properties = super.toProperties();
 
 		if (tagId) properties.tagId = tagId;
 		if (tagName) properties.tagName = tagName;
@@ -1502,13 +1557,13 @@ export class MatrixParameter extends Parameter {
 		return properties;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -1526,8 +1581,8 @@ export class MatrixParameter extends Parameter {
  *
  */
 export class FileParameter extends Parameter {
-	constructor(json) {
-		super(ParamType.FILE);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, ParamType.FILE);
 
 		if (json) {
 			this.parse(json);
@@ -1550,23 +1605,20 @@ export class FileParameter extends Parameter {
 		return super.toJSON();
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId);
-
-		json.languageId = languageId;
-		json.availableLanguageIds = availableLanguageIds;
+	toProperties(tagId, tagName) {
+		let json = super.toProperties();
 
 		if (tagId) json.tagId = tagId;
 		if (tagName) json.tagName = tagName;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -1584,8 +1636,8 @@ export class FileParameter extends Parameter {
  *
  */
 export class AddressParameter extends Parameter {
-	constructor(json) {
-		super(ParamType.ADDRESS);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, ParamType.ADDRESS);
 
 		if (json) {
 			this.parse(json);
@@ -1626,23 +1678,20 @@ export class AddressParameter extends Parameter {
 		return super.toJSON();
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId);
-
-		json.languageId = languageId;
-		json.availableLanguageIds = availableLanguageIds;
+	toProperties(tagId, tagName) {
+		let json = super.toProperties();
 
 		if (tagId) json.tagId = tagId;
 		if (tagName) json.tagName = tagName;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -1662,8 +1711,8 @@ export class AddressParameter extends Parameter {
 export class DateParameter extends Parameter {
 	#enableTime = false;
 
-	constructor(json) {
-		super(ParamType.DATE);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, ParamType.DATE);
 
 		if (json) {
 			this.parse(json);
@@ -1698,11 +1747,8 @@ export class DateParameter extends Parameter {
 		return json;
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId);
-
-		json.languageId = languageId;
-		json.availableLanguageIds = availableLanguageIds;
+	toProperties(tagId, tagName) {
+		let json = super.toProperties();
 
 		json.enableTime = this.enableTime;
 
@@ -1710,13 +1756,13 @@ export class DateParameter extends Parameter {
 		if (tagName) json.tagName = tagName;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -1736,8 +1782,8 @@ export class DateParameter extends Parameter {
 export class PhoneParameter extends Parameter {
 	#enableCountryNo = false;
 
-	constructor(json) {
-		super(ParamType.PHONE);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, ParamType.PHONE);
 
 		if (json) {
 			this.parse(json);
@@ -1790,11 +1836,8 @@ export class PhoneParameter extends Parameter {
 		return json;
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId);
-
-		json.languageId = languageId;
-		json.availableLanguageIds = availableLanguageIds;
+	toProperties(tagId, tagName) {
+		let json = super.toProperties();
 
 		json.enableCountryNo = this.enableCountryNo;
 
@@ -1802,13 +1845,13 @@ export class PhoneParameter extends Parameter {
 		if (tagName) json.tagName = tagName;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -1828,8 +1871,8 @@ export class PhoneParameter extends Parameter {
 export class EMailParameter extends Parameter {
 	static serverList = ["gmail.com", "daum.net", "naver.com"];
 
-	constructor(json) {
-		super(json);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, json);
 
 		if (json) {
 			this.parse(json);
@@ -1858,23 +1901,20 @@ export class EMailParameter extends Parameter {
 		return super.toJSON();
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId);
-
-		json.languageId = languageId;
-		json.availableLanguageIds = availableLanguageIds;
+	toProperties(tagId, tagName) {
+		let json = super.toProperties();
 
 		if (tagId) json.tagId = tagId;
 		if (tagName) json.tagName = tagName;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -1905,8 +1945,8 @@ export class GroupParameter extends Parameter {
 	#decorative = false;
 	#membersPerRow = 1;
 
-	constructor(json) {
-		super(ParamType.GROUP);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, ParamType.GROUP);
 
 		if (json) {
 			this.parse(json);
@@ -2017,47 +2057,28 @@ export class GroupParameter extends Parameter {
 		return json;
 	}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId);
+	toProperties(tagId, tagName) {
+		let json = super.toProperties();
 
 		json.viewType = this.viewType;
 		json.decorative = this.decorative;
 		json.fieldsPerRow = this.membersPerRow;
-		json.languageId = languageId;
-		json.availableLanguageIds = availableLanguageIds;
 
 		json.tagId = tagId;
 		json.tagName = tagName;
 
-		json.members = this.members.map((member) =>
-			member.toProperties(languageId, availableLanguageIds, tagId, tagName)
-		);
+		json.members = this.members.map((member) => member.toProperties(tagId, tagName));
 
 		return json;
 	}
 
-	render(
-		namespace, //
-		languageId,
-		availableLanguageIds,
-		tagId,
-		tagName,
-		events,
-		className,
-		style,
-		spritemap
-	) {
-		const properties = this.toProperties(
-			languageId, //
-			availableLanguageIds,
-			tagId,
-			tagName
-		);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
@@ -2077,8 +2098,8 @@ export class GroupParameter extends Parameter {
 export class SelectGroupParameter extends Parameter {
 	#children;
 
-	constructor(json) {
-		super(json);
+	constructor(namespace, formId, languageId, availableLanguageIds, json) {
+		super(namespace, formId, languageId, availableLanguageIds, json);
 	}
 
 	get children() {
@@ -2093,23 +2114,20 @@ export class SelectGroupParameter extends Parameter {
 
 	toJSON() {}
 
-	toProperties(languageId, availableLanguageIds, tagId, tagName) {
-		let json = super.toProperties(languageId);
-
-		json.languageId = languageId;
-		json.availableLanguageIds = availableLanguageIds;
+	toProperties(tagId, tagName) {
+		let json = super.toProperties();
 
 		if (tagId) json.tagId = tagId;
 		if (tagName) json.tagName = tagName;
 	}
 
-	render(namespace, languageId, availableLanguageIds, tagId, tagName, events, className, style, spritemap) {
-		const properties = this.toProperties(languageId, availableLanguageIds, tagId, tagName);
+	render(tagId, tagName, events, className, style, spritemap) {
+		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
 			<SXFormField
 				key={this.key}
-				namespace={namespace}
+				namespace={this.namespace}
 				properties={properties}
 				events={events}
 				className={className}
