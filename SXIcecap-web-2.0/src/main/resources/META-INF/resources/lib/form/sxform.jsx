@@ -836,7 +836,7 @@ export class SXLocalizedInput extends React.Component {
 	handleBlur(e) {
 		const newValue = e.target.value;
 
-		const translation = this.state.translations[this.state.selectedLang];
+		const translation = this.state.translations[this.state.selectedLang] ?? "";
 		if (translation === newValue) {
 			return;
 		}

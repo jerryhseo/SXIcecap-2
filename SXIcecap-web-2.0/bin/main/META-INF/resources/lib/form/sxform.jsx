@@ -836,7 +836,7 @@ export class SXLocalizedInput extends React.Component {
 	handleBlur(e) {
 		const newValue = e.target.value;
 
-		const translation = this.state.translations[this.state.selectedLang];
+		const translation = this.state.translations[this.state.selectedLang] ?? "";
 		if (translation === newValue) {
 			return;
 		}
@@ -1188,6 +1188,16 @@ export class SXNumeric extends React.Component {
 
 		let textUncertainty = fixedVal.toString();
 
+		this.setState((prevState) => {
+			console.log("handleUncertaintyChanged prevState: ", prevState, textUncertainty, error);
+			return {
+				textUncertainty: isNaN(textUncertainty) ? prevState.textUncertainty : textUncertainty,
+				error: error
+			};
+		});
+
+		this.dirty = true;
+
 		if (Util.isNotEmpty(this.events.fire)) {
 			this.events.fire.forEach((event) => {
 				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
@@ -1214,16 +1224,6 @@ export class SXNumeric extends React.Component {
 				}
 			});
 		}
-
-		this.dirty = true;
-
-		this.setState((prevState) => {
-			console.log("handleUncertaintyChanged prevState: ", prevState, textUncertainty, error);
-			return {
-				textUncertainty: isNaN(textUncertainty) ? prevState.textUncertainty : textUncertainty,
-				error: error
-			};
-		});
 	}
 
 	renderLabel(forHtml) {
@@ -1288,7 +1288,6 @@ export class SXNumeric extends React.Component {
 							)}
 							<ClayInput.GroupItem append>
 								<ClayInput
-									key={this.state.textValue}
 									type="text"
 									defaultValue={this.state.textValue}
 									onBlur={(e) => this.handleValueChanged(e.target.value)}
@@ -1316,7 +1315,6 @@ export class SXNumeric extends React.Component {
 										style={{ maxWidth: "200px", width: "120px" }}
 									>
 										<ClayInput
-											key={this.state.textUncertainty}
 											type="text"
 											defaultValue={this.state.textUncertainty}
 											onBlur={(e) => this.handleUncertaintyChanged(e.target.value)}
