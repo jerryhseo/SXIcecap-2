@@ -101,13 +101,20 @@ class SXDSBuilderValidationPanel extends React.Component {
 	}
 
 	handleToggle(section) {
-		Parameter.toggleValidationSection(this.state.validation, section);
+		let newValidation = Parameter.toggleValidationSection(this.state.validation, section);
 
 		if (section === ValidationKeys.REQUIRED) {
-			this.setValue(section, Parameter.checkValidationEnabled(this.state.validation, section));
-		}
+			this.setValue(section, Parameter.checkValidationEnabled(newValidation, section));
+		} else {
+			this.setState({ validation: newValidation });
 
-		this.setState({ validation: { ...this.state.validation } });
+			Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
+				target: this.dsbuilderId,
+				paramName: "validation",
+				paramVersion: "1.0.0",
+				value: newValidation
+			});
+		}
 	}
 
 	toggleBoundary(section) {

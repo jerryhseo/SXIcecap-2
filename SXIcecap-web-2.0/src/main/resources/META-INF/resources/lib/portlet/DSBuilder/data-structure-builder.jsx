@@ -173,6 +173,7 @@ class DataStructureBuilder extends React.Component {
 					}
 				}
 
+				this.state.workingParam.refreshKey();
 				console.log("send SX_PARAM_PROPERTY_CHANGED");
 				Event.fire(Event.SX_PARAM_PROPERTY_CHANGED, this.namespace, this.namespace, {
 					target: this.previewCanvasId,

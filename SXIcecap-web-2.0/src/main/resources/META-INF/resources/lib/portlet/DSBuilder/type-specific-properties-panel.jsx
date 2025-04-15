@@ -317,7 +317,7 @@ class SXSelectOptionBuilder extends React.Component {
 				{this.state.duplicatedValueState && (
 					<SXModalDialog
 						header={Util.translate("error")}
-						body={Util.translate("option-value-is-already-exist-try-other-value")}
+						body={Util.translate("option-value-is-already-exist-try-another-value")}
 						buttons={[
 							{
 								label: Util.translate("ok"),
@@ -347,7 +347,8 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 		this.spritemap = props.spritemap;
 
 		this.state = {
-			parameter: props.parameter
+			parameter: props.parameter,
+			refresh: false
 		};
 
 		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
@@ -364,6 +365,7 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 			}
 
 			console.log("SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ", dataPacket, this.state.parameter);
+			this.setState({ refresh: !this.state.refresh });
 		});
 	}
 
@@ -482,13 +484,7 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 				);
 			}
 			case ParamType.SELECT: {
-				events.on = [
-					{
-						target: this.dsbuilderId,
-						event: Event.SX_PARAM_VALUE_CHANGED
-					}
-				];
-
+				console.log("SXTypeSpecific Select: ", this.state.parameter, this.state.parameter.viewType);
 				return (
 					<>
 						<SXFormField

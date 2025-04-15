@@ -1167,7 +1167,6 @@ export class SXNumeric extends React.Component {
 		this.dirty = true;
 
 		this.setState((prevState) => {
-			console.log("handleValueChanged prevState: ", prevState, textValue, error);
 			return { textValue: isNaN(textValue) ? prevState.textValue : textValue, error: error };
 		});
 	}
@@ -1189,7 +1188,6 @@ export class SXNumeric extends React.Component {
 		let textUncertainty = fixedVal.toString();
 
 		this.setState((prevState) => {
-			console.log("handleUncertaintyChanged prevState: ", prevState, textUncertainty, error);
 			return {
 				textUncertainty: isNaN(textUncertainty) ? prevState.textUncertainty : textUncertainty,
 				error: error
@@ -1245,7 +1243,6 @@ export class SXNumeric extends React.Component {
 		const tagId = this.namespace + this.state.paramName;
 		const tagName = tagId;
 
-		console.log("SXNumeric render: ", this.state);
 		return (
 			<ClayForm.Group
 				className={className}
@@ -1652,8 +1649,6 @@ export class SXSelect extends React.Component {
 			});
 		}
 
-		console.log("SXSelect events: ", this.events);
-
 		this.state = {
 			error: "",
 			paramName: props.paramName ?? "",
@@ -1668,7 +1663,9 @@ export class SXSelect extends React.Component {
 			optionsPerRow: props.optionsPerRow ?? 1,
 			disabled: props.disabled ?? false,
 			viewType: props.viewType ?? SelectParameter.ViewTypes.DROPDOWN,
-			validation: props.validation ?? {}
+			validation: props.validation ?? {},
+			underConstruction:
+				props.viewType === SelectParameter.ViewTypes.CHECKBOX || props.viewType === SelectParameter.LISTBOX
 		};
 
 		if (Util.isNotEmpty(this.events.on)) {
@@ -1698,21 +1695,16 @@ export class SXSelect extends React.Component {
 						if (Util.isEmpty(dataPacket)) return;
 
 						console.log("SXSelect: ", dataPacket);
-						this.state[dataPacket.property] = dataPacket.value;
-						this.setState({ ...this.state });
-					});
-				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
-					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(
-							e,
-							this.namespace,
-							event.target,
-							this.paramName,
-							this.paramVersion
-						);
-						if (Util.isEmpty(dataPacket)) return;
+						let newState = {};
+						newState[dataPacket.property] = dataPacket.value;
 
-						this.setState({ value: dataPacket.value });
+						newState.underConstruction = false;
+						if (dataPacket.property === ParamProperty.VIEW_TYPE) {
+							newState.underConstruction =
+								dataPacket.value === SelectParameter.ViewTypes.CHECKBOX ||
+								dataPacket.value === SelectParameter.ViewTypes.LISTBOX;
+						}
+						this.setState(newState);
 					});
 				}
 			});
@@ -1801,7 +1793,7 @@ export class SXSelect extends React.Component {
 			);
 		} else if (this.state.viewType === SelectParameter.ViewTypes.RADIO) {
 			const optionRows = Util.convertArrayToRows(this.state.options, this.state.optionsPerRow);
-			console.log("Select value: ", this.state.value);
+			console.log("Select value: ", this.state.optionsPerRow, optionRows);
 			return (
 				<div
 					className={"form-group " + this.className}
@@ -1849,9 +1841,39 @@ export class SXSelect extends React.Component {
 				</div>
 			);
 		} else if (this.state.viewType === SelectParameter.ViewTypes.CHECKBOX) {
-			return <UnderConstruction />;
+			return (
+				<>
+					{this.state.underConstruction && (
+						<SXModalDialog
+							header={Util.translate("sorry")}
+							body={<UnderConstruction />}
+							buttons={[
+								{
+									label: Util.translate("ok"),
+									onClick: () => this.setState({ underConstruction: false })
+								}
+							]}
+						/>
+					)}
+				</>
+			);
 		} else if (this.state.viewType === SelectParameter.ViewTypes.LISTBOX) {
-			return <UnderConstruction />;
+			return (
+				<>
+					{this.state.underConstruction && (
+						<SXModalDialog
+							header={Util.translate("sorry")}
+							body={<UnderConstruction />}
+							buttons={[
+								{
+									label: Util.translate("ok"),
+									onClick: () => this.setState({ underConstruction: false })
+								}
+							]}
+						/>
+					)}
+				</>
+			);
 		}
 	}
 }

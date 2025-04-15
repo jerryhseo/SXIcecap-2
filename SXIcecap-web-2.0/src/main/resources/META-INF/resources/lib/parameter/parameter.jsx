@@ -160,10 +160,12 @@ export class Parameter {
 		} else {
 			delete validation[section];
 		}
+
+		return { ...validation };
 	}
 
 	static toggleValidationSection(validation, section) {
-		Parameter.enableValidation(validation, section, !Parameter.checkValidationEnabled(validation, section));
+		return Parameter.enableValidation(validation, section, !Parameter.checkValidationEnabled(validation, section));
 	}
 
 	static getValidationValue(validation, section, valueProp, locale) {
