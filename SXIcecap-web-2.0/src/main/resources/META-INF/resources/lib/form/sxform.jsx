@@ -426,6 +426,18 @@ export class SXPreviewRow extends React.Component {
 			}, 2000);
 		}
 
+		let style = {};
+		if (
+			this.parameter.paramType === ParamType.BOOLEAN &&
+			(this.parameter.viewType === BooleanParameter.ViewTypes.CHECKBOX ||
+				this.parameter.viewType === BooleanParameter.ViewTypes.TOGGLE)
+		) {
+			style = {
+				marginTop: "15px",
+				marginBottom: "15px"
+			};
+		}
+
 		return (
 			<>
 				<div
@@ -436,7 +448,7 @@ export class SXPreviewRow extends React.Component {
 						className="autofit-col autofit-col-expand"
 						style={{ marginRight: "10px" }}
 					>
-						{this.parameter.render(null, null, this.events, "", {}, this.spritemap)}
+						{this.parameter.render(null, null, this.events, "", style, this.spritemap)}
 					</div>
 					<div
 						className="autofit-col autofit-col-shrink"
@@ -1640,14 +1652,7 @@ export class SXSelect extends React.Component {
 		this.spritemap = props.spritemap ?? "";
 
 		this.dirty = false;
-
-		let options = props.options ?? [];
-		if (props.placeholder && props.viewType === SelectParameter.ViewTypes.DROPDOWN) {
-			options.unshift({
-				label: props.placeholder,
-				value: undefined
-			});
-		}
+		this.selectedOptionChanged = false;
 
 		this.state = {
 			error: "",
@@ -1657,15 +1662,18 @@ export class SXSelect extends React.Component {
 			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
 			placeholder: props.placeholder ?? "",
 			required: props.required ?? false,
-			value: props.value ?? "",
+			value:
+				props.value ??
+				(props.viewType === SelectParameter.ViewTypes.CHECKBOX || props.viewType === SelectParameter.LISTBOX
+					? []
+					: ""),
 			tooltip: props.tooltip ?? "",
-			options: options,
+			options: props.options ?? [],
 			optionsPerRow: props.optionsPerRow ?? 1,
 			disabled: props.disabled ?? false,
 			viewType: props.viewType ?? SelectParameter.ViewTypes.DROPDOWN,
 			validation: props.validation ?? {},
-			underConstruction:
-				props.viewType === SelectParameter.ViewTypes.CHECKBOX || props.viewType === SelectParameter.LISTBOX
+			index: props.index
 		};
 
 		if (Util.isNotEmpty(this.events.on)) {
@@ -1694,16 +1702,25 @@ export class SXSelect extends React.Component {
 						);
 						if (Util.isEmpty(dataPacket)) return;
 
-						console.log("SXSelect: ", dataPacket);
 						let newState = {};
 						newState[dataPacket.property] = dataPacket.value;
 
 						newState.underConstruction = false;
 						if (dataPacket.property === ParamProperty.VIEW_TYPE) {
-							newState.underConstruction =
+							if (
 								dataPacket.value === SelectParameter.ViewTypes.CHECKBOX ||
-								dataPacket.value === SelectParameter.ViewTypes.LISTBOX;
+								dataPacket.value === SelectParameter.ViewTypes.LISTBOX
+							) {
+								if (!this.isMultiple()) {
+									newState.value = Util.isEmpty(this.state.value) ? [] : [this.state.value];
+								}
+							} else {
+								if (this.isMultiple()) {
+									newState.value = Util.isEmpty(this.state.value) ? "" : this.state.value[0];
+								}
+							}
 						}
+
 						this.setState(newState);
 					});
 				}
@@ -1711,27 +1728,30 @@ export class SXSelect extends React.Component {
 		}
 	}
 
-	handleChange(e) {
-		console.log("SXSelect handleChange: ", e);
-		this.setState({ value: e.target.value });
+	isMultiple() {
+		return (
+			this.state.viewType === SelectParameter.ViewTypes.CHECKBOX ||
+			this.state.viewType === SelectParameter.ViewTypes.LISTBOX
+		);
+	}
 
-		if (Util.isNotEmpty(this.events.fire)) {
-			this.events.fire.forEach((event) => {
-				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-					Event.fire(event.event, this.namespace, this.namespace, {
-						target: event.target,
-						value: e.target.value,
-						paramName: this.state.paramName,
-						paramVersion: this.state.paramVersion
-					});
-				}
-			});
+	handleRadioClick(val) {
+		if (this.state.value === val) {
+			this.setState({ value: "" });
 		}
 	}
 
 	handleValueChange(val) {
-		console.log("handleValueChange: ", val);
-		this.setState({ value: val });
+		let newValue = val;
+		if (this.isMultiple()) {
+			if (this.state.value.includes(val)) {
+				newValue = this.state.value.filter((elem) => elem !== val);
+			} else {
+				newValue = [...this.state.value, val];
+			}
+		}
+
+		this.setState({ value: newValue });
 
 		if (Util.isNotEmpty(this.events.fire)) {
 			this.events.fire.forEach((event) => {
@@ -1740,7 +1760,8 @@ export class SXSelect extends React.Component {
 						target: event.target,
 						value: val,
 						paramName: this.state.paramName,
-						paramVersion: this.state.paramVersion
+						paramVersion: this.state.paramVersion,
+						index: this.state.index
 					});
 				}
 			});
@@ -1748,16 +1769,10 @@ export class SXSelect extends React.Component {
 	}
 
 	render() {
-		let componentLabel;
-
-		let componentBody;
-
-		const component = null;
 		const tagId = this.namespace + this.state.paramName;
 		const tagName = tagId;
 
 		if (this.state.viewType === SelectParameter.ViewTypes.DROPDOWN) {
-			console.log("SXSelect Dropdown: ", this.state.options);
 			return (
 				<div
 					className={"form-grorp " + this.className}
@@ -1793,7 +1808,6 @@ export class SXSelect extends React.Component {
 			);
 		} else if (this.state.viewType === SelectParameter.ViewTypes.RADIO) {
 			const optionRows = Util.convertArrayToRows(this.state.options, this.state.optionsPerRow);
-			console.log("Select value: ", this.state.optionsPerRow, optionRows);
 			return (
 				<div
 					className={"form-group " + this.className}
@@ -1827,6 +1841,7 @@ export class SXSelect extends React.Component {
 											label={option.label}
 											value={option.value}
 											checked={this.state.value === option.value}
+											onClick={(e) => this.handleRadioClick(e.target.value)}
 											onChange={(e) => {
 												e.stopPropagation();
 												this.handleValueChange(option.value);
@@ -1841,38 +1856,90 @@ export class SXSelect extends React.Component {
 				</div>
 			);
 		} else if (this.state.viewType === SelectParameter.ViewTypes.CHECKBOX) {
+			const optionRows = Util.convertArrayToRows(this.state.options, this.state.optionsPerRow);
 			return (
-				<>
-					{this.state.underConstruction && (
-						<SXModalDialog
-							header={Util.translate("sorry")}
-							body={<UnderConstruction />}
-							buttons={[
-								{
-									label: Util.translate("ok"),
-									onClick: () => this.setState({ underConstruction: false })
-								}
-							]}
-						/>
-					)}
-				</>
+				<div
+					className={"form-group " + this.className}
+					style={this.style}
+				>
+					<SXLabel
+						label={this.state.label}
+						forHtml={tagId}
+						required={this.state.required}
+						tooltip={this.state.tooltip}
+						spritemap={this.spritemap}
+					/>
+					<div
+						name={tagName}
+						id={tagId}
+						style={{ marginLeft: "10px" }}
+					>
+						{optionRows.map((row, rowIndex) => (
+							<div
+								key={Util.randomKey()}
+								className="form-group form-group-autofit"
+								style={{ marginBottom: "5px" }}
+							>
+								{row.map((option, optionIndex) => {
+									const valueIndex = this.state.optionsPerRow * rowIndex + optionIndex;
+
+									return (
+										<div
+											key={Util.randomKey()}
+											className="form-group-item"
+											style={{ marginBottom: "0" }}
+										>
+											<ClayCheckbox
+												key={option.value}
+												label={option.label}
+												checked={this.state.value.includes(option.value)}
+												onChange={(e) => {
+													e.stopPropagation();
+													this.handleValueChange(option.value);
+												}}
+												disabled={this.state.disabled}
+											/>
+										</div>
+									);
+								})}
+							</div>
+						))}
+					</div>
+				</div>
 			);
 		} else if (this.state.viewType === SelectParameter.ViewTypes.LISTBOX) {
 			return (
-				<>
-					{this.state.underConstruction && (
-						<SXModalDialog
-							header={Util.translate("sorry")}
-							body={<UnderConstruction />}
-							buttons={[
-								{
-									label: Util.translate("ok"),
-									onClick: () => this.setState({ underConstruction: false })
-								}
-							]}
-						/>
-					)}
-				</>
+				<div
+					className={"form-grorp " + this.className}
+					style={this.style}
+				>
+					<SXLabel
+						label={this.state.label}
+						forHtml={tagId}
+						required={this.state.required}
+						tooltip={this.state.tooltip}
+						spritemap={this.spritemap}
+					/>
+					<ClaySelectBox
+						id={tagId}
+						name={tagName}
+						value={this.state.value}
+						items={this.state.options}
+						multiple
+						disabled={this.state.disabled}
+						onClick={(e) => {
+							if (this.selectedOptionChanged) {
+								this.selectedOptionChanged = false;
+							} else if (this.state.value.includes(e.target.value)) {
+								this.setState({ value: this.state.value.filter((value) => value !== e.target.value) });
+							}
+						}}
+						onSelectChange={(val) => {
+							this.selectedOptionChanged = true;
+							this.setState({ value: val });
+						}}
+					/>
+				</div>
 			);
 		}
 	}

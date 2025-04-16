@@ -28,7 +28,8 @@ class DataStructureBuilder extends React.Component {
 		ParamProperty.FALSE_LABEL,
 		ParamProperty.UNIT,
 		ParamProperty.UNCERTAINTY,
-		ParamProperty.OPTIONS
+		ParamProperty.OPTIONS,
+		ParamProperty.OPTIONS_PER_ROW
 	];
 
 	propertyPanelStyles = {

@@ -515,7 +515,7 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 									}
 								],
 								optionsPerRow: 2,
-								value: SelectParameter.ViewTypes.DROPDOWN
+								value: this.state.parameter.viewType ?? SelectParameter.ViewTypes.DROPDOWN
 							}}
 							events={events}
 							spritemap={this.spritemap}
@@ -532,7 +532,7 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 									tooltip: Util.translate("options-per-row-tooltip"),
 									isInteger: true,
 									languageId: this.languageId,
-									value: this.state.parameter.decimalPlaces ?? "2"
+									value: this.state.parameter.optionsPerRow ?? ""
 								}}
 								events={events}
 								spritemap={this.spritemap}
@@ -582,7 +582,7 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 						optionsPerRow: 2,
 						languageId: this.languageId,
 						tooltip: Util.translate("view-type-tooltip"),
-						value: BooleanParameter.ViewTypes.CHECKBOX
+						value: this.state.parameter.viewType ?? BooleanParameter.ViewTypes.CHECKBOX
 					},
 					{
 						paramType: ParamType.LOCALIZED_STRING,

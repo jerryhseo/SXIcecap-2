@@ -1203,6 +1203,7 @@ export class SelectParameter extends Parameter {
 
 		this.viewType = json.viewType ?? SelectParameter.ViewTypes.DROPDOWN;
 
+		console.log("SelectParameter parse: ", json.viewTypw, json.optionsPerRow);
 		if (this.viewType === SelectParameter.ViewTypes.RADIO || this.viewType === SelectParameter.ViewTypes.CHECKBOX) {
 			if (json.optionsPerRow > 0) {
 				this.optionsPerRow = json.optionsPerRow;
@@ -1216,6 +1217,7 @@ export class SelectParameter extends Parameter {
 		json.viewType = this.viewType;
 		if (Util.isNotEmpty(this.options)) json.options = this.options;
 
+		console.log("SelectParameter toJSON: ", this.viewTypw, this.optionsPerRow);
 		if (this.viewType === SelectParameter.ViewTypes.RADIO || this.viewType === SelectParameter.ViewTypes.CHECKBOX) {
 			if (this.optionsPerRow > 0) {
 				json.optionsPerRow = this.optionsPerRow;
