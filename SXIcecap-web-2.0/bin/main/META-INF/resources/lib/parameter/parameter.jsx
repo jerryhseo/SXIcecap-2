@@ -375,6 +375,7 @@ export class Parameter {
 	#synonyms = "";
 	#disabled = false;
 	#definition = {};
+	#showDefinition = false;
 	#tooltip = {};
 	#order = 0;
 	#defaultValue = null;
@@ -386,6 +387,7 @@ export class Parameter {
 	#active = true;
 	#readOnly = false;
 	#labelPosition = Parameter.LabelPosition.UPPER_LEFT;
+	#referenceFile = { fileId: 0, fileType: "pdf" };
 
 	#validation = {};
 	#renderImage = null;
@@ -490,6 +492,9 @@ export class Parameter {
 	get definition() {
 		return this.#definition;
 	}
+	get showDefinition() {
+		return this.#showDefinition;
+	}
 	get tooltip() {
 		return this.#tooltip;
 	}
@@ -537,6 +542,9 @@ export class Parameter {
 	}
 	get labelPosition() {
 		return this.#labelPosition;
+	}
+	get referenceFile() {
+		return this.#referenceFile;
 	}
 	get dirty() {
 		return this.#dirty;
@@ -594,6 +602,9 @@ export class Parameter {
 	set definition(val) {
 		this.#definition = val;
 	}
+	set showDefinition(val) {
+		this.#showDefinition = val;
+	}
 	set tooltip(val) {
 		this.#tooltip = val;
 	}
@@ -641,6 +652,9 @@ export class Parameter {
 	}
 	set labelPosition(val) {
 		this.#labelPosition = val;
+	}
+	set referenceFile(val) {
+		this.#referenceFile = val;
 	}
 	set dirty(val) {
 		this.#dirty = val;
@@ -790,7 +804,9 @@ export class Parameter {
 		if (Util.isNotEmpty(this.parent)) json.parent = this.parent;
 		if (Util.isNotEmpty(this.validation)) json.validation = this.validation;
 		if (Util.isNotEmpty(this.value)) json.value = this.value;
+		if (Util.isNotEmpty(this.referenceFile)) json.referenceFile = this.referenceFile;
 		if (this.readOnly) json.readOnly = this.readOnly;
+		if (this.showDefinition) json.showDefinition = this.showDefinition;
 		if (this.abstractKey) json.abstractKey = this.abstractKey;
 		if (this.disabled) json.disabled = this.disabled;
 		if (this.standard) json.standard = this.standard;
@@ -816,9 +832,12 @@ export class Parameter {
 			tagName: this.paramName,
 			label: this.getDisplayName(this.languageId),
 			labelPosition: this.labelPosition,
+			definition: this.getDefinition(this.languageId),
+			showDefinition: this.showDefinition,
 			required: this.required,
 			disabled: this.disabled,
 			tooltip: this.getTooltip(this.languageId),
+			referenceFile: this.referenceFile,
 			validation: this.validation,
 			readOnly: this.readOnly,
 			index: this.order,

@@ -26,7 +26,6 @@ const SXDSBuilderOptionPropertiesPanel = ({
 					paramType: ParamType.BOOLEAN,
 					paramName: ParamProperty.ABSTRACT_KEY,
 					viewType: BooleanParameter.ViewTypes.TOGGLE,
-					labelPosition: Parameter.LabelPosition.INLINE_LEFT,
 					label: Util.translate("abstract-key"),
 					tooltip: Util.translate("abstract-key-of-the-parameter-tooltip"),
 					ariaLabel: Util.translate("abstract-key"),

@@ -17,6 +17,8 @@ class DataStructureBuilder extends React.Component {
 		ParamProperty.DISPLAY_NAME,
 		ParamProperty.REQUIRED,
 		ParamProperty.TOOLTIP,
+		ParamProperty.DEFINITION,
+		ParamProperty.SHOW_DEFINITION,
 		ParamProperty.LABEL_POSITION,
 		ParamProperty.VIEW_TYPE,
 		ParamProperty.DISABLED,
@@ -126,6 +128,7 @@ class DataStructureBuilder extends React.Component {
 						break;
 					}
 					case ParamProperty.TOOLTIP:
+					case ParamProperty.DEFINITION:
 					case ParamProperty.PLACEHOLDER: {
 						property = dataPacket.paramName;
 						value = this.state.workingParam[dataPacket.paramName][this.languageId];

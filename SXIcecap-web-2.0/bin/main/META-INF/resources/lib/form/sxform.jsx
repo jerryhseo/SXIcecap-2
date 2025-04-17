@@ -583,6 +583,8 @@ export class SXInput extends React.Component {
 			placeholder: props.placeholder ?? "",
 			disabled: props.disabled ?? false,
 			validation: props.validation ?? {},
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false,
 			viewType: props.viewType ?? StringParameter.ViewTypes.REGULAR,
 			index: props.index,
 			value: props.value ?? ""
@@ -623,22 +625,6 @@ export class SXInput extends React.Component {
 						}
 
 						this.setState(stateObj);
-					});
-				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
-					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(
-							e,
-							this.namespace,
-							event.target,
-							this.state.paramName,
-							this.state.paramVersion
-						);
-						if (Util.isEmpty(dataPacket)) return;
-
-						this.setState({ value: dataPacket.value });
-						if (!this.dirty) {
-							this.dirty = true;
-						}
 					});
 				}
 			});
@@ -719,16 +705,21 @@ export class SXInput extends React.Component {
 						labelPosition={this.state.labelPosition}
 						label={this.renderLabel(tagId)}
 						control={
-							<ClayInput
-								component={this.state.component}
-								id={tagId}
-								name={tagName}
-								placeholder={this.state.placeholder}
-								type="text"
-								defaultValue={this.state.value}
-								disabled={this.state.disabled}
-								onBlur={(e) => this.handleBlur(e)}
-							/>
+							<>
+								{this.state.showDefinition && (
+									<div className="sx-param-definition">{this.state.definition}</div>
+								)}
+								<ClayInput
+									component={this.state.component}
+									id={tagId}
+									name={tagName}
+									placeholder={this.state.placeholder}
+									type="text"
+									defaultValue={this.state.value}
+									disabled={this.state.disabled}
+									onBlur={(e) => this.handleBlur(e)}
+								/>
+							</>
 						}
 					/>
 					{this.dirty && this.state.error.message && (
@@ -779,7 +770,9 @@ export class SXLocalizedInput extends React.Component {
 			selectedLang: props.languageId,
 			index: props.index ?? 0,
 			translations: Util.isNotEmpty(props.value) ? props.value : {},
-			translation: Util.isNotEmpty(props.value) ? props.value[props.languageId] : ""
+			translation: Util.isNotEmpty(props.value) ? props.value[props.languageId] : "",
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false
 		};
 
 		this.languageFlags = this.availableLanguageIds.map((lang) => ({
@@ -930,81 +923,86 @@ export class SXLocalizedInput extends React.Component {
 					labelPosition={this.state.labelPosition}
 					label={this.renderLabel(tagId)}
 					control={
-						<ClayInput.Group>
-							<ClayInput.GroupItem>
-								<ClayInput
-									component={this.state.component}
-									type="text"
-									id={tagId}
-									name={tagName}
-									defaultValue={this.state.translation}
-									placeholder={this.state.placeholder}
-									disabled={this.state.disabled}
-									onBlur={(e) => this.handleBlur(e)}
-								/>
-							</ClayInput.GroupItem>
-							<ClayInput.GroupItem shrink>
-								<DropDown
-									trigger={
-										<ClayButton
-											displayType="secondary"
-											className="btn-monospaced btn-md"
-										>
-											<ClayIcon
-												symbol={this.state.selectedLang.toLowerCase()}
-												spritemap={this.spritemap}
-											/>
-											<span className="btn-section">{this.state.selectedLang}</span>
-										</ClayButton>
-									}
-									closeOnClick={true}
-								>
-									<DropDown.ItemList items={this.languageFlags}>
-										{(flag) => {
-											let displayType, label;
-											if (this.state.translations[flag.name]) {
-												displayType = "success";
-												label = Util.translate("translated");
-											} else {
-												displayType = "warning";
-												label = Util.translate("not-translated");
-											}
+						<>
+							{this.state.showDefinition && (
+								<div className="sx-param-definition">{this.state.definition}</div>
+							)}
+							<ClayInput.Group>
+								<ClayInput.GroupItem>
+									<ClayInput
+										component={this.state.component}
+										type="text"
+										id={tagId}
+										name={tagName}
+										defaultValue={this.state.translation}
+										placeholder={this.state.placeholder}
+										disabled={this.state.disabled}
+										onBlur={(e) => this.handleBlur(e)}
+									/>
+								</ClayInput.GroupItem>
+								<ClayInput.GroupItem shrink>
+									<DropDown
+										trigger={
+											<ClayButton
+												displayType="secondary"
+												className="btn-monospaced btn-md"
+											>
+												<ClayIcon
+													symbol={this.state.selectedLang.toLowerCase()}
+													spritemap={this.spritemap}
+												/>
+												<span className="btn-section">{this.state.selectedLang}</span>
+											</ClayButton>
+										}
+										closeOnClick={true}
+									>
+										<DropDown.ItemList items={this.languageFlags}>
+											{(flag) => {
+												let displayType, label;
+												if (this.state.translations[flag.name]) {
+													displayType = "success";
+													label = Util.translate("translated");
+												} else {
+													displayType = "warning";
+													label = Util.translate("not-translated");
+												}
 
-											return (
-												<DropDown.Item
-													key={flag.name}
-													onClick={() => {
-														this.setState({
-															selectedLang: flag.name,
-															translation: this.state.translations[flag.name]
-														});
-													}}
-													active={this.state.selectedLang === flag.name}
-												>
-													<ClayIcon
-														spritemap={this.spritemap}
-														symbol={flag.symbol}
-														style={{
-															marginRight: "5px"
+												return (
+													<DropDown.Item
+														key={flag.name}
+														onClick={() => {
+															this.setState({
+																selectedLang: flag.name,
+																translation: this.state.translations[flag.name]
+															});
 														}}
-													/>
-													{flag.name}
-													<ClayLabel
-														displayType={displayType}
-														spritemap={this.spritemap}
-														style={{
-															float: "right"
-														}}
+														active={this.state.selectedLang === flag.name}
 													>
-														{label}
-													</ClayLabel>
-												</DropDown.Item>
-											);
-										}}
-									</DropDown.ItemList>
-								</DropDown>
-							</ClayInput.GroupItem>
-						</ClayInput.Group>
+														<ClayIcon
+															spritemap={this.spritemap}
+															symbol={flag.symbol}
+															style={{
+																marginRight: "5px"
+															}}
+														/>
+														{flag.name}
+														<ClayLabel
+															displayType={displayType}
+															spritemap={this.spritemap}
+															style={{
+																float: "right"
+															}}
+														>
+															{label}
+														</ClayLabel>
+													</DropDown.Item>
+												);
+											}}
+										</DropDown.ItemList>
+									</DropDown>
+								</ClayInput.GroupItem>
+							</ClayInput.Group>
+						</>
 					}
 				/>
 				{this.dirty && this.state.error.message && (
@@ -1063,7 +1061,9 @@ export class SXNumeric extends React.Component {
 			unit: props.unit ?? "",
 			decimalPlaces: props.decimalPlaces ?? 1,
 			textValue: "",
-			textUncertainty: ""
+			textUncertainty: "",
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false
 		};
 
 		this.convertValueToText(props.value);
@@ -1264,104 +1264,109 @@ export class SXNumeric extends React.Component {
 					labelPosition={this.state.labelPosition}
 					label={this.renderLabel(tagId)}
 					control={
-						<ClayInput.Group stacked>
-							{Parameter.checkValidationEnabled(this.state.validation, ValidationKeys.MIN) && (
-								<>
-									<ClayInput.GroupItem
-										prepend
-										shrink
-									>
-										<ClayInput.GroupText>
+						<>
+							{this.state.showDefinition && (
+								<div className="sx-param-definition">{this.state.definition}</div>
+							)}
+							<ClayInput.Group stacked>
+								{Parameter.checkValidationEnabled(this.state.validation, ValidationKeys.MIN) && (
+									<>
+										<ClayInput.GroupItem
+											prepend
+											shrink
+										>
+											<ClayInput.GroupText>
+												{Parameter.getValidationValue(
+													this.state.validation,
+													ValidationKeys.MIN,
+													ValidationSectionProperty.VALUE
+												)}
+											</ClayInput.GroupText>
+										</ClayInput.GroupItem>
+										<ClayInput.GroupItem
+											append
+											shrink
+										>
 											{Parameter.getValidationValue(
 												this.state.validation,
 												ValidationKeys.MIN,
-												ValidationSectionProperty.VALUE
+												ValidationSectionProperty.BOUNDARY
+											) ? (
+												<ClayInput.GroupText>&#8804;</ClayInput.GroupText>
+											) : (
+												<ClayInput.GroupText>{"<"}</ClayInput.GroupText>
 											)}
-										</ClayInput.GroupText>
-									</ClayInput.GroupItem>
-									<ClayInput.GroupItem
-										append
-										shrink
-									>
-										{Parameter.getValidationValue(
-											this.state.validation,
-											ValidationKeys.MIN,
-											ValidationSectionProperty.BOUNDARY
-										) ? (
-											<ClayInput.GroupText>&#8804;</ClayInput.GroupText>
-										) : (
-											<ClayInput.GroupText>{"<"}</ClayInput.GroupText>
-										)}
-									</ClayInput.GroupItem>
-								</>
-							)}
-							<ClayInput.GroupItem append>
-								<ClayInput
-									type="text"
-									defaultValue={this.state.textValue}
-									onBlur={(e) => this.handleValueChanged(e.target.value)}
-								/>
-							</ClayInput.GroupItem>
-							{this.state.unit && (
-								<ClayInput.GroupItem
-									append
-									shrink
-								>
-									<ClayInput.GroupText>{this.state.unit}</ClayInput.GroupText>
+										</ClayInput.GroupItem>
+									</>
+								)}
+								<ClayInput.GroupItem append>
+									<ClayInput
+										type="text"
+										defaultValue={this.state.textValue}
+										onBlur={(e) => this.handleValueChanged(e.target.value)}
+									/>
 								</ClayInput.GroupItem>
-							)}
-							{this.state.uncertainty && (
-								<>
+								{this.state.unit && (
 									<ClayInput.GroupItem
 										append
 										shrink
 									>
-										<ClayInput.GroupText>&#177;</ClayInput.GroupText>
+										<ClayInput.GroupText>{this.state.unit}</ClayInput.GroupText>
 									</ClayInput.GroupItem>
-									<ClayInput.GroupItem
-										append
-										shrink
-										style={{ maxWidth: "200px", width: "120px" }}
-									>
-										<ClayInput
-											type="text"
-											defaultValue={this.state.textUncertainty}
-											onBlur={(e) => this.handleUncertaintyChanged(e.target.value)}
-										/>
-									</ClayInput.GroupItem>
-								</>
-							)}
-							{Parameter.checkValidationEnabled(this.state.validation, ValidationKeys.MAX) && (
-								<>
-									<ClayInput.GroupItem
-										append
-										shrink
-									>
-										{Parameter.getValidationValue(
-											this.state.validation,
-											ValidationKeys.MAX,
-											ValidationSectionProperty.BOUNDARY
-										) ? (
-											<ClayInput.GroupText>&#8804;</ClayInput.GroupText>
-										) : (
-											<ClayInput.GroupText>{"<"}</ClayInput.GroupText>
-										)}
-									</ClayInput.GroupItem>
-									<ClayInput.GroupItem
-										append
-										shrink
-									>
-										<ClayInput.GroupText>
+								)}
+								{this.state.uncertainty && (
+									<>
+										<ClayInput.GroupItem
+											append
+											shrink
+										>
+											<ClayInput.GroupText>&#177;</ClayInput.GroupText>
+										</ClayInput.GroupItem>
+										<ClayInput.GroupItem
+											append
+											shrink
+											style={{ maxWidth: "200px", width: "120px" }}
+										>
+											<ClayInput
+												type="text"
+												defaultValue={this.state.textUncertainty}
+												onBlur={(e) => this.handleUncertaintyChanged(e.target.value)}
+											/>
+										</ClayInput.GroupItem>
+									</>
+								)}
+								{Parameter.checkValidationEnabled(this.state.validation, ValidationKeys.MAX) && (
+									<>
+										<ClayInput.GroupItem
+											append
+											shrink
+										>
 											{Parameter.getValidationValue(
 												this.state.validation,
 												ValidationKeys.MAX,
-												ValidationSectionProperty.VALUE
+												ValidationSectionProperty.BOUNDARY
+											) ? (
+												<ClayInput.GroupText>&#8804;</ClayInput.GroupText>
+											) : (
+												<ClayInput.GroupText>{"<"}</ClayInput.GroupText>
 											)}
-										</ClayInput.GroupText>
-									</ClayInput.GroupItem>
-								</>
-							)}
-						</ClayInput.Group>
+										</ClayInput.GroupItem>
+										<ClayInput.GroupItem
+											append
+											shrink
+										>
+											<ClayInput.GroupText>
+												{Parameter.getValidationValue(
+													this.state.validation,
+													ValidationKeys.MAX,
+													ValidationSectionProperty.VALUE
+												)}
+											</ClayInput.GroupText>
+										</ClayInput.GroupItem>
+									</>
+								)}
+							</ClayInput.Group>
+						</>
 					}
 				/>
 				{this.dirty && this.state.error.message && (

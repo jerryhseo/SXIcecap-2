@@ -207,6 +207,7 @@ export const ParamProperty = {
 	ROWS: "rows",
 	SEARCHABLE: "searchable",
 	SLAVE_TERMS: "slaveParameters",
+	SHOW_DEFINITION: "showDefinition",
 	START_YEAR: "startYear",
 	SWEEPABLE: "sweepable",
 	SYNONYMS: "synonyms",

@@ -1,8 +1,9 @@
 import React from "react";
 import { Util } from "../../common/util";
 import { Event, ParamProperty, ValidationRule } from "../../common/station-x";
-import { SXInput, SXLocalizedInput } from "../../form/sxform";
+import { SXBoolean, SXInput, SXLocalizedInput } from "../../form/sxform";
 import LocalizedInput from "@clayui/localized-input";
+import { BooleanParameter } from "../../parameter/parameter";
 
 class SXDSBuilderBasicPropertiesPanel extends React.Component {
 	constructor(props) {
@@ -100,7 +101,21 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 			placeholder: Util.translate("definition-of-the-parameter"),
 			tooltip: Util.translate("definition-of-the-parameter-tooltip"),
 			ariaLabel: Util.translate("definition"),
-			value: props.parameter.definition ?? {}
+			value: props.parameter.definition ?? {},
+			validation: {
+				max: {
+					value: 512,
+					message: Util.translate("too-long")
+				}
+			}
+		};
+		this.showDefinitionProps = {
+			paramName: ParamProperty.SHOW_DEFINITION,
+			viewType: BooleanParameter.ViewTypes.CHECKBOX,
+			label: Util.translate("show-definition"),
+			tooltip: Util.translate("show-definition-of-the-parameter-tooltip"),
+			ariaLabel: Util.translate("show-definition"),
+			value: props.parameter.showDefinition
 		};
 		this.tooltipProps = {
 			paramName: ParamProperty.TOOLTIP,
@@ -158,6 +173,14 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 					namespace={this.namespace}
 					{...this.definitionProps}
 					events={events}
+					style={{ marginBottom: "5px" }}
+					spritemap={this.spritemap}
+				/>
+				<SXBoolean
+					namespace={this.namespace}
+					{...this.showDefinitionProps}
+					events={events}
+					style={{ marginBottom: "15px" }}
 					spritemap={this.spritemap}
 				/>
 				<SXLocalizedInput

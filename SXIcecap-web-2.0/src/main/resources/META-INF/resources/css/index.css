@@ -77,6 +77,18 @@
 	border: 2px solid #f495da;
 }
 
+.sx-param-definition {
+	border: 1px solid #d4d0cf;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-bottom: 10px;
+	padding: 5px 10px;
+	font-weight: 400;
+	font-size: 0.8rem;
+	color: #8f8d8c;
+	white-space: pre-wrap;
+}
+
 .custom-control-label-text {
 	font-weight: 600;
 }
