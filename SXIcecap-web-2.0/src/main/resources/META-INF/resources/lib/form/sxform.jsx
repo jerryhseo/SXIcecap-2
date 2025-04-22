@@ -1,34 +1,31 @@
-import React, { useState, useEffect, useLayoutEffect, useCallback, useContext, useRef, forwardRef } from "react";
+import React, { createRef } from "react";
 import { Text } from "@clayui/core";
 import ClayForm, {
 	ClayInput,
 	ClayCheckbox,
 	ClayRadio,
 	ClayRadioGroup,
-	ClaySelectWithOption,
 	ClaySelect,
 	ClayToggle,
-	ClayPanel,
 	ClaySelectBox
 } from "@clayui/form";
-import ClayTooltip, { ClayTooltipProvider } from "@clayui/tooltip";
-import ClayIcon from "@clayui/icon";
-import ClayButton, { ClayButtonWithIcon } from "@clayui/button";
+import { ClayTooltipProvider } from "@clayui/tooltip";
+import Icon from "@clayui/icon";
+import Button, { ClayButtonWithIcon } from "@clayui/button";
 import DropDown from "@clayui/drop-down";
 import ClayLabel from "@clayui/label";
 import { Util } from "../common/util";
 
 import {
 	ParamType,
-	DisplayType,
 	Event,
-	ViewTypes,
 	ParamProperty,
 	ErrorClass,
 	ValidationKeys,
 	ValidationSectionProperty
 } from "../common/station-x";
 import {
+	AddressParameter,
 	BooleanParameter,
 	DualListParameter,
 	GroupParameter,
@@ -142,7 +139,7 @@ export const validateForm = (formFields, formData, formErrors) => {
 export const SXRequiredMark = ({ spritemap }) => {
 	return (
 		<sup>
-			<ClayIcon
+			<Icon
 				symbol="asterisk"
 				style={{
 					fontSize: "0.5rem",
@@ -163,7 +160,7 @@ export const SXTooltip = ({ tooltip, spritemap }) => {
 				title={tooltip}
 				style={{ marginLeft: "3px" }}
 			>
-				<ClayIcon
+				<Icon
 					spritemap={spritemap}
 					symbol="question-circle-full"
 				/>
@@ -267,7 +264,7 @@ export const SXAutoComplete = ({ namespace, items, labelPosition, events, sprite
 								className="btn btn-unstyled"
 								type="submit"
 							>
-								<ClayIcon
+								<Icon
 									spritemap={spritemap}
 									symbol="search"
 								/>
@@ -276,7 +273,7 @@ export const SXAutoComplete = ({ namespace, items, labelPosition, events, sprite
 								className="btn btn-unstyled"
 								type="button"
 							>
-								<ClayIcon
+								<Icon
 									spritemap={spritemap}
 									symbol="times"
 								/>
@@ -479,7 +476,7 @@ export class SXPreviewRow extends React.Component {
 										key={actionItem.name}
 										onClick={() => this.setState({ underConstruction: true })}
 									>
-										<ClayIcon
+										<Icon
 											spritemap={this.spritemap}
 											symbol={actionItem.symbol}
 											style={{ marginRight: "5px" }}
@@ -707,7 +704,9 @@ export class SXInput extends React.Component {
 						control={
 							<>
 								{this.state.showDefinition && (
-									<div className="sx-param-definition">{this.state.definition}</div>
+									<div className="sx-param-definition">
+										<pre>{this.state.definition}</pre>
+									</div>
 								)}
 								<ClayInput
 									component={this.state.component}
@@ -925,7 +924,9 @@ export class SXLocalizedInput extends React.Component {
 					control={
 						<>
 							{this.state.showDefinition && (
-								<div className="sx-param-definition">{this.state.definition}</div>
+								<div className="sx-param-definition">
+									<pre>{this.state.definition}</pre>
+								</div>
 							)}
 							<ClayInput.Group>
 								<ClayInput.GroupItem>
@@ -943,16 +944,16 @@ export class SXLocalizedInput extends React.Component {
 								<ClayInput.GroupItem shrink>
 									<DropDown
 										trigger={
-											<ClayButton
+											<Button
 												displayType="secondary"
 												className="btn-monospaced btn-md"
 											>
-												<ClayIcon
+												<Icon
 													symbol={this.state.selectedLang.toLowerCase()}
 													spritemap={this.spritemap}
 												/>
 												<span className="btn-section">{this.state.selectedLang}</span>
-											</ClayButton>
+											</Button>
 										}
 										closeOnClick={true}
 									>
@@ -978,7 +979,7 @@ export class SXLocalizedInput extends React.Component {
 														}}
 														active={this.state.selectedLang === flag.name}
 													>
-														<ClayIcon
+														<Icon
 															spritemap={this.spritemap}
 															symbol={flag.symbol}
 															style={{
@@ -1059,13 +1060,14 @@ export class SXNumeric extends React.Component {
 			isInteger: props.isInteger ?? false,
 			index: props.index ?? 0,
 			unit: props.unit ?? "",
-			decimalPlaces: props.decimalPlaces ?? 1,
+			decimalPlaces: props.decimalPlaces ?? "1",
 			textValue: "",
 			textUncertainty: "",
 			definition: props.definition ?? "",
 			showDefinition: props.showDefinition ?? false
 		};
 
+		console.log("props.decimalPlaces: ", props.decimalPlaces);
 		this.convertValueToText(props.value);
 
 		if (Util.isNotEmpty(this.events.on)) {
@@ -1143,6 +1145,7 @@ export class SXNumeric extends React.Component {
 		let fixedVal;
 		if (Util.isNotEmpty(val)) {
 			fixedVal = this.state.isInteger ? Math.trunc(Number(val)) : Number(val).toFixed(this.state.decimalPlaces);
+			console.log("SXNumeric handleValueChanged: ", this.state.isInteger, fixedVal);
 
 			error = Parameter.validateValue(ParamType.NUMERIC, this.state.validation, fixedVal, this.languageId);
 
@@ -1266,7 +1269,9 @@ export class SXNumeric extends React.Component {
 					control={
 						<>
 							{this.state.showDefinition && (
-								<div className="sx-param-definition">{this.state.definition}</div>
+								<div className="sx-param-definition">
+									<pre>{this.state.definition}</pre>
+								</div>
 							)}
 							<ClayInput.Group stacked>
 								{Parameter.checkValidationEnabled(this.state.validation, ValidationKeys.MIN) && (
@@ -1301,7 +1306,7 @@ export class SXNumeric extends React.Component {
 								)}
 								<ClayInput.GroupItem append>
 									<ClayInput
-										type="text"
+										type={this.state.isInteger ? "number" : "text"}
 										defaultValue={this.state.textValue}
 										onBlur={(e) => this.handleValueChanged(e.target.value)}
 									/>
@@ -1328,7 +1333,7 @@ export class SXNumeric extends React.Component {
 											style={{ maxWidth: "200px", width: "120px" }}
 										>
 											<ClayInput
-												type="text"
+												type={this.state.isInteger ? "number" : "text"}
 												defaultValue={this.state.textUncertainty}
 												onBlur={(e) => this.handleUncertaintyChanged(e.target.value)}
 											/>
@@ -1423,7 +1428,9 @@ export class SXBoolean extends React.Component {
 			tooltip: props.tooltip ?? "",
 			disabled: props.disabled ?? false,
 			value: props.value,
-			viewType: props.viewType
+			viewType: props.viewType,
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false
 		};
 
 		if (Util.isNotEmpty(this.events.on)) {
@@ -1449,19 +1456,6 @@ export class SXBoolean extends React.Component {
 						stateObj[dataPacket.property] = dataPacket.value;
 
 						this.setState(stateObj);
-					});
-				} else if (event.event === Event.SX_PARAM_VALUE_CHANGED) {
-					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(
-							e,
-							this.namespace,
-							event.target,
-							this.paramName,
-							this.paramVersion
-						);
-						if (Util.isEmpty(dataPacket)) return;
-
-						this.setState({ value: dataPacket.value });
 					});
 				}
 			});
@@ -1549,6 +1543,11 @@ export class SXBoolean extends React.Component {
 							required={this.state.required}
 							tooltip={this.state.tooltip}
 						/>
+						{this.state.showDefinition && (
+							<div className="sx-param-definition">
+								<pre>{this.state.definition}</pre>
+							</div>
+						)}
 						<ClaySelect
 							id={tagId}
 							name={tagName}
@@ -1581,6 +1580,11 @@ export class SXBoolean extends React.Component {
 							required={this.state.required}
 							tooltip={this.state.tooltip}
 						/>
+						{this.state.showDefinition && (
+							<div className="sx-param-definition">
+								<pre>{this.state.definition}</pre>
+							</div>
+						)}
 						<ClayRadioGroup
 							id={tagId}
 							name={tagName}
@@ -1678,7 +1682,9 @@ export class SXSelect extends React.Component {
 			disabled: props.disabled ?? false,
 			viewType: props.viewType ?? SelectParameter.ViewTypes.DROPDOWN,
 			validation: props.validation ?? {},
-			index: props.index
+			index: props.index,
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false
 		};
 
 		if (Util.isNotEmpty(this.events.on)) {
@@ -1790,6 +1796,11 @@ export class SXSelect extends React.Component {
 						tooltip={this.state.tooltip}
 						spritemap={this.spritemap}
 					/>
+					{this.state.showDefinition && (
+						<div className="sx-param-definition">
+							<pre>{this.state.definition}</pre>
+						</div>
+					)}
 					<ClaySelect
 						id={tagId}
 						name={tagName}
@@ -1825,6 +1836,11 @@ export class SXSelect extends React.Component {
 						tooltip={this.state.tooltip}
 						spritemap={this.spritemap}
 					/>
+					{this.state.showDefinition && (
+						<div className="sx-param-definition">
+							<pre>{this.state.definition}</pre>
+						</div>
+					)}
 					<ClayRadioGroup
 						name={tagName}
 						style={{ marginLeft: "10px" }}
@@ -1874,6 +1890,11 @@ export class SXSelect extends React.Component {
 						tooltip={this.state.tooltip}
 						spritemap={this.spritemap}
 					/>
+					{this.state.showDefinition && (
+						<div className="sx-param-definition">
+							<pre>{this.state.definition}</pre>
+						</div>
+					)}
 					<div
 						name={tagName}
 						id={tagId}
@@ -1925,6 +1946,11 @@ export class SXSelect extends React.Component {
 						tooltip={this.state.tooltip}
 						spritemap={this.spritemap}
 					/>
+					{this.state.showDefinition && (
+						<div className="sx-param-definition">
+							<pre>{this.state.definition}</pre>
+						</div>
+					)}
 					<ClaySelectBox
 						id={tagId}
 						name={tagName}
@@ -1984,7 +2010,9 @@ export class SXDualListBox extends React.Component {
 			leftOptions: props.leftOptions ?? [],
 			leftSelected: [],
 			rightOptions: props.rightOptions ?? [],
-			rightSelected: []
+			rightSelected: [],
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false
 		};
 
 		if (Util.isNotEmpty(this.events.on)) {
@@ -2151,13 +2179,20 @@ export class SXDualListBox extends React.Component {
 				style={this.style}
 			>
 				{this.state.labelPosition === Parameter.LabelPosition.NONE ? null : (
-					<SXLabel
-						label={this.state.label}
-						forHtml={tagId}
-						required={this.state.required}
-						tooltip={this.state.tooltip}
-						spritemap={this.spritemap}
-					/>
+					<>
+						<SXLabel
+							label={this.state.label}
+							forHtml={tagId}
+							required={this.state.required}
+							tooltip={this.state.tooltip}
+							spritemap={this.spritemap}
+						/>
+						{this.state.showDefinition && (
+							<div className="sx-param-definition">
+								<pre>{this.state.definition}</pre>
+							</div>
+						)}
+					</>
 				)}
 				<div className="sx-dual-listbox">
 					<div
@@ -2230,21 +2265,6 @@ export class SXDualListBox extends React.Component {
 	}
 }
 
-// 04.3. when displayStyle is multi list
-export const SXDropMultiSelect = () => {
-	return <></>;
-};
-
-// 04.4. when displayStyle is checkbox
-export const SXCheckboxGroup = () => {
-	return <></>;
-};
-
-// 04.5. when displayStyle is radio
-export const SXRadioButtonGroup = () => {
-	return <></>;
-};
-
 /****************************************************
  *  05. Matrix
  ****************************************************/
@@ -2260,9 +2280,243 @@ export const SXFile = () => {
 };
 
 /*09. Address */
-export const SXAddress = () => {
-	return <></>;
-};
+export class SXAddress extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
+
+		this.dirty = false;
+		this.selectedOptionChanged = false;
+
+		this.state = {
+			error: "",
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			required: props.required ?? false,
+			value: props.value ?? {},
+			tooltip: props.tooltip ?? "",
+			disabled: props.disabled ?? false,
+			validation: props.validation ?? {},
+			viewType: props.viewType ?? AddressParameter.ViewTypes.BLOCK,
+			index: props.index,
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false,
+			searched: false,
+			underConstruction: props.viewType === AddressParameter.ViewTypes.ONE_LINE ? true : false
+		};
+
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.paramName,
+							this.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.setState({ value: "", error: dataPacket.error });
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						let newState = {};
+						newState[dataPacket.property] = dataPacket.value;
+
+						if (
+							dataPacket.property === ParamProperty.VIEW_TYPE &&
+							dataPacket.value === AddressParameter.ViewTypes.ONE_LINE
+						) {
+							newState.underConstruction = true;
+						}
+
+						this.setState(newState);
+					});
+				}
+			});
+		}
+	}
+
+	handleAddressSearch() {
+		new daum.Postcode({
+			width: 500,
+			height: 600,
+			oncomplete: (data) => {
+				console.log("address data: ", data);
+
+				let value = {};
+				value.zipcode = data.zonecode;
+				if (data.userSelectionType === "R") {
+					value.street = this.languageId === "ko-KR" ? data.address : data.addressEnglish;
+				} else {
+					value.street = this.languageId === "ko-KR" ? data.roadAddres : data.roadAddressEnglish;
+				}
+
+				this.dirty = true;
+				this.setState({ value: value, searched: true });
+			}
+		}).open();
+	}
+
+	render() {
+		const tagId = this.state.tagId ?? this.namespace + this.state.paramName;
+		const tagName = this.state.tagName ?? tagId;
+
+		console.log("SXAddress render: ", this.state.viewType);
+		return (
+			<ClayForm.Group>
+				<SXLabel
+					label={this.state.label}
+					forHtml={tagId}
+					required={this.state.required}
+					tooltip={this.state.tooltip}
+					spritemap={this.spritemap}
+				/>
+				{this.state.showDefinition && (
+					<div className="sx-param-definition">
+						<pre>{this.state.definition}</pre>
+					</div>
+				)}
+				{!this.dirty && (
+					<ClayInput.GroupItem shrink>
+						<Button
+							onClick={(e) => this.handleAddressSearch()}
+							size="sm"
+						>
+							<span className="inline-item inline-item-before">
+								<Icon
+									symbol="search"
+									spritemap={this.spritemap}
+								/>
+							</span>
+							{Util.translate("search-address")}
+						</Button>
+					</ClayInput.GroupItem>
+				)}
+				{this.dirty && this.state.viewType === AddressParameter.ViewTypes.INLINE && (
+					<ClayInput.Group style={{ marginLeft: "10px" }}>
+						<ClayInput.GroupItem shrink>
+							<ClayButtonWithIcon
+								aria-label={Util.translate("search-address")}
+								symbol="search"
+								onClick={(e) => this.handleAddressSearch()}
+								size="sm"
+								spritemap={this.spritemap}
+							/>
+						</ClayInput.GroupItem>
+						<ClayInput.GroupItem
+							prepend
+							shrink
+							style={{ width: "min-content" }}
+						>
+							<ClayInput
+								style={{ minWidth: "5rem" }}
+								defaultValue={this.state.value.zipcode}
+								readOnly={true}
+							/>
+						</ClayInput.GroupItem>
+						<ClayInput.GroupItem
+							append
+							shrink
+						>
+							<span style={{ alignContent: "end" }}>,</span>
+						</ClayInput.GroupItem>
+						<ClayInput.GroupItem
+							prepend
+							shrink
+							style={{ width: "min-content" }}
+						>
+							<ClayInput
+								defaultValue={this.state.value.street}
+								readOnly={true}
+								style={{
+									minWidth: "15rem",
+									width: "70%"
+								}}
+							/>
+						</ClayInput.GroupItem>
+						<ClayInput.GroupItem
+							append
+							shrink
+						>
+							<span style={{ alignContent: "end" }}>,</span>
+						</ClayInput.GroupItem>
+						<ClayInput.GroupItem prepend>
+							<ClayInput
+								aria-label={Util.translate("address")}
+								value={this.state.value.address}
+								placeholder={Util.translate("detail-address")}
+								disabled={!this.dirty}
+								onChange={(e) => {
+									const value = { ...this.state.value, address: e.target.value };
+									this.setState({ value: value });
+								}}
+							/>
+						</ClayInput.GroupItem>
+					</ClayInput.Group>
+				)}
+				{this.dirty && this.state.viewType === AddressParameter.ViewTypes.BLOCK && (
+					<div style={{ marginLeft: "10px" }}>
+						<div>
+							<span>{this.state.value.zipcode}</span>
+							<ClayButtonWithIcon
+								aria-label={Util.translate("search-address")}
+								symbol="search"
+								onClick={(e) => this.handleAddressSearch()}
+								size="sm"
+								spritemap={this.spritemap}
+								className="float-right"
+							/>
+						</div>
+						<div style={{ marginTop: "10px", marginBottom: "10px" }}>{this.state.value.street}</div>
+						<ClayInput
+							value={this.state.value.address}
+							placeholder={Util.translate("detail-address")}
+							disabled={!this.dirty}
+							autoFocus={true}
+							onChange={(e) => {
+								const value = { ...this.state.value, address: e.target.value };
+								this.setState({ value: value });
+							}}
+						/>
+					</div>
+				)}
+				{this.state.underConstruction && (
+					<SXModalDialog
+						header={Util.translate("sorry")}
+						body={<UnderConstruction />}
+						buttons={[
+							{
+								label: Util.translate("ok"),
+								onClick: () => {
+									this.setState({ underConstruction: false });
+								}
+							}
+						]}
+					/>
+				)}
+			</ClayForm.Group>
+		);
+	}
+}
 
 /*10. Date */
 export const SXDate = () => {
@@ -2301,7 +2555,9 @@ export class SXGroup extends React.Component {
 			disabled: props.disabled ?? false,
 			viewType: props.viewType ?? GroupParameter.ViewTypes.HORIZONTAL,
 			members: props.members ?? [],
-			membersPerRow: props.membersPerRow ?? 1
+			membersPerRow: props.membersPerRow ?? 1,
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false
 		};
 
 		if (Util.isNotEmpty(this.events.on)) {
@@ -2421,7 +2677,7 @@ export const SXButtonWithIcon = ({
 	onClick
 }) => {
 	return (
-		<ClayButton
+		<Button
 			type={type}
 			id={id}
 			displayType={displayType}
@@ -2430,13 +2686,13 @@ export const SXButtonWithIcon = ({
 			size={size}
 			onClick={onClick}
 		>
-			<ClayIcon
+			<Icon
 				spritemap={spritemap}
 				symbol={symbol}
 				style={{ marginRight: "5px" }}
 			/>
 			{label}
-		</ClayButton>
+		</Button>
 	);
 };
 
@@ -2587,6 +2843,18 @@ class SXFormField extends React.Component {
 			case ParamType.DUALLIST: {
 				return (
 					<SXDualListBox
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.ADDRESS: {
+				return (
+					<SXAddress
 						namespace={this.namespace}
 						{...this.properties}
 						events={this.events}

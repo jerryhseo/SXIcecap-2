@@ -86,7 +86,7 @@ class SXDSBuilderValidationPanel extends React.Component {
 	}
 
 	setTranslations(section, translations) {
-		Parameter.setValidationValue(this.state.validation, ValidationKeys.REQUIRED, "message", translations);
+		Parameter.setValidationValue(this.state.validation, section, "message", translations);
 
 		if (Util.isNotEmpty(this.state.validation[section])) {
 			Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {

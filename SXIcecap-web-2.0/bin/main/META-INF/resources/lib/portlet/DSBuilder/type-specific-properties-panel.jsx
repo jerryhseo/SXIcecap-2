@@ -2,7 +2,7 @@ import React from "react";
 import { Util } from "../../common/util";
 import { Event, ParamProperty, ParamType } from "../../common/station-x";
 import SXFormField, { SXLabel } from "../../form/sxform";
-import { BooleanParameter, SelectParameter } from "../../parameter/parameter";
+import { AddressParameter, BooleanParameter, SelectParameter } from "../../parameter/parameter";
 import { ClayButtonWithIcon } from "@clayui/button";
 import { Button, Icon } from "@clayui/core";
 import DropDown from "@clayui/drop-down";
@@ -83,12 +83,16 @@ class SXSelectOptionBuilder extends React.Component {
 		this.setState({
 			selectedOptionIndex: this.props.parameter.moveUpOption(index)
 		});
+
+		this.fireFieldValueChangedEvent();
 	}
 
 	moveDownOption(index) {
 		this.setState({
 			selectedOptionIndex: this.props.parameter.moveDownOption(index)
 		});
+
+		this.fireFieldValueChangedEvent();
 	}
 
 	removeOption(index) {
@@ -96,11 +100,11 @@ class SXSelectOptionBuilder extends React.Component {
 		let selectedOptionIndex = index === optionCount ? optionCount - 1 : index;
 		this.selectedOption = this.props.parameter.getOption(selectedOptionIndex);
 
-		this.fireFieldValueChangedEvent();
-
 		this.setState({
 			selectedOptionIndex: selectedOptionIndex
 		});
+
+		this.fireFieldValueChangedEvent();
 	}
 
 	handleOptionSelected(index) {
@@ -147,7 +151,15 @@ class SXSelectOptionBuilder extends React.Component {
 				>
 					{"Option Builder"}
 				</div>
-				<div style={{ display: "inline-flex", marginBottom: "5px", alignItems: "center", flexWrap: "wrap" }}>
+				<div
+					style={{
+						display: "inline-flex",
+						marginBottom: "5px",
+						alignItems: "center",
+						flexWrap: "wrap",
+						width: "100%"
+					}}
+				>
 					<SXLabel
 						label={Util.translate("options")}
 						forHtml=""
@@ -157,18 +169,6 @@ class SXSelectOptionBuilder extends React.Component {
 							fontSize: "0.875rem"
 						}}
 						spritemap={this.props.spritemap}
-					/>
-					<ClayButtonWithIcon
-						aria-label={Util.translate("new-option")}
-						size="sm"
-						symbol="plus"
-						title={Util.translate("new-option")}
-						onClick={(e) => {
-							e.stopPropagation();
-							this.handleNewOption();
-						}}
-						spritemap={this.props.spritemap}
-						style={{ marginLeft: "auto" }}
 					/>
 				</div>
 				<div className="sx-option-preview">
@@ -264,7 +264,8 @@ class SXSelectOptionBuilder extends React.Component {
 						padding: "10px 5px",
 						justifyContent: "center",
 						marginBottom: "5px",
-						marginTop: "5px"
+						marginTop: "5px",
+						width: "100%"
 					}}
 				>
 					<Button
@@ -283,6 +284,18 @@ class SXSelectOptionBuilder extends React.Component {
 							spritemap={this.props.spritemap}
 						/>
 					</Button>
+					<ClayButtonWithIcon
+						aria-label={Util.translate("new-option")}
+						size="sm"
+						symbol="plus"
+						title={Util.translate("new-option")}
+						onClick={(e) => {
+							e.stopPropagation();
+							this.handleNewOption();
+						}}
+						spritemap={this.props.spritemap}
+						style={{ leftMargin: "auto" }}
+					/>
 				</Button.Group>
 				<LocalizedInput
 					id={this.props.namespace + "label"}
@@ -352,15 +365,8 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 		};
 
 		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = Event.pickUpDataPacket(
-				e,
-				this.namespace,
-				this.propertyPanelId,
-				ParamProperty.VIEW_TYPE,
-				"1.0.0"
-			);
-
-			if (Util.isEmpty(dataPacket)) {
+			const dataPacket = e.dataPacket;
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.propertyPanelId) {
 				return;
 			}
 
@@ -374,6 +380,10 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 			fire: [
 				{
 					target: this.dsbuilderId,
+					event: Event.SX_FIELD_VALUE_CHANGED
+				},
+				{
+					target: this.propertyPanelId,
 					event: Event.SX_FIELD_VALUE_CHANGED
 				}
 			]
@@ -446,10 +456,13 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 									tooltip: Util.translate("decimal-places-tooltip"),
 									isInteger: true,
 									languageId: this.languageId,
-									value: this.state.parameter.decimalPlaces ?? ""
+									value: this.state.parameter.decimalPlaces
+										? Math.floor(this.state.parameter.decimalPlaces)
+										: "1"
 								}}
 								events={events}
 								spritemap={this.spritemap}
+								onChange={(e) => console.log("isIntegerChanged: ", e)}
 							/>
 						)}
 						<SXFormField
@@ -608,14 +621,50 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 					}
 				];
 
-				console.log(
-					"this.state.parameter.trueLabel: ",
-					this.state.parameter.getTrueLabel(this.availableLanguageIds)
+				return (
+					<div>
+						{fields.map((field) => {
+							return (
+								<SXFormField
+									key={Util.randomKey()}
+									namespace={this.namespace}
+									properties={field}
+									events={events}
+									spritemap={this.spritemap}
+								/>
+							);
+						})}
+					</div>
 				);
-				console.log(
-					"this.state.parameter.falseLabel: ",
-					this.state.parameter.getFalseLabel(this.availableLanguageIds)
-				);
+			}
+			case ParamType.ADDRESS: {
+				const fields = [
+					{
+						paramType: ParamType.SELECT,
+						paramName: ParamProperty.VIEW_TYPE,
+						paramVersion: "1.0.0",
+						viewType: SelectParameter.ViewTypes.RADIO,
+						label: Util.translate("view-type"),
+						options: [
+							{
+								label: "Block",
+								value: AddressParameter.ViewTypes.BLOCK
+							},
+							{
+								label: "In Line",
+								value: AddressParameter.ViewTypes.INLINE
+							},
+							{
+								label: "One Line",
+								value: AddressParameter.ViewTypes.ONE_LINE
+							}
+						],
+						optionsPerRow: 0,
+						languageId: this.languageId,
+						tooltip: Util.translate("view-type-tooltip"),
+						value: this.state.parameter.viewType ?? AddressParameter.ViewTypes.BLOCK
+					}
+				];
 
 				return (
 					<div>

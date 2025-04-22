@@ -15,7 +15,7 @@ export const SXModalDialog = ({ size, status = "secondary", spritemap, header = 
 			center
 		>
 			<Modal.Header>{header}</Modal.Header>
-			<Modal.Body>{body}</Modal.Body>
+			<Modal.Body style={{ justifyItems: "center" }}>{body}</Modal.Body>
 			<Modal.Footer
 				last={
 					<Button.Group spaced>

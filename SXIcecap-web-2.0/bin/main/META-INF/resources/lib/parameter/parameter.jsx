@@ -1222,7 +1222,7 @@ export class SelectParameter extends Parameter {
 
 		this.viewType = json.viewType ?? SelectParameter.ViewTypes.DROPDOWN;
 
-		console.log("SelectParameter parse: ", json.viewTypw, json.optionsPerRow);
+		console.log("SelectParameter parse: ", json.viewType, json.optionsPerRow);
 		if (this.viewType === SelectParameter.ViewTypes.RADIO || this.viewType === SelectParameter.ViewTypes.CHECKBOX) {
 			if (json.optionsPerRow > 0) {
 				this.optionsPerRow = json.optionsPerRow;
@@ -1659,14 +1659,21 @@ export class FileParameter extends Parameter {
  *
  */
 export class AddressParameter extends Parameter {
+	static ViewTypes = {
+		INLINE: "inline",
+		BLOCK: "block",
+		ONE_LINE: "oneLine"
+	};
+
 	constructor(namespace, formId, languageId, availableLanguageIds, json) {
 		super(namespace, formId, languageId, availableLanguageIds, ParamType.ADDRESS);
 
 		if (json) {
 			this.parse(json);
+		} else {
+			this.value = {};
+			this.viewType = AddressParameter.ViewTypes.BLOCK;
 		}
-
-		this.value = {};
 	}
 
 	get zipcode() {
@@ -1680,13 +1687,13 @@ export class AddressParameter extends Parameter {
 	}
 
 	set zipcode(val) {
-		this.value = { ...this.value, zipcode: val };
+		this.value.zipcode = val;
 	}
 	set street(val) {
-		this.value = { ...this.value, street: val };
+		this.value.street = val;
 	}
 	set address(val) {
-		this.value = { ...this.value, address: val };
+		this.value.address = val;
 	}
 
 	getFullAddress() {
@@ -1702,10 +1709,12 @@ export class AddressParameter extends Parameter {
 	}
 
 	toProperties(tagId, tagName) {
-		let json = super.toProperties();
+		let properties = super.toProperties();
 
-		if (tagId) json.tagId = tagId;
-		if (tagName) json.tagName = tagName;
+		if (tagId) properties.tagId = tagId;
+		if (tagName) properties.tagName = tagName;
+
+		return properties;
 	}
 
 	render(tagId, tagName, events, className, style, spritemap) {

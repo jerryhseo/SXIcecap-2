@@ -86,7 +86,9 @@
 	font-weight: 400;
 	font-size: 0.8rem;
 	color: #8f8d8c;
-	white-space: pre-wrap;
+}
+.sx-param-definition pre {
+	margin: 0;
 }
 
 .custom-control-label-text {

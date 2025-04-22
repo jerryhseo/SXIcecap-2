@@ -35,7 +35,7 @@ class DataStructureBuilder extends React.Component {
 	];
 
 	propertyPanelStyles = {
-		display: "grid",
+		display: "block",
 		backgroundColor: "#FFFFFF",
 		border: "2px solid #CDCED9",
 		padding: ".75rem 5px",
@@ -242,11 +242,20 @@ class DataStructureBuilder extends React.Component {
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.dsbuilderId) return;
 
 			if (
-				dataPacket.paramType !== ParamType.STRING &&
-				dataPacket.paramType !== ParamType.LOCALIZED_STRING &&
-				dataPacket.paramType !== ParamType.NUMERIC &&
-				dataPacket.paramType !== ParamType.BOOLEAN &&
-				dataPacket.paramType !== ParamType.SELECT
+				dataPacket.paramType === ParamType.MATRIX ||
+				dataPacket.paramType === ParamType.EMAIL ||
+				dataPacket.paramType === ParamType.PHONE ||
+				dataPacket.paramType === ParamType.DUALLIST ||
+				dataPacket.paramType === ParamType.CALCULATOR ||
+				dataPacket.paramType === ParamType.DATE ||
+				dataPacket.paramType === ParamType.FILE ||
+				dataPacket.paramType === ParamType.GRID ||
+				dataPacket.paramType === ParamType.IMAGE ||
+				dataPacket.paramType === ParamType.LINKER ||
+				dataPacket.paramType === ParamType.SELECT_GROUP ||
+				dataPacket.paramType === ParamType.REFERENCE ||
+				dataPacket.paramType === ParamType.TABLE ||
+				dataPacket.paramType === ParamType.COMMENT
 			) {
 				this.setState({ underConstruction: true });
 				return;
@@ -511,7 +520,8 @@ class DataStructureBuilder extends React.Component {
 								background: "rgba(247, 237, 171, 0.8)",
 								padding: "10px 5px",
 								justifyContent: "center",
-								marginBottom: "20px"
+								marginBottom: "20px",
+								width: "100%"
 							}}
 						>
 							<ClayButtonWithIcon
