@@ -243,9 +243,8 @@ class DataStructureBuilder extends React.Component {
 
 			if (
 				dataPacket.paramType === ParamType.MATRIX ||
-				dataPacket.paramType === ParamType.EMAIL ||
-				dataPacket.paramType === ParamType.PHONE ||
 				dataPacket.paramType === ParamType.DUALLIST ||
+				dataPacket.paramType === ParamType.PHONE ||
 				dataPacket.paramType === ParamType.CALCULATOR ||
 				dataPacket.paramType === ParamType.DATE ||
 				dataPacket.paramType === ParamType.FILE ||

@@ -28,6 +28,7 @@ import {
 	AddressParameter,
 	BooleanParameter,
 	DualListParameter,
+	EMailParameter,
 	GroupParameter,
 	Parameter,
 	SelectParameter,
@@ -35,6 +36,7 @@ import {
 } from "../parameter/parameter";
 import { UnderConstruction } from "../common/common";
 import { SXModalDialog } from "../modal/sxmodal";
+import Autocomplete from "@clayui/autocomplete";
 
 export const SelectDisplayStyle = {
 	DUAL_LISTBOX: "DUAL_LISTBOX",
@@ -863,7 +865,7 @@ export class SXLocalizedInput extends React.Component {
 					if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
 						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
 							target: event.target,
-							error: error.message,
+							error: error,
 							paramName: this.state.paramName,
 							paramVersion: this.state.paramVersion,
 							index: this.state.index
@@ -908,7 +910,7 @@ export class SXLocalizedInput extends React.Component {
 	}
 
 	render() {
-		const className = this.dirty ? this.state.error.errorClass : "";
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
 
 		const tagId = this.namespace + this.state.paramName;
 		const tagName = tagId;
@@ -1500,6 +1502,8 @@ export class SXBoolean extends React.Component {
 	}
 
 	render() {
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
+
 		const tagId = this.namespace + this.state.paramName;
 		const tagName = tagId;
 
@@ -1507,7 +1511,7 @@ export class SXBoolean extends React.Component {
 			case BooleanParameter.ViewTypes.CHECKBOX: {
 				return (
 					<div
-						className={this.className}
+						className={className}
 						style={this.style}
 					>
 						<ClayCheckbox
@@ -1534,7 +1538,7 @@ export class SXBoolean extends React.Component {
 				console.log("SXBoolean: ", this.state.trueLabel, this.state.falseLabel);
 				return (
 					<div
-						className={this.className}
+						className={className}
 						style={this.style}
 					>
 						<SXLabel
@@ -1571,7 +1575,7 @@ export class SXBoolean extends React.Component {
 				console.log("SXBoolean: ", this.state.value);
 				return (
 					<div
-						className={this.className}
+						className={className}
 						style={this.style}
 					>
 						<SXLabel
@@ -1610,7 +1614,7 @@ export class SXBoolean extends React.Component {
 			case BooleanParameter.ViewTypes.TOGGLE: {
 				return (
 					<div
-						className={this.className}
+						className={className}
 						style={this.style}
 					>
 						<ClayToggle
@@ -1749,6 +1753,7 @@ export class SXSelect extends React.Component {
 	handleRadioClick(val) {
 		if (this.state.value === val) {
 			this.setState({ value: "" });
+			this.dirty = true;
 		}
 	}
 
@@ -1777,16 +1782,20 @@ export class SXSelect extends React.Component {
 				}
 			});
 		}
+
+		this.dirty = true;
 	}
 
 	render() {
 		const tagId = this.namespace + this.state.paramName;
 		const tagName = tagId;
 
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
+
 		if (this.state.viewType === SelectParameter.ViewTypes.DROPDOWN) {
 			return (
 				<div
-					className={"form-grorp " + this.className}
+					className={"form-grorp " + className}
 					style={this.style}
 				>
 					<SXLabel
@@ -1826,7 +1835,7 @@ export class SXSelect extends React.Component {
 			const optionRows = Util.convertArrayToRows(this.state.options, this.state.optionsPerRow);
 			return (
 				<div
-					className={"form-group " + this.className}
+					className={"form-group " + className}
 					style={this.style}
 				>
 					<SXLabel
@@ -1880,7 +1889,7 @@ export class SXSelect extends React.Component {
 			const optionRows = Util.convertArrayToRows(this.state.options, this.state.optionsPerRow);
 			return (
 				<div
-					className={"form-group " + this.className}
+					className={"form-group " + className}
 					style={this.style}
 				>
 					<SXLabel
@@ -1936,7 +1945,7 @@ export class SXSelect extends React.Component {
 		} else if (this.state.viewType === SelectParameter.ViewTypes.LISTBOX) {
 			return (
 				<div
-					className={"form-grorp " + this.className}
+					className={"form-grorp " + className}
 					style={this.style}
 				>
 					<SXLabel
@@ -1997,7 +2006,7 @@ export class SXDualListBox extends React.Component {
 		this.dirty = false;
 
 		this.state = {
-			error: "",
+			error: {},
 			paramName: props.paramName ?? "",
 			paramVersion: props.paramVersion ?? "1.0.0",
 			label: props.label ?? "",
@@ -2091,23 +2100,20 @@ export class SXDualListBox extends React.Component {
 		const left = this.state.leftOptions.filter((item) => !this.state.leftSelected.includes(item.value));
 		const leave = this.state.leftOptions.filter((item) => this.state.leftSelected.includes(item.value));
 
+		let error = Parameter.validateValue(ParamType.DUALLIST, this.state.validation, left, this.languageId);
 		this.setState({
 			leftOptions: left,
-			rightOptions: [...this.state.rightOptions, ...leave]
+			rightOptions: [...this.state.rightOptions, ...leave],
+			error: error
 		});
-
-		const errorMsg = validateFormField(ParamType.DUALLIST, left, this.state.validation, this.languageId);
-		if (this.state.error !== errorMsg) {
-			this.setState({ error: errorMsg });
-		}
 
 		if (Util.isNotEmpty(this.events.fire)) {
 			this.events.fire.forEach((event) => {
 				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-					if (errorMsg) {
+					if (error.errorClass === ErrorClass.ERROR) {
 						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
 							target: event.target,
-							error: errorMsg,
+							error: error,
 							paramName: this.state.paramName,
 							paramVersion: this.state.paramVersion
 						});
@@ -2131,23 +2137,21 @@ export class SXDualListBox extends React.Component {
 		const leave = this.state.rightOptions.filter((item) => this.state.rightSelected.includes(item.value));
 
 		const newItems = [...this.state.leftOptions, ...leave];
+		let error = Parameter.validateValue(ParamType.DUALLIST, this.state.validation, left, this.languageId);
+
 		this.setState({
 			leftOptions: newItems,
-			rightOptions: left
+			rightOptions: left,
+			error: error
 		});
-
-		const errorMsg = validateFormField(ParamType.DUALLIST, left, this.state.validation, this.languageId);
-		if (this.state.error !== errorMsg) {
-			this.setState({ error: errorMsg });
-		}
 
 		if (Util.isNotEmpty(this.events.fire)) {
 			this.events.fire.forEach((event) => {
 				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-					if (errorMsg) {
+					if (error.errorClass === ErrorClass.ERROR) {
 						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
 							target: event.target,
-							error: errorMsg,
+							error: error,
 							paramName: this.state.paramName,
 							paramVersion: this.state.paramVersion
 						});
@@ -2167,7 +2171,7 @@ export class SXDualListBox extends React.Component {
 	}
 
 	render() {
-		const className = this.className + (this.dirty ? (this.state.error ? " has-error" : " has-success") : "");
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
 
 		const tagId = this.namespace + this.state.paramName;
 		const tagName = tagId;
@@ -2294,13 +2298,12 @@ export class SXAddress extends React.Component {
 		this.selectedOptionChanged = false;
 
 		this.state = {
-			error: "",
+			error: {},
 			paramName: props.paramName ?? "",
 			paramVersion: props.paramVersion ?? "1.0.0",
 			label: props.label ?? "",
 			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
 			required: props.required ?? false,
-			value: props.value ?? {},
 			tooltip: props.tooltip ?? "",
 			disabled: props.disabled ?? false,
 			validation: props.validation ?? {},
@@ -2308,7 +2311,9 @@ export class SXAddress extends React.Component {
 			index: props.index,
 			definition: props.definition ?? "",
 			showDefinition: props.showDefinition ?? false,
-			searched: false,
+			zipcode: Util.isEmpty(props.value) ? "" : props.value.zipcode,
+			street: Util.isEmpty(props.value) ? "" : props.value.street,
+			address: Util.isEmpty(props.value) ? "" : props.value.address,
 			underConstruction: props.viewType === AddressParameter.ViewTypes.ONE_LINE ? true : false
 		};
 
@@ -2339,7 +2344,23 @@ export class SXAddress extends React.Component {
 						if (Util.isEmpty(dataPacket)) return;
 
 						let newState = {};
-						newState[dataPacket.property] = dataPacket.value;
+						if (dataPacket.property === ParamType.VALUE) {
+							if (Util.isNotEmpty(props.value)) {
+								this.setState({
+									zipcode: props.value.zipcode,
+									street: props.value.street,
+									address: props.value.address
+								});
+							} else {
+								this.setState({
+									zipcode: "",
+									street: "",
+									address: ""
+								});
+							}
+						} else {
+							newState[dataPacket.property] = dataPacket.value;
+						}
 
 						if (
 							dataPacket.property === ParamProperty.VIEW_TYPE &&
@@ -2362,27 +2383,62 @@ export class SXAddress extends React.Component {
 			oncomplete: (data) => {
 				console.log("address data: ", data);
 
-				let value = {};
-				value.zipcode = data.zonecode;
-				if (data.userSelectionType === "R") {
-					value.street = this.languageId === "ko-KR" ? data.address : data.addressEnglish;
-				} else {
-					value.street = this.languageId === "ko-KR" ? data.roadAddres : data.roadAddressEnglish;
-				}
+				const street =
+					data.userSelectionType === "R"
+						? this.languageId === "ko-KR"
+							? data.address
+							: data.addressEnglish
+						: this.languageId === "ko-KR"
+						? data.roadAddres
+						: data.roadAddressEnglish;
 
 				this.dirty = true;
-				this.setState({ value: value, searched: true });
+				this.setState({ zipcode: data.zonecode, street: street, address: "" });
 			}
 		}).open();
+	}
+
+	handleAddressChanged(address) {
+		const error = Parameter.validateValue(ParamType.ADDRESS, this.state.validation, address, this.languageId);
+
+		this.setState({ address: address, error: error });
+
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+					if (error.errorClass === ErrorClass.ERROR) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
+							target: event.target,
+							error: error,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion
+						});
+					} else {
+						Event.fire(event.event, this.namespace, this.namespace, {
+							target: event.target,
+							value: {
+								zipcode: this.state.zipcode,
+								street: this.state.street,
+								address: address
+							},
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion
+						});
+					}
+				}
+			});
+		}
+
+		this.dirty = true;
 	}
 
 	render() {
 		const tagId = this.state.tagId ?? this.namespace + this.state.paramName;
 		const tagName = this.state.tagName ?? tagId;
 
-		console.log("SXAddress render: ", this.state.viewType);
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
 		return (
-			<ClayForm.Group>
+			<ClayForm.Group className={className}>
 				<SXLabel
 					label={this.state.label}
 					forHtml={tagId}
@@ -2413,7 +2469,10 @@ export class SXAddress extends React.Component {
 				)}
 				{this.dirty && this.state.viewType === AddressParameter.ViewTypes.INLINE && (
 					<ClayInput.Group style={{ marginLeft: "10px" }}>
-						<ClayInput.GroupItem shrink>
+						<ClayInput.GroupItem
+							shrink
+							style={{ alignSelf: "center" }}
+						>
 							<ClayButtonWithIcon
 								aria-label={Util.translate("search-address")}
 								symbol="search"
@@ -2429,7 +2488,7 @@ export class SXAddress extends React.Component {
 						>
 							<ClayInput
 								style={{ minWidth: "5rem" }}
-								defaultValue={this.state.value.zipcode}
+								defaultValue={this.state.zipcode}
 								readOnly={true}
 							/>
 						</ClayInput.GroupItem>
@@ -2445,7 +2504,7 @@ export class SXAddress extends React.Component {
 							style={{ width: "min-content" }}
 						>
 							<ClayInput
-								defaultValue={this.state.value.street}
+								defaultValue={this.state.street}
 								readOnly={true}
 								style={{
 									minWidth: "15rem",
@@ -2462,21 +2521,18 @@ export class SXAddress extends React.Component {
 						<ClayInput.GroupItem prepend>
 							<ClayInput
 								aria-label={Util.translate("address")}
-								value={this.state.value.address}
+								value={this.state.address}
 								placeholder={Util.translate("detail-address")}
 								disabled={!this.dirty}
-								onChange={(e) => {
-									const value = { ...this.state.value, address: e.target.value };
-									this.setState({ value: value });
-								}}
+								onChange={(e) => this.handleAddressChanged(e.target.value)}
 							/>
 						</ClayInput.GroupItem>
 					</ClayInput.Group>
 				)}
 				{this.dirty && this.state.viewType === AddressParameter.ViewTypes.BLOCK && (
 					<div style={{ marginLeft: "10px" }}>
-						<div>
-							<span>{this.state.value.zipcode}</span>
+						<div style={{ display: "block" }}>
+							<span>{this.state.zipcode}</span>
 							<ClayButtonWithIcon
 								aria-label={Util.translate("search-address")}
 								symbol="search"
@@ -2486,16 +2542,15 @@ export class SXAddress extends React.Component {
 								className="float-right"
 							/>
 						</div>
-						<div style={{ marginTop: "10px", marginBottom: "10px" }}>{this.state.value.street}</div>
+						<div style={{ display: "block", marginTop: "10px", marginBottom: "10px" }}>
+							{this.state.street}
+						</div>
 						<ClayInput
-							value={this.state.value.address}
+							value={this.state.address}
 							placeholder={Util.translate("detail-address")}
 							disabled={!this.dirty}
 							autoFocus={true}
-							onChange={(e) => {
-								const value = { ...this.state.value, address: e.target.value };
-								this.setState({ value: value });
-							}}
+							onChange={(e) => this.handleAddressChanged(e.target.value)}
 						/>
 					</div>
 				)}
@@ -2529,9 +2584,171 @@ export const SXPhone = () => {
 };
 
 /*12. EMail */
-export const SXEMail = () => {
-	return <></>;
-};
+export class SXEMail extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
+
+		this.dirty = false;
+
+		this.state = {
+			error: {},
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			required: props.required ?? false,
+			tooltip: props.tooltip ?? "",
+			disabled: props.disabled ?? false,
+			validation: props.validation ?? {},
+			emailId: Util.isNotEmpty(props.value) ? props.value.emailId : "",
+			serverName: Util.isNotEmpty(props.value) ? props.value.serverName : "",
+			index: props.index,
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false
+		};
+
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.paramName,
+							this.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.setState({ value: "", error: dataPacket.error });
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						let newState = {};
+
+						if (dataPacket.property === ParamProperty.VALUE) {
+							newState.emailId = Util.isEmpty(dataPacket.value) ? "" : dataPacket.value.emailId;
+							newState.serverName = Util.isEmpty(dataPacket.value) ? "" : dataPacket.value.serverName;
+						} else {
+							newState[dataPacket.property] = dataPacket.value;
+						}
+
+						this.setState(newState);
+					});
+				}
+			});
+		}
+	}
+
+	fireValueChangedEvent(value, error) {
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+					if (error.errorClass === ErrorClass.ERROR) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
+							target: event.target,
+							error: error,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion
+						});
+					} else {
+						Event.fire(event.event, this.namespace, this.namespace, {
+							target: event.target,
+							value: value,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion
+						});
+					}
+				}
+			});
+		}
+	}
+
+	handleEMailIdChanged(emailId) {
+		const error = Parameter.validateValue(ParamType.EMAIL, this.state.validation, emailId, this.languageId);
+
+		this.setState({ emailId: emailId, error: error });
+
+		this.fireValueChangedEvent({ emailId: emailId, serverName: this.state.serverName }, error);
+	}
+
+	handleServerChanged(server) {
+		const error = Parameter.validateValue(ParamType.EMAIL, this.state.validation, server, this.languageId);
+
+		this.setState({ serverName: server, error: error });
+
+		this.fireValueChangedEvent({ emailId: this.state.emailId, serverName: server }, error);
+	}
+
+	render() {
+		const tagId = this.state.tagId ?? this.namespace + this.state.paramName;
+		const tagName = this.state.tagName ?? tagId;
+
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
+
+		return (
+			<ClayForm.Group className={className}>
+				<SXLabel
+					label={this.state.label}
+					forHtml={tagId}
+					required={this.state.required}
+					tooltip={this.state.tooltip}
+					spritemap={this.spritemap}
+				/>
+				{this.state.showDefinition && (
+					<div className="sx-param-definition">
+						<pre>{this.state.definition}</pre>
+					</div>
+				)}
+				<ClayInput.Group style={{ marginLeft: "10px" }}>
+					<ClayInput.GroupItem prepend>
+						<ClayInput
+							value={this.state.emailId}
+							disabled={this.state.disabled}
+							placeholder={Util.translate("email-id")}
+							onChange={(e) => this.handleEMailIdChanged(e.target.value)}
+							spritemap={this.spritemap}
+						/>
+					</ClayInput.GroupItem>
+					<ClayInput.GroupItem
+						prepend
+						shrink
+					>
+						<span style={{ alignContent: "center" }}>@</span>
+					</ClayInput.GroupItem>
+					<ClayInput.GroupItem prepend>
+						<Autocomplete
+							aria-labelledby={Util.translate("email-server-name")}
+							id={tagId}
+							defaultItems={EMailParameter.SERVERS}
+							placeholder={Util.translate("email-server-name")}
+							disabled={this.state.disabled}
+							onChange={(val) => this.handleServerChanged(val)}
+							value={this.state.serverName}
+						>
+							{(item) => <Autocomplete.Item key={item}>{item}</Autocomplete.Item>}
+						</Autocomplete>
+					</ClayInput.GroupItem>
+				</ClayInput.Group>
+			</ClayForm.Group>
+		);
+	}
+}
 
 /*13. Group */
 export class SXGroup extends React.Component {
@@ -2547,7 +2764,6 @@ export class SXGroup extends React.Component {
 		this.dirty = false;
 
 		this.state = {
-			error: "",
 			paramName: props.paramName ?? "",
 			paramVersion: props.paramVersion ?? "1.0.0",
 			label: props.label ?? "",
@@ -2855,6 +3071,18 @@ class SXFormField extends React.Component {
 			case ParamType.ADDRESS: {
 				return (
 					<SXAddress
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.EMAIL: {
+				return (
+					<SXEMail
 						namespace={this.namespace}
 						{...this.properties}
 						events={this.events}

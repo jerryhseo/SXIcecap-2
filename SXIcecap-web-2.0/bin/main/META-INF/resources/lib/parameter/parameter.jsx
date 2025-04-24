@@ -86,6 +86,9 @@ export class Parameter {
 			case ParamType.ADDRESS: {
 				return new AddressParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
+			case ParamType.EMAIL: {
+				return new EMailParameter(namespace, formId, languageId, availableLanguageIds, json);
+			}
 			case ParamType.DATE: {
 				return new DateParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
@@ -1720,7 +1723,7 @@ export class AddressParameter extends Parameter {
 	render(tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(tagId, tagName);
 
-		this.renderImage = (
+		return (
 			<SXFormField
 				key={this.key}
 				namespace={this.namespace}
@@ -1731,8 +1734,6 @@ export class AddressParameter extends Parameter {
 				spritemap={spritemap}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }
 
@@ -1901,13 +1902,17 @@ export class PhoneParameter extends Parameter {
  *
  */
 export class EMailParameter extends Parameter {
-	static serverList = ["gmail.com", "daum.net", "naver.com"];
+	static SERVERS = ["gmail.com", "daum.net", "naver.com"];
 
 	constructor(namespace, formId, languageId, availableLanguageIds, json) {
-		super(namespace, formId, languageId, availableLanguageIds, json);
+		super(namespace, formId, languageId, availableLanguageIds, ParamType.EMAIL);
 
 		if (json) {
 			this.parse(json);
+		}
+
+		if (Util.isEmpty(this.value)) {
+			this.value = {};
 		}
 	}
 
@@ -1919,14 +1924,18 @@ export class EMailParameter extends Parameter {
 	}
 
 	set emailId(val) {
-		this.value = { ...this.value, emailId: val };
+		this.value.emailId = val;
 	}
 	set serverName(val) {
-		this.value = { ...this.value, serverName: val };
+		this.value.serverName = val;
 	}
 
 	parse(json) {
 		super.parse(json);
+	}
+
+	toString() {
+		return this.value.emailId + "@" + this.value.serverName;
 	}
 
 	toJSON() {
@@ -1934,16 +1943,18 @@ export class EMailParameter extends Parameter {
 	}
 
 	toProperties(tagId, tagName) {
-		let json = super.toProperties();
+		let properties = super.toProperties();
 
-		if (tagId) json.tagId = tagId;
-		if (tagName) json.tagName = tagName;
+		if (tagId) properties.tagId = tagId;
+		if (tagName) properties.tagName = tagName;
+
+		return properties;
 	}
 
 	render(tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(tagId, tagName);
 
-		this.renderImage = (
+		return (
 			<SXFormField
 				key={this.key}
 				namespace={this.namespace}
@@ -1954,8 +1965,6 @@ export class EMailParameter extends Parameter {
 				spritemap={spritemap}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }
 

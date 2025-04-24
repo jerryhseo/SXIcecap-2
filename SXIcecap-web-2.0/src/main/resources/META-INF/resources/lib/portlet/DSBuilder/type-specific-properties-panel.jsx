@@ -684,7 +684,7 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 			}
 		}
 
-		return <div>{"Step 2 to define a parameter."}</div>;
+		return <div>{"No specified properties for this parameter type."}</div>;
 	}
 }
 
