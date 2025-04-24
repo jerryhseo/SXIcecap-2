@@ -1840,16 +1840,16 @@ export class PhoneParameter extends Parameter {
 	}
 
 	set countryNo(val) {
-		this.value = { ...this.value, countryNo: val };
+		this.value.countryNo = val;
 	}
 	set areaNo(val) {
-		this.value = { ...this.value, areaNo: val };
+		this.value.areaNo = val;
 	}
 	set stationNo(val) {
-		this.value = { ...this.value, stationNo: val };
+		this.value.stationNo = val;
 	}
 	set personalNo(val) {
-		this.value = { ...this.value, personalNo: val };
+		this.value.personalNo = val;
 	}
 	set enableCountryNo(val) {
 		this.#enableCountryNo = val;
@@ -1870,18 +1870,20 @@ export class PhoneParameter extends Parameter {
 	}
 
 	toProperties(tagId, tagName) {
-		let json = super.toProperties();
+		let properties = super.toProperties();
 
-		json.enableCountryNo = this.enableCountryNo;
+		properties.enableCountryNo = this.enableCountryNo;
 
-		if (tagId) json.tagId = tagId;
-		if (tagName) json.tagName = tagName;
+		if (tagId) properties.tagId = tagId;
+		if (tagName) properties.tagName = tagName;
+
+		return properties;
 	}
 
 	render(tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(tagId, tagName);
 
-		this.renderImage = (
+		return (
 			<SXFormField
 				key={this.key}
 				namespace={this.namespace}
@@ -1892,8 +1894,6 @@ export class PhoneParameter extends Parameter {
 				spritemap={spritemap}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }
 

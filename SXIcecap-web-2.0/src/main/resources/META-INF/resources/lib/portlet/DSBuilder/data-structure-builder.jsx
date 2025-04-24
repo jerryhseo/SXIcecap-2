@@ -244,7 +244,6 @@ class DataStructureBuilder extends React.Component {
 			if (
 				dataPacket.paramType === ParamType.MATRIX ||
 				dataPacket.paramType === ParamType.DUALLIST ||
-				dataPacket.paramType === ParamType.PHONE ||
 				dataPacket.paramType === ParamType.CALCULATOR ||
 				dataPacket.paramType === ParamType.DATE ||
 				dataPacket.paramType === ParamType.FILE ||
@@ -281,7 +280,6 @@ class DataStructureBuilder extends React.Component {
 	}
 
 	loadDataStructure() {
-		console.log("Load data structure....");
 		Util.ajax({
 			namespace: this.namespace,
 			baseResourceURL: this.baseResourceURL,
@@ -290,7 +288,6 @@ class DataStructureBuilder extends React.Component {
 				dataTypeId: this.state.dataTypeId
 			},
 			successFunc: (result) => {
-				console.log("Load data structure result: ", result, Util.isNotEmpty(result.dataStructure));
 				let dataStructure = Util.isNotEmpty(result.dataStructure)
 					? new DataStructure(
 							this.namespace,
@@ -354,7 +351,6 @@ class DataStructureBuilder extends React.Component {
 	}
 
 	handleNewParameter() {
-		console.log("handleNewParameter: ");
 		const newParam = Parameter.createParameter(
 			this.namespace,
 			this.previewCanvasId,
@@ -405,7 +401,6 @@ class DataStructureBuilder extends React.Component {
 		if (noError) {
 			this.state.dataStructure.addParameter(this.state.workingParam);
 
-			console.log("workingParam.order: ", this.state.workingParam.order);
 			this.setState({ paramOrder: this.state.workingParam.order });
 
 			Event.fire(Event.SX_FOCUS, this.namespace, this.namespace, {
@@ -454,8 +449,8 @@ class DataStructureBuilder extends React.Component {
 			return <h3>{this.loadingFailMessage}</h3>;
 		}
 
-		console.log("workingParam: ", this.state.loadingStatus, this.state.workingParam);
-		console.log("dataStructure: ", this.state.dataStructure);
+		console.log("DataStructureBuilder workingParam: ", this.state.loadingStatus, this.state.workingParam);
+		console.log("DataStructureBuilder dataStructure: ", this.state.dataStructure);
 
 		return (
 			<>

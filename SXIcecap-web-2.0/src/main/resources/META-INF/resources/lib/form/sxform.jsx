@@ -723,7 +723,7 @@ export class SXInput extends React.Component {
 							</>
 						}
 					/>
-					{this.dirty && this.state.error.message && (
+					{this.dirty && this.state.error.errorClass !== ErrorClass.SUCCESS && (
 						<SXFormFieldFeedback
 							content={this.state.error.message}
 							spritemap={this.spritemap}
@@ -1008,7 +1008,7 @@ export class SXLocalizedInput extends React.Component {
 						</>
 					}
 				/>
-				{this.dirty && this.state.error.message && (
+				{this.dirty && this.state.error.errorClass !== ErrorClass.SUCCESS && (
 					<SXFormFieldFeedback
 						content={this.state.error.message}
 						spritemap={this.spritemap}
@@ -1376,7 +1376,7 @@ export class SXNumeric extends React.Component {
 						</>
 					}
 				/>
-				{this.dirty && this.state.error.message && (
+				{this.dirty && this.state.error.errorClass !== ErrorClass.SUCCESS && (
 					<SXFormFieldFeedback
 						content={this.state.error.message}
 						spritemap={this.spritemap}
@@ -1507,40 +1507,32 @@ export class SXBoolean extends React.Component {
 		const tagId = this.namespace + this.state.paramName;
 		const tagName = tagId;
 
-		switch (this.state.viewType) {
-			case BooleanParameter.ViewTypes.CHECKBOX: {
-				return (
-					<div
-						className={className}
-						style={this.style}
-					>
-						<ClayCheckbox
-							id={tagId}
-							name={tagName}
-							aria-label={this.state.label}
-							label={
-								<SXLabel
-									label={this.state.label}
-									forHtml={tagId}
-									required={this.state.required}
-									tooltip={this.state.tooltip}
-									spritemap={this.spritemap}
-								/>
-							}
-							checked={this.state.value}
-							onChange={(e) => this.handleOnChange(e)}
-							disabled={this.state.disabled}
-						/>
-					</div>
-				);
-			}
-			case BooleanParameter.ViewTypes.DROPDOWN: {
-				console.log("SXBoolean: ", this.state.trueLabel, this.state.falseLabel);
-				return (
-					<div
-						className={className}
-						style={this.style}
-					>
+		return (
+			<ClayForm.Group
+				className={className}
+				style={this.style}
+			>
+				{this.state.viewType === BooleanParameter.ViewTypes.CHECKBOX && (
+					<ClayCheckbox
+						id={tagId}
+						name={tagName}
+						aria-label={this.state.label}
+						label={
+							<SXLabel
+								label={this.state.label}
+								forHtml={tagId}
+								required={this.state.required}
+								tooltip={this.state.tooltip}
+								spritemap={this.spritemap}
+							/>
+						}
+						checked={this.state.value}
+						onChange={(e) => this.handleOnChange(e)}
+						disabled={this.state.disabled}
+					/>
+				)}
+				{this.state.viewType === BooleanParameter.ViewTypes.DROPDOWN && (
+					<>
 						<SXLabel
 							label={this.state.label}
 							forHtml={tagId}
@@ -1568,16 +1560,10 @@ export class SXBoolean extends React.Component {
 								value="false"
 							/>
 						</ClaySelect>
-					</div>
-				);
-			}
-			case BooleanParameter.ViewTypes.RADIO: {
-				console.log("SXBoolean: ", this.state.value);
-				return (
-					<div
-						className={className}
-						style={this.style}
-					>
+					</>
+				)}
+				{this.state.viewType === BooleanParameter.ViewTypes.RADIO && (
+					<>
 						<SXLabel
 							label={this.state.label}
 							forHtml={tagId}
@@ -1608,44 +1594,41 @@ export class SXBoolean extends React.Component {
 								disabled={this.state.disabled}
 							/>
 						</ClayRadioGroup>
-					</div>
-				);
-			}
-			case BooleanParameter.ViewTypes.TOGGLE: {
-				return (
-					<div
-						className={className}
-						style={this.style}
-					>
-						<ClayToggle
-							id={tagId}
-							name={tagName}
-							label={
-								<SXLabel
-									label={this.state.label}
-									forHtml={tagId}
-									required={this.state.required}
-									tooltip={this.state.tooltip}
-									spritemap={this.spritemap}
-								/>
-							}
-							onToggle={(e) => this.handleOnChange(e)}
-							spritemap={this.spritemap}
-							symbol={{
-								off: "times",
-								on: "check"
-							}}
-							toggled={this.state.value}
-							disabled={this.state.disabled}
-							sizing="md"
-						/>
-					</div>
-				);
-			}
-			default: {
-				return <></>;
-			}
-		}
+					</>
+				)}
+				{this.state.viewType === BooleanParameter.ViewTypes.TOGGLE && (
+					<ClayToggle
+						id={tagId}
+						name={tagName}
+						label={
+							<SXLabel
+								label={this.state.label}
+								forHtml={tagId}
+								required={this.state.required}
+								tooltip={this.state.tooltip}
+								spritemap={this.spritemap}
+							/>
+						}
+						onToggle={(e) => this.handleOnChange(e)}
+						spritemap={this.spritemap}
+						symbol={{
+							off: "times",
+							on: "check"
+						}}
+						toggled={this.state.value}
+						disabled={this.state.disabled}
+						sizing="md"
+					/>
+				)}
+				{this.dirty && this.state.error.errorClass !== ErrorClass.SUCCESS && (
+					<SXFormFieldFeedback
+						content={this.state.error.message}
+						spritemap={this.spritemap}
+						symbol="exclamation-full"
+					/>
+				)}
+			</ClayForm.Group>
+		);
 	}
 }
 
@@ -1791,7 +1774,195 @@ export class SXSelect extends React.Component {
 		const tagName = tagId;
 
 		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
+		const optionRows = Util.convertArrayToRows(this.state.options, this.state.optionsPerRow);
+		return (
+			<ClayForm.Group
+				className={className}
+				style={this.style}
+			>
+				{this.state.viewType === SelectParameter.ViewTypes.DROPDOWN && (
+					<>
+						<SXLabel
+							label={this.state.label}
+							forHtml={tagId}
+							required={this.state.required}
+							tooltip={this.state.tooltip}
+							spritemap={this.spritemap}
+						/>
+						{this.state.showDefinition && (
+							<div className="sx-param-definition">
+								<pre>{this.state.definition}</pre>
+							</div>
+						)}
+						<ClaySelect
+							id={tagId}
+							name={tagName}
+							value={this.state.value}
+							disabled={this.state.disabled}
+							onChange={(e) => {
+								this.handleValueChange(e.target.value);
+							}}
+						>
+							{this.state.options.map((option, index) => {
+								return (
+									<ClaySelect.Option
+										key={option.value}
+										label={option.label}
+										value={option.value}
+									/>
+								);
+							})}
+						</ClaySelect>
+					</>
+				)}
+				{this.state.viewType === SelectParameter.ViewTypes.RADIO && (
+					<>
+						<SXLabel
+							label={this.state.label}
+							forHtml={tagId}
+							required={this.state.required}
+							tooltip={this.state.tooltip}
+							spritemap={this.spritemap}
+						/>
+						{this.state.showDefinition && (
+							<div className="sx-param-definition">
+								<pre>{this.state.definition}</pre>
+							</div>
+						)}
+						<ClayRadioGroup
+							name={tagName}
+							style={{ marginLeft: "10px" }}
+						>
+							{optionRows.map((row) => (
+								<div
+									key={Util.randomKey()}
+									className="form-group form-group-autofit"
+									style={{ marginBottom: "5px" }}
+								>
+									{row.map((option) => (
+										<div
+											key={Util.randomKey()}
+											className="form-group-item"
+											style={{ marginBottom: "0" }}
+										>
+											<ClayRadio
+												key={option.value}
+												label={option.label}
+												value={option.value}
+												checked={this.state.value === option.value}
+												onClick={(e) => this.handleRadioClick(e.target.value)}
+												onChange={(e) => {
+													e.stopPropagation();
+													this.handleValueChange(option.value);
+												}}
+												disabled={this.state.disabled}
+											/>
+										</div>
+									))}
+								</div>
+							))}
+						</ClayRadioGroup>
+					</>
+				)}
+				{this.state.viewType === SelectParameter.ViewTypes.CHECKBOX && (
+					<>
+						<SXLabel
+							label={this.state.label}
+							forHtml={tagId}
+							required={this.state.required}
+							tooltip={this.state.tooltip}
+							spritemap={this.spritemap}
+						/>
+						{this.state.showDefinition && (
+							<div className="sx-param-definition">
+								<pre>{this.state.definition}</pre>
+							</div>
+						)}
+						<div
+							name={tagName}
+							id={tagId}
+							style={{ marginLeft: "10px" }}
+						>
+							{optionRows.map((row, rowIndex) => (
+								<div
+									key={Util.randomKey()}
+									className="form-group form-group-autofit"
+									style={{ marginBottom: "5px" }}
+								>
+									{row.map((option, optionIndex) => {
+										const valueIndex = this.state.optionsPerRow * rowIndex + optionIndex;
 
+										return (
+											<div
+												key={Util.randomKey()}
+												className="form-group-item"
+												style={{ marginBottom: "0" }}
+											>
+												<ClayCheckbox
+													key={option.value}
+													label={option.label}
+													checked={this.state.value.includes(option.value)}
+													onChange={(e) => {
+														e.stopPropagation();
+														this.handleValueChange(option.value);
+													}}
+													disabled={this.state.disabled}
+												/>
+											</div>
+										);
+									})}
+								</div>
+							))}
+						</div>
+					</>
+				)}
+				{this.state.viewType === SelectParameter.ViewTypes.LISTBOX && (
+					<>
+						<SXLabel
+							label={this.state.label}
+							forHtml={tagId}
+							required={this.state.required}
+							tooltip={this.state.tooltip}
+							spritemap={this.spritemap}
+						/>
+						{this.state.showDefinition && (
+							<div className="sx-param-definition">
+								<pre>{this.state.definition}</pre>
+							</div>
+						)}
+						<ClaySelectBox
+							id={tagId}
+							name={tagName}
+							value={this.state.value}
+							items={this.state.options}
+							multiple
+							disabled={this.state.disabled}
+							onClick={(e) => {
+								if (this.selectedOptionChanged) {
+									this.selectedOptionChanged = false;
+								} else if (this.state.value.includes(e.target.value)) {
+									this.setState({
+										value: this.state.value.filter((value) => value !== e.target.value)
+									});
+								}
+							}}
+							onSelectChange={(val) => {
+								this.selectedOptionChanged = true;
+								this.setState({ value: val });
+							}}
+						/>
+					</>
+				)}
+				{this.dirty && this.state.error.errorClass !== ErrorClass.SUCCESS && (
+					<SXFormFieldFeedback
+						content={this.state.error.message}
+						spritemap={this.spritemap}
+						symbol="exclamation-full"
+					/>
+				)}
+			</ClayForm.Group>
+		);
+		/*
 		if (this.state.viewType === SelectParameter.ViewTypes.DROPDOWN) {
 			return (
 				<div
@@ -1982,6 +2153,7 @@ export class SXSelect extends React.Component {
 				</div>
 			);
 		}
+			*/
 	}
 }
 
@@ -2216,7 +2388,7 @@ export class SXDualListBox extends React.Component {
 							disabled={this.state.disabled}
 							style={{ marginBottom: "5px" }}
 						/>
-						{this.dirty && this.state.error && (
+						{this.dirty && this.state.error.errorClass !== ErrorClass.SUCCESS && (
 							<ClayForm.FeedbackGroup>
 								<ClayForm.FeedbackItem>
 									<ClayForm.FeedbackIndicator
@@ -2438,7 +2610,10 @@ export class SXAddress extends React.Component {
 
 		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
 		return (
-			<ClayForm.Group className={className}>
+			<ClayForm.Group
+				className={className}
+				style={this.style}
+			>
 				<SXLabel
 					label={this.state.label}
 					forHtml={tagId}
@@ -2554,6 +2729,13 @@ export class SXAddress extends React.Component {
 						/>
 					</div>
 				)}
+				{this.dirty && this.state.error.errorClass !== ErrorClass.SUCCESS && (
+					<SXFormFieldFeedback
+						content={this.state.error.message}
+						spritemap={this.spritemap}
+						symbol="exclamation-full"
+					/>
+				)}
 				{this.state.underConstruction && (
 					<SXModalDialog
 						header={Util.translate("sorry")}
@@ -2579,9 +2761,217 @@ export const SXDate = () => {
 };
 
 /*11. Phone */
-export const SXPhone = () => {
-	return <></>;
-};
+export class SXPhone extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
+
+		this.dirty = false;
+
+		this.state = {
+			error: {},
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			required: props.required ?? false,
+			tooltip: props.tooltip ?? "",
+			disabled: props.disabled ?? false,
+			validation: props.validation ?? {},
+			enableCountryNo: props.enableCountryNo ?? false,
+			countryNo: Util.isNotEmpty(props.value) ? props.value.countryNo : "",
+			areaNo: Util.isNotEmpty(props.value) ? props.value.areaNo : "",
+			stationNo: Util.isNotEmpty(props.value) ? props.value.stationNo : "",
+			personalNo: Util.isNotEmpty(props.value) ? props.value.personalNo : "",
+			index: props.index,
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false
+		};
+
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.paramName,
+							this.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.setState({ value: "", error: dataPacket.error });
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						let newState = {};
+
+						if (dataPacket.property === ParamProperty.VALUE) {
+							newState.countryNo = Util.isEmpty(dataPacket.value) ? "" : dataPacket.value.countryNo;
+							newState.areaNo = Util.isEmpty(dataPacket.value) ? "" : dataPacket.value.areaNo;
+							newState.stationNo = Util.isEmpty(dataPacket.value) ? "" : dataPacket.value.stationNo;
+							newState.personalNo = Util.isEmpty(dataPacket.value) ? "" : dataPacket.value.personalNo;
+						} else {
+							newState[dataPacket.property] = dataPacket.value;
+						}
+
+						this.setState(newState);
+					});
+				}
+			});
+		}
+	}
+
+	fireValueChangedEvent(value, error) {
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+					if (error.errorClass === ErrorClass.ERROR) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
+							target: event.target,
+							error: error,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion
+						});
+					} else {
+						Event.fire(event.event, this.namespace, this.namespace, {
+							target: event.target,
+							value: value,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion
+						});
+					}
+				}
+			});
+		}
+	}
+
+	checkFullNo() {
+		return this.state.areaNo && this.state.stationNo && this.state.personalNo;
+	}
+
+	handleValueChanged(section, sectionValue) {
+		const newValue = {
+			countryNo: this.state.countryNo,
+			areaNo: this.state.areaNo,
+			stationNo: this.state.stationNo,
+			personalNo: this.state.personalNo
+		};
+
+		newValue[section] = sectionValue;
+
+		const error = Parameter.validateValue(ParamType.PHONE, this.state.validation, newValue, this.languageId);
+
+		this.setState({ ...newValue, error: error });
+
+		if (this.checkFullNo()) {
+			this.fireValueChangedEvent(newValue, error);
+		}
+
+		this.dirty = true;
+	}
+
+	render() {
+		const tagId = this.state.tagId ?? this.namespace + this.state.paramName;
+		const tagName = this.state.tagName ?? tagId;
+
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
+
+		return (
+			<ClayForm.Group>
+				<SXLabel
+					label={this.state.label}
+					forHtml={tagId}
+					required={this.state.required}
+					tooltip={this.state.tooltip}
+					className={className}
+					spritemap={this.spritemap}
+				/>
+				{this.state.showDefinition && (
+					<div className="sx-param-definition">
+						<pre>{this.state.definition}</pre>
+					</div>
+				)}
+				<ClayInput.Group style={{ marginLeft: "10px" }}>
+					{this.state.enableCountryNo && (
+						<>
+							<ClayInput.GroupItem shrink>
+								<ClayInput
+									value={this.state.countryNo}
+									disabled={this.state.disabled}
+									maxLength={6}
+									onChange={(e) => this.handleValueChanged("countryNo", e.target.value)}
+									spritemap={this.spritemap}
+								/>
+							</ClayInput.GroupItem>
+							<ClayInput.GroupItem shrink>
+								<span style={{ alignContent: "center" }}>-</span>
+							</ClayInput.GroupItem>
+						</>
+					)}
+					<ClayInput.GroupItem shrink>
+						<ClayInput
+							value={this.state.areaNo}
+							disabled={this.state.disabled}
+							maxLength={4}
+							onChange={(e) => this.handleValueChanged("areaNo", e.target.value)}
+							style={{ maxWidth: "8ch" }}
+							spritemap={this.spritemap}
+						/>
+					</ClayInput.GroupItem>
+					<ClayInput.GroupItem shrink>
+						<span style={{ alignContent: "center" }}>-</span>
+					</ClayInput.GroupItem>
+					<ClayInput.GroupItem shrink>
+						<ClayInput
+							value={this.state.stationNo}
+							disabled={this.state.disabled}
+							maxLength={4}
+							style={{ maxWidth: "8ch" }}
+							onChange={(e) => this.handleValueChanged("stationNo", e.target.value)}
+							spritemap={this.spritemap}
+						/>
+					</ClayInput.GroupItem>
+					<ClayInput.GroupItem shrink>
+						<span style={{ alignContent: "center" }}>-</span>
+					</ClayInput.GroupItem>
+					<ClayInput.GroupItem shrink>
+						<ClayInput
+							value={this.state.personalNo}
+							disabled={this.state.disabled}
+							maxLength={4}
+							style={{ maxWidth: "8ch" }}
+							onChange={(e) => this.handleValueChanged("personalNo", e.target.value)}
+							spritemap={this.spritemap}
+						/>
+					</ClayInput.GroupItem>
+				</ClayInput.Group>
+				{this.dirty && this.state.error.errorClass !== ErrorClass.SUCCESS && (
+					<SXFormFieldFeedback
+						content={this.state.error.message}
+						spritemap={this.spritemap}
+						symbol="exclamation-full"
+					/>
+				)}
+			</ClayForm.Group>
+		);
+	}
+}
 
 /*12. EMail */
 export class SXEMail extends React.Component {
@@ -2716,7 +3106,7 @@ export class SXEMail extends React.Component {
 					</div>
 				)}
 				<ClayInput.Group style={{ marginLeft: "10px" }}>
-					<ClayInput.GroupItem prepend>
+					<ClayInput.GroupItem>
 						<ClayInput
 							value={this.state.emailId}
 							disabled={this.state.disabled}
@@ -2725,13 +3115,10 @@ export class SXEMail extends React.Component {
 							spritemap={this.spritemap}
 						/>
 					</ClayInput.GroupItem>
-					<ClayInput.GroupItem
-						prepend
-						shrink
-					>
+					<ClayInput.GroupItem shrink>
 						<span style={{ alignContent: "center" }}>@</span>
 					</ClayInput.GroupItem>
-					<ClayInput.GroupItem prepend>
+					<ClayInput.GroupItem>
 						<Autocomplete
 							aria-labelledby={Util.translate("email-server-name")}
 							id={tagId}
@@ -3043,8 +3430,6 @@ class SXFormField extends React.Component {
 				);
 			}
 			case ParamType.SELECT: {
-				console.log("SXFormField Properties: ", this.properties);
-
 				return (
 					<SXSelect
 						namespace={this.namespace}
@@ -3083,6 +3468,18 @@ class SXFormField extends React.Component {
 			case ParamType.EMAIL: {
 				return (
 					<SXEMail
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.PHONE: {
+				return (
+					<SXPhone
 						namespace={this.namespace}
 						{...this.properties}
 						events={this.events}

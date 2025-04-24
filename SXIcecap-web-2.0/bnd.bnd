@@ -1,5 +1,5 @@
 Bundle-Name: sx-icecap-web
 Bundle-SymbolicName: sx.icecap.web
-Bundle-Version: 2.9.0
+Bundle-Version: 2.10.1
 
 Web-ContextPath: /sx-icecap-web
