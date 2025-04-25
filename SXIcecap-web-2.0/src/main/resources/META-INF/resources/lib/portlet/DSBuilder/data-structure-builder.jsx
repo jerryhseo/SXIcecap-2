@@ -31,7 +31,10 @@ class DataStructureBuilder extends React.Component {
 		ParamProperty.UNIT,
 		ParamProperty.UNCERTAINTY,
 		ParamProperty.OPTIONS,
-		ParamProperty.OPTIONS_PER_ROW
+		ParamProperty.OPTIONS_PER_ROW,
+		ParamProperty.ENABLE_TIME,
+		ParamProperty.START_YEAR,
+		ParamProperty.END_YEAR
 	];
 
 	propertyPanelStyles = {
@@ -245,7 +248,6 @@ class DataStructureBuilder extends React.Component {
 				dataPacket.paramType === ParamType.MATRIX ||
 				dataPacket.paramType === ParamType.DUALLIST ||
 				dataPacket.paramType === ParamType.CALCULATOR ||
-				dataPacket.paramType === ParamType.DATE ||
 				dataPacket.paramType === ParamType.FILE ||
 				dataPacket.paramType === ParamType.GRID ||
 				dataPacket.paramType === ParamType.IMAGE ||

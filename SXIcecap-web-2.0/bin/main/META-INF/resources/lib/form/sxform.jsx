@@ -9,6 +9,7 @@ import ClayForm, {
 	ClayToggle,
 	ClaySelectBox
 } from "@clayui/form";
+import DatePicker from "@clayui/date-picker";
 import { ClayTooltipProvider } from "@clayui/tooltip";
 import Icon from "@clayui/icon";
 import Button, { ClayButtonWithIcon } from "@clayui/button";
@@ -2756,9 +2757,123 @@ export class SXAddress extends React.Component {
 }
 
 /*10. Date */
-export const SXDate = () => {
-	return <></>;
-};
+export class SXDate extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
+
+		this.dirty = false;
+
+		this.state = {
+			error: {},
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			required: props.required ?? false,
+			tooltip: props.tooltip ?? "",
+			disabled: props.disabled ?? false,
+			validation: props.validation ?? {},
+			enableTime: props.enableTime ?? false,
+			startYear: props.startYear ?? "1970",
+			endYear: props.endYear ?? new Date().getFullYear().toString(),
+			index: props.index,
+			value: props.value ?? props.enableTime ? "1970-1-1 00:00" : "1970-1-1",
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false
+		};
+
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.paramName,
+							this.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.setState({ value: "", error: dataPacket.error });
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						let newState = {};
+
+						newState[dataPacket.property] = dataPacket.value;
+
+						this.setState(newState);
+					});
+				}
+			});
+		}
+	}
+
+	handleDateChanged(date) {
+		console.log("SxDate: ", date);
+
+		this.setState({ value: date });
+	}
+
+	render() {
+		const tagId = this.state.tagId ?? this.namespace + this.state.paramName;
+		const tagName = this.state.tagName ?? tagId;
+
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
+
+		console.log("Date value: ", this.state.enableTime, this.state.value, this.state.startYear, this.state.endYear);
+
+		let picker = (
+			<ClayForm.Group className={className}>
+				<SXLabel
+					label={this.state.label}
+					forHtml={tagId}
+					required={this.state.required}
+					tooltip={this.state.tooltip}
+					className={className}
+					spritemap={this.spritemap}
+				/>
+				{this.state.showDefinition && (
+					<div className="sx-param-definition">
+						<pre>{this.state.definition}</pre>
+					</div>
+				)}
+				<DatePicker
+					key={Util.randomKey()}
+					onChange={(val) => this.handleDateChanged(val)}
+					placeholder={this.state.enableTime ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD"}
+					time={this.state.enableTime}
+					timezone="GMT+09:00"
+					value={this.state.value}
+					years={{
+						end: Number(this.state.endYear),
+						start: Number(this.state.startYear)
+					}}
+					style={{ width: "fit-content" }}
+					spritemap={this.spritemap}
+				/>
+			</ClayForm.Group>
+		);
+
+		return picker;
+	}
+}
 
 /*11. Phone */
 export class SXPhone extends React.Component {
@@ -2893,7 +3008,7 @@ export class SXPhone extends React.Component {
 		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
 
 		return (
-			<ClayForm.Group>
+			<ClayForm.Group className={className}>
 				<SXLabel
 					label={this.state.label}
 					forHtml={tagId}
@@ -3480,6 +3595,18 @@ class SXFormField extends React.Component {
 			case ParamType.PHONE: {
 				return (
 					<SXPhone
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.DATE: {
+				return (
+					<SXDate
 						namespace={this.namespace}
 						{...this.properties}
 						events={this.events}

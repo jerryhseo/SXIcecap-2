@@ -637,6 +637,25 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 					</div>
 				);
 			}
+			case ParamType.PHONE: {
+				return (
+					<SXFormField
+						key={Util.randomKey()}
+						namespace={this.namespace}
+						properties={{
+							paramType: ParamType.BOOLEAN,
+							paramName: ParamProperty.ENABLE_COUNTRY_NO,
+							paramVersion: "1.0.0",
+							viewType: BooleanParameter.ViewTypes.TOGGLE,
+							label: Util.translate("enable-country-no"),
+							tooltip: Util.translate("enable-country-no-tooltip"),
+							value: this.state.parameter.enableCountryNo ?? false
+						}}
+						events={events}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
 			case ParamType.ADDRESS: {
 				const fields = [
 					{
@@ -680,6 +699,55 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 							);
 						})}
 					</div>
+				);
+			}
+			case ParamType.DATE: {
+				return (
+					<>
+						<SXFormField
+							key={Util.randomKey()}
+							namespace={this.namespace}
+							properties={{
+								paramType: ParamType.BOOLEAN,
+								paramName: ParamProperty.ENABLE_TIME,
+								paramVersion: "1.0.0",
+								viewType: BooleanParameter.ViewTypes.TOGGLE,
+								label: Util.translate("enable-time"),
+								tooltip: Util.translate("enable-time-tooltip"),
+								value: this.state.parameter.enableTime ?? false
+							}}
+							events={events}
+							spritemap={this.spritemap}
+						/>
+						<SXFormField
+							key={Util.randomKey()}
+							namespace={this.namespace}
+							properties={{
+								paramType: ParamType.STRING,
+								paramName: ParamProperty.START_YEAR,
+								paramVersion: "1.0.0",
+								label: Util.translate("start-year"),
+								tooltip: Util.translate("start-year-tooltip"),
+								value: this.state.parameter.startYear ?? "1970"
+							}}
+							events={events}
+							spritemap={this.spritemap}
+						/>
+						<SXFormField
+							key={Util.randomKey()}
+							namespace={this.namespace}
+							properties={{
+								paramType: ParamType.STRING,
+								paramName: ParamProperty.END_YEAR,
+								paramVersion: "1.0.0",
+								label: Util.translate("end-year"),
+								tooltip: Util.translate("end-year-tooltip"),
+								value: this.state.parameter.endYear ?? Date.now().getFullYear().toString()
+							}}
+							events={events}
+							spritemap={this.spritemap}
+						/>
+					</>
 				);
 			}
 		}

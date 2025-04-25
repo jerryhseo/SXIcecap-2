@@ -1743,6 +1743,8 @@ export class AddressParameter extends Parameter {
  */
 export class DateParameter extends Parameter {
 	#enableTime = false;
+	#startYear = "1970";
+	#endYear = new Date().getFullYear().toString();
 
 	constructor(namespace, formId, languageId, availableLanguageIds, json) {
 		super(namespace, formId, languageId, availableLanguageIds, ParamType.DATE);
@@ -1758,18 +1760,41 @@ export class DateParameter extends Parameter {
 	get enableTime() {
 		return this.#enableTime;
 	}
-
-	set date(val) {
-		this.value = val.getTime();
+	get startYear() {
+		return this.#startYear;
 	}
+	get endYear() {
+		return this.#endYear;
+	}
+
 	set enableTime(val) {
 		this.#enableTime = val;
+	}
+	set startYear(val) {
+		this.#startYear = val;
+	}
+	set endYear(val) {
+		this.#endYear = val;
+	}
+
+	setValue(val) {
+		const year = val.getFullYear();
+		const month = String(val.getMonth() + 1).padStart(2, "0");
+		const day = String(val.getDate()).padStart(2, "0");
+
+		const date = year + "-" + month + "-" + day;
+
+		this.value = this.enableTime
+			? date + " " + String(val.getHours()).padStart(2, "0") + ":" + String(val.getHours()).padStart(2, "0")
+			: date;
 	}
 
 	parse(json) {
 		super.parse(json);
 
 		this.enableTime = json.enableTime ?? false;
+		this.startYear = json.startYear ?? "1970";
+		this.endYear = json.endYear ?? new Date().getFullYear().toString();
 	}
 
 	toJSON() {
@@ -1777,22 +1802,30 @@ export class DateParameter extends Parameter {
 
 		if (this.enableTime) json.enableTime = this.enableTime;
 
+		json.startYear = this.startYear ?? "1970";
+		json.endYear = this.endYear ?? new Date().getFullYear().toString();
+
 		return json;
 	}
 
 	toProperties(tagId, tagName) {
-		let json = super.toProperties();
+		let properties = super.toProperties();
 
-		json.enableTime = this.enableTime;
+		properties.enableTime = this.enableTime;
 
-		if (tagId) json.tagId = tagId;
-		if (tagName) json.tagName = tagName;
+		properties.startYear = this.startYear;
+		properties.endYear = this.endYear;
+
+		if (tagId) properties.tagId = tagId;
+		if (tagName) properties.tagName = tagName;
+
+		return properties;
 	}
 
 	render(tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(tagId, tagName);
 
-		this.renderImage = (
+		return (
 			<SXFormField
 				key={this.key}
 				namespace={this.namespace}
@@ -1803,8 +1836,6 @@ export class DateParameter extends Parameter {
 				spritemap={spritemap}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }
 

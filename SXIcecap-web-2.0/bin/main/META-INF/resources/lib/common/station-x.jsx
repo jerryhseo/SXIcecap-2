@@ -155,6 +155,7 @@ export const ParamProperty = {
 	DOWNLOADABLE: "downloadable",
 	ELEMENT_TYPE: "elementType",
 	ENABLE_TIME: "enableTime",
+	ENABLE_COUNTRY_NO: "enableCountryNo",
 	END_YEAR: "endYear",
 	EXPANDED: "expanded",
 	FALSE_LABEL: "falseLabel",
