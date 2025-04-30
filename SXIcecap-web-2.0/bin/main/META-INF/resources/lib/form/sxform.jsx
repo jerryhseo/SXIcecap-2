@@ -2859,13 +2859,12 @@ export class SXDate extends React.Component {
 					onChange={(val) => this.handleDateChanged(val)}
 					placeholder={this.state.enableTime ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD"}
 					time={this.state.enableTime}
-					timezone="GMT+09:00"
 					value={this.state.value}
+					disabled={this.state.disabled}
 					years={{
 						end: Number(this.state.endYear),
 						start: Number(this.state.startYear)
 					}}
-					style={{ width: "fit-content" }}
 					spritemap={this.spritemap}
 				/>
 			</ClayForm.Group>

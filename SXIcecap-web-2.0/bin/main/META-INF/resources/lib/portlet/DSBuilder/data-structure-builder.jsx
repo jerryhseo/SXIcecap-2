@@ -32,6 +32,7 @@ class DataStructureBuilder extends React.Component {
 		ParamProperty.UNCERTAINTY,
 		ParamProperty.OPTIONS,
 		ParamProperty.OPTIONS_PER_ROW,
+		ParamProperty.ENABLE_COUNTRY_NO,
 		ParamProperty.ENABLE_TIME,
 		ParamProperty.START_YEAR,
 		ParamProperty.END_YEAR

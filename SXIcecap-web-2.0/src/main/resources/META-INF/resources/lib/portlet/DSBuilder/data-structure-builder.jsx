@@ -14,27 +14,29 @@ import { UnderConstruction } from "../../common/common";
 
 class DataStructureBuilder extends React.Component {
 	rerenderProperties = [
-		ParamProperty.DISPLAY_NAME,
-		ParamProperty.REQUIRED,
-		ParamProperty.TOOLTIP,
 		ParamProperty.DEFINITION,
-		ParamProperty.SHOW_DEFINITION,
-		ParamProperty.LABEL_POSITION,
-		ParamProperty.VIEW_TYPE,
 		ParamProperty.DISABLED,
-		ParamProperty.READ_ONLY,
-		ParamProperty.VALIDATION,
-		ParamProperty.PLACEHOLDER,
-		ParamProperty.MULTIPLE_LINE,
-		ParamProperty.TRUE_LABEL,
+		ParamProperty.DISPLAY_NAME,
+		ParamProperty.ENABLE_COUNTRY_NO,
+		ParamProperty.ENABLE_TIME,
+		ParamProperty.END_YEAR,
 		ParamProperty.FALSE_LABEL,
-		ParamProperty.UNIT,
-		ParamProperty.UNCERTAINTY,
+		ParamProperty.LABEL_POSITION,
+		ParamProperty.MULTIPLE_LINE,
 		ParamProperty.OPTIONS,
 		ParamProperty.OPTIONS_PER_ROW,
-		ParamProperty.ENABLE_TIME,
+		ParamProperty.PLACEHOLDER,
+		ParamProperty.READ_ONLY,
+		ParamProperty.REQUIRED,
+		ParamProperty.SHOW_DEFINITION,
 		ParamProperty.START_YEAR,
-		ParamProperty.END_YEAR
+		ParamProperty.TOOLTIP,
+		ParamProperty.TRUE_LABEL,
+		ParamProperty.UNCERTAINTY,
+		ParamProperty.UNIT,
+		ParamProperty.VALIDATION,
+		ParamProperty.VALUE,
+		ParamProperty.VIEW_TYPE
 	];
 
 	propertyPanelStyles = {

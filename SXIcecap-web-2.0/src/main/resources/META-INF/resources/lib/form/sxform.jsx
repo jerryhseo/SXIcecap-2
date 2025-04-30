@@ -2452,9 +2452,106 @@ export const SXMatrix = () => {
 /****************************************************
  *  06. File
  ****************************************************/
-export const SXFile = () => {
-	return <></>;
-};
+export class SXFile extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
+
+		this.dirty = false;
+
+		this.state = {
+			error: {},
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			required: props.required ?? false,
+			tooltip: props.tooltip ?? "",
+			disabled: props.disabled ?? false,
+			validation: props.validation ?? {},
+			index: props.index,
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false,
+			value: props.value ?? []
+		};
+
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.paramName,
+							this.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.setState({ value: "", error: dataPacket.error });
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						let newState = {};
+						newState[dataPacket.property] = dataPacket.value;
+
+						this.setState(newState);
+					});
+				}
+			});
+		}
+	}
+
+	render() {
+		return (
+			<ClayForm.Group
+				className={className}
+				style={this.style}
+			>
+				<SXLabel
+					label={this.state.label}
+					forHtml={tagId}
+					required={this.state.required}
+					tooltip={this.state.tooltip}
+					spritemap={this.spritemap}
+				/>
+				{this.state.showDefinition && (
+					<div className="sx-param-definition">
+						<pre>{this.state.definition}</pre>
+					</div>
+				)}
+				<div>
+					<ClayInput
+						type="file"
+						disabled={this.state.disabled}
+					/>
+					<div>
+						{this.state.value.map((fileInfo) => (
+							<div
+								key={fileInfo.fileName}
+								className="sx-table-row"
+							></div>
+						))}
+					</div>
+				</div>
+			</ClayForm.Group>
+		);
+	}
+}
 
 /*09. Address */
 export class SXAddress extends React.Component {
@@ -3410,74 +3507,6 @@ export const SXButtonWithIcon = ({
 			/>
 			{label}
 		</Button>
-	);
-};
-
-export const SXInlineInputGroup = ({ items, displayStyle = "justify" }) => {
-	return (
-		<div className="sx-inline-input-group">
-			{items.map((item) => {
-				switch (item.paramType) {
-					case /*01.*/ ParamType.String: {
-						return <SXInput></SXInput>;
-					}
-					case /*02.*/ ParamType.LocalizedString: {
-						return <SXLocalizedInput />;
-					}
-					case /*03.*/ ParamType.NUMERIC: {
-						return <SXNumeric />;
-					}
-					case /*04.*/ ParamType.INTEGER: {
-						return <SXInteger />;
-					}
-					case /*05.*/ ParamType.BOOLEAN: {
-						return <SXBoolean />;
-					}
-					case /*06.*/ ParamType.SELECT: {
-						return <SXSelect />;
-					}
-					case /*07.*/ ParamType.MATRIX: {
-						return <SXMatrix />;
-					}
-					case /*08.*/ ParamType.FILE: {
-						return <SXFile />;
-					}
-					case /*09.*/ ParamType.ADDRESS: {
-						return <SXAddress />;
-					}
-					case /*10.*/ ParamType.DATE: {
-						return <SXDate />;
-					}
-					case /*11.*/ ParamType.PHONE: {
-						return <SXPhone />;
-					}
-					case /*12.*/ ParamType.EMAIL: {
-						return <SXEMail />;
-					}
-					case /*13.*/ ParamType.GROUP: {
-						return <SXGroup />;
-					}
-					case /*14.*/ ParamType.SELECT_GROUP: {
-						return <SXSelectGrooup />;
-					}
-					case /*15.*/ ParamType.GRID: {
-						return <SXGrid />;
-					}
-					case /*16.*/ ParamType.TABLE_GRID: {
-						return <SXTableGrid />;
-					}
-					case /*17.*/ ParamType.CALCULATOR: {
-						return <SXCalculator />;
-					}
-					case /*18.*/ ParamType.REFERENCE: {
-						return <SXReference />;
-					}
-					case /*19.*/ ParamType.LINKER: {
-						return <SXLinker />;
-					}
-				}
-			})}
-		</div>
 	);
 };
 
