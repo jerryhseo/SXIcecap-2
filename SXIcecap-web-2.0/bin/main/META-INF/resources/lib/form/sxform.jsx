@@ -2452,9 +2452,282 @@ export const SXMatrix = () => {
 /****************************************************
  *  06. File
  ****************************************************/
-export const SXFile = () => {
-	return <></>;
-};
+export class SXFile extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.namespace = props.namespace ?? "";
+		this.events = props.events ?? {};
+		this.className = props.className ?? "";
+		this.style = props.style ?? {};
+		this.spritemap = props.spritemap ?? "";
+
+		this.dirty = false;
+
+		this.state = {
+			error: {},
+			paramName: props.paramName ?? "",
+			paramVersion: props.paramVersion ?? "1.0.0",
+			label: props.label ?? "",
+			labelPosition: props.LabelPosition ?? Parameter.LabelPosition.UPPER_LEFT,
+			required: props.required ?? false,
+			tooltip: props.tooltip ?? "",
+			disabled: props.disabled ?? false,
+			validation: props.validation ?? {},
+			index: props.index,
+			definition: props.definition ?? "",
+			showDefinition: props.showDefinition ?? false,
+			value: props.value ?? [],
+			underConstruction: false
+		};
+
+		this.inputRef = React.createRef();
+
+		if (Util.isNotEmpty(this.events.on)) {
+			this.events.on.forEach((event) => {
+				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
+					Event.on(Event.SX_PARAM_ERROR_FOUND, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.paramName,
+							this.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						this.setState({ value: "", error: dataPacket.error });
+					});
+				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
+					Event.on(Event.SX_PARAM_PROPERTY_CHANGED, (e) => {
+						const dataPacket = Event.pickUpDataPacket(
+							e,
+							this.namespace,
+							event.target,
+							this.state.paramName,
+							this.state.paramVersion
+						);
+						if (Util.isEmpty(dataPacket)) return;
+
+						let newState = {};
+						newState[dataPacket.property] = dataPacket.value;
+
+						this.setState(newState);
+					});
+				}
+			});
+		}
+	}
+
+	handleFileSelectionChanged(files) {
+		let value = Util.isEmpty(this.state.value) ? [] : this.state.value.filter((fileInfo) => fileInfo.fileId > 0);
+
+		for (let i = 0; i < files.length; i++) {
+			const file = files[i];
+			console.log("SXFile info: ", file.name, file.size, file.type);
+			value.push({
+				fileId: 0,
+				name: file.name,
+				size: file.size,
+				type: file.type,
+				file: file
+			});
+		}
+
+		const error = Parameter.validateValue(ParamType.FILE, this.state.validation, value, this.languageId);
+		this.setState({ value: value, error: error });
+
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+					if (error.errorClass === ErrorClass.ERROR) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
+							target: event.target,
+							error: error,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
+						});
+					} else {
+						Event.fire(event.event, this.namespace, this.namespace, {
+							target: event.target,
+							value: value,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
+						});
+					}
+				}
+			});
+		}
+	}
+
+	handleActionClick(action, fileInfo) {
+		console.log("handleActionClick: ", action, fileInfo);
+		switch (action) {
+			case "download":
+			case "upload": {
+				this.setState({ underConstruction: true });
+
+				break;
+			}
+			case "delete": {
+				console.log("files VALUE: ", this.state.value);
+				const dataTransfer = new DataTransfer();
+
+				let files = this.state.value
+					.filter((fileItem) => {
+						console.log(
+							"fileItem: ",
+							fileItem,
+							fileInfo,
+							fileItem.fileId === 0,
+							fileItem.name !== fileInfo.name
+						);
+						return fileItem.fileId === 0 && fileItem.name !== fileInfo.name;
+					})
+					.map((fileItem) => fileItem.file);
+
+				console.log("mapped files: ", files);
+				files.forEach((file) => dataTransfer.items.add(file));
+
+				this.inputRef.current.files = dataTransfer.files;
+
+				this.handleFileSelectionChanged(files);
+
+				break;
+			}
+		}
+	}
+
+	render() {
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
+
+		const tagId = this.namespace + this.state.paramName;
+		const tagName = tagId;
+
+		return (
+			<ClayForm.Group
+				className={className}
+				style={this.style}
+			>
+				<SXLabel
+					label={this.state.label}
+					forHtml={tagId}
+					required={this.state.required}
+					tooltip={this.state.tooltip}
+					spritemap={this.spritemap}
+				/>
+				{this.state.showDefinition && (
+					<div className="sx-param-definition">
+						<pre>{this.state.definition}</pre>
+					</div>
+				)}
+				<ClayInput
+					type="file"
+					disabled={this.state.disabled}
+					multiple={true}
+					ref={this.inputRef}
+					onChange={(e) => {
+						this.handleFileSelectionChanged(e.target.files);
+					}}
+				/>
+				{Util.isNotEmpty(this.state.value) &&
+					this.state.value.map((fileInfo) => (
+						<div
+							key={fileInfo.name}
+							className="autofit-row autofit-row-center autofit-padded-no-gutters-x"
+							style={{ fontSize: "0.725rem" }}
+						>
+							<div
+								className="autofit-col"
+								style={{ width: "4rem", textAlign: "center" }}
+							>
+								{fileInfo.id > 0 ? fileInfo.id : "-"}
+							</div>
+							<div className="autofit-col autofit-col-expand">{fileInfo.name}</div>
+							<div className="autofit-col">{fileInfo.size}</div>
+							<div className="autofit-col">{fileInfo.type}</div>
+							<div className="autofit-col">
+								<DropDown
+									trigger={
+										<ClayButtonWithIcon
+											aria-label="Actions"
+											symbol="ellipsis-v"
+											title="Actions"
+											borderless="true"
+											displayType="secondary"
+											size="xs"
+											spritemap={this.spritemap}
+										/>
+									}
+									menuWidth="shrink"
+								>
+									<DropDown.ItemList
+										items={
+											fileInfo.fileId > 0
+												? [
+														{
+															id: "delete",
+															name: Util.translate("delete"),
+															symbol: "times"
+														},
+														{
+															id: "download",
+															name: Util.translate("download"),
+															symbol: "download"
+														}
+												  ]
+												: [
+														{
+															id: "delete",
+															name: Util.translate("delete"),
+															symbol: "times"
+														},
+														{
+															id: "upload",
+															name: Util.translate("upload"),
+															symbol: "upload"
+														}
+												  ]
+										}
+									>
+										{(actionItem) => (
+											<DropDown.Item
+												key={actionItem.name}
+												onClick={() => this.handleActionClick(actionItem.id, fileInfo)}
+											>
+												<Icon
+													spritemap={this.spritemap}
+													symbol={actionItem.symbol}
+													style={{ marginRight: "5px" }}
+												/>
+												{actionItem.name}
+											</DropDown.Item>
+										)}
+									</DropDown.ItemList>
+								</DropDown>
+							</div>
+						</div>
+					))}
+				{this.state.underConstruction && (
+					<SXModalDialog
+						header={Util.translate("sorry")}
+						body={<UnderConstruction />}
+						buttons={[
+							{
+								label: Util.translate("ok"),
+								onClick: () => {
+									this.setState({ underConstruction: false });
+								}
+							}
+						]}
+					/>
+				)}
+			</ClayForm.Group>
+		);
+	}
+}
 
 /*09. Address */
 export class SXAddress extends React.Component {
@@ -3413,74 +3686,6 @@ export const SXButtonWithIcon = ({
 	);
 };
 
-export const SXInlineInputGroup = ({ items, displayStyle = "justify" }) => {
-	return (
-		<div className="sx-inline-input-group">
-			{items.map((item) => {
-				switch (item.paramType) {
-					case /*01.*/ ParamType.String: {
-						return <SXInput></SXInput>;
-					}
-					case /*02.*/ ParamType.LocalizedString: {
-						return <SXLocalizedInput />;
-					}
-					case /*03.*/ ParamType.NUMERIC: {
-						return <SXNumeric />;
-					}
-					case /*04.*/ ParamType.INTEGER: {
-						return <SXInteger />;
-					}
-					case /*05.*/ ParamType.BOOLEAN: {
-						return <SXBoolean />;
-					}
-					case /*06.*/ ParamType.SELECT: {
-						return <SXSelect />;
-					}
-					case /*07.*/ ParamType.MATRIX: {
-						return <SXMatrix />;
-					}
-					case /*08.*/ ParamType.FILE: {
-						return <SXFile />;
-					}
-					case /*09.*/ ParamType.ADDRESS: {
-						return <SXAddress />;
-					}
-					case /*10.*/ ParamType.DATE: {
-						return <SXDate />;
-					}
-					case /*11.*/ ParamType.PHONE: {
-						return <SXPhone />;
-					}
-					case /*12.*/ ParamType.EMAIL: {
-						return <SXEMail />;
-					}
-					case /*13.*/ ParamType.GROUP: {
-						return <SXGroup />;
-					}
-					case /*14.*/ ParamType.SELECT_GROUP: {
-						return <SXSelectGrooup />;
-					}
-					case /*15.*/ ParamType.GRID: {
-						return <SXGrid />;
-					}
-					case /*16.*/ ParamType.TABLE_GRID: {
-						return <SXTableGrid />;
-					}
-					case /*17.*/ ParamType.CALCULATOR: {
-						return <SXCalculator />;
-					}
-					case /*18.*/ ParamType.REFERENCE: {
-						return <SXReference />;
-					}
-					case /*19.*/ ParamType.LINKER: {
-						return <SXLinker />;
-					}
-				}
-			})}
-		</div>
-	);
-};
-
 class SXFormField extends React.Component {
 	constructor(props) {
 		super(props);
@@ -3606,6 +3811,18 @@ class SXFormField extends React.Component {
 			case ParamType.DATE: {
 				return (
 					<SXDate
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.FILE: {
+				return (
+					<SXFile
 						namespace={this.namespace}
 						{...this.properties}
 						events={this.events}

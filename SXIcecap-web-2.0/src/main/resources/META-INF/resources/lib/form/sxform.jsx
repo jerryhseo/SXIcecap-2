@@ -2477,8 +2477,11 @@ export class SXFile extends React.Component {
 			index: props.index,
 			definition: props.definition ?? "",
 			showDefinition: props.showDefinition ?? false,
-			value: props.value ?? []
+			value: props.value ?? [],
+			underConstruction: false
 		};
+
+		this.inputRef = React.createRef();
 
 		if (Util.isNotEmpty(this.events.on)) {
 			this.events.on.forEach((event) => {
@@ -2516,7 +2519,93 @@ export class SXFile extends React.Component {
 		}
 	}
 
+	handleFileSelectionChanged(files) {
+		let value = Util.isEmpty(this.state.value) ? [] : this.state.value.filter((fileInfo) => fileInfo.fileId > 0);
+
+		for (let i = 0; i < files.length; i++) {
+			const file = files[i];
+			console.log("SXFile info: ", file.name, file.size, file.type);
+			value.push({
+				fileId: 0,
+				name: file.name,
+				size: file.size,
+				type: file.type,
+				file: file
+			});
+		}
+
+		const error = Parameter.validateValue(ParamType.FILE, this.state.validation, value, this.languageId);
+		this.setState({ value: value, error: error });
+
+		if (Util.isNotEmpty(this.events.fire)) {
+			this.events.fire.forEach((event) => {
+				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
+					if (error.errorClass === ErrorClass.ERROR) {
+						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
+							target: event.target,
+							error: error,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
+						});
+					} else {
+						Event.fire(event.event, this.namespace, this.namespace, {
+							target: event.target,
+							value: value,
+							paramName: this.state.paramName,
+							paramVersion: this.state.paramVersion,
+							index: this.state.index
+						});
+					}
+				}
+			});
+		}
+	}
+
+	handleActionClick(action, fileInfo) {
+		console.log("handleActionClick: ", action, fileInfo);
+		switch (action) {
+			case "download":
+			case "upload": {
+				this.setState({ underConstruction: true });
+
+				break;
+			}
+			case "delete": {
+				console.log("files VALUE: ", this.state.value);
+				const dataTransfer = new DataTransfer();
+
+				let files = this.state.value
+					.filter((fileItem) => {
+						console.log(
+							"fileItem: ",
+							fileItem,
+							fileInfo,
+							fileItem.fileId === 0,
+							fileItem.name !== fileInfo.name
+						);
+						return fileItem.fileId === 0 && fileItem.name !== fileInfo.name;
+					})
+					.map((fileItem) => fileItem.file);
+
+				console.log("mapped files: ", files);
+				files.forEach((file) => dataTransfer.items.add(file));
+
+				this.inputRef.current.files = dataTransfer.files;
+
+				this.handleFileSelectionChanged(files);
+
+				break;
+			}
+		}
+	}
+
 	render() {
+		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
+
+		const tagId = this.namespace + this.state.paramName;
+		const tagName = tagId;
+
 		return (
 			<ClayForm.Group
 				className={className}
@@ -2534,20 +2623,107 @@ export class SXFile extends React.Component {
 						<pre>{this.state.definition}</pre>
 					</div>
 				)}
-				<div>
-					<ClayInput
-						type="file"
-						disabled={this.state.disabled}
-					/>
-					<div>
-						{this.state.value.map((fileInfo) => (
+				<ClayInput
+					type="file"
+					disabled={this.state.disabled}
+					multiple={true}
+					ref={this.inputRef}
+					onChange={(e) => {
+						this.handleFileSelectionChanged(e.target.files);
+					}}
+				/>
+				{Util.isNotEmpty(this.state.value) &&
+					this.state.value.map((fileInfo) => (
+						<div
+							key={fileInfo.name}
+							className="autofit-row autofit-row-center autofit-padded-no-gutters-x"
+							style={{ fontSize: "0.725rem" }}
+						>
 							<div
-								key={fileInfo.fileName}
-								className="sx-table-row"
-							></div>
-						))}
-					</div>
-				</div>
+								className="autofit-col"
+								style={{ width: "4rem", textAlign: "center" }}
+							>
+								{fileInfo.id > 0 ? fileInfo.id : "-"}
+							</div>
+							<div className="autofit-col autofit-col-expand">{fileInfo.name}</div>
+							<div className="autofit-col">{fileInfo.size}</div>
+							<div className="autofit-col">{fileInfo.type}</div>
+							<div className="autofit-col">
+								<DropDown
+									trigger={
+										<ClayButtonWithIcon
+											aria-label="Actions"
+											symbol="ellipsis-v"
+											title="Actions"
+											borderless="true"
+											displayType="secondary"
+											size="xs"
+											spritemap={this.spritemap}
+										/>
+									}
+									menuWidth="shrink"
+								>
+									<DropDown.ItemList
+										items={
+											fileInfo.fileId > 0
+												? [
+														{
+															id: "delete",
+															name: Util.translate("delete"),
+															symbol: "times"
+														},
+														{
+															id: "download",
+															name: Util.translate("download"),
+															symbol: "download"
+														}
+												  ]
+												: [
+														{
+															id: "delete",
+															name: Util.translate("delete"),
+															symbol: "times"
+														},
+														{
+															id: "upload",
+															name: Util.translate("upload"),
+															symbol: "upload"
+														}
+												  ]
+										}
+									>
+										{(actionItem) => (
+											<DropDown.Item
+												key={actionItem.name}
+												onClick={() => this.handleActionClick(actionItem.id, fileInfo)}
+											>
+												<Icon
+													spritemap={this.spritemap}
+													symbol={actionItem.symbol}
+													style={{ marginRight: "5px" }}
+												/>
+												{actionItem.name}
+											</DropDown.Item>
+										)}
+									</DropDown.ItemList>
+								</DropDown>
+							</div>
+						</div>
+					))}
+				{this.state.underConstruction && (
+					<SXModalDialog
+						header={Util.translate("sorry")}
+						body={<UnderConstruction />}
+						buttons={[
+							{
+								label: Util.translate("ok"),
+								onClick: () => {
+									this.setState({ underConstruction: false });
+								}
+							}
+						]}
+					/>
+				)}
 			</ClayForm.Group>
 		);
 	}
@@ -3635,6 +3811,18 @@ class SXFormField extends React.Component {
 			case ParamType.DATE: {
 				return (
 					<SXDate
+						namespace={this.namespace}
+						{...this.properties}
+						events={this.events}
+						className={this.className}
+						style={this.style}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.FILE: {
+				return (
+					<SXFile
 						namespace={this.namespace}
 						{...this.properties}
 						events={this.events}

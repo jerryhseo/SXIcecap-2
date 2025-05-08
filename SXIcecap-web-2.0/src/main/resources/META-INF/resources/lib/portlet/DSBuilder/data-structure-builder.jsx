@@ -250,7 +250,6 @@ class DataStructureBuilder extends React.Component {
 				dataPacket.paramType === ParamType.MATRIX ||
 				dataPacket.paramType === ParamType.DUALLIST ||
 				dataPacket.paramType === ParamType.CALCULATOR ||
-				dataPacket.paramType === ParamType.FILE ||
 				dataPacket.paramType === ParamType.GRID ||
 				dataPacket.paramType === ParamType.IMAGE ||
 				dataPacket.paramType === ParamType.LINKER ||

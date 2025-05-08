@@ -77,6 +77,14 @@
 	border: 2px solid #f495da;
 }
 
+.sx-table-row {
+	display: inline-flex;
+	border: 1px solid #dfdfdf;
+	padding: 5px;
+	width: 100%;
+	align-items: center;
+}
+
 .sx-param-definition {
 	border: 1px solid #d4d0cf;
 	margin-left: 20px;

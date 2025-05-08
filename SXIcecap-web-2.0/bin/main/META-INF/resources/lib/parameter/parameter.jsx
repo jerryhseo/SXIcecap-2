@@ -1623,6 +1623,10 @@ export class FileParameter extends Parameter {
 		this.value = val;
 	}
 
+	addFile(file) {}
+
+	removeFile(fileId) {}
+
 	parse(json) {
 		super.parse(json);
 	}
@@ -1632,16 +1636,18 @@ export class FileParameter extends Parameter {
 	}
 
 	toProperties(tagId, tagName) {
-		let json = super.toProperties();
+		let properties = super.toProperties();
 
-		if (tagId) json.tagId = tagId;
-		if (tagName) json.tagName = tagName;
+		if (tagId) properties.tagId = tagId;
+		if (tagName) properties.tagName = tagName;
+
+		return properties;
 	}
 
 	render(tagId, tagName, events, className, style, spritemap) {
 		const properties = this.toProperties(tagId, tagName);
 
-		this.renderImage = (
+		return (
 			<SXFormField
 				key={this.key}
 				namespace={this.namespace}
@@ -1652,8 +1658,6 @@ export class FileParameter extends Parameter {
 				spritemap={spritemap}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }
 
