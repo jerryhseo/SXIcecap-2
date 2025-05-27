@@ -7,7 +7,8 @@ import ClayForm, {
 	ClayRadioGroup,
 	ClaySelect,
 	ClayToggle,
-	ClaySelectBox
+	ClaySelectBox,
+	ClaySelectWithOption
 } from "@clayui/form";
 import DatePicker from "@clayui/date-picker";
 import { ClayTooltipProvider } from "@clayui/tooltip";
@@ -38,6 +39,9 @@ import {
 import { UnderConstruction } from "../common/common";
 import { SXModalDialog } from "../modal/sxmodal";
 import Autocomplete from "@clayui/autocomplete";
+import Panel from "@clayui/panel";
+import Toolbar from "@clayui/toolbar";
+import { DataStructure } from "../portlet/DSBuilder/data-structure";
 
 export const SelectDisplayStyle = {
 	DUAL_LISTBOX: "DUAL_LISTBOX",
@@ -323,6 +327,163 @@ export const SXAutoComplete = ({ namespace, items, labelPosition, events, sprite
 	);
 };
 
+export class SXDataStatusBar extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.dataStructure = props.dataStructure;
+		this.namespace = props.namespace;
+		this.canvasId = props.canvasId;
+
+		if (this.dataStructure.enableInputStatus) {
+			this.totalInputs = props.dataStructure.countTotalFields(null);
+			this.inputCount = props.dataStructure.countFilledFields(null);
+		}
+
+		this.spritemap = props.spritemap;
+
+		this.state = {
+			goToBasis: DataStructure.GotoBasis.PARAM_NAME,
+			autoCompleteItems: this.dataStructure.enableGoTo
+				? this.dataStructure.getGotoAutoCompleteItems(null, DataStructure.GotoBasis.PARAM_NAME)
+				: [],
+			goToParam: {}
+		};
+	}
+
+	goTo() {
+		console.log("goTo: ", this.state.goToParam);
+
+		if (Util.isNotEmpty(this.state.goToParam)) {
+			Event.fire(Event.SX_DISTRACT_ALL, this.namespace, this.namespace, {
+				target: this.canvasId,
+				focus: false
+			});
+			Event.fire(Event.SX_FOCUS, this.namespace, this.namespace, {
+				target: this.canvasId,
+				paramName: this.state.goToParam.name,
+				paramVersion: this.state.goToParam.version
+			});
+		}
+	}
+
+	handleBasisChanged(val) {
+		this.setState({
+			goToBasis: val,
+			autoCompleteItems: this.dataStructure.getGotoAutoCompleteItems(null, this.state.goToBasis)
+		});
+	}
+
+	handleGoToParamChanged(val) {
+		console.log("handleGoToParamChanged: ", this.state.autoCompleteItems.filter((item) => item.name === val)[0]);
+		this.setState({
+			goToParam: this.state.autoCompleteItems.filter((item) => item.name === val)[0]
+		});
+	}
+
+	render() {
+		console.log("SXDataStatus: ", this.dataStructure);
+
+		return (
+			<div style={{ paddingLeft: "10px", paddingRight: "10px", background: "#d8f2df", marginBottom: "15px" }}>
+				<Toolbar>
+					<Toolbar.Nav>
+						<Toolbar.Item expand>
+							{this.dataStructure.enableGoTo && (
+								<Toolbar.Section>
+									<ClayInput.Group>
+										<ClayInput.GroupItem shrink>
+											<label className="component-title">{Util.translate("goto")}</label>
+										</ClayInput.GroupItem>
+										<ClayInput.GroupItem shrink>
+											<ClaySelectWithOption
+												aria-label="Select Label"
+												id="mySelectId"
+												options={[
+													{ label: Util.translate("parameter-name"), value: false },
+													{ label: Util.translate("display-name"), value: true }
+												]}
+												onChange={(e) => this.handleBasisChanged(e.target.val)}
+											/>
+										</ClayInput.GroupItem>
+										<ClayInput.GroupItem
+											shrink
+											prepend
+										>
+											<ClayButtonWithIcon
+												aria-labelledby={Util.translate("goto")}
+												symbol="search"
+												spritemap={this.spritemap}
+												displayType="secondary"
+												onClick={(e) => this.goTo()}
+											/>
+										</ClayInput.GroupItem>
+										<ClayInput.GroupItem
+											append
+											expand="true"
+										>
+											<Autocomplete
+												aria-labelledby={Util.translate("find-parameter")}
+												id=""
+												defaultItems={this.state.autoCompleteItems.map((item) => item.name)}
+												messages={{
+													notFound: "No results found"
+												}}
+												placeholder={Util.translate("enter-keyword")}
+												onBlur={(e) => this.handleGoToParamChanged(e.target.value)}
+											>
+												{(item) => <Autocomplete.Item key={item}>{item}</Autocomplete.Item>}
+											</Autocomplete>
+										</ClayInput.GroupItem>
+									</ClayInput.Group>
+								</Toolbar.Section>
+							)}
+						</Toolbar.Item>
+						{this.dataStructure.enableInputStatus && (
+							<Toolbar.Item>
+								<Toolbar.Section>
+									<ClayInput.Group>
+										<ClayInput.GroupItem shrink>
+											<ClayInput.GroupText>
+												{this.inputCount +
+													"/" +
+													this.totalInputs +
+													"(" +
+													((this.inputCount / this.totalInputs) * 100).toFixed(1) +
+													"%)"}
+											</ClayInput.GroupText>
+										</ClayInput.GroupItem>
+									</ClayInput.Group>
+								</Toolbar.Section>
+							</Toolbar.Item>
+						)}
+						<Toolbar.Item>
+							<Toolbar.Section>
+								<Button.Group spaced>
+									<ClayButtonWithIcon
+										title={Util.translate("pdf")}
+										aria-labelledby={Util.translate("pdf")}
+										displayType="secondary"
+										symbol="document-pdf"
+										spritemap={this.spritemap}
+									/>
+									<ClayButtonWithIcon
+										title={Util.translate("structured-data-editor")}
+										aria-labelledby={Util.translate("structured-data-editor")}
+										displayType="secondary"
+										symbol="order-form-pencil"
+										spritemap={this.spritemap}
+									/>
+								</Button.Group>
+							</Toolbar.Section>
+						</Toolbar.Item>
+					</Toolbar.Nav>
+				</Toolbar>
+			</div>
+		);
+	}
+}
+
 export class SXPreviewRow extends React.Component {
 	constructor(props) {
 		super(props);
@@ -337,8 +498,9 @@ export class SXPreviewRow extends React.Component {
 		this.spritemap = props.spritemap;
 
 		this.state = {
-			focus: props.focus,
+			focus: props.focus ?? false,
 			rendered: false,
+			inputStatus: props.inputStatus ?? false,
 			underConstruction: false
 		};
 
@@ -368,10 +530,8 @@ export class SXPreviewRow extends React.Component {
 		Event.on(Event.SX_DISTRACT_ALL, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.previewCanvasId) {
-				console.log("SX_DISTRACT_ALL rejected: ", dataPacket);
 				return;
 			}
-			console.log("SX_DISTRACT_ALL received: ", dataPacket);
 			if (!this.state.focus) {
 				return;
 			}
@@ -387,10 +547,8 @@ export class SXPreviewRow extends React.Component {
 				dataPacket.paramName !== this.parameter.paramName ||
 				dataPacket.paramVersion !== dataPacket.paramVersion
 			) {
-				console.log("SX_FOCUS rejected: ", dataPacket);
 				return;
 			}
-			console.log("SX_FOCUS received: ", dataPacket);
 
 			this.setState({ focus: true });
 		});
@@ -401,7 +559,7 @@ export class SXPreviewRow extends React.Component {
 			return;
 		}
 
-		Event.fire(Event.SX_DISTRACT_ALL, this.namespace, this.namespace, { target: this.previewCanvasId });
+		//Event.fire(Event.SX_DISTRACT_ALL, this.namespace, this.namespace, { target: this.previewCanvasId });
 
 		this.setState({ focus: true });
 
@@ -414,17 +572,6 @@ export class SXPreviewRow extends React.Component {
 
 	render() {
 		let className = this.state.focus ? "autofit autofit-row sx-focused" : "autofit autofit-row";
-		if (!this.state.rendered) {
-			className += " sx-glore-border";
-
-			let gloringTimer = setTimeout(() => {
-				className = this.state.focus ? "autofit autofit-row sx-focused" : "autofit autofit-row";
-
-				clearTimeout(gloringTimer);
-
-				this.setState({ rendered: true });
-			}, 2000);
-		}
 
 		let style = {};
 		if (
@@ -448,7 +595,15 @@ export class SXPreviewRow extends React.Component {
 						className="autofit-col autofit-col-expand"
 						style={{ marginRight: "10px" }}
 					>
-						{this.parameter.render(null, null, this.events, "", style, this.spritemap)}
+						{this.parameter.render(
+							null,
+							null,
+							this.events,
+							"",
+							style,
+							this.spritemap,
+							this.state.inputStatus
+						)}
 					</div>
 					<div
 						className="autofit-col autofit-col-shrink"
@@ -587,48 +742,9 @@ export class SXInput extends React.Component {
 			showDefinition: props.showDefinition ?? false,
 			viewType: props.viewType ?? StringParameter.ViewTypes.REGULAR,
 			index: props.index,
-			value: props.value ?? ""
+			value: props.value ?? "",
+			inputStatus: props.inputStatus ?? false
 		};
-
-		if (Util.isNotEmpty(this.events.on)) {
-			this.events.on.forEach((event) => {
-				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
-					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(
-							e,
-							this.namespace,
-							event.target,
-							this.state.paramName,
-							this.state.paramVersion
-						);
-						if (Util.isEmpty(dataPacket)) return;
-
-						this.dirty = true;
-						this.setState({ error: dataPacket.error });
-					});
-				} else if (event.event === Event.SX_PARAM_PROPERTY_CHANGED) {
-					Event.on(event.event, (e) => {
-						const dataPacket = Event.pickUpDataPacket(
-							e,
-							this.namespace,
-							event.target,
-							this.state.paramName,
-							this.state.paramVersion
-						);
-						if (Util.isEmpty(dataPacket)) return;
-
-						let stateObj = {};
-						if (dataPacket.property === ParamProperty.MULTIPLE_LINE) {
-							stateObj.component = dataPacket.value ? "textarea" : "input";
-						} else {
-							stateObj[dataPacket.property] = dataPacket.value;
-						}
-
-						this.setState(stateObj);
-					});
-				}
-			});
-		}
 	}
 
 	renderLabel(forHtml) {
@@ -783,6 +899,7 @@ export class SXLocalizedInput extends React.Component {
 			symbol: lang.toLowerCase()
 		}));
 
+		/*
 		if (Util.isNotEmpty(this.events.on)) {
 			this.events.on.forEach((event) => {
 				if (event.event === Event.SX_PARAM_ERROR_FOUND) {
@@ -838,6 +955,7 @@ export class SXLocalizedInput extends React.Component {
 				}
 			});
 		}
+			*/
 	}
 
 	handleBlur(e) {
@@ -1039,16 +1157,6 @@ export class SXNumeric extends React.Component {
 
 		this.dirty = false;
 
-		let textValue = props.value;
-		let textUncertainty;
-		if (Util.isNotEmpty(props.value)) {
-			if (props.uncertainty) {
-				textValue = Util.isEmpty(props.value.value) ? "" : props.value.value.toString();
-			} else {
-				textValue = props.value.toString();
-			}
-		}
-
 		this.state = {
 			error: {},
 			paramName: props.paramName ?? "",
@@ -1070,7 +1178,7 @@ export class SXNumeric extends React.Component {
 			showDefinition: props.showDefinition ?? false
 		};
 
-		console.log("props.decimalPlaces: ", props.decimalPlaces);
+		console.log("props.value: ", props.value);
 		this.convertValueToText(props.value);
 
 		if (Util.isNotEmpty(this.events.on)) {
@@ -1377,13 +1485,15 @@ export class SXNumeric extends React.Component {
 						</>
 					}
 				/>
-				{this.dirty && this.state.error.errorClass !== ErrorClass.SUCCESS && (
-					<SXFormFieldFeedback
-						content={this.state.error.message}
-						spritemap={this.spritemap}
-						symbol="exclamation-full"
-					/>
-				)}
+				{this.dirty &&
+					(this.state.error.errorClass === ErrorClass.ERROR ||
+						this.state.error.errorClass === ErrorClass.WARNING) && (
+						<SXFormFieldFeedback
+							content={this.state.error.message}
+							spritemap={this.spritemap}
+							symbol="exclamation-full"
+						/>
+					)}
 			</ClayForm.Group>
 		);
 	}
@@ -1421,6 +1531,7 @@ export class SXBoolean extends React.Component {
 		this.dirty = false;
 
 		this.state = {
+			error: {},
 			paramName: props.paramName ?? "",
 			paramVersion: props.paramVersion ?? "1.0.0",
 			label: props.label ?? "",
@@ -1487,6 +1598,7 @@ export class SXBoolean extends React.Component {
 
 	handleOnChange(e) {
 		this.setState({ value: !this.state.value });
+		if (!this.dirty) this.dirty = true;
 
 		if (Util.isNotEmpty(this.events.fire)) {
 			this.events.fire.forEach((event) => {
@@ -1621,13 +1733,15 @@ export class SXBoolean extends React.Component {
 						sizing="md"
 					/>
 				)}
-				{this.dirty && this.state.error.errorClass !== ErrorClass.SUCCESS && (
-					<SXFormFieldFeedback
-						content={this.state.error.message}
-						spritemap={this.spritemap}
-						symbol="exclamation-full"
-					/>
-				)}
+				{this.dirty &&
+					(this.state.error.errorClass === ErrorClass.ERROR ||
+						this.state.error.errorClass === ErrorClass.WARNING) && (
+						<SXFormFieldFeedback
+							content={this.state.error.message}
+							spritemap={this.spritemap}
+							symbol="exclamation-full"
+						/>
+					)}
 			</ClayForm.Group>
 		);
 	}
@@ -1954,13 +2068,15 @@ export class SXSelect extends React.Component {
 						/>
 					</>
 				)}
-				{this.dirty && this.state.error.errorClass !== ErrorClass.SUCCESS && (
-					<SXFormFieldFeedback
-						content={this.state.error.message}
-						spritemap={this.spritemap}
-						symbol="exclamation-full"
-					/>
-				)}
+				{this.dirty &&
+					(this.state.error.errorClass === ErrorClass.ERROR ||
+						this.state.error.errorClass === ErrorClass.WARNING) && (
+						<SXFormFieldFeedback
+							content={this.state.error.message}
+							spritemap={this.spritemap}
+							symbol="exclamation-full"
+						/>
+					)}
 			</ClayForm.Group>
 		);
 		/*
@@ -2167,7 +2283,6 @@ export class SXDualListBox extends React.Component {
 	constructor(props) {
 		super(props);
 
-		console.log("SXDualListBox: ", props);
 		this.namespace = props.namespace ?? "";
 		this.events = props.events ?? {};
 		this.className = props.className ?? "";
@@ -2349,7 +2464,6 @@ export class SXDualListBox extends React.Component {
 		const tagId = this.namespace + this.state.paramName;
 		const tagName = tagId;
 
-		console.log("+++++ ", this.state.leftOptions, this.state.rightOptions);
 		return (
 			<ClayForm.Group
 				className={className}
@@ -3543,7 +3657,7 @@ export class SXGroup extends React.Component {
 			label: props.label ?? "",
 			tooltip: props.tooltip ?? "",
 			disabled: props.disabled ?? false,
-			viewType: props.viewType ?? GroupParameter.ViewTypes.HORIZONTAL,
+			viewType: props.viewType ?? GroupParameter.ViewTypes.ARRANGEMENT,
 			members: props.members ?? [],
 			membersPerRow: props.membersPerRow ?? 1,
 			definition: props.definition ?? "",
@@ -3579,10 +3693,10 @@ export class SXGroup extends React.Component {
 
 		let content;
 		switch (this.state.viewType) {
-			case GroupParameter.ViewTypes.HORIZONTAL: {
+			case GroupParameter.ViewTypes.ARRANGEMENT: {
 				const rows = Util.convertArrayToRows(this.state.members, this.state.membersPerRow);
 
-				content = (
+				return (
 					<div
 						id={tagId}
 						className={this.className}
@@ -3612,15 +3726,35 @@ export class SXGroup extends React.Component {
 						))}
 					</div>
 				);
-
-				break;
+			}
+			case GroupParameter.ViewTypes.HORIZONTAL_PANEL: {
+				return <Panel></Panel>;
 			}
 			default: {
-				content = <></>;
+				return (
+					<Panel
+						collapsable
+						displayTitle={
+							<Panel.Title>
+								<h3>{this.state.label}</h3>
+							</Panel.Title>
+						}
+					>
+						<Panel.Body>
+							{this.state.members.map((member) => (
+								<SXFormField
+									key={member.paramName}
+									namespace={this.namespace}
+									properties={member}
+									events={this.events}
+									spritemap={this.spritemap}
+								/>
+							))}
+						</Panel.Body>
+					</Panel>
+				);
 			}
 		}
-
-		return content;
 	}
 }
 
@@ -3686,169 +3820,59 @@ export const SXButtonWithIcon = ({
 	);
 };
 
-class SXFormField extends React.Component {
-	constructor(props) {
-		super(props);
+const SXFormField = function ({ namespace, properties, events, className, style, spritemap, inputStatus = false }) {
+	const controlProps = {
+		...properties,
+		namespace: namespace,
+		events: events,
+		className: className,
+		style: style,
+		spritemap: spritemap,
+		inputStatus: inputStatus
+	};
 
-		this.namespace = props.namespace;
-		this.properties = props.properties;
-		this.events = props.events;
-		this.className = props.className;
-		this.style = props.style;
-		this.spritemap = props.spritemap;
-	}
-
-	render() {
-		switch (this.properties.paramType) {
-			case ParamType.STRING: {
-				return (
-					<SXInput
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
-			case ParamType.LOCALIZED_STRING: {
-				return (
-					<SXLocalizedInput
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
-			case ParamType.NUMERIC: {
-				return (
-					<SXNumeric
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
-			case ParamType.BOOLEAN: {
-				return (
-					<SXBoolean
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
-			case ParamType.SELECT: {
-				return (
-					<SXSelect
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
-			case ParamType.DUALLIST: {
-				return (
-					<SXDualListBox
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
-			case ParamType.ADDRESS: {
-				return (
-					<SXAddress
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
-			case ParamType.EMAIL: {
-				return (
-					<SXEMail
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
-			case ParamType.PHONE: {
-				return (
-					<SXPhone
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
-			case ParamType.DATE: {
-				return (
-					<SXDate
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
-			case ParamType.FILE: {
-				return (
-					<SXFile
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
-			case ParamType.GROUP: {
-				return (
-					<SXGroup
-						namespace={this.namespace}
-						{...this.properties}
-						events={this.events}
-						className={this.className}
-						style={this.style}
-						spritemap={this.spritemap}
-					/>
-				);
-			}
+	switch (properties.paramType) {
+		case ParamType.STRING: {
+			return <SXInput {...controlProps} />;
 		}
-
-		return <></>;
+		case ParamType.LOCALIZED_STRING: {
+			return <SXLocalizedInput {...controlProps} />;
+		}
+		case ParamType.NUMERIC: {
+			return <SXNumeric {...controlProps} />;
+		}
+		case ParamType.BOOLEAN: {
+			return <SXBoolean {...controlProps} />;
+		}
+		case ParamType.SELECT: {
+			return <SXSelect {...controlProps} />;
+		}
+		case ParamType.DUALLIST: {
+			return <SXDualListBox {...controlProps} />;
+		}
+		case ParamType.ADDRESS: {
+			return <SXAddress {...controlProps} />;
+		}
+		case ParamType.EMAIL: {
+			return <SXEMail {...controlProps} />;
+		}
+		case ParamType.PHONE: {
+			return <SXPhone {...controlProps} />;
+		}
+		case ParamType.DATE: {
+			return <SXDate {...controlProps} />;
+		}
+		case ParamType.FILE: {
+			return <SXFile {...controlProps} />;
+		}
+		case ParamType.GROUP: {
+			return <SXGroup {...controlProps} />;
+		}
+		default: {
+			return <></>;
+		}
 	}
-}
+};
 
 export const SXForm = ({
 	namespace,

@@ -2,7 +2,7 @@ import React from "react";
 import { Util } from "../../common/util";
 import { Event, ParamProperty, ParamType } from "../../common/station-x";
 import SXFormField, { SXLabel } from "../../form/sxform";
-import { AddressParameter, BooleanParameter, SelectParameter } from "../../parameter/parameter";
+import { AddressParameter, BooleanParameter, GroupParameter, SelectParameter } from "../../parameter/parameter";
 import { ClayButtonWithIcon } from "@clayui/button";
 import { Button, Icon } from "@clayui/core";
 import DropDown from "@clayui/drop-down";
@@ -358,6 +358,8 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 		this.languageId = props.languageId;
 		this.availableLanguageIds = props.availableLanguageIds;
 		this.spritemap = props.spritemap;
+		this.inputStatus = props.inputStatus;
+		this.dataStructure = props.dataStructure;
 
 		this.state = {
 			parameter: props.parameter,
@@ -747,6 +749,50 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 							events={events}
 							spritemap={this.spritemap}
 						/>
+					</>
+				);
+			}
+			case ParamType.GROUP: {
+				const members = this.state.parameter.members.map((member) => ({
+					name: member.paramName,
+					version: paramVersion
+				}));
+				const memberables = this.dataStructure.getMemberParameters(this.state.parameter.parent);
+
+				console.log("Group siblings: ", members, memberables);
+
+				return (
+					<>
+						<SXFormField
+							namespace={this.namespace}
+							properties={{
+								paramType: ParamType.SELECT,
+								paramName: ParamProperty.VIEW_TYPE,
+								paramVersion: "1.0.0",
+								viewType: SelectParameter.ViewTypes.RADIO,
+								label: Util.translate("view-type"),
+								tooltip: Util.translate("group-view-type-tooltip"),
+								options: [
+									{
+										label: Util.translate("arrangement"),
+										value: GroupParameter.ViewTypes.ARRANGEMENT
+									},
+									{
+										label: Util.translate("vertical-panel"),
+										value: GroupParameter.ViewTypes.VERTICAL_PANEL
+									},
+									{
+										label: Util.translate("horizontal-panel"),
+										value: GroupParameter.ViewTypes.HORIZONTAL_PANEL
+									}
+								],
+								optionsPerRow: 3,
+								value: this.state.parameter.viewType ?? GroupParameter.ViewTypes.VERTICAL_PANEL
+							}}
+							events={events}
+							spritemap={this.spritemap}
+						/>
+						{this.inputStatus && <div></div>}
 					</>
 				);
 			}

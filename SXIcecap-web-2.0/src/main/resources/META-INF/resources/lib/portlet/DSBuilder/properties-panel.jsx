@@ -36,6 +36,7 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 		this.languageId = props.languageId;
 		this.availableLanguageIds = props.availableLanguageIds;
 		this.spritemap = props.spritemap;
+		this.dataStructure = props.dataStructure;
 
 		this.state = {
 			parameter: props.parameter,
@@ -92,6 +93,7 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 						languageId={this.languageId}
 						availableLanguageIds={this.availableLanguageIds}
 						parameter={this.state.parameter}
+						dataStructure={this.dataStructure}
 						spritemap={this.spritemap}
 					/>
 				);

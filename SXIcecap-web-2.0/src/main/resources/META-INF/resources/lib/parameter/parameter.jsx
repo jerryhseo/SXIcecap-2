@@ -401,6 +401,7 @@ export class Parameter {
 
 	#key = Util.randomKey();
 	#dirty = false;
+	#focused = false;
 
 	constructor(namespace, formId, languageId, availableLanguageIds, paramType) {
 		this.#namespace = namespace;
@@ -552,6 +553,9 @@ export class Parameter {
 	get dirty() {
 		return this.#dirty;
 	}
+	get focused() {
+		return this.#focused;
+	}
 
 	set namespace(val) {
 		this.#namespace = val;
@@ -662,6 +666,9 @@ export class Parameter {
 	set dirty(val) {
 		this.#dirty = val;
 	}
+	set focused(val) {
+		this.#focused = val;
+	}
 
 	refreshKey() {
 		this.#key = Util.randomKey();
@@ -745,10 +752,14 @@ export class Parameter {
 
 	setError(val) {
 		this.error = val;
+		this.refreshKey();
 	}
 
 	clearError() {
-		this.error = "";
+		if (!!this.error) {
+			this.refreshKey();
+			this.error = null;
+		}
 	}
 
 	isRendered() {
@@ -806,7 +817,7 @@ export class Parameter {
 		if (Util.isNotEmpty(this.defaultValue)) json.defaultValue = this.defaultValue;
 		if (Util.isNotEmpty(this.parent)) json.parent = this.parent;
 		if (Util.isNotEmpty(this.validation)) json.validation = this.validation;
-		if (Util.isNotEmpty(this.value)) json.value = this.value;
+		if (Util.isNotEmpty(this.defaultValue)) json.defaultValue = this.defaultValue;
 		if (Util.isNotEmpty(this.referenceFile)) json.referenceFile = this.referenceFile;
 		if (this.readOnly) json.readOnly = this.readOnly;
 		if (this.showDefinition) json.showDefinition = this.showDefinition;
@@ -845,7 +856,8 @@ export class Parameter {
 			readOnly: this.readOnly,
 			index: this.order,
 			languageId: this.languageId,
-			availableLanguageIds: this.availableLanguageIds
+			availableLanguageIds: this.availableLanguageIds,
+			focused: this.focused
 		};
 	}
 }
@@ -944,14 +956,15 @@ export class StringParameter extends Parameter {
 		events,
 		className,
 		style,
-		spritemap
+		spritemap,
+		inputStatus
 	) {
 		if (!this.isRendered()) {
 			this.renderImage = (
 				<SXPreviewRow
 					propertyPanelId={propertyPanelId}
 					previewCanvasId={previewCanvasId}
-					content={this.render(tagId, tagName, events, className, style, spritemap)}
+					content={this.render(tagId, tagName, events, className, style, spritemap, inputStatus)}
 					spritemap={spritemap}
 				/>
 			);
@@ -960,7 +973,7 @@ export class StringParameter extends Parameter {
 		return this.renderImage;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
@@ -972,6 +985,7 @@ export class StringParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 
@@ -1037,6 +1051,7 @@ export class NumericParameter extends Parameter {
 
 	hasValue() {
 		if (this.uncertainty) {
+			console.log("Numeric hasValue(): ", this.value);
 			if (Util.isEmpty(this.value) || Util.isEmpty(this.value.value)) return false;
 		} else {
 			if (Util.isEmpty(this.value)) return false;
@@ -1086,7 +1101,7 @@ export class NumericParameter extends Parameter {
 		json.uncertainty = this.uncertainty;
 		json.isInteger = this.isInteger;
 		json.unit = this.unit;
-		json.value = this.defaultValue;
+		json.value = this.value ?? this.defaultValue;
 		if (Util.isNotEmpty(this.decimalPlaces)) {
 			json.decimalPlaces = this.decimalPlaces;
 		}
@@ -1097,7 +1112,7 @@ export class NumericParameter extends Parameter {
 		return json;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
@@ -1109,6 +1124,7 @@ export class NumericParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 
@@ -1262,7 +1278,7 @@ export class SelectParameter extends Parameter {
 		return json;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
@@ -1274,6 +1290,7 @@ export class SelectParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 
@@ -1353,7 +1370,7 @@ export class DualListParameter extends Parameter {
 		return json;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
@@ -1365,6 +1382,7 @@ export class DualListParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 
@@ -1485,7 +1503,7 @@ export class BooleanParameter extends SelectParameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
@@ -1497,6 +1515,7 @@ export class BooleanParameter extends SelectParameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 
@@ -1583,7 +1602,7 @@ export class MatrixParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
@@ -1595,6 +1614,7 @@ export class MatrixParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 
@@ -1644,7 +1664,7 @@ export class FileParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		return (
@@ -1656,6 +1676,7 @@ export class FileParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 	}
@@ -1724,7 +1745,7 @@ export class AddressParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		return (
@@ -1736,6 +1757,7 @@ export class AddressParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 	}
@@ -1826,7 +1848,7 @@ export class DateParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		return (
@@ -1838,6 +1860,7 @@ export class DateParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 	}
@@ -1915,7 +1938,7 @@ export class PhoneParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		return (
@@ -1927,6 +1950,7 @@ export class PhoneParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 	}
@@ -1986,7 +2010,7 @@ export class EMailParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		return (
@@ -1998,6 +2022,7 @@ export class EMailParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 	}
@@ -2009,11 +2034,8 @@ export class EMailParameter extends Parameter {
  */
 export class GroupParameter extends Parameter {
 	static ViewTypes = {
-		HORIZONTAL: "horizontal",
-		HORIZONTAL_LIST: "horizontalList",
+		ARRANGEMENT: "arrangement",
 		HORIZONTAL_PANEL: "horizontalPanel",
-		VERTICAL: "vertical",
-		VERTICAL_LIST: "verticalList",
 		VERTICAL_PANEL: "verticalPanel"
 	};
 
@@ -2105,7 +2127,7 @@ export class GroupParameter extends Parameter {
 	parse(json) {
 		super.parse(json);
 
-		this.viewType = this.viewType ?? GroupParameter.ViewTypes.HORIZONTAL_LIST;
+		this.viewType = this.viewType ?? GroupParameter.ViewTypes.VERTICAL_PANEL;
 		this.decorative = json.decorative ?? false;
 		this.membersPerRow = json.membersPerRow ?? 1;
 
@@ -2143,12 +2165,14 @@ export class GroupParameter extends Parameter {
 		json.tagId = tagId;
 		json.tagName = tagName;
 
-		json.members = this.members.map((member) => member.toProperties(tagId, tagName));
+		json.members = this.members.map((member) => {
+			return member.toProperties(member.paramName, member.paramName);
+		});
 
 		return json;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
@@ -2160,6 +2184,7 @@ export class GroupParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 
@@ -2197,7 +2222,7 @@ export class SelectGroupParameter extends Parameter {
 		if (tagName) json.tagName = tagName;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap) {
+	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
 		const properties = this.toProperties(tagId, tagName);
 
 		this.renderImage = (
@@ -2209,6 +2234,7 @@ export class SelectGroupParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
+				inputStatus={inputStatus}
 			/>
 		);
 

@@ -64,28 +64,26 @@ const SXDSBuilderOptionPropertiesPanel = ({
 
 	return (
 		<>
-			<div className="sheet-section">
-				<div className="sheet-subtitle">{Util.translate("label-position")}</div>
-				<SXFormField
-					namespace={namespace}
-					properties={{
-						paramType: ParamType.SELECT,
-						paramName: ParamProperty.LABEL_POSITION,
-						paramVersion: "1.0.0",
-						viewType: SelectParameter.ViewTypes.RADIO,
-						optionsPerRow: 2,
-						label: Util.translate("label-position"),
-						tooltip: Util.translate("label-position-tooltip"),
-						options: [
-							{
-								label: Util.translate("upper-left"),
-								value: Parameter.LabelPosition.UPPER_LEFT
-							},
-							{
-								label: Util.translate("inline-left"),
-								value: Parameter.LabelPosition.INLINE_LEFT
-							}
-							/*
+			<SXFormField
+				namespace={namespace}
+				properties={{
+					paramType: ParamType.SELECT,
+					paramName: ParamProperty.LABEL_POSITION,
+					paramVersion: "1.0.0",
+					viewType: SelectParameter.ViewTypes.RADIO,
+					optionsPerRow: 2,
+					label: Util.translate("label-position"),
+					tooltip: Util.translate("label-position-tooltip"),
+					options: [
+						{
+							label: Util.translate("upper-left"),
+							value: Parameter.LabelPosition.UPPER_LEFT
+						},
+						{
+							label: Util.translate("inline-left"),
+							value: Parameter.LabelPosition.INLINE_LEFT
+						}
+						/*
 											{
 												label: Util.translate("upper-right"),
 												value: Parameter.LabelPosition.UPPER_RIGHT
@@ -103,20 +101,19 @@ const SXDSBuilderOptionPropertiesPanel = ({
 												value: Parameter.LabelPosition.BOTTOM_RIGHT
 											}
 											*/
-						],
-						value: SelectParameter.LabelPosition.UPPER_LEFT
-					}}
-					events={{
-						fire: [
-							{
-								target: dsbuilderId,
-								event: Event.SX_FIELD_VALUE_CHANGED
-							}
-						]
-					}}
-					spritemap={spritemap}
-				/>
-			</div>
+					],
+					value: SelectParameter.LabelPosition.UPPER_LEFT
+				}}
+				events={{
+					fire: [
+						{
+							target: dsbuilderId,
+							event: Event.SX_FIELD_VALUE_CHANGED
+						}
+					]
+				}}
+				spritemap={spritemap}
+			/>
 			{optionFields.map((field) => {
 				return (
 					<SXFormField

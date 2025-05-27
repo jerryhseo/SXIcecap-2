@@ -12,6 +12,11 @@ import { SXAutoComplete, SXPreviewRow } from "../../form/sxform";
 import { createRoot } from "react-dom/client";
 
 export class DataStructure {
+	static GotoBasis = {
+		PARAM_NAME: "paramName",
+		DISPLAY_NAME: "displayName"
+	};
+
 	#key = Util.randomKey();
 	#namespace = "";
 	#formId = "";
@@ -142,6 +147,10 @@ export class DataStructure {
 		this.#hierarchicalData = val;
 	}
 
+	refreshKey() {
+		this.#key = Util.randomKey();
+	}
+
 	loadParameterValues(values) {
 		if (Util.isEmpty(this.parameters)) return;
 
@@ -263,11 +272,11 @@ export class DataStructure {
 
 		this.parameters.push(parameter);
 
-		this.#key = Util.randomKey();
+		this.refreshKey();
 	}
 
 	removeParameter() {
-		this.#key = Util.randomKey();
+		this.refreshKey();
 	}
 
 	getParameterByOrder(groupId, order) {
@@ -320,13 +329,100 @@ export class DataStructure {
 		return search(this.parameters);
 	}
 
-	getMemberParameters(groupId) {
-		if (Util.isEmpty(groupId)) {
-			return this.parameters;
+	getDescendantParameters(groupId) {
+		let groupParam;
+		if (Util.isNotEmpty(groupId)) {
+			groupParam = this.getParameter(groupId.name, groupId.version);
+		}
+
+		if (Util.isEmpty(groupParam)) {
+			return this.parameters.filter((param) => Util.isEmpty(param.parent));
 		} else {
 			let param = this.getParameter(groupId.name, groupId.version);
 			return param.members;
 		}
+	}
+
+	getSiblingParameters(paramName, paramVersion, selfInclude = false) {
+		const parameter = this.getParameter(paramName, paramVersion);
+		const siblings = this.getChildParameters(parameter.groupId);
+
+		if (selfInclude) {
+			return siblings;
+		} else {
+			return siblings.filter((param) => param.paramName !== paramName || param.paramVersion !== paramVersion);
+		}
+	}
+
+	getChildParameters(groupId) {
+		if (Util.isEmpty(groupId)) {
+			return this.parameters;
+		} else {
+			const groupParam = this.getParameter(groupId.name, groupId.version);
+
+			return groupParam.members;
+		}
+	}
+	countTotalFields(group) {
+		let inputCount = 0;
+		const members = !!group ? group.members : this.parameters;
+
+		members.forEach((param) => {
+			if (param.isAssembly()) {
+				inputCount += this.countTotalFields(param);
+			} else {
+				inputCount++;
+			}
+		});
+
+		return inputCount;
+	}
+
+	countFilledFields(group) {
+		let inputCount = 0;
+		const members = !!group ? group.members : this.parameters;
+
+		members.forEach((param) => {
+			if (param.isAssembly()) {
+				inputCount += this.countFilledFields(param);
+			} else {
+				if (param.hasValue()) {
+					inputCount++;
+				}
+			}
+		});
+
+		return inputCount;
+	}
+
+	getGotoAutoCompleteItems(rootGroup, basis = DataStructure.GotoBasis.PARAM_NAME) {
+		const parameters = !!rootGroup ? rootGroup.members : this.parameters;
+		let items = [];
+
+		parameters.forEach((param) => {
+			if (param.isAssembly()) {
+				items = items.concat(this.getGotoAutoCompleteItems(param, basis));
+			}
+
+			basis === DataStructure.GotoBasis.PARAM_NAME
+				? items.push({ name: param.paramName, version: param.paramVersion })
+				: items.push({ name: param.getDisplayName(this.languageId), version: param.paramVersion });
+		});
+
+		console.log("getGotoAutoCompleteItems: ", rootGroup, basis, items);
+		return items;
+	}
+
+	focusParameter(paramName, paramVersion) {
+		this.parameters.forEach((param) => {
+			const focused = param.paramName === paramName && param.paramVersion === paramVersion;
+			if (param.focused !== focused) {
+				param.refreshKey();
+				param.focused = focused;
+			}
+		});
+
+		this.refreshKey();
 	}
 
 	parse(json) {
@@ -373,73 +469,31 @@ export class DataStructure {
 	}
 
 	renderPreview(dsbuilderId, propertyPanelId, previewCanvasId, className, style, spritemap, workingParamOrder) {
-		let goTo;
-		this.enableGoTo = true;
-		const items = ["Apple", "Banana", "Orange", "Pineapple", "Strawberry"];
-		const value = "";
-		if (this.enableGoTo) {
-			goTo = (
-				<SXAutoComplete
-					key={this.key}
-					namespace={this.namespace}
-					languageId={this.languageId}
-					availableLanguageIds={this.availableLanguageIds}
-					className={className}
-					style={style}
-					spritemap={spritemap}
-				/>
-			);
-		}
-
 		return (
-			<>
-				{/*goTo*/}
-				<div id={previewCanvasId}>
-					{this.parameters.map((parameter, i) => {
-						console.log("parameter: ", parameter);
-						return (
-							<SXPreviewRow
-								key={parameter.key}
-								dsbuilderId={dsbuilderId}
-								propertyPanelId={propertyPanelId}
-								previewCanvasId={previewCanvasId}
-								parameter={parameter}
-								focus={i + 1 === workingParamOrder ? true : false}
-								spritemap={spritemap}
-							/>
-						);
-					})}
-				</div>
-			</>
+			<div id={previewCanvasId}>
+				{this.parameters.map((parameter, i) => {
+					console.log("parameter: ", parameter, parameter.hasValue());
+					return (
+						<SXPreviewRow
+							key={parameter.key}
+							dsbuilderId={dsbuilderId}
+							propertyPanelId={propertyPanelId}
+							previewCanvasId={previewCanvasId}
+							parameter={parameter}
+							focus={i + 1 === workingParamOrder ? true : false}
+							spritemap={spritemap}
+							inputStatus={this.enableInputStatus}
+						/>
+					);
+				})}
+			</div>
 		);
 	}
 
 	render(canvasId, events, className, style, spritemap) {
-		let goTo;
-		this.enableGoTo = true;
-		const items = ["Apple", "Banana", "Orange", "Pineapple", "Strawberry"];
-		const value = "";
-		if (this.enableGoTo) {
-			goTo = (
-				<SXAutoComplete
-					key={this.key}
-					namespace={this.namespace}
-					languageId={this.languageId}
-					availableLanguageIds={this.availableLanguageIds}
-					events={events}
-					className={className}
-					style={style}
-					spritemap={spritemap}
-				/>
-			);
-		}
 		return (
 			<>
-				{/*goTo*/}
-				<div
-					id={canvasId}
-					style={{ zIndex: "-10" }}
-				>
+				<div id={canvasId}>
 					{this.parameters.map((parameter) =>
 						parameter.render(
 							this.namespace,
@@ -450,7 +504,8 @@ export class DataStructure {
 							events,
 							className,
 							style,
-							spritemap
+							spritemap,
+							this.enableInputStatus
 						)
 					)}
 				</div>

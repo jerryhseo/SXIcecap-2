@@ -87,6 +87,7 @@ class DataStructureBuilder extends React.Component {
 		this.saveResult = "";
 
 		this.loadingFailMessage = "";
+
 		this.state = {
 			paramType: ParamType.STRING,
 			workingParam: null,
@@ -99,9 +100,9 @@ class DataStructureBuilder extends React.Component {
 				this.languageId,
 				this.availableLanguageIds
 			),
+			refresh: false,
 			confirmDlgState: false,
 			confirmDlgBody: "",
-			paramOrder: 0,
 			underConstruction: false
 		};
 
@@ -184,13 +185,8 @@ class DataStructureBuilder extends React.Component {
 
 				this.state.workingParam.refreshKey();
 				console.log("send SX_PARAM_PROPERTY_CHANGED");
-				Event.fire(Event.SX_PARAM_PROPERTY_CHANGED, this.namespace, this.namespace, {
-					target: this.previewCanvasId,
-					paramName: this.state.workingParam.paramName,
-					paramVersion: this.state.workingParam.paramVersion,
-					property: property,
-					value: value
-				});
+
+				this.setState({ refresh: !this.state.refresh });
 			}
 		});
 
@@ -234,12 +230,16 @@ class DataStructureBuilder extends React.Component {
 				workingParam: selectedParam
 			});
 
+			this.state.dataStructure.focusParameter(selectedParam.paramName, selectedParam.paramVersion);
+
 			console.log("SX_PARAMETER_SELECTED received: ", dataPacket);
 
+			/*
 			Event.fire(Event.SX_PARAMETER_CHANGED, this.namespace, this.namespace, {
 				target: this.propertyPanelId,
 				parameter: selectedParam
 			});
+			*/
 		});
 
 		Event.on(Event.SX_PARAM_TYPE_CHANGED, (e) => {
@@ -271,6 +271,7 @@ class DataStructureBuilder extends React.Component {
 			);
 			this.setState({ workingParam: newParam });
 
+			/*
 			Event.fire(Event.SX_PARAMETER_CHANGED, this.namespace, this.namespace, {
 				target: this.propertyPanelId,
 				parameter: newParam
@@ -279,6 +280,7 @@ class DataStructureBuilder extends React.Component {
 			Event.fire(Event.SX_DISTRACT_ALL, this.namespace, this.namespace, {
 				target: this.previewCanvasId
 			});
+			*/
 		});
 	}
 
@@ -329,28 +331,18 @@ class DataStructureBuilder extends React.Component {
 		});
 	}
 
-	handleEnableInputStatusChange(e) {
-		this.setState({ underConstruction: true });
-		/*
-		this.state.dataStructure.enableInputStatus = e.target.checked;
+	handleEnableInputStatusChange(val) {
+		this.state.dataStructure.enableInputStatus = val;
+		this.state.dataStructure.refreshKey();
 
-		Event.fire(Event.SX_ENABLE_INPUT_STATUS, this.namespace, this.namespace, {
-			target: this.previewCanvasId,
-			enable: this.state.dataStructure.enableInputStatus
-		});
-		*/
+		this.setState({ refresh: !this.state.refresh });
 	}
 
-	handleEnableGotoChange(e) {
-		this.setState({ underConstruction: true });
-		/*
-		this.state.dataStructure.enableGoto = e.target.checked;
+	handleEnableGotoChange(val) {
+		this.state.dataStructure.enableGoTo = val;
+		this.state.dataStructure.refreshKey();
 
-		Event.fire(Event.SX_ENABLE_GOTO, this.namespace, this.namespace, {
-			target: this.previewCanvasId,
-			parameter: this.state.dataStructure.enableGoto
-		});
-		*/
+		this.setState({ refresh: !this.state.refresh });
 	}
 
 	handleNewParameter() {
@@ -363,6 +355,7 @@ class DataStructureBuilder extends React.Component {
 		);
 		this.setState({ workingParam: newParam });
 
+		/*
 		Event.fire(Event.SX_PARAMETER_CHANGED, this.namespace, this.namespace, {
 			target: this.propertyPanelId,
 			parameter: newParam
@@ -372,6 +365,7 @@ class DataStructureBuilder extends React.Component {
 			target: this.previewCanvasId,
 			focus: false
 		});
+		*/
 	}
 
 	handleSaveDataStructure = () => {
@@ -403,14 +397,12 @@ class DataStructureBuilder extends React.Component {
 
 		if (noError) {
 			this.state.dataStructure.addParameter(this.state.workingParam);
+			this.state.dataStructure.focusParameter(
+				this.state.workingParam.paramName,
+				this.state.workingParam.paramVersion
+			);
 
-			this.setState({ paramOrder: this.state.workingParam.order });
-
-			Event.fire(Event.SX_FOCUS, this.namespace, this.namespace, {
-				target: this.previewCanvasId,
-				paramName: this.state.workingParam.paramName,
-				paramVersion: this.state.workingParam.paramVersion
-			});
+			this.setState({ refresh: !this.state.refresh });
 		}
 	}
 
@@ -484,8 +476,8 @@ class DataStructureBuilder extends React.Component {
 					<div className="autofit-col autofit-col-expand">
 						<ClayToggle
 							label={Util.translate("enable-input-status")}
-							value={false}
-							onChange={(e) => this.handleEnableInputStatusChange(e)}
+							toggled={this.state.dataStructure.enableInputStatus}
+							onToggle={(val) => this.handleEnableInputStatusChange(val)}
 							sizing="md"
 							style={{ width: "30%" }}
 						/>
@@ -493,8 +485,8 @@ class DataStructureBuilder extends React.Component {
 					<div className="autofit-col autofit-col-expand">
 						<ClayToggle
 							label={Util.translate("enable-goto")}
-							value={false}
-							onChange={(e) => this.handleEnableGotoChange(e)}
+							toggled={this.state.dataStructure.enableGoTo}
+							onToggle={(val) => this.handleEnableGotoChange(val)}
 							sizing="md"
 							style={{ width: "30%" }}
 						/>
@@ -567,6 +559,7 @@ class DataStructureBuilder extends React.Component {
 							languageId={this.languageId}
 							availableLanguageIds={this.availableLanguageIds}
 							parameter={this.state.workingParam}
+							dataStructure={this.state.dataStructure}
 							spritemap={this.spritemap}
 						/>
 					</div>
@@ -623,7 +616,7 @@ class DataStructureBuilder extends React.Component {
 					</div>
 					<div style={this.previewPanelStyles}>
 						<SXDataStructurePreviewer
-							key={this.state.dataStructure.key}
+							key={this.state.workingParam.key}
 							namespace={this.namespace}
 							dsbuilderId={this.dsbuilderId}
 							propertyPanelId={this.propertyPanelId}

@@ -110,7 +110,7 @@ const DataTypeExplorer = ({ portletParameters }) => {
 							onClick: () => {
 								editDataStructure(dataType.dataTypeId);
 							},
-							label: Util.translate("edit-structure"),
+							label: Util.translate("edit-data-structure"),
 							symbolLeft: "forms"
 						});
 					}
