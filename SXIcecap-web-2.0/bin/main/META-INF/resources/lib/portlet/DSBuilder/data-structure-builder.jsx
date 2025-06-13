@@ -80,6 +80,17 @@ class DataStructureBuilder extends React.Component {
 		this.workbenchId = props.portletParameters.params.workbenchId;
 		this.workbenchNamespace = props.portletParameters.params.workbenchNamespace;
 
+		this.workingParam = null;
+		this.dataTypeId = props.portletParameters.params.dataTypeId;
+		this.dataType = {};
+		(this.dataStructure = new DataStructure(
+			this.namespace,
+			this.previewCanvasId,
+			this.languageId,
+			this.availableLanguageIds
+		)),
+			(this.dataStructure.dirty = false);
+
 		this.dsbuilderId = this.namespace + "dataStructureBuilder";
 		this.propertyPanelId = this.namespace + "propertyPanel";
 		this.previewCanvasId = this.namespace + "previewCanvas";
@@ -90,29 +101,17 @@ class DataStructureBuilder extends React.Component {
 
 		this.state = {
 			paramType: ParamType.STRING,
-			workingParam: null,
 			loadingStatus: LoadingStatus.PENDING,
-			dataTypeId: props.portletParameters.params.dataTypeId,
-			dataType: {},
-			dataStructure: new DataStructure(
-				this.namespace,
-				this.previewCanvasId,
-				this.languageId,
-				this.availableLanguageIds
-			),
 			refresh: false,
 			confirmDlgState: false,
 			confirmDlgBody: "",
 			underConstruction: false
 		};
-
-		this.dirty = false;
-
-		this.attachEvents();
-		this.loadDataStructure();
 	}
 
-	attachEvents() {
+	componentDidMount() {
+		this.loadDataStructure();
+
 		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.dsbuilderId) return;
@@ -124,65 +123,6 @@ class DataStructureBuilder extends React.Component {
 
 			console.log("DataStructureBuilder SX_FIELD_VALUE_CHANGED RECEIVED: ", dataPacket, this.state.workingParam);
 			if (this.rerenderProperties.includes(dataPacket.paramName)) {
-				let property;
-				let value;
-				switch (dataPacket.paramName) {
-					case ParamProperty.DISPLAY_NAME: {
-						property = ParamProperty.LABEL;
-						value = this.state.workingParam.displayName[this.languageId];
-
-						break;
-					}
-					case ParamProperty.TOOLTIP:
-					case ParamProperty.DEFINITION:
-					case ParamProperty.PLACEHOLDER: {
-						property = dataPacket.paramName;
-						value = this.state.workingParam[dataPacket.paramName][this.languageId];
-
-						break;
-					}
-					case ParamProperty.VALIDATION: {
-						property = dataPacket.paramName;
-						value = this.state.workingParam[dataPacket.paramName];
-
-						Event.fire(Event.SX_PARAM_PROPERTY_CHANGED, this.namespace, this.namespace, {
-							target: this.previewCanvasId,
-							paramName: this.state.workingParam.paramName,
-							paramVersion: this.state.workingParam.paramVersion,
-							property: ParamProperty.REQUIRED,
-							value: value.required ? value.required.value : false
-						});
-						break;
-					}
-					case ParamProperty.OPTIONS: {
-						property = dataPacket.paramName;
-						value = this.state.workingParam.options.map((option) => ({
-							label: option.label[this.languageId],
-							value: option.value
-						}));
-
-						break;
-					}
-					case ParamProperty.VIEW_TYPE: {
-						property = dataPacket.paramName;
-						value = this.state.workingParam[dataPacket.paramName];
-
-						Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
-							target: this.propertyPanelId,
-							paramName: ParamProperty.VIEW_TYPE,
-							paramVersion: "1.0.0",
-							value: value
-						});
-						break;
-					}
-					default: {
-						property = dataPacket.paramName;
-						value = this.state.workingParam[dataPacket.paramName];
-
-						break;
-					}
-				}
-
 				this.state.workingParam.refreshKey();
 				console.log("send SX_PARAM_PROPERTY_CHANGED");
 
@@ -290,7 +230,7 @@ class DataStructureBuilder extends React.Component {
 			baseResourceURL: this.baseResourceURL,
 			resourceId: ResourceIds.LOAD_DATA_STRUCTURE,
 			params: {
-				dataTypeId: this.state.dataTypeId
+				dataTypeId: this.dataTypeId
 			},
 			successFunc: (result) => {
 				let dataStructure = Util.isNotEmpty(result.dataStructure)

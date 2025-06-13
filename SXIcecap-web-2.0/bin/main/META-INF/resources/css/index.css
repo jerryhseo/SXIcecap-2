@@ -48,6 +48,32 @@
 	animation: rotation 20s linear infinite;
 }
 
+.sx-dsb-property-panel {
+	display: block;
+	background-color: #ffffff;
+	border: 2px solid #cdced9;
+	padding: 0.75rem 5px;
+	width: 35%;
+}
+.sx-dsb-button-panel {
+	display: grid;
+	background-color: #f2f7c6;
+	border-top: 2px solid #cdced9;
+	border-bottom: 2px solid #cdced9;
+	border-left: none;
+	border-right: none;
+	padding: 0.75rem 5px;
+	justify-content: center;
+	width: 60px;
+}
+.sx-dsb-preview-panel {
+	display: grid;
+	background-color: #ffffff;
+	border: 2px solid #cdced9;
+	padding: 0.75rem 5px;
+	width: 60%;
+}
+
 .sx-glore-border::after {
 	filter: blur(3.5rem);
 }

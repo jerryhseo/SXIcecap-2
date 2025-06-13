@@ -1,33 +1,21 @@
-import React, { useState, useLayoutEffect, useRef, useContext } from "react";
+import React from "react";
 import { Text } from "@clayui/core";
 import ClayButton from "@clayui/button";
-import { ClayIconSpriteContext } from "@clayui/icon";
-import ClayForm, { Form } from "@clayui/form";
-import { Context } from "@clayui/modal";
-import SXFormField, {
-	SXButtonWithIcon,
-	SXLabeledText,
-	validateForm,
-	SelectDisplayStyle,
-	SXGroup,
-	SXLocalizedInput,
-	SXDualListBox
-} from "../../form/sxform";
+import { SXButtonWithIcon, SXLabeledText } from "../../form/sxform";
 import { Util } from "../../common/util";
 import {
 	EditStatus,
 	LoadingStatus,
 	Event,
 	DataTypeProperty,
-	ParamType,
-	DisplayType,
 	ValidationRule,
 	ResourceIds,
 	PortletKeys,
 	WindowState,
-	ViewTypes
+	ViewTypes,
+	Constant,
+	ErrorClass
 } from "../../common/station-x";
-import { DataStructure } from "../DSBuilder/data-structure";
 import { DualListParameter, GroupParameter, Parameter, StringParameter } from "../../parameter/parameter";
 import { SXModalDialog } from "../../modal/sxmodal";
 
@@ -141,168 +129,203 @@ class DataTypeEditor extends React.Component {
 			editStatus: props.portletParameters.params.dataTypeId > 0 ? EditStatus.UPDATE : EditStatus.ADD
 		};
 
-		this.nameProps = {
-			paramName: DataTypeProperty.NAME,
-			paramType: ParamType.STRING,
-			label: Util.translate("parameter-code"),
-			required: true,
-			viewType: ViewTypes.NORMAL,
-			placeholder: Util.translate("code-name"),
-			tooltip: Util.translate("code-name-tooltip"),
-			languageId: this.languageId,
-			validation: {
-				required: {
-					value: true,
-					message: `${DataTypeProperty.NAME} is required`
-				},
-				pattern: {
-					value: ValidationRule.VARIABLE,
-					message: "Invalid data type name"
-				},
-				min: {
-					value: 3,
-					message: "Should be at least 3"
-				},
-				max: {
-					value: 32,
-					message: "Should be shorter than 33"
+		this.fields = [];
+
+		this.parameterCode = new StringParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: DataTypeProperty.NAME,
+				displayName: Util.getTranslationObject(this.languageId, "parameter-code"),
+				required: true,
+				viewType: ViewTypes.NORMAL,
+				placeholder: Util.getTranslationObject(this.languageId, "code-name"),
+				tooltip: Util.getTranslationObject(this.languageId, "code-name-tooltip"),
+				validation: {
+					required: {
+						value: true,
+						message: Util.getTranslationObject(this.languageId, "this-field-is-required")
+					},
+					pattern: {
+						value: ValidationRule.VARIABLE,
+						message: Util.getTranslationObject(this.languageId, "invalid-data-type-name")
+					},
+					min: {
+						value: 3,
+						message: Util.getTranslationObject(this.languageId, "should-be-at-least-x")
+					},
+					max: {
+						value: 32,
+						message: Util.getTranslationObject(this.languageId, "should-be-shorter-than-x")
+					}
 				}
-			},
-			value: ""
-		};
-		this.versionProps = {
-			paramName: DataTypeProperty.VERSION,
-			paramType: ParamType.STRING,
-			label: Util.translate("version"),
-			required: true,
-			placeholder: "1.0.0",
-			tooltip: Util.translate("version-tooltip"),
-			languageId: this.languageId,
-			validation: {
-				required: {
-					value: true,
-					message: `${DataTypeProperty.VERSION} is required`
+			}
+		);
+
+		const versionPlaceholder = {};
+		versionPlaceholder[this.languageId] = "1.0.0";
+		this.parameterVersion = new StringParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: DataTypeProperty.VERSION,
+				displayName: Util.getTranslationObject(this.languageId, "version"),
+				required: true,
+				placeholder: versionPlaceholder,
+				tooltip: Util.getTranslationObject(this.languageId, "version-tooltip"),
+				validation: {
+					required: {
+						value: true,
+						message: Util.getTranslationObject(this.languageId, "this-field-is-required")
+					},
+					pattern: {
+						value: ValidationRule.VERSION,
+						message: Util.getTranslationObject(this.languageId, "invalid-version-format")
+					},
+					min: {
+						value: 6,
+						message: Util.getTranslationObject(this.languageId, "should-be-at-least-x")
+					},
+					max: {
+						value: 12,
+						message: Util.getTranslationObject(this.languageId, "should-be-shorter-than-x")
+					}
 				},
-				pattern: {
-					value: ValidationRule.VERSION,
-					message: "Invalid data type version"
-				}
-			},
-			value: "1.0.0"
-		};
-		this.extensionProps = {
+				defaultValue: "1.0.0"
+			}
+		);
+
+		const versionExt = {};
+		versionExt[this.languageId] = "ext";
+		this.extension = new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
 			paramName: DataTypeProperty.EXTENSION,
-			paramType: ParamType.STRING,
-			label: Util.translate("extension"),
+			displayName: Util.getTranslationObject(this.languageId, "extension"),
 			required: true,
-			placeholder: Util.translate("ext"),
-			tooltip: Util.translate("extension-tooltip"),
-			languageId: this.languageId,
+			placeholder: versionExt,
+			tooltip: Util.getTranslationObject(this.languageId, "extension"),
 			validation: {
 				required: {
 					value: true,
-					message: `${DataTypeProperty.EXTENSION}-is-required`
+					message: Util.getTranslationObject(this.languageId, "this-field-is-required")
 				},
 				pattern: {
 					value: ValidationRule.EXTENSION,
-					message: "Invalid data type extension"
+					message: Util.getTranslationObject(this.languageId, "invalid-extension")
 				},
 				min: {
 					value: 2,
-					message: "Should be at least 2"
+					message: Util.getTranslationObject(this.languageId, "should-be-at-least-x")
 				},
 				max: {
 					value: 16,
-					message: "Should be shorter than 17"
+					message: Util.getTranslationObject(this.languageId, "should-be-shorter-than-x")
 				}
 			}
-		};
-		this.displayNameProps = {
-			paramName: DataTypeProperty.DISPLAY_NAME,
-			paramType: ParamType.LOCALIZED_STRING,
-			label: Util.translate("display-name"),
-			required: true,
-			placeholder: Util.translate("display-name"),
-			tooltip: Util.translate("display-name-tooltip"),
-			languageId: this.languageId,
-			availableLanguageIds: this.availableLanguageIds,
-			validation: {
-				required: {
-					value: true,
-					message: `${DataTypeProperty.DISPLAY_NAME}-is-required`
-				},
-				min: {
-					value: 3,
-					message: "Must longer than 3"
-				},
-				max: {
-					value: 64,
-					message: "Must shorter than 64"
+		});
+
+		this.displayName = new StringParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: DataTypeProperty.DISPLAY_NAME,
+				localized: true,
+				displayName: Util.getTranslationObject(this.languageId, "display-name"),
+				required: true,
+				placeholder: Util.getTranslationObject(this.languageId, "display-name"),
+				tooltip: Util.getTranslationObject(this.languageId, "display-name-tooltip"),
+				validation: {
+					required: {
+						value: true,
+						message: Util.getTranslationObject(this.languageId, "this-field-is-required")
+					},
+					min: {
+						value: 3,
+						message: Util.getTranslationObject(this.languageId, "should-be-at-least-x")
+					},
+					max: {
+						value: 64,
+						message: Util.getTranslationObject(this.languageId, "should-be-shorter-than-x")
+					}
 				}
 			}
-		};
-		this.descriptionProps = {
-			paramName: DataTypeProperty.DESCRIPTION,
-			paramType: ParamType.LOCALIZED_STRING,
-			label: Util.translate("description"),
-			placeholder: Util.translate("description"),
-			tooltip: Util.translate("description-tooltip"),
-			multipleLine: true,
-			languageId: this.languageId,
-			availableLanguageIds: this.availableLanguageIds
-		};
-		this.tooltipProps = {
+		);
+
+		this.description = new StringParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: DataTypeProperty.DESCRIPTION,
+				localized: true,
+				displayName: Util.getTranslationObject(this.languageId, "description"),
+				placeholder: Util.getTranslationObject(this.languageId, "description"),
+				tooltip: Util.getTranslationObject(this.languageId, "description-tooltip"),
+				multipleLine: true
+			}
+		);
+
+		this.tooltip = new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
 			paramName: DataTypeProperty.TOOLTIP,
-			paramType: ParamType.LOCALIZED_STRING,
-			label: Util.translate("tooltip"),
-			placeholder: Util.translate("tooltip"),
-			tooltip: Util.translate("tooltip-tooltip"),
-			languageId: this.languageId,
-			availableLanguageIds: this.availableLanguageIds,
+			localized: true,
+			displayName: Util.getTranslationObject(this.languageId, "tooltip"),
+			placeholder: Util.getTranslationObject(this.languageId, "tooltip"),
+			tooltip: Util.getTranslationObject(this.languageId, "tooltip-tooltip"),
 			validation: {
 				max: {
 					value: 64,
-					message: "Should be shorter than 65 bytes"
+					message: Util.getTranslationObject(this.languageId, "should-be-shorter-than-x")
 				}
 			}
-		};
-		this.visualizersProps = {
-			paramName: DataTypeProperty.VISUALIZERS,
-			paramType: ParamType.DUALLIST,
-			label: Util.translate("associated-visualizers"),
-			required: true,
-			tooltip: Util.translate("associated-visualizers-tooltip"),
-			viewType: DualListParameter.ViewTypes.HORIZONTAL,
-			languageId: this.languageId,
-			validation: {
-				required: {
-					value: true,
-					message: `${DataTypeProperty.VISUALIZERS}-is-required`
-				}
-			},
-			leftOptions: [],
-			rightOptions: []
-		};
-
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			console.log("SX_FIELD_VALUE_CHANGED RECEIVED: ", e);
-			const { dataPacket } = e;
-			if (dataPacket.targetPortlet !== this.namespace) return;
-
-			const { paramName, paramVersion, value } = dataPacket;
-
-			this.formValues[paramName] = value;
-			delete this.formErrors[paramName];
 		});
 
-		Event.on(Event.SX_FORM_FIELD_FAILED, (e) => {
-			console.log("SX_FORM_FIELD_FAILED RECEIVED: ", e);
-			const dataPacket = Event.pickUpNamesapceDataPacket(e, this.namespace);
-			if (Util.isEmpty(dataPacket)) return;
+		this.visualizers = new DualListParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: DataTypeProperty.VISUALIZERS,
+				displayName: Util.getTranslationObject(this.languageId, "associated-visualizers"),
+				required: true,
+				tooltip: Util.getTranslationObject(this.languageId, "associated-visualizers-tooltip"),
+				viewType: DualListParameter.ViewTypes.HORIZONTAL,
+				validation: {
+					required: {
+						value: true,
+						message: Util.getTranslationObject(this.languageId, "this-field-is-required")
+					}
+				},
+				leftOptions: [],
+				rightOptions: []
+			}
+		);
 
-			const { paramName, paramVersion, error } = dataPacket;
-			this.formErrors[paramName] = error;
-		});
+		this.groupParameter = new GroupParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: "basicProps",
+				paramVersion: "1.0.0",
+				viewType: GroupParameter.ViewTypes.ARRANGEMENT,
+				members: [this.parameterCode, this.parameterVersion, this.extension],
+				membersPerRow: 3
+			}
+		);
+
+		this.fields.push(this.groupParameter);
+		this.fields.push(this.displayName);
+		this.fields.push(this.description);
+		this.fields.push(this.tooltip);
+		this.fields.push(this.visualizers);
 
 		//Loading dataType
 
@@ -317,50 +340,16 @@ class DataTypeEditor extends React.Component {
 					dataTypeId: this.state.dataTypeId
 				},
 				successFunc: (result) => {
-					for (const paramName in result.dataType) {
-						this.formValues[paramName] = result.dataType[paramName];
+					console.log("data type loaded: ", result);
+					for (const fieldName in result.dataType) {
+						const field = this.getField(this.fields, fieldName);
 
-						switch (paramName) {
-							case DataTypeProperty.NAME: {
-								this.nameProps.value = this.formValues[paramName];
-								break;
-							}
-							case DataTypeProperty.VERSION: {
-								this.versionProps.value = this.formValues[paramName];
-								break;
-							}
-							case DataTypeProperty.EXTENSION: {
-								this.extensionProps.value = this.formValues[paramName];
-								break;
-							}
-							case DataTypeProperty.DISPLAY_NAME: {
-								this.displayNameProps.value = this.formValues[paramName];
-								break;
-							}
-							case DataTypeProperty.DESCRIPTION: {
-								this.descriptionProps.value = this.formValues[paramName];
-								break;
-							}
-							case DataTypeProperty.TOOLTIP: {
-								this.tooltipProps.value = this.formValues[paramName];
-								break;
-							}
-							case DataTypeProperty.VISUALIZERS: {
-								this.visualizersProps.value = this.formValues[paramName];
-								this.visualizersProps.leftOptions = result.dataType.visualizers.map((item) => ({
-									...item,
-									key: item.id
-								}));
-								this.visualizersProps.rightOptions = result.visualizers.map((item) => ({
-									label: item.displayName[this.languageId],
-									id: item.id,
-									key: item.id,
-									value: item.id.toString()
-								}));
-								break;
-							}
+						if (field) {
+							field.value = result.dataType[fieldName];
 						}
 					}
+
+					this.visualizers.rightOptions = result.visualizers;
 
 					this.setState({ loadingStatus: LoadingStatus.COMPLETE });
 				},
@@ -377,12 +366,7 @@ class DataTypeEditor extends React.Component {
 				type: "post",
 				dataType: "json",
 				successFunc: (result) => {
-					this.visualizersProps.rightOptions = result.map((item) => ({
-						label: item.displayName[this.languageId],
-						id: item.id,
-						key: item.id,
-						value: item.id.toString()
-					}));
+					this.visualizers.setRightOptions(result);
 
 					this.setState({ loadingStatus: LoadingStatus.COMPLETE });
 				},
@@ -392,6 +376,43 @@ class DataTypeEditor extends React.Component {
 				}
 			});
 		}
+	}
+
+	componentDidMount() {
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, (event) => {
+			const dataPacket = Event.pickUpDataPacket(event, this.namespace, this.formId);
+
+			if (!dataPacket) {
+				return;
+			}
+
+			console.log("DataTypeEditor receives SX_FIELD_VALUE_CHANGED: ", dataPacket);
+		});
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		console.log("DataTypeEditor updated: ", prevProps, prevState);
+	}
+
+	getField(fields, fieldName) {
+		let found = null;
+
+		fields.every((field) => {
+			if (field.isAssembly()) {
+				found = this.getField(field.members, fieldName);
+
+				if (found) {
+					return Constant.STOP_EVERY;
+				}
+			} else if (field.paramName === fieldName) {
+				found = field;
+				return Constant.STOP_EVERY;
+			}
+
+			return Constant.CONTINUE_EVERY;
+		});
+
+		return found;
 	}
 
 	handleMoveToExplorer(e) {
@@ -412,65 +433,62 @@ class DataTypeEditor extends React.Component {
 		);
 	}
 
-	validateFormValues() {
-		if (Util.isEmpty(this.formValues.dataTypeName)) {
-			return {
-				fieldName: DataTypeProperty.NAME,
-				fieldVersion: "1.0.0",
-				message: DataTypeProperty.NAME + " is required"
-			};
-		}
-		if (Util.isEmpty(this.formValues.dataTypeVersion)) {
-			return {
-				fieldName: DataTypeProperty.VERSION,
-				fieldVersion: "1.0.0",
-				message: DataTypeProperty.VERSION + " is required"
-			};
-		}
-		if (Util.isEmpty(this.formValues.extension)) {
-			return {
-				fieldName: DataTypeProperty.EXTENSION,
-				fieldVersion: "1.0.0",
-				message: DataTypeProperty.EXTENSION + " is required"
-			};
-		}
-		if (Util.isEmpty(this.formValues.displayName)) {
-			return {
-				fieldName: DataTypeProperty.DISPLAY_NAME,
-				fieldVersion: "1.0.0",
-				message: DataTypeProperty.DISPLAY_NAME + " is required"
-			};
-		}
-		if (Util.isEmpty(this.formValues.visualizers)) {
-			return {
-				fieldName: DataTypeProperty.VISUALIZERS,
-				fieldVersion: "1.0.0",
-				message: DataTypeProperty.VISUALIZERS + " is required"
-			};
-		}
+	collectFormValues() {
+		let formValues = {};
+
+		this.fields.forEach((field) => {
+			if (field.isAssembly()) {
+				formValues = { ...formValues, ...field.getValue() };
+			} else if (field.hasValue()) {
+				formValues[field.paramName] = field.getValue();
+			}
+		});
+
+		console.log("DataTypeEditor.formValues: ", formValues);
+		return formValues;
+	}
+
+	validateFormValues(fields) {
+		let errorParam;
+		fields.every((field) => {
+			if (field.isAssembly()) {
+				errorParam = this.validateFormValues(field.members);
+			} else {
+				Parameter.validate(field);
+				if (field.hasError()) {
+					console.log("validation failed: ", field);
+					errorParam = field;
+				}
+			}
+
+			return errorParam ? Constant.STOP_EVERY : Constant.CONTINUE_EVERY;
+		});
+
+		return errorParam;
 	}
 
 	handleBtnSaveClick(e) {
-		const checkError = this.validateFormValues();
+		let errorParam = this.validateFormValues(this.fields);
 
-		if (Util.isNotEmpty(checkError)) {
-			console.log("checkError: ", this.formErrors);
-			Event.fire(Event.SX_PARAM_ERROR_FOUND, this.namespace, this.namespace, {
-				target: this.formId,
-				paramName: checkError.fieldName,
-				paramVersion: checkError.fieldVersion,
-				error: checkError.message
-			});
+		if (errorParam) {
+			console.log("An Error found: ", errorParam);
+
+			errorParam.dirty = true;
+			errorParam.fireFocus();
+
 			return;
 		}
 
 		const saveResourceId =
 			this.state.editStatus === EditStatus.UPDATE ? ResourceIds.UPDATE_DATATYPE : ResourceIds.ADD_DATATYPE;
 
-		console.log("handleBtnSaveClick: ", JSON.stringify(this.formValues, null, 4));
+		const formValues = this.collectFormValues();
+
+		console.log("handleBtnSaveClick: ", JSON.stringify(formValues, null, 4));
+
 		const params = {
 			dataTypeId: this.state.dataTypeId,
-			formData: JSON.stringify(this.formValues)
+			formData: JSON.stringify(formValues)
 		};
 
 		Util.ajax({
@@ -585,26 +603,6 @@ class DataTypeEditor extends React.Component {
 		} else if (this.state.loadingStatus === LoadingStatus.COMPLETE) {
 			const saveButtonLabel = Util.translate(this.state.editStatus === EditStatus.UPDATE ? "update" : "create");
 
-			const header = (
-				<div className="form-group">
-					<Text size={6}>
-						{this.state.editStatus === EditStatus.UPDATE
-							? Util.translate("edit-datatype")
-							: Util.translate("add-datatype")}
-					</Text>
-					<SXButtonWithIcon
-						id={this.namespace + "btnMoveToExplorer"}
-						label={Util.translate("datatype-list")}
-						symbol={"list"}
-						displayType={"link"}
-						style={{ float: "right" }}
-						size="lg"
-						onClick={(e) => this.handleMoveToExplorer(e)}
-						spritemap={this.spritemap}
-					/>
-				</div>
-			);
-
 			const events = {
 				fire: [
 					{
@@ -621,7 +619,23 @@ class DataTypeEditor extends React.Component {
 			};
 			return (
 				<>
-					{header}
+					<div className="form-group">
+						<Text size={6}>
+							{this.state.editStatus === EditStatus.UPDATE
+								? Util.translate("edit-datatype")
+								: Util.translate("add-datatype")}
+						</Text>
+						<SXButtonWithIcon
+							id={this.namespace + "btnMoveToExplorer"}
+							label={Util.translate("datatype-list")}
+							symbol="list"
+							displayType="link"
+							style={{ float: "right" }}
+							size="lg"
+							onClick={(e) => this.handleMoveToExplorer(e)}
+							spritemap={this.spritemap}
+						/>
+					</div>
 					{this.state.dataTypeId > 0 && (
 						<div className="form-group">
 							<SXLabeledText
@@ -631,44 +645,15 @@ class DataTypeEditor extends React.Component {
 							/>
 						</div>
 					)}
-					<ClayForm id={this.formId}>
-						<SXGroup
-							namespace={this.namespace}
-							events={events}
-							paramName="basicProps"
-							members={[this.nameProps, this.versionProps, this.extensionProps]}
-							membersPerRow={3}
-							spritemap={this.spritemap}
-						/>
-						<SXLocalizedInput
-							key={Util.randomKey()}
-							namespace={this.namespace}
-							events={events}
-							{...this.displayNameProps}
-							spritemap={this.spritemap}
-						/>
-						<SXLocalizedInput
-							key={Util.randomKey()}
-							namespace={this.namespace}
-							events={events}
-							{...this.descriptionProps}
-							spritemap={this.spritemap}
-						/>
-						<SXLocalizedInput
-							key={Util.randomKey()}
-							namespace={this.namespace}
-							events={events}
-							{...this.tooltipProps}
-							spritemap={this.spritemap}
-						/>
-						<SXDualListBox
-							key={Util.randomKey()}
-							namespace={this.namespace}
-							events={events}
-							{...this.visualizersProps}
-							spritemap={this.spritemap}
-						/>
-					</ClayForm>
+					{this.fields.map((field) =>
+						field.render({
+							events: events,
+							className: "",
+							style: {},
+							spritemap: this.spritemap
+						})
+					)}
+
 					<div className="sx-row">
 						<ClayButton.Group spaced>
 							<SXButtonWithIcon

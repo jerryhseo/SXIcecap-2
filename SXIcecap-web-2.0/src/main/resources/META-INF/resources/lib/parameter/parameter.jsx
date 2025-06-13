@@ -1,7 +1,26 @@
 import React from "react";
-import { Constant, ViewTypes, ParamType, ValidationKeys, ErrorClass, Event } from "../common/station-x";
+import { Constant, ParamType, ValidationKeys, ErrorClass, Event } from "../common/station-x";
 import { Util } from "../common/util";
-import SXFormField, { SXInput, SXLocalizedInput, SXPreviewRow } from "../form/sxform";
+import SXFormField, {
+	SXAddress,
+	SXBoolean,
+	SXDate,
+	SXDualListBox,
+	SXEMail,
+	SXFile,
+	SXGroup,
+	SXInput,
+	SXLabel,
+	SXLocalizedInput,
+	SXMatrix,
+	SXNumeric,
+	SXPhone,
+	SXPreviewRow,
+	SXRequiredMark,
+	SXSelectGroup,
+	SXTooltip
+} from "../form/sxform";
+import { ClayInput } from "@clayui/form";
 
 export class Translations {
 	constructor(json) {
@@ -39,11 +58,10 @@ export class SelectOption {
 export class ParamId {}
 
 export class Parameter {
-	static ViewTypes = {
-		REQULAR_LABEL: "regularLabel",
-		INLINE_LABEL: "inlineLabel",
-		ROW: "row",
-		COLUMN: "column",
+	static DisplayTypes = {
+		FORM_FIELD: "formField",
+		INLINE: "inline",
+		TABLE_SELECT_CELL: "tableSelectCell",
 		CELL: "cell"
 	};
 
@@ -104,7 +122,7 @@ export class Parameter {
 			/*
 			case ParamType.GRID: {
 				return new GridParameter(namespace, formId, languageId, availableLanguageIds, json);
-			}
+				}
 			case ParamType.TABLE: {
 				return new TableParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
@@ -233,6 +251,15 @@ export class Parameter {
 				}
 			}
 		}
+	}
+
+	static validate(parameter) {
+		parameter.error = Parameter.validateValue(
+			parameter.paramType,
+			parameter.validation,
+			parameter.value,
+			parameter.languageId
+		);
 	}
 
 	static validateValue(fieldType, validation, value, languageId) {
@@ -393,11 +420,14 @@ export class Parameter {
 	#referenceFile = { fileId: 0, fileType: "pdf" };
 
 	#validation = {};
+	#style = {};
+
 	#renderImage = null;
 	#pdf = null;
 
 	#value;
-	#error;
+	#displayType = Parameter.DisplayTypes.FORM_FIELD;
+	#error = {};
 
 	#key = Util.randomKey();
 	#dirty = false;
@@ -409,32 +439,6 @@ export class Parameter {
 		this.#languageId = languageId;
 		this.#availableLanguageIds = availableLanguageIds;
 		this.#paramType = paramType;
-
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const { targetPortlet, target, paramName, paramVersion, value } = e.dataPacket;
-
-			if (
-				targetPortlet !== this.#namespace ||
-				target !== this.#formId ||
-				paramName !== this.paramName ||
-				paramVersion !== this.paramVersion
-			) {
-				return;
-			}
-
-			console.log(
-				"StringParameter received SX_FIELD_VALUE_CHANGED: ",
-				e.dataPacket,
-				this,
-				this.paramType,
-				targetPortlet,
-				target,
-				paramName,
-				paramVersion
-			);
-
-			this.value = value;
-		});
 	}
 
 	get key() {
@@ -541,8 +545,17 @@ export class Parameter {
 	get value() {
 		return this.#value;
 	}
+	get displayType() {
+		return this.#displayType;
+	}
 	get error() {
 		return this.#error;
+	}
+	get errorMessage() {
+		return this.error.message ?? "";
+	}
+	get errorClass() {
+		return this.error.errorClass ?? "";
 	}
 	get labelPosition() {
 		return this.#labelPosition;
@@ -555,6 +568,23 @@ export class Parameter {
 	}
 	get focused() {
 		return this.#focused;
+	}
+	get tagId() {
+		return this.namespace + this.paramName + "_" + this.paramVersion;
+	}
+	get tagName() {
+		return this.namespace + this.paramName;
+	}
+	get style() {
+		return this.#style;
+	}
+
+	get rowCount() {
+		if (this.displayType !== Parameter.DisplayTypes.CELL) {
+			return;
+		}
+
+		return this.value.length;
 	}
 
 	set namespace(val) {
@@ -654,9 +684,19 @@ export class Parameter {
 	set value(val) {
 		this.#value = val;
 	}
+	set displayType(val) {
+		this.#displayType = val;
+	}
 	set error(val) {
 		this.#error = val;
 	}
+	set errorMessage(message) {
+		this.error.message = message;
+	}
+	set errorClass(className) {
+		this.error.errorClass = className;
+	}
+
 	set labelPosition(val) {
 		this.#labelPosition = val;
 	}
@@ -668,6 +708,9 @@ export class Parameter {
 	}
 	set focused(val) {
 		this.#focused = val;
+	}
+	set style(val) {
+		this.#style = val;
 	}
 
 	refreshKey() {
@@ -688,7 +731,10 @@ export class Parameter {
 	}
 
 	getDisplayName(languageId) {
-		return this.displayName[languageId];
+		return languageId ? this.displayName[languageId] : this.displayName[this.languageId];
+	}
+	get label() {
+		return this.getDisplayName();
 	}
 	addDisplayName(languageId, translation) {
 		this.displayName = Parameter.addLocalized(this.displayName, languageId, translation);
@@ -698,7 +744,7 @@ export class Parameter {
 	}
 
 	getDefinition(languageId) {
-		return this.definition[languageId];
+		return languageId ? this.definition[languageId] : this.definition[this.languageId];
 	}
 	addDefinition(languageId, translation) {
 		this.definition = Parameter.addLocalized(this.definition, languageId, translation);
@@ -708,7 +754,7 @@ export class Parameter {
 	}
 
 	getTooltip(languageId) {
-		return this.tooltip[languageId];
+		return languageId ? this.tooltip[languageId] : this.tooltip[this.languageId];
 	}
 	addTooltip(languageId, translation) {
 		this.tooltip = Parameter.addLocalized(this.tooltip, languageId, translation);
@@ -738,28 +784,16 @@ export class Parameter {
 		return Util.isNotEmpty(this.value);
 	}
 
-	getValue() {
-		return this.value;
-	}
-
-	setValue(value) {
-		this.value = value;
+	clearValue() {
+		this.value = this.value instanceof Array ? [] : null;
 	}
 
 	hasError() {
-		return Util.isNotEmpty(this.error);
-	}
-
-	setError(val) {
-		this.error = val;
-		this.refreshKey();
+		return this.error.errorClass !== ErrorClass.SUCCESS;
 	}
 
 	clearError() {
-		if (!!this.error) {
-			this.refreshKey();
-			this.error = null;
-		}
+		this.error = {};
 	}
 
 	isRendered() {
@@ -796,7 +830,46 @@ export class Parameter {
 		}
 	}
 
+	getTagId(cellIndex) {
+		return cellIndex >= 0 ? this.tagId + "_" + cellIndex : this.tagId;
+	}
+
 	validate(key = "") {}
+
+	addStyle(style) {
+		this.style = { ...this.style, ...style };
+	}
+
+	removeStyle(property) {
+		delete this.#style[property];
+	}
+
+	fireRefresh(cellIndex) {
+		Event.fire(Event.SX_REFRESH, this.namespace, this.namespace, {
+			targetFormId: this.formId,
+			paramName: this.paramName,
+			paramVersion: this.paramVersion,
+			cellIndex: cellIndex
+		});
+	}
+
+	fireFocus(cellIndex) {
+		Event.fire(Event.SX_FOCUS, this.namespace, this.namespace, {
+			targetFormId: this.formId,
+			paramName: this.paramName,
+			paramVersion: this.paramVersion,
+			cellIndex: cellIndex
+		});
+	}
+
+	fireValueChanged(cellIndex) {
+		Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
+			targetFormId: this.formId,
+			paramName: this.paramName,
+			paramVersion: this.paramVersion,
+			cellIndex: cellIndex
+		});
+	}
 
 	parse(json) {
 		for (const key in json) {
@@ -832,6 +905,8 @@ export class Parameter {
 		if (this.status > 0) json.status = this.status;
 		if (this.state > 0) json.state = this.state;
 
+		json.displayType = this.displayType;
+
 		return json;
 	}
 
@@ -854,11 +929,65 @@ export class Parameter {
 			referenceFile: this.referenceFile,
 			validation: this.validation,
 			readOnly: this.readOnly,
-			index: this.order,
+			order: this.order,
 			languageId: this.languageId,
 			availableLanguageIds: this.availableLanguageIds,
 			focused: this.focused
 		};
+	}
+
+	renderLabel({ forHtml, spritemap, inputStatus = false, languageId = this.languageId }) {
+		const style =
+			inputStatus && !this.hasValue()
+				? {
+						color: "#ff80b3"
+				  }
+				: {
+						color: "black"
+				  };
+
+		return (
+			<label
+				htmlFor={forHtml}
+				className="control-label"
+				style={style}
+			>
+				{this.label}
+				{this.required && <SXRequiredMark spritemap={spritemap} />}
+				{Util.isNotEmpty(this.tooltip) && (
+					<SXTooltip
+						tooltip={this.getTooltip()}
+						spritemap={spritemap}
+					/>
+				)}
+			</label>
+		);
+	}
+
+	renderPrefix() {
+		if (Util.isNotEmpty(this.prefix)) {
+			return (
+				<ClayInput.GroupItem
+					shrink
+					style={{ alignContent: "end", marginLeft: "0.5rem" }}
+				>
+					{this.getPrefix()}
+				</ClayInput.GroupItem>
+			);
+		}
+	}
+
+	renderPostfix() {
+		if (Util.isNotEmpty(this.postfix)) {
+			return (
+				<ClayInput.GroupItem
+					shrink
+					style={{ alignContent: "end" }}
+				>
+					{this.getPostfix()}
+				</ClayInput.GroupItem>
+			);
+		}
 	}
 }
 
@@ -871,6 +1000,8 @@ export class StringParameter extends Parameter {
 	#maxLength = 72;
 	#multipleLine = false;
 	#placeholder = {};
+	#prefix = {};
+	#postfix = {};
 
 	constructor(namespace, formId, languageId, availableLanguageIds, json) {
 		super(namespace, formId, languageId, availableLanguageIds, ParamType.STRING);
@@ -879,8 +1010,18 @@ export class StringParameter extends Parameter {
 			this.parse(json);
 		}
 
-		if (Util.isEmpty(this.viewType)) {
-			this.viewType = StringParameter.ViewTypes.REGULAR;
+		if (this.displayType === Parameter.DisplayTypes.CELL) {
+			if (this.localized) {
+				this.value = [{}];
+			} else {
+				this.value = [""];
+			}
+		} else {
+			if (this.localized) {
+				this.value = {};
+			} else {
+				this.value = "";
+			}
 		}
 	}
 
@@ -896,6 +1037,20 @@ export class StringParameter extends Parameter {
 	get placeholder() {
 		return this.#placeholder;
 	}
+	get prefix() {
+		return this.#prefix;
+	}
+	get postfix() {
+		return this.#postfix;
+	}
+
+	get languageFlags() {
+		return this.availableLanguageIds.map((lang) => ({
+			id: lang,
+			name: lang,
+			symbol: lang.toLowerCase()
+		}));
+	}
 
 	set minLength(val) {
 		this.#minLength = val;
@@ -909,9 +1064,93 @@ export class StringParameter extends Parameter {
 	set placeholder(val) {
 		this.#placeholder = val;
 	}
+	set prefix(val) {
+		this.#prefix = val;
+	}
+	set postfix(val) {
+		this.#postfix = val;
+	}
+
+	/**
+	 *
+	 * @param {Integer} cellIndex
+	 * @returns
+	 *     If index is larger than or equal to 0, it means the value type is array
+	 *     so that the function returns indexed cell value.
+	 *     Otherwise, vlaue array is returned when the value type of the parameter is "array",
+	 *     and single value when the value type of the parameter is "single".
+	 */
+	getValue(cellIndex) {
+		if (this.displayType === Parameter.DisplayTypes.CELL) {
+			return this.localized ? this.value[cellIndex] ?? {} : this.value[cellIndex] ?? "";
+		} else {
+			return this.value;
+		}
+	}
+
+	setValue(value, index) {
+		if (this.displayType === Parameter.DisplayTypes.CELL && index >= 0) {
+			this.value[index] = value;
+		} else {
+			this.value = value;
+		}
+		console.log("Parameter.setValue(): ", this.displayType, value, index, this.value);
+	}
 
 	getPlaceholder(languageId) {
 		return this.placeholder[languageId];
+	}
+
+	getPrefix(languageId) {
+		return languageId ?? this.prefix[this.languageId];
+	}
+
+	getPostfix(languageId) {
+		return languageId ?? this.postfix[this.languageId];
+	}
+
+	setPrefix(prefix, languageId) {
+		const langKey = languageId ?? this.languageId;
+
+		this.prefix[langKey] = prefix;
+	}
+
+	setPostfix(postfix, languageId) {
+		const langKey = languageId ?? this.languageId;
+
+		this.postfix[langKey] = postfix;
+	}
+
+	getTranslation(languageId, cellIndex) {
+		if (!(this.localized && this.hasValue())) {
+			return "";
+		}
+
+		if (cellIndex >= 0) {
+			return this.value[cellIndex] ? this.value[cellIndex][languageId] ?? "" : "";
+		} else {
+			return this.value[languageId] ?? "";
+		}
+	}
+
+	setTranslation(languageId, translation, cellIndex) {
+		if (!this.localized) {
+			return;
+		}
+
+		if (cellIndex >= 0) {
+			if (!this.value[cellIndex]) {
+				this.value[cellIndex] = {};
+			}
+
+			this.value[cellIndex][languageId] = translation;
+		} else {
+			this.value[languageId] = translation;
+		}
+	}
+
+	getTranslations(cellIndex) {
+		return cellIndex >= 0 ? this.value[cellIndex] ?? {} : this.value;
 	}
 
 	parse(json) {
@@ -947,61 +1186,47 @@ export class StringParameter extends Parameter {
 		return json;
 	}
 
-	renderPreviewRow(
-		namespace, //
-		propertyPanelId,
-		previewCanvasId,
-		tagId,
-		tagName,
+	render({
 		events,
 		className,
 		style,
 		spritemap,
-		inputStatus
-	) {
-		if (!this.isRendered()) {
-			this.renderImage = (
-				<SXPreviewRow
-					propertyPanelId={propertyPanelId}
-					previewCanvasId={previewCanvasId}
-					content={this.render(tagId, tagName, events, className, style, spritemap, inputStatus)}
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
+		if (this.localized) {
+			return (
+				<SXLocalizedInput
+					key={this.key}
+					parameter={this}
+					events={events}
+					className={className}
+					style={style}
 					spritemap={spritemap}
+					inputStatus={inputStatus}
+					displayType={displayType}
+					viewType={viewType}
+					cellIndex={cellIndex}
+				/>
+			);
+		} else {
+			return (
+				<SXInput
+					key={this.key}
+					parameter={this}
+					events={events}
+					className={className}
+					style={style}
+					spritemap={spritemap}
+					inputStatus={inputStatus}
+					displayType={displayType}
+					viewType={viewType}
+					cellIndex={cellIndex}
 				/>
 			);
 		}
-
-		return this.renderImage;
-	}
-
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
-		this.renderImage = (
-			<SXFormField
-				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
-				events={events}
-				className={className}
-				style={style}
-				spritemap={spritemap}
-				inputStatus={inputStatus}
-			/>
-		);
-
-		return this.renderImage;
-	}
-}
-
-export class LocalizedStringParameter extends StringParameter {
-	constructor(namespace, formId, languageId, availableLanguageIds, json) {
-		super(namespace, formId, languageId, availableLanguageIds, json);
-
-		this.paramType = ParamType.LOCALIZED_STRING;
-	}
-
-	toProperties(tagId, tagName) {
-		return super.toProperties(tagId, tagName);
 	}
 }
 
@@ -1112,14 +1337,10 @@ export class NumericParameter extends Parameter {
 		return json;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
-		this.renderImage = (
-			<SXFormField
-				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+	render(events, className, style, spritemap, inputStatus) {
+		return (
+			<SXNumeric
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -1127,8 +1348,6 @@ export class NumericParameter extends Parameter {
 				inputStatus={inputStatus}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }
 
@@ -1278,14 +1497,10 @@ export class SelectParameter extends Parameter {
 		return json;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
-		this.renderImage = (
+	render(events, className, style, spritemap, inputStatus) {
+		return (
 			<SXFormField
-				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -1293,8 +1508,6 @@ export class SelectParameter extends Parameter {
 				inputStatus={inputStatus}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }
 
@@ -1307,7 +1520,7 @@ export class DualListParameter extends Parameter {
 		HORIZONTAL: "horizontal",
 		VERTICAL: "vertical"
 	};
-	#rightOptions;
+	#rightOptions = [];
 
 	constructor(namespace, formId, languageId, availableLanguageIds, json) {
 		super(namespace, formId, languageId, availableLanguageIds, ParamType.DUALLIST);
@@ -1317,6 +1530,8 @@ export class DualListParameter extends Parameter {
 		} else {
 			this.viewType = DualListParameter.ViewTypes.HORIZONTAL;
 		}
+
+		this.value = [];
 	}
 
 	get leftOptions() {
@@ -1333,20 +1548,47 @@ export class DualListParameter extends Parameter {
 		this.#rightOptions = val;
 	}
 
-	addValue(val) {
-		if (Util.isEmpty(this.value)) {
-			this.value = new Array();
-		}
+	setValueByIds(ids) {
+		let leftOptions = this.leftOptions.filter((option) => ids.includes(option.id));
+		let rightOptions = this.leftOptions.filter((option) => !ids.includes(option.id));
 
+		this.leftOptions = [...leftOptions, ...this.rightOptions.filter((option) => ids.includes(option.id))];
+		this.rightOptions = [...rightOptions, ...this.rightOptions.filter((option) => !ids.includes(option.id))];
+
+		this.dirty = true;
+	}
+
+	addValue(val) {
 		this.value.push(val);
 	}
 
+	includedInValues(value) {
+		if (this.hasValue()) {
+			const result = this.value.filter((val) => val.value === value);
+			return result.length > 0;
+		} else {
+			return false;
+		}
+	}
+
+	notIncludedInValues(value) {
+		return !this.includedInValues(value);
+	}
+
 	removeValue(val) {
-		if (Util.isEmpty(this.value)) {
+		if (!this.hasValue()) {
 			return;
 		}
 
 		this.value = this.value.filter((elem) => elem.value !== val);
+	}
+
+	setRightOptions(options) {
+		this.rightOptions = options.filter((option) => this.notIncludedInValues(option.value));
+	}
+
+	getValue() {
+		return this.value;
 	}
 
 	parse(json) {
@@ -1370,14 +1612,20 @@ export class DualListParameter extends Parameter {
 		return json;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
-		this.renderImage = (
-			<SXFormField
+	render({
+		events,
+		className,
+		style,
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
+		return (
+			<SXDualListBox
 				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -1385,8 +1633,6 @@ export class DualListParameter extends Parameter {
 				inputStatus={inputStatus}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }
 
@@ -1503,14 +1749,10 @@ export class BooleanParameter extends SelectParameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
-		this.renderImage = (
-			<SXFormField
-				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+	render(events, className, style, spritemap, inputStatus) {
+		return (
+			<SXBoolean
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -1518,8 +1760,6 @@ export class BooleanParameter extends SelectParameter {
 				inputStatus={inputStatus}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }
 
@@ -1602,14 +1842,10 @@ export class MatrixParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
-		this.renderImage = (
-			<SXFormField
-				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+	render(events, className, style, spritemap, inputStatus) {
+		return (
+			<SXMatrix
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -1617,8 +1853,6 @@ export class MatrixParameter extends Parameter {
 				inputStatus={inputStatus}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }
 
@@ -1664,14 +1898,10 @@ export class FileParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
+	render(events, className, style, spritemap, inputStatus) {
 		return (
-			<SXFormField
-				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+			<SXFile
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -1745,14 +1975,10 @@ export class AddressParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
+	render(events, className, style, spritemap, inputStatus) {
 		return (
-			<SXFormField
-				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+			<SXAddress
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -1848,14 +2074,10 @@ export class DateParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
+	render(events, className, style, spritemap, inputStatus) {
 		return (
-			<SXFormField
-				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+			<SXDate
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -1938,14 +2160,10 @@ export class PhoneParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
+	render(events, className, style, spritemap, inputStatus) {
 		return (
-			<SXFormField
-				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+			<SXPhone
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -2010,14 +2228,10 @@ export class EMailParameter extends Parameter {
 		return properties;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
+	render(events, className, style, spritemap, inputStatus) {
 		return (
-			<SXFormField
-				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+			<SXEMail
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -2118,10 +2332,30 @@ export class GroupParameter extends Parameter {
 	loadData(data) {
 		this.members.forEach((member) => {
 			const value = data[member.paramName];
-			if (Util.isNotEmpty(vaue)) {
-				member.loadData(values);
+			if (Util.isNotEmpty(value)) {
+				member.loadData(value);
 			}
 		});
+	}
+
+	getValue() {
+		let values = {};
+		if (this.viewType === GroupParameter.ViewTypes.ARRANGEMENT) {
+			this.members.forEach((member) => {
+				if (member.hasValue()) {
+					values[member.paramName] = member.getValue();
+				}
+			});
+		} else {
+			values[this.paramName] = {};
+			this.members.forEach((member) => {
+				if (member.hasValue()) {
+					values[this.paramName][member.paramName] = member.getValue();
+				}
+			});
+		}
+
+		return values;
 	}
 
 	parse(json) {
@@ -2172,14 +2406,11 @@ export class GroupParameter extends Parameter {
 		return json;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
-		this.renderImage = (
-			<SXFormField
+	render({ events, className, style, spritemap, inputStatus }) {
+		return (
+			<SXGroup
 				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -2187,8 +2418,6 @@ export class GroupParameter extends Parameter {
 				inputStatus={inputStatus}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }
 
@@ -2222,14 +2451,10 @@ export class SelectGroupParameter extends Parameter {
 		if (tagName) json.tagName = tagName;
 	}
 
-	render(tagId, tagName, events, className, style, spritemap, inputStatus) {
-		const properties = this.toProperties(tagId, tagName);
-
-		this.renderImage = (
-			<SXFormField
-				key={this.key}
-				namespace={this.namespace}
-				properties={properties}
+	render(events, className, style, spritemap, inputStatus) {
+		return (
+			<SXSelectGroup
+				parameter={this}
 				events={events}
 				className={className}
 				style={style}
@@ -2237,7 +2462,5 @@ export class SelectGroupParameter extends Parameter {
 				inputStatus={inputStatus}
 			/>
 		);
-
-		return this.renderImage;
 	}
 }

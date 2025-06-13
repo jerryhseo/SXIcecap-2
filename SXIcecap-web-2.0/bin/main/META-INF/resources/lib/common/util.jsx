@@ -170,6 +170,13 @@ export const Util = {
 		return Liferay.Language.get(key);
 	},
 
+	getTranslationObject(languageId, key) {
+		const transObject = {};
+		transObject[languageId] = Liferay.Language.get(key);
+
+		return transObject;
+	},
+
 	convertArrayToRows: (ary, colsPerRow) => {
 		let rows = [];
 
