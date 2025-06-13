@@ -474,7 +474,7 @@ class DataTypeEditor extends React.Component {
 			console.log("An Error found: ", errorParam);
 
 			errorParam.dirty = true;
-			errorParam.fireFocus();
+			errorParam.fireRefresh();
 
 			return;
 		}

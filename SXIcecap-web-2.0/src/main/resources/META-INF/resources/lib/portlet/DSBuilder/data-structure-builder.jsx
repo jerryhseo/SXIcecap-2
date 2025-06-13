@@ -80,7 +80,6 @@ class DataStructureBuilder extends React.Component {
 		this.workbenchId = props.portletParameters.params.workbenchId;
 		this.workbenchNamespace = props.portletParameters.params.workbenchNamespace;
 
-		this.workingParam = null;
 		this.dataTypeId = props.portletParameters.params.dataTypeId;
 		this.dataType = {};
 		(this.dataStructure = new DataStructure(
@@ -89,20 +88,20 @@ class DataStructureBuilder extends React.Component {
 			this.languageId,
 			this.availableLanguageIds
 		)),
-			(this.dataStructure.dirty = false);
+		(this.dataStructure.dirty = false);
 
 		this.dsbuilderId = this.namespace + "dataStructureBuilder";
 		this.propertyPanelId = this.namespace + "propertyPanel";
 		this.previewCanvasId = this.namespace + "previewCanvas";
-
+		
 		this.saveResult = "";
-
+		
 		this.loadingFailMessage = "";
-
+		
 		this.state = {
 			paramType: ParamType.STRING,
+			workingParam: null,
 			loadingStatus: LoadingStatus.PENDING,
-			refresh: false,
 			confirmDlgState: false,
 			confirmDlgBody: "",
 			underConstruction: false
