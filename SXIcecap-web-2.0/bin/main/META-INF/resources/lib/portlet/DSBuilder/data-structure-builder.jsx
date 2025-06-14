@@ -80,19 +80,22 @@ class DataStructureBuilder extends React.Component {
 		this.workbenchId = props.portletParameters.params.workbenchId;
 		this.workbenchNamespace = props.portletParameters.params.workbenchNamespace;
 
-		this.dataTypeId = props.portletParameters.params.dataTypeId;
-		this.dataType = {};
-		(this.dataStructure = new DataStructure(
-			this.namespace,
-			this.previewCanvasId,
-			this.languageId,
-			this.availableLanguageIds
-		)),
-		(this.dataStructure.dirty = false);
-
 		this.dsbuilderId = this.namespace + "dataStructureBuilder";
 		this.propertyPanelId = this.namespace + "propertyPanel";
 		this.previewCanvasId = this.namespace + "previewCanvas";
+
+		this.dataTypeId = props.portletParameters.params.dataTypeId;
+		this.dataType = {};
+		this.dataStructure = new DataStructure(
+			this.namespace,
+			this.dsbuilderId,
+			this.propertyPanelId,
+			this.previewCanvasId,
+			this.languageId,
+			this.availableLanguageIds
+		);
+		this.dataStructure.dirty = false;
+
 		
 		this.saveResult = "";
 		
