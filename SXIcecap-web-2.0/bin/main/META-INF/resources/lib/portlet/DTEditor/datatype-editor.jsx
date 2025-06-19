@@ -65,7 +65,7 @@ export const DataTypeInfo = ({ title, abstract, items, colsPerRow = 1 }) => {
 	}
 
 	return (
-		<div className="form-group sheet sheet-lg">
+		<div className="form-group sheet">
 			<div
 				className="sheet-header"
 				style={{ marginBottom: "20px" }}
@@ -112,8 +112,6 @@ class DataTypeEditor extends React.Component {
 		this.formValues = {
 			dataTypeVersion: "1.0.0"
 		};
-
-		this.formErrors = {};
 
 		this.dirty = false;
 
@@ -474,7 +472,7 @@ class DataTypeEditor extends React.Component {
 			console.log("An Error found: ", errorParam);
 
 			errorParam.dirty = true;
-			errorParam.fireFocus();
+			errorParam.fireRefresh();
 
 			return;
 		}
@@ -516,11 +514,10 @@ class DataTypeEditor extends React.Component {
 	}
 
 	handleBtnUpgradeDataTypeClick() {
-		this.formValues[DataTypeProperty.VERSION] = "";
-		this.versionProps.value = "";
+		this.parameterVersion.value = "";
 
-		this.nameProps.disabled = true;
-		this.extensionProps.disabled = true;
+		this.parameterCode.disabled = true;
+		this.extension.disabled = true;
 
 		this.setState({
 			dataTypeId: 0,
@@ -529,12 +526,9 @@ class DataTypeEditor extends React.Component {
 	}
 
 	handleBtnCopyDataTypeClick() {
-		this.formValues[DataTypeProperty.NAME] = "";
-		this.nameProps.value = "";
-		this.formValues[DataTypeProperty.VERSION] = "1.0.0";
-		this.versionProps.value = "1.0.0";
-		this.formValues[DataTypeProperty.EXTENSION] = "";
-		this.extensionProps.value = "";
+		this.parameterCode.value = "";
+		this.parameterVersion.value = "1.0.0";
+		this.extension.value = "";
 
 		this.setState({ dataTypeId: 0, editStatus: EditStatus.ADD });
 	}
@@ -562,17 +556,16 @@ class DataTypeEditor extends React.Component {
 	}
 
 	clearForm() {
-		this.formValues = {};
-		this.formErrors = {};
+		this.parameterCode.clearValue();
+		this.parameterVersion.clearValue();
+		this.extension.clearValue();
+		this.displayName.clearValue();
+		this.description.clearValue();
+		this.tooltip.clearValue();
 
-		this.nameProps.value = "";
-		this.versionProps.value = "1.0.0";
-		this.extensionProps.value = "";
-		this.displayNameProps.value = {};
-		this.descriptionProps.value = {};
-		this.tooltipProps.value = {};
+		this.visualizers.clearValue();
 
-		this.visualizersProps.value = [];
+		this.forceUpdate();
 	}
 
 	proceedDelete() {
@@ -603,20 +596,7 @@ class DataTypeEditor extends React.Component {
 		} else if (this.state.loadingStatus === LoadingStatus.COMPLETE) {
 			const saveButtonLabel = Util.translate(this.state.editStatus === EditStatus.UPDATE ? "update" : "create");
 
-			const events = {
-				fire: [
-					{
-						traget: this.formId,
-						event: Event.SX_FIELD_VALUE_CHANGED
-					}
-				],
-				on: [
-					{
-						target: this.formId,
-						event: Event.SX_PARAM_ERROR_FOUND
-					}
-				]
-			};
+			const events = {};
 			return (
 				<>
 					<div className="form-group">

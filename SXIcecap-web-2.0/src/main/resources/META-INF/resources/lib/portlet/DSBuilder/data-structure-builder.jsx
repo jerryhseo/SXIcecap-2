@@ -102,7 +102,6 @@ class DataStructureBuilder extends React.Component {
 		this.state = {
 			paramType: ParamType.STRING,
 			loadingStatus: LoadingStatus.PENDING,
-			refresh: false,
 			confirmDlgState: false,
 			confirmDlgBody: "",
 			underConstruction: false
@@ -112,48 +111,6 @@ class DataStructureBuilder extends React.Component {
 	componentDidMount() {
 		this.loadDataStructure();
 
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.dsbuilderId) return;
-
-			this.dirty = true;
-
-			this.state.workingParam.clearError();
-			this.state.workingParam[dataPacket.paramName] = dataPacket.value;
-
-			console.log("DataStructureBuilder SX_FIELD_VALUE_CHANGED RECEIVED: ", dataPacket, this.state.workingParam);
-			if (this.rerenderProperties.includes(dataPacket.paramName)) {
-				this.state.workingParam.refreshKey();
-				console.log("send SX_PARAM_PROPERTY_CHANGED");
-
-				this.setState({ refresh: !this.state.refresh });
-			}
-		});
-
-		Event.on(Event.SX_FORM_FIELD_FAILED, (e) => {
-			const dataPacket = Event.pickUpNamesapceDataPacket(e, this.namespace);
-			if (Util.isEmpty(dataPacket)) return;
-
-			this.state.workingParam.setError(dataPacket.error);
-			console.log("DataStructureBuilder SX_FORM_FIELD_FAILED RECEIVED: ", e, this.state.workingParam);
-		});
-
-		Event.on(Event.SX_PARAMETER_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.dsbuilderId) return;
-
-			this.setState({
-				workingParam: Parameter.createParameter(
-					this.namespace,
-					this.previewCanvasId,
-					this.languageId,
-					this.availableLanguageIds,
-					dataPacket.parameter.paramType,
-					dataPacket.parameter.toJSON()
-				)
-			});
-		});
-
 		Event.on(Event.SX_PARAMETER_SELECTED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.dsbuilderId) {
@@ -161,7 +118,7 @@ class DataStructureBuilder extends React.Component {
 				return;
 			}
 
-			const selectedParam = this.state.dataStructure.getParameter(dataPacket.paramName, dataPacket.paramVersion);
+			const selectedParam = this.dataStructure.findParameter(dataPacket.paramName, dataPacket.paramVersion);
 			if (selectedParam === this.state.workingParam) {
 				return;
 			}
@@ -170,7 +127,8 @@ class DataStructureBuilder extends React.Component {
 				workingParam: selectedParam
 			});
 
-			this.state.dataStructure.focusParameter(selectedParam.paramName, selectedParam.paramVersion);
+			this.dataStructure.releaseFocus();
+			selectedParam.fireFocus();
 
 			console.log("SX_PARAMETER_SELECTED received: ", dataPacket);
 
@@ -233,7 +191,7 @@ class DataStructureBuilder extends React.Component {
 				dataTypeId: this.dataTypeId
 			},
 			successFunc: (result) => {
-				let dataStructure = Util.isNotEmpty(result.dataStructure)
+				this.dataStructure = Util.isNotEmpty(result.dataStructure)
 					? new DataStructure(
 							this.namespace,
 							this.previewCanvasId,
@@ -248,12 +206,12 @@ class DataStructureBuilder extends React.Component {
 							this.availableLanguageIds
 					  );
 
+				this.dataType = result.dataType;
+
 				this.setState({
-					dataType: result.dataType,
-					dataStructure: dataStructure,
 					workingParam:
-						dataStructure.parameters.length > 0
-							? dataStructure.parameters[0]
+						this.dataStructure.countParameters() > 0
+							? this.dataStructure.parameters[0]
 							: Parameter.createParameter(
 									this.namespace,
 									this.previewCanvasId,
@@ -265,35 +223,34 @@ class DataStructureBuilder extends React.Component {
 				});
 			},
 			errorFunc: (err) => {
-				this.loadingFailMessage = "Failed to load data type: " + this.state.dataTypeId;
+				this.loadingFailMessage = "Failed to load data type: " + this.dataTypeId;
 				this.setState({ loadingStatus: LoadingStatus.FAIL });
 			}
 		});
 	}
 
 	handleEnableInputStatusChange(val) {
-		this.state.dataStructure.enableInputStatus = val;
-		this.state.dataStructure.refreshKey();
+		this.dataStructure.enableInputStatus = val;
 
-		this.setState({ refresh: !this.state.refresh });
+		this.forceUpdate();
 	}
 
 	handleEnableGotoChange(val) {
-		this.state.dataStructure.enableGoTo = val;
-		this.state.dataStructure.refreshKey();
+		this.dataStructure.enableGoTo = val;
 
-		this.setState({ refresh: !this.state.refresh });
+		this.forceUpdate();
 	}
 
 	handleNewParameter() {
-		const newParam = Parameter.createParameter(
-			this.namespace,
-			this.previewCanvasId,
-			this.languageId,
-			this.availableLanguageIds,
-			ParamType.STRING
-		);
-		this.setState({ workingParam: newParam });
+		this.setState({
+			workingParam: Parameter.createParameter(
+				this.namespace,
+				this.previewCanvasId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.STRING
+			)
+		});
 
 		/*
 		Event.fire(Event.SX_PARAMETER_CHANGED, this.namespace, this.namespace, {
@@ -309,22 +266,23 @@ class DataStructureBuilder extends React.Component {
 	}
 
 	handleSaveDataStructure = () => {
-		console.log(JSON.stringify(this.state.dataStructure.toJSON(), null, 4));
+		console.log(JSON.stringify(this.dataStructure.toJSON(), null, 4));
 
 		Util.ajax({
 			namespace: this.namespace,
 			baseResourceURL: this.baseResourceURL,
 			resourceId: ResourceIds.UPDATE_DATA_STRUCTURE,
 			params: {
-				dataTypeId: this.state.dataTypeId,
-				dataStructure: JSON.stringify(this.state.dataStructure.toJSON())
+				dataTypeId: this.dataTypeId,
+				dataStructure: JSON.stringify(this.dataStructure.toJSON())
 			},
 			successFunc: (result) => {
 				this.setState({
 					confirmDlgState: true,
-					confirmDlgBody: <h4>{"Data structure is saved successfully as " + result.dataTypeId}</h4>,
-					dirty: false
+					confirmDlgBody: <h4>{"Data structure is saved successfully as " + result.dataTypeId}</h4>
 				});
+
+				this.dataStructure.dirty = false;
 			},
 			errorFunc: (err) => {
 				this.setState({ loadingStatus: LoadingStatus.FAIL });
@@ -336,16 +294,14 @@ class DataStructureBuilder extends React.Component {
 		const noError = this.validateParameter();
 
 		if (noError) {
-			this.state.dataStructure.addParameter(this.state.workingParam);
-			this.state.dataStructure.focusParameter(
-				this.state.workingParam.paramName,
-				this.state.workingParam.paramVersion
-			);
+			this.dataStructure.addParameter(this.state.workingParam);
+			this.state.workingParam.focused = true;
 
-			this.setState({ refresh: !this.state.refresh });
+			this.forceUpdate();
 		}
 	}
 
+	/*
 	validateParameter() {
 		if (Util.isEmpty(this.state.workingParam.paramName)) {
 			Event.fire(Event.SX_PARAM_ERROR_FOUND, this.namespace, this.namespace, {
@@ -376,6 +332,7 @@ class DataStructureBuilder extends React.Component {
 
 		return true;
 	}
+		*/
 
 	render() {
 		if (this.state.loadingStatus === LoadingStatus.PENDING) {
@@ -385,38 +342,38 @@ class DataStructureBuilder extends React.Component {
 		}
 
 		console.log("DataStructureBuilder workingParam: ", this.state.loadingStatus, this.state.workingParam);
-		console.log("DataStructureBuilder dataStructure: ", this.state.dataStructure);
+		console.log("DataStructureBuilder dataStructure: ", this.dataStructure);
 
 		return (
 			<>
 				<DataTypeInfo
-					title={this.state.dataType.displayName}
-					abstract={this.state.dataType.description}
+					title={this.dataType.displayName}
+					abstract={this.dataType.description}
 					items={[
 						{
 							label: Util.translate("id"),
-							text: this.state.dataType[DataTypeProperty.ID]
+							text: this.dataType[DataTypeProperty.ID]
 						},
 						{
 							label: Util.translate("name"),
-							text: this.state.dataType[DataTypeProperty.NAME]
+							text: this.dataType[DataTypeProperty.NAME]
 						},
 						{
 							label: Util.translate("version"),
-							text: this.state.dataType[DataTypeProperty.VERSION]
+							text: this.dataType[DataTypeProperty.VERSION]
 						},
 						{
 							label: Util.translate("extension"),
-							text: this.state.dataType[DataTypeProperty.EXTENSION]
+							text: this.dataType[DataTypeProperty.EXTENSION]
 						}
 					]}
-					colsPerRow={2}
+					colsPerRow={4}
 				/>
 				<div style={{ display: "inline-flex", width: "100%" }}>
 					<div className="autofit-col autofit-col-expand">
 						<ClayToggle
 							label={Util.translate("enable-input-status")}
-							toggled={this.state.dataStructure.enableInputStatus}
+							toggled={this.dataStructure.enableInputStatus}
 							onToggle={(val) => this.handleEnableInputStatusChange(val)}
 							sizing="md"
 							style={{ width: "30%" }}
@@ -425,7 +382,7 @@ class DataStructureBuilder extends React.Component {
 					<div className="autofit-col autofit-col-expand">
 						<ClayToggle
 							label={Util.translate("enable-goto")}
-							toggled={this.state.dataStructure.enableGoTo}
+							toggled={this.dataStructure.enableGoTo}
 							onToggle={(val) => this.handleEnableGotoChange(val)}
 							sizing="md"
 							style={{ width: "30%" }}
@@ -489,17 +446,15 @@ class DataStructureBuilder extends React.Component {
 								className="float-right"
 							/>
 						</Button.Group>
-
 						<SXDSBuilderPropertiesPanel
-							key={this.state.workingParam.key}
 							namespace={this.namespace}
 							dsbuilderId={this.dsbuilderId}
 							propertyPanelId={this.propertyPanelId}
 							previewCanvasId={this.previewCanvasId}
 							languageId={this.languageId}
 							availableLanguageIds={this.availableLanguageIds}
-							parameter={this.state.workingParam}
-							dataStructure={this.state.dataStructure}
+							workingParam={this.state.workingParam}
+							dataStructure={this.dataStructure}
 							spritemap={this.spritemap}
 						/>
 					</div>
@@ -555,6 +510,7 @@ class DataStructureBuilder extends React.Component {
 						</div>
 					</div>
 					<div style={this.previewPanelStyles}>
+						{/*
 						<SXDataStructurePreviewer
 							key={this.state.workingParam.key}
 							namespace={this.namespace}
@@ -563,10 +519,11 @@ class DataStructureBuilder extends React.Component {
 							previewCanvasId={this.previewCanvasId}
 							languageId={this.languageId}
 							availableLanguageIds={this.availableLanguageIds}
-							dataStructure={this.state.dataStructure}
+							dataStructure={this.dataStructure}
 							spritemap={this.spritemap}
 							workingParamOrder={this.state.workingParam.order}
 						/>
+					*/}
 					</div>
 				</div>
 				<Button.Group spaced>

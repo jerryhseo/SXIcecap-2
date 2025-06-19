@@ -351,29 +351,29 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.namespace = props.namespace;
+		this.namespace = props.workingParam.namespace;
 		this.dsbuilderId = props.dsbuilderId;
 		this.propertyPanelId = props.propertyPanelId;
 		this.previewCanvasId = props.previewCanvasId;
-		this.languageId = props.languageId;
-		this.availableLanguageIds = props.availableLanguageIds;
+		this.languageId = props.workingParam.languageId;
+		this.availableLanguageIds = props.workingParam.availableLanguageIds;
 		this.spritemap = props.spritemap;
-		this.inputStatus = props.inputStatus;
 		this.dataStructure = props.dataStructure;
+		this.workingParam = props.workingParam;
 
-		this.state = {
-			parameter: props.parameter,
-			refresh: false
-		};
+		this.typeSpecificFormId = this.namespace + "typeSpecificForm";
+	}
 
+	componentDidMount() {
 		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.propertyPanelId) {
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.typeSpecificFormId) {
 				return;
 			}
 
 			console.log("SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ", dataPacket, this.state.parameter);
-			this.setState({ refresh: !this.state.refresh });
+
+			this.workingParam.fireRefreshPreview();
 		});
 	}
 

@@ -8,7 +8,6 @@ import SXDSBuilderOptionPropertiesPanel from "./option-properties-panel";
 import SXDSBuilderValidationPanel from "./validation-builder-panel";
 import { Event, ParamProperty, ParamType } from "../../common/station-x";
 import { SXLabel } from "../../form/sxform";
-import { Parameter } from "../../parameter/parameter";
 
 class SXDSBuilderPropertiesPanel extends React.Component {
 	panelSteps = [
@@ -37,22 +36,14 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 		this.availableLanguageIds = props.availableLanguageIds;
 		this.spritemap = props.spritemap;
 		this.dataStructure = props.dataStructure;
+		this.workingParam = props.workingParam;
 
 		this.state = {
-			parameter: props.parameter,
 			panelStep: 0
 		};
-
-		Event.on(Event.SX_PARAMETER_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.propertyPanelId) return;
-
-			this.setState({
-				parameter: dataPacket.parameter,
-				panelStep: 0
-			});
-		});
 	}
+
+	componentDidMount() {}
 
 	handlePanelStepChange(step) {
 		this.setState({ panelStep: step });
@@ -66,33 +57,28 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 	}
 
 	renderPanelContent() {
+		console.log("SXDSBuilderPropertiesPanel workingParam: ", this.workingParam);
 		switch (this.state.panelStep) {
 			case 0: {
 				return (
 					<SXDSBuilderBasicPropertiesPanel
-						key={this.state.parameter.key}
-						namespace={this.namespace}
 						dsbuilderId={this.dsbuilderId}
 						propertyPanelId={this.propertyPanelId}
 						previewCanvasId={this.previewCanvasId}
-						languageId={this.languageId}
-						availableLanguageIds={this.availableLanguageIds}
-						parameter={this.state.parameter}
+						workingParam={this.workingParam}
+						dataStructure={this.dataStructure}
 						spritemap={this.spritemap}
 					/>
 				);
 			}
+			/*
 			case 1: {
 				return (
 					<SXDSBuilderTypeSpecificPanel
-						key={this.state.parameter.key}
-						namespace={this.namespace}
 						dsbuilderId={this.dsbuilderId}
 						propertyPanelId={this.propertyPanelId}
 						previewCanvasId={this.previewCanvasId}
-						languageId={this.languageId}
-						availableLanguageIds={this.availableLanguageIds}
-						parameter={this.state.parameter}
+						workingParam={this.workingParam}
 						dataStructure={this.dataStructure}
 						spritemap={this.spritemap}
 					/>
@@ -101,14 +87,11 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 			case 2: {
 				return (
 					<SXDSBuilderOptionPropertiesPanel
-						key={this.state.parameter.key}
-						namespace={this.namespace}
 						dsbuilderId={this.dsbuilderId}
 						propertyPanelId={this.propertyPanelId}
 						previewCanvasId={this.previewCanvasId}
-						languageId={this.languageId}
-						availableLanguageIds={this.availableLanguageIds}
-						parameter={this.state.parameter}
+						workingParam={this.workingParam}
+						dataStructure={this.dataStructure}
 						spritemap={this.spritemap}
 					/>
 				);
@@ -116,18 +99,16 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 			case 3: {
 				return (
 					<SXDSBuilderValidationPanel
-						key={this.state.parameter.key}
-						namespace={this.namespace}
 						dsbuilderId={this.dsbuilderId}
 						propertyPanelId={this.propertyPanelId}
 						previewCanvasId={this.previewCanvasId}
-						languageId={this.languageId}
-						availableLanguageIds={this.availableLanguageIds}
-						parameter={this.state.parameter}
+						workingParam={this.workingParam}
+						dataStructure={this.dataStructure}
 						spritemap={this.spritemap}
 					/>
 				);
 			}
+				*/
 		}
 	}
 
@@ -152,11 +133,11 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 							label: ParamType[key],
 							value: ParamType[key]
 						}))}
-						value={this.state.parameter.paramType}
+						value={this.workingParam.paramType}
 						onChange={(e) => {
 							this.handleParamTypeSelect(e);
 						}}
-						disabled={this.state.parameter.order > 0}
+						disabled={this.workingParam.order > 0}
 						spritemap={this.spritemap}
 					/>
 				</Form.Group>

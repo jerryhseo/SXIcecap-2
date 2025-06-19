@@ -3,144 +3,206 @@ import { Util } from "../../common/util";
 import { Event, ParamProperty, ValidationRule } from "../../common/station-x";
 import { SXBoolean, SXInput, SXLocalizedInput } from "../../form/sxform";
 import LocalizedInput from "@clayui/localized-input";
-import { BooleanParameter } from "../../parameter/parameter";
+import { BooleanParameter, StringParameter } from "../../parameter/parameter";
 
 class SXDSBuilderBasicPropertiesPanel extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.namespace = props.namespace;
+		this.namespace = props.workingParam.namespace;
 		this.dsbuilderId = props.dsbuilderId;
 		this.propertyPanelId = props.propertyPanelId;
 		this.previewCanvasId = props.previewCanvasId;
-		this.languageId = props.languageId;
-		this.availableLanguageIds = props.availableLanguageIds;
+		this.languageId = props.workingParam.languageId;
+		this.availableLanguageIds = props.workingParam.availableLanguageIds;
+		this.workingParam = props.workingParam;
+		this.dataStructure = props.dataStructure;
 		this.spritemap = props.spritemap;
 
-		this.state = {
-			parameter: props.parameter
-		};
+		this.basicPropertiesFormId = this.namespace + "basicPropertiesForm";
 
-		this.paramNameProps = {
-			paramName: ParamProperty.PARAM_NAME,
-			required: true,
-			label: Util.translate("parameter-name"),
-			placeholder: Util.translate("code-name-of-the-parameter"),
-			tooltip: Util.translate("code-name-of-the-parameter-tooltip"),
-			ariaLabel: Util.translate("parameter-name"),
-			value: props.parameter.paramName ?? "",
-			validation: {
-				required: {
-					value: true,
-					message: Util.translate("Parameter name is required")
+		this.fieldParamName = new StringParameter(
+			this.namespace,
+			this.basicPropertiesFormId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: ParamProperty.PARAM_NAME,
+				required: true,
+				displayName: Util.getTranslationObject(this.languageId, "parameter-name"),
+				placeholder: Util.getTranslationObject(this.languageId, "code-name-of-the-parameter"),
+				tooltip: Util.getTranslationObject(this.languageId, "code-name-of-the-parameter-tooltip"),
+				validation: {
+					required: {
+						value: true,
+						message: Util.getTranslationObject(this.languageId, "this-field-is-required")
+					},
+					pattern: {
+						value: ValidationRule.VARIABLE,
+						message: Util.getTranslationObject(this.languageId, "invalid-parameter-name")
+					},
+					min: {
+						value: 8,
+						message: Util.getTranslationObject(this.languageId, "too-short")
+					},
+					max: {
+						value: 32,
+						message: Util.getTranslationObject(this.languageId, "too-long")
+					}
 				},
-				pattern: {
-					value: ValidationRule.VARIABLE,
-					message: Util.translate("invalid-parameter-name")
-				},
-				min: {
-					value: 8,
-					message: Util.translate("too-short")
-				},
-				max: {
-					value: 32,
-					message: Util.translate("too-long")
-				}
+				value: this.workingParam.paramName
 			}
-		};
-		this.versionProps = {
-			paramName: ParamProperty.VERSION,
-			required: true,
-			label: Util.translate("version"),
-			placeholder: Util.translate("version-of-the-parameter"),
-			tooltip: Util.translate("version-of-the-parameter-tooltip"),
-			ariaLabel: Util.translate("version"),
-			value: props.parameter.paramVersion ?? "1.0.0",
-			validation: {
-				required: {
-					value: true,
-					message: Util.translate("Parameter version is required")
+		);
+		this.fieldParamVersion = new StringParameter(
+			this.namespace,
+			this.basicPropertiesFormId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: ParamProperty.VERSION,
+				required: true,
+				displayName: Util.getTranslationObject(this.languageId, "version"),
+				placeholder: Util.getTranslationObject(this.languageId, "version-of-the-parameter"),
+				tooltip: Util.getTranslationObject(this.languageId, "version-of-the-parameter-tooltip"),
+				defaultValue: "1.0.0",
+				validation: {
+					required: {
+						value: true,
+						message: Util.getTranslationObject(this.languageId, "Parameter version is required")
+					},
+					pattern: {
+						value: ValidationRule.VERSION,
+						message: Util.getTranslationObject(this.languageId, "invalid-parameter-version")
+					}
 				},
-				pattern: {
-					value: ValidationRule.VERSION,
-					message: Util.translate("invalid-parameter-version")
-				}
+				value: this.workingParam.paramVersion
 			}
-		};
-		this.displayNameProps = {
-			paramName: ParamProperty.DISPLAY_NAME,
-			required: true,
-			label: Util.translate("display-name"),
-			languageId: props.languageId,
-			availableLanguageIds: props.availableLanguageIds,
-			placeholder: Util.translate("display-name-of-the-parameter"),
-			tooltip: Util.translate("display-name-of-the-parameter-tooltip"),
-			ariaLabel: Util.translate("display-name"),
-			value: props.parameter.displayName ?? {},
-			validation: {
-				required: {
-					value: true,
-					message: Util.translate("display-name-is-required")
+		);
+		this.fieldDisplayName = new StringParameter(
+			this.namespace,
+			this.basicPropertiesFormId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: ParamProperty.DISPLAY_NAME,
+				localized: true,
+				required: true,
+				displayName: Util.getTranslationObject(this.languageId, "display-name"),
+				placeholder: Util.getTranslationObject(this.languageId, "display-name-of-the-parameter"),
+				tooltip: Util.getTranslationObject(this.languageId, "display-name-of-the-parameter-tooltip"),
+				value: this.workingParam.displayName ?? {},
+				validation: {
+					required: {
+						value: true,
+						message: Util.getTranslationObject(this.languageId, "display-name-is-required")
+					},
+					min: {
+						value: 2,
+						message: Util.getTranslationObject(this.languageId, "too-short")
+					},
+					max: {
+						value: 32,
+						message: Util.getTranslationObject(this.languageId, "too-long")
+					}
 				},
-				min: {
-					value: 2,
-					message: Util.translate("too-short")
+				value: this.workingParam.displayName
+			}
+		);
+		this.fieldDefinition = new StringParameter(
+			this.namespace,
+			this.basicPropertiesFormId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: ParamProperty.DEFINITION,
+				localized: true,
+				displayName: Util.getTranslationObject(this.languageId, "definition"),
+				multipleLine: true,
+				placeholder: Util.getTranslationObject(this.languageId, "definition-of-the-parameter"),
+				tooltip: Util.getTranslationObject(this.languageId, "definition-of-the-parameter-tooltip"),
+				validation: {
+					max: {
+						value: 512,
+						message: Util.getTranslationObject(this.languageId, "too-long")
+					}
 				},
-				max: {
-					value: 32,
-					message: Util.translate("too-long")
-				}
+				value: this.workingParam.definition
 			}
-		};
-		this.definitionProps = {
-			paramName: ParamProperty.DEFINITION,
-			label: Util.translate("definition"),
-			languageId: props.languageId,
-			availableLanguageIds: props.availableLanguageIds,
-			multipleLine: true,
-			placeholder: Util.translate("definition-of-the-parameter"),
-			tooltip: Util.translate("definition-of-the-parameter-tooltip"),
-			ariaLabel: Util.translate("definition"),
-			value: props.parameter.definition ?? {},
-			validation: {
-				max: {
-					value: 512,
-					message: Util.translate("too-long")
-				}
+		);
+		this.fieldShowDefinition = new BooleanParameter(
+			this.namespace,
+			this.basicPropertiesFormId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: ParamProperty.SHOW_DEFINITION,
+				viewType: BooleanParameter.ViewTypes.CHECKBOX,
+				displayName: Util.getTranslationObject(this.languageId, "show-definition"),
+				tooltip: Util.getTranslationObject(this.languageId, "show-definition-of-the-parameter-tooltip"),
+				value: this.workingParam.showDefinition
 			}
-		};
-		this.showDefinitionProps = {
-			paramName: ParamProperty.SHOW_DEFINITION,
-			viewType: BooleanParameter.ViewTypes.CHECKBOX,
-			label: Util.translate("show-definition"),
-			tooltip: Util.translate("show-definition-of-the-parameter-tooltip"),
-			ariaLabel: Util.translate("show-definition"),
-			value: props.parameter.showDefinition
-		};
-		this.tooltipProps = {
-			paramName: ParamProperty.TOOLTIP,
-			label: Util.translate("tooltip"),
-			languageId: props.languageId,
-			availableLanguageIds: props.availableLanguageIds,
-			placeholder: Util.translate("tooltip-of-the-parameter"),
-			tooltip: Util.translate("tooltip-of-the-parameter-tooltip"),
-			ariaLabel: Util.translate("tooltip"),
-			value: props.parameter.tooltip ?? {}
-		};
-		this.synonymsProps = {
-			paramName: ParamProperty.SYNONYMS,
-			label: Util.translate("synonyms"),
-			placeholder: Util.translate("synonyms-of-the-parameter"),
-			tooltip: Util.translate("synonyms-of-the-parameter-tooltip"),
-			ariaLabel: Util.translate("synonyms"),
-			value: props.parameter.synonyms ?? ""
-		};
+		);
+		this.fieldTooltip = new StringParameter(
+			this.namespace,
+			this.basicPropertiesFormId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: ParamProperty.TOOLTIP,
+				localized: true,
+				displayName: Util.getTranslationObject(this.languageId, "tooltip"),
+				placeholder: Util.getTranslationObject(this.languageId, "tooltip-of-the-parameter"),
+				tooltip: Util.getTranslationObject(this.languageId, "tooltip-of-the-parameter-tooltip"),
+				value: this.workingParam.tooltip
+			}
+		);
+		this.fieldSynonyms = new StringParameter(
+			this.namespace,
+			this.basicPropertiesFormId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: ParamProperty.SYNONYMS,
+				displayName: Util.getTranslationObject(this.languageId, "synonyms"),
+				placeholder: Util.getTranslationObject(this.languageId, "synonyms-of-the-parameter"),
+				tooltip: Util.getTranslationObject(this.languageId, "synonyms-of-the-parameter-tooltip"),
+				value: this.workingParam.synonyms
+			}
+		);
+
+		this.fields = [
+			this.fieldParamName,
+			this.fieldParamVersion,
+			this.fieldDisplayName,
+			this.fieldDefinition,
+			this.fieldShowDefinition,
+			this.fieldTooltip,
+			this.fieldSynonyms
+		];
 
 		console.log("SXDSBuilderBasicPropertiesPanel: ", props);
 	}
 
+	componentDidMount() {
+		console.log("Mounted SXDSBuilderBasicPropertiesPanel");
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+			const dataPacket = e.dataPacket;
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.basicPropertiesFormId)
+				return;
+
+			this.dataStructure.dirty = true;
+
+			this.workingParam.clearError();
+			this.workingParam[dataPacket.paramName] = dataPacket.value;
+
+			console.log("DataStructureBuilder SX_FIELD_VALUE_CHANGED RECEIVED: ", dataPacket, this.workingParam);
+
+			this.workingParam.fireRefreshPreview();
+		});
+	}
+
 	render() {
-		console.log("SXDSBuilderBasicPropertiesPanel: ", this.state.parameter);
+		console.log("SXDSBuilderBasicPropertiesPanel: ", this.workingParam);
 		const events = {
 			fire: [
 				{
@@ -151,50 +213,12 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 		};
 		return (
 			<>
-				<SXInput
-					namespace={this.namespace}
-					{...this.paramNameProps}
-					events={events}
-					spritemap={this.spritemap}
-				/>
-				<SXInput
-					namespace={this.namespace}
-					{...this.versionProps}
-					events={events}
-					spritemap={this.spritemap}
-				/>
-				<SXLocalizedInput
-					namespace={this.namespace}
-					{...this.displayNameProps}
-					events={events}
-					spritemap={this.spritemap}
-				/>
-				<SXLocalizedInput
-					namespace={this.namespace}
-					{...this.definitionProps}
-					events={events}
-					style={{ marginBottom: "5px" }}
-					spritemap={this.spritemap}
-				/>
-				<SXBoolean
-					namespace={this.namespace}
-					{...this.showDefinitionProps}
-					events={events}
-					style={{ marginBottom: "15px" }}
-					spritemap={this.spritemap}
-				/>
-				<SXLocalizedInput
-					namespace={this.namespace}
-					{...this.tooltipProps}
-					events={events}
-					spritemap={this.spritemap}
-				/>
-				<SXInput
-					namespace={this.namespace}
-					{...this.synonymsProps}
-					events={events}
-					spritemap={this.spritemap}
-				/>
+				{this.fields.map((field) =>
+					field.render({
+						spritemap: this.spritemap,
+						inputStatus: this.dataStructure.inputStatus
+					})
+				)}
 			</>
 		);
 	}

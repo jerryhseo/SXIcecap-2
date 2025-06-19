@@ -17,6 +17,7 @@ import SXFormField, {
 	SXPhone,
 	SXPreviewRow,
 	SXRequiredMark,
+	SXSelect,
 	SXSelectGroup,
 	SXTooltip
 } from "../form/sxform";
@@ -61,8 +62,8 @@ export class Parameter {
 	static DisplayTypes = {
 		FORM_FIELD: "formField",
 		INLINE: "inline",
-		TABLE_SELECT_CELL: "tableSelectCell",
-		CELL: "cell"
+		TABLE_CELL: "tableCell",
+		GRID_CELL: "gridCell"
 	};
 
 	static LabelPosition = {
@@ -580,7 +581,7 @@ export class Parameter {
 	}
 
 	get rowCount() {
-		if (this.displayType !== Parameter.DisplayTypes.CELL) {
+		if (this.displayType !== Parameter.DisplayTypes.GRID_CELL) {
 			return;
 		}
 
@@ -719,6 +720,10 @@ export class Parameter {
 		return this.#key;
 	}
 
+	isGridCell(cellIndex) {
+		return this.displayType === Parameter.DisplayTypes.GRID_CELL && cellIndex >= 0;
+	}
+
 	setRequiredMessage(msg) {
 		this.#validation.required.message = msg;
 	}
@@ -780,22 +785,6 @@ export class Parameter {
 		);
 	}
 
-	hasValue() {
-		return Util.isNotEmpty(this.value);
-	}
-
-	clearValue() {
-		this.value = this.value instanceof Array ? [] : null;
-	}
-
-	hasError() {
-		return this.error.errorClass !== ErrorClass.SUCCESS;
-	}
-
-	clearError() {
-		this.error = {};
-	}
-
 	isRendered() {
 		return !!this.renderImage;
 	}
@@ -844,8 +833,25 @@ export class Parameter {
 		delete this.#style[property];
 	}
 
+	hasError() {
+		return this.error.errorClass !== ErrorClass.SUCCESS;
+	}
+
+	clearError() {
+		this.error = {};
+	}
+
 	fireRefresh(cellIndex) {
 		Event.fire(Event.SX_REFRESH, this.namespace, this.namespace, {
+			targetFormId: this.formId,
+			paramName: this.paramName,
+			paramVersion: this.paramVersion,
+			cellIndex: cellIndex
+		});
+	}
+
+	fireRefreshPreview(cellIndex) {
+		Event.fire(Event.SX_REFRESH_PREVIEW, this.namespace, this.namespace, {
 			targetFormId: this.formId,
 			paramName: this.paramName,
 			paramVersion: this.paramVersion,
@@ -989,6 +995,21 @@ export class Parameter {
 			);
 		}
 	}
+
+	renderPreview({ dsbuilderId, propertyPanelId, previewCanvasId, className, style, spritemap }) {
+		return (
+			<SXPreviewRow
+				key={parameter.key}
+				dsbuilderId={dsbuilderId}
+				propertyPanelId={propertyPanelId}
+				previewCanvasId={previewCanvasId}
+				parameter={this}
+				focus={i + 1 === workingParamOrder ? true : false}
+				spritemap={spritemap}
+				inputStatus={this.enableInputStatus}
+			/>
+		);
+	}
 }
 
 /**
@@ -1010,7 +1031,7 @@ export class StringParameter extends Parameter {
 			this.parse(json);
 		}
 
-		if (this.displayType === Parameter.DisplayTypes.CELL) {
+		if (this.displayType === Parameter.DisplayTypes.GRID_CELL) {
 			if (this.localized) {
 				this.value = [{}];
 			} else {
@@ -1081,20 +1102,31 @@ export class StringParameter extends Parameter {
 	 *     and single value when the value type of the parameter is "single".
 	 */
 	getValue(cellIndex) {
-		if (this.displayType === Parameter.DisplayTypes.CELL) {
+		if (this.isGridCell(cellIndex)) {
 			return this.localized ? this.value[cellIndex] ?? {} : this.value[cellIndex] ?? "";
 		} else {
-			return this.value;
+			return this.localized ? this.value[cellIndex] : this.value;
 		}
 	}
 
-	setValue(value, index) {
-		if (this.displayType === Parameter.DisplayTypes.CELL && index >= 0) {
-			this.value[index] = value;
+	setValue(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = value;
 		} else {
 			this.value = value;
 		}
-		console.log("Parameter.setValue(): ", this.displayType, value, index, this.value);
+	}
+
+	hasValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+	}
+
+	clearValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.localized ? this.defaultValue ?? {} : this.defaultValue ?? "";
+		} else {
+			this.value = this.localized ? this.defaultValue ?? {} : this.defaultValue ?? "";
+		}
 	}
 
 	getPlaceholder(languageId) {
@@ -1187,9 +1219,9 @@ export class StringParameter extends Parameter {
 	}
 
 	render({
-		events,
-		className,
-		style,
+		events = {},
+		className = "",
+		style = {},
 		spritemap,
 		inputStatus,
 		displayType = this.displayType,
@@ -1260,6 +1292,12 @@ export class NumericParameter extends Parameter {
 	get unit() {
 		return this.#unit;
 	}
+	get valueUncertainty() {
+		return this.value.uncertainty;
+	}
+	get valueValue() {
+		return this.value.value;
+	}
 
 	set uncertainty(val) {
 		this.#uncertainty = val;
@@ -1273,28 +1311,71 @@ export class NumericParameter extends Parameter {
 	set unit(val) {
 		this.#unit = val;
 	}
-
-	hasValue() {
-		if (this.uncertainty) {
-			console.log("Numeric hasValue(): ", this.value);
-			if (Util.isEmpty(this.value) || Util.isEmpty(this.value.value)) return false;
-		} else {
-			if (Util.isEmpty(this.value)) return false;
-		}
-
-		return true;
+	set valueUncertainty(val) {
+		this.value.uncertainty = Number(val);
+	}
+	set valueValue(val) {
+		this.value.value = Number(val);
 	}
 
-	setValue(value, uncertainty) {
-		const numVal = Number(value);
-		const numUncertainty = Util.isEmpty(uncertainty) ? undefined : Number(uncertainty);
+	/**
+	 *
+	 * @param {Integer} cellIndex
+	 * @returns
+	 *     If cellIndex is larger than or equal to 0, it means the value type is array
+	 *     so that the function returns indexed cell value.
+	 */
+	getValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
+	}
 
-		this.value = this.uncertainty
-			? {
-					vakue: numVal,
-					uncertainty: numUncertainty
-			  }
-			: (this.value = numVal);
+	getValueUncertainty(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex].uncertainty : this.value.uncertainty;
+	}
+
+	getValueValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex].value : this.value.value;
+	}
+
+	setValue(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = value;
+		} else {
+			this.value = value;
+		}
+	}
+
+	setValueUncertainty(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex].uncertainty = Number(value);
+		} else {
+			this.value.uncertainty = Number(value);
+		}
+	}
+
+	setValueValue(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex].value = Number(value);
+		} else {
+			this.value.value = Number(value);
+		}
+	}
+
+	hasValue(cellIndex) {
+		let value = this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
+		if (Util.isEmpty(value)) {
+			return false;
+		}
+
+		return value.uncertainty ? Util.isNotEmpty(value.value) : Util.isNotEmpty(value);
+	}
+
+	clearValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.uncertainty ? this.defaultValue ?? {} : this.defaultValue;
+		} else {
+			this.value = this.uncertainty ? this.defaultValue ?? {} : this.defaultValue;
+		}
 	}
 
 	parse(json) {
@@ -1337,15 +1418,28 @@ export class NumericParameter extends Parameter {
 		return json;
 	}
 
-	render(events, className, style, spritemap, inputStatus) {
+	render({
+		events = {},
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
 		return (
 			<SXNumeric
+				key={this.key}
 				parameter={this}
 				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}
@@ -1391,6 +1485,13 @@ export class SelectParameter extends Parameter {
 	}
 	set optionsPerRow(val) {
 		this.#optionsPerRow = val;
+	}
+
+	isMultiple() {
+		return (
+			this.viewType === SelectParameter.ViewTypes.CHECKBOX ||
+			this.viewType === SelectGroupParameter.ViewTypes.LISTBOX
+		);
 	}
 
 	addOption(option) {
@@ -1454,6 +1555,30 @@ export class SelectParameter extends Parameter {
 		return index + 1;
 	}
 
+	getValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
+	}
+
+	setValue(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = value;
+		} else {
+			this.value = value;
+		}
+	}
+
+	hasValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+	}
+
+	clearValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.defaultValue;
+		} else {
+			this.value = this.defaultValue;
+		}
+	}
+
 	parse(json) {
 		super.parse(json);
 		this.options = json.options ?? [];
@@ -1497,15 +1622,28 @@ export class SelectParameter extends Parameter {
 		return json;
 	}
 
-	render(events, className, style, spritemap, inputStatus) {
+	render({
+		events = {},
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
 		return (
-			<SXFormField
+			<SXSelect
+				key={this.key}
 				parameter={this}
 				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}
@@ -1558,6 +1696,36 @@ export class DualListParameter extends Parameter {
 		this.dirty = true;
 	}
 
+	/**
+	 *
+	 * @param {Integer} cellIndex
+	 * @returns
+	 *     If index is larger than or equal to 0, it means the value type is array
+	 *     so that the function returns indexed cell value.
+	 *     Otherwise, vlaue array is returned when the value type of the parameter is "array",
+	 *     and single value when the value type of the parameter is "single".
+	 */
+	getValue(cellIndex) {
+		if (this.displayType === Parameter.DisplayTypes.GRID_CELL) {
+			return this.localized ? this.value[cellIndex] ?? {} : this.value[cellIndex] ?? "";
+		} else {
+			return this.value;
+		}
+	}
+
+	setValue(value, index) {
+		if (this.displayType === Parameter.DisplayTypes.GRID_CELL && index >= 0) {
+			this.value[index] = value;
+		} else {
+			this.value = value;
+		}
+		console.log("Parameter.setValue(): ", this.displayType, value, index, this.value);
+	}
+
+	hasValue(cellIndex) {
+		return cellIndex >= 0 ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+	}
+
 	addValue(val) {
 		this.value.push(val);
 	}
@@ -1581,6 +1749,12 @@ export class DualListParameter extends Parameter {
 		}
 
 		this.value = this.value.filter((elem) => elem.value !== val);
+	}
+
+	clearValue() {
+		this.rightOptions.concat(this.leftOptions);
+
+		this.leftOptions = [];
 	}
 
 	setRightOptions(options) {
@@ -1613,9 +1787,9 @@ export class DualListParameter extends Parameter {
 	}
 
 	render({
-		events,
-		className,
-		style,
+		events = {},
+		className = "",
+		style = {},
 		spritemap,
 		inputStatus,
 		displayType = this.displayType,
@@ -1631,6 +1805,9 @@ export class DualListParameter extends Parameter {
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}
@@ -1699,32 +1876,36 @@ export class BooleanParameter extends SelectParameter {
 		this.falseOption.label = label;
 	}
 
-	getTrueLabel() {
-		if (Util.isEmpty(this.trueLabel)) {
-			let label = {};
-			this.availableLanguageIds.forEach((locale) => {
-				label[locale] = Util.translate("yes");
-			});
-			this.trueLabel = label;
-		}
-
-		return this.trueLabel;
+	getTrueLabel(languageId) {
+		return languageId ? this.trueLabel[languageId] : this.trueLabel[this.languageId];
 	}
 
-	getFalseLabel() {
-		if (Util.isEmpty(this.falseLabel)) {
-			let label = {};
-			this.availableLanguageIds.forEach((locale) => {
-				label[locale] = Util.translate("no");
-			});
-			this.falseLabel = label;
-		}
-
-		return this.falseLabel;
+	getFalseLabel(languageId) {
+		return languageId ? this.falseLabel[languageId] : this.falseLabel[this.languageId];
 	}
 
-	setValue(val) {
-		this.value = Util.isEmpty(val) ? undefined : Boolean(val);
+	getValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
+	}
+
+	setValue(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = value;
+		} else {
+			this.value = value;
+		}
+	}
+
+	hasValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+	}
+
+	clearValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.defaultValue;
+		} else {
+			this.value = this.defaultValue;
+		}
 	}
 
 	parse(json) {
@@ -1749,15 +1930,28 @@ export class BooleanParameter extends SelectParameter {
 		return properties;
 	}
 
-	render(events, className, style, spritemap, inputStatus) {
+	render({
+		events = {},
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
 		return (
 			<SXBoolean
+				key={this.key}
 				parameter={this}
 				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}
@@ -1807,6 +2001,30 @@ export class MatrixParameter extends Parameter {
 		this.#delimiter = val;
 	}
 
+	getValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
+	}
+
+	setValue(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = value;
+		} else {
+			this.value = value;
+		}
+	}
+
+	hasValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+	}
+
+	clearValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = [];
+		} else {
+			this.value = [];
+		}
+	}
+
 	parse(json) {
 		super.parse(json);
 
@@ -1842,15 +2060,28 @@ export class MatrixParameter extends Parameter {
 		return properties;
 	}
 
-	render(events, className, style, spritemap, inputStatus) {
+	render({
+		events = {},
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
 		return (
 			<SXMatrix
+				key={this.key}
 				parameter={this}
 				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}
@@ -1877,9 +2108,33 @@ export class FileParameter extends Parameter {
 		this.value = val;
 	}
 
-	addFile(file) {}
+	addFile(file, cellIndex) {}
 
-	removeFile(fileId) {}
+	removeFile(fileId, cellIndex) {}
+
+	getValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
+	}
+
+	setValue(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = value;
+		} else {
+			this.value = value;
+		}
+	}
+
+	hasValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+	}
+
+	clearValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = [];
+		} else {
+			this.value = [];
+		}
+	}
 
 	parse(json) {
 		super.parse(json);
@@ -1898,15 +2153,28 @@ export class FileParameter extends Parameter {
 		return properties;
 	}
 
-	render(events, className, style, spritemap, inputStatus) {
+	render({
+		events = {},
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
 		return (
 			<SXFile
+				key={this.key}
 				parameter={this}
 				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}
@@ -1934,28 +2202,64 @@ export class AddressParameter extends Parameter {
 		}
 	}
 
-	get zipcode() {
-		return this.value.zipcode;
+	getZipcode(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex].zipcode : this.value.zipcode;
 	}
-	get street() {
-		return this.value.street;
+	getStreet(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex].street : this.value.street;
 	}
-	get address() {
-		return this.value.address;
-	}
-
-	set zipcode(val) {
-		this.value.zipcode = val;
-	}
-	set street(val) {
-		this.value.street = val;
-	}
-	set address(val) {
-		this.value.address = val;
+	getAddress(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex].address : this.value.address;
 	}
 
-	getFullAddress() {
-		return this.zipcode + ", " + this.street + ", " + this.address;
+	setZipcode(val, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex].zipcode = val;
+		} else {
+			this.value.zipcode = val;
+		}
+	}
+	setStreet(val, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex].street = val;
+		} else {
+			this.value.street = val;
+		}
+	}
+	setAddress(val, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex].address = val;
+		} else {
+			this.value.address = val;
+		}
+	}
+
+	getFullAddress(cellIndex) {
+		return this.getZipcode(cellIndex) + ", " + this.getStreet(cellIndex) + ", " + this.getAddress(cellIndex);
+	}
+
+	getValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
+	}
+
+	setValue(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = value;
+		} else {
+			this.value = value;
+		}
+	}
+
+	hasValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+	}
+
+	clearValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = {};
+		} else {
+			this.value = {};
+		}
 	}
 
 	parse(json) {
@@ -1975,15 +2279,28 @@ export class AddressParameter extends Parameter {
 		return properties;
 	}
 
-	render(events, className, style, spritemap, inputStatus) {
+	render({
+		events = {},
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
 		return (
 			<SXAddress
+				key={this.key}
 				parameter={this}
 				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}
@@ -2005,10 +2322,6 @@ export class DateParameter extends Parameter {
 			this.parse(json);
 		}
 	}
-
-	get date() {
-		return new Date(this.value);
-	}
 	get enableTime() {
 		return this.#enableTime;
 	}
@@ -2029,16 +2342,48 @@ export class DateParameter extends Parameter {
 		this.#endYear = val;
 	}
 
-	setValue(val) {
-		const year = val.getFullYear();
-		const month = String(val.getMonth() + 1).padStart(2, "0");
-		const day = String(val.getDate()).padStart(2, "0");
+	getDate(cellIndex) {
+		return this.isGridCell(cellIndex) ? new Date(this.value[cellIndex]) : new Date(this.value);
+	}
 
-		const date = year + "-" + month + "-" + day;
+	getValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
+	}
 
-		this.value = this.enableTime
-			? date + " " + String(val.getHours()).padStart(2, "0") + ":" + String(val.getHours()).padStart(2, "0")
-			: date;
+	setValue(date, cellIndex) {
+		const dateStr =
+			val.getFullYear() +
+			"/" +
+			String(val.getMonth() + 1).padStart(2, "0") +
+			"/" +
+			String(val.getDate()).padStart(2, "0");
+
+		const value = this.enableTime
+			? dateStr + " " + String(val.getHours()).padStart(2, "0") + ":" + String(val.getHours()).padStart(2, "0")
+			: dateStr;
+
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = value;
+		} else {
+			this.value = value;
+		}
+	}
+
+	hasValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+	}
+
+	clearValue(cellIndex) {
+		let startDate = "1970/01/01 ";
+		if (this.enableTime) {
+			startDate += "00:00";
+		}
+
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = startDate;
+		} else {
+			this.value = startDate;
+		}
 	}
 
 	parse(json) {
@@ -2074,15 +2419,28 @@ export class DateParameter extends Parameter {
 		return properties;
 	}
 
-	render(events, className, style, spritemap, inputStatus) {
+	render({
+		events = {},
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
 		return (
 			<SXDate
+				key={this.key}
 				parameter={this}
 				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}
@@ -2103,36 +2461,76 @@ export class PhoneParameter extends Parameter {
 		}
 	}
 
-	get countryNo() {
-		return this.value.countryNo;
+	getCountryNo(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex].countryNo : this.value.countryNo;
 	}
-	get areaNo() {
-		return this.value.areaNo;
+	getAreaNo(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex].areaNo : this.value.areaNo;
 	}
-	get stationNo() {
-		return this.value.stationNo;
+	getStationNo(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex].stationNo : this.value.stationNo;
 	}
-	get personalNo() {
-		return this.value.personalNo;
+	getPersonalNo(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex].personal : this.value.personal;
 	}
 	get enableCountryNo() {
 		return this.#enableCountryNo;
 	}
 
-	set countryNo(val) {
-		this.value.countryNo = val;
+	setCountryNo(val, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex].countryNo;
+		} else {
+			this.value.countryNo = val;
+		}
 	}
-	set areaNo(val) {
-		this.value.areaNo = val;
+	setAreaNo(val, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex].areaNo;
+		} else {
+			this.value.areaNo = val;
+		}
 	}
-	set stationNo(val) {
-		this.value.stationNo = val;
+	setStationNo(val, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex].stationNo;
+		} else {
+			this.value.stationNo = val;
+		}
 	}
-	set personalNo(val) {
-		this.value.personalNo = val;
+	setPersonalNo(val, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex].personalNo;
+		} else {
+			this.value.personalNo = val;
+		}
 	}
 	set enableCountryNo(val) {
 		this.#enableCountryNo = val;
+	}
+
+	getValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
+	}
+
+	setValue(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = value;
+		} else {
+			this.value = value;
+		}
+	}
+
+	hasValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+	}
+
+	clearValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.defaultValue ?? {};
+		} else {
+			this.value = this.defaultValue ?? {};
+		}
 	}
 
 	parse(json) {
@@ -2160,15 +2558,28 @@ export class PhoneParameter extends Parameter {
 		return properties;
 	}
 
-	render(events, className, style, spritemap, inputStatus) {
+	render({
+		events = {},
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
 		return (
 			<SXPhone
+				key={this.key}
 				parameter={this}
 				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}
@@ -2193,18 +2604,50 @@ export class EMailParameter extends Parameter {
 		}
 	}
 
-	get emailId() {
-		return this.value.emailId;
+	getEmailId(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex].emailId : this.value.emailId;
 	}
-	get serverName() {
-		return this.value.serverName;
+	getServerName(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex].serverName : this.value.serverName;
 	}
 
-	set emailId(val) {
-		this.value.emailId = val;
+	setEmailId(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex].emailId = value;
+		} else {
+			this.value.emailId = value;
+		}
 	}
-	set serverName(val) {
-		this.value.serverName = val;
+	setServerName(value) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex].serverName = value;
+		} else {
+			this.value.serverName = value;
+		}
+	}
+
+	getValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
+	}
+
+	setValue(value, cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = value;
+		} else {
+			this.value = value;
+		}
+	}
+
+	hasValue(cellIndex) {
+		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+	}
+
+	clearValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.defaultValue ?? {};
+		} else {
+			this.value = this.defaultValue ?? {};
+		}
 	}
 
 	parse(json) {
@@ -2228,15 +2671,28 @@ export class EMailParameter extends Parameter {
 		return properties;
 	}
 
-	render(events, className, style, spritemap, inputStatus) {
+	render({
+		events = {},
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
 		return (
 			<SXEMail
+				key={this.key}
 				parameter={this}
 				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}
@@ -2406,7 +2862,16 @@ export class GroupParameter extends Parameter {
 		return json;
 	}
 
-	render({ events, className, style, spritemap, inputStatus }) {
+	render({
+		events = {},
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
 		return (
 			<SXGroup
 				key={this.key}
@@ -2416,6 +2881,9 @@ export class GroupParameter extends Parameter {
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}
@@ -2451,15 +2919,28 @@ export class SelectGroupParameter extends Parameter {
 		if (tagName) json.tagName = tagName;
 	}
 
-	render(events, className, style, spritemap, inputStatus) {
+	render({
+		events = {},
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		displayType = this.displayType,
+		viewType = this.viewType,
+		cellIndex
+	}) {
 		return (
 			<SXSelectGroup
+				key={this.key}
 				parameter={this}
 				events={events}
 				className={className}
 				style={style}
 				spritemap={spritemap}
 				inputStatus={inputStatus}
+				displayType={displayType}
+				viewType={viewType}
+				cellIndex={cellIndex}
 			/>
 		);
 	}

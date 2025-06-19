@@ -468,48 +468,37 @@ export class DataStructure {
 		return json;
 	}
 
-	renderPreview(dsbuilderId, propertyPanelId, previewCanvasId, className, style, spritemap, workingParamOrder) {
+	renderPreview(dsbuilderId, propertyPanelId, previewCanvasId, className, style, spritemap) {
 		return (
 			<div id={previewCanvasId}>
 				{this.parameters.map((parameter, i) => {
 					console.log("parameter: ", parameter, parameter.hasValue());
-					return (
-						<SXPreviewRow
-							key={parameter.key}
-							dsbuilderId={dsbuilderId}
-							propertyPanelId={propertyPanelId}
-							previewCanvasId={previewCanvasId}
-							parameter={parameter}
-							focus={i + 1 === workingParamOrder ? true : false}
-							spritemap={spritemap}
-							inputStatus={this.enableInputStatus}
-						/>
-					);
+					return parameter.renderPreview({
+						dabuilderId: dsbuilderId,
+						propertyPanelId: propertyPanelId,
+						previewCanvasId: previewCanvasId,
+						className: className,
+						style: style,
+						spritemap: spritemap
+					});
 				})}
 			</div>
 		);
 	}
 
-	render(canvasId, events, className, style, spritemap) {
+	render({ canvasId, events, className, style, spritemap }) {
 		return (
-			<>
-				<div id={canvasId}>
-					{this.parameters.map((parameter) =>
-						parameter.render(
-							this.namespace,
-							this.languageId,
-							this.availableLanguageIds,
-							null,
-							null,
-							events,
-							className,
-							style,
-							spritemap,
-							this.enableInputStatus
-						)
-					)}
-				</div>
-			</>
+			<div id={canvasId}>
+				{this.parameters.map((parameter) =>
+					parameter.render({
+						events: events,
+						className: className,
+						style: style,
+						spritemap: spritemap,
+						inputStatus: this.enableInputStatus
+					})
+				)}
+			</div>
 		);
 	}
 }
