@@ -1312,10 +1312,10 @@ export class NumericParameter extends Parameter {
 		this.#unit = val;
 	}
 	set valueUncertainty(val) {
-		this.value.uncertainty = Number(val);
+		this.value.uncertainty = val;
 	}
 	set valueValue(val) {
-		this.value.value = Number(val);
+		this.value.value = val;
 	}
 
 	/**
@@ -1345,19 +1345,27 @@ export class NumericParameter extends Parameter {
 		}
 	}
 
+	initValue(cellIndex) {
+		if (Util.isNotEmpty(this.defaultValue)) {
+			this.setValue(this.defaultValue, cellIndex);
+		} else {
+			this.setValue(this.uncertainty ? {} : null, cellIndex);
+		}
+	}
+
 	setValueUncertainty(value, cellIndex) {
 		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex].uncertainty = Number(value);
+			this.value[cellIndex].uncertainty = value;
 		} else {
-			this.value.uncertainty = Number(value);
+			this.value.uncertainty = value;
 		}
 	}
 
 	setValueValue(value, cellIndex) {
 		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex].value = Number(value);
+			this.value[cellIndex].value = value;
 		} else {
-			this.value.value = Number(value);
+			this.value.value = value;
 		}
 	}
 
@@ -1372,9 +1380,22 @@ export class NumericParameter extends Parameter {
 
 	clearValue(cellIndex) {
 		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex] = this.uncertainty ? this.defaultValue ?? {} : this.defaultValue;
+			this.setValue(this.uncertainty ? this.defaultValue ?? {} : this.defaultValue, cellIndex);
 		} else {
-			this.value = this.uncertainty ? this.defaultValue ?? {} : this.defaultValue;
+			this.initValue(cellIndex);
+		}
+	}
+
+	toNumber() {
+		if (!this.hasValue()) {
+			return;
+		}
+
+		if (this.displayType === Parameter.DisplayTypes.GRID_CELL) {
+			return this.uncertainty
+				? this.value.map((val) => ({ value: Number(val.value), uncertainty: Number(val.uncertainty) }))
+				: { value: Number(this.valueValue), uncertainty: Number(this.valueUncertainty) };
+		} else {
 		}
 	}
 
@@ -1565,6 +1586,8 @@ export class SelectParameter extends Parameter {
 		} else {
 			this.value = value;
 		}
+
+		Parameter.validate(this);
 	}
 
 	hasValue(cellIndex) {
@@ -1572,11 +1595,15 @@ export class SelectParameter extends Parameter {
 	}
 
 	clearValue(cellIndex) {
-		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex] = this.defaultValue;
-		} else {
-			this.value = this.defaultValue;
-		}
+		const initVal =
+			this.defaultValue ??
+			(this.viewType === SelectParameter.ViewTypes.CHECKBOX || this.viewType === SelectParameter.LISTBOX)
+				? []
+				: "";
+
+		this.setValue(initVal, cellIndex);
+
+		return initVal;
 	}
 
 	parse(json) {
@@ -1658,7 +1685,8 @@ export class DualListParameter extends Parameter {
 		HORIZONTAL: "horizontal",
 		VERTICAL: "vertical"
 	};
-	#rightOptions = [];
+	#options = [];
+	#viewType = DualListParameter.ViewTypes.HORIZONTAL;
 
 	constructor(namespace, formId, languageId, availableLanguageIds, json) {
 		super(namespace, formId, languageId, availableLanguageIds, ParamType.DUALLIST);
@@ -1675,55 +1703,65 @@ export class DualListParameter extends Parameter {
 	get leftOptions() {
 		return this.value;
 	}
+	get options() {
+		return this.#options;
+	}
+	get viewType() {
+		return this.#viewType;
+	}
 	get rightOptions() {
-		return this.#rightOptions;
+		return this.#options.filter((option) => this.value.notIncludedInValues(option.value));
 	}
 
 	set leftOptions(val) {
 		this.value = val;
 	}
-	set rightOptions(val) {
-		this.#rightOptions = val;
+	set options(val) {
+		this.#options = val;
+	}
+	set viewType(val) {
+		this.#viewType = val;
 	}
 
-	setValueByIds(ids) {
-		let leftOptions = this.leftOptions.filter((option) => ids.includes(option.id));
-		let rightOptions = this.leftOptions.filter((option) => !ids.includes(option.id));
+	/**
+	 * Saves options that match the values ​​contained in the optionValues ​​array among the all options as parameter values.
+	 *
+	 * @param {Array} optionValues
+	 */
+	setLeftOptions(optionValues) {
+		let leftOptions = this.leftOptions.filter((option) => optionValues.includes(option.value));
 
-		this.leftOptions = [...leftOptions, ...this.rightOptions.filter((option) => ids.includes(option.id))];
-		this.rightOptions = [...rightOptions, ...this.rightOptions.filter((option) => !ids.includes(option.id))];
+		this.leftOptions = [...leftOptions, ...this.options.filter((option) => optionValues.includes(option.value))];
 
 		this.dirty = true;
 	}
 
 	/**
-	 *
+	 * If index is larger than or equal to 0, it means the value type is array
+	 *     so that the function returns indexed cell value.
 	 * @param {Integer} cellIndex
 	 * @returns
-	 *     If index is larger than or equal to 0, it means the value type is array
-	 *     so that the function returns indexed cell value.
-	 *     Otherwise, vlaue array is returned when the value type of the parameter is "array",
-	 *     and single value when the value type of the parameter is "single".
+	 *	String array of values
 	 */
 	getValue(cellIndex) {
-		if (this.displayType === Parameter.DisplayTypes.GRID_CELL) {
-			return this.localized ? this.value[cellIndex] ?? {} : this.value[cellIndex] ?? "";
-		} else {
-			return this.value;
-		}
+		return this.displayType === Parameter.DisplayTypes.GRID_CELL ? this.value[cellIndex] ?? [] : this.value;
 	}
 
-	setValue(value, index) {
-		if (this.displayType === Parameter.DisplayTypes.GRID_CELL && index >= 0) {
-			this.value[index] = value;
+	setValue(value, cellIndex) {
+		if (this.isGridCell()) {
+			this.value[cellIndex] = value;
 		} else {
 			this.value = value;
 		}
-		console.log("Parameter.setValue(): ", this.displayType, value, index, this.value);
+		console.log("Parameter.setValue(): ", this.displayType, value, cellIndex, this.value);
 	}
 
 	hasValue(cellIndex) {
 		return cellIndex >= 0 ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+	}
+
+	clearValue() {
+		this.leftOptions = [];
 	}
 
 	addValue(val) {
@@ -1751,26 +1789,15 @@ export class DualListParameter extends Parameter {
 		this.value = this.value.filter((elem) => elem.value !== val);
 	}
 
-	clearValue() {
-		this.rightOptions.concat(this.leftOptions);
-
-		this.leftOptions = [];
-	}
-
-	setRightOptions(options) {
-		this.rightOptions = options.filter((option) => this.notIncludedInValues(option.value));
-	}
-
-	getValue() {
-		return this.value;
-	}
-
 	parse(json) {
 		super.parse(json);
 	}
 
 	toJSON() {
-		return super.toJSON();
+		let json = super.toJSON();
+
+		json.options = this.options;
+		json.viewType = this.viewType;
 	}
 
 	toProperties(tagId, tagName) {
@@ -1778,7 +1805,7 @@ export class DualListParameter extends Parameter {
 
 		json.viewType = this.viewType;
 		json.leftOptions = this.leftOptions;
-		json.rightOptions = this.rightOptions;
+		json.options = this.options;
 
 		if (tagId) json.tagId = tagId;
 		if (tagName) json.tagName = tagName;
@@ -1832,7 +1859,9 @@ export class BooleanParameter extends SelectParameter {
 
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
-		} else {
+		}
+
+		if (Util.isEmpty(this.viewType)) {
 			this.viewType = BooleanParameter.ViewTypes.CHECKBOX;
 		}
 
@@ -1861,6 +1890,11 @@ export class BooleanParameter extends SelectParameter {
 	}
 	get falseLabel() {
 		return this.falseOption.label;
+	}
+	get allowUnsetValue() {
+		return (
+			this.viewType === BooleanParameter.ViewTypes.RADIO || this.viewType === BooleanParameter.ViewTypes.DROPDOWN
+		);
 	}
 
 	set trueOption(option) {
@@ -2100,17 +2134,13 @@ export class FileParameter extends Parameter {
 		}
 	}
 
-	get files() {
-		return this.value;
+	getFiles(cellIndex) {
+		return this.getValue(cellIndex);
 	}
 
-	set files(val) {
-		this.value = val;
+	setFiles(val, cellIndex) {
+		this.setValue(val, cellIndex);
 	}
-
-	addFile(file, cellIndex) {}
-
-	removeFile(fileId, cellIndex) {}
 
 	getValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
