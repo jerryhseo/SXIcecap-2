@@ -693,7 +693,7 @@ export class SXInput extends React.Component {
 		this.spritemap = props.spritemap ?? "";
 		this.parameter = props.parameter;
 		this.viewType = props.viewType ?? props.parameter.viewType;
-		this.cellIndex = this.displayType === Parameter.DisplayTypes.CELL ? props.cellIndex : undefined;
+		this.cellIndex = this.displayType === Parameter.DisplayTypes.GRID_CELL ? props.cellIndex : undefined;
 		this.inputStatus = props.inputStatus;
 
 		this.state = {
@@ -788,15 +788,15 @@ export class SXInput extends React.Component {
 		);
 	}
 
-	renderCell() {
+	renderGridCell() {
+		const tagId = this.parameter.tagId + "_" + this.cellIndex;
+		const tagName = this.parameter.tagName;
+
 		return this.getClayUI();
 	}
 
 	renderFormField() {
-		const tagId =
-			this.displayType === Parameter.DisplayTypes.CELL
-				? this.parameter.tagId + "_" + this.cellIndex
-				: this.parameter.tagId;
+		const tagId = this.parameter.tagId;
 		const tagName = this.parameter.tagName;
 
 		if (this.parameter.prefix || this.parameter.postfix) {
@@ -849,7 +849,7 @@ export class SXInput extends React.Component {
 					)}
 				</ClayForm.Group>
 			);
-		} else if (this.parameter.displayType === Parameter.DisplayTypes.CELL) {
+		} else if (this.parameter.displayType === Parameter.DisplayTypes.GRID_CELL) {
 			this.renderCell();
 		}
 	}
@@ -868,7 +868,7 @@ export class SXLocalizedInput extends React.Component {
 		this.style = props.style ?? {};
 		this.spritemap = props.spritemap ?? "";
 		this.parameter = props.parameter;
-		this.cellIndex = this.parameter.displayType === Parameter.DisplayTypes.CELL ? props.cellIndex : undefined;
+		this.cellIndex = this.parameter.displayType === Parameter.DisplayTypes.GRID_CELL ? props.cellIndex : undefined;
 		this.inputStatus = props.inputStatus;
 
 		this.state = {
@@ -961,7 +961,7 @@ export class SXLocalizedInput extends React.Component {
 		);
 	}
 
-	getClayUI() {
+	getClayUI(tagId, tagName) {
 		return (
 			<ClayInput.Group>
 				{this.parameter.renderPrefix()}
@@ -969,8 +969,8 @@ export class SXLocalizedInput extends React.Component {
 					<ClayInput
 						component={this.parameter.multipleLine ? "textarea" : "input"}
 						type="text"
-						id={this.parameter.tagId}
-						name={this.parameter.tagName}
+						id={tagId}
+						name={tagName}
 						value={this.state.translation}
 						placeholder={this.parameter.getPlaceholder(this.state.selectedLang)}
 						disabled={this.parameter.disabled}
@@ -1047,19 +1047,41 @@ export class SXLocalizedInput extends React.Component {
 	}
 
 	renderCell() {
-		return this.getClayUI();
+		return this.getClayUI(this.parameter.tagId + "_" + this.cellIndex, this.parameter.tagName);
 	}
 
 	renderFormField() {
 		return (
-			<>
-				{this.parameter.showDefinition && (
-					<div className="sx-param-definition">
-						<pre>{this.parameter.definition}</pre>
-					</div>
+			<ClayForm.Group
+				className={className}
+				style={this.style}
+			>
+				<SXControlWrapper
+					displayType={this.parameter.displayType}
+					label={this.parameter.renderLabel({
+						forHtml: this.parameter.tagId,
+						spritemap: this.spritemap,
+						inputStatus: this.inputStatus
+					})}
+					control={
+						<>
+							{this.parameter.showDefinition && (
+								<div className="sx-param-definition">
+									<pre>{this.parameter.definition}</pre>
+								</div>
+							)}
+							{this.getClayUI(this.parameter.tagId, this.parameter.tagName)}
+						</>
+					}
+				/>
+				{this.parameter.dirty && this.parameter.errorClass !== ErrorClass.SUCCESS && (
+					<SXFormFieldFeedback
+						content={this.parameter.errorMessage}
+						spritemap={this.spritemap}
+						symbol="exclamation-full"
+					/>
 				)}
-				{this.getClayUI()}
-			</>
+			</ClayForm.Group>
 		);
 	}
 
@@ -1067,30 +1089,8 @@ export class SXLocalizedInput extends React.Component {
 		const className = this.className + (this.parameter.dirty ? " " + this.parameter.error.errorClass : "");
 
 		if (this.parameter.displayType === Parameter.DisplayTypes.FORM_FIELD) {
-			return (
-				<ClayForm.Group
-					className={className}
-					style={this.style}
-				>
-					<SXControlWrapper
-						displayType={this.parameter.displayType}
-						label={this.parameter.renderLabel({
-							forHtml: this.parameter.tagId,
-							spritemap: this.spritemap,
-							inputStatus: this.inputStatus
-						})}
-						control={<>{this.renderFormField()}</>}
-					/>
-					{this.parameter.dirty && this.parameter.errorClass !== ErrorClass.SUCCESS && (
-						<SXFormFieldFeedback
-							content={this.parameter.errorMessage}
-							spritemap={this.spritemap}
-							symbol="exclamation-full"
-						/>
-					)}
-				</ClayForm.Group>
-			);
-		} else if (this.parameter.displayType === Parameter.DisplayTypes.CELL) {
+			return this.renderFormField();
+		} else if (this.parameter.displayType === Parameter.DisplayTypes.GRID_CELL) {
 			return this.renderCell();
 		}
 	}
@@ -1113,10 +1113,15 @@ export class SXNumeric extends React.Component {
 		this.cellIndex = props.cellIndex;
 
 		this.parameter.dirty = false;
+		this.parameter.initValue();
 
 		this.state = {
-			value: "",
-			uncertainty: ""
+			value: Util.isEmpty(this.parameter.getValueValue(this.cellIndex))
+				? ""
+				: this.parameter.getValueValue(this.cellIndex).toString(),
+			uncertainty: Util.isEmpty(this.parameter.getValueUncertainty(this.cellIndex))
+				? ""
+				: this.parameter.getValueUncertainty(this.cellIndex).toString()
 		};
 	}
 
@@ -1167,164 +1172,64 @@ export class SXNumeric extends React.Component {
 		});
 	}
 
-	setValue(value) {
-		this.state.value = value;
-		this.parameter.setValueValue(value, this.cellIndex);
+	toNumber(val) {
+		return this.parameter.isInteger ? Math.trunc(Number(val)) : Number(val).toFixed(this.parameter.decimalPlaces);
+	}
 
-		this.parameter.fireValueChanged();
+	setValue(value) {
+		const numVal = this.toNumber(value);
+		if (isNaN(numVal)) {
+			this.errorClass = ErrorClass.ERROR;
+			this.errorMessage = Util.translate("required-number");
+		} else {
+			this.parameter.setValueValue(numVal, this.cellIndex);
+			this.parameter.dirty = true;
+
+			this.parameter.fireValueChanged(this.cellIndex);
+		}
+
+		this.setState({ value: value });
 	}
 
 	setUncertainTy(uncertainty) {
-		this.state.uncertainty = uncertainty;
-		this.parameter.setValueUncertainty(uncertainty, this.cellIndex);
-		this.parameter.fireValueChanged();
-	}
-
-	convertValueToText(value) {
-		if (this.state.uncertainty) {
-			if (Util.isNotEmpty(value)) {
-				this.state.textValue = Util.isEmpty(value.value) ? "" : value.value.toString();
-				this.state.textUncertainty = Util.isEmpty(value.uncertainty) ? "" : value.uncertainty.toString();
-			}
+		const numVal = this.toNumber(uncertainty);
+		if (isNaN(numVal)) {
+			this.errorClass = ErrorClass.ERROR;
+			this.errorMessage = Util.translate("required-number");
 		} else {
-			this.state.textValue = Util.isEmpty(value) ? "" : value.toString();
-		}
-	}
+			this.parameter.setValueUncertainty(numVal, this.cellIndex);
+			this.parameter.dirty = true;
 
-	convertTextToValue(textValue, textUncertainty) {
-		return this.state.uncertainty
-			? {
-					value: Util.isNotEmpty(textValue) ? Number(textValue).toFixed(this.state.decimalPlaces) : undefined,
-					uncertainty: Util.isNotEmpty(textUncertainty)
-						? Number(textUncertainty).toFixed(this.state.decimalPlaces)
-						: undefined
-			  }
-			: Util.isNotEmpty(textValue)
-			? Number(textValue).toFixed(this.state.decimalPlaces)
-			: undefined;
+			this.parameter.fireValueChanged(this.cellIndex);
+		}
+
+		this.setState({ uncertainty: uncertainty });
 	}
 
 	handleValueChanged(val) {
-		if (this.state.textValue === val) {
+		if (this.state.value === val) {
 			return;
 		}
 
-		let error = {};
-		let textValue = "";
-		let fixedVal;
-		if (Util.isNotEmpty(val)) {
-			fixedVal = this.state.isInteger ? Math.trunc(Number(val)) : Number(val).toFixed(this.state.decimalPlaces);
-			console.log("SXNumeric handleValueChanged: ", this.state.isInteger, fixedVal);
-
-			error = Parameter.validateValue(ParamType.NUMERIC, this.state.validation, fixedVal, this.languageId);
-
-			textValue = fixedVal.toString();
-		}
-
-		if (Util.isNotEmpty(this.events.fire)) {
-			this.events.fire.forEach((event) => {
-				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-					if (error.errorClass === ErrorClass.ERROR) {
-						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
-							targetFormId: event.target,
-							error: error,
-							paramName: this.state.paramName,
-							paramVersion: this.state.paramVersion,
-							index: this.state.index
-						});
-					} else {
-						Event.fire(event.event, this.namespace, this.namespace, {
-							target: event.target,
-							value: this.convertTextToValue(
-								isNaN(textValue) ? this.state.textValue : textValue,
-								this.state.textUncertainty
-							),
-							paramName: this.state.paramName,
-							paramVersion: this.state.paramVersion,
-							index: this.state.index
-						});
-					}
-				}
-			});
-		}
-
-		this.dirty = true;
-
-		this.setState((prevState) => {
-			return { textValue: isNaN(textValue) ? prevState.textValue : textValue, error: error };
-		});
+		this.setValue(val);
 	}
 
 	handleUncertaintyChanged(val) {
-		if (val === this.state.textUncertainty) {
+		if (val === this.state.uncertainty) {
 			return;
 		}
 
-		const fixedVal = this.state.isInteger ? Math.trunc(Number(val)) : Number(val).toFixed(this.state.decimalPlaces);
-
-		let error;
-		if (isNaN(fixedVal)) {
-			error = { errorClass: ErrorClass.ERROR, message: Util.translate("only-numbers-allowed-for-this-field") };
-		} else {
-			error = { errorClass: ErrorClass.SUCCESS, message: "" };
-		}
-
-		let textUncertainty = fixedVal.toString();
-
-		this.setState((prevState) => {
-			return {
-				textUncertainty: isNaN(textUncertainty) ? prevState.textUncertainty : textUncertainty,
-				error: error
-			};
-		});
-
-		this.dirty = true;
-
-		if (Util.isNotEmpty(this.events.fire)) {
-			this.events.fire.forEach((event) => {
-				if (event.event === Event.SX_FIELD_VALUE_CHANGED) {
-					if (error.errorClass === ErrorClass.ERROR) {
-						Event.fire(Event.SX_FORM_FIELD_FAILED, this.namespace, this.namespace, {
-							target: event.target,
-							error: error,
-							paramName: this.state.paramName,
-							paramVersion: this.state.paramVersion,
-							index: this.state.index
-						});
-					} else {
-						Event.fire(event.event, this.namespace, this.namespace, {
-							target: event.target,
-							value: this.convertTextToValue(
-								this.state.textValue,
-								isNaN(textUncertainty) ? this.state.textUncertainty : textUncertainty
-							),
-							paramName: this.state.paramName,
-							paramVersion: this.state.paramVersion,
-							index: this.state.index
-						});
-					}
-				}
-			});
-		}
+		this.setUncertainTy(val);
 	}
 
-	renderLabel(forHtml) {
-		return this.state.labelPosition === Parameter.LabelPosition.NONE ? null : (
-			<SXLabel
-				key={Util.randomKey()}
-				label={this.state.label}
-				forHtml={forHtml}
-				required={this.state.required}
-				tooltip={this.state.tooltip}
-				spritemap={this.spritemap}
-			/>
-		);
+	renderGridCell() {
+		return <></>;
 	}
 
-	render() {
-		const className = this.className + (this.dirty ? this.state.error.errorClass : "");
+	renderFormField() {
+		const className = this.className + (this.parameter.dirty ? " " + this.parameter.errorClass : "");
 
-		const tagId = this.namespace + this.state.paramName;
+		const tagId = this.parameter.tagId;
 		const tagName = tagId;
 
 		return (
@@ -1334,16 +1239,19 @@ export class SXNumeric extends React.Component {
 			>
 				<SXControlWrapper
 					labelPosition={this.state.labelPosition}
-					label={this.renderLabel(tagId)}
+					label={this.parameter.renderLabel({
+						spritemap: this.spritemap,
+						inputStatus: this.inputStatus
+					})}
 					control={
 						<>
-							{this.state.showDefinition && (
+							{this.parameter.showDefinition && (
 								<div className="sx-param-definition">
-									<pre>{this.state.definition}</pre>
+									<pre>{this.parameter.getDefinition()}</pre>
 								</div>
 							)}
 							<ClayInput.Group stacked>
-								{Parameter.checkValidationEnabled(this.state.validation, ValidationKeys.MIN) && (
+								{Parameter.checkValidationEnabled(this.parameter.validation, ValidationKeys.MIN) && (
 									<>
 										<ClayInput.GroupItem
 											prepend
@@ -1351,7 +1259,7 @@ export class SXNumeric extends React.Component {
 										>
 											<ClayInput.GroupText>
 												{Parameter.getValidationValue(
-													this.state.validation,
+													this.parameter.validation,
 													ValidationKeys.MIN,
 													ValidationSectionProperty.VALUE
 												)}
@@ -1362,7 +1270,7 @@ export class SXNumeric extends React.Component {
 											shrink
 										>
 											{Parameter.getValidationValue(
-												this.state.validation,
+												this.parameter.validation,
 												ValidationKeys.MIN,
 												ValidationSectionProperty.BOUNDARY
 											) ? (
@@ -1374,21 +1282,27 @@ export class SXNumeric extends React.Component {
 									</>
 								)}
 								<ClayInput.GroupItem append>
-									<ClayInput
-										type={this.state.isInteger ? "number" : "text"}
-										defaultValue={this.state.textValue}
-										onBlur={(e) => this.handleValueChanged(e.target.value)}
-									/>
+									<ClayInput.Group>
+										{this.parameter.renderPrefix()}
+										<ClayInput.GroupItem>
+											<ClayInput
+												type={this.parameter.isInteger ? "number" : "text"}
+												defaultValue={this.state.value}
+												onChange={(e) => this.handleValueChanged(e.target.value)}
+											/>
+										</ClayInput.GroupItem>
+										{this.parameter.renderPostfix()}
+									</ClayInput.Group>
 								</ClayInput.GroupItem>
-								{this.state.unit && (
+								{this.parameter.unit && (
 									<ClayInput.GroupItem
 										append
 										shrink
 									>
-										<ClayInput.GroupText>{this.state.unit}</ClayInput.GroupText>
+										<ClayInput.GroupText>{this.parameter.unit}</ClayInput.GroupText>
 									</ClayInput.GroupItem>
 								)}
-								{this.state.uncertainty && (
+								{this.parameter.uncertainty && (
 									<>
 										<ClayInput.GroupItem
 											append
@@ -1402,21 +1316,21 @@ export class SXNumeric extends React.Component {
 											style={{ maxWidth: "200px", width: "120px" }}
 										>
 											<ClayInput
-												type={this.state.isInteger ? "number" : "text"}
-												defaultValue={this.state.textUncertainty}
-												onBlur={(e) => this.handleUncertaintyChanged(e.target.value)}
+												type={this.parameter.isInteger ? "number" : "text"}
+												defaultValue={this.state.uncertainty}
+												onChange={(e) => this.handleUncertaintyChanged(e.target.value)}
 											/>
 										</ClayInput.GroupItem>
 									</>
 								)}
-								{Parameter.checkValidationEnabled(this.state.validation, ValidationKeys.MAX) && (
+								{Parameter.checkValidationEnabled(this.parameter.validation, ValidationKeys.MAX) && (
 									<>
 										<ClayInput.GroupItem
 											append
 											shrink
 										>
 											{Parameter.getValidationValue(
-												this.state.validation,
+												this.parameter.validation,
 												ValidationKeys.MAX,
 												ValidationSectionProperty.BOUNDARY
 											) ? (
@@ -1431,7 +1345,7 @@ export class SXNumeric extends React.Component {
 										>
 											<ClayInput.GroupText>
 												{Parameter.getValidationValue(
-													this.state.validation,
+													this.parameter.validation,
 													ValidationKeys.MAX,
 													ValidationSectionProperty.VALUE
 												)}
@@ -1443,11 +1357,11 @@ export class SXNumeric extends React.Component {
 						</>
 					}
 				/>
-				{this.dirty &&
-					(this.state.error.errorClass === ErrorClass.ERROR ||
-						this.state.error.errorClass === ErrorClass.WARNING) && (
+				{this.parameter.dirty &&
+					(this.parameter.errorClass === ErrorClass.ERROR ||
+						this.parameter.errorClass === ErrorClass.WARNING) && (
 						<SXFormFieldFeedback
-							content={this.state.error.message}
+							content={this.parameter.errorMessage}
 							spritemap={this.spritemap}
 							symbol="exclamation-full"
 						/>
@@ -1455,19 +1369,13 @@ export class SXNumeric extends React.Component {
 			</ClayForm.Group>
 		);
 	}
-}
-
-/****************************************************
- *  04. The type of Parametrer is Numeric and
- * 		integer property is true
- ****************************************************/
-export class SXInteger extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 
 	render() {
-		return <></>;
+		if (this.parameter.displayType === Parameter.DisplayTypes.FORM_FIELD) {
+			return this.renderFormField();
+		} else {
+			return this.renderGridCell();
+		}
 	}
 }
 
@@ -1544,23 +1452,21 @@ export class SXBoolean extends React.Component {
 	}
 
 	handleSelect(val) {
-		console.log("SXBoolean handleSelect: ", val);
+		console.log("SXBoolean handleSelect: ", val, typeof val);
 		this.setState({ value: val });
 		this.parameter.setValue(val, this.cellIndex);
 
 		this.parameter.dirty = true;
 
-		Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
-			target: event.target,
-			value: val,
-			paramName: this.parameter.paramName,
-			paramVersion: this.parameter.paramVersion,
-			cellIndex: this.cellIndex
-		});
+		this.parameter.fireValueChanged(this.cellIndex);
 	}
 
-	render() {
-		const className = this.className + (this.dirty ? " " + this.parameter.errorClass : "");
+	renderGridCell() {
+		return <></>;
+	}
+
+	renderFormField() {
+		const className = this.className + (this.parameter.dirty ? " " + this.parameter.errorClass : "");
 
 		const tagId = this.parameter.tagId;
 		const tagName = tagId;
@@ -1693,6 +1599,14 @@ export class SXBoolean extends React.Component {
 			</ClayForm.Group>
 		);
 	}
+
+	render() {
+		if (this.parameter.displayType === Parameter.DisplayTypes.FORM_FIELD) {
+			return this.renderFormField();
+		} else {
+			return this.renderGridCell();
+		}
+	}
 }
 
 /****************************************************
@@ -1744,6 +1658,7 @@ export class SXSelect extends React.Component {
 			if (this.parameter.isGridCell(this.cellIndex)) {
 				if (dataPacket.cellIndex === this.cellIndex) {
 					this.forceUpdate();
+					return;
 				}
 			}
 			this.forceUpdate();
@@ -1765,6 +1680,7 @@ export class SXSelect extends React.Component {
 			if (this.parameter.isGridCell(this.cellIndex)) {
 				if (dataPacket.cellIndex === this.cellIndex) {
 					this.focusRef.focus();
+					return;
 				}
 			}
 
@@ -1781,7 +1697,7 @@ export class SXSelect extends React.Component {
 		this.parameter.setValue(value, this.cellIndex);
 		this.parameter.dirty = true;
 
-		this.parameter.fireValueChanged();
+		this.parameter.fireValueChanged(this.cellIndex);
 	}
 
 	handleRadioClick(val) {

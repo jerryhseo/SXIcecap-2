@@ -59,6 +59,18 @@ export class SelectOption {
 export class ParamId {}
 
 export class Parameter {
+	static GridCellableTypes = [
+		ParamType.STRING,
+		ParamType.NUMERIC,
+		ParamType.BOOLEAN,
+		ParamType.SELECT,
+		ParamType.EMAIL,
+		ParamType.ADDRESS,
+		ParamType.PHONE,
+		ParamType.DATE,
+		ParamType.FILE
+	];
+
 	static DisplayTypes = {
 		FORM_FIELD: "formField",
 		INLINE: "inline",
@@ -942,7 +954,7 @@ export class Parameter {
 		};
 	}
 
-	renderLabel({ forHtml, spritemap, inputStatus = false, languageId = this.languageId }) {
+	renderLabel({ forHtml = this.tagId, spritemap, inputStatus = false, languageId = this.languageId }) {
 		const style =
 			inputStatus && !this.hasValue()
 				? {
@@ -1109,6 +1121,14 @@ export class StringParameter extends Parameter {
 		}
 	}
 
+	initValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.defaultValue ?? this.localized ? {} : "";
+		} else {
+			this.value = this.localized ? {} : "";
+		}
+	}
+
 	setValue(value, cellIndex) {
 		if (this.isGridCell(cellIndex)) {
 			this.value[cellIndex] = value;
@@ -1122,11 +1142,7 @@ export class StringParameter extends Parameter {
 	}
 
 	clearValue(cellIndex) {
-		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex] = this.localized ? this.defaultValue ?? {} : this.defaultValue ?? "";
-		} else {
-			this.value = this.localized ? this.defaultValue ?? {} : this.defaultValue ?? "";
-		}
+		this.initValue(cellIndex);
 	}
 
 	getPlaceholder(languageId) {
@@ -1272,6 +1288,9 @@ export class NumericParameter extends Parameter {
 	#isInteger = false;
 	#unit = "";
 
+	#prefix = {};
+	#postfix = {};
+
 	constructor(namespace, formId, languageId, availableLanguageIds, json) {
 		super(namespace, formId, languageId, availableLanguageIds, ParamType.NUMERIC);
 
@@ -1298,6 +1317,12 @@ export class NumericParameter extends Parameter {
 	get valueValue() {
 		return this.value.value;
 	}
+	get prefix() {
+		return this.#prefix;
+	}
+	get postfix() {
+		return this.#postfix;
+	}
 
 	set uncertainty(val) {
 		this.#uncertainty = val;
@@ -1316,6 +1341,12 @@ export class NumericParameter extends Parameter {
 	}
 	set valueValue(val) {
 		this.value.value = val;
+	}
+	set prefix(val) {
+		this.#prefix = val;
+	}
+	set postfix(val) {
+		this.#postfix = val;
 	}
 
 	/**
@@ -1343,6 +1374,8 @@ export class NumericParameter extends Parameter {
 		} else {
 			this.value = value;
 		}
+
+		Parameter.validate(this);
 	}
 
 	initValue(cellIndex) {
@@ -1359,6 +1392,8 @@ export class NumericParameter extends Parameter {
 		} else {
 			this.value.uncertainty = value;
 		}
+
+		Parameter.validate(this);
 	}
 
 	setValueValue(value, cellIndex) {
@@ -1367,6 +1402,8 @@ export class NumericParameter extends Parameter {
 		} else {
 			this.value.value = value;
 		}
+
+		Parameter.validate(this);
 	}
 
 	hasValue(cellIndex) {
@@ -1394,8 +1431,11 @@ export class NumericParameter extends Parameter {
 		if (this.displayType === Parameter.DisplayTypes.GRID_CELL) {
 			return this.uncertainty
 				? this.value.map((val) => ({ value: Number(val.value), uncertainty: Number(val.uncertainty) }))
-				: { value: Number(this.valueValue), uncertainty: Number(this.valueUncertainty) };
+				: this.value.map((val) => Number(val));
 		} else {
+			return this.uncertainty
+				? { value: Number(this.valueValue), uncertainty: Number(this.valueUncertainty) }
+				: Number(this.value);
 		}
 	}
 
@@ -1405,7 +1445,7 @@ export class NumericParameter extends Parameter {
 		if (json.uncertainty) this.uncertainty = json.uncertainty;
 		if (json.isInteger) {
 			this.isInteger = json.isInteger;
-			this.decimalPlaces = 0;
+			this.decimalPlaces = undefined;
 		} else if (json.decimalPlaces) {
 			this.decimalPlaces = json.decimalPlaces;
 		}
@@ -1916,6 +1956,12 @@ export class BooleanParameter extends SelectParameter {
 
 	getFalseLabel(languageId) {
 		return languageId ? this.falseLabel[languageId] : this.falseLabel[this.languageId];
+	}
+
+	initValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+		} else {
+		}
 	}
 
 	getValue(cellIndex) {
