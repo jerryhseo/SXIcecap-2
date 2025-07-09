@@ -180,8 +180,8 @@ export const Util = {
 	convertArrayToRows: (ary, colsPerRow) => {
 		let rows = [];
 
-		if (colsPerRow === 0) {
-			rows.push(ary);
+		if (colsPerRow <= 1) {
+			rows = [...ary];
 		} else {
 			let quotient = Math.floor(ary.length / colsPerRow);
 			let remainder = ary.length % colsPerRow;

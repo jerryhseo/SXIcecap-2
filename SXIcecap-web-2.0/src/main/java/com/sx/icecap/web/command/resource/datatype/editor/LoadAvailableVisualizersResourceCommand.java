@@ -37,8 +37,7 @@ public class LoadAvailableVisualizersResourceCommand extends BaseMVCResourceComm
 		JSONArray availables = JSONFactoryUtil.createJSONArray();
 		
 		JSONObject item = JSONFactoryUtil.createJSONObject();
-		item.put( "id", 123456);
-		item.put( "portletName", "com_sx_visualizer_TextViewer");
+		item.put( "value", 123456);
 		JSONObject displayName = JSONFactoryUtil.createJSONObject();
 		displayName.put("en-US", "Text Viewer");
 		displayName.put("ko-KR", "텍스트 뷰어");
@@ -47,8 +46,7 @@ public class LoadAvailableVisualizersResourceCommand extends BaseMVCResourceComm
 		availables.put(item);
 		
 		item = JSONFactoryUtil.createJSONObject();
-		item.put( "id", 234567);
-		item.put( "portletName", "com_sx_visualizer_StructuredDataEditor");
+		item.put( "value", 234567);
 		displayName = JSONFactoryUtil.createJSONObject();
 		displayName.put("en-US", "Structured Data Editor");
 		displayName.put("ko-KR", "구조데이터 편집기");
@@ -57,8 +55,7 @@ public class LoadAvailableVisualizersResourceCommand extends BaseMVCResourceComm
 		availables.put(item);
 		
 		item = JSONFactoryUtil.createJSONObject();
-		item.put( "id", 345678);
-		item.put( "portletName", "com_sx_visualizer_ImageViewer");
+		item.put( "value", 345678);
 		displayName = JSONFactoryUtil.createJSONObject();
 		displayName.put("en-US", "Image Viewer");
 		displayName.put("ko-KR", "이미지 뷰어");
@@ -67,8 +64,7 @@ public class LoadAvailableVisualizersResourceCommand extends BaseMVCResourceComm
 		availables.put(item);
 		
 		item = JSONFactoryUtil.createJSONObject();
-		item.put( "id", 456789);
-		item.put( "portletName", "com_sx_visualizer_TextEditor");
+		item.put( "value", 456789);
 		displayName = JSONFactoryUtil.createJSONObject();
 		displayName.put("en-US", "Text Editor");
 		displayName.put("ko-KR", "텍스트 편집기");
@@ -77,8 +73,7 @@ public class LoadAvailableVisualizersResourceCommand extends BaseMVCResourceComm
 		availables.put(item);
 		
 		item = JSONFactoryUtil.createJSONObject();
-		item.put( "id", 567890);
-		item.put( "portletName", "com_sx_visualizer_ImageEditor");
+		item.put( "value", 567890);
 		displayName = JSONFactoryUtil.createJSONObject();
 		displayName.put("en-US", "Image Editor");
 		displayName.put("ko-KR", "이미지 편집기");

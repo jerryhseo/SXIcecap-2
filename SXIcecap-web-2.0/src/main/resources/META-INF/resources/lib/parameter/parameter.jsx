@@ -74,7 +74,8 @@ export class Parameter {
 	static DisplayTypes = {
 		FORM_FIELD: "formField",
 		INLINE: "inline",
-		TABLE_CELL: "tableCell",
+		SHARED_OPTION_CELL: "sharedOptionCell",
+		SHARED_LABEL_CELL: "sharedLabelCell",
 		GRID_CELL: "gridCell"
 	};
 
@@ -129,9 +130,6 @@ export class Parameter {
 			case ParamType.GROUP: {
 				return new GroupParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
-			case ParamType.SELECT_GROUP: {
-				return new SelectGroupParameter(namespace, formId, languageId, availableLanguageIds, json);
-			}
 			/*
 			case ParamType.GRID: {
 				return new GridParameter(namespace, formId, languageId, availableLanguageIds, json);
@@ -170,240 +168,6 @@ export class Parameter {
 		return localizationObj;
 	}
 
-	static checkValidationEnabled(validation, section) {
-		return !!(validation && validation[section]);
-	}
-
-	static enableValidation(validation, section, enable) {
-		if (enable) {
-			switch (section) {
-				case ValidationKeys.REQUIRED: {
-					validation.required = {
-						value: true
-					};
-					break;
-				}
-				case ValidationKeys.CUSTOM: {
-					validation.custom = 'function(value){\n return {\nmessage:"",\nerrorClass:"has-error"};\n}';
-					break;
-				}
-				default: {
-					validation[section] = {};
-				}
-			}
-		} else {
-			delete validation[section];
-		}
-
-		return { ...validation };
-	}
-
-	static toggleValidationSection(validation, section) {
-		return Parameter.enableValidation(validation, section, !Parameter.checkValidationEnabled(validation, section));
-	}
-
-	static getValidationValue(validation, section, valueProp, locale) {
-		if (Parameter.checkValidationEnabled(validation, section)) {
-			switch (valueProp) {
-				case "message": {
-					if (locale) {
-						return validation[section].message ? validation[section].message[locale] : "";
-					} else {
-						return validation[section].message;
-					}
-				}
-				case "value":
-				case "boundary": {
-					return validation[section][valueProp];
-				}
-				default: {
-					return validation[section];
-				}
-			}
-		}
-	}
-	static setValidationValue(validation, section, valueProp, value, locale) {
-		if (Parameter.checkValidationEnabled(validation, section)) {
-			switch (valueProp) {
-				case "message": {
-					if (Util.isEmpty(validation[section].message)) {
-						validation[section].message = {};
-					}
-
-					if (Util.isNotEmpty(value)) {
-						if (locale) {
-							validation[section].message[locale] = value;
-						} else {
-							validation[section].message = value;
-						}
-					} else {
-						if (locale) {
-							delete validation[section].message[locale];
-						} else {
-							delete validation[section].message;
-						}
-					}
-
-					break;
-				}
-				case "value":
-				case "boundary": {
-					if (Util.isNotEmpty(value)) {
-						validation[section][valueProp] = value;
-					} else {
-						delete validation[section][valueProp];
-					}
-					break;
-				}
-				default: {
-					if (Util.isNotEmpty(value)) {
-						validation[section] = value;
-					} else {
-						delete validation[section];
-					}
-				}
-			}
-		}
-	}
-
-	static validate(parameter) {
-		parameter.error = Parameter.validateValue(
-			parameter.paramType,
-			parameter.validation,
-			parameter.value,
-			parameter.languageId
-		);
-	}
-
-	static validateValue(fieldType, validation, value, languageId) {
-		console.log("validation: ", fieldType, isNaN(value), validation, languageId);
-		switch (fieldType) {
-			case ParamType.NUMERIC: {
-				if (isNaN(value)) {
-					return {
-						message: Util.translate("only-numbers-allowed-for-this-field"),
-						errorClass: ErrorClass.ERROR
-					};
-				}
-			}
-		}
-
-		for (const validationType in validation) {
-			switch (validationType) {
-				case ValidationKeys.REQUIRED: {
-					if (validation.required.value && Util.isEmpty(value)) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.ERROR
-						};
-					}
-
-					break;
-				}
-				case ValidationKeys.PATTERN: {
-					const regExpr = new RegExp(validation.pattern.value);
-
-					if (!regExpr.test(value)) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.ERROR
-						};
-					}
-
-					break;
-				}
-				case ValidationKeys.MIN_LENGTH: {
-					if (value.length < validation.minLength.value) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.ERROR
-						};
-					}
-
-					break;
-				}
-				case ValidationKeys.MAX_LENGTH: {
-					if (value.length > validation.maxLength.value) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.ERROR
-						};
-					}
-
-					break;
-				}
-				case ValidationKeys.NORMAL_MIN: {
-					if (validation.normalMin.boundary && value < validation.normalMin.value) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.WARNING
-						};
-					} else if (value <= validation.normalMin.value) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.WARNING
-						};
-					}
-
-					break;
-				}
-				case ValidationKeys.NORMAL_MAX: {
-					if (validation.normalMax.boundary && value > validation.normalMax.value) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.WARNING
-						};
-					} else if (value >= validation.normalMax.value) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.WARNING
-						};
-					}
-
-					break;
-				}
-				case ValidationKeys.MIN: {
-					if (validation.min.boundary && value < validation.min.value) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.ERROR
-						};
-					} else if (value <= validation.min.value) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.ERROR
-						};
-					}
-
-					break;
-				}
-				case ValidationKeys.MAX: {
-					if (validation.max.boundary && value > validation.max.value) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.ERROR
-						};
-					} else if (value >= validation.max.value) {
-						return {
-							message: Parameter.getValidationValue(validation, validationType, "message", languageId),
-							errorClass: ErrorClass.ERROR
-						};
-					}
-
-					break;
-				}
-				case ValidationKeys.CUSTOM: {
-					return validation.custom(value);
-				}
-			}
-		}
-
-		return {
-			message: "",
-			errorClass: ErrorClass.SUCCESS
-		};
-	}
-
 	#namespace;
 	#formId;
 	#languageId;
@@ -412,6 +176,7 @@ export class Parameter {
 	#paramName = "";
 	#paramVersion = "1.0.0";
 	#displayName = {};
+	#viewType;
 	#abstractKey = false;
 	#searchable = true;
 	#downloadable = true;
@@ -435,11 +200,9 @@ export class Parameter {
 	#validation = {};
 	#style = {};
 
-	#renderImage = null;
-	#pdf = null;
-
 	#value;
 	#displayType = Parameter.DisplayTypes.FORM_FIELD;
+
 	#error = {};
 
 	#key = Util.randomKey();
@@ -480,6 +243,9 @@ export class Parameter {
 	}
 	get displayName() {
 		return this.#displayName;
+	}
+	get viewType() {
+		return this.#viewType;
 	}
 	get abstractKey() {
 		return this.#abstractKey;
@@ -528,6 +294,12 @@ export class Parameter {
 	get parent() {
 		return this.#parent;
 	}
+	get parentName() {
+		return Util.isEmpty(this.parent) ? "" : this.parent.name;
+	}
+	get parentVersion() {
+		return Util.isEmpty(this.parent) ? "" : this.parent.version;
+	}
 	get parameterId() {
 		return this.#parameterId;
 	}
@@ -539,12 +311,6 @@ export class Parameter {
 	}
 	get state() {
 		return this.#state;
-	}
-	get renderImage() {
-		return this.#renderImage;
-	}
-	get pdf() {
-		return this.#pdf;
 	}
 	get validation() {
 		return this.#validation;
@@ -618,6 +384,9 @@ export class Parameter {
 	set displayName(val) {
 		this.#displayName = val;
 	}
+	set viewType(val) {
+		this.#viewType = val;
+	}
 	set abstractKey(val) {
 		this.#abstractKey = val;
 	}
@@ -667,6 +436,22 @@ export class Parameter {
 	set parent(val) {
 		this.#parent = val;
 	}
+	set parentName(val) {
+		const version = Util.isEmpty(this.parent) ? "" : this.parent.version ?? "";
+
+		this.parent = {
+			name: val,
+			version: version
+		};
+	}
+	set parentVersion(val) {
+		const name = Util.isEmpty(this.parent) ? "" : this.parent.name ?? "";
+
+		this.parent = {
+			name: name,
+			version: val
+		};
+	}
 	set parameterId(val) {
 		this.#parameterId = val;
 	}
@@ -678,12 +463,6 @@ export class Parameter {
 	}
 	set state(val) {
 		this.#state = val;
-	}
-	set renderImage(val) {
-		this.#renderImage = val;
-	}
-	set pdf(val) {
-		this.#pdf = val;
 	}
 	set validation(val) {
 		this.#validation = val;
@@ -781,7 +560,11 @@ export class Parameter {
 	}
 
 	equalTo(name, version) {
-		return name === this.paramName && version === this.paramVersion;
+		if (version) {
+			return name === this.paramName && version === (this.paramVersion ? this.paramVersion : "1.0.0");
+		} else {
+			return name === this.paramName;
+		}
 	}
 
 	isMemberOf(assembly) {
@@ -798,21 +581,11 @@ export class Parameter {
 	}
 
 	isRendered() {
-		return !!this.renderImage;
+		return this.order > 0;
 	}
 
 	isActive() {
 		return !!this.active;
-	}
-
-	getOutput() {
-		let out = {};
-
-		if (this.hasValue()) {
-			out[this.paramName] = this.value;
-		}
-
-		return out;
 	}
 
 	loadData(data) {
@@ -832,10 +605,8 @@ export class Parameter {
 	}
 
 	getTagId(cellIndex) {
-		return cellIndex >= 0 ? this.tagId + "_" + cellIndex : this.tagId;
+		return this.isGridCell(cellIndex) ? this.tagId + "_" + cellIndex : this.tagId;
 	}
-
-	validate(key = "") {}
 
 	addStyle(style) {
 		this.style = { ...this.style, ...style };
@@ -846,11 +617,147 @@ export class Parameter {
 	}
 
 	hasError() {
-		return this.error.errorClass !== ErrorClass.SUCCESS;
+		return this.error.errorClass === ErrorClass.ERROR || this.error.errorClass === ErrorClass.WARNING;
 	}
 
 	clearError() {
 		this.error = {};
+	}
+
+	checkIntegrity() {
+		if (Util.isEmpty(this.paramName)) {
+			this.error = {
+				message: Util.translate("parameter-name-is-missing"),
+				errorClass: ErrorClass.ERROR
+			};
+
+			this.dirty = true;
+
+			return false;
+		}
+
+		if (Util.isEmpty(this.paramVersion)) {
+			this.error = {
+				message: Util.translate("parameter-version-is-missing"),
+				errorClass: ErrorClass.ERROR
+			};
+
+			this.dirty = true;
+			return false;
+		}
+
+		if (Util.isEmpty(this.displayName)) {
+			this.error = {
+				message: Util.translate("display-name-is-missing"),
+				errorClass: ErrorClass.ERROR
+			};
+
+			this.dirty = true;
+			return false;
+		}
+
+		return true;
+	}
+
+	checkValidationEnabled(section) {
+		return !!(this.validation && this.validation[section]);
+	}
+
+	enableValidation(section, enable) {
+		if (enable) {
+			switch (section) {
+				case ValidationKeys.REQUIRED: {
+					this.validation.required = {
+						value: true
+					};
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.validation.custom = 'function(value){\n return {\nmessage:"",\nerrorClass:"has-error"};\n}';
+					break;
+				}
+				default: {
+					this.validation[section] = {};
+				}
+			}
+		} else {
+			delete this.validation[section];
+		}
+	}
+
+	toggleValidationSection(section) {
+		return this.enableValidation(section, !this.checkValidationEnabled(section));
+	}
+
+	getValidationValue(section, valueProp, locale) {
+		if (this.checkValidationEnabled(section)) {
+			switch (valueProp) {
+				case "message": {
+					if (locale) {
+						return this.validation[section].message ? this.validation[section].message[locale] : "";
+					} else {
+						return this.validation[section].message ?? {};
+					}
+				}
+				case "value":
+				case "boundary": {
+					return this.validation[section][valueProp];
+				}
+				default: {
+					return this.validation[section];
+				}
+			}
+		}
+	}
+	setValidationValue(section, valueProp, value, locale) {
+		if (this.checkValidationEnabled(section)) {
+			switch (valueProp) {
+				case "message": {
+					if (Util.isEmpty(this.validation[section].message)) {
+						this.validation[section].message = {};
+					}
+
+					if (Util.isNotEmpty(value)) {
+						if (locale) {
+							this.validation[section].message[locale] = value;
+						} else {
+							this.validation[section].message = value;
+						}
+					} else {
+						if (locale) {
+							delete this.validation[section].message[locale];
+						} else {
+							delete this.validation[section].message;
+						}
+					}
+
+					break;
+				}
+				case "value":
+				case "boundary": {
+					if (Util.isNotEmpty(value)) {
+						this.validation[section][valueProp] = value;
+					} else {
+						delete this.validation[section][valueProp];
+					}
+					break;
+				}
+				default: {
+					if (Util.isNotEmpty(value)) {
+						this.validation[section] = value;
+					} else {
+						delete this.validation[section];
+					}
+				}
+			}
+		}
+	}
+
+	convertToSelectItem() {
+		return {
+			label: this.displayName,
+			value: this.paramName
+		};
 	}
 
 	fireRefresh(cellIndex) {
@@ -886,6 +793,36 @@ export class Parameter {
 			paramName: this.paramName,
 			paramVersion: this.paramVersion,
 			cellIndex: cellIndex
+		});
+	}
+
+	fireSelectGroup(targetForm) {
+		Event.fire(Event.SX_SELECT_GROUP, this.namespace, this.namespace, {
+			targetFormId: targetForm
+		});
+	}
+
+	fireCopy(targetForm) {
+		Event.fire(Event.SX_COPY_PARAMETER, this.namespace, this.namespace, {
+			targetFormId: targetForm
+		});
+	}
+
+	fireDelete(targetForm) {
+		Event.fire(Event.SX_DELETE_PARAMETER, this.namespace, this.namespace, {
+			targetFormId: targetForm
+		});
+	}
+
+	fireMoveUp(targetForm) {
+		Event.fire(Event.SX_MOVE_PARAMETER_UP, this.namespace, this.namespace, {
+			targetFormId: targetForm
+		});
+	}
+
+	fireMoveDown(targetForm) {
+		Event.fire(Event.SX_MOVE_PARAMETER_DOWN, this.namespace, this.namespace, {
+			targetFormId: targetForm
 		});
 	}
 
@@ -954,15 +891,8 @@ export class Parameter {
 		};
 	}
 
-	renderLabel({ forHtml = this.tagId, spritemap, inputStatus = false, languageId = this.languageId }) {
-		const style =
-			inputStatus && !this.hasValue()
-				? {
-						color: "#ff80b3"
-				  }
-				: {
-						color: "black"
-				  };
+	renderLabel({ forHtml = this.tagId, spritemap, inputStatus = false, languageId = this.languageId, style = {} }) {
+		style.color = inputStatus && !this.hasValue() ? "#ff80b3" : "black";
 
 		return (
 			<label
@@ -980,6 +910,14 @@ export class Parameter {
 				)}
 			</label>
 		);
+	}
+
+	getPrefix(languageId = this.languageId) {
+		return this.prefix[languageId];
+	}
+
+	getPostfix(languageId = this.languageId) {
+		return this.postfix[languageId];
 	}
 
 	renderPrefix() {
@@ -1008,17 +946,29 @@ export class Parameter {
 		}
 	}
 
-	renderPreview({ dsbuilderId, propertyPanelId, previewCanvasId, className, style, spritemap }) {
+	renderPreview({
+		dsbuilderId,
+		propertyPanelId,
+		previewCanvasId,
+		className = "",
+		style = {},
+		spritemap,
+		inputStatus,
+		position
+	}) {
+		console.log("Parameter renderPreview: ", dsbuilderId);
 		return (
 			<SXPreviewRow
-				key={parameter.key}
+				key={this.paramName}
 				dsbuilderId={dsbuilderId}
 				propertyPanelId={propertyPanelId}
 				previewCanvasId={previewCanvasId}
 				parameter={this}
-				focus={i + 1 === workingParamOrder ? true : false}
 				spritemap={spritemap}
-				inputStatus={this.enableInputStatus}
+				inputStatus={inputStatus}
+				position={position}
+				className={className}
+				style={style}
 			/>
 		);
 	}
@@ -1032,6 +982,7 @@ export class StringParameter extends Parameter {
 	#minLength = 1;
 	#maxLength = 72;
 	#multipleLine = false;
+	#localized = false;
 	#placeholder = {};
 	#prefix = {};
 	#postfix = {};
@@ -1043,18 +994,8 @@ export class StringParameter extends Parameter {
 			this.parse(json);
 		}
 
-		if (this.displayType === Parameter.DisplayTypes.GRID_CELL) {
-			if (this.localized) {
-				this.value = [{}];
-			} else {
-				this.value = [""];
-			}
-		} else {
-			if (this.localized) {
-				this.value = {};
-			} else {
-				this.value = "";
-			}
+		if (!this.hasValue()) {
+			this.initValue();
 		}
 	}
 
@@ -1066,6 +1007,9 @@ export class StringParameter extends Parameter {
 	}
 	get multipleLine() {
 		return this.#multipleLine;
+	}
+	get localized() {
+		return this.#localized;
 	}
 	get placeholder() {
 		return this.#placeholder;
@@ -1094,6 +1038,9 @@ export class StringParameter extends Parameter {
 	set multipleLine(val) {
 		this.#multipleLine = val;
 	}
+	set localized(val) {
+		this.#localized = val;
+	}
 	set placeholder(val) {
 		this.#placeholder = val;
 	}
@@ -1117,7 +1064,7 @@ export class StringParameter extends Parameter {
 		if (this.isGridCell(cellIndex)) {
 			return this.localized ? this.value[cellIndex] ?? {} : this.value[cellIndex] ?? "";
 		} else {
-			return this.localized ? this.value[cellIndex] : this.value;
+			return this.localized ? this.value ?? {} : this.value ?? "";
 		}
 	}
 
@@ -1125,7 +1072,7 @@ export class StringParameter extends Parameter {
 		if (this.isGridCell(cellIndex)) {
 			this.value[cellIndex] = this.defaultValue ?? this.localized ? {} : "";
 		} else {
-			this.value = this.localized ? {} : "";
+			this.value = this.defaultValue ?? (this.localized ? {} : "");
 		}
 	}
 
@@ -1135,6 +1082,9 @@ export class StringParameter extends Parameter {
 		} else {
 			this.value = value;
 		}
+
+		this.dirty = true;
+		this.validate(cellIndex);
 	}
 
 	hasValue(cellIndex) {
@@ -1186,15 +1136,129 @@ export class StringParameter extends Parameter {
 			return;
 		}
 
-		if (cellIndex >= 0) {
+		if (this.isGridCell(cellIndex)) {
 			if (!this.value[cellIndex]) {
 				this.value[cellIndex] = {};
 			}
 
 			this.value[cellIndex][languageId] = translation;
 		} else {
+			if (!this.value) {
+				this.value = {};
+			}
+
 			this.value[languageId] = translation;
 		}
+	}
+
+	validate(cellIndex) {
+		let value = this.getValue(cellIndex);
+
+		for (const validationType in this.validation) {
+			switch (validationType) {
+				case ValidationKeys.REQUIRED: {
+					if (this.validation.required.value && !this.hasValue(cellIndex)) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.PATTERN: {
+					const regExpr = new RegExp(this.validation.pattern.value);
+
+					if (this.localized) {
+						for (const locale in value) {
+							if (!regExpr.test(value[locale])) {
+								this.error = {
+									message: this.getValidationValue(validationType, "message", this.languageId),
+									errorClass: ErrorClass.ERROR
+								};
+
+								return;
+							}
+						}
+					} else {
+						if (!regExpr.test(value)) {
+							this.error = {
+								message: this.getValidationValue(validationType, "message", this.languageId),
+								errorClass: ErrorClass.ERROR
+							};
+
+							return;
+						}
+					}
+
+					break;
+				}
+				case ValidationKeys.MIN_LENGTH: {
+					if (this.localized) {
+						for (const locale in value) {
+							if (value[locale].length < this.validation.minLength.value) {
+								this.error = {
+									message: this.getValidationValue(validationType, "message", this.languageId),
+									errorClass: ErrorClass.ERROR
+								};
+
+								return;
+							}
+						}
+					} else {
+						if (value.length < this.validation.minLength.value) {
+							this.error = {
+								message: this.getValidationValue(validationType, "message", this.languageId),
+								errorClass: ErrorClass.ERROR
+							};
+
+							return;
+						}
+					}
+
+					break;
+				}
+				case ValidationKeys.MAX_LENGTH: {
+					if (this.localized) {
+						for (const locale in value) {
+							if (value[locale].length > this.validation.maxLength.value) {
+								this.error = {
+									message: this.getValidationValue(validationType, "message", this.languageId),
+									errorClass: ErrorClass.ERROR
+								};
+
+								return;
+							}
+						}
+					} else {
+						if (value.length > this.validation.maxLength.value) {
+							this.error = {
+								message: this.getValidationValue(validationType, "message", this.languageId),
+								errorClass: ErrorClass.ERROR
+							};
+
+							return;
+						}
+					}
+
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.error = this.validation.custom(value);
+
+					if (this.hasError()) {
+						return;
+					}
+				}
+			}
+		}
+
+		this.error = {
+			message: "",
+			errorClass: ErrorClass.SUCCESS
+		};
 	}
 
 	getTranslations(cellIndex) {
@@ -1207,6 +1271,7 @@ export class StringParameter extends Parameter {
 		this.minLength = json.minLength ?? 1;
 		this.maxLength = json.maxLength ?? 72;
 		this.multipleLine = json.multipleLine ?? false;
+		this.localized = json.localized ?? false;
 		this.placeholder = json.placeholder ?? "";
 	}
 
@@ -1215,7 +1280,8 @@ export class StringParameter extends Parameter {
 
 		if (this.minLength > 1) json.minLength = this.minLength;
 		if (this.maxLength !== 72) json.maxLength = this.maxLength;
-		if (this.mutilLine === true) json.multipleLine = this.multipleLine;
+		if (this.multipleLine === true) json.multipleLine = this.multipleLine;
+		if (this.localized === true) json.localized = this.localized;
 		if (Util.isNotEmpty(this.placeholder)) json.placeholder = this.placeholder;
 
 		return json;
@@ -1226,6 +1292,7 @@ export class StringParameter extends Parameter {
 
 		json.placeholder = this.getPlaceholder(this.languageId);
 		json.multipleLine = this.multipleLine;
+		json.localized = this.localized;
 		json.value = this.hasValue() ? this.value : this.defaultValue;
 
 		if (tagId) json.tagId = tagId;
@@ -1296,6 +1363,10 @@ export class NumericParameter extends Parameter {
 
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
+		}
+
+		if (!this.hasValue()) {
+			this.initValue();
 		}
 	}
 
@@ -1375,7 +1446,8 @@ export class NumericParameter extends Parameter {
 			this.value = value;
 		}
 
-		Parameter.validate(this);
+		this.dirty = true;
+		this.validate(cellIndex);
 	}
 
 	initValue(cellIndex) {
@@ -1393,7 +1465,7 @@ export class NumericParameter extends Parameter {
 			this.value.uncertainty = value;
 		}
 
-		Parameter.validate(this);
+		this.validate(cellIndex);
 	}
 
 	setValueValue(value, cellIndex) {
@@ -1403,7 +1475,7 @@ export class NumericParameter extends Parameter {
 			this.value.value = value;
 		}
 
-		Parameter.validate(this);
+		this.validate(cellIndex);
 	}
 
 	hasValue(cellIndex) {
@@ -1415,12 +1487,120 @@ export class NumericParameter extends Parameter {
 		return value.uncertainty ? Util.isNotEmpty(value.value) : Util.isNotEmpty(value);
 	}
 
-	clearValue(cellIndex) {
-		if (this.isGridCell(cellIndex)) {
-			this.setValue(this.uncertainty ? this.defaultValue ?? {} : this.defaultValue, cellIndex);
-		} else {
-			this.initValue(cellIndex);
+	validate(cellIndex) {
+		const valueObj = this.getValue(cellIndex);
+		const value = this.uncertainty ? valueObj.value : valueObj;
+		const uncertainty = this.uncertainty ? valueObj.uncertainty : 0;
+
+		if (isNaN(value)) {
+			this.error = {
+				message: Util.translate("only-numbers-allowed-for-this-field"),
+				errorClass: ErrorClass.ERROR
+			};
 		}
+
+		for (const validationType in this.validation) {
+			switch (validationType) {
+				case ValidationKeys.REQUIRED: {
+					if (this.validation.required.value && !this.hasValue(cellIndex)) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.NORMAL_MIN: {
+					if (this.validation.normalMin.boundary && value - uncertainty < this.validation.normalMin.value) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.WARNING
+						};
+					} else if (value - uncertainty <= this.validation.normalMin.value) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.WARNING
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.NORMAL_MAX: {
+					if (this.validation.normalMax.boundary && value + uncertainty > this.validation.normalMax.value) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.WARNING
+						};
+
+						return;
+					} else if (value + uncertainty >= this.validation.normalMax.value) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.WARNING
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.MIN: {
+					if (this.validation.min.boundary && value - uncertainty < this.validation.min.value) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					} else if (value - uncertainty <= this.validation.min.value) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.MAX: {
+					if (this.validation.max.boundary && value + uncertainty > this.validation.max.value) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					} else if (value + uncertainty >= this.validation.max.value) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.error = this.validation.custom(value);
+
+					if (this.hasError()) {
+						return;
+					}
+				}
+			}
+		}
+
+		this.error = {
+			message: "",
+			errorClass: ErrorClass.SUCCESS
+		};
 	}
 
 	toNumber() {
@@ -1449,6 +1629,8 @@ export class NumericParameter extends Parameter {
 		} else if (json.decimalPlaces) {
 			this.decimalPlaces = json.decimalPlaces;
 		}
+		if (json.prefix) this.prefix = json.prefix;
+		if (json.postfix) this.postfix = json.postfix;
 	}
 
 	toJSON() {
@@ -1458,6 +1640,8 @@ export class NumericParameter extends Parameter {
 		if (this.isInteger === true) json.isInteger = this.isInteger;
 		if (this.decimalPlaces !== 2) json.decimalPlaces = this.decimalPlaces;
 		if (this.unit) json.unit = this.unit;
+		if (Util.isNotEmpty(this.prefix)) json.prefix = this.prefix;
+		if (Util.isNotEmpty(this.postfix)) json.postfix = this.postfix;
 
 		return json;
 	}
@@ -1468,6 +1652,8 @@ export class NumericParameter extends Parameter {
 		json.uncertainty = this.uncertainty;
 		json.isInteger = this.isInteger;
 		json.unit = this.unit;
+		json.prefix = this.prefix;
+		json.postfix = this.postfix;
 		json.value = this.value ?? this.defaultValue;
 		if (Util.isNotEmpty(this.decimalPlaces)) {
 			json.decimalPlaces = this.decimalPlaces;
@@ -1528,6 +1714,14 @@ export class SelectParameter extends Parameter {
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
 		}
+
+		if (!this.viewType) {
+			this.viewType = SelectParameter.ViewTypes.DROPDOWN;
+		}
+
+		if (!this.hasValue()) {
+			this.initValue();
+		}
 	}
 
 	get options() {
@@ -1550,8 +1744,7 @@ export class SelectParameter extends Parameter {
 
 	isMultiple() {
 		return (
-			this.viewType === SelectParameter.ViewTypes.CHECKBOX ||
-			this.viewType === SelectGroupParameter.ViewTypes.LISTBOX
+			this.viewType === SelectParameter.ViewTypes.CHECKBOX || this.viewType === SelectParameter.ViewTypes.LISTBOX
 		);
 	}
 
@@ -1579,6 +1772,15 @@ export class SelectParameter extends Parameter {
 
 	getOption(index) {
 		return this.options[index];
+	}
+
+	copyOption(index) {
+		const insertPlace = index + 1;
+		const newOption = { ...this.getOption(index), value: "" };
+		this.options = [...this.options.slice(0, insertPlace), newOption, ...this.options.slice(insertPlace)];
+
+		this.refreshKey();
+		return insertPlace;
 	}
 
 	removeOption(index) {
@@ -1616,6 +1818,19 @@ export class SelectParameter extends Parameter {
 		return index + 1;
 	}
 
+	initValue(cellIndex) {
+		let value = this.defaultValue;
+		if (this.isMultiple()) {
+			value = this.defaultValue ?? [];
+		}
+
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = value;
+		} else {
+			this.value = value;
+		}
+	}
+
 	getValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
 	}
@@ -1627,23 +1842,43 @@ export class SelectParameter extends Parameter {
 			this.value = value;
 		}
 
-		Parameter.validate(this);
+		this.dirty = true;
+		this.validate(cellIndex);
 	}
 
 	hasValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
 	}
 
-	clearValue(cellIndex) {
-		const initVal =
-			this.defaultValue ??
-			(this.viewType === SelectParameter.ViewTypes.CHECKBOX || this.viewType === SelectParameter.LISTBOX)
-				? []
-				: "";
+	validate(cellIndex) {
+		for (const validationType in this.validation) {
+			switch (validationType) {
+				case ValidationKeys.REQUIRED: {
+					if (this.validation.required.value && !this.hasValue(cellIndex)) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
 
-		this.setValue(initVal, cellIndex);
+						return;
+					}
 
-		return initVal;
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.error = this.validation.custom(this.getValue(cellIndex));
+
+					if (this.hasError()) {
+						return;
+					}
+				}
+			}
+		}
+
+		this.error = {
+			message: "",
+			errorClass: ErrorClass.SUCCESS
+		};
 	}
 
 	parse(json) {
@@ -1652,7 +1887,6 @@ export class SelectParameter extends Parameter {
 
 		this.viewType = json.viewType ?? SelectParameter.ViewTypes.DROPDOWN;
 
-		console.log("SelectParameter parse: ", json.viewType, json.optionsPerRow);
 		if (this.viewType === SelectParameter.ViewTypes.RADIO || this.viewType === SelectParameter.ViewTypes.CHECKBOX) {
 			if (json.optionsPerRow > 0) {
 				this.optionsPerRow = json.optionsPerRow;
@@ -1666,7 +1900,6 @@ export class SelectParameter extends Parameter {
 		json.viewType = this.viewType;
 		if (Util.isNotEmpty(this.options)) json.options = this.options;
 
-		console.log("SelectParameter toJSON: ", this.viewTypw, this.optionsPerRow);
 		if (this.viewType === SelectParameter.ViewTypes.RADIO || this.viewType === SelectParameter.ViewTypes.CHECKBOX) {
 			if (this.optionsPerRow > 0) {
 				json.optionsPerRow = this.optionsPerRow;
@@ -1733,11 +1966,15 @@ export class DualListParameter extends Parameter {
 
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
-		} else {
+		}
+
+		if (Util.isEmpty(this.viewType)) {
 			this.viewType = DualListParameter.ViewTypes.HORIZONTAL;
 		}
 
-		this.value = [];
+		if (!this.hasValue()) {
+			this.initValue();
+		}
 	}
 
 	get leftOptions() {
@@ -1763,17 +2000,12 @@ export class DualListParameter extends Parameter {
 		this.#viewType = val;
 	}
 
-	/**
-	 * Saves options that match the values ​​contained in the optionValues ​​array among the all options as parameter values.
-	 *
-	 * @param {Array} optionValues
-	 */
-	setLeftOptions(optionValues) {
-		let leftOptions = this.leftOptions.filter((option) => optionValues.includes(option.value));
-
-		this.leftOptions = [...leftOptions, ...this.options.filter((option) => optionValues.includes(option.value))];
-
-		this.dirty = true;
+	initValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.defaultValue ?? [];
+		} else {
+			this.value = this.defaultValue ?? [];
+		}
 	}
 
 	/**
@@ -1787,34 +2019,52 @@ export class DualListParameter extends Parameter {
 		return this.displayType === Parameter.DisplayTypes.GRID_CELL ? this.value[cellIndex] ?? [] : this.value;
 	}
 
-	setValue(value, cellIndex) {
+	setValue(options, cellIndex) {
+		const values = options.map((option) => option.value);
 		if (this.isGridCell()) {
-			this.value[cellIndex] = value;
+			this.value[cellIndex] = this.options.filter((option) => values.includes(option.value));
 		} else {
-			this.value = value;
+			this.value = this.options.filter((option) => values.includes(option.value));
 		}
-		console.log("Parameter.setValue(): ", this.displayType, value, cellIndex, this.value);
+
+		this.dirty = true;
+		this.validate(cellIndex);
 	}
 
 	hasValue(cellIndex) {
 		return cellIndex >= 0 ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
 	}
 
-	clearValue() {
-		this.leftOptions = [];
+	getLeftOptions(cellIndex) {
+		const value = this.getValue(cellIndex) ?? [];
+		//const value = this.getValue(cellIndex).map((val) => ({ displayName: val.displayName, value: val.id })) ?? [];
+
+		return value.map((option) => ({
+			key: option.value,
+			label: option.label[this.languageId],
+			value: option.value
+		}));
+	}
+
+	getRightOptions() {
+		return this.options
+			.filter((option) => this.notIncludedInValues(option.value))
+			.map((option) => ({
+				key: option.value,
+				label: option.label[this.languageId],
+				value: option.value
+			}));
 	}
 
 	addValue(val) {
 		this.value.push(val);
 	}
 
-	includedInValues(value) {
-		if (this.hasValue()) {
-			const result = this.value.filter((val) => val.value === value);
-			return result.length > 0;
-		} else {
-			return false;
-		}
+	includedInValues(value, cellIndex) {
+		const values = this.getValue(cellIndex);
+
+		const result = this.value.filter((val) => val.value === value);
+		return result.length > 0;
 	}
 
 	notIncludedInValues(value) {
@@ -1827,6 +2077,37 @@ export class DualListParameter extends Parameter {
 		}
 
 		this.value = this.value.filter((elem) => elem.value !== val);
+	}
+
+	validate(cellIndex) {
+		for (const validationType in this.validation) {
+			switch (validationType) {
+				case ValidationKeys.REQUIRED: {
+					if (this.validation.required.value && !this.hasValue(cellIndex)) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.error = this.validation.custom(this.getValue(cellIndex));
+
+					if (this.hasError()) {
+						return;
+					}
+				}
+			}
+		}
+
+		this.error = {
+			message: "",
+			errorClass: ErrorClass.SUCCESS
+		};
 	}
 
 	parse(json) {
@@ -1906,16 +2187,22 @@ export class BooleanParameter extends SelectParameter {
 		}
 
 		if (Util.isEmpty(this.options)) {
-			this.options = [
-				{
-					label: {},
-					value: false
-				},
-				{
-					label: {},
-					value: true
-				}
-			];
+			const falseOption = {
+				label: {},
+				value: false
+			};
+			falseOption.label[this.languageId] = Util.translate("no");
+			const trueOption = {
+				label: {},
+				value: false
+			};
+			trueOption.label[this.languageId] = Util.translate("yes");
+
+			this.options = [falseOption, trueOption];
+		}
+
+		if (!this.hasValue()) {
+			this.initValue();
 		}
 	}
 
@@ -1959,8 +2246,18 @@ export class BooleanParameter extends SelectParameter {
 	}
 
 	initValue(cellIndex) {
+		let defaultValue = this.defaultValue;
+		if (
+			this.viewType === BooleanParameter.ViewTypes.CHECKBOX ||
+			this.viewType === BooleanParameter.ViewTypes.TOGGLE
+		) {
+			defaultValue = this.defaultValue ?? false;
+		}
+
 		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = defaultValue;
 		} else {
+			this.value = defaultValue;
 		}
 	}
 
@@ -1974,18 +2271,44 @@ export class BooleanParameter extends SelectParameter {
 		} else {
 			this.value = value;
 		}
+
+		this.dirty = true;
+		this.validate(cellIndex);
 	}
 
 	hasValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
 	}
 
-	clearValue(cellIndex) {
-		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex] = this.defaultValue;
-		} else {
-			this.value = this.defaultValue;
+	validate(cellIndex) {
+		for (const validationType in this.validation) {
+			switch (validationType) {
+				case ValidationKeys.REQUIRED: {
+					if (this.validation.required.value && !this.hasValue(cellIndex)) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.error = this.validation.custom(this.getValue(cellIndex));
+
+					if (this.hasError()) {
+						return;
+					}
+				}
+			}
 		}
+
+		this.error = {
+			message: "",
+			errorClass: ErrorClass.SUCCESS
+		};
 	}
 
 	parse(json) {
@@ -1999,8 +2322,8 @@ export class BooleanParameter extends SelectParameter {
 	toProperties(tagId, tagName) {
 		let properties = super.toProperties(tagId, tagName);
 
-		properties.trueLabel = this.getTrueLabel()[this.languageId];
-		properties.falseLabel = this.getFalseLabel()[this.languageId];
+		properties.trueLabel = this.getTrueLabel(this.languageId);
+		properties.falseLabel = this.getFalseLabel(this.languageId);
 
 		properties.value = this.value ?? !!this.defaultValue;
 
@@ -2053,6 +2376,10 @@ export class MatrixParameter extends Parameter {
 		if (!Util.isEmpty(json)) {
 			this.parse(json);
 		}
+
+		if (!this.hasValue()) {
+			this.initValue();
+		}
 	}
 
 	get rowCount() {
@@ -2081,6 +2408,14 @@ export class MatrixParameter extends Parameter {
 		this.#delimiter = val;
 	}
 
+	initValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.defaultValue ?? [];
+		} else {
+			this.value = this.defaultValue ?? [];
+		}
+	}
+
 	getValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
 	}
@@ -2091,18 +2426,44 @@ export class MatrixParameter extends Parameter {
 		} else {
 			this.value = value;
 		}
+
+		this.dirty = true;
+		this.validate(cellIndex);
 	}
 
 	hasValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
 	}
 
-	clearValue(cellIndex) {
-		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex] = [];
-		} else {
-			this.value = [];
+	validate(cellIndex) {
+		for (const validationType in this.validation) {
+			switch (validationType) {
+				case ValidationKeys.REQUIRED: {
+					if (this.validation.required.value && !this.hasValue(cellIndex)) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.error = this.validation.custom(this.getValue(cellIndex));
+
+					if (this.hasError()) {
+						return;
+					}
+				}
+			}
 		}
+
+		this.error = {
+			message: "",
+			errorClass: ErrorClass.SUCCESS
+		};
 	}
 
 	parse(json) {
@@ -2178,6 +2539,18 @@ export class FileParameter extends Parameter {
 		if (json) {
 			this.parse(json);
 		}
+
+		if (!this.hasValue()) {
+			this.initValue();
+		}
+	}
+
+	initValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.defaultValue ?? [];
+		} else {
+			this.value = this.defaultValue ?? [];
+		}
 	}
 
 	getFiles(cellIndex) {
@@ -2198,18 +2571,44 @@ export class FileParameter extends Parameter {
 		} else {
 			this.value = value;
 		}
+
+		this.dirty = true;
+		this.validate(cellIndex);
 	}
 
 	hasValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
 	}
 
-	clearValue(cellIndex) {
-		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex] = [];
-		} else {
-			this.value = [];
+	validate(cellIndex) {
+		for (const validationType in this.validation) {
+			switch (validationType) {
+				case ValidationKeys.REQUIRED: {
+					if (this.validation.required.value && !this.hasValue(cellIndex)) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.error = this.validation.custom(this.getValue(cellIndex));
+
+					if (this.hasError()) {
+						return;
+					}
+				}
+			}
 		}
+
+		this.error = {
+			message: "",
+			errorClass: ErrorClass.SUCCESS
+		};
 	}
 
 	parse(json) {
@@ -2272,9 +2671,14 @@ export class AddressParameter extends Parameter {
 
 		if (json) {
 			this.parse(json);
-		} else {
-			this.value = {};
+		}
+
+		if (Util.isEmpty(this.viewType)) {
 			this.viewType = AddressParameter.ViewTypes.BLOCK;
+		}
+
+		if (!this.hasValue()) {
+			this.initValue();
 		}
 	}
 
@@ -2314,6 +2718,14 @@ export class AddressParameter extends Parameter {
 		return this.getZipcode(cellIndex) + ", " + this.getStreet(cellIndex) + ", " + this.getAddress(cellIndex);
 	}
 
+	initValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.defaultValue ?? {};
+		} else {
+			this.value = this.defaultValue ?? {};
+		}
+	}
+
 	getValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
 	}
@@ -2324,18 +2736,44 @@ export class AddressParameter extends Parameter {
 		} else {
 			this.value = value;
 		}
+
+		this.dirty = true;
+		this.validate(cellIndex);
 	}
 
 	hasValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
 	}
 
-	clearValue(cellIndex) {
-		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex] = {};
-		} else {
-			this.value = {};
+	validate(cellIndex) {
+		for (const validationType in this.validation) {
+			switch (validationType) {
+				case ValidationKeys.REQUIRED: {
+					if (this.validation.required.value && !this.hasValue(cellIndex)) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.error = this.validation.custom(this.getValue(cellIndex));
+
+					if (this.hasError()) {
+						return;
+					}
+				}
+			}
 		}
+
+		this.error = {
+			message: "",
+			errorClass: ErrorClass.SUCCESS
+		};
 	}
 
 	parse(json) {
@@ -2397,6 +2835,12 @@ export class DateParameter extends Parameter {
 		if (json) {
 			this.parse(json);
 		}
+
+		if (!this.hasValue()) {
+			this.initValue();
+		}
+
+		this.dirty = false;
 	}
 	get enableTime() {
 		return this.#enableTime;
@@ -2422,44 +2866,65 @@ export class DateParameter extends Parameter {
 		return this.isGridCell(cellIndex) ? new Date(this.value[cellIndex]) : new Date(this.value);
 	}
 
+	initValue(cellIndex) {
+		const startYear = this.startYear ?? "1970";
+
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] =
+				this.defaultValue ?? this.enableTime ? startYear + "-01-01 00:00" : startYear + "-01-01";
+		} else {
+			this.value = this.defaultValue ?? this.enableTime ? startYear + "-01-01 00:00" : startYear + "-01-01";
+		}
+	}
+
 	getValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
 	}
 
-	setValue(date, cellIndex) {
-		const dateStr =
-			val.getFullYear() +
-			"/" +
-			String(val.getMonth() + 1).padStart(2, "0") +
-			"/" +
-			String(val.getDate()).padStart(2, "0");
-
-		const value = this.enableTime
-			? dateStr + " " + String(val.getHours()).padStart(2, "0") + ":" + String(val.getHours()).padStart(2, "0")
-			: dateStr;
-
+	setValue(value, cellIndex) {
 		if (this.isGridCell(cellIndex)) {
 			this.value[cellIndex] = value;
 		} else {
 			this.value = value;
 		}
+
+		this.dirty = true;
+		this.validate(cellIndex);
 	}
 
 	hasValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
 	}
 
-	clearValue(cellIndex) {
-		let startDate = "1970/01/01 ";
-		if (this.enableTime) {
-			startDate += "00:00";
+	validate(cellIndex) {
+		for (const validationType in this.validation) {
+			switch (validationType) {
+				case ValidationKeys.REQUIRED: {
+					if (this.validation.required.value && !this.hasValue(cellIndex)) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.error = this.validation.custom(this.getValue(cellIndex));
+
+					if (this.hasError()) {
+						return;
+					}
+				}
+			}
 		}
 
-		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex] = startDate;
-		} else {
-			this.value = startDate;
-		}
+		this.error = {
+			message: "",
+			errorClass: ErrorClass.SUCCESS
+		};
 	}
 
 	parse(json) {
@@ -2535,6 +3000,10 @@ export class PhoneParameter extends Parameter {
 		if (json) {
 			this.parse(json);
 		}
+
+		if (!this.hasValue()) {
+			this.initValue();
+		}
 	}
 
 	getCountryNo(cellIndex) {
@@ -2585,6 +3054,14 @@ export class PhoneParameter extends Parameter {
 		this.#enableCountryNo = val;
 	}
 
+	initValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.defaultValue ?? {};
+		} else {
+			this.value = this.defaultValue ?? {};
+		}
+	}
+
 	getValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
 	}
@@ -2595,18 +3072,44 @@ export class PhoneParameter extends Parameter {
 		} else {
 			this.value = value;
 		}
+
+		this.dirty = true;
+		this.validate(cellIndex);
 	}
 
 	hasValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
 	}
 
-	clearValue(cellIndex) {
-		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex] = this.defaultValue ?? {};
-		} else {
-			this.value = this.defaultValue ?? {};
+	validate(cellIndex) {
+		for (const validationType in this.validation) {
+			switch (validationType) {
+				case ValidationKeys.REQUIRED: {
+					if (this.validation.required.value && !this.hasValue(cellIndex)) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.error = this.validation.custom(this.getValue(cellIndex));
+
+					if (this.hasError()) {
+						return;
+					}
+				}
+			}
 		}
+
+		this.error = {
+			message: "",
+			errorClass: ErrorClass.SUCCESS
+		};
 	}
 
 	parse(json) {
@@ -2675,8 +3178,8 @@ export class EMailParameter extends Parameter {
 			this.parse(json);
 		}
 
-		if (Util.isEmpty(this.value)) {
-			this.value = {};
+		if (!this.hasValue()) {
+			this.initValue();
 		}
 	}
 
@@ -2693,12 +3196,34 @@ export class EMailParameter extends Parameter {
 		} else {
 			this.value.emailId = value;
 		}
+
+		this.dirty = true;
 	}
-	setServerName(value) {
+	setServerName(value, cellIndex) {
 		if (this.isGridCell(cellIndex)) {
 			this.value[cellIndex].serverName = value;
 		} else {
 			this.value.serverName = value;
+		}
+
+		this.dirty = true;
+	}
+
+	getEmailAddress(cellIndex) {
+		if (this.isGridCell(this.cellIndex)) {
+			return this.getEmailId(this.cellIndex) + "@" + this.getServerName(this.cellIndex);
+		}
+	}
+
+	checkValidEmail(cellIndex) {
+		const value = this.isGridCell(cellIndex) ? this.value[cellIndex] : this.value;
+	}
+
+	initValue(cellIndex) {
+		if (this.isGridCell(cellIndex)) {
+			this.value[cellIndex] = this.defaultValue ?? {};
+		} else {
+			this.value = this.defaultValue ?? {};
 		}
 	}
 
@@ -2712,18 +3237,44 @@ export class EMailParameter extends Parameter {
 		} else {
 			this.value = value;
 		}
+
+		this.dirty = true;
+		this.validate(cellIndex);
 	}
 
 	hasValue(cellIndex) {
 		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
 	}
 
-	clearValue(cellIndex) {
-		if (this.isGridCell(cellIndex)) {
-			this.value[cellIndex] = this.defaultValue ?? {};
-		} else {
-			this.value = this.defaultValue ?? {};
+	validate(cellIndex) {
+		for (const validationType in this.validation) {
+			switch (validationType) {
+				case ValidationKeys.REQUIRED: {
+					if (this.validation.required.value && !this.hasValue(cellIndex)) {
+						this.error = {
+							message: this.getValidationValue(validationType, "message", this.languageId),
+							errorClass: ErrorClass.ERROR
+						};
+
+						return;
+					}
+
+					break;
+				}
+				case ValidationKeys.CUSTOM: {
+					this.error = this.validation.custom(this.getValue(cellIndex));
+
+					if (this.hasError()) {
+						return;
+					}
+				}
+			}
 		}
+
+		this.error = {
+			message: "",
+			errorClass: ErrorClass.SUCCESS
+		};
 	}
 
 	parse(json) {
@@ -2780,14 +3331,16 @@ export class EMailParameter extends Parameter {
  */
 export class GroupParameter extends Parameter {
 	static ViewTypes = {
-		ARRANGEMENT: "arrangement",
-		HORIZONTAL_PANEL: "horizontalPanel",
-		VERTICAL_PANEL: "verticalPanel"
+		ARRANGEMENT: "arrangement", // Just for arrangement for all members
+		PANEL: "panel", // Normal display as form fields
+		GRID: "grid", // Excel-like display
+		SHARED_OPTION_TABLE: "sharedOptionTable", // All members has same options
+		SHARED_LABEL_TABLE: "sharedLabelTable" // All members has same group which has same parameter type members
 	};
 
 	#members = [];
-	#decorative = false;
 	#membersPerRow = 1;
+	#expanded = false;
 
 	constructor(namespace, formId, languageId, availableLanguageIds, json) {
 		super(namespace, formId, languageId, availableLanguageIds, ParamType.GROUP);
@@ -2795,44 +3348,100 @@ export class GroupParameter extends Parameter {
 		if (json) {
 			this.parse(json);
 		}
+
+		if (Util.isEmpty(this.viewType)) {
+			this.viewType = GroupParameter.ViewTypes.PANEL;
+		}
 	}
 
 	get members() {
 		return this.#members;
 	}
-	get decorative() {
-		return this.#decorative;
-	}
 	get membersPerRow() {
 		return this.#membersPerRow;
+	}
+	get expanded() {
+		return this.#expanded;
 	}
 
 	set members(val) {
 		this.#members = val;
 	}
-	set decorative(val) {
-		this.#decorative = val;
-	}
 	set membersPerRow(val) {
 		this.#membersPerRow = val;
 	}
-
-	addMember(member) {
-		if (member.order < 1) {
-			member.order = this.members.length + 1;
-		}
-
-		this.members.push(member);
+	set expanded(val) {
+		this.#expanded = val;
 	}
 
-	removeMember(name, version) {
+	get showMembersPerRow() {
+		return (
+			this.viewType === GroupParameter.ViewTypes.ARRANGEMENT || this.viewType === GroupParameter.ViewTypes.PANEL
+		);
+	}
+
+	setMemberOrders() {
+		this.members.forEach((member, index) => (member.order = index + 1));
+	}
+
+	addMember(member) {
+		switch (this.viewType) {
+			case GroupParameter.ViewTypes.ARRANGEMENT:
+			case GroupParameter.ViewTypes.PANEL: {
+				member.displayType = Parameter.DisplayTypes.FORM_FIELD;
+				break;
+			}
+			case GroupParameter.ViewTypes.GRID: {
+				member.displayType = Parameter.DisplayTypes.GRID_CELL;
+				break;
+			}
+			case GroupParameter.ViewTypes.SHARED_OPTION_TABLE: {
+				member.displayType = Parameter.DisplayTypes.SHARED_OPTION_CELL;
+				break;
+			}
+			case GroupParameter.ViewTypes.SHARED_LABEL_TABLE: {
+				member.displayType = Parameter.DisplayTypes.SHARED_LABEL_CELL;
+				break;
+			}
+		}
+
+		member.parent = { name: this.paramName, version: this.paramVersion };
+
+		this.members.push(member);
+
+		this.setMemberOrders();
+
+		console.log("Group addMember: ", this.members);
+	}
+
+	isMember(paramName, paramVersion) {
+		let isMember = false;
+
+		this.members.every((member) => {
+			if (member.equalTo(paramName, paramVersion)) {
+				isMember = true;
+
+				return Constant.STOP_EVERY;
+			}
+
+			return Constant.CONTINUE_EVERY;
+		});
+
+		return isMember;
+	}
+
+	setMemberOrders() {
+		this.members.forEach((member, index) => (member.order = index + 1));
+	}
+
+	removeMember({ paramName, paramVersion }) {
 		let removed;
 
 		this.members = this.members.filter((member) => {
-			if (member.equalTo(name, version)) {
+			if (member.equalTo(paramName, paramVersion)) {
 				removed = member;
 				return Constant.FILTER_SKIP;
-			} else if (member.paramType === ParamType.GROUP) {
+			} else if (member.isAssembly()) {
 				removed = member.removeMember();
 				if (removed) {
 					return Constant.FILTER_SKIP;
@@ -2842,16 +3451,19 @@ export class GroupParameter extends Parameter {
 			return Constant.FILTER_ADD;
 		});
 
+		this.setMemberOrders();
+
+		console.log("Group removeMember: ", removed, paramName, paramVersion);
 		return removed;
 	}
 
-	getOutput() {
+	collectValues() {
 		let output = {};
 		this.members.forEach((member) => {
 			output = { ...output, ...member.getOutput() };
 		});
 
-		if (this.decorative) {
+		if (this.isDecorative()) {
 			return output;
 		} else {
 			let groupOutput = {};
@@ -2870,32 +3482,12 @@ export class GroupParameter extends Parameter {
 		});
 	}
 
-	getValue() {
-		let values = {};
-		if (this.viewType === GroupParameter.ViewTypes.ARRANGEMENT) {
-			this.members.forEach((member) => {
-				if (member.hasValue()) {
-					values[member.paramName] = member.getValue();
-				}
-			});
-		} else {
-			values[this.paramName] = {};
-			this.members.forEach((member) => {
-				if (member.hasValue()) {
-					values[this.paramName][member.paramName] = member.getValue();
-				}
-			});
-		}
-
-		return values;
-	}
-
 	parse(json) {
 		super.parse(json);
 
 		this.viewType = this.viewType ?? GroupParameter.ViewTypes.VERTICAL_PANEL;
-		this.decorative = json.decorative ?? false;
 		this.membersPerRow = json.membersPerRow ?? 1;
+		this.expanded = json.expanded ?? false;
 
 		if (Util.isNotEmpty(json.members)) {
 			this.members = json.members.map((member) => {
@@ -2907,9 +3499,9 @@ export class GroupParameter extends Parameter {
 	toJSON() {
 		let json = super.toJSON();
 
-		if (this.viewType !== GroupParameter.ViewTypes.VERTICAL_PANEL) json.viewType = this.viewType;
-		if (this.decorative === true) json.decorative = this.decorative;
+		if (this.viewType !== GroupParameter.ViewTypes.PANEL) json.viewType = this.viewType;
 		if (this.membersPerRow > 1) json.membersPerRow = this.membersPerRow;
+		if (this.expanded) json.expanded = this.expanded;
 
 		let jsonMembers = [];
 		this.members.forEach((member) => {
@@ -2925,8 +3517,8 @@ export class GroupParameter extends Parameter {
 		let json = super.toProperties();
 
 		json.viewType = this.viewType;
-		json.decorative = this.decorative;
 		json.fieldsPerRow = this.membersPerRow;
+		json.expanded = this.expanded;
 
 		json.tagId = tagId;
 		json.tagName = tagName;
@@ -2946,12 +3538,17 @@ export class GroupParameter extends Parameter {
 		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
+		preview = false,
+		dsbuilderId,
+		propertyPanelId,
+		previewCanvasId,
 		cellIndex
 	}) {
 		return (
 			<SXGroup
 				key={this.key}
 				parameter={this}
+				formId={this.formId}
 				events={events}
 				className={className}
 				style={style}
@@ -2960,6 +3557,10 @@ export class GroupParameter extends Parameter {
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
+				preview={preview}
+				dsbuilderId={dsbuilderId}
+				propertyPanelId={propertyPanelId}
+				previewCanvasId={previewCanvasId}
 			/>
 		);
 	}

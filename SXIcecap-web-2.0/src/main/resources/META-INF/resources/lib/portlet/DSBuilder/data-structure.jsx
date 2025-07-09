@@ -28,7 +28,7 @@ export class DataStructure {
 	#matrixBracketType = "[]";
 	#matrixElementDelimiter = " ";
 	#commentChar = "#";
-	#parameters = [];
+	#members = [];
 	#enableInputStatus = false;
 	#enableGoTo = false;
 	#hierarchicalData = false;
@@ -97,8 +97,8 @@ export class DataStructure {
 	get commentChar() {
 		return this.#commentChar;
 	}
-	get parameters() {
-		return this.#parameters;
+	get members() {
+		return this.#members;
 	}
 	get enableInputStatus() {
 		return this.#enableInputStatus;
@@ -134,8 +134,8 @@ export class DataStructure {
 	set commentChar(val) {
 		this.#commentChar = val;
 	}
-	set parameters(val) {
-		this.#parameters = val;
+	set members(val) {
+		this.#members = val;
 	}
 	set enableInputStatus(val) {
 		this.#enableInputStatus = val;
@@ -152,9 +152,9 @@ export class DataStructure {
 	}
 
 	loadParameterValues(values) {
-		if (Util.isEmpty(this.parameters)) return;
+		if (Util.isEmpty(this.members)) return;
 
-		this.parameters.forEach((param) => {
+		this.members.forEach((param) => {
 			const value = values[param.paramName];
 			if (Util.isNotEmpty(value)) {
 				param.loadData(value);
@@ -163,11 +163,11 @@ export class DataStructure {
 	}
 
 	findParameter(paramName, paramVersion) {
-		function getParam(params, name, version) {
+		const getParam = (params) => {
 			let found = null;
 
 			params.every((field) => {
-				if (field.equalTo(name, version)) {
+				if (field.equalTo(paramName, paramVersion)) {
 					found = field;
 					return Constant.STOP_EVERY;
 				}
@@ -183,9 +183,9 @@ export class DataStructure {
 			});
 
 			return found;
-		}
+		};
 
-		return getParam(this.parameters, paramName, paramVersion);
+		return getParam(this.members);
 	}
 
 	setParameterValue(paramName, paramVersion, value) {
@@ -197,14 +197,14 @@ export class DataStructure {
 	}
 
 	clearParameterValues() {
-		this.parameters.forEach((field) => {
+		this.members.forEach((field) => {
 			if (field.isAssembly()) {
 				this.clearParameterValues(field.members);
 			} else {
 				field.clearValue();
 			}
 		});
-		console.log("clearParameterValues: ", this.parameters);
+		console.log("clearParameterValues: ", this.members);
 	}
 
 	setParameterError(paramName, paramVersion, error) {
@@ -261,28 +261,45 @@ export class DataStructure {
 			return error;
 		}
 
-		return checkParamErrors(this.parameters);
+		return checkParamErrors(this.members);
 	}
 
-	addParameter(parameter) {
-		console.log("addParameter order: " + parameter.order, this.parameters.length);
-		if (Util.isEmpty(parameter.order) || parameter.order < 1) {
-			parameter.order = this.parameters.length + 1;
-		}
+	setMemberOrders() {
+		this.members.forEach((member, index) => (member.order = index + 1));
+	}
 
-		this.parameters.push(parameter);
+	addMember(parameter) {
+		parameter.displayType = Parameter.DisplayTypes.FORM_FIELD;
+		parameter.refreshKey();
+		this.members.push(parameter);
 
+		parameter.parent = {};
+		this.setMemberOrders();
 		this.refreshKey();
 	}
 
-	removeParameter() {
-		this.refreshKey();
+	removeMember({ paramName, paramVersion }) {
+		let removed;
+		let remained = [];
+		this.members.forEach((param) => {
+			if (param.equalTo(paramName, paramVersion)) {
+				removed = param;
+			} else {
+				remained.push(param);
+			}
+		});
+
+		this.members = remained;
+
+		this.setMemberOrders();
+
+		return removed;
 	}
 
 	getParameterByOrder(groupId, order) {
 		let retrieved = null;
 
-		this.parameters.every((param) => {
+		this.members.every((param) => {
 			if (param.order === order) {
 				retrieved = param;
 				return Constant.STOP_EVERY;
@@ -294,7 +311,7 @@ export class DataStructure {
 	}
 
 	countParameters() {
-		return this.parameters.length;
+		return this.members.length;
 	}
 
 	/**
@@ -304,9 +321,9 @@ export class DataStructure {
 	 * @returns
 	 */
 	getParameter(name, version) {
-		function search(parameters) {
+		function search(members) {
 			let retrieved = null;
-			parameters.every((param) => {
+			members.every((param) => {
 				if (param.equalTo(name, version)) {
 					retrieved = param;
 					return Constant.STOP_EVERY;
@@ -326,7 +343,7 @@ export class DataStructure {
 			return retrieved;
 		}
 
-		return search(this.parameters);
+		return search(this.members);
 	}
 
 	getDescendantParameters(groupId) {
@@ -336,36 +353,124 @@ export class DataStructure {
 		}
 
 		if (Util.isEmpty(groupParam)) {
-			return this.parameters.filter((param) => Util.isEmpty(param.parent));
+			return this.members.filter((param) => Util.isEmpty(param.parent));
 		} else {
 			let param = this.getParameter(groupId.name, groupId.version);
 			return param.members;
 		}
 	}
 
-	getSiblingParameters(paramName, paramVersion, selfInclude = false) {
-		const parameter = this.getParameter(paramName, paramVersion);
-		const siblings = this.getChildParameters(parameter.groupId);
+	getSiblingParameters({ groupName = "", groupVersion = "", paramName, paramVersion }) {
+		let siblings;
 
-		if (selfInclude) {
-			return siblings;
+		if (!groupName) {
+			siblings = this.members;
 		} else {
-			return siblings.filter((param) => param.paramName !== paramName || param.paramVersion !== paramVersion);
+			const group = this.findParameter(groupName, groupVersion);
+			siblings = group.members;
 		}
+
+		return siblings.filter((param) => !(param.paramName === paramName && param.paramVersion === paramVersion));
 	}
 
-	getChildParameters(groupId) {
-		if (Util.isEmpty(groupId)) {
-			return this.parameters;
+	getSiblingGroups({ groupName = "", groupVersion = "", paramName, paramVersion }) {
+		let siblings;
+
+		if (!groupName) {
+			siblings = this.members;
 		} else {
-			const groupParam = this.getParameter(groupId.name, groupId.version);
+			const group = this.findParameter(groupName, groupVersion);
+			siblings = group.members;
+		}
+
+		return siblings.filter(
+			(param) => param.isAssembly() && (param.paramName !== paramName || param.paramVersion !== paramVersion)
+		);
+	}
+
+	getChildParameters({ paramName, paramVersion }) {
+		if (Util.isEmpty(paramName)) {
+			return this.members;
+		} else {
+			const groupParam = this.getParameter(paramName, paramVersion);
 
 			return groupParam.members;
 		}
 	}
+
+	getSiblingParamsAsSelectItems({ groupName = "", groupVersion = "", paramName, paramVersion }) {
+		const siblings = this.getSiblingParameters({
+			groupName: groupName,
+			groupVersion: groupVersion,
+			paramName: paramName,
+			paramVersion: paramVersion
+		});
+
+		return siblings.map((param) => param.convertToSelectItem());
+	}
+
+	getSiblingGroupsAsSelectItems({ groupName = "", groupVersion = "", paramName, paramVersion }) {
+		const param = this.getParameter(paramName, paramVersion);
+
+		const siblings = this.getSiblingGroups({
+			groupName: groupName,
+			groupVersion: groupVersion,
+			paramName: paramName,
+			paramVersion: paramVersion
+		});
+
+		return siblings.map((param) => param.convertToSelectItem());
+	}
+
+	getGroupsAsSelectItems({ paramName, paramVersion }) {
+		let groups = [];
+
+		const pickUpGroup = (params) => {
+			params.forEach((param) => {
+				if (param.isAssembly()) {
+					if (param.paramName !== paramName || param.paramVersion !== paramVersion) {
+						groups.push({ label: param.label, value: param.paramName });
+					}
+
+					pickUpGroup(param.members);
+				}
+			});
+		};
+
+		pickUpGroup(this.members);
+
+		console.log("picked groups: ", groups);
+		return groups;
+	}
+
+	getGroups({ paramName, paramVersion }) {
+		let groups = [];
+
+		const pickUpGroup = (params) => {
+			params.forEach((param) => {
+				if (param.isAssembly()) {
+					if (!param.equalTo(paramName, paramVersion)) {
+						groups.push(param);
+					}
+
+					pickUpGroup(param.members);
+				}
+			});
+		};
+
+		pickUpGroup(this.members);
+
+		return groups;
+	}
+
+	moveParameterGroup(param, srcGroup, targetGroup) {
+		console.log("moveParameterGroup: ", param, srcGroup, targetGroup);
+		targetGroup.addMember(srcGroup.removeMember({ paramName: param.paramName, paramVersion: param.paramVersion }));
+	}
+
 	countTotalFields(group) {
 		let inputCount = 0;
-		const members = !!group ? group.members : this.parameters;
+		const members = !!group ? group.members : this.members;
 
 		members.forEach((param) => {
 			if (param.isAssembly()) {
@@ -380,7 +485,7 @@ export class DataStructure {
 
 	countFilledFields(group) {
 		let inputCount = 0;
-		const members = !!group ? group.members : this.parameters;
+		const members = !!group ? group.members : this.members;
 
 		members.forEach((param) => {
 			if (param.isAssembly()) {
@@ -396,10 +501,10 @@ export class DataStructure {
 	}
 
 	getGotoAutoCompleteItems(rootGroup, basis = DataStructure.GotoBasis.PARAM_NAME) {
-		const parameters = !!rootGroup ? rootGroup.members : this.parameters;
+		const members = !!rootGroup ? rootGroup.members : this.members;
 		let items = [];
 
-		parameters.forEach((param) => {
+		members.forEach((param) => {
 			if (param.isAssembly()) {
 				items = items.concat(this.getGotoAutoCompleteItems(param, basis));
 			}
@@ -413,12 +518,16 @@ export class DataStructure {
 		return items;
 	}
 
-	focusParameter(paramName, paramVersion) {
-		this.parameters.forEach((param) => {
+	focusParameter(params, paramName, paramVersion) {
+		params.forEach((param) => {
 			const focused = param.paramName === paramName && param.paramVersion === paramVersion;
 			if (param.focused !== focused) {
-				param.refreshKey();
 				param.focused = focused;
+				param.refreshKey();
+			}
+
+			if (param.isAssembly()) {
+				this.focusParameter(param.members, paramName, paramVersion);
 			}
 		});
 
@@ -429,12 +538,9 @@ export class DataStructure {
 		this.paramDelimiter = json.paramDelimiter ?? this.paramDelimiter;
 		this.paramDelimiterPosition = json.paramDelimiterPosition ?? this.paramDelimiterPosition;
 		this.paramValueDelimiter = json.paramValueDelimiter ?? this.paramValueDelimiter;
-		this.matrixBracketType = json.matrixBracketType ?? this.matrixBracketType;
-		this.matrixElementDelimiter = json.matrixElementDelimiter ?? this.matrixElementDelimiter;
-		this.commentChar = json.commentChar ?? this.commentChar;
 
-		json.parameters.forEach((paramJSONObj) => {
-			this.parameters.push(
+		json.members.forEach((paramJSONObj) => {
+			this.members.push(
 				Parameter.createParameter(
 					this.namespace,
 					this.formId,
@@ -456,11 +562,8 @@ export class DataStructure {
 		if (this.paramDelimiter !== ";") json.paramDelimiter = this.paramDelimiter;
 		if (this.paramDelimiterPosition !== "end") json.paramDelimiterPosition = this.paramDelimiterPosition;
 		if (this.paramValueDelimiter !== "=") json.paramValueDelimiter = this.paramValueDelimiter;
-		if (this.matrixBracketType !== "[]") json.matrixBracketType = this.matrixBracketType;
-		if (this.matrixElementDelimiter !== " ") json.matrixElementDelimiter = this.matrixElementDelimiter;
-		if (this.commentChar !== "#") json.commentChar = this.commentChar;
 
-		json.parameters = this.parameters.map((parameter) => parameter.toJSON());
+		json.members = this.members.map((parameter) => parameter.toJSON());
 
 		if (this.enableInputStatus) json.enableInputStatus = this.enableInputStatus;
 		if (this.enableGoTo) json.enableGoTo = this.enableGoTo;
@@ -468,28 +571,35 @@ export class DataStructure {
 		return json;
 	}
 
-	renderPreview(dsbuilderId, propertyPanelId, previewCanvasId, className, style, spritemap) {
+	renderPreview({ dsbuilderId, propertyPanelId, previewCanvasId, className, style, spritemap }) {
 		return (
-			<div id={previewCanvasId}>
-				{this.parameters.map((parameter, i) => {
-					console.log("parameter: ", parameter, parameter.hasValue());
+			<>
+				{this.members.map((parameter) => {
+					let position = "middle";
+					if (parameter.order === 1) {
+						position = "start";
+					} else if (parameter.order === this.countParameters()) {
+						position = "end";
+					}
 					return parameter.renderPreview({
-						dabuilderId: dsbuilderId,
+						dsbuilderId: dsbuilderId,
 						propertyPanelId: propertyPanelId,
 						previewCanvasId: previewCanvasId,
 						className: className,
 						style: style,
-						spritemap: spritemap
+						spritemap: spritemap,
+						inputStatus: this.enableInputStatus,
+						position: position
 					});
 				})}
-			</div>
+			</>
 		);
 	}
 
 	render({ canvasId, events, className, style, spritemap }) {
 		return (
 			<div id={canvasId}>
-				{this.parameters.map((parameter) =>
+				{this.members.map((parameter) =>
 					parameter.render({
 						events: events,
 						className: className,

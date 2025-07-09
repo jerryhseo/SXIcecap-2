@@ -58,7 +58,6 @@ class DataStructureBuilder extends React.Component {
 		width: "60px"
 	};
 	previewPanelStyles = {
-		display: "grid",
 		backgroundColor: "#FFFFFF",
 		border: "2px solid #CDCED9",
 		padding: ".75rem 5px",
@@ -82,18 +81,25 @@ class DataStructureBuilder extends React.Component {
 
 		this.workingParam = null;
 		this.dataTypeId = props.portletParameters.params.dataTypeId;
+		this.editPhase = this.dataTypeId > 0 ? "update" : "create";
 		this.dataType = {};
-		(this.dataStructure = new DataStructure(
+		this.dataStructure = new DataStructure(
 			this.namespace,
 			this.previewCanvasId,
 			this.languageId,
 			this.availableLanguageIds
-		)),
-			(this.dataStructure.dirty = false);
+		);
+		this.dataStructure.dirty = false;
 
-		this.dsbuilderId = this.namespace + "dataStructureBuilder";
-		this.propertyPanelId = this.namespace + "propertyPanel";
-		this.previewCanvasId = this.namespace + "previewCanvas";
+		this.formIds = {
+			dsbuilderId: this.namespace + "dataStructureBuilder",
+			propertyPanelId: this.namespace + "propertyPanel",
+			basicPropertiesFormId: this.namespace + "basicPropertiesForm",
+			typeOptionsFormId: this.namespace + "typeOptionsForm",
+			optionsFormId: this.namespace + "optionsForm",
+			validationFormId: this.namespace + "validationForm",
+			previewCanvasId: this.namespace + "previewCanvas"
+		};
 
 		this.saveResult = "";
 
@@ -113,36 +119,32 @@ class DataStructureBuilder extends React.Component {
 
 		Event.on(Event.SX_PARAMETER_SELECTED, (e) => {
 			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.dsbuilderId) {
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId) {
 				console.log("SX_PARAMETER_SELECTED rejected: ", dataPacket);
 				return;
 			}
 
 			const selectedParam = this.dataStructure.findParameter(dataPacket.paramName, dataPacket.paramVersion);
+			console.log("SX_PARAMETER_SELECTED: ", dataPacket, selectedParam);
 			if (selectedParam === this.state.workingParam) {
 				return;
 			}
 
+			this.dataStructure.focusParameter(
+				this.dataStructure.members,
+				dataPacket.paramName,
+				dataPacket.paramVersion
+			);
 			this.setState({
 				workingParam: selectedParam
 			});
-
-			this.dataStructure.releaseFocus();
-			selectedParam.fireFocus();
-
-			console.log("SX_PARAMETER_SELECTED received: ", dataPacket);
-
-			/*
-			Event.fire(Event.SX_PARAMETER_CHANGED, this.namespace, this.namespace, {
-				target: this.propertyPanelId,
-				parameter: selectedParam
-			});
-			*/
 		});
 
 		Event.on(Event.SX_PARAM_TYPE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.target !== this.dsbuilderId) return;
+			console.log("SX_PARAM_TYPE_CHANGED: ", dataPacket);
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId)
+				return;
 
 			if (
 				dataPacket.paramType === ParamType.MATRIX ||
@@ -159,26 +161,23 @@ class DataStructureBuilder extends React.Component {
 				this.setState({ underConstruction: true });
 				return;
 			}
+			console.log("SX_PARAM_TYPE_CHANGED>>>>: ", dataPacket);
 
-			const newParam = Parameter.createParameter(
-				this.namespace,
-				this.previewCanvasId,
-				this.languageId,
-				this.availableLanguageIds,
-				dataPacket.paramType
-			);
-			this.setState({ workingParam: newParam });
-
-			/*
-			Event.fire(Event.SX_PARAMETER_CHANGED, this.namespace, this.namespace, {
-				target: this.propertyPanelId,
-				parameter: newParam
+			this.setState({
+				workingParam: Parameter.createParameter(
+					this.namespace,
+					this.formIds.previewCanvasId,
+					this.languageId,
+					this.availableLanguageIds,
+					dataPacket.paramType
+				)
 			});
 
-			Event.fire(Event.SX_DISTRACT_ALL, this.namespace, this.namespace, {
-				target: this.previewCanvasId
+			Event.on(Event.SX_COPY_PARAMETER, (e) => {
+				const dataPacket = e.dataPacket;
+				if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId)
+					return;
 			});
-			*/
 		});
 	}
 
@@ -191,34 +190,44 @@ class DataStructureBuilder extends React.Component {
 				dataTypeId: this.dataTypeId
 			},
 			successFunc: (result) => {
-				this.dataStructure = Util.isNotEmpty(result.dataStructure)
-					? new DataStructure(
-							this.namespace,
-							this.previewCanvasId,
-							this.languageId,
-							this.availableLanguageIds,
-							result.dataStructure
-					  )
-					: new DataStructure(
-							this.namespace,
-							this.previewCanvasId,
-							this.languageId,
-							this.availableLanguageIds
-					  );
-
 				this.dataType = result.dataType;
 
+				if (Util.isNotEmpty(result.dataStructure)) {
+					this.dataStructure = new DataStructure(
+						this.namespace,
+						this.formIds.previewCanvasId,
+						this.languageId,
+						this.availableLanguageIds,
+						result.dataStructure
+					);
+					this.editPhase = "update";
+				} else {
+					this.dataStructure = new DataStructure(
+						this.namespace,
+						this.formIds.previewCanvasId,
+						this.languageId,
+						this.availableLanguageIds
+					);
+					this.editPhase = "create";
+				}
+
+				const workingParam =
+					this.dataStructure.countParameters() > 0
+						? this.dataStructure.members[0]
+						: Parameter.createParameter(
+								this.namespace,
+								this.formIds.previewCanvasId,
+								this.languageId,
+								this.availableLanguageIds,
+								ParamType.STRING
+						  );
+
+				if (workingParam.isRendered()) {
+					workingParam.focused = true;
+				}
+
 				this.setState({
-					workingParam:
-						this.dataStructure.countParameters() > 0
-							? this.dataStructure.parameters[0]
-							: Parameter.createParameter(
-									this.namespace,
-									this.previewCanvasId,
-									this.languageId,
-									this.availableLanguageIds,
-									ParamType.STRING
-							  ),
+					workingParam: workingParam,
 					loadingStatus: LoadingStatus.COMPLETE
 				});
 			},
@@ -245,12 +254,14 @@ class DataStructureBuilder extends React.Component {
 		this.setState({
 			workingParam: Parameter.createParameter(
 				this.namespace,
-				this.previewCanvasId,
+				this.formIds.previewCanvasId,
 				this.languageId,
 				this.availableLanguageIds,
 				ParamType.STRING
 			)
 		});
+
+		this.dataStructure.focusParameter(this.dataStructure.members);
 
 		/*
 		Event.fire(Event.SX_PARAMETER_CHANGED, this.namespace, this.namespace, {
@@ -291,14 +302,16 @@ class DataStructureBuilder extends React.Component {
 	};
 
 	handleAddParameter() {
-		const noError = this.validateParameter();
-
-		if (noError) {
+		if (this.state.workingParam.checkIntegrity()) {
 			this.dataStructure.addParameter(this.state.workingParam);
-			this.state.workingParam.focused = true;
-
-			this.forceUpdate();
+			this.dataStructure.focusParameter(
+				this.dataStructure.members,
+				this.state.workingParam.paramName,
+				this.state.workingParam.paramVersion
+			);
 		}
+
+		this.forceUpdate();
 	}
 
 	/*
@@ -447,12 +460,8 @@ class DataStructureBuilder extends React.Component {
 							/>
 						</Button.Group>
 						<SXDSBuilderPropertiesPanel
-							namespace={this.namespace}
-							dsbuilderId={this.dsbuilderId}
-							propertyPanelId={this.propertyPanelId}
-							previewCanvasId={this.previewCanvasId}
-							languageId={this.languageId}
-							availableLanguageIds={this.availableLanguageIds}
+							key={this.state.workingParam.key}
+							formIds={this.formIds}
 							workingParam={this.state.workingParam}
 							dataStructure={this.dataStructure}
 							spritemap={this.spritemap}
@@ -510,20 +519,12 @@ class DataStructureBuilder extends React.Component {
 						</div>
 					</div>
 					<div style={this.previewPanelStyles}>
-						{/*
 						<SXDataStructurePreviewer
-							key={this.state.workingParam.key}
-							namespace={this.namespace}
-							dsbuilderId={this.dsbuilderId}
-							propertyPanelId={this.propertyPanelId}
-							previewCanvasId={this.previewCanvasId}
-							languageId={this.languageId}
-							availableLanguageIds={this.availableLanguageIds}
+							key={this.dataStructure.countParameters()}
+							formIds={this.formIds}
 							dataStructure={this.dataStructure}
 							spritemap={this.spritemap}
-							workingParamOrder={this.state.workingParam.order}
 						/>
-					*/}
 					</div>
 				</div>
 				<Button.Group spaced>
@@ -539,18 +540,20 @@ class DataStructureBuilder extends React.Component {
 						/>
 						{Util.translate("save")}
 					</Button>
-					<Button
-						displayType="warning"
-						onClick={() => {}}
-						title={Util.translate("delete-data-structure")}
-					>
-						<Icon
-							symbol="trash"
-							spritemap={this.spritemap}
-							style={{ marginRight: "5px" }}
-						/>
-						{Util.translate("delete")}
-					</Button>
+					{this.editPhase === "update" && (
+						<Button
+							displayType="warning"
+							onClick={() => {}}
+							title={Util.translate("delete-data-structure")}
+						>
+							<Icon
+								symbol="trash"
+								spritemap={this.spritemap}
+								style={{ marginRight: "5px" }}
+							/>
+							{Util.translate("delete")}
+						</Button>
+					)}
 				</Button.Group>
 				{this.state.confirmDlgState && (
 					<SXModalDialog

@@ -14,7 +14,8 @@ import {
 	WindowState,
 	ViewTypes,
 	Constant,
-	ErrorClass
+	ErrorClass,
+	ParamType
 } from "../../common/station-x";
 import { DualListParameter, GroupParameter, Parameter, StringParameter } from "../../parameter/parameter";
 import { SXModalDialog } from "../../modal/sxmodal";
@@ -300,8 +301,7 @@ class DataTypeEditor extends React.Component {
 						message: Util.getTranslationObject(this.languageId, "this-field-is-required")
 					}
 				},
-				leftOptions: [],
-				rightOptions: []
+				options: []
 			}
 		);
 
@@ -324,7 +324,9 @@ class DataTypeEditor extends React.Component {
 		this.fields.push(this.description);
 		this.fields.push(this.tooltip);
 		this.fields.push(this.visualizers);
+	}
 
+	componentDidMount() {
 		//Loading dataType
 
 		if (this.state.dataTypeId > 0) {
@@ -342,12 +344,25 @@ class DataTypeEditor extends React.Component {
 					for (const fieldName in result.dataType) {
 						const field = this.getField(this.fields, fieldName);
 
+						console.log("DataTypeEditor field found: ", fieldName, field);
+
+						this.visualizers.options = result.visualizers.map((item) => ({
+							label: item.displayName,
+							value: item.value
+						}));
+
 						if (field) {
-							field.value = result.dataType[fieldName];
+							//if (field.paramType === ParamType.DUALLIST) {
+							//	field.setValue(result.dataType[fieldName].map((item) => item.id));
+							//} else {
+							field.setValue(result.dataType[fieldName]);
+							//}
+
+							field.dirty = false;
+
+							console.log("Field data set: ", field);
 						}
 					}
-
-					this.visualizers.rightOptions = result.visualizers;
 
 					this.setState({ loadingStatus: LoadingStatus.COMPLETE });
 				},
@@ -374,9 +389,7 @@ class DataTypeEditor extends React.Component {
 				}
 			});
 		}
-	}
 
-	componentDidMount() {
 		Event.on(Event.SX_FIELD_VALUE_CHANGED, (event) => {
 			const dataPacket = Event.pickUpDataPacket(event, this.namespace, this.formId);
 
@@ -384,7 +397,7 @@ class DataTypeEditor extends React.Component {
 				return;
 			}
 
-			console.log("DataTypeEditor receives SX_FIELD_VALUE_CHANGED: ", dataPacket);
+			console.log("DataTypeEditor receives SX_FIELD_VALUE_CHANGED: ", dataPacket, this.fields);
 		});
 	}
 
@@ -436,9 +449,9 @@ class DataTypeEditor extends React.Component {
 
 		this.fields.forEach((field) => {
 			if (field.isAssembly()) {
-				formValues = { ...formValues, ...field.getValue() };
+				formValues = { ...formValues, ...field.collectValues() };
 			} else if (field.hasValue()) {
-				formValues[field.paramName] = field.getValue();
+				formValues[field.paramName] = field.value;
 			}
 		});
 
@@ -452,7 +465,7 @@ class DataTypeEditor extends React.Component {
 			if (field.isAssembly()) {
 				errorParam = this.validateFormValues(field.members);
 			} else {
-				Parameter.validate(field);
+				field.validate();
 				if (field.hasError()) {
 					console.log("validation failed: ", field);
 					errorParam = field;
@@ -482,7 +495,7 @@ class DataTypeEditor extends React.Component {
 
 		const formValues = this.collectFormValues();
 
-		console.log("handleBtnSaveClick: ", JSON.stringify(formValues, null, 4));
+		console.log("handleBtnSaveClick: ", JSON.stringify(formValues, null, 4), this.fields);
 
 		const params = {
 			dataTypeId: this.state.dataTypeId,

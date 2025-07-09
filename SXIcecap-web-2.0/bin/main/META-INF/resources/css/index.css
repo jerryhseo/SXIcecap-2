@@ -81,6 +81,11 @@
 .sx-preview-row {
 	padding-left: 5px;
 	padding-right: 5px;
+	margin-bottom: 1.5rem;
+}
+
+.sx-preview-row .form-group {
+	margin-bottom: 0;
 }
 
 .sx-option-preview {
@@ -218,6 +223,9 @@ div .under-construction {
 	flex-direction: column;
 	margin-right: 0.25rem;
 }
+.sx-dual-listbox-item .form-group {
+	margin-bottom: 0;
+}
 @media (min-width: 576px) {
 	.sx-dual-listbox-item {
 		margin-right: 1.5rem;
@@ -308,6 +316,29 @@ div .under-construction {
 
 .sx-focused {
 	border: 2px solid #7ff47d;
+}
+
+.sx-option-builder-title {
+	font-weight: 600;
+	font-size: 0.875rem;
+	text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+	border-bottom: 4px solid #efefef;
+	margin-bottom: 15px;
+}
+.sx-option-builder-label {
+	display: inline-flex;
+	margin-bottom: 5px;
+	align-items: center;
+	flex-wrap: wrap;
+	width: 100%;
+}
+.sx-option-builder-btn-group {
+	background: #f5f5f5;
+	padding: 10px 5px;
+	justify-content: center;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	width: 100%;
 }
 
 .modal.show .modal-dialog {

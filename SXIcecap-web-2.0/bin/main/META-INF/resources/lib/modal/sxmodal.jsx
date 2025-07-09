@@ -4,7 +4,16 @@ import ClayButton from "@clayui/button";
 import ClayIcon from "@clayui/icon";
 import Button from "@clayui/button";
 
-export const SXModalDialog = ({ size, status = "secondary", spritemap, header = "", body, buttons }) => {
+export const SXModalDialog = ({
+	size,
+	status = "secondary",
+	spritemap,
+	header = "",
+	body,
+	buttons,
+	withTitle = false,
+	disableAutoClose = "false"
+}) => {
 	const { observer, onOpenChange, open } = useModal();
 	return (
 		<Modal
@@ -12,9 +21,10 @@ export const SXModalDialog = ({ size, status = "secondary", spritemap, header = 
 			size={size}
 			spritemap={spritemap}
 			status={status}
+			disableAutoClose={disableAutoClose}
 			center
 		>
-			<Modal.Header>{header}</Modal.Header>
+			<Modal.Header withTitle={withTitle}>{header}</Modal.Header>
 			<Modal.Body style={{ justifyItems: "center" }}>{body}</Modal.Body>
 			<Modal.Footer
 				last={

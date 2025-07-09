@@ -7,53 +7,70 @@ class SXDataStructurePreviewer extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.namespace = props.namespace;
-		this.dsbuilderId = props.dsbuilderId;
-		this.propertyPanelId = props.propertyPanelId;
-		this.previewCanvasId = props.previewCanvasId;
-		this.languageId = props.languageId;
-		this.availableLanguageIds = props.availableLanguageIds;
-		this.spritemap = props.spritemap;
 		this.dataStructure = props.dataStructure;
+		this.namespace = props.dataStructure.namespace;
+		this.formIds = props.formIds;
+		this.languageId = props.dataStructure.languageId;
+		this.availableLanguageIds = props.dataStructure.availableLanguageIds;
+		this.spritemap = props.spritemap;
+	}
 
-		this.state = {
-			workingParamOrder: props.workingParamOrder,
-			refresh: false
-		};
+	componentDidMount() {
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+			const dataPacket = e.dataPacket;
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.previewCanvasId)
+				return;
 
-		console.log("SXDataStructurePreviewer: ", props);
+			console.log(
+				"SXDataStructurePreviewer SX_FIELD_VALUE_CHANGED RECEIVED: ",
+				dataPacket,
+				this.dataStructure,
+				this.dataStructure.members
+			);
+		});
 
+		/*
 		Event.on(Event.SX_FOCUS, (e) => {
-			console.log("SXDataStructurePreviewer SX_FOCUS: ", e.dataPacket);
-			if (e.dataPacket.targetPortlet !== this.namespace || e.dataPacket.target !== this.previewCanvasId) {
-				console.log("Not for SXDataStructurePreviewer: ", e.dataPacket, this.namespace, this.previewCanvasId);
+			if (
+				e.dataPacket.targetPortlet !== this.namespace ||
+				e.dataPacket.targetFormId !== this.formIds.previewCanvasId
+			) {
 				return;
 			}
 
 			this.dataStructure.focusParameter(e.dataPacket.paramName, e.dataPacket.paramVersion);
 		});
+		*/
+
+		Event.on(Event.SX_REFRESH_FORM, (e) => {
+			if (
+				e.dataPacket.targetPortlet !== this.namespace ||
+				e.dataPacket.targetFormId !== this.formIds.previewCanvasId
+			) {
+				return;
+			}
+
+			this.forceUpdate();
+		});
 	}
 
 	render() {
-		console.log("SXDataStructurePreviewer render: ", this.state.dataStructure);
+		console.log("SXDataStructurePreviewer render: ", this.dataStructure, this.formIds);
 		return (
 			<>
 				<SXDataStatusBar
 					key={this.dataStructure.key}
 					dataStructure={this.dataStructure}
 					namespace={this.namespace}
-					canvasId={this.previewCanvasId}
+					formIds={this.formIds}
 					spritemap={this.spritemap}
 				/>
-				{this.dataStructure.renderPreview(
-					this.dsbuilderId,
-					this.propertyPanelId,
-					this.previewCanvasId,
-					"",
-					{},
-					this.spritemap,
-					this.state.workingParamOrder
-				)}
+				{this.dataStructure.renderPreview({
+					dsbuilderId: this.formIds.dsbuilderId,
+					propertyPanelId: this.formIds.propertyPanelId,
+					previewCanvasId: this.formIds.previewCanvasId,
+					spritemap: this.spritemap
+				})}
 			</>
 		);
 	}

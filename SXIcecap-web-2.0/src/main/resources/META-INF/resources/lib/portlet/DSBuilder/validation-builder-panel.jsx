@@ -5,67 +5,60 @@ import { ClayCheckbox, ClayInput, ClayToggle } from "@clayui/form";
 import LocalizedInput from "@clayui/localized-input";
 import { Context } from "@clayui/modal";
 import { openConfirmModal } from "../../modal/sxmodal";
-import { Parameter } from "../../parameter/parameter";
 
 class SXDSBuilderValidationPanel extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.namespace = props.namespace;
-		this.dsbuilderId = props.dsbuilderId;
-		this.propertyPanelId = props.propertyPanelId;
-		this.previewCanvasId = props.previewCanvasId;
-		this.languageId = props.languageId;
-		this.availableLanguageIds = props.availableLanguageIds;
+		this.namespace = props.workingParam.namespace;
+		this.formIds = props.formIds;
+		this.languageId = props.workingParam.languageId;
+		this.availableLanguageIds = props.workingParam.availableLanguageIds;
+		this.workingParam = props.workingParam;
+		this.dataStructure = props.dataStructure;
 		this.spritemap = props.spritemap;
 
-		this.locales = props.availableLanguageIds.map((locale) => ({
+		this.locales = this.availableLanguageIds.map((locale) => ({
 			label: locale,
 			symbol: locale.toLowerCase()
 		}));
 
 		this.state = {
-			parameter: props.parameter,
-			validation: props.parameter.validation ?? {},
+			validation: this.workingParam.validation ?? {},
 			selectedLang: {
-				required: { label: props.languageId, symbol: props.languageId.toLowerCase() },
-				pattern: { label: props.languageId, symbol: props.languageId.toLowerCase() },
-				minLength: { label: props.languageId, symbol: props.languageId.toLowerCase() },
-				maxLength: { label: props.languageId, symbol: props.languageId.toLowerCase() },
-				min: { label: props.languageId, symbol: props.languageId.toLowerCase() },
-				max: { label: props.languageId, symbol: props.languageId.toLowerCase() },
-				normalMin: { label: props.languageId, symbol: props.languageId.toLowerCase() },
-				normalMax: { label: props.languageId, symbol: props.languageId.toLowerCase() }
+				required: { label: this.languageId, symbol: this.languageId.toLowerCase() },
+				pattern: { label: this.languageId, symbol: this.languageId.toLowerCase() },
+				minLength: { label: this.languageId, symbol: this.languageId.toLowerCase() },
+				maxLength: { label: this.languageId, symbol: this.languageId.toLowerCase() },
+				min: { label: this.languageId, symbol: this.languageId.toLowerCase() },
+				max: { label: this.languageId, symbol: this.languageId.toLowerCase() },
+				normalMin: { label: this.languageId, symbol: this.languageId.toLowerCase() },
+				normalMax: { label: this.languageId, symbol: this.languageId.toLowerCase() }
 			},
 			waringDlg: false
 		};
 	}
 
 	validationEnabled(section) {
-		return Parameter.checkValidationEnabled(this.state.validation, section);
+		return this.workingParam.checkValidationEnabled(section);
 	}
 
 	getTranslations(section) {
-		return Parameter.getValidationValue(this.state.validation, section, "message") ?? {};
+		return this.workingParam.getValidationValue(section, "message") ?? {};
 	}
 
 	getValue(section) {
-		return Parameter.getValidationValue(
-			this.state.validation,
-			section,
-			section === ValidationKeys.CUSTOM ? null : "value"
-		);
+		return this.workingParam.getValidationValue(section, section === ValidationKeys.CUSTOM ? null : "value");
 	}
 
 	setValue(section, value) {
-		Parameter.setValidationValue(this.state.validation, section, "value", value);
+		this.workingParam.setValidationValue(section, "value", value);
 
 		if (section === ValidationKeys.REQUIRED) {
 			if (value) {
 				for (let i = 0; i < this.availableLanguageIds.length; i++) {
 					const lang = this.availableLanguageIds[i];
-					Parameter.setValidationValue(
-						this.state.validation,
+					this.workingParam.setValidationValue(
 						ValidationKeys.REQUIRED,
 						"message",
 						"This field is required",
@@ -75,61 +68,36 @@ class SXDSBuilderValidationPanel extends React.Component {
 			}
 		}
 
-		Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
-			target: this.dsbuilderId,
-			paramName: "validation",
-			paramVersion: "1.0.0",
-			value: this.state.validation
-		});
+		this.setState({ validation: { ...this.workingParam.validation } });
 
-		this.setState({ validation: { ...this.state.validation } });
+		this.workingParam.fireRefreshPreview();
 	}
 
 	setTranslations(section, translations) {
-		Parameter.setValidationValue(this.state.validation, section, "message", translations);
+		this.workingParam.setValidationValue(section, "message", translations);
+		this.setState({ validation: { ...this.workingParam.validation } });
 
-		if (Util.isNotEmpty(this.state.validation[section])) {
-			Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
-				target: this.dsbuilderId,
-				paramName: "validation",
-				paramVersion: "1.0.0",
-				value: this.state.validation
-			});
-		}
-
-		this.setState({ validation: { ...this.state.validation } });
+		this.workingParam.fireRefreshPreview();
 	}
 
 	handleToggle(section) {
-		let newValidation = Parameter.toggleValidationSection(this.state.validation, section);
+		this.workingParam.toggleValidationSection(section);
 
 		if (section === ValidationKeys.REQUIRED) {
-			this.setValue(section, Parameter.checkValidationEnabled(newValidation, section));
+			this.setValue(section, this.workingParam.checkValidationEnabled(section));
 		} else {
-			this.setState({ validation: newValidation });
+			this.setState({ validation: { ...this.workingParam.validation } });
 
-			Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
-				target: this.dsbuilderId,
-				paramName: "validation",
-				paramVersion: "1.0.0",
-				value: newValidation
-			});
+			this.workingParam.fireRefreshPreview();
 		}
 	}
 
 	toggleBoundary(section) {
-		const newValidation = { ...this.state.validation };
+		this.workingParam.setValidationValue(section, "boundary", !this.state.validation[section].boundary);
 
-		Parameter.setValidationValue(newValidation, section, "boundary", !this.state.validation[section].boundary);
+		this.setState({ validation: { ...this.workingParam.validation } });
 
-		this.setState({ validation: newValidation });
-
-		Event.fire(Event.SX_FIELD_VALUE_CHANGED, this.namespace, this.namespace, {
-			target: this.dsbuilderId,
-			paramName: "validation",
-			paramVersion: "1.0.0",
-			value: newValidation
-		});
+		this.workingParam.fireRefreshPreview();
 	}
 
 	handleValueChanged(section, value) {
@@ -166,7 +134,6 @@ class SXDSBuilderValidationPanel extends React.Component {
 	}
 
 	handleLanguageChanged(section, locale) {
-		console.log("handleLanguageChanged locale: ", locale);
 		this.state.selectedLang[section] = locale;
 
 		this.setState({ ...this.state.selectedLang });
@@ -212,8 +179,8 @@ class SXDSBuilderValidationPanel extends React.Component {
 						</div>
 					)}
 				</div>
-				{(this.state.parameter.paramType === ParamType.STRING ||
-					this.state.parameter.paramType === ParamType.LOCALIZED_STRING) && (
+				{(this.workingParam.paramType === ParamType.STRING ||
+					this.workingParam.paramType === ParamType.LOCALIZED_STRING) && (
 					<>
 						<div className="border sx-validation-section">
 							<div className="autofit-row">
@@ -354,8 +321,8 @@ class SXDSBuilderValidationPanel extends React.Component {
 						</div>
 					</>
 				)}
-				{(this.state.parameter.paramType === ParamType.NUMERIC ||
-					this.state.parameter.paramType === ParamType.INTEGER) && (
+				{(this.workingParam.paramType === ParamType.NUMERIC ||
+					this.workingParam.paramType === ParamType.INTEGER) && (
 					<>
 						<div className="border sx-validation-section">
 							<div className="autofit-row">
@@ -581,11 +548,11 @@ class SXDSBuilderValidationPanel extends React.Component {
 						</div>
 					</>
 				)}
-				{(this.state.parameter.paramType === ParamType.STRING ||
-					this.state.parameter.paramType === ParamType.LOCALIZED_STRING ||
-					this.state.parameter.paramType === ParamType.NUMERIC ||
-					this.state.parameter.paramType === ParamType.INTEGER ||
-					this.state.parameter.paramType === ParamType.MATRIX) && (
+				{(this.workingParam.paramType === ParamType.STRING ||
+					this.workingParam.paramType === ParamType.LOCALIZED_STRING ||
+					this.workingParam.paramType === ParamType.NUMERIC ||
+					this.workingParam.paramType === ParamType.INTEGER ||
+					this.workingParam.paramType === ParamType.MATRIX) && (
 					<div className="border sx-validation-section">
 						<div className="autofit-row">
 							<span className="autifit-col autofit-col-expand">
