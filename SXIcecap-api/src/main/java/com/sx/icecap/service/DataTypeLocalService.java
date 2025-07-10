@@ -103,6 +103,8 @@ public interface DataTypeLocalService
 			ServiceContext sc)
 		throws PortalException;
 
+	public boolean checkDataTypeNameUnique(String paramName);
+
 	public DataType copyDataType(long dataTypeId, ServiceContext sc)
 		throws PortalException;
 

@@ -258,6 +258,7 @@ export const ResourceIds = {
 	LOAD_DATATYPES: "/ajax/DTExplorer/load-datatypes",
 	LOAD_DATATYPE: "/ajax/DTEditor/load-datatype",
 	ADD_DATATYPE: "/ajax/DTEditor/add-datatype",
+	CHECK_DATATYPE_NAME_UNIQUE: "/ajax/DTEditor/check-datatype-name-unique",
 	UPDATE_DATATYPE: "/ajax/DTEditor/update-datatype",
 	DELETE_DATATYPE: "/ajax/DTEditor/delete-datatype",
 	DELETE_DATATYPES: "/ajax/DTExplorer/delete-datatypes",

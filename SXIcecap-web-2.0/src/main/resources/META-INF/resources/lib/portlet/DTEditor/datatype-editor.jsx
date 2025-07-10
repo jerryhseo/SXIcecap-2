@@ -125,6 +125,7 @@ class DataTypeEditor extends React.Component {
 			deleteErrorDlgStatus: false,
 			deleteSuccessDlgStatus: false,
 			saveSuccessDlgStatus: false,
+			dataTypeNameDuplicated: false,
 			editStatus: props.portletParameters.params.dataTypeId > 0 ? EditStatus.UPDATE : EditStatus.ADD
 		};
 
@@ -379,7 +380,10 @@ class DataTypeEditor extends React.Component {
 				type: "post",
 				dataType: "json",
 				successFunc: (result) => {
-					this.visualizers.setRightOptions(result);
+					this.visualizers.options = result.map((item) => ({
+						label: item.displayName,
+						value: item.value
+					}));
 
 					this.setState({ loadingStatus: LoadingStatus.COMPLETE });
 				},
@@ -398,12 +402,37 @@ class DataTypeEditor extends React.Component {
 			}
 
 			console.log("DataTypeEditor receives SX_FIELD_VALUE_CHANGED: ", dataPacket, this.fields);
+
+			if (dataPacket.paramName === DataTypeProperty.NAME) {
+				if (Util.isNotEmpty(this.parameterCode.value)) {
+					Util.ajax({
+						namespace: this.namespace,
+						baseResourceURL: this.baseResourceURL,
+						resourceId: ResourceIds.CHECK_DATATYPE_NAME_UNIQUE,
+						type: "post",
+						dataType: "json",
+						params: {
+							parameterCode: this.parameterCode.value
+						},
+						successFunc: (result) => {
+							if (!result) {
+								this.parameterCode.errorClass = ErrorClass.ERROR;
+								this.parameterCode.errorMessage = Util.translate("parameter-code-duplicated");
+
+								this.setState({ dataTypeNameDuplicated: true });
+							}
+						},
+						errorFunc: (err) => {
+							this.loadingFailMessage = "Error while loading visualizers: ";
+							this.setState({ loadingStatus: LoadingStatus.FAIL });
+						}
+					});
+				}
+			}
 		});
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		console.log("DataTypeEditor updated: ", prevProps, prevState);
-	}
+	componentDidUpdate(prevProps, prevState) {}
 
 	getField(fields, fieldName) {
 		let found = null;
@@ -742,6 +771,22 @@ class DataTypeEditor extends React.Component {
 										this.setState({
 											deleteSuccessDlgStatus: false,
 											dataTypeId: 0
+										});
+									}
+								}
+							]}
+						/>
+					)}
+					{this.state.dataTypeNameDuplicated && (
+						<SXModalDialog
+							header={Util.translate("error")}
+							body={Util.translate("datatype-name-duplicated") + ": " + this.parameterCode.getValue()}
+							buttons={[
+								{
+									label: Util.translate("ok"),
+									onClick: (e) => {
+										this.setState({
+											dataTypeNameDuplicated: false
 										});
 									}
 								}

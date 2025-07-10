@@ -19,6 +19,7 @@ public class MVCCommand {
 	public static final String RESOURCE_UPDATE_DATATYPE = "/ajax/DTEditor/update-datatype";
 	public static final String RESOURCE_DELETE_DATATYPE = "/ajax/DTEditor/delete-datatype";
 	public static final String RESOURCE_LOAD_AVAILABLE_VISUALIZERS = "/ajax/DTEditor/load-available-visualizers";
+	public static final String RESOURCE_CHECK_DATATYPE_NAME_UNIQUE = "/ajax/DTEditor/check-datatype-name-unique";
 
 	public static final String RENDER_DATA_STRUCTURE_BUILDER = "/jsp/DSBuilder/data-structure-builder";
 	public static final String RESOURCE_LOAD_DATA_STRUCTURE = "/ajax/DSBuilder/load-data-structure";

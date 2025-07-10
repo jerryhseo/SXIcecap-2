@@ -75,6 +75,11 @@ public class DataTypeLocalServiceWrapper
 	}
 
 	@Override
+	public boolean checkDataTypeNameUnique(String paramName) {
+		return _dataTypeLocalService.checkDataTypeNameUnique(paramName);
+	}
+
+	@Override
 	public com.sx.icecap.model.DataType copyDataType(
 			long dataTypeId,
 			com.liferay.portal.kernel.service.ServiceContext sc)

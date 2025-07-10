@@ -396,6 +396,14 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		return dataStructure;
 	}
 	
+	public boolean checkDataTypeNameUnique(String paramName) {
+		int result = super.dataTypePersistence.countByName(paramName);
+		
+		System.out.println("countByName: " + result);
+		
+		return result < 1;
+	}
+	
 	public List<DataType> getDataTypes( 
 			long groupId, 
 			long userId, 

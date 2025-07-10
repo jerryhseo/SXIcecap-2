@@ -83,6 +83,10 @@ public class DataTypeLocalServiceUtil {
 			dataSetId, dataTypeId, data, status, sc);
 	}
 
+	public static boolean checkDataTypeNameUnique(String paramName) {
+		return getService().checkDataTypeNameUnique(paramName);
+	}
+
 	public static DataType copyDataType(
 			long dataTypeId,
 			com.liferay.portal.kernel.service.ServiceContext sc)
