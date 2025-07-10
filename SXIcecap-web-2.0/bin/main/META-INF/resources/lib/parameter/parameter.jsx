@@ -832,6 +832,16 @@ export class Parameter {
 		}
 	}
 
+	toData() {
+		if (this.hasValue()) {
+			let data = {};
+
+			data[this.paramName] = this.value;
+
+			return data;
+		}
+	}
+
 	toJSON() {
 		let json = new Object();
 
@@ -3457,13 +3467,17 @@ export class GroupParameter extends Parameter {
 		return removed;
 	}
 
-	collectValues() {
+	toData() {
 		let output = {};
 		this.members.forEach((member) => {
-			output = { ...output, ...member.getOutput() };
+			const data = member.toData();
+
+			if (Util.isNotEmpty(data)) {
+				output = { ...output, ...data };
+			}
 		});
 
-		if (this.isDecorative()) {
+		if (this.viewType === GroupParameter.ViewTypes.ARRANGEMENT) {
 			return output;
 		} else {
 			let groupOutput = {};

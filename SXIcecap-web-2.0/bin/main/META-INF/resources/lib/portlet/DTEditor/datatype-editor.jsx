@@ -477,10 +477,10 @@ class DataTypeEditor extends React.Component {
 		let formValues = {};
 
 		this.fields.forEach((field) => {
-			if (field.isAssembly()) {
-				formValues = { ...formValues, ...field.collectValues() };
-			} else if (field.hasValue()) {
-				formValues[field.paramName] = field.value;
+			const data = field.toData();
+
+			if (Util.isNotEmpty(data)) {
+				formValues = { ...formValues, ...data };
 			}
 		});
 
@@ -494,7 +494,6 @@ class DataTypeEditor extends React.Component {
 			if (field.isAssembly()) {
 				errorParam = this.validateFormValues(field.members);
 			} else {
-				field.validate();
 				if (field.hasError()) {
 					console.log("validation failed: ", field);
 					errorParam = field;
@@ -513,8 +512,7 @@ class DataTypeEditor extends React.Component {
 		if (errorParam) {
 			console.log("An Error found: ", errorParam);
 
-			errorParam.dirty = true;
-			errorParam.fireRefresh();
+			errorParam.fireFocus();
 
 			return;
 		}
