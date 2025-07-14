@@ -157,14 +157,20 @@ export class Parameter {
 		return localizationObj;
 	}
 
+	#key = Util.randomKey();
 	#namespace;
 	#formId;
 	#languageId;
 	#availableLanguageIds;
+	#dirty = false;
+	#focused = false;
+	#error = {};
+
 	#paramType;
 	#paramName = "";
 	#paramVersion = Parameter.DEFAULT_VERSION;
 	#displayName = {};
+	#displayType = Parameter.DisplayTypes.FORM_FIELD;
 	#viewType;
 	#abstractKey = false;
 	#searchable = true;
@@ -185,20 +191,12 @@ export class Parameter {
 	#status = 0;
 	#state = 0;
 	#active = true;
-	#readOnly = false;
 	#referenceFile = { fileId: 0, fileType: "pdf" };
 
 	#validation = {};
 	#style = {};
 
 	#value;
-	#displayType = Parameter.DisplayTypes.FORM_FIELD;
-
-	#error = {};
-
-	#key = Util.randomKey();
-	#dirty = false;
-	#focused = false;
 
 	constructor(namespace, formId, languageId, availableLanguageIds, paramType) {
 		this.#namespace = namespace;
@@ -305,9 +303,6 @@ export class Parameter {
 	}
 	get validation() {
 		return this.#validation;
-	}
-	get readOnly() {
-		return this.#readOnly;
 	}
 	get active() {
 		return this.#active;
@@ -457,9 +452,6 @@ export class Parameter {
 	}
 	set validation(val) {
 		this.#validation = val;
-	}
-	set readOnly(val) {
-		this.#readOnly = val;
 	}
 	set active(val) {
 		this.#active = val;
@@ -884,7 +876,6 @@ export class Parameter {
 		if (Util.isNotEmpty(this.validation)) json.validation = this.validation;
 		if (Util.isNotEmpty(this.defaultValue)) json.defaultValue = this.defaultValue;
 		if (Util.isNotEmpty(this.referenceFile)) json.referenceFile = this.referenceFile;
-		if (this.readOnly) json.readOnly = this.readOnly;
 		if (this.showDefinition) json.showDefinition = this.showDefinition;
 		if (this.abstractKey) json.abstractKey = this.abstractKey;
 		if (this.disabled) json.disabled = this.disabled;
@@ -919,7 +910,6 @@ export class Parameter {
 			tooltip: this.getTooltip(this.languageId),
 			referenceFile: this.referenceFile,
 			validation: this.validation,
-			readOnly: this.readOnly,
 			order: this.order,
 			languageId: this.languageId,
 			availableLanguageIds: this.availableLanguageIds,
@@ -3444,7 +3434,7 @@ export class GroupParameter extends Parameter {
 		this.members.forEach((member, index) => (member.order = index + 1));
 	}
 
-	addMember(member) {
+	addMember(member, memOrder = this.members.length) {
 		switch (this.viewType) {
 			case GroupParameter.ViewTypes.ARRANGEMENT:
 			case GroupParameter.ViewTypes.PANEL: {
@@ -3467,12 +3457,22 @@ export class GroupParameter extends Parameter {
 
 		member.parent = { name: this.paramName, version: this.paramVersion };
 
-		this.members.push(member);
+		this.insertMember(member, memorder);
+
+		console.log("Group addMember: ", this.members);
+	}
+
+	insertMember(param, memOrder) {
+		if (this.members.length === 0 || memOrder === this.members.length) {
+			this.members.push(param);
+		} else if (memOrder === 0) {
+			this.#members.unshift(param);
+		} else {
+			this.members.splice(memOrder, 0, param);
+		}
+		this.refreshKey();
 
 		this.setMemberOrders();
-
-		this.refreshKey();
-		console.log("Group addMember: ", this.members);
 	}
 
 	isMember(paramName, paramVersion) {
@@ -3572,7 +3572,6 @@ export class GroupParameter extends Parameter {
 	}
 
 	getMemberPosition(member) {
-		console.log("getMemberPosition: ", member.order, this.members.length, this);
 		if (this.members.length === 1 && member.order === 1) {
 			return "deadEnd";
 		} else if (member.order === 1) {

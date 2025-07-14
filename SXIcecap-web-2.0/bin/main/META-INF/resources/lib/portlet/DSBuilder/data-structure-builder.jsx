@@ -171,6 +171,8 @@ class DataStructureBuilder extends React.Component {
 				this.availableLanguageIds,
 				dataPacket.paramType
 			);
+
+			this.fireRefreshPropertyPanel();
 		});
 
 		Event.on(Event.SX_COPY_PARAMETER, (e) => {
@@ -180,7 +182,9 @@ class DataStructureBuilder extends React.Component {
 
 			const copied = this.workingParam.copy();
 			this.workingParam.focused = false;
+			this.workingParam.refreshKey();
 			copied.focused = true;
+			copied.refreshKey();
 
 			const group = this.dataStructure.findParameter({
 				paramName: copied.parentName,
@@ -188,10 +192,13 @@ class DataStructureBuilder extends React.Component {
 				descendant: true
 			});
 
-			console.log("SX_COPY_PARAMETER group: ", group);
-			group.addMember(copied);
+			console.log("SX_COPY_PARAMETER group: ", group, this.workingParam, copied);
+			group.insertMember(copied, this.workingParam.order);
 
 			this.workingParam = copied;
+
+			this.fireRefreshPropertyPanel();
+			this.forceUpdate();
 		});
 
 		Event.on(Event.SX_DELETE_PARAMETER, (e) => {
@@ -243,7 +250,6 @@ class DataStructureBuilder extends React.Component {
 					this.editPhase = "create";
 				}
 
-				console.log("DataStructureBuilder: ", this.dataStructure);
 				const workingParam =
 					this.dataStructure.members.length > 0
 						? this.dataStructure.members[0]
@@ -347,8 +353,7 @@ class DataStructureBuilder extends React.Component {
 			return <h3>{this.loadingFailMessage}</h3>;
 		}
 
-		console.log("DataStructureBuilder workingParam: ", this.state.loadingStatus, this.workingParam);
-		console.log("DataStructureBuilder dataStructure: ", this.dataStructure);
+		console.log("DataStructureBuilder render: ", this.dataStructure, this.workingParam);
 
 		return (
 			<>

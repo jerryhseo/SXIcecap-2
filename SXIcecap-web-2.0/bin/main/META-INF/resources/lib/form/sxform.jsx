@@ -448,7 +448,6 @@ export class SXPreviewRow extends React.Component {
 		if (!this.parameter.focused) {
 			this.parameter.focused = true;
 
-			console.log("SXPreviewRow activeDropdown: ", this.state.activeDropdown);
 			Event.fire(Event.SX_PARAMETER_SELECTED, this.namespace, this.namespace, {
 				targetFormId: this.dsbuilderId,
 				paramName: this.parameter.paramName,
@@ -502,6 +501,8 @@ export class SXPreviewRow extends React.Component {
 	}
 
 	render() {
+		console.log("SXPreviewRow render: " + this.parameter.paramName, this.parameter);
+
 		let className = this.parameter.focused ? "autofit autofit-row sx-focused" : "autofit autofit-row";
 
 		let style = {};
@@ -581,7 +582,10 @@ export class SXPreviewRow extends React.Component {
 								{(actionItem) => (
 									<DropDown.Item
 										key={actionItem.name}
-										onClick={() => this.handleActionClick(actionItem.id)}
+										onClick={(e) => {
+											e.stopPropagation();
+											this.handleActionClick(actionItem.id);
+										}}
 									>
 										<Icon
 											spritemap={this.spritemap}
