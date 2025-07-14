@@ -712,10 +712,6 @@ export class SXInput extends React.Component {
 	}
 
 	fireValueChanged(value) {
-		if (value === this.state.value) {
-			return;
-		}
-
 		this.parameter.fireValueChanged(this.cellIndex);
 	}
 
@@ -2821,10 +2817,7 @@ export class SXDate extends React.Component {
 		const className = this.className + (this.parameter.dirty ? " " + this.parameter.errorClass : "");
 
 		return (
-			<ClayForm.Group
-				className={className}
-				style={{ paddingLeft: "10px" }}
-			>
+			<ClayForm.Group className={className}>
 				{this.parameter.renderLabel({
 					spritemap: this.spritemap,
 					inputStatus: this.inputStatus
@@ -2844,6 +2837,7 @@ export class SXDate extends React.Component {
 						end: Number(this.parameter.endYear),
 						start: Number(this.parameter.startYear)
 					}}
+					style={{ paddingLeft: "10px" }}
 					spritemap={this.spritemap}
 				/>
 			</ClayForm.Group>

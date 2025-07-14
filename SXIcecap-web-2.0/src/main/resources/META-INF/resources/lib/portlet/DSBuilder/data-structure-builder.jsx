@@ -61,7 +61,8 @@ class DataStructureBuilder extends React.Component {
 		backgroundColor: "#FFFFFF",
 		border: "2px solid #CDCED9",
 		padding: ".75rem 5px",
-		width: "60%"
+		width: "60%",
+		overflowY: "auto"
 	};
 
 	constructor(props) {
@@ -300,17 +301,7 @@ class DataStructureBuilder extends React.Component {
 
 		this.dataStructure.focus();
 
-		/*
-		Event.fire(Event.SX_PARAMETER_CHANGED, this.namespace, this.namespace, {
-			target: this.propertyPanelId,
-			parameter: newParam
-		});
-
-		Event.fire(Event.SX_DISTRACT_ALL, this.namespace, this.namespace, {
-			target: this.previewCanvasId,
-			focus: false
-		});
-		*/
+		this.forceUpdate();
 	}
 
 	handleSaveDataStructure = () => {
@@ -340,8 +331,10 @@ class DataStructureBuilder extends React.Component {
 
 	handleAddParameter() {
 		if (this.workingParam.checkIntegrity()) {
-			this.dataStructure.addParameter(this.workingParam);
+			this.dataStructure.addMember(this.workingParam);
 			this.dataStructure.focus(this.workingParam.paramName, this.workingParam.paramVersion);
+		} else {
+			console.log("checkIntegrity fail: ", this.workingParam);
 		}
 
 		this.forceUpdate();

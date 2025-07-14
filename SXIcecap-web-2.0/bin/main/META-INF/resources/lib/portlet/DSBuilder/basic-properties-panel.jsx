@@ -168,8 +168,8 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log("Mounted SXDSBuilderBasicPropertiesPanel");
 		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+			console.log("Mounted SXDSBuilderBasicPropertiesPanel: ", e);
 			const dataPacket = e.dataPacket;
 			if (
 				dataPacket.targetPortlet !== this.namespace ||

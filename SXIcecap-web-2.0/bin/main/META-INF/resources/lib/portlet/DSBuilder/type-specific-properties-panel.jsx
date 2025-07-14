@@ -1044,7 +1044,7 @@ class SXGroupTypeOptionForm extends React.Component {
 						value: GroupParameter.ViewTypes.SHARED_OPTION_TABLE
 					},
 					{
-						label: Util.getTranslationObject(this.languageId, "Shared Label Groups"),
+						label: Util.getTranslationObject(this.languageId, "Shared Labels"),
 						value: GroupParameter.ViewTypes.SHARED_LABEL_TABLE
 					}
 				],
