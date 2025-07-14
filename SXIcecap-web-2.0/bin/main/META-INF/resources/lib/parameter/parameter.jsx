@@ -579,7 +579,6 @@ export class Parameter {
 		);
 
 		copied.postfixParameterCode("copied");
-		console.log("copied: ", copied);
 
 		return copied;
 	}

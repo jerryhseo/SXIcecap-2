@@ -523,7 +523,7 @@ export class SXPreviewRow extends React.Component {
 			actionItems.push({ id: "moveDown", name: Util.translate("move-down"), symbol: "order-arrow-down" });
 		} else if (this.position === "end") {
 			actionItems.push({ id: "moveUp", name: Util.translate("move-up"), symbol: "order-arrow-up" });
-		} else {
+		} else if (this.position !== "deadEnd") {
 			actionItems.push({ id: "moveDown", name: Util.translate("move-down"), symbol: "order-arrow-down" });
 			actionItems.push({ id: "moveUp", name: Util.translate("move-up"), symbol: "order-arrow-up" });
 		}

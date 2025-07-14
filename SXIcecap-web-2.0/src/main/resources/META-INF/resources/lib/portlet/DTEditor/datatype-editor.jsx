@@ -23,8 +23,6 @@ import { SXModalDialog } from "../../modal/sxmodal";
 export const DataTypeInfo = ({ title, abstract, items, colsPerRow = 1 }) => {
 	let sectionContent;
 
-	console.log("DataTypeInfo items: ", items);
-
 	if (colsPerRow === 1) {
 		sectionContent = items.map((item, index) => (
 			<div
@@ -39,8 +37,6 @@ export const DataTypeInfo = ({ title, abstract, items, colsPerRow = 1 }) => {
 		));
 	} else if (colsPerRow > 1) {
 		let rows = Util.convertArrayToRows(items, colsPerRow);
-
-		console.log("DataTypeInfo: rows ", rows);
 
 		sectionContent = rows.map((row, rowIndex) => (
 			<div
@@ -98,7 +94,6 @@ class DataTypeEditor extends React.Component {
 	constructor(props) {
 		super(props);
 
-		console.log("DataTypeEditor: ", props);
 		this.namespace = props.portletParameters.namespace;
 		this.baseResourceURL = props.portletParameters.baseResourceURL;
 		this.spritemap = props.portletParameters.spritemapPath;

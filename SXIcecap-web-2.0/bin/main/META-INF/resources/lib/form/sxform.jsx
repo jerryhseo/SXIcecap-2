@@ -486,8 +486,6 @@ export class SXPreviewRow extends React.Component {
 	}
 
 	handleActiveChange(val) {
-		console.log("onActiveChange: ", val);
-
 		if (!this.parameter.focused) {
 			this.parameter.focused = true;
 			Event.fire(Event.SX_PARAMETER_SELECTED, this.namespace, this.namespace, {
@@ -501,8 +499,6 @@ export class SXPreviewRow extends React.Component {
 	}
 
 	render() {
-		console.log("SXPreviewRow render: " + this.parameter.paramName, this.parameter);
-
 		let className = this.parameter.focused ? "autofit autofit-row sx-focused" : "autofit autofit-row";
 
 		let style = {};
@@ -527,7 +523,7 @@ export class SXPreviewRow extends React.Component {
 			actionItems.push({ id: "moveDown", name: Util.translate("move-down"), symbol: "order-arrow-down" });
 		} else if (this.position === "end") {
 			actionItems.push({ id: "moveUp", name: Util.translate("move-up"), symbol: "order-arrow-up" });
-		} else {
+		} else if (this.position !== "deadEnd") {
 			actionItems.push({ id: "moveDown", name: Util.translate("move-down"), symbol: "order-arrow-down" });
 			actionItems.push({ id: "moveUp", name: Util.translate("move-up"), symbol: "order-arrow-up" });
 		}
@@ -570,7 +566,6 @@ export class SXPreviewRow extends React.Component {
 									className="btn-secondary"
 									spritemap={this.spritemap}
 									onClick={(e) => {
-										console.log("onClick button");
 										e.stopPropagation();
 									}}
 								/>
