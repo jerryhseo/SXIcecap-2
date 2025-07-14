@@ -41,6 +41,45 @@ class SXDataStructurePreviewer extends React.Component {
 			this.dataStructure.focusParameter(e.dataPacket.paramName, e.dataPacket.paramVersion);
 		});
 		*/
+		Event.on(Event.SX_MOVE_PARAMETER_UP, (e) => {
+			if (
+				e.dataPacket.targetPortlet !== this.namespace ||
+				e.dataPacket.targetFormId !== this.formIds.previewCanvasId
+			) {
+				return;
+			}
+
+			const parameter = e.dataPacket.parameter;
+			const group = this.dataStructure.findParameter({
+				paramName: parameter.parentName,
+				paramVersion: parameter.parentVersion,
+				descendant: true
+			});
+
+			group.moveParameterUp(parameter.order);
+
+			this.forceUpdate();
+		});
+
+		Event.on(Event.SX_MOVE_PARAMETER_DOWN, (e) => {
+			if (
+				e.dataPacket.targetPortlet !== this.namespace ||
+				e.dataPacket.targetFormId !== this.formIds.previewCanvasId
+			) {
+				return;
+			}
+
+			const parameter = e.dataPacket.parameter;
+			const group = this.dataStructure.findParameter({
+				paramName: parameter.parentName,
+				paramVersion: parameter.parentVersion,
+				descendant: true
+			});
+
+			group.moveParameterDown(parameter.order);
+
+			this.forceUpdate();
+		});
 
 		Event.on(Event.SX_REFRESH_FORM, (e) => {
 			if (

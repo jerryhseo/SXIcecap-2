@@ -4,7 +4,7 @@ import { DataTypeProperty, Event, LoadingStatus, ParamProperty, ParamType, Resou
 import { Util } from "../../common/util";
 import { DataStructure } from "./data-structure";
 import { DataTypeInfo } from "../DTEditor/datatype-editor";
-import { Parameter } from "../../parameter/parameter";
+import { GroupParameter, Parameter } from "../../parameter/parameter";
 import { Button, Icon } from "@clayui/core";
 import { ClayButtonWithIcon } from "@clayui/button";
 import SXDSBuilderPropertiesPanel from "./properties-panel";
@@ -79,7 +79,6 @@ class DataStructureBuilder extends React.Component {
 		this.workbenchId = props.portletParameters.params.workbenchId;
 		this.workbenchNamespace = props.portletParameters.params.workbenchNamespace;
 
-		this.workingParam = null;
 		this.dataTypeId = props.portletParameters.params.dataTypeId;
 		this.editPhase = this.dataTypeId > 0 ? "update" : "create";
 		this.dataType = {};
@@ -104,14 +103,15 @@ class DataStructureBuilder extends React.Component {
 		this.saveResult = "";
 
 		this.loadingFailMessage = "";
-
-		this.state = {
-			paramType: ParamType.STRING,
-			loadingStatus: LoadingStatus.PENDING,
-			confirmDlgState: false,
-			confirmDlgBody: "",
-			underConstruction: false
-		};
+		(this.workingParam = null),
+			(this.state = {
+				paramType: ParamType.STRING,
+				loadingStatus: LoadingStatus.PENDING,
+				confirmDlgState: false,
+				confirmParamDeleteDlg: false,
+				confirmDlgBody: "",
+				underConstruction: false
+			});
 	}
 
 	componentDidMount() {
@@ -124,20 +124,24 @@ class DataStructureBuilder extends React.Component {
 				return;
 			}
 
-			const selectedParam = this.dataStructure.findParameter(dataPacket.paramName, dataPacket.paramVersion);
-			console.log("SX_PARAMETER_SELECTED: ", dataPacket, selectedParam);
-			if (selectedParam === this.state.workingParam) {
+			const selectedParam = this.dataStructure.findParameter({
+				paramName: dataPacket.paramName,
+				paramVersion: dataPacket.paramVersion,
+				descendant: true
+			});
+			console.log("SX_PARAMETER_SELECTED: ", dataPacket, selectedParam, this.workingParam);
+			if (selectedParam === this.workingParam) {
 				return;
 			}
 
-			this.dataStructure.focusParameter(
-				this.dataStructure.members,
-				dataPacket.paramName,
-				dataPacket.paramVersion
-			);
-			this.setState({
-				workingParam: selectedParam
-			});
+			this.workingParam.focused = false;
+			this.workingParam.fireRefreshPreview();
+
+			//this.dataStructure.focus(dataPacket.paramName, dataPacket.paramVersion);
+
+			this.workingParam = selectedParam;
+
+			this.fireRefreshPropertyPanel();
 		});
 
 		Event.on(Event.SX_PARAM_TYPE_CHANGED, (e) => {
@@ -150,33 +154,60 @@ class DataStructureBuilder extends React.Component {
 				dataPacket.paramType === ParamType.MATRIX ||
 				dataPacket.paramType === ParamType.DUALLIST ||
 				dataPacket.paramType === ParamType.CALCULATOR ||
-				dataPacket.paramType === ParamType.GRID ||
 				dataPacket.paramType === ParamType.IMAGE ||
 				dataPacket.paramType === ParamType.LINKER ||
-				dataPacket.paramType === ParamType.SELECT_GROUP ||
-				dataPacket.paramType === ParamType.REFERENCE ||
-				dataPacket.paramType === ParamType.TABLE ||
-				dataPacket.paramType === ParamType.COMMENT
+				dataPacket.paramType === ParamType.REFERENCE
 			) {
 				this.setState({ underConstruction: true });
 				return;
 			}
 			console.log("SX_PARAM_TYPE_CHANGED>>>>: ", dataPacket);
 
-			this.setState({
-				workingParam: Parameter.createParameter(
-					this.namespace,
-					this.formIds.previewCanvasId,
-					this.languageId,
-					this.availableLanguageIds,
-					dataPacket.paramType
-				)
+			this.workingParam = Parameter.createParameter(
+				this.namespace,
+				this.formIds.previewCanvasId,
+				this.languageId,
+				this.availableLanguageIds,
+				dataPacket.paramType
+			);
+		});
+
+		Event.on(Event.SX_COPY_PARAMETER, (e) => {
+			const dataPacket = e.dataPacket;
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId)
+				return;
+
+			const copied = this.workingParam.copy();
+			this.workingParam.focused = false;
+			copied.focused = true;
+
+			const group = this.dataStructure.findParameter({
+				paramName: copied.parentName,
+				paramVersion: copied.paramVersion,
+				descendant: true
 			});
 
-			Event.on(Event.SX_COPY_PARAMETER, (e) => {
-				const dataPacket = e.dataPacket;
-				if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId)
-					return;
+			console.log("SX_COPY_PARAMETER group: ", group);
+			group.addMember(copied);
+
+			this.workingParam = copied;
+		});
+
+		Event.on(Event.SX_DELETE_PARAMETER, (e) => {
+			const dataPacket = e.dataPacket;
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId)
+				return;
+
+			this.setState({
+				confirmParamDeleteDlg: true,
+				confirmDlgBody: (
+					<div>
+						{Util.translate("are-you-sure-delete-the-parameter") +
+							': "' +
+							this.workingParam.paramName +
+							'"?'}
+					</div>
+				)
 			});
 		});
 	}
@@ -211,8 +242,9 @@ class DataStructureBuilder extends React.Component {
 					this.editPhase = "create";
 				}
 
+				console.log("DataStructureBuilder: ", this.dataStructure);
 				const workingParam =
-					this.dataStructure.countParameters() > 0
+					this.dataStructure.members.length > 0
 						? this.dataStructure.members[0]
 						: Parameter.createParameter(
 								this.namespace,
@@ -226,8 +258,8 @@ class DataStructureBuilder extends React.Component {
 					workingParam.focused = true;
 				}
 
+				this.workingParam = workingParam;
 				this.setState({
-					workingParam: workingParam,
 					loadingStatus: LoadingStatus.COMPLETE
 				});
 			},
@@ -235,6 +267,13 @@ class DataStructureBuilder extends React.Component {
 				this.loadingFailMessage = "Failed to load data type: " + this.dataTypeId;
 				this.setState({ loadingStatus: LoadingStatus.FAIL });
 			}
+		});
+	}
+
+	fireRefreshPropertyPanel() {
+		Event.fire(Event.SX_REFRESH_PROPERTY_PANEL, this.namespace, this.namespace, {
+			targetFormId: this.formIds.propertyPanelId,
+			workingParam: this.workingParam
 		});
 	}
 
@@ -251,17 +290,15 @@ class DataStructureBuilder extends React.Component {
 	}
 
 	handleNewParameter() {
-		this.setState({
-			workingParam: Parameter.createParameter(
-				this.namespace,
-				this.formIds.previewCanvasId,
-				this.languageId,
-				this.availableLanguageIds,
-				ParamType.STRING
-			)
-		});
+		this.workingParam = Parameter.createParameter(
+			this.namespace,
+			this.formIds.previewCanvasId,
+			this.languageId,
+			this.availableLanguageIds,
+			ParamType.STRING
+		);
 
-		this.dataStructure.focusParameter(this.dataStructure.members);
+		this.dataStructure.focus();
 
 		/*
 		Event.fire(Event.SX_PARAMETER_CHANGED, this.namespace, this.namespace, {
@@ -302,50 +339,13 @@ class DataStructureBuilder extends React.Component {
 	};
 
 	handleAddParameter() {
-		if (this.state.workingParam.checkIntegrity()) {
-			this.dataStructure.addParameter(this.state.workingParam);
-			this.dataStructure.focusParameter(
-				this.dataStructure.members,
-				this.state.workingParam.paramName,
-				this.state.workingParam.paramVersion
-			);
+		if (this.workingParam.checkIntegrity()) {
+			this.dataStructure.addParameter(this.workingParam);
+			this.dataStructure.focus(this.workingParam.paramName, this.workingParam.paramVersion);
 		}
 
 		this.forceUpdate();
 	}
-
-	/*
-	validateParameter() {
-		if (Util.isEmpty(this.state.workingParam.paramName)) {
-			Event.fire(Event.SX_PARAM_ERROR_FOUND, this.namespace, this.namespace, {
-				target: this.propertyPanelId,
-				paramName: "paramName",
-				paramVersion: "1.0.0",
-				error: "Parameter name is required"
-			});
-			alert("Error: Parameter name is required");
-			return false;
-		}
-
-		if (Util.isEmpty(this.state.workingParam.displayName)) {
-			Event.fire(Event.SX_PARAM_ERROR_FOUND, this.namespace, this.namespace, {
-				target: this.propertyPanelId,
-				paramName: "displayName",
-				paramVersion: "1.0.0",
-				error: "Display name is required"
-			});
-			alert("Error: Display name is required");
-			return false;
-		}
-
-		if (this.state.workingParam.hasError()) {
-			alert("Error: " + this.state.workingParam.getError());
-			return false;
-		}
-
-		return true;
-	}
-		*/
 
 	render() {
 		if (this.state.loadingStatus === LoadingStatus.PENDING) {
@@ -354,7 +354,7 @@ class DataStructureBuilder extends React.Component {
 			return <h3>{this.loadingFailMessage}</h3>;
 		}
 
-		console.log("DataStructureBuilder workingParam: ", this.state.loadingStatus, this.state.workingParam);
+		console.log("DataStructureBuilder workingParam: ", this.state.loadingStatus, this.workingParam);
 		console.log("DataStructureBuilder dataStructure: ", this.dataStructure);
 
 		return (
@@ -460,9 +460,9 @@ class DataStructureBuilder extends React.Component {
 							/>
 						</Button.Group>
 						<SXDSBuilderPropertiesPanel
-							key={this.state.workingParam.key}
+							key={this.workingParam.key}
 							formIds={this.formIds}
-							workingParam={this.state.workingParam}
+							workingParam={this.workingParam}
 							dataStructure={this.dataStructure}
 							spritemap={this.spritemap}
 						/>
@@ -491,7 +491,7 @@ class DataStructureBuilder extends React.Component {
 								onClick={() => {}}
 								borderless
 								size="md"
-								disabled={this.state.workingParam.order > 0}
+								disabled={this.workingParam.isRendered()}
 								spritemap={this.spritemap}
 							></ClayButtonWithIcon>
 							<ClayButtonWithIcon
@@ -503,7 +503,7 @@ class DataStructureBuilder extends React.Component {
 								}}
 								displayType="secondary"
 								size="md"
-								disabled={this.state.workingParam.order > 0}
+								disabled={this.workingParam.isRendered()}
 								spritemap={this.spritemap}
 							></ClayButtonWithIcon>
 							<ClayButtonWithIcon
@@ -513,14 +513,14 @@ class DataStructureBuilder extends React.Component {
 								onClick={() => {}}
 								borderless
 								size="md"
-								disabled={this.state.workingParam.order > 0}
+								disabled={this.workingParam.isRendered()}
 								spritemap={this.spritemap}
 							></ClayButtonWithIcon>
 						</div>
 					</div>
 					<div style={this.previewPanelStyles}>
 						<SXDataStructurePreviewer
-							key={this.dataStructure.countParameters()}
+							key={this.dataStructure.members.length}
 							formIds={this.formIds}
 							dataStructure={this.dataStructure}
 							spritemap={this.spritemap}
@@ -565,6 +565,55 @@ class DataStructureBuilder extends React.Component {
 									this.setState({ confirmDlgState: false });
 								},
 								label: Util.translate("ok"),
+								displayType: "primary"
+							}
+						]}
+						status="info"
+						spritemap={this.spritemap}
+					/>
+				)}
+				{this.state.confirmParamDeleteDlg && (
+					<SXModalDialog
+						header={Util.translate("delete-parameter")}
+						body={this.state.confirmDlgBody}
+						buttons={[
+							{
+								onClick: () => {
+									const group = this.dataStructure.findParameter({
+										paramName: this.workingParam.parentName,
+										paramVersion: this.workingParam.parentVersion,
+										descendant: true
+									});
+
+									group.removeMember({
+										paramName: this.workingParam.paramName,
+										paramVersion: this.workingParam.paramVersion
+									});
+
+									const workingParam =
+										group.firstMember ??
+										(group.paramName === GroupParameter.ROOT_GROUP
+											? Parameter.createParameter(
+													this.namespace,
+													this.formIds.dsbuilderId,
+													this.languageId,
+													this.availableLanguageIds,
+													ParamType.STRING
+											  )
+											: group);
+									workingParam.focused = workingParam.isRendered() ? true : false;
+
+									this.workingParam = workingParam;
+									this.setState({ confirmParamDeleteDlg: false });
+								},
+								label: Util.translate("ok"),
+								displayType: "primary"
+							},
+							{
+								onClick: () => {
+									this.setState({ confirmParamDeleteDlg: false });
+								},
+								label: Util.translate("cancel"),
 								displayType: "primary"
 							}
 						]}

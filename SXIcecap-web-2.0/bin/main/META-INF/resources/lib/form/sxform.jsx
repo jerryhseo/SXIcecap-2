@@ -143,19 +143,12 @@ export const SXLabeledText = ({ label, text, viewType = "INLINE_ATTACH" }) => {
 	}
 };
 
-export const SXAutoComplete = ({ namespace, items, labelPosition, events, spritemap }) => {
+export const SXAutoComplete = ({ namespace, items, events, spritemap }) => {
 	const inputId = namespace + "input";
-	const labelPos = Util.isEmpty(labelPosition) ? Parameter.LabelPosition.UPPER_LEFT : labelPosition;
 
-	let groupClass = "form-group";
-	let labelClass = "control-label";
-	let inputClass = "form-control input-group-inset input-group-inset-after";
-
-	if (labelPos === Parameter.LabelPosition.INLINE_LEFT || labelPos === Parameter.LabelPosition.INLINE_RIGHT) {
-		groupClass += " autofit - row";
-		labelClass += " autofit-col";
-		inputClass += " autofit-col autofit-col-expand";
-	}
+	let groupClass = "form-group autofit-row";
+	let inputClass = "form-control input-group-inset input-group-inset-after autofit-col autofit-col-expand";
+	const labelClass = " autofit-col";
 
 	return (
 		<div className={groupClass}>
@@ -289,8 +282,6 @@ export class SXDataStatusBar extends React.Component {
 	}
 
 	render() {
-		console.log("SXDataStatus: ", this.dataStructure);
-
 		return (
 			<Toolbar style={{ paddingLeft: "10px", paddingRight: "10px", background: "#d8f2df", marginBottom: "15px" }}>
 				<Toolbar.Nav>
@@ -407,6 +398,7 @@ export class SXPreviewRow extends React.Component {
 		this.style = props.style ?? {};
 
 		this.state = {
+			activeDropdown: false,
 			underConstruction: false
 		};
 
@@ -415,16 +407,19 @@ export class SXPreviewRow extends React.Component {
 
 	componentDidMount() {
 		Event.on(Event.SX_REFRESH_PREVIEW, (e) => {
-			const dataPacket = e.dataPacket;
+			const dataPacket = Event.pickUpDataPacket(
+				e,
+				this.namespace,
+				this.previewCanvasId,
+				this.parameter.paramName,
+				this.parameter.paramVersion
+			);
 
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.previewCanvasId) {
+			if (!dataPacket) {
 				return;
 			}
 
-			if (!this.parameter.focused) {
-				return;
-			}
-
+			console.log("SXPreviewRow SX_REFRESH_PREVIEW: ", dataPacket);
 			this.parameter.refreshKey();
 
 			this.forceUpdate();
@@ -450,11 +445,18 @@ export class SXPreviewRow extends React.Component {
 	handleClick(e) {
 		e.stopPropagation();
 
-		Event.fire(Event.SX_PARAMETER_SELECTED, this.namespace, this.namespace, {
-			targetFormId: this.dsbuilderId,
-			paramName: this.parameter.paramName,
-			paramVersion: this.parameter.paramVersion
-		});
+		if (!this.parameter.focused) {
+			this.parameter.focused = true;
+
+			console.log("SXPreviewRow activeDropdown: ", this.state.activeDropdown);
+			Event.fire(Event.SX_PARAMETER_SELECTED, this.namespace, this.namespace, {
+				targetFormId: this.dsbuilderId,
+				paramName: this.parameter.paramName,
+				paramVersion: this.parameter.paramVersion
+			});
+
+			this.forceUpdate();
+		}
 	}
 
 	handleActionClick(actionId) {
@@ -480,6 +482,23 @@ export class SXPreviewRow extends React.Component {
 				break;
 			}
 		}
+
+		this.setState({ activeDropdown: false });
+	}
+
+	handleActiveChange(val) {
+		console.log("onActiveChange: ", val);
+
+		if (!this.parameter.focused) {
+			this.parameter.focused = true;
+			Event.fire(Event.SX_PARAMETER_SELECTED, this.namespace, this.namespace, {
+				targetFormId: this.dsbuilderId,
+				paramName: this.parameter.paramName,
+				paramVersion: this.parameter.paramVersion
+			});
+		}
+
+		this.setState({ activeDropdown: val });
 	}
 
 	render() {
@@ -498,7 +517,7 @@ export class SXPreviewRow extends React.Component {
 		}
 
 		let actionItems = [
-			{ id: "group", name: Util.translate("change-group"), symbol: "group" },
+			{ id: "group", name: Util.translate("change-group"), symbol: "move-folder" },
 			{ id: "copy", name: Util.translate("copy"), symbol: "copy" },
 			{ id: "delete", name: Util.translate("delete"), symbol: "times" }
 		];
@@ -540,6 +559,7 @@ export class SXPreviewRow extends React.Component {
 						style={{ alignSelf: "center" }}
 					>
 						<DropDown
+							active={this.state.activeDropdown}
 							trigger={
 								<ClayButtonWithIcon
 									aria-label="Actions"
@@ -548,8 +568,13 @@ export class SXPreviewRow extends React.Component {
 									borderless="true"
 									className="btn-secondary"
 									spritemap={this.spritemap}
+									onClick={(e) => {
+										console.log("onClick button");
+										e.stopPropagation();
+									}}
 								/>
 							}
+							onActiveChange={(val) => this.handleActiveChange(val)}
 							menuWidth="shrink"
 						>
 							<DropDown.ItemList items={actionItems}>
@@ -588,35 +613,6 @@ export class SXPreviewRow extends React.Component {
 		);
 	}
 }
-
-export const SXControlWrapper = ({ labelPosition, label, control }) => {
-	switch (labelPosition) {
-		case Parameter.LabelPosition.INLINE_LEFT: {
-			return (
-				<div style={{ display: "inline-flex", maxWidth: "100%" }}>
-					{label}
-					{control}
-				</div>
-			);
-		}
-		case Parameter.LabelPosition.INLINE_RIGHT: {
-			return (
-				<div style={{ display: "inline-flex", maxWidth: "100%" }}>
-					{control}
-					{label}
-				</div>
-			);
-		}
-		default: {
-			return (
-				<>
-					{label}
-					{control}
-				</>
-			);
-		}
-	}
-};
 
 export const SXFormFieldFeedback = ({ content, level, symbol, spritemap }) => {
 	return (
@@ -715,7 +711,11 @@ export class SXInput extends React.Component {
 		this.setState({ value: value });
 	}
 
-	fireValueChanged() {
+	fireValueChanged(value) {
+		if (value === this.state.value) {
+			return;
+		}
+
 		this.parameter.fireValueChanged(this.cellIndex);
 	}
 
@@ -730,7 +730,7 @@ export class SXInput extends React.Component {
 				value={this.state.value}
 				disabled={this.parameter.disabled}
 				onChange={(e) => this.handleChange(e.target.value)}
-				onBlur={(e) => this.fireValueChanged()}
+				onBlur={(e) => this.fireValueChanged(e.target.value)}
 				ref={this.focusRef}
 			/>
 		);
@@ -751,28 +751,21 @@ export class SXInput extends React.Component {
 				className={className}
 				style={{ ...style, marginBottom: "0" }}
 			>
-				<SXControlWrapper
-					labelPosition={this.parameter.labelPosition}
-					label={this.parameter.renderLabel({
-						forHtml: this.parameter.tagId,
-						spritemap: this.spritemap,
-						inputStatus: this.inputStatus
-					})}
-					control={
-						<>
-							{this.parameter.showDefinition && (
-								<div className="sx-param-definition">
-									<pre>{this.parameter.getDefinition(this.parameter.languageId)}</pre>
-								</div>
-							)}
-							<ClayInput.Group style={{ paddingLeft: "10px" }}>
-								{!!this.parameter.prefix && this.parameter.renderPrefix()}
-								<ClayInput.GroupItem>{this.getClayUI()}</ClayInput.GroupItem>
-								{!!this.parameter.postfix && this.parameter.renderPostfix()}
-							</ClayInput.Group>
-						</>
-					}
-				/>
+				{this.parameter.renderLabel({
+					forHtml: this.parameter.tagId,
+					spritemap: this.spritemap,
+					inputStatus: this.inputStatus
+				})}
+				{this.parameter.showDefinition && (
+					<div className="sx-param-definition">
+						<pre>{this.parameter.getDefinition(this.parameter.languageId)}</pre>
+					</div>
+				)}
+				<ClayInput.Group style={{ paddingLeft: "10px" }}>
+					{!!this.parameter.prefix && this.parameter.renderPrefix()}
+					<ClayInput.GroupItem>{this.getClayUI()}</ClayInput.GroupItem>
+					{!!this.parameter.postfix && this.parameter.renderPostfix()}
+				</ClayInput.Group>
 				{this.parameter.dirty && this.parameter.hasError() && (
 					<SXFormFieldFeedback
 						content={this.parameter.errorMessage}
@@ -986,24 +979,17 @@ export class SXLocalizedInput extends React.Component {
 				className={className}
 				style={this.style}
 			>
-				<SXControlWrapper
-					displayType={this.parameter.displayType}
-					label={this.parameter.renderLabel({
-						forHtml: this.parameter.tagId,
-						spritemap: this.spritemap,
-						inputStatus: this.inputStatus
-					})}
-					control={
-						<>
-							{this.parameter.showDefinition && (
-								<div className="sx-param-definition">
-									<pre>{this.parameter.getDefinition()}</pre>
-								</div>
-							)}
-							{this.getClayUI(this.parameter.tagId, this.parameter.tagName)}
-						</>
-					}
-				/>
+				{this.parameter.renderLabel({
+					forHtml: this.parameter.tagId,
+					spritemap: this.spritemap,
+					inputStatus: this.inputStatus
+				})}
+				{this.parameter.showDefinition && (
+					<div className="sx-param-definition">
+						<pre>{this.parameter.getDefinition()}</pre>
+					</div>
+				)}
+				{this.getClayUI(this.parameter.tagId, this.parameter.tagName)}
 				{this.parameter.dirty && this.parameter.hasError() && (
 					<SXFormFieldFeedback
 						content={this.parameter.errorMessage}
@@ -1148,126 +1134,120 @@ export class SXNumeric extends React.Component {
 				className={className}
 				style={{ ...this.style, marginBottom: "0" }}
 			>
-				<SXControlWrapper
-					labelPosition={this.state.labelPosition}
-					label={this.parameter.renderLabel({
-						spritemap: this.spritemap,
-						inputStatus: this.inputStatus
-					})}
-					control={
+				{this.parameter.renderLabel({
+					spritemap: this.spritemap,
+					inputStatus: this.inputStatus
+				})}
+
+				{this.parameter.showDefinition && (
+					<div className="sx-param-definition">
+						<pre>{this.parameter.getDefinition()}</pre>
+					</div>
+				)}
+				<ClayInput.Group
+					style={{ paddingLeft: "10px" }}
+					stacked
+				>
+					{this.parameter.checkValidationEnabled(ValidationKeys.MIN) && (
 						<>
-							{this.parameter.showDefinition && (
-								<div className="sx-param-definition">
-									<pre>{this.parameter.getDefinition()}</pre>
-								</div>
-							)}
-							<ClayInput.Group
-								style={{ paddingLeft: "10px" }}
-								stacked
+							<ClayInput.GroupItem
+								prepend
+								shrink
 							>
-								{this.parameter.checkValidationEnabled(ValidationKeys.MIN) && (
-									<>
-										<ClayInput.GroupItem
-											prepend
-											shrink
-										>
-											<ClayInput.GroupText>
-												{this.parameter.getValidationValue(
-													ValidationKeys.MIN,
-													ValidationSectionProperty.VALUE
-												)}
-											</ClayInput.GroupText>
-										</ClayInput.GroupItem>
-										<ClayInput.GroupItem
-											append
-											shrink
-										>
-											{this.parameter.getValidationValue(
-												ValidationKeys.MIN,
-												ValidationSectionProperty.BOUNDARY
-											) ? (
-												<ClayInput.GroupText>&#8804;</ClayInput.GroupText>
-											) : (
-												<ClayInput.GroupText>{"<"}</ClayInput.GroupText>
-											)}
-										</ClayInput.GroupItem>
-									</>
+								<ClayInput.GroupText>
+									{this.parameter.getValidationValue(
+										ValidationKeys.MIN,
+										ValidationSectionProperty.VALUE
+									)}
+								</ClayInput.GroupText>
+							</ClayInput.GroupItem>
+							<ClayInput.GroupItem
+								append
+								shrink
+							>
+								{this.parameter.getValidationValue(
+									ValidationKeys.MIN,
+									ValidationSectionProperty.BOUNDARY
+								) ? (
+									<ClayInput.GroupText>&#8804;</ClayInput.GroupText>
+								) : (
+									<ClayInput.GroupText>{"<"}</ClayInput.GroupText>
 								)}
-								<ClayInput.GroupItem append>
-									<ClayInput.Group>
-										{this.parameter.renderPrefix()}
-										<ClayInput.GroupItem>
-											<ClayInput
-												type={this.parameter.isInteger ? "number" : "text"}
-												defaultValue={this.state.value}
-												ref={this.focusRef}
-												onChange={(e) => this.handleValueChanged(e.target.value)}
-											/>
-										</ClayInput.GroupItem>
-									</ClayInput.Group>
-								</ClayInput.GroupItem>
-								{this.parameter.uncertainty && (
-									<>
-										<ClayInput.GroupItem
-											append
-											shrink
-										>
-											<ClayInput.GroupText>&#177;</ClayInput.GroupText>
-										</ClayInput.GroupItem>
-										<ClayInput.GroupItem
-											append
-											shrink
-											style={{ maxWidth: "200px", width: "120px" }}
-										>
-											<ClayInput
-												type={this.parameter.isInteger ? "number" : "text"}
-												defaultValue={this.state.uncertainty}
-												onChange={(e) => this.handleUncertaintyChanged(e.target.value)}
-											/>
-										</ClayInput.GroupItem>
-									</>
-								)}
-								{this.parameter.renderPostfix()}
-								{this.parameter.unit && (
-									<ClayInput.GroupItem
-										append
-										shrink
-									>
-										<ClayInput.GroupText>{this.parameter.unit}</ClayInput.GroupText>
-									</ClayInput.GroupItem>
-								)}
-								{this.parameter.checkValidationEnabled(ValidationKeys.MAX) && (
-									<>
-										<ClayInput.GroupItem
-											append
-											shrink
-										>
-											{this.parameter.getValidationValue(
-												ValidationKeys.MAX,
-												ValidationSectionProperty.BOUNDARY
-											) ? (
-												<ClayInput.GroupText>&#8804;</ClayInput.GroupText>
-											) : (
-												<ClayInput.GroupText>{"<"}</ClayInput.GroupText>
-											)}
-										</ClayInput.GroupItem>
-										<ClayInput.GroupItem
-											append
-											shrink
-										>
-											<ClayInput.GroupText>
-												{this.parameter.getValidationValue(
-													ValidationKeys.MAX,
-													ValidationSectionProperty.VALUE
-												)}
-											</ClayInput.GroupText>
-										</ClayInput.GroupItem>
-									</>
-								)}
-							</ClayInput.Group>
+							</ClayInput.GroupItem>
 						</>
-					}
-				/>
+					)}
+					<ClayInput.GroupItem append>
+						<ClayInput.Group>
+							{this.parameter.renderPrefix()}
+							<ClayInput.GroupItem>
+								<ClayInput
+									type={this.parameter.isInteger ? "number" : "text"}
+									defaultValue={this.state.value}
+									ref={this.focusRef}
+									onChange={(e) => this.handleValueChanged(e.target.value)}
+								/>
+							</ClayInput.GroupItem>
+						</ClayInput.Group>
+					</ClayInput.GroupItem>
+					{this.parameter.uncertainty && (
+						<>
+							<ClayInput.GroupItem
+								append
+								shrink
+							>
+								<ClayInput.GroupText>&#177;</ClayInput.GroupText>
+							</ClayInput.GroupItem>
+							<ClayInput.GroupItem
+								append
+								shrink
+								style={{ maxWidth: "200px", width: "120px" }}
+							>
+								<ClayInput
+									type={this.parameter.isInteger ? "number" : "text"}
+									defaultValue={this.state.uncertainty}
+									onChange={(e) => this.handleUncertaintyChanged(e.target.value)}
+								/>
+							</ClayInput.GroupItem>
+						</>
+					)}
+					{this.parameter.renderPostfix()}
+					{this.parameter.unit && (
+						<ClayInput.GroupItem
+							append
+							shrink
+						>
+							<ClayInput.GroupText>{this.parameter.unit}</ClayInput.GroupText>
+						</ClayInput.GroupItem>
+					)}
+					{this.parameter.checkValidationEnabled(ValidationKeys.MAX) && (
+						<>
+							<ClayInput.GroupItem
+								append
+								shrink
+							>
+								{this.parameter.getValidationValue(
+									ValidationKeys.MAX,
+									ValidationSectionProperty.BOUNDARY
+								) ? (
+									<ClayInput.GroupText>&#8804;</ClayInput.GroupText>
+								) : (
+									<ClayInput.GroupText>{"<"}</ClayInput.GroupText>
+								)}
+							</ClayInput.GroupItem>
+							<ClayInput.GroupItem
+								append
+								shrink
+							>
+								<ClayInput.GroupText>
+									{this.parameter.getValidationValue(
+										ValidationKeys.MAX,
+										ValidationSectionProperty.VALUE
+									)}
+								</ClayInput.GroupText>
+							</ClayInput.GroupItem>
+						</>
+					)}
+				</ClayInput.Group>
 				{this.parameter.dirty &&
 					(this.parameter.errorClass === ErrorClass.ERROR ||
 						this.parameter.errorClass === ErrorClass.WARNING) && (
@@ -1660,7 +1640,7 @@ export class SXSelect extends React.Component {
 					this.selectedOptionChanged = true;
 					this.setValue(val);
 				}}
-				style={{ marginBottom: "0px" }}
+				style={{ paddingLeft: "10px", marginBottom: "0px" }}
 			/>
 		);
 	}
@@ -1730,7 +1710,6 @@ export class SXSelect extends React.Component {
 										}}
 									>
 										<ClayCheckbox
-											key={option.value}
 											label={option.label[this.parameter.languageId]}
 											checked={this.state.value.includes(option.value)}
 											onChange={(e) => {
@@ -1749,7 +1728,6 @@ export class SXSelect extends React.Component {
 	}
 
 	renderRadioGroup(tagId, tagName) {
-		console.log("SXSelect: ", this.parameter);
 		const optionRows = Util.convertArrayToRows(this.parameter.options, this.parameter.optionsPerRow);
 
 		return (
@@ -1844,6 +1822,7 @@ export class SXSelect extends React.Component {
 				onChange={(e) => {
 					this.handleValueChange(e.target.value);
 				}}
+				style={{ paddingLeft: "10px" }}
 			>
 				{this.parameter.options.map((option) => {
 					return (
@@ -2211,7 +2190,6 @@ export class SXFile extends React.Component {
 
 		for (let i = 0; i < files.length; i++) {
 			const file = files[i];
-			console.log("SXFile info: ", file.name, file.size, file.type);
 			fileList.push({
 				fileId: 0,
 				name: file.name,
@@ -2226,8 +2204,21 @@ export class SXFile extends React.Component {
 		this.parameter.fireValueChanged(this.cellIndex);
 	}
 
+	valueToFiles() {
+		const dataTransfer = new DataTransfer();
+
+		let files = this.state.value
+			.filter((fileItem) => {
+				return fileItem.fileId === 0 && fileItem.name !== fileInfo.name;
+			})
+			.map((fileItem) => fileItem.file);
+
+		files.forEach((file) => dataTransfer.items.add(file));
+
+		this.focusRef.current.files = dataTransfer.files;
+	}
+
 	handleActionClick(action, fileInfo) {
-		console.log("handleActionClick: ", action, fileInfo);
 		switch (action) {
 			case "download":
 			case "upload": {
@@ -2236,23 +2227,14 @@ export class SXFile extends React.Component {
 				break;
 			}
 			case "delete": {
-				console.log("files VALUE: ", this.state.value);
 				const dataTransfer = new DataTransfer();
 
 				let files = this.state.value
 					.filter((fileItem) => {
-						console.log(
-							"fileItem: ",
-							fileItem,
-							fileInfo,
-							fileItem.fileId === 0,
-							fileItem.name !== fileInfo.name
-						);
 						return fileItem.fileId === 0 && fileItem.name !== fileInfo.name;
 					})
 					.map((fileItem) => fileItem.file);
 
-				console.log("mapped files: ", files);
 				files.forEach((file) => dataTransfer.items.add(file));
 
 				this.focusRef.current.files = dataTransfer.files;
@@ -2291,13 +2273,14 @@ export class SXFile extends React.Component {
 					onChange={(e) => {
 						this.handleFileSelectionChanged(e.target.files);
 					}}
+					style={{ paddingLeft: "10px" }}
 				/>
 				{Util.isNotEmpty(this.state.value) &&
 					this.state.value.map((fileInfo) => (
 						<div
 							key={fileInfo.name}
 							className="autofit-row autofit-row-center autofit-padded-no-gutters-x"
-							style={{ fontSize: "0.725rem" }}
+							style={{ fontSize: "0.725rem", paddingLeft: "10px" }}
 						>
 							<div
 								className="autofit-col"
@@ -2551,7 +2534,6 @@ export class SXAddress extends React.Component {
 
 		const className = this.className + (this.parameter.dirty ? " " + this.parameter.errorClass : "");
 
-		console.log("Address render: ", this.state);
 		return (
 			<div
 				className={className}
@@ -2582,8 +2564,6 @@ export class SXAddress extends React.Component {
 												this.state.zipcode + ", " + this.state.street + ", ",
 												""
 											);
-
-											console.log("address value: ", value);
 
 											this.handleAddressChanged(value);
 										}}
@@ -2841,7 +2821,10 @@ export class SXDate extends React.Component {
 		const className = this.className + (this.parameter.dirty ? " " + this.parameter.errorClass : "");
 
 		return (
-			<ClayForm.Group className={className}>
+			<ClayForm.Group
+				className={className}
+				style={{ paddingLeft: "10px" }}
+			>
 				{this.parameter.renderLabel({
 					spritemap: this.spritemap,
 					inputStatus: this.inputStatus
@@ -2980,7 +2963,6 @@ export class SXPhone extends React.Component {
 
 		this.setState(newValue);
 
-		console.log("SXPhone changed: ", newValue, this.checkFullNo());
 		if (this.checkFullNo()) {
 			this.parameter.setValue(newValue, this.cellIndex);
 			this.parameter.fireValueChanged();
@@ -3217,7 +3199,7 @@ export class SXEMail extends React.Component {
 						<pre>{this.parameter.getDefinition()}</pre>
 					</div>
 				)}
-				<ClayInput.Group style={{ marginLeft: "10px" }}>
+				<ClayInput.Group style={{ paddingLeft: "10px" }}>
 					<ClayInput.GroupItem>
 						<ClayInput
 							value={this.state.emailId}
@@ -3325,9 +3307,12 @@ export class SXGroup extends React.Component {
 	renderMember(member) {
 		return this.preview
 			? member.renderPreview({
-					previewCanvasId: this.formId,
+					dsbuilderId: this.dsbuilderId,
+					propertyPanelId: this.propertyPanelId,
+					previewCanvasId: this.previewCanvasId,
 					spritemap: this.spritemap,
-					inputStatus: this.inputStatus
+					inputStatus: this.inputStatus,
+					position: this.parameter.getMemberPosition(member)
 			  })
 			: member.render({
 					spritemap: this.spritemap,
@@ -3348,10 +3333,11 @@ export class SXGroup extends React.Component {
 				{this.parameter.membersPerRow === 0 && (
 					<div
 						className=""
-						style={{ display: "flex", oprflowX: "auto" }}
+						style={{ display: "flex", overflowX: "auto" }}
 					>
-						{rows.map((field) => (
+						{rows.map((field, index) => (
 							<div
+								key={index}
 								style={{
 									display: "inline-block",
 									flex: "0 0 auto",
@@ -3359,37 +3345,12 @@ export class SXGroup extends React.Component {
 									padding: "5px"
 								}}
 							>
-								{this.preview
-									? field.renderPreview({
-											dsbuilderId: this.dsbuilderId,
-											propertyPanelId: this.propertyPanelId,
-											previewCanvasId: this.previewCanvasId,
-											spritemap: this.spritemap,
-											inputStatus: this.inputStatus
-									  })
-									: field.render({
-											spritemap: this.spritemap,
-											inputStatus: this.inputStatus
-									  })}
+								{this.renderMember(field)}
 							</div>
 						))}
 					</div>
 				)}
-				{this.parameter.membersPerRow === 1 &&
-					rows.map((field) =>
-						this.preview
-							? field.renderPreview({
-									dsbuilderId: this.dsbuilderId,
-									propertyPanelId: this.propertyPanelId,
-									previewCanvasId: this.previewCanvasId,
-									spritemap: this.spritemap,
-									inputStatus: this.inputStatus
-							  })
-							: field.render({
-									spritemap: this.spritemap,
-									inputStatus: this.inputStatus
-							  })
-					)}
+				{this.parameter.membersPerRow === 1 && rows.map((field) => this.renderMember(field))}
 				{this.parameter.membersPerRow > 1 &&
 					rows.map((row, rowIndex) => (
 						<div
@@ -3403,18 +3364,7 @@ export class SXGroup extends React.Component {
 									className="autofit-col autofit-col-expand"
 									style={{ marginBottom: "0" }}
 								>
-									{this.preview
-										? field.renderPreview({
-												dsbuilderId: this.dsbuilderId,
-												propertyPanelId: this.propertyPanelId,
-												previewCanvasId: this.previewCanvasId,
-												spritemap: this.spritemap,
-												inputStatus: this.inputStatus
-										  })
-										: field.render({
-												spritemap: this.spritemap,
-												inputStatus: this.inputStatus
-										  })}
+									{this.renderMember(field)}
 								</div>
 							))}
 						</div>
@@ -3450,8 +3400,6 @@ export class SXGroup extends React.Component {
 	}
 
 	render() {
-		console.log("SXGroup render: ", this.parameter);
-
 		switch (this.parameter.viewType) {
 			case GroupParameter.ViewTypes.ARRANGEMENT: {
 				return this.renderArrangeMent();

@@ -8,7 +8,7 @@ import SXDSBuilderOptionPropertiesPanel from "./option-properties-panel";
 import SXDSBuilderValidationPanel from "./validation-builder-panel";
 import { Event, ParamProperty, ParamType } from "../../common/station-x";
 import { SXLabel, SXSelect } from "../../form/sxform";
-import { SelectParameter } from "../../parameter/parameter";
+import { GroupParameter, Parameter, SelectParameter } from "../../parameter/parameter";
 import Button from "@clayui/button";
 import { SXModalDialog } from "../../modal/sxmodal";
 
@@ -27,7 +27,9 @@ class GroupSelectorBody extends React.Component {
 		this.options = this.convertGroupsToOptions();
 
 		this.state = {
-			selected: this.getOption(this.workingParam.parentName ? this.workingParam.parentName : "__top__")
+			selected: this.getOption(
+				this.workingParam.parentName ? this.workingParam.parentName : GroupParameter.ROOT_GROUP
+			)
 		};
 	}
 
@@ -40,7 +42,11 @@ class GroupSelectorBody extends React.Component {
 	 */
 	convertGroupsToOptions() {
 		return [
-			{ label: Util.translate("top-level"), paramName: "__top__", paramVersion: "" },
+			{
+				label: Util.translate("top-level"),
+				paramName: GroupParameter.ROOT_GROUP,
+				paramVersion: Parameter.DEFAULT_VERSION
+			},
 			...this.dataStructure
 				.getGroups({
 					paramName: this.workingParam.paramName,
@@ -55,19 +61,20 @@ class GroupSelectorBody extends React.Component {
 	}
 
 	getOption(paramName) {
-		console.log("getOption: ", this.options, "[" + paramName + "]");
 		return this.options.filter((option) => option.paramName === paramName)[0];
 	}
 
 	handleGroupSelected(option) {
-		console.log("handleGroupSelected: ", option);
-		const srcGroup = Util.isEmpty(this.workingParam.parent)
-			? this.dataStructure
-			: this.dataStructure.findParameter(this.workingParam.parentName, this.workingParam.parentVersion);
-		const targetGroup =
-			option.paramName === "__top__"
-				? this.dataStructure
-				: this.dataStructure.findParameter(option.paramName, option.paramVersion);
+		const srcGroup = this.dataStructure.findParameter({
+			paramName: this.workingParam.parentName,
+			paramVersion: this.workingParam.parentVersion,
+			descendant: true
+		});
+		const targetGroup = this.dataStructure.findParameter({
+			paramName: option.paramName,
+			paramVersion: option.paramVersion,
+			descendant: true
+		});
 
 		this.dataStructure.moveParameterGroup(this.workingParam, srcGroup, targetGroup);
 
@@ -75,7 +82,6 @@ class GroupSelectorBody extends React.Component {
 	}
 
 	render() {
-		console.log("GroupSelectorBody: ", this.options, this.state.selected, this.workingParam);
 		if (this.optionType === "radio") {
 			return (
 				<div style={{ width: "100%" }}>
@@ -141,10 +147,28 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 			openSelectGroupModal: false
 		};
 
-		console.log("SXDSBuilderPropertiesPanel.constructor: ", this.workingParam);
+		this.formId = this.formIds.propertyPanelId;
 	}
 
-	componentDidMount() {}
+	componentDidMount() {
+		Event.on(Event.SX_SELECT_GROUP, (e) => {
+			if (e.dataPacket.targetPortlet !== this.namespace || e.dataPacket.targetFormId !== this.formId) {
+				return;
+			}
+
+			this.setState({ openSelectGroupModal: true });
+		});
+
+		Event.on(Event.SX_REFRESH_PROPERTY_PANEL, (e) => {
+			if (e.dataPacket.targetPortlet !== this.namespace || e.dataPacket.targetFormId !== this.formId) {
+				return;
+			}
+
+			this.workingParam = e.dataPacket.workingParam;
+
+			this.setState({ paramType: this.workingParam.paramType });
+		});
+	}
 
 	handlePanelStepChange(step) {
 		this.setState({ panelStep: step });
@@ -209,6 +233,7 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 	}
 
 	render() {
+		console.log("SXDSBuilderPropertiesPanel rendered");
 		return (
 			<>
 				<Form.Group className="form-group-sm">
@@ -231,6 +256,7 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 							this.handleParamTypeSelect(e.target.value);
 						}}
 						disabled={this.workingParam.order > 0}
+						style={{ paddingLeft: "10px" }}
 						spritemap={this.spritemap}
 					/>
 				</Form.Group>
@@ -242,12 +268,12 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 						tooltip={Util.translate("group-tooltip")}
 						spritemap={this.spritemap}
 					/>
-					<ClayInput.Group style={{ paddingLeft: "1.0rem" }}>
+					<ClayInput.Group style={{ paddingLeft: "10px" }}>
 						<ClayInput.GroupItem
 							prepend
 							style={{ padding: "5px", backgroundColor: "#effccf", justifyContent: "center" }}
 						>
-							{this.state.group ?? Util.translate("top-level")}
+							{this.state.group ?? Util.translate("root")}
 						</ClayInput.GroupItem>
 						<ClayInput.GroupItem
 							append

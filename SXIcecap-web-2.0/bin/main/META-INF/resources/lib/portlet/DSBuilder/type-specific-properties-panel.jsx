@@ -1045,7 +1045,7 @@ class SXGroupTypeOptionForm extends React.Component {
 					},
 					{
 						label: Util.getTranslationObject(this.languageId, "Shared Label Groups"),
-						value: GroupParameter.ViewTypes.SHARED_GROUP_TABLE
+						value: GroupParameter.ViewTypes.SHARED_LABEL_TABLE
 					}
 				],
 				optionsPerRow: 2,
@@ -1096,7 +1096,7 @@ class SXGroupTypeOptionForm extends React.Component {
 				"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
 				dataPacket,
 				this.workingParam,
-				this.fieldMembers.getValue()
+				this.fieldMembersPerRow.getValue()
 			);
 
 			switch (dataPacket.paramName) {

@@ -345,23 +345,15 @@ class DataTypeEditor extends React.Component {
 					for (const fieldName in result.dataType) {
 						const field = this.getField(this.fields, fieldName);
 
-						console.log("DataTypeEditor field found: ", fieldName, field);
-
 						this.visualizers.options = result.visualizers.map((item) => ({
 							label: item.displayName,
 							value: item.value
 						}));
 
 						if (field) {
-							//if (field.paramType === ParamType.DUALLIST) {
-							//	field.setValue(result.dataType[fieldName].map((item) => item.id));
-							//} else {
 							field.setValue(result.dataType[fieldName]);
-							//}
 
 							field.dirty = false;
-
-							console.log("Field data set: ", field);
 						}
 					}
 
@@ -400,8 +392,6 @@ class DataTypeEditor extends React.Component {
 			if (!dataPacket) {
 				return;
 			}
-
-			console.log("DataTypeEditor receives SX_FIELD_VALUE_CHANGED: ", dataPacket, this.fields);
 
 			if (dataPacket.paramName === DataTypeProperty.NAME) {
 				if (Util.isNotEmpty(this.parameterCode.value)) {
@@ -456,7 +446,6 @@ class DataTypeEditor extends React.Component {
 	}
 
 	handleMoveToExplorer(e) {
-		console.log("redirectTo: ", this.workbenchId);
 		Util.redirectTo(
 			this.workbenchURL,
 			{

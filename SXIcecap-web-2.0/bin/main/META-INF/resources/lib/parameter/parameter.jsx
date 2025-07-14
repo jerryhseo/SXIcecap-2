@@ -79,23 +79,12 @@ export class Parameter {
 		GRID_CELL: "gridCell"
 	};
 
-	static LabelPosition = {
-		UPPER_LEFT: "upperLeft",
-		UPPER_RIGHT: "upperRight",
-		INLINE_LEFT: "inlineLeft",
-		INLINE_RIGHT: "inlineRight",
-		BOTTOM_LEFT: "bottomLeft",
-		BOTTOM_RIGHT: "bottomRight",
-		NONE: "none"
-	};
+	static DEFAULT_VERSION = "1.0.0";
 
 	static createParameter(namespace, formId, languageId, availableLanguageIds, paramType, json) {
 		switch (paramType) {
 			case ParamType.STRING: {
 				return new StringParameter(namespace, formId, languageId, availableLanguageIds, json);
-			}
-			case ParamType.LOCALIZED_STRING: {
-				return new LocalizedStringParameter(namespace, formId, languageId, availableLanguageIds, json);
 			}
 			case ParamType.NUMERIC: {
 				return new NumericParameter(namespace, formId, languageId, availableLanguageIds, json);
@@ -174,7 +163,7 @@ export class Parameter {
 	#availableLanguageIds;
 	#paramType;
 	#paramName = "";
-	#paramVersion = "1.0.0";
+	#paramVersion = Parameter.DEFAULT_VERSION;
 	#displayName = {};
 	#viewType;
 	#abstractKey = false;
@@ -187,14 +176,16 @@ export class Parameter {
 	#tooltip = {};
 	#order = 0;
 	#defaultValue = null;
-	#parent = null;
+	#parent = {
+		name: GroupParameter.ROOT_GROUP,
+		version: Parameter.DEFAULT_VERSION
+	};
 	#parameterId = 0;
 	#standard = false;
 	#status = 0;
 	#state = 0;
 	#active = true;
 	#readOnly = false;
-	#labelPosition = Parameter.LabelPosition.UPPER_LEFT;
 	#referenceFile = { fileId: 0, fileType: "pdf" };
 
 	#validation = {};
@@ -295,10 +286,10 @@ export class Parameter {
 		return this.#parent;
 	}
 	get parentName() {
-		return Util.isEmpty(this.parent) ? "" : this.parent.name;
+		return this.parent.name;
 	}
 	get parentVersion() {
-		return Util.isEmpty(this.parent) ? "" : this.parent.version;
+		return this.parent.version;
 	}
 	get parameterId() {
 		return this.#parameterId;
@@ -336,9 +327,6 @@ export class Parameter {
 	get errorClass() {
 		return this.error.errorClass ?? "";
 	}
-	get labelPosition() {
-		return this.#labelPosition;
-	}
 	get referenceFile() {
 		return this.#referenceFile;
 	}
@@ -364,6 +352,13 @@ export class Parameter {
 		}
 
 		return this.value.length;
+	}
+
+	get totalFieldsCount() {
+		return 1;
+	}
+	get valuedFieldsCount() {
+		return this.hasValue() ? 1 : 0;
 	}
 
 	set namespace(val) {
@@ -437,18 +432,14 @@ export class Parameter {
 		this.#parent = val;
 	}
 	set parentName(val) {
-		const version = Util.isEmpty(this.parent) ? "" : this.parent.version ?? "";
-
 		this.parent = {
 			name: val,
-			version: version
+			version: this.parent.version
 		};
 	}
 	set parentVersion(val) {
-		const name = Util.isEmpty(this.parent) ? "" : this.parent.name ?? "";
-
 		this.parent = {
-			name: name,
+			name: this.parent.name,
 			version: val
 		};
 	}
@@ -489,9 +480,6 @@ export class Parameter {
 		this.error.errorClass = className;
 	}
 
-	set labelPosition(val) {
-		this.#labelPosition = val;
-	}
 	set referenceFile(val) {
 		this.#referenceFile = val;
 	}
@@ -561,14 +549,17 @@ export class Parameter {
 
 	equalTo(name, version) {
 		if (version) {
-			return name === this.paramName && version === (this.paramVersion ? this.paramVersion : "1.0.0");
+			return (
+				name === this.paramName &&
+				version === (this.paramVersion ? this.paramVersion : Parameter.DEFAULT_VERSION)
+			);
 		} else {
 			return name === this.paramName;
 		}
 	}
 
 	isMemberOf(assembly) {
-		return assembly.name === this.parent.name && assembly.version === this.parent.version;
+		return assembly.name === this.parentName && assembly.version === this.parentVersion;
 	}
 
 	isAssembly() {
@@ -578,6 +569,40 @@ export class Parameter {
 			this.paramType === ParamType.SELECT_GROUP ||
 			this.paramType === ParamType.TABLE
 		);
+	}
+
+	postfixParameterCode(postfix) {
+		this.paramName += "_" + postfix;
+		this.paramVersion = Parameter.DEFAULT_VERSION;
+	}
+
+	copy() {
+		const copied = Parameter.createParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			this.paramType,
+			JSON.parse(JSON.stringify(this))
+		);
+
+		copied.postfixParameterCode("copied");
+		console.log("copied: ", copied);
+
+		return copied;
+	}
+
+	focus(paramName, paramVersion) {
+		const focus = this.equalTo(paramName, paramVersion);
+
+		if (this.focused !== focus) {
+			this.focused = focus;
+
+			this.refreshKey();
+
+			return true;
+		}
+		return false;
 	}
 
 	isRendered() {
@@ -816,13 +841,15 @@ export class Parameter {
 
 	fireMoveUp(targetForm) {
 		Event.fire(Event.SX_MOVE_PARAMETER_UP, this.namespace, this.namespace, {
-			targetFormId: targetForm
+			targetFormId: targetForm,
+			parameter: this
 		});
 	}
 
 	fireMoveDown(targetForm) {
 		Event.fire(Event.SX_MOVE_PARAMETER_DOWN, this.namespace, this.namespace, {
-			targetFormId: targetForm
+			targetFormId: targetForm,
+			parameter: this
 		});
 	}
 
@@ -881,11 +908,10 @@ export class Parameter {
 			paramType: this.paramType,
 			paramName: this.paramName,
 			paramVersion: this.paramVersion,
-			parentId: this.parent,
+			parent: this.parent,
 			tagId: this.paramName,
 			tagName: this.paramName,
 			label: this.getDisplayName(this.languageId),
-			labelPosition: this.labelPosition,
 			definition: this.getDefinition(this.languageId),
 			showDefinition: this.showDefinition,
 			required: this.required,
@@ -966,10 +992,9 @@ export class Parameter {
 		inputStatus,
 		position
 	}) {
-		console.log("Parameter renderPreview: ", dsbuilderId);
 		return (
 			<SXPreviewRow
-				key={this.paramName}
+				key={this.key}
 				dsbuilderId={dsbuilderId}
 				propertyPanelId={propertyPanelId}
 				previewCanvasId={previewCanvasId}
@@ -3340,6 +3365,8 @@ export class EMailParameter extends Parameter {
  *
  */
 export class GroupParameter extends Parameter {
+	static ROOT_GROUP = "__root__";
+
 	static ViewTypes = {
 		ARRANGEMENT: "arrangement", // Just for arrangement for all members
 		PANEL: "panel", // Normal display as form fields
@@ -3367,11 +3394,34 @@ export class GroupParameter extends Parameter {
 	get members() {
 		return this.#members;
 	}
+	get firstMember() {
+		return this.members.length > 0 ? this.members[0] : null;
+	}
+	get lastMember() {
+		return this.members.length > 0 ? this.members[this.members.length - 1] : null;
+	}
+
 	get membersPerRow() {
 		return this.#membersPerRow;
 	}
 	get expanded() {
 		return this.#expanded;
+	}
+	get totalFieldsCount() {
+		let totalFields = 0;
+		this.members.forEach((field) => {
+			totalFields += field.totalFieldsCount;
+		});
+
+		return totalFields;
+	}
+	get valuedFieldsCount() {
+		let valuedFields = 0;
+		this.members.forEach((field) => {
+			valuedFields += field.valuedFieldsCount;
+		});
+
+		return valuedFields;
 	}
 
 	set members(val) {
@@ -3421,6 +3471,7 @@ export class GroupParameter extends Parameter {
 
 		this.setMemberOrders();
 
+		this.refreshKey();
 		console.log("Group addMember: ", this.members);
 	}
 
@@ -3444,27 +3495,150 @@ export class GroupParameter extends Parameter {
 		this.members.forEach((member, index) => (member.order = index + 1));
 	}
 
-	removeMember({ paramName, paramVersion }) {
+	removeMember({ paramName, paramVersion = Parameter.DEFAULT_VERSION }) {
 		let removed;
 
 		this.members = this.members.filter((member) => {
+			let skipped;
+
 			if (member.equalTo(paramName, paramVersion)) {
-				removed = member;
-				return Constant.FILTER_SKIP;
+				removed = skipped = member;
 			} else if (member.isAssembly()) {
-				removed = member.removeMember();
-				if (removed) {
-					return Constant.FILTER_SKIP;
+				skipped = member.removeMember({ paramName: paramName, paramVersion: paramVersion });
+				if (skipped) {
+					removed = skipped;
 				}
 			}
 
-			return Constant.FILTER_ADD;
+			return skipped ? Constant.FILTER_SKIP : Constant.FILTER_ADD;
 		});
 
 		this.setMemberOrders();
 
-		console.log("Group removeMember: ", removed, paramName, paramVersion);
 		return removed;
+	}
+
+	findParameter({ paramName, paramVersion = Parameter.DEFAULT_VERSION, descendant = true }) {
+		if (this.equalTo(paramName, paramVersion)) {
+			return this;
+		}
+
+		let found = null;
+
+		this.members.every((field) => {
+			if (field.equalTo(paramName, paramVersion)) {
+				found = field;
+			} else if (descendant && field.isAssembly()) {
+				found = field.findParameter({
+					paramName: paramName,
+					paramVersion: paramVersion,
+					descendant: descendant
+				});
+			}
+
+			return found ? Constant.STOP_EVERY : Constant.CONTINUE_EVERY;
+		});
+
+		return found;
+	}
+
+	moveParameterUp(paramOrder) {
+		const srcIndex = paramOrder - 1;
+		const targetIndex = srcIndex - 1;
+		const targetParam = this.members[targetIndex];
+		this.members[targetIndex] = this.members[srcIndex];
+		this.members[targetIndex].refreshKey();
+		this.members[srcIndex] = targetParam;
+		this.members[srcIndex].refreshKey();
+
+		this.setMemberOrders();
+	}
+
+	moveParameterDown(paramOrder) {
+		const srcIndex = paramOrder - 1;
+		const targetIndex = srcIndex + 1;
+		const targetParam = this.members[targetIndex];
+		this.members[targetIndex] = this.members[srcIndex];
+		this.members[srcIndex] = targetParam;
+
+		this.setMemberOrders();
+	}
+
+	postfixParameterCode(postfix) {
+		this.paramName += "_" + postfix;
+		this.paramVersion = Parameter.DEFAULT_VERSION;
+
+		this.members.forEach((member, index) => member.postfixParameterCode(postfix + "_" + index));
+	}
+
+	getMemberPosition(member) {
+		console.log("getMemberPosition: ", member.order, this.members.length, this);
+		if (this.members.length === 1 && member.order === 1) {
+			return "deadEnd";
+		} else if (member.order === 1) {
+			return "start";
+		} else if (member.order === this.members.length) {
+			return "end";
+		}
+
+		return "middle";
+	}
+
+	copy() {
+		const copied = Parameter.createParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			this.paramType,
+			JSON.parse(JSON.stringify(this))
+		);
+
+		copied.postfixParameterCode("copied");
+
+		return copied;
+	}
+
+	countParameters() {
+		return this.members.length;
+	}
+
+	focus(paramName, paramVersion) {
+		this.focused = this.equalTo(paramName, paramVersion);
+
+		this.members.forEach((param) => {
+			param.focus(paramName, paramVersion);
+		});
+	}
+
+	loadData(data) {
+		this.members.forEach((member) => {
+			const value = data[member.paramName];
+			if (Util.isNotEmpty(value)) {
+				member.loadData(value);
+			}
+		});
+	}
+
+	parse(json) {
+		super.parse(json);
+
+		this.viewType = this.viewType ?? GroupParameter.ViewTypes.PANEL;
+		this.membersPerRow = json.membersPerRow ?? 1;
+		this.expanded = json.expanded ?? false;
+
+		if (Util.isNotEmpty(json.members)) {
+			this.members = json.members.map((member) => {
+				return Parameter.createParameter(
+					this.namespace,
+					this.formId,
+					this.languageId,
+					this.availableLanguageIds,
+					member.paramType,
+					member
+				);
+			});
+		}
 	}
 
 	toData() {
@@ -3484,29 +3658,6 @@ export class GroupParameter extends Parameter {
 			groupOutput[this.paramName] = output;
 
 			return groupOutput;
-		}
-	}
-
-	loadData(data) {
-		this.members.forEach((member) => {
-			const value = data[member.paramName];
-			if (Util.isNotEmpty(value)) {
-				member.loadData(value);
-			}
-		});
-	}
-
-	parse(json) {
-		super.parse(json);
-
-		this.viewType = this.viewType ?? GroupParameter.ViewTypes.VERTICAL_PANEL;
-		this.membersPerRow = json.membersPerRow ?? 1;
-		this.expanded = json.expanded ?? false;
-
-		if (Util.isNotEmpty(json.members)) {
-			this.members = json.members.map((member) => {
-				return Parameter.createParameter(member.paramType, member);
-			});
 		}
 	}
 
