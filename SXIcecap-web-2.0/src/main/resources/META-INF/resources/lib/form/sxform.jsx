@@ -1810,26 +1810,28 @@ export class SXSelect extends React.Component {
 
 	renderDropDown(tagId, tagName) {
 		return (
-			<ClaySelect
-				id={tagId}
-				name={tagName}
-				value={this.state.value}
-				disabled={this.parameter.disabled}
-				onChange={(e) => {
-					this.handleValueChange(e.target.value);
-				}}
-				style={{ paddingLeft: "10px" }}
-			>
-				{this.parameter.options.map((option) => {
-					return (
-						<ClaySelect.Option
-							key={option.value}
-							label={option.label[this.parameter.languageId]}
-							value={option.value}
-						/>
-					);
-				})}
-			</ClaySelect>
+			<div style={{ paddingLeft: "10px" }}>
+				<ClaySelect
+					id={tagId}
+					name={tagName}
+					value={this.state.value}
+					disabled={this.parameter.disabled}
+					onChange={(e) => {
+						this.handleValueChange(e.target.value);
+					}}
+					style={{ paddingLeft: "10px" }}
+				>
+					{this.parameter.options.map((option) => {
+						return (
+							<ClaySelect.Option
+								key={option.value}
+								label={option.label[this.parameter.languageId]}
+								value={option.value}
+							/>
+						);
+					})}
+				</ClaySelect>
+			</div>
 		);
 	}
 
@@ -2827,19 +2829,20 @@ export class SXDate extends React.Component {
 						<pre>{this.parameter.getDefinition()}</pre>
 					</div>
 				)}
-				<DatePicker
-					onChange={(val) => this.handleDateChanged(val)}
-					placeholder={this.parameter.enableTime ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD"}
-					time={this.parameter.enableTime}
-					value={this.parameter.getValue(this.cellIndex)}
-					disabled={this.parameter.disabled}
-					years={{
-						end: Number(this.parameter.endYear),
-						start: Number(this.parameter.startYear)
-					}}
-					style={{ paddingLeft: "10px" }}
-					spritemap={this.spritemap}
-				/>
+				<div style={{ paddingLeft: "10px" }}>
+					<DatePicker
+						onChange={(val) => this.handleDateChanged(val)}
+						placeholder={this.parameter.enableTime ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD"}
+						time={this.parameter.enableTime}
+						value={this.parameter.getValue(this.cellIndex)}
+						disabled={this.parameter.disabled}
+						years={{
+							end: Number(this.parameter.endYear),
+							start: Number(this.parameter.startYear)
+						}}
+						spritemap={this.spritemap}
+					/>
+				</div>
 			</ClayForm.Group>
 		);
 	}

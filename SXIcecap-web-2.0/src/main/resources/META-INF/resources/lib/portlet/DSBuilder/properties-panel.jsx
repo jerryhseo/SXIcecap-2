@@ -192,6 +192,7 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 			case 0: {
 				return (
 					<SXDSBuilderBasicPropertiesPanel
+						key={this.workingParam.key}
 						formIds={this.formIds}
 						dataStructure={this.dataStructure}
 						workingParam={this.workingParam}
@@ -202,6 +203,7 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 			case 1: {
 				return (
 					<SXDSBuilderTypeSpecificPanel
+						key={this.workingParam.key}
 						formIds={this.formIds}
 						dataStructure={this.dataStructure}
 						workingParam={this.workingParam}
@@ -212,6 +214,7 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 			case 2: {
 				return (
 					<SXDSBuilderOptionPropertiesPanel
+						key={this.workingParam.key}
 						formIds={this.formIds}
 						dataStructure={this.dataStructure}
 						workingParam={this.workingParam}
@@ -222,6 +225,7 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 			case 3: {
 				return (
 					<SXDSBuilderValidationPanel
+						key={this.workingParam.key}
 						formIds={this.formIds}
 						dataStructure={this.dataStructure}
 						workingParam={this.workingParam}
@@ -244,21 +248,23 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 						tooltip={Util.translate("parameter-type-tooltip")}
 						spritemap={this.spritemap}
 					/>
-					<ClaySelectWithOption
-						aria-label={Util.translate("parameter-type")}
-						id={this.namespace + ParamProperty.PARAM_TYPE}
-						options={Object.keys(ParamType).map((key) => ({
-							label: ParamType[key],
-							value: ParamType[key]
-						}))}
-						value={this.state.paramType}
-						onChange={(e) => {
-							this.handleParamTypeSelect(e.target.value);
-						}}
-						disabled={this.workingParam.order > 0}
-						style={{ paddingLeft: "10px" }}
-						spritemap={this.spritemap}
-					/>
+					<div style={{ paddingLeft: "10px" }}>
+						<ClaySelectWithOption
+							aria-label={Util.translate("parameter-type")}
+							id={this.namespace + ParamProperty.PARAM_TYPE}
+							options={Object.keys(ParamType).map((key) => ({
+								label: ParamType[key],
+								value: ParamType[key]
+							}))}
+							value={this.state.paramType}
+							onChange={(e) => {
+								this.handleParamTypeSelect(e.target.value);
+							}}
+							disabled={this.workingParam.order > 0}
+							style={{ paddingLeft: "10px" }}
+							spritemap={this.spritemap}
+						/>
+					</div>
 				</Form.Group>
 				<Form.Group style={{ marginBottom: "1.5rem" }}>
 					<SXLabel
