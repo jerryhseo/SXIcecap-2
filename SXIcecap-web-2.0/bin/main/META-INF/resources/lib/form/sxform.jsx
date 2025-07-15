@@ -41,6 +41,7 @@ import Autocomplete from "@clayui/autocomplete";
 import Panel from "@clayui/panel";
 import Toolbar from "@clayui/toolbar";
 import { DataStructure } from "../portlet/DSBuilder/data-structure";
+import { Table } from "@clayui/core";
 
 export const SelectDisplayStyle = {
 	DUAL_LISTBOX: "DUAL_LISTBOX",
@@ -3395,6 +3396,35 @@ export class SXGroup extends React.Component {
 		);
 	}
 
+	getGridHeadItems() {
+		return [
+			{ id: "rowIndex", name: <></> },
+			...this.members.map((member) => ({
+				id: member.paramName,
+				name: member.renderLabel({ inputStatus: this.inputStatus, spritemap: this.spritemap })
+			}))
+		];
+	}
+
+	getGridBodyItems() {
+		let items = [];
+		let rowCount = this.parameter.gridRowCount + 1;
+
+		for (let i = 0; i < rowCount; i++) {
+			let row = { rowIndex: i + 1 };
+			this.members.forEach((member) => {
+				row[member.paramName] = member.getValue(i);
+				row[member.paramName] = member.getValue(i);
+			});
+		}
+	}
+
+	renderGrid() {
+		const headItems = this.getGridHeadItems();
+
+		return <Table></Table>;
+	}
+
 	render() {
 		switch (this.parameter.viewType) {
 			case GroupParameter.ViewTypes.ARRANGEMENT: {
@@ -3402,6 +3432,9 @@ export class SXGroup extends React.Component {
 			}
 			case GroupParameter.ViewTypes.PANEL: {
 				return this.renderPanel();
+			}
+			case GroupParameter.ViewTypes.GRID: {
+				return this.renderGrid();
 			}
 			default: {
 				return this.renderPanel();

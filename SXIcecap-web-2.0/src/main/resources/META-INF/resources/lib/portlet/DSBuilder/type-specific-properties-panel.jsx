@@ -1063,8 +1063,8 @@ class SXGroupTypeOptionForm extends React.Component {
 			{
 				paramName: ParamProperty.MEMBERS_PER_ROW,
 				isInteger: true,
-				displayName: Util.getTranslationObject(this.languageId, "options-per-row"),
-				tooltip: Util.getTranslationObject(this.languageId, "options-per-row-tooltip"),
+				displayName: Util.getTranslationObject(this.languageId, "members-per-row"),
+				tooltip: Util.getTranslationObject(this.languageId, "members-per-row-tooltip"),
 				defaultValue: 1,
 				value: this.workingParam.membersPerRow
 			}

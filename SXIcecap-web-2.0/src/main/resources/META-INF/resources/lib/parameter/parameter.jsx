@@ -600,9 +600,7 @@ export class Parameter {
 		return this.order > 0;
 	}
 
-	isActive() {
-		return !!this.active;
-	}
+	isValueFilled() {}
 
 	loadData(data) {
 		this.value = data;
@@ -3429,6 +3427,14 @@ export class GroupParameter extends Parameter {
 		);
 	}
 
+	get gridRowCount() {
+		if (this.viewType === GroupParameter.ViewTypes.GRID) {
+			return this.members[0].value.length;
+		} else {
+			return 0;
+		}
+	}
+
 	setMemberOrders() {
 		this.members.forEach((member, index) => (member.order = index + 1));
 	}
@@ -3456,7 +3462,7 @@ export class GroupParameter extends Parameter {
 
 		member.parent = { name: this.paramName, version: this.paramVersion };
 
-		this.insertMember(member, memorder);
+		this.insertMember(member, memOrder);
 
 		console.log("Group addMember: ", this.members);
 	}
