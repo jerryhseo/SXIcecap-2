@@ -37,7 +37,6 @@ class SXDataStructurePreviewer extends React.Component {
 				return;
 			}
 
-			console.log("SX_MOVE_PARAMETER_UP");
 			const parameter = e.dataPacket.parameter;
 			const group = this.dataStructure.findParameter({
 				paramName: parameter.parentName,

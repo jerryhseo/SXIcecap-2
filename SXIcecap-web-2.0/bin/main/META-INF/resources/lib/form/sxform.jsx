@@ -460,7 +460,6 @@ export class SXPreviewRow extends React.Component {
 	}
 
 	handleActionClick(actionId) {
-		console.log("handleActionClick actionId: " + actionId);
 		switch (actionId) {
 			case "group": {
 				this.parameter.fireSelectGroup(this.propertyPanelId);
