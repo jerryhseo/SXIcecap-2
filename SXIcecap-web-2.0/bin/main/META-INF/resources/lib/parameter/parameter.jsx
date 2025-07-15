@@ -829,6 +829,7 @@ export class Parameter {
 	}
 
 	fireMoveUp(targetForm) {
+		console.log("Parameter fireMoveUp: " + targetForm);
 		Event.fire(Event.SX_MOVE_PARAMETER_UP, this.namespace, this.namespace, {
 			targetFormId: targetForm,
 			parameter: this
@@ -3462,8 +3463,8 @@ export class GroupParameter extends Parameter {
 
 		member.parent = { name: this.paramName, version: this.paramVersion };
 
-		this.insertMember(member, memOrder);
-
+		member.order = this.members.length + 1;
+		this.members.push(member);
 		console.log("Group addMember: ", this.members);
 	}
 
@@ -3550,6 +3551,8 @@ export class GroupParameter extends Parameter {
 	moveParameterUp(paramOrder) {
 		const srcIndex = paramOrder - 1;
 		const targetIndex = srcIndex - 1;
+		console.log("moveParameterUp: ", paramOrder, srcIndex, targetIndex);
+		console.log("moveParameterUp: ", paramOrder, this.members[srcIndex], this.members[targetIndex]);
 		const targetParam = this.members[targetIndex];
 		this.members[targetIndex] = this.members[srcIndex];
 		this.members[targetIndex].refreshKey();

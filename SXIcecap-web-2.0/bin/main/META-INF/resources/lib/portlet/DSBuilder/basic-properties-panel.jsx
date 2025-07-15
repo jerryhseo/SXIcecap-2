@@ -168,7 +168,7 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			console.log("Mounted SXDSBuilderBasicPropertiesPanel: ", e);
 			const dataPacket = e.dataPacket;
 			if (

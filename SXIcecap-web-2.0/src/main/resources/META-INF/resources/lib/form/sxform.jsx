@@ -407,7 +407,7 @@ export class SXPreviewRow extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH_PREVIEW, (e) => {
+		Event.uniqueOn(Event.SX_REFRESH_PREVIEW, (e) => {
 			const dataPacket = Event.pickUpDataPacket(
 				e,
 				this.namespace,
@@ -427,7 +427,7 @@ export class SXPreviewRow extends React.Component {
 		});
 
 		/*
-		Event.on(Event.SX_FOCUS, (e) => {
+		Event.uniqueOn(Event.SX_FOCUS, (e) => {
 			const dataPacket = e.dataPacket;
 			if (
 				dataPacket.targetPortlet !== this.namespace ||
@@ -553,10 +553,12 @@ export class SXPreviewRow extends React.Component {
 						})}
 					</div>
 					<div
+						key={Util.randomKey()}
 						className="autofit-col autofit-col-shrink"
 						style={{ alignSelf: "center" }}
 					>
 						<DropDown
+							key={Util.randomKey()}
 							active={this.state.activeDropdown}
 							trigger={
 								<ClayButtonWithIcon
@@ -656,7 +658,7 @@ export class SXInput extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -678,7 +680,7 @@ export class SXInput extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -811,7 +813,7 @@ export class SXLocalizedInput extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -833,7 +835,7 @@ export class SXLocalizedInput extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -1037,7 +1039,7 @@ export class SXNumeric extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -1059,7 +1061,7 @@ export class SXNumeric extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -1295,7 +1297,7 @@ export class SXBoolean extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -1317,7 +1319,7 @@ export class SXBoolean extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -1540,7 +1542,7 @@ export class SXSelect extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -1562,7 +1564,7 @@ export class SXSelect extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -1920,7 +1922,7 @@ export class SXDualListBox extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -1942,7 +1944,7 @@ export class SXDualListBox extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -2137,7 +2139,7 @@ export class SXFile extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -2159,7 +2161,7 @@ export class SXFile extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -2442,7 +2444,7 @@ export class SXAddress extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -2464,7 +2466,7 @@ export class SXAddress extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -2754,7 +2756,7 @@ export class SXDate extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -2776,7 +2778,7 @@ export class SXDate extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -2886,7 +2888,7 @@ export class SXPhone extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -2908,7 +2910,7 @@ export class SXPhone extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -3094,7 +3096,7 @@ export class SXEMail extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -3116,7 +3118,7 @@ export class SXEMail extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -3268,7 +3270,7 @@ export class SXGroup extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_REFRESH, (event) => {
+		Event.uniqueOn(Event.SX_REFRESH, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,
@@ -3284,7 +3286,7 @@ export class SXGroup extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_FOCUS, (event) => {
+		Event.uniqueOn(Event.SX_FOCUS, (event) => {
 			const dataPacket = Event.pickUpDataPacket(
 				event,
 				this.parameter.namespace,

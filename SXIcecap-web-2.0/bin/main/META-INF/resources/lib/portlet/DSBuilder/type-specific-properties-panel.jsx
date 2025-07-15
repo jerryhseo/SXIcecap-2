@@ -460,7 +460,7 @@ class SXStringTypeOptionForm extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
 				return;
@@ -557,7 +557,7 @@ class SXNumericTypeOptionForm extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			console.log("SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED------: ", dataPacket, this.workingParam);
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
@@ -666,7 +666,7 @@ class SXSelectTypeOptionForm extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
 				return;
@@ -773,7 +773,7 @@ class SXBooleanTypeOptionForm extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
 				return;
@@ -837,7 +837,7 @@ class SXPhoneTypeOptionForm extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
 				return;
@@ -903,7 +903,7 @@ class SXAddressTypeOptionForm extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
 				return;
@@ -970,7 +970,7 @@ class SXDateTypeOptionForm extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
 				return;
@@ -1086,7 +1086,7 @@ class SXGroupTypeOptionForm extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
 				return;

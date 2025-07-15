@@ -151,7 +151,7 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_SELECT_GROUP, (e) => {
+		Event.uniqueOn(Event.SX_SELECT_GROUP, (e) => {
 			if (e.dataPacket.targetPortlet !== this.namespace || e.dataPacket.targetFormId !== this.formId) {
 				return;
 			}
@@ -159,7 +159,7 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 			this.setState({ openSelectGroupModal: true });
 		});
 
-		Event.on(Event.SX_REFRESH_PROPERTY_PANEL, (e) => {
+		Event.uniqueOn(Event.SX_REFRESH_PROPERTY_PANEL, (e) => {
 			if (e.dataPacket.targetPortlet !== this.namespace || e.dataPacket.targetFormId !== this.formId) {
 				return;
 			}

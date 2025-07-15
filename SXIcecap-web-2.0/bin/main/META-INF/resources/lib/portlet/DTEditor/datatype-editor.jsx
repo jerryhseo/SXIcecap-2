@@ -381,7 +381,7 @@ class DataTypeEditor extends React.Component {
 			});
 		}
 
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (event) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (event) => {
 			const dataPacket = Event.pickUpDataPacket(event, this.namespace, this.formId);
 
 			if (!dataPacket) {

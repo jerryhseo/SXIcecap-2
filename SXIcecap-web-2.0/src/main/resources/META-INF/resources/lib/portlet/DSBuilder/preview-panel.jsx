@@ -16,7 +16,7 @@ class SXDataStructurePreviewer extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.previewCanvasId)
 				return;
@@ -29,19 +29,7 @@ class SXDataStructurePreviewer extends React.Component {
 			);
 		});
 
-		/*
-		Event.on(Event.SX_FOCUS, (e) => {
-			if (
-				e.dataPacket.targetPortlet !== this.namespace ||
-				e.dataPacket.targetFormId !== this.formIds.previewCanvasId
-			) {
-				return;
-			}
-
-			this.dataStructure.focusParameter(e.dataPacket.paramName, e.dataPacket.paramVersion);
-		});
-		*/
-		Event.on(Event.SX_MOVE_PARAMETER_UP, (e) => {
+		Event.uniqueOn(Event.SX_MOVE_PARAMETER_UP, (e) => {
 			if (
 				e.dataPacket.targetPortlet !== this.namespace ||
 				e.dataPacket.targetFormId !== this.formIds.previewCanvasId
@@ -61,7 +49,7 @@ class SXDataStructurePreviewer extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_MOVE_PARAMETER_DOWN, (e) => {
+		Event.uniqueOn(Event.SX_MOVE_PARAMETER_DOWN, (e) => {
 			if (
 				e.dataPacket.targetPortlet !== this.namespace ||
 				e.dataPacket.targetFormId !== this.formIds.previewCanvasId
@@ -81,7 +69,7 @@ class SXDataStructurePreviewer extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_REFRESH_FORM, (e) => {
+		Event.uniqueOn(Event.SX_REFRESH_FORM, (e) => {
 			if (
 				e.dataPacket.targetPortlet !== this.namespace ||
 				e.dataPacket.targetFormId !== this.formIds.previewCanvasId

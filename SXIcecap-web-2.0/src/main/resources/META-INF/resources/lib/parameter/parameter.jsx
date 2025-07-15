@@ -3462,8 +3462,8 @@ export class GroupParameter extends Parameter {
 
 		member.parent = { name: this.paramName, version: this.paramVersion };
 
-		this.insertMember(member, memOrder);
-
+		member.order = this.members.length + 1;
+		this.members.push(member);
 		console.log("Group addMember: ", this.members);
 	}
 

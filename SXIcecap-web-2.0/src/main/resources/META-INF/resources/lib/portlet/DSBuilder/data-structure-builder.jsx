@@ -118,7 +118,7 @@ class DataStructureBuilder extends React.Component {
 	componentDidMount() {
 		this.loadDataStructure();
 
-		Event.on(Event.SX_PARAMETER_SELECTED, (e) => {
+		Event.uniqueOn(Event.SX_PARAMETER_SELECTED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId) {
 				console.log("SX_PARAMETER_SELECTED rejected: ", dataPacket);
@@ -145,7 +145,7 @@ class DataStructureBuilder extends React.Component {
 			this.fireRefreshPropertyPanel();
 		});
 
-		Event.on(Event.SX_PARAM_TYPE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_PARAM_TYPE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			console.log("SX_PARAM_TYPE_CHANGED: ", dataPacket);
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId)
@@ -175,7 +175,7 @@ class DataStructureBuilder extends React.Component {
 			this.fireRefreshPropertyPanel();
 		});
 
-		Event.on(Event.SX_COPY_PARAMETER, (e) => {
+		Event.uniqueOn(Event.SX_COPY_PARAMETER, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId)
 				return;
@@ -201,7 +201,7 @@ class DataStructureBuilder extends React.Component {
 			this.forceUpdate();
 		});
 
-		Event.on(Event.SX_DELETE_PARAMETER, (e) => {
+		Event.uniqueOn(Event.SX_DELETE_PARAMETER, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId)
 				return;

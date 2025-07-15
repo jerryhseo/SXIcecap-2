@@ -86,7 +86,7 @@ class SXDSBuilderOptionPropertiesPanel extends React.Component {
 	}
 
 	componentDidMount() {
-		Event.on(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.optionsFormId)
 				return;
