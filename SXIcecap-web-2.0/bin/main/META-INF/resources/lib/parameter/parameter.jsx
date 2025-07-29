@@ -2115,8 +2115,8 @@ export class DualListParameter extends Parameter {
 		super.setValue({ value: this.defaultValue ?? [], cellIndex: cellIndex });
 	}
 
-	setValue(options, cellIndex) {
-		const values = options.map((option) => option.value);
+	setValue({ value, cellIndex }) {
+		const values = value.map((option) => option.value);
 		super.setValue({
 			value: this.options.filter((option) => values.includes(option.value)),
 			cellIndex: cellIndex
@@ -3718,14 +3718,19 @@ export class GridParameter extends Parameter {
 
 	get totalFieldsCount() {
 		let totalFields = 0;
-		this.members.forEach((field) => {
-			totalFields += field.totalFieldsCount;
+		this.columns.forEach((column) => {
+			totalFields += column.totalFieldsCount;
 		});
 
 		return totalFields;
 	}
 	get valuedFieldsCount() {
-		return this.columns.length;
+		let valuedFields = 0;
+		this.columns.forEach((column) => {
+			valuedFields += column.valuedFieldsCount;
+		});
+
+		return valuedFields;
 	}
 
 	set columns(val) {

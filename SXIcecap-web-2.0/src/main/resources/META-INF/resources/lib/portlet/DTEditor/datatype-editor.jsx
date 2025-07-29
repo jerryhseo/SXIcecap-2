@@ -346,7 +346,7 @@ class DataTypeEditor extends React.Component {
 						}));
 
 						if (field) {
-							field.setValue(result.dataType[fieldName]);
+							field.setValue({ value: result.dataType[fieldName] });
 
 							field.dirty = false;
 						}
@@ -620,7 +620,6 @@ class DataTypeEditor extends React.Component {
 		} else if (this.state.loadingStatus === LoadingStatus.COMPLETE) {
 			const saveButtonLabel = Util.translate(this.state.editStatus === EditStatus.UPDATE ? "update" : "create");
 
-			const events = {};
 			return (
 				<>
 					<div className="form-group">
@@ -651,9 +650,6 @@ class DataTypeEditor extends React.Component {
 					)}
 					{this.fields.map((field) =>
 						field.render({
-							events: events,
-							className: "",
-							style: {},
 							spritemap: this.spritemap
 						})
 					)}

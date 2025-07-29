@@ -284,6 +284,9 @@ export class SXDataStatusBar extends React.Component {
 	}
 
 	render() {
+		const totalFieldsCount = this.dataStructure.totalFieldsCount;
+		const valuedFieldsCount = this.dataStructure.valuedFieldsCount;
+
 		return (
 			<Toolbar style={{ paddingLeft: "10px", paddingRight: "10px", background: "#d8f2df", marginBottom: "15px" }}>
 				<Toolbar.Nav>
@@ -344,11 +347,11 @@ export class SXDataStatusBar extends React.Component {
 								<ClayInput.Group>
 									<ClayInput.GroupItem shrink>
 										<ClayInput.GroupText>
-											{this.inputCount +
+											{valuedFieldsCount +
 												"/" +
-												this.totalInputs +
+												totalFieldsCount +
 												"(" +
-												((this.inputCount / this.totalInputs) * 100).toFixed(1) +
+												((valuedFieldsCount / totalFieldsCount) * 100).toFixed(1) +
 												"%)"}
 										</ClayInput.GroupText>
 									</ClayInput.GroupItem>
