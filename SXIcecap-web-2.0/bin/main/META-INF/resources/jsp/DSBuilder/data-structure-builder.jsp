@@ -4,6 +4,7 @@
 <%@page import="com.sx.icecap.constant.WebKey"%>
 <%@page import="com.sx.constant.StationXWebKeys"%>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@clayui/css/lib/css/atlas.css">
 <%@ include file="../../init.jsp" %>
 <%
 	long dataTypeId = ParamUtil.getLong(renderRequest, WebKey.DATATYPE_ID, 0);

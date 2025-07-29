@@ -25,6 +25,55 @@
 	--sx-caption-font-size: 0.75rem;
 	--sx-highlight-border: 2px solid #7ff47d;
 }
+.sx-table {
+	border-collapse: collapse;
+	border: solid 1px #646466;
+}
+
+.sx-table th {
+	background-color: #efefac;
+}
+
+/*
+.sx-table tr th td {
+	border-collapse: collapse;
+}
+	*/
+
+.sx-table th {
+	padding: 3px 5px;
+	border: solid 1px #646466;
+}
+.sx-table td {
+	padding: 2px;
+	border: solid 1px #646466;
+	text-align: center;
+}
+
+.sx-table td div {
+	padding: 0;
+}
+.sx-table td label {
+	padding: 0;
+	margin: 0;
+	justify-content: center;
+}
+
+.sx-table td label .custom-control-label {
+	margin-left: 1.5rem;
+}
+
+.sx-table td label span.toggle-switch-handle span {
+	display: none;
+}
+
+.sx-tavle td label > span.toggle-switch-label {
+	margin: 0;
+}
+.sx-table td label span.toggle-switch-check-bar,
+span.toggle-switch-bar {
+	margin: 0;
+}
 
 .sx-glore-border {
 	border: none;

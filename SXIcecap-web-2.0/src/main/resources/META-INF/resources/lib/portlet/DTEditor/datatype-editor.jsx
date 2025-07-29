@@ -423,7 +423,7 @@ class DataTypeEditor extends React.Component {
 		let found = null;
 
 		fields.every((field) => {
-			if (field.isAssembly()) {
+			if (field.isGroup) {
 				found = this.getField(field.members, fieldName);
 
 				if (found) {
@@ -475,7 +475,7 @@ class DataTypeEditor extends React.Component {
 	validateFormValues(fields) {
 		let errorParam;
 		fields.every((field) => {
-			if (field.isAssembly()) {
+			if (field.isGroup) {
 				errorParam = this.validateFormValues(field.members);
 			} else {
 				if (field.hasError()) {

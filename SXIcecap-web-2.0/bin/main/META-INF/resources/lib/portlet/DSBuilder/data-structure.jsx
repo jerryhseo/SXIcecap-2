@@ -102,7 +102,7 @@ export class DataStructure extends GroupParameter {
 		}
 
 		return siblings.filter(
-			(param) => param.isAssembly() && (param.paramName !== paramName || param.paramVersion !== paramVersion)
+			(param) => param.isGroup && (param.paramName !== paramName || param.paramVersion !== paramVersion)
 		);
 	}
 
@@ -140,33 +140,12 @@ export class DataStructure extends GroupParameter {
 		return siblings.map((param) => param.convertToSelectItem());
 	}
 
-	getGroupsAsSelectItems({ paramName, paramVersion }) {
-		let groups = [];
-
-		const pickUpGroup = (params) => {
-			params.forEach((param) => {
-				if (param.isAssembly()) {
-					if (param.paramName !== paramName || param.paramVersion !== paramVersion) {
-						groups.push({ label: param.label, value: param.paramName });
-					}
-
-					pickUpGroup(param.members);
-				}
-			});
-		};
-
-		pickUpGroup(this.members);
-
-		console.log("picked groups: ", groups);
-		return groups;
-	}
-
 	getGroups({ paramName, paramVersion }) {
 		let groups = [];
 
 		const pickUpGroup = (params) => {
 			params.forEach((param) => {
-				if (param.isAssembly()) {
+				if (param.isGroup) {
 					if (!param.equalTo(paramName, paramVersion)) {
 						groups.push(param);
 					}
@@ -191,7 +170,7 @@ export class DataStructure extends GroupParameter {
 		let items = [];
 
 		members.forEach((param) => {
-			if (param.isAssembly()) {
+			if (param.isGroup) {
 				items = items.concat(this.getGotoAutoCompleteItems(param, basis));
 			}
 

@@ -16,6 +16,7 @@ class SXDataStructurePreviewer extends React.Component {
 	}
 
 	componentDidMount() {
+		console.log("=== SXDataStructurePreviewer componentDidMount executed ===");
 		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
 			const dataPacket = e.dataPacket;
 			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.previewCanvasId)
@@ -82,22 +83,22 @@ class SXDataStructurePreviewer extends React.Component {
 	}
 
 	render() {
-		console.log("SXDataStructurePreviewer render: ", this.dataStructure, this.formIds);
 		return (
 			<>
 				<SXDataStatusBar
-					key={this.dataStructure.key}
 					dataStructure={this.dataStructure}
 					namespace={this.namespace}
 					formIds={this.formIds}
 					spritemap={this.spritemap}
 				/>
-				{this.dataStructure.renderPreview({
-					dsbuilderId: this.formIds.dsbuilderId,
-					propertyPanelId: this.formIds.propertyPanelId,
-					previewCanvasId: this.formIds.previewCanvasId,
-					spritemap: this.spritemap
-				})}
+				<div style={{ maxHeight: "1000px", overflowY: "auto", overflowX: "hidden" }}>
+					{this.dataStructure.renderPreview({
+						dsbuilderId: this.formIds.dsbuilderId,
+						propertyPanelId: this.formIds.propertyPanelId,
+						previewCanvasId: this.formIds.previewCanvasId,
+						spritemap: this.spritemap
+					})}
+				</div>
 			</>
 		);
 	}

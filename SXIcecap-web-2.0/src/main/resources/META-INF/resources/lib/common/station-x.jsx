@@ -502,6 +502,8 @@ export const Event = {
 	SX_PARAM_PROPERTY_CHANGED: "SX_PARAM_PROPERTY_CHANGED",
 	SX_PARAM_TYPE_CHANGED: "SX_PARAM_TYPE_CHANGED",
 	SX_PARAM_VALUE_CHANGED: "SX_PARAM_VALUE_CHANGED",
+	SX_POP_ACTION_CLICKED: "SX_POP_ACTION_CLICKED",
+	SX_POP_BUTTON_CLICKED: "SX_POP_BUTTON_CLICKED",
 	SX_PREVIEW_COPY_PARAM: "SX_PREVIEW_COPY_PARAM",
 	SX_PREVIEW_DELETE_PARAM: "SX_PREVIEW_DELETE_PARAM",
 	SX_PREVIEW_GROUPUP_PARAM: "SX_PREVIEW_GROUPUP_PARAM",
@@ -669,7 +671,7 @@ export const Event = {
 		});
 	},
 	uniqueOn: (event, handler) => {
-		Liferay.detach(event).on(event, handler);
+		Liferay.detach(event, handler).on(event, handler);
 	},
 	on: (event, handler) => {
 		Liferay.on(event, handler);
@@ -681,7 +683,7 @@ export const Event = {
 			...params
 		};
 	},
-	pickUpDataPacket: (event, namespace, targetFormId, paramName, paramVersion) => {
+	pickUpDataPacket: (event, namespace, targetFormId, paramName, paramVersion = "1.0.0") => {
 		if (Util.isEmpty(event.dataPacket)) return;
 
 		if (event.dataPacket.targetPortlet !== namespace || event.dataPacket.targetFormId !== targetFormId) {
@@ -722,10 +724,12 @@ export const ParamType = {
 	/*10.*/ PHONE: "Phone",
 	/*11.*/ EMAIL: "EMail",
 	/*12.*/ GROUP: "Group",
-	/*13.*/ CALCULATOR: "Calculator",
-	/*14.*/ REFERENCE: "Reference",
-	/*15.*/ LINKER: "Linker",
-	/*16.*/ IMAGE: "Image"
+	/*13.*/ GRID: "Grid",
+	/*13.*/ TABLE: "Table",
+	/*14.*/ CALCULATOR: "Calculator",
+	/*15.*/ REFERENCE: "Reference",
+	/*16.*/ LINKER: "Linker",
+	/*17.*/ IMAGE: "Image"
 };
 
 export const WindowState = {

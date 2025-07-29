@@ -1,22 +1,25 @@
 import React, { useLayoutEffect } from "react";
 import { Util } from "../../common/util";
 import { Event, ParamProperty, ParamType } from "../../common/station-x";
-import SXFormField, { SXDualListBox, SXLabel } from "../../form/sxform";
+import SXFormField, { SXDualListBox, SXInput, SXLabel } from "../../form/sxform";
 import {
 	AddressParameter,
 	BooleanParameter,
 	DualListParameter,
 	GroupParameter,
 	NumericParameter,
+	Parameter,
 	SelectParameter,
 	StringParameter
 } from "../../parameter/parameter";
 import { ClayButtonWithIcon } from "@clayui/button";
-import { Button, Icon } from "@clayui/core";
+import { Body, Button, Cell, Head, Icon, Table } from "@clayui/core";
 import DropDown from "@clayui/drop-down";
 import LocalizedInput from "@clayui/localized-input";
-import Form, { ClayInput } from "@clayui/form";
+import Form, { ClayInput, ClaySelectWithOption } from "@clayui/form";
 import { SXModalDialog } from "../../modal/sxmodal";
+import { Row } from "@clayui/core/lib/table/Row";
+import SXDropdown from "../../modal/sxdropdown";
 
 class SXSelectOptionBuilder extends React.Component {
 	constructor(props) {
@@ -43,14 +46,88 @@ class SXSelectOptionBuilder extends React.Component {
 		}
 
 		this.state = {
-			selectedOptionLocale: this.locales.filter((locale) => locale.label === this.languageId)[0],
 			selectedOptionIndex: selectedOptionIndex,
 			duplicatedValueState: false
 		};
+
+		this.formId = this.namespace + "selectOptionBuilder";
+		this.fieldOptionLabel = new StringParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: "optionLabel",
+				localized: true,
+				displayName: Util.getTranslationObject(this.languageId, "option-label"),
+				placeholder: Util.getTranslationObject(this.languageId, "label-for-the-option"),
+				value: this.selectedOption.label
+			}
+		);
+
+		this.activeDropdown = false;
+	}
+
+	componentDidMount() {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+			const dataPacket = Event.pickUpDataPacket(e, this.namespace, this.formId, "optionLabel");
+
+			if (!dataPacket) {
+				return;
+			}
+
+			console.log("SXSelectOptionBuilder SX_FIELD_VALUE_CHANGED: ", dataPacket);
+
+			this.selectedOption.label = this.fieldOptionLabel.getValue();
+			this.forceUpdate();
+		});
+
+		Event.uniqueOn(Event.SX_POP_ACTION_CLICKED, (e) => {
+			const dataPacket = e.dataPacket;
+
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+				return;
+			}
+
+			const rowIndex = dataPacket.targetData;
+
+			switch (dataPacket.actionId) {
+				case "copy": {
+					this.copyOption(rowIndex);
+					break;
+				}
+				case "delete": {
+					this.removeOption(rowIndex);
+					break;
+				}
+				case "up": {
+					this.moveUpOption(rowIndex);
+					break;
+				}
+				case "down": {
+					this.moveDownOption(rowIndex);
+					break;
+				}
+			}
+
+			this.activeDropdown = false;
+		});
+
+		Event.uniqueOn(Event.SX_POP_ACTION_CLICKED, (e) => {
+			const dataPacket = e.dataPacket;
+
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+				return;
+			}
+
+			this.activeDropdown = dataPacket.activeDropdown;
+		});
 	}
 
 	handleNewOption() {
 		this.selectedOption = {};
+		this.fieldOptionLabel.setValue({ value: {} });
+		this.fieldOptionLabel.refreshKey();
 
 		this.setState({
 			selectedOptionIndex: -1
@@ -77,12 +154,6 @@ class SXSelectOptionBuilder extends React.Component {
 		this.setState({
 			selectedOptionIndex: optionLength - 1
 		});
-	}
-
-	switchOptions(index1, index2) {
-		this.workingParam.switchOptions(index1, index2);
-
-		this.workingParam.fireRefreshPreview();
 	}
 
 	copyOption(index) {
@@ -123,20 +194,12 @@ class SXSelectOptionBuilder extends React.Component {
 
 	handleOptionSelected(index) {
 		this.selectedOption = this.workingParam.getOption(index);
+		this.fieldOptionLabel.setValue({ value: this.selectedOption.label });
+		this.fieldOptionLabel.refreshKey();
 
 		this.setState({
 			selectedOptionIndex: index
 		});
-	}
-
-	handleOptionLabelChanged(translations) {
-		this.selectedOption.label = translations;
-
-		if (this.state.selectedOptionIndex > -1) {
-			this.workingParam.fireRefreshPreview();
-		}
-
-		this.forceUpdate();
 	}
 
 	handleOptionValueChanged(val) {
@@ -168,26 +231,31 @@ class SXSelectOptionBuilder extends React.Component {
 				<div className="sx-option-preview">
 					{this.workingParam.options.map((option, index) => {
 						let actionItems = [
-							{ id: "copy", name: Util.translate("copy") },
-							{ id: "delete", name: Util.translate("delete") }
+							{ id: "copy", name: Util.translate("copy"), symbol: "copy" },
+							{ id: "delete", name: Util.translate("delete"), symbol: "times" }
 						];
 						if (index > 0) {
-							actionItems.push({ id: "up", name: Util.translate("moveUp") });
+							actionItems.push({ id: "up", name: Util.translate("moveUp"), symbol: "order-arrow-up" });
 						}
 						if (index < this.workingParam.options.length - 1) {
-							actionItems.push({ id: "down", name: Util.translate("moveDown") });
+							actionItems.push({
+								id: "down",
+								name: Util.translate("moveDown"),
+								symbol: "order-arrow-down"
+							});
 						}
 
 						return (
 							<div
-								key={option.value}
+								key={index}
+								aria-hidden="undefined"
 								className={
 									option.value === this.selectedOption.value
 										? "sx-option-preview-row sx-option-focused"
 										: "sx-option-preview-row"
 								}
 								onClick={(e) => {
-									e.stopPropagation();
+									//e.stopPropagation();
 
 									this.handleOptionSelected(index);
 								}}
@@ -208,51 +276,16 @@ class SXSelectOptionBuilder extends React.Component {
 									className="sx-option-preview-cell"
 									style={{ width: "auto" }}
 								>
-									<DropDown
-										trigger={
-											<ClayButtonWithIcon
-												aria-label="Actions"
-												symbol="ellipsis-v"
-												title="Actions"
-												displayType={"secondary"}
-												size="sm"
-												borderless="true"
-												spritemap={this.spritemap}
-											/>
-										}
-									>
-										<DropDown.ItemList items={actionItems}>
-											{(action) => (
-												<DropDown.Item
-													key={Util.randomKey()}
-													onClick={(e) => {
-														e.stopPropagation();
-
-														switch (action.id) {
-															case "copy": {
-																this.copyOption(index);
-																break;
-															}
-															case "delete": {
-																this.removeOption(index);
-																break;
-															}
-															case "up": {
-																this.moveUpOption(index);
-																break;
-															}
-															case "down": {
-																this.moveDownOption(index);
-																break;
-															}
-														}
-													}}
-												>
-													{action.name}
-												</DropDown.Item>
-											)}
-										</DropDown.ItemList>
-									</DropDown>
+									<SXDropdown
+										key={this.workingParam.options.length - index}
+										namespace={this.namespace}
+										formId={this.formId}
+										items={actionItems}
+										targetData={index}
+										symbol="ellipsis-v"
+										activeDropdown={option === this.selectedOption && this.activeDropdown}
+										spritemap={this.spritemap}
+									/>
 								</div>
 							</div>
 						);
@@ -291,18 +324,10 @@ class SXSelectOptionBuilder extends React.Component {
 						style={{ leftMargin: "auto" }}
 					/>
 				</Button.Group>
-				<LocalizedInput
-					id={this.props.namespace + "label"}
-					locales={this.locales}
-					label={Util.translate("option-label")}
-					onSelectedLocaleChange={(locale) => {
-						this.setState({ selectedOptionLocale: locale });
-					}}
-					onTranslationsChange={(translations) => this.handleOptionLabelChanged(translations)}
-					selectedLocale={this.state.selectedOptionLocale}
-					translations={this.selectedOption.label ?? {}}
-					spritemap={this.props.spritemap}
-				/>
+
+				{this.fieldOptionLabel.renderField({
+					spritemap: this.spritemap
+				})}
 
 				<Form.Group>
 					<SXLabel
@@ -479,7 +504,7 @@ class SXStringTypeOptionForm extends React.Component {
 	render() {
 		const fields = Object.values(this.fields);
 
-		return <>{fields.map((field) => field.render({ spritemap: this.spritemap }))}</>;
+		return <>{fields.map((field) => field.renderField({ spritemap: this.spritemap }))}</>;
 	}
 }
 
@@ -585,9 +610,9 @@ class SXNumericTypeOptionForm extends React.Component {
 			<>
 				{fields.map((field) => {
 					if (field.paramName === ParamProperty.DECIMAL_PLACES && !this.state.isInteger) {
-						return field.render({ spritemap: this.spritemap });
+						return field.renderField({ spritemap: this.spritemap });
 					} else if (field.paramName !== ParamProperty.DECIMAL_PLACES) {
-						return field.render({ spritemap: this.spritemap });
+						return field.renderField({ spritemap: this.spritemap });
 					}
 				})}
 			</>
@@ -608,28 +633,33 @@ class SXSelectTypeOptionForm extends React.Component {
 
 		this.formId = this.workingParam.namespace + "selectTypeOptionForm";
 
+		const viewTypes = [
+			{
+				label: Util.getTranslationObject(this.languageId, "Dropdown"),
+				value: SelectParameter.ViewTypes.DROPDOWN
+			},
+			{
+				label: Util.getTranslationObject(this.languageId, "Radio"),
+				value: SelectParameter.ViewTypes.RADIO
+			},
+			{
+				label: Util.getTranslationObject(this.languageId, "Checkbox"),
+				value: SelectParameter.ViewTypes.CHECKBOX
+			}
+		];
+
+		if (this.workingParam.displayType !== Parameter.DisplayTypes.GRID_CELL) {
+			viewTypes.push({
+				label: Util.getTranslationObject(this.languageId, "Listbox"),
+				value: SelectParameter.ViewTypes.LISTBOX
+			});
+		}
+
 		this.fields = {
 			viewType: new SelectParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
 				paramName: ParamProperty.VIEW_TYPE,
 				viewType: BooleanParameter.ViewTypes.RADIO,
-				options: [
-					{
-						label: Util.getTranslationObject(this.languageId, "Dropdown"),
-						value: SelectParameter.ViewTypes.DROPDOWN
-					},
-					{
-						label: Util.getTranslationObject(this.languageId, "Radio"),
-						value: SelectParameter.ViewTypes.RADIO
-					},
-					{
-						label: Util.getTranslationObject(this.languageId, "Checkbox"),
-						value: SelectParameter.ViewTypes.CHECKBOX
-					},
-					{
-						label: Util.getTranslationObject(this.languageId, "Listbox"),
-						value: SelectParameter.ViewTypes.LISTBOX
-					}
-				],
+				options: viewTypes,
 				optionsPerRow: 2,
 				displayName: Util.getTranslationObject(this.languageId, "view-type"),
 				tooltip: Util.getTranslationObject(this.languageId, "select-view-type-tooltip"),
@@ -651,8 +681,10 @@ class SXSelectTypeOptionForm extends React.Component {
 					isInteger: true,
 					displayName: Util.getTranslationObject(this.languageId, "options-per-row"),
 					tooltip: Util.getTranslationObject(this.languageId, "options-per-row-tooltip"),
-					defaultValue: 1,
-					value: this.workingParam.optionsPerRow
+					defaultValue: 0,
+					value: this.workingParam.optionsPerRow,
+					min: "0",
+					max: this.workingParam.optionCount.toString()
 				}
 			)
 		};
@@ -676,11 +708,12 @@ class SXSelectTypeOptionForm extends React.Component {
 				"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
 				dataPacket,
 				this.workingParam,
+				this.fields[dataPacket.paramName],
 				this.fields[dataPacket.paramName].getValue()
 			);
 
 			this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
-			this.workingParam.initValue();
+			//this.workingParam.initValue();
 
 			this.forceUpdate();
 
@@ -693,8 +726,11 @@ class SXSelectTypeOptionForm extends React.Component {
 	render() {
 		return (
 			<>
-				{this.fields.viewType.render({ spritemap: this.spritemap })}
-				{this.displayOptionsPerRow() && this.fields.optionsPerRow.render({ spritemap: this.spritemap })}
+				{this.fields.viewType.renderField({ spritemap: this.spritemap })}
+				{this.displayOptionsPerRow() &&
+					this.fields.optionsPerRow.renderField({
+						spritemap: this.spritemap
+					})}
 				<SXSelectOptionBuilder
 					namespace={this.namespace}
 					formIds={this.formIds}
@@ -797,9 +833,9 @@ class SXBooleanTypeOptionForm extends React.Component {
 	render() {
 		return (
 			<>
-				{this.fields.viewType.render({ spritemap: this.spritemap })}
-				{this.fields.trueLabel.render({ spritemap: this.spritemap })}
-				{this.fields.falseLabel.render({ spritemap: this.spritemap })}
+				{this.fields.viewType.renderField({ spritemap: this.spritemap })}
+				{this.fields.trueLabel.renderField({ spritemap: this.spritemap })}
+				{this.fields.falseLabel.renderField({ spritemap: this.spritemap })}
 			</>
 		);
 	}
@@ -859,7 +895,7 @@ class SXPhoneTypeOptionForm extends React.Component {
 	}
 
 	render() {
-		return <>{this.fields.enableCountryNo.render({ spritemap: this.spritemap })}</>;
+		return <>{this.fields.enableCountryNo.renderField({ spritemap: this.spritemap })}</>;
 	}
 }
 
@@ -925,7 +961,7 @@ class SXAddressTypeOptionForm extends React.Component {
 	}
 
 	render() {
-		return <>{this.fields.viewType.render({ spritemap: this.spritemap })}</>;
+		return <>{this.fields.viewType.renderField({ spritemap: this.spritemap })}</>;
 	}
 }
 
@@ -995,9 +1031,9 @@ class SXDateTypeOptionForm extends React.Component {
 	render() {
 		return (
 			<>
-				{this.fields.enableTime.render({ spritemap: this.spritemap })}
-				{this.fields.startYear.render({ spritemap: this.spritemap })}
-				{this.fields.endYear.render({ spritemap: this.spritemap })}
+				{this.fields.enableTime.renderField({ spritemap: this.spritemap })}
+				{this.fields.startYear.renderField({ spritemap: this.spritemap })}
+				{this.fields.endYear.renderField({ spritemap: this.spritemap })}
 			</>
 		);
 	}
@@ -1034,18 +1070,6 @@ class SXGroupTypeOptionForm extends React.Component {
 					{
 						label: Util.getTranslationObject(this.languageId, "Panel"),
 						value: GroupParameter.ViewTypes.PANEL
-					},
-					{
-						label: Util.getTranslationObject(this.languageId, "Grid"),
-						value: GroupParameter.ViewTypes.GRID
-					},
-					{
-						label: Util.getTranslationObject(this.languageId, "Shared Options"),
-						value: GroupParameter.ViewTypes.SHARED_OPTION_TABLE
-					},
-					{
-						label: Util.getTranslationObject(this.languageId, "Shared Labels"),
-						value: GroupParameter.ViewTypes.SHARED_LABEL_TABLE
 					}
 				],
 				optionsPerRow: 2,
@@ -1093,7 +1117,7 @@ class SXGroupTypeOptionForm extends React.Component {
 			}
 
 			console.log(
-				"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
+				"SXGroupTypeOptionForm SX_FIELD_VALUE_CHANGED: ",
 				dataPacket,
 				this.workingParam,
 				this.fieldMembersPerRow.getValue()
@@ -1123,8 +1147,354 @@ class SXGroupTypeOptionForm extends React.Component {
 	render() {
 		return (
 			<>
-				{this.fieldViewType.render({ spritemap: this.spritemap })}
-				{this.workingParam.showMembersPerRow && this.fieldMembersPerRow.render({ spritemap: this.spritemap })}
+				{this.fieldViewType.renderField({ spritemap: this.spritemap })}
+				{this.workingParam.showMembersPerRow &&
+					this.fieldMembersPerRow.renderField({ spritemap: this.spritemap })}
+				{this.fieldExpanded.renderField({ spritemap: this.spritemap })}
+			</>
+		);
+	}
+}
+
+class SXGridTypeOptionForm extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.formIds = props.formIds;
+		this.workingParam = props.workingParam;
+		this.namespace = props.workingParam.namespace;
+		this.languageId = props.workingParam.languageId;
+		this.availableLanguageIds = props.workingParam.availableLanguageIds;
+		this.spritemap = props.spritemap;
+
+		this.formId = this.workingParam.namespace + "gridTypeOptionForm";
+
+		this.state = {
+			selectedColumn: this.workingParam.columns[0]
+		};
+		this.activeDropdown = false;
+
+		this.paramNameFileds = {};
+		this.displayNameFileds = {};
+
+		this.columnReadyTypes = [
+			{
+				label: Util.translate("select-to-add-column"),
+				value: ""
+			},
+			...Object.keys(Parameter.ColumnReadyTypes).map((key) => ({
+				label: Parameter.ColumnReadyTypes[key],
+				value: Parameter.ColumnReadyTypes[key]
+			}))
+		];
+
+		this.fieldColumnCode = new StringParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: "columnCode",
+				displayName: Util.getTranslationObject(this.languageId, "column-code"),
+				tooltip: Util.getTranslationObject(this.languageId, "column-code-tooltip"),
+				placeholder: Util.getTranslationObject(this.languageId, "code-name-for-column"),
+				value: this.state.selectedColumn ? this.state.selectedColumn.paramName : ""
+			}
+		);
+		this.fieldColumnDisplayName = new StringParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: "columnDisplayName",
+				displayName: Util.getTranslationObject(this.languageId, "display-name"),
+				tooltip: Util.getTranslationObject(this.languageId, "display-name-tooltip"),
+				placeholder: Util.getTranslationObject(this.languageId, "translation-for-display-name"),
+				localized: true,
+				value: this.state.selectedColumn ? this.state.selectedColumn.displayName : {}
+			}
+		);
+	}
+
+	componentDidMount() {
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+			const dataPacket = e.dataPacket;
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+				return;
+			}
+
+			console.log(
+				"SXGridTypeOptionForm SX_FIELD_VALUE_CHANGED: ",
+				dataPacket,
+				this.state.selectedColumn,
+				this.fieldColumnCode,
+				this.fieldColumnDisplayName
+			);
+
+			switch (dataPacket.paramName) {
+				case "columnCode": {
+					this.state.selectedColumn.paramName = this.fieldColumnCode.getValue();
+
+					break;
+				}
+				case "columnDisplayName": {
+					this.state.selectedColumn.displayName = this.fieldColumnDisplayName.getValue();
+
+					break;
+				}
+			}
+
+			if (this.workingParam.isRendered()) {
+				this.workingParam.fireRefreshPreview();
+			}
+
+			this.forceUpdate();
+		});
+
+		Event.uniqueOn(Event.SX_POP_ACTION_CLICKED, (e) => {
+			const dataPacket = e.dataPacket;
+
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+				return;
+			}
+
+			switch (dataPacket.actionId) {
+				case "copy": {
+					this.copyColumn(dataPacket.targetData);
+					break;
+				}
+				case "delete": {
+					this.removeColumn(dataPacket.targetData);
+					break;
+				}
+				case "left": {
+					this.moveColumnLeft(dataPacket.targetData);
+					break;
+				}
+				case "right": {
+					this.moveColumnRight(dataPacket.targetData);
+					break;
+				}
+			}
+
+			this.activeDropdown = false;
+		});
+
+		Event.uniqueOn(Event.SX_POP_BUTTON_CLICKED, (e) => {
+			const dataPacket = e.dataPacket;
+
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+				return;
+			}
+
+			//this.handleColumnSelected(dataPacket.targetData);
+
+			this.activeDropdown = dataPacket.activeDropdown;
+		});
+	}
+
+	moveColumnLeft(column) {
+		this.workingParam.moveColumnLeft(column.order);
+
+		this.workingParam.fireRefreshPreview();
+
+		this.forceUpdate();
+	}
+
+	moveColumnRight(column) {
+		this.workingParam.moveColumnRight(column.order);
+
+		this.workingParam.fireRefreshPreview();
+
+		this.forceUpdate();
+	}
+
+	removeColumn(column) {
+		let columnCount = this.workingParam.removeColumn({ colName: column.paramName });
+
+		const firstColumn = columnCount > 0 ? this.workingParam.columns[0] : null;
+		this.setState({
+			selectedColumn: firstColumn
+		});
+
+		if (firstColumn) {
+			this.fieldColumnCode.setValue({ value: firstColumn.paramName });
+			this.fieldColumnDisplayName.setValue({ value: firstColumn.displayName });
+		}
+
+		this.workingParam.fireRefreshPreview();
+	}
+
+	copyColumn(column) {
+		let copied = column.copy();
+
+		this.workingParam.insertColumn(copied, column.order);
+
+		this.setState({
+			selectedColumn: copied
+		});
+
+		this.fieldColumnCode.setValue({ value: copied.paramName });
+		this.fieldColumnDisplayName.setValue({ value: copied.displayName });
+
+		this.workingParam.fireRefreshPreview();
+	}
+
+	handleColumnSelected(column) {
+		this.fieldColumnCode.setValue({ value: column.paramName });
+		this.fieldColumnDisplayName.setValue({ value: column.displayName });
+		this.fieldColumnCode.refreshKey();
+		this.fieldColumnDisplayName.refreshKey();
+
+		this.setState({ selectedColumn: column });
+	}
+
+	handleColumnTypeSelect(columnType) {
+		const column = new Parameter.createParameter(
+			this.namespace,
+			this.workingParam.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			columnType,
+			{
+				paramName: "column_" + Util.randomKey(8)
+			}
+		);
+
+		this.workingParam.addColumn(column);
+
+		column.displayName = Util.getTranslationObject(
+			this.languageId,
+			"column_" + column.order.toString().padStart(2, "0")
+		);
+		column.value = [];
+
+		this.workingParam.fireRefreshPreview();
+
+		this.fieldColumnCode.setValue({ value: column.paramName });
+		this.fieldColumnCode.refreshKey();
+		this.fieldColumnDisplayName.setValue({ value: column.displayName });
+		this.fieldColumnDisplayName.refreshKey();
+
+		this.setState({
+			selectedColumn: column
+		});
+	}
+
+	render() {
+		return (
+			<>
+				<Form.Group className="form-group-sm">
+					<SXLabel
+						label={Util.translate("add-column")}
+						forHtml={this.namespace + "columnType"}
+						tooltip={Util.translate("add-column-tooltip")}
+						spritemap={this.spritemap}
+					/>
+					<div style={{ paddingLeft: "10px" }}>
+						<ClaySelectWithOption
+							aria-label={Util.translate("column-type")}
+							id={this.namespace + "columnType"}
+							options={this.columnReadyTypes}
+							value={this.state.selectedColumn ? this.state.selectedColumn.paramType : ""}
+							onChange={(e) => {
+								this.handleColumnTypeSelect(e.target.value);
+							}}
+							style={{ paddingLeft: "10px" }}
+							spritemap={this.spritemap}
+						/>
+					</div>
+				</Form.Group>
+				{this.workingParam.columnCount > 0 && (
+					<>
+						{this.fieldColumnCode.renderField({ spritemap: this.spritemap })}
+						{this.fieldColumnDisplayName.renderField({ spritemap: this.spritemap })}
+					</>
+				)}
+				<div className="sx-option-builder-label">
+					<SXLabel
+						label={Util.translate("columns")}
+						forHtml=""
+						required={true}
+						style={{
+							fontWeight: "600",
+							fontSize: "0.875rem"
+						}}
+						spritemap={this.spritemap}
+					/>
+				</div>
+				<div
+					className="sx-table"
+					style={{ marginLeft: "10px" }}
+				>
+					<div>
+						{this.workingParam.columns.map((column, index) => {
+							let actionItems = [
+								{ id: "copy", name: Util.translate("copy"), symbol: "copy" },
+								{ id: "delete", name: Util.translate("delete"), symbol: "times" }
+							];
+							if (column.order > 1) {
+								actionItems.push({
+									id: "left",
+									name: Util.translate("move-left"),
+									symbol: "caret-left"
+								});
+							}
+							if (column.order < this.workingParam.columnCount) {
+								actionItems.push({
+									id: "right",
+									name: Util.translate("move-right"),
+									symbol: "caret-right"
+								});
+							}
+
+							let className = "autofit-row";
+							if (column === this.state.selectedColumn) {
+								className += " sx-option-focused";
+							}
+
+							return (
+								<div
+									key={column.paramName}
+									className={className}
+									onClick={(e) => {
+										this.handleColumnSelected(column);
+									}}
+								>
+									<div
+										className="autofit-col sx-table-cell"
+										style={{ width: "2rem" }}
+									>
+										{column.order}
+									</div>
+									<div
+										className="autofit-col sx-table-cell"
+										style={{ width: "4rem" }}
+									>
+										{column.paramType}
+									</div>
+									<div className="autofit-col autofit-col-expand sx-table-cell">{column.label}</div>
+									<div
+										className="autofit-col sx-table-cell"
+										style={{ width: "auto" }}
+									>
+										<SXDropdown
+											key={this.workingParam.columnCount - index}
+											namespace={this.namespace}
+											formId={this.formId}
+											items={actionItems}
+											targetData={column}
+											symbol="ellipsis-v"
+											activeDropdown={column === this.state.selectedColumn && this.activeDropdown}
+											spritemap={this.spritemap}
+										/>
+									</div>
+								</div>
+							);
+						})}
+					</div>
+				</div>
 			</>
 		);
 	}
@@ -1216,6 +1586,15 @@ class SXDSBuilderTypeSpecificPanel extends React.Component {
 					<SXGroupTypeOptionForm
 						formIds={this.formIds}
 						dataStructure={this.dataStructure}
+						workingParam={this.workingParam}
+						spritemap={this.spritemap}
+					/>
+				);
+			}
+			case ParamType.GRID: {
+				return (
+					<SXGridTypeOptionForm
+						formIds={this.formIds}
 						workingParam={this.workingParam}
 						spritemap={this.spritemap}
 					/>

@@ -3,7 +3,7 @@ import { Util } from "../../common/util";
 import { Event, ParamProperty, ValidationRule } from "../../common/station-x";
 import { SXBoolean, SXInput, SXLocalizedInput } from "../../form/sxform";
 import LocalizedInput from "@clayui/localized-input";
-import { BooleanParameter, StringParameter } from "../../parameter/parameter";
+import { BooleanParameter, Parameter, StringParameter } from "../../parameter/parameter";
 
 class SXDSBuilderBasicPropertiesPanel extends React.Component {
 	constructor(props) {
@@ -169,7 +169,6 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 
 	componentDidMount() {
 		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			console.log("Mounted SXDSBuilderBasicPropertiesPanel: ", e);
 			const dataPacket = e.dataPacket;
 			if (
 				dataPacket.targetPortlet !== this.namespace ||
@@ -185,9 +184,28 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 			);
 
 			this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
+			/*
+			if (
+				this.workingParam.isGroup &&
+				(dataPacket.paramName === ParamProperty.PARAM_NAME ||
+					dataPacket.paramName === ParamProperty.PARAM_VERSION)
+			) {
+				this.workingParam.updateMemberParents();
+			}
+				*/
 
 			if (this.workingParam.isRendered()) {
-				this.workingParam.fireRefreshPreview();
+				if (this.workingParam.displayType === Parameter.DisplayTypes.GRID_CELL) {
+					const gridParam = this.dataStructure.findParameter({
+						paramName: this.workingParam.parent.name,
+						paramVersion: this.workingParam.parent.version,
+						descendant: true
+					});
+
+					gridParam.fireRefreshPreview();
+				} else {
+					this.workingParam.fireRefreshPreview();
+				}
 			}
 		});
 	}
@@ -199,7 +217,7 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 		return (
 			<>
 				{fields.map((field) =>
-					field.render({
+					field.renderField({
 						spritemap: this.spritemap
 					})
 				)}

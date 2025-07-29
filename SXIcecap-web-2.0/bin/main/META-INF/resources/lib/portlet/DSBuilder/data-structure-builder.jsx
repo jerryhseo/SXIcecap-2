@@ -61,8 +61,7 @@ class DataStructureBuilder extends React.Component {
 		backgroundColor: "#FFFFFF",
 		border: "2px solid #CDCED9",
 		padding: ".75rem 5px",
-		width: "60%",
-		overflowY: "auto"
+		width: "60%"
 	};
 
 	constructor(props) {
@@ -125,22 +124,27 @@ class DataStructureBuilder extends React.Component {
 				return;
 			}
 
-			const selectedParam = this.dataStructure.findParameter({
-				paramName: dataPacket.paramName,
-				paramVersion: dataPacket.paramVersion,
-				descendant: true
-			});
+			const selectedParam = dataPacket.parameter;
 			console.log("SX_PARAMETER_SELECTED: ", dataPacket, selectedParam, this.workingParam);
 			if (selectedParam === this.workingParam) {
 				return;
 			}
 
+			selectedParam.focused = true;
 			this.workingParam.focused = false;
 			this.workingParam.fireRefreshPreview();
 
-			//this.dataStructure.focus(dataPacket.paramName, dataPacket.paramVersion);
-
 			this.workingParam = selectedParam;
+
+			if (selectedParam.displayType === Parameter.DisplayTypes.GRID_CELL) {
+				const gridParam = this.dataStructure.findParameter({
+					paramName: this.workingParam.parent.name,
+					paramVersion: this.workingParam.parent.version,
+					descendant: true
+				});
+
+				gridParam.fireRefreshPreview();
+			}
 
 			this.fireRefreshPropertyPanel();
 		});
@@ -154,6 +158,7 @@ class DataStructureBuilder extends React.Component {
 			if (
 				dataPacket.paramType === ParamType.MATRIX ||
 				dataPacket.paramType === ParamType.DUALLIST ||
+				dataPacket.paramType === ParamType.TABLE ||
 				dataPacket.paramType === ParamType.CALCULATOR ||
 				dataPacket.paramType === ParamType.IMAGE ||
 				dataPacket.paramType === ParamType.LINKER ||
@@ -162,7 +167,6 @@ class DataStructureBuilder extends React.Component {
 				this.setState({ underConstruction: true });
 				return;
 			}
-			console.log("SX_PARAM_TYPE_CHANGED>>>>: ", dataPacket);
 
 			this.workingParam = Parameter.createParameter(
 				this.namespace,
@@ -518,7 +522,6 @@ class DataStructureBuilder extends React.Component {
 					</div>
 					<div style={this.previewPanelStyles}>
 						<SXDataStructurePreviewer
-							key={this.dataStructure.members.length}
 							formIds={this.formIds}
 							dataStructure={this.dataStructure}
 							spritemap={this.spritemap}

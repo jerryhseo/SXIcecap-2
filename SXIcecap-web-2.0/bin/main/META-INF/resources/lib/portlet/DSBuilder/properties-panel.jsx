@@ -266,35 +266,37 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 						/>
 					</div>
 				</Form.Group>
-				<Form.Group style={{ marginBottom: "1.5rem" }}>
-					<SXLabel
-						label={Util.translate("group")}
-						forHtml={this.namespace + ParamProperty.GROUP}
-						required={true}
-						tooltip={Util.translate("group-tooltip")}
-						spritemap={this.spritemap}
-					/>
-					<ClayInput.Group style={{ paddingLeft: "10px" }}>
-						<ClayInput.GroupItem
-							prepend
-							style={{ padding: "5px", backgroundColor: "#effccf", justifyContent: "center" }}
-						>
-							{this.state.group ?? Util.translate("root")}
-						</ClayInput.GroupItem>
-						<ClayInput.GroupItem
-							append
-							shrink
-						>
-							<Button
-								displayType="secondary"
-								onClick={() => this.handleSelectGroup()}
-								size="sm"
+				{this.workingParam.displayType !== Parameter.DisplayTypes.GRID_CELL && (
+					<Form.Group style={{ marginBottom: "1.5rem" }}>
+						<SXLabel
+							label={Util.translate("group")}
+							forHtml={this.namespace + ParamProperty.GROUP}
+							required={true}
+							tooltip={Util.translate("group-tooltip")}
+							spritemap={this.spritemap}
+						/>
+						<ClayInput.Group style={{ paddingLeft: "10px" }}>
+							<ClayInput.GroupItem
+								prepend
+								style={{ padding: "5px", backgroundColor: "#effccf", justifyContent: "center" }}
 							>
-								{Util.translate("select-group")}
-							</Button>
-						</ClayInput.GroupItem>
-					</ClayInput.Group>
-				</Form.Group>
+								{this.state.group ?? Util.translate("root")}
+							</ClayInput.GroupItem>
+							<ClayInput.GroupItem
+								append
+								shrink
+							>
+								<Button
+									displayType="secondary"
+									onClick={() => this.handleSelectGroup()}
+									size="sm"
+								>
+									{Util.translate("select-group")}
+								</Button>
+							</ClayInput.GroupItem>
+						</ClayInput.Group>
+					</Form.Group>
+				)}
 				{this.state.openSelectGroupModal && (
 					<SXModalDialog
 						header={Util.translate("select-group")}
@@ -350,7 +352,9 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 						);
 					})}
 				</ClayMultiStepNav>
-				{this.renderPanelContent()}
+				<div style={{ maxHeight: "700px", overflowY: "auto", overflowX: "hidden" }}>
+					{this.renderPanelContent()}
+				</div>
 			</>
 		);
 	}

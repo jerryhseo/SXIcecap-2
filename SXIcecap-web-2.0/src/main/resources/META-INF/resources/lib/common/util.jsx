@@ -210,11 +210,11 @@ export const Util = {
 		//return ids;
 	},
 
-	randomKey: () => {
+	randomKey: (length = 32) => {
 		let mask = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 		let result = "";
-		for (let i = 32; i > 0; --i) {
+		for (let i = length; i > 0; --i) {
 			result += mask[Math.floor(Math.random() * mask.length)];
 		}
 

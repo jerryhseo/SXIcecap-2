@@ -2,7 +2,13 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { Util } from "../../common/util";
 import { Event, ParamProperty, ParamType, ValidationRule } from "../../common/station-x";
 import SXFormField from "../../form/sxform";
-import { BooleanParameter, GroupParameter, Parameter, SelectParameter } from "../../parameter/parameter";
+import {
+	BooleanParameter,
+	GroupParameter,
+	Parameter,
+	SelectParameter,
+	StringParameter
+} from "../../parameter/parameter";
 
 class SXDSBuilderOptionPropertiesPanel extends React.Component {
 	constructor(props) {
@@ -83,6 +89,20 @@ class SXDSBuilderOptionPropertiesPanel extends React.Component {
 				members: Object.values(this.toggleFields)
 			}
 		);
+
+		this.fieldCssWidth = new StringParameter(
+			this.namespace,
+			this.formIds.optionsFormId,
+			this.languageId,
+			this.availableLanguageIds,
+			{
+				paramName: ParamProperty.CSS_WIDTH,
+				displayName: Util.getTranslationObject(this.languageId, "width"),
+				placeholder: Util.getTranslationObject(this.languageId, "width-in-pixel-or-rem"),
+				tooltip: Util.getTranslationObject(this.languageId, "width-of-the-parameter-tooltip"),
+				value: this.workingParam.cssWidth
+			}
+		);
 	}
 
 	componentDidMount() {
@@ -98,7 +118,11 @@ class SXDSBuilderOptionPropertiesPanel extends React.Component {
 				this.workingParam
 			);
 
-			this.workingParam[dataPacket.paramName] = this.toggleFields[dataPacket.paramName].getValue();
+			if (dataPacket.paramName === ParamProperty.CSS_WIDTH) {
+				this.workingParam.cssWidth = this.fieldCssWidth.getValue();
+			} else {
+				this.workingParam[dataPacket.paramName] = this.toggleFields[dataPacket.paramName].getValue();
+			}
 
 			if (this.workingParam.isRendered()) {
 				this.workingParam.fireRefreshPreview();
@@ -109,9 +133,11 @@ class SXDSBuilderOptionPropertiesPanel extends React.Component {
 	render() {
 		return (
 			<>
-				{this.fieldToggleGroup.render({
-					spritemap: this.spritemap,
-					inputStatus: this.inputStatus
+				{this.fieldToggleGroup.renderField({
+					spritemap: this.spritemap
+				})}
+				{this.fieldCssWidth.renderField({
+					spritemap: this.spritemap
 				})}
 			</>
 		);
