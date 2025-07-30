@@ -199,6 +199,9 @@ export class Parameter {
 
 	#value;
 
+	#inputStatus = false;
+	#position = Constant.Position.MIDDLE;
+
 	constructor(namespace, formId, languageId, availableLanguageIds, paramType) {
 		this.#namespace = namespace;
 		this.#formId = formId;
@@ -345,6 +348,12 @@ export class Parameter {
 		if (this.style) {
 			return this.style.width;
 		}
+	}
+	get inputStatus() {
+		return this.#inputStatus;
+	}
+	get position() {
+		return this.#position;
 	}
 
 	get rowCount() {
@@ -496,6 +505,12 @@ export class Parameter {
 		}
 
 		this.#style.width = val;
+	}
+	set inputStatus(val) {
+		this.#inputStatus = val;
+	}
+	set position(val) {
+		this.#position = val;
 	}
 
 	refreshKey() {
@@ -821,11 +836,7 @@ export class Parameter {
 	}
 
 	hasValue(cellIndex) {
-		if (!this.value) {
-			return false;
-		}
-
-		return this.isGridCell(cellIndex) ? Util.isNotEmpty(this.value[cellIndex]) : Util.isNotEmpty(this.value);
+		return Util.isNotEmpty(this.getValue(cellIndex));
 	}
 
 	initValue(cellIndex) {
@@ -992,12 +1003,14 @@ export class Parameter {
 			order: this.order,
 			languageId: this.languageId,
 			availableLanguageIds: this.availableLanguageIds,
-			focused: this.focused
+			focused: this.focused,
+			inputStatus: this.inputStatus,
+			position: this.position
 		};
 	}
 
-	renderLabel({ forHtml = this.tagId, spritemap, inputStatus = false, languageId = this.languageId, style = {} }) {
-		style.color = inputStatus && !this.hasValue() ? "#ff80b3" : "black";
+	renderLabel({ forHtml = this.tagId, spritemap, languageId = this.languageId, style = {} }) {
+		style.color = this.inputStatus && !this.hasValue() ? "#ff80b3" : "black";
 		style.marginBottom = "0.3rem";
 		style.fontSize = "0.825rem";
 		style.fontWeight = "600";
@@ -1053,16 +1066,7 @@ export class Parameter {
 		}
 	}
 
-	renderPreview({
-		dsbuilderId,
-		propertyPanelId,
-		previewCanvasId,
-		className = "",
-		style = {},
-		spritemap,
-		inputStatus,
-		position
-	}) {
+	renderPreview({ dsbuilderId, propertyPanelId, previewCanvasId, className = "", style = {}, spritemap, position }) {
 		return (
 			<SXPreviewRow
 				key={this.key}
@@ -1071,7 +1075,6 @@ export class Parameter {
 				previewCanvasId={previewCanvasId}
 				parameter={this}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				position={position}
 				className={className}
 				style={style}
@@ -1079,13 +1082,12 @@ export class Parameter {
 		);
 	}
 
-	renderField({ className = "", style = {}, spritemap, inputStatus }) {
+	renderField({ className = "", style = {}, spritemap }) {
 		return (
 			<SXFormField
 				key={this.key}
 				parameter={this}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				className={className}
 				style={style}
 			/>
@@ -1404,7 +1406,6 @@ export class StringParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -1418,7 +1419,6 @@ export class StringParameter extends Parameter {
 					className={className}
 					style={style}
 					spritemap={spritemap}
-					inputStatus={inputStatus}
 					displayType={displayType}
 					viewType={viewType}
 					cellIndex={cellIndex}
@@ -1433,7 +1433,6 @@ export class StringParameter extends Parameter {
 					className={className}
 					style={style}
 					spritemap={spritemap}
-					inputStatus={inputStatus}
 					displayType={displayType}
 					viewType={viewType}
 					cellIndex={cellIndex}
@@ -1804,7 +1803,6 @@ export class NumericParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -1817,7 +1815,6 @@ export class NumericParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -2038,7 +2035,6 @@ export class SelectParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -2051,7 +2047,6 @@ export class SelectParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -2227,7 +2222,6 @@ export class DualListParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -2240,7 +2234,6 @@ export class DualListParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -2403,7 +2396,6 @@ export class BooleanParameter extends SelectParameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -2416,7 +2408,6 @@ export class BooleanParameter extends SelectParameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -2548,7 +2539,6 @@ export class MatrixParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -2561,7 +2551,6 @@ export class MatrixParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -2652,7 +2641,6 @@ export class FileParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -2665,7 +2653,6 @@ export class FileParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -2818,7 +2805,6 @@ export class AddressParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -2831,7 +2817,6 @@ export class AddressParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -2883,15 +2868,13 @@ export class DateParameter extends Parameter {
 	}
 
 	getDate(cellIndex) {
-		return this.isGridCell(cellIndex) ? new Date(this.value[cellIndex]) : new Date(this.value);
+		const value = super.getValue(cellIndex);
+
+		return !!value ? new Date(value) : new Date();
 	}
 
 	initValue(cellIndex) {
-		const startYear = this.startYear ?? "1970";
-
-		const defaultValue = this.defaultValue ?? this.enableTime ? startYear + "-01-01 00:00" : startYear + "-01-01";
-
-		super.setValue({ value: defaultValue, cellIndex: cellIndex });
+		super.setValue({ value: this.defaultValue ?? "", cellIndex: cellIndex });
 	}
 
 	validate(cellIndex) {
@@ -2963,7 +2946,6 @@ export class DateParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -2976,7 +2958,6 @@ export class DateParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -3117,7 +3098,6 @@ export class PhoneParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -3130,7 +3110,6 @@ export class PhoneParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -3276,7 +3255,6 @@ export class EMailParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -3289,7 +3267,6 @@ export class EMailParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -3527,14 +3504,14 @@ export class GroupParameter extends Parameter {
 
 	getMemberPosition(member) {
 		if (this.members.length === 1 && member.order === 1) {
-			return "deadEnd";
+			return Constant.Position.DEAD_END;
 		} else if (member.order === 1) {
-			return "start";
+			return Constant.Position.START;
 		} else if (member.order === this.members.length) {
-			return "end";
+			return Constant.Position.END;
 		}
 
-		return "middle";
+		return Constant.Position.MIDDLE;
 	}
 
 	copy() {
@@ -3653,7 +3630,6 @@ export class GroupParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		preview = false,
@@ -3671,7 +3647,6 @@ export class GroupParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -3770,6 +3745,8 @@ export class GridParameter extends Parameter {
 		column.displayType = Parameter.DisplayTypes.GRID_CELL;
 
 		column.order = this.columnCount + 1;
+		column.formId = this.tagName;
+
 		this.columns.push(column);
 
 		this.dirty = true;
@@ -4027,7 +4004,7 @@ export class GridParameter extends Parameter {
 			this.columns = json.columns.map((column) => {
 				return Parameter.createParameter(
 					this.namespace,
-					this.formId,
+					this.tagName,
 					this.languageId,
 					this.availableLanguageIds,
 					column.paramType,
@@ -4088,7 +4065,6 @@ export class GridParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		preview = false,
@@ -4106,7 +4082,6 @@ export class GridParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}
@@ -4154,7 +4129,6 @@ export class SelectGroupParameter extends Parameter {
 		className = "",
 		style = {},
 		spritemap,
-		inputStatus,
 		displayType = this.displayType,
 		viewType = this.viewType,
 		cellIndex
@@ -4167,7 +4141,6 @@ export class SelectGroupParameter extends Parameter {
 				className={className}
 				style={style}
 				spritemap={spritemap}
-				inputStatus={inputStatus}
 				displayType={displayType}
 				viewType={viewType}
 				cellIndex={cellIndex}

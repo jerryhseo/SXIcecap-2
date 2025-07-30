@@ -211,15 +211,16 @@ export class DataStructure extends GroupParameter {
 		return (
 			<>
 				{this.members.map((parameter) => {
+					parameter.inputStatus = this.enableInputStatus;
+					parameter.position = this.getMemberPosition(parameter);
+
 					return parameter.renderPreview({
 						dsbuilderId: dsbuilderId,
 						propertyPanelId: propertyPanelId,
 						previewCanvasId: previewCanvasId,
 						className: className,
 						style: style,
-						spritemap: spritemap,
-						inputStatus: this.enableInputStatus,
-						position: this.getMemberPosition(parameter)
+						spritemap: spritemap
 					});
 				})}
 			</>

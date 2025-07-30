@@ -88,7 +88,7 @@ class SXDataStructurePreviewer extends React.Component {
 				<SXDataStatusBar
 					dataStructure={this.dataStructure}
 					namespace={this.namespace}
-					formIds={this.formIds}
+					canvasId={this.formIds.previewCanvasId}
 					spritemap={this.spritemap}
 				/>
 				<div style={{ maxHeight: "1000px", overflowY: "auto", overflowX: "hidden" }}>

@@ -23,7 +23,8 @@ import {
 	ParamProperty,
 	ErrorClass,
 	ValidationKeys,
-	ValidationSectionProperty
+	ValidationSectionProperty,
+	Constant
 } from "../common/station-x";
 import {
 	AddressParameter,
@@ -253,6 +254,23 @@ export class SXDataStatusBar extends React.Component {
 		};
 	}
 
+	componentDidMount() {
+		console.log("=== SXDataStatusBar componentDidMount executed ===");
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+			const dataPacket = e.dataPacket;
+			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.canvasId) return;
+
+			console.log(
+				"SXDataStructurePreviewer SX_FIELD_VALUE_CHANGED RECEIVED: ",
+				dataPacket,
+				this.dataStructure,
+				this.dataStructure.members
+			);
+
+			this.forceUpdate();
+		});
+	}
+
 	goTo() {
 		console.log("goTo: ", this.state.goToParam);
 
@@ -397,8 +415,6 @@ export class SXPreviewRow extends React.Component {
 		this.languageId = props.parameter.languageId;
 		this.availableLanguageIds = props.parameter.availableLanguageIds;
 		this.spritemap = props.spritemap;
-		this.inputStatus = props.inputStatus ?? false;
-		this.position = props.position;
 		this.className = props.className ?? "";
 		this.style = props.style ?? {};
 
@@ -520,11 +536,11 @@ export class SXPreviewRow extends React.Component {
 			{ id: "delete", name: Util.translate("delete"), symbol: "times" }
 		];
 
-		if (this.position === "start") {
+		if (this.parameter.position === Constant.Position.START) {
 			actionItems.push({ id: "moveDown", name: Util.translate("move-down"), symbol: "order-arrow-down" });
-		} else if (this.position === "end") {
+		} else if (this.parameter.position === Constant.Position.END) {
 			actionItems.push({ id: "moveUp", name: Util.translate("move-up"), symbol: "order-arrow-up" });
-		} else if (this.position !== "deadEnd") {
+		} else if (this.parameter.position !== Constant.Position.DEAD_END) {
 			actionItems.push({ id: "moveDown", name: Util.translate("move-down"), symbol: "order-arrow-down" });
 			actionItems.push({ id: "moveUp", name: Util.translate("move-up"), symbol: "order-arrow-up" });
 		}
@@ -545,7 +561,7 @@ export class SXPreviewRow extends React.Component {
 						{this.parameter.render({
 							style: style,
 							spritemap: this.spritemap,
-							inputStatus: this.state.inputStatus,
+							inputStatus: this.parameter.inputStatus,
 							preview: true,
 							dsbuilderId: this.dsbuilderId,
 							propertyPanelId: this.propertyPanelId,
@@ -644,7 +660,6 @@ export class SXInput extends React.Component {
 		this.parameter = props.parameter;
 		this.viewType = props.viewType ?? props.parameter.viewType;
 		this.cellIndex = props.cellIndex;
-		this.inputStatus = props.inputStatus;
 
 		this.state = {
 			value: this.parameter.getValue(this.cellIndex)
@@ -754,7 +769,7 @@ export class SXInput extends React.Component {
 				{this.parameter.renderLabel({
 					forHtml: this.parameter.tagId,
 					spritemap: this.spritemap,
-					inputStatus: this.inputStatus
+					inputStatus: this.parameter.inputStatus
 				})}
 				{this.parameter.showDefinition && (
 					<div className="sx-param-definition">
@@ -813,7 +828,6 @@ export class SXLocalizedInput extends React.Component {
 		this.spritemap = props.spritemap ?? "";
 		this.parameter = props.parameter;
 		this.cellIndex = this.parameter.displayType === Parameter.DisplayTypes.GRID_CELL ? props.cellIndex : undefined;
-		this.inputStatus = props.inputStatus;
 
 		this.state = {
 			selectedLang: props.parameter.languageId,
@@ -1000,7 +1014,7 @@ export class SXLocalizedInput extends React.Component {
 				{this.parameter.renderLabel({
 					forHtml: this.parameter.tagId,
 					spritemap: this.spritemap,
-					inputStatus: this.inputStatus
+					inputStatus: this.parameter.inputStatus
 				})}
 				{this.parameter.showDefinition && (
 					<div className="sx-param-definition">
@@ -1036,7 +1050,6 @@ export class SXNumeric extends React.Component {
 		this.className = props.className ?? "";
 		this.style = props.style ?? {};
 		this.spritemap = props.spritemap ?? "";
-		this.inputStatus = props.inputStatus ?? false;
 		this.cellIndex = props.cellIndex;
 
 		if (props.parameter.isInteger) {
@@ -1272,7 +1285,7 @@ export class SXNumeric extends React.Component {
 			>
 				{this.parameter.renderLabel({
 					spritemap: this.spritemap,
-					inputStatus: this.inputStatus
+					inputStatus: this.parameter.inputStatus
 				})}
 				<div style={{ paddingLeft: "10px" }}>
 					{this.parameter.showDefinition && (
@@ -1509,7 +1522,7 @@ export class SXBoolean extends React.Component {
 						aria-label={this.parameter.label}
 						label={this.parameter.renderLabel({
 							spritemap: this.spritemap,
-							inputStatus: this.inputStatus,
+							inputStatus: this.parameter.inputStatus,
 							style: {
 								paddingLeft: "0",
 								fontSize: "0.875rem"
@@ -1525,7 +1538,7 @@ export class SXBoolean extends React.Component {
 					<div ref={this.focusRef}>
 						{this.parameter.renderLabel({
 							spritemap: this.spritemap,
-							inputStatus: this.inputStatus
+							inputStatus: this.parameter.inputStatus
 						})}
 						{this.parameter.showDefinition && (
 							<div className="sx-param-definition">
@@ -1554,7 +1567,7 @@ export class SXBoolean extends React.Component {
 					<div ref={this.focusRef}>
 						{this.parameter.renderLabel({
 							spritemap: this.spritemap,
-							inputStatus: this.inputStatus
+							inputStatus: this.parameter.inputStatus
 						})}
 						{this.parameter.showDefinition && (
 							<div className="sx-param-definition">
@@ -1600,7 +1613,7 @@ export class SXBoolean extends React.Component {
 						name={tagName}
 						label={this.parameter.renderLabel({
 							spritemap: this.spritemap,
-							inputStatus: this.inputStatus
+							inputStatus: this.parameter.inputStatus
 						})}
 						onToggle={(e) => this.handleValueChange(!this.state.value)}
 						spritemap={this.spritemap}
@@ -1650,7 +1663,6 @@ export class SXSelect extends React.Component {
 		this.style = props.style ?? {};
 		this.spritemap = props.spritemap ?? "";
 		this.parameter = props.parameter;
-		this.inputStatus = props.inputStatus ?? false;
 		this.cellIndex = props.cellIndex;
 
 		this.selectedOptionChanged = false;
@@ -2000,7 +2012,7 @@ export class SXSelect extends React.Component {
 			>
 				{this.parameter.renderLabel({
 					forHtml: tagId,
-					inputStatus: this.inputStatus,
+					inputStatus: this.parameter.inputStatus,
 					spritemap: this.spritemap
 				})}
 				{this.parameter.showDefinition && (
@@ -2060,7 +2072,6 @@ export class SXDualListBox extends React.Component {
 		this.className = props.className ?? "";
 		this.style = props.style ?? {};
 		this.spritemap = props.spritemap ?? "";
-		this.inputStatus = props.inputStatus ?? false;
 
 		this.focusRef = createRef();
 
@@ -2173,7 +2184,7 @@ export class SXDualListBox extends React.Component {
 				{this.parameter.renderLabel({
 					forHtml: this.parameter.tagId,
 					spritemap: this.spritemap,
-					inputStatus: this.inputStatus
+					inputStatus: this.parameter.inputStatus
 				})}
 				{this.parameter.showDefinition && (
 					<div className="sx-param-definition">
@@ -2278,7 +2289,6 @@ export class SXFile extends React.Component {
 		this.parameter = props.parameter;
 		this.viewType = props.viewType ?? props.parameter.viewType;
 		this.cellIndex = props.cellIndex;
-		this.inputStatus = props.inputStatus;
 
 		this.state = {
 			value: this.parameter.getValue(this.cellIndex),
@@ -2503,7 +2513,7 @@ export class SXFile extends React.Component {
 			>
 				{this.parameter.renderLabel({
 					spritemap: this.spritemap,
-					inputStatus: this.inputStatus
+					inputStatus: this.parameter.inputStatus
 				})}
 				{this.parameter.showDefinition && (
 					<div className="sx-param-definition">
@@ -2753,7 +2763,7 @@ export class SXAddress extends React.Component {
 			>
 				{this.parameter.renderLabel({
 					spritemap: this.spritemap,
-					inputStatus: this.inputStatus
+					inputStatus: this.parameter.inputStatus
 				})}
 				{this.parameter.showDefinition && (
 					<div className="sx-param-definition">
@@ -2998,7 +3008,7 @@ export class SXDate extends React.Component {
 				<ClayForm.Group className={className}>
 					{this.parameter.renderLabel({
 						spritemap: this.spritemap,
-						inputStatus: this.inputStatus
+						inputStatus: this.parameter.inputStatus
 					})}
 					{this.parameter.showDefinition && (
 						<div className="sx-param-definition">
@@ -3211,7 +3221,7 @@ export class SXPhone extends React.Component {
 			>
 				{this.parameter.renderLabel({
 					spritemap: this.spritemap,
-					inputStatus: this.inputStatus
+					inputStatus: this.parameter.inputStatus
 				})}
 				{this.parameter.showDefinition && (
 					<div className="sx-param-definition">
@@ -3404,7 +3414,7 @@ export class SXEMail extends React.Component {
 			>
 				{this.parameter.renderLabel({
 					spritemap: this.spritemap,
-					inputStatus: this.inputStatus
+					inputStatus: this.parameter.inputStatus
 				})}
 				{this.parameter.showDefinition && (
 					<div className="sx-param-definition">
@@ -3440,7 +3450,6 @@ export class SXGroup extends React.Component {
 		this.className = props.className ?? "";
 		this.style = props.style ?? {};
 		this.spritemap = props.spritemap ?? "";
-		this.inputStatus = props.inputStatus ?? false;
 		this.preview = props.preview ?? false;
 
 		this.state = {
@@ -3485,18 +3494,18 @@ export class SXGroup extends React.Component {
 	}
 
 	renderMember(member) {
+		member.inputStatus = this.parameter.inputStatus;
+		member.position = this.parameter.getMemberPosition(member);
+
 		return this.preview
 			? member.renderPreview({
 					dsbuilderId: this.dsbuilderId,
 					propertyPanelId: this.propertyPanelId,
 					previewCanvasId: this.previewCanvasId,
-					spritemap: this.spritemap,
-					inputStatus: this.inputStatus,
-					position: this.parameter.getMemberPosition(member)
+					spritemap: this.spritemap
 			  })
 			: member.render({
-					spritemap: this.spritemap,
-					inputStatus: this.inputStatus
+					spritemap: this.spritemap
 			  });
 	}
 
@@ -3564,7 +3573,7 @@ export class SXGroup extends React.Component {
 								<h3>{this.parameter.label}</h3>
 							</div>
 							<div className="autofit-col">
-								{this.inputStatus && (
+								{this.parameter.inputStatus && (
 									<div className="autofit-section">
 										<span>
 											{"(" +
@@ -3632,7 +3641,6 @@ export class SXGrid extends React.Component {
 		this.className = props.className ?? "";
 		this.style = props.style ?? {};
 		this.spritemap = props.spritemap ?? "";
-		this.inputStatus = props.inputStatus ?? false;
 		this.preview = props.preview ?? false;
 
 		this.state = {
@@ -3675,6 +3683,26 @@ export class SXGrid extends React.Component {
 			}
 
 			this.focusRef.current.focus();
+		});
+
+		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
+			const dataPacket = e.dataPacket;
+			if (
+				dataPacket.targetPortlet !== this.parameter.namespace ||
+				dataPacket.targetFormId !== this.parameter.tagName
+			)
+				return;
+
+			console.log("SXGrid SX_FIELD_VALUE_CHANGED RECEIVED: ", dataPacket, this.parameter);
+
+			const value = {};
+			this.parameter.columns.map((column) => {
+				value[column.paramName] = column.value;
+			});
+			this.parameter.setValue({ value: value });
+
+			console.log("SXGrid value: ", this.parameter.hasValue());
+			this.forceUpdate();
 		});
 	}
 
@@ -3739,7 +3767,7 @@ export class SXGrid extends React.Component {
 					id: column.paramName,
 					name: column.renderLabel({
 						forHtml: column.paramName,
-						inputStatus: this.inputStatus,
+						inputStatus: this.parameter.inputStatus,
 						spritemap: this.spritemap
 					}),
 					textValue: column.label,
@@ -3809,7 +3837,7 @@ export class SXGrid extends React.Component {
 						<td key={colIndex}>
 							{column.render({
 								spritemap: this.spritemap,
-								inputStatus: this.inputStatus,
+								inputStatus: this.parameter.inputStatus,
 								cellIndex: rowIndex
 							})}
 						</td>
@@ -3824,7 +3852,7 @@ export class SXGrid extends React.Component {
 	render() {
 		return (
 			<>
-				{this.parameter.renderLabel({ spritemap: this.spritemap, inputStatus: this.inputStatus })}
+				{this.parameter.renderLabel({ spritemap: this.spritemap, inputStatus: this.parameter.inputStatus })}
 				<div style={{ paddingLeft: "10px", overflowX: "auto", width: "100%" }}>
 					<table
 						className="sx-table"
@@ -3983,7 +4011,6 @@ class SXFormField extends React.Component {
 					className: this.props.className,
 					style: this.props.style,
 					spritemap: this.props.spritemap,
-					inputStatus: this.props.inputStatus,
 					events: this.props.events,
 					displayType: this.props.displayType,
 					viewType: this.props.viewType,

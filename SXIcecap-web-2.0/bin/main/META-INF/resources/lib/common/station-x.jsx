@@ -478,6 +478,12 @@ export const Constant = {
 		CANCELED: { code: "CANCELED", value: 1702010 },
 		SUCCESS: { code: "SUCCESS", value: 1702011 },
 		FAILED: { code: "FAILED", value: 1702012 }
+	},
+	Position: {
+		DEAD_END: "deadEnd",
+		START: "start",
+		MIDDLE: "middle",
+		END: "end"
 	}
 };
 
