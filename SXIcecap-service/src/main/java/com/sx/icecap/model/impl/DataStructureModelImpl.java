@@ -16,15 +16,29 @@ package com.sx.icecap.model.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.model.TrashedModel;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.model.DataStructureModel;
@@ -40,7 +54,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -66,34 +83,79 @@ public class DataStructureModelImpl
 	public static final String TABLE_NAME = "SX_ICECAP_DataStructure";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"dataTypeId", Types.BIGINT}, {"structure", Types.VARCHAR}
+		{"uuid_", Types.VARCHAR}, {"companyId", Types.BIGINT},
+		{"groupId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"lastPublishDate", Types.TIMESTAMP},
+		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
+		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP},
+		{"dataStructureId", Types.BIGINT}, {"dataStructureName", Types.VARCHAR},
+		{"dataStructureVersion", Types.VARCHAR}, {"displayName", Types.VARCHAR},
+		{"description", Types.VARCHAR}, {"freezable", Types.BOOLEAN},
+		{"verifiable", Types.BOOLEAN}, {"commentable", Types.BOOLEAN},
+		{"structure", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
 		new HashMap<String, Integer>();
 
 	static {
-		TABLE_COLUMNS_MAP.put("dataTypeId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("dataStructureId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("dataStructureName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("dataStructureVersion", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("freezable", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("verifiable", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("commentable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("structure", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataStructure (dataTypeId LONG not null primary key,structure TEXT null)";
+		"create table SX_ICECAP_DataStructure (uuid_ VARCHAR(75) null,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataStructureId LONG not null primary key,dataStructureName VARCHAR(75) null,dataStructureVersion VARCHAR(75) null,displayName STRING null,description STRING null,freezable BOOLEAN,verifiable BOOLEAN,commentable BOOLEAN,structure TEXT null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_DataStructure";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY dataStructure.dataTypeId ASC";
+		" ORDER BY dataStructure.dataStructureId ASC";
 
 	public static final String ORDER_BY_SQL =
-		" ORDER BY SX_ICECAP_DataStructure.dataTypeId ASC";
+		" ORDER BY SX_ICECAP_DataStructure.dataStructureId ASC";
 
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
+
+	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+
+	public static final long DATASTRUCTURENAME_COLUMN_BITMASK = 2L;
+
+	public static final long DATASTRUCTUREVERSION_COLUMN_BITMASK = 4L;
+
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
+
+	public static final long STATUS_COLUMN_BITMASK = 16L;
+
+	public static final long USERID_COLUMN_BITMASK = 32L;
+
+	public static final long UUID_COLUMN_BITMASK = 64L;
+
+	public static final long DATASTRUCTUREID_COLUMN_BITMASK = 128L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -108,17 +170,17 @@ public class DataStructureModelImpl
 
 	@Override
 	public long getPrimaryKey() {
-		return _dataTypeId;
+		return _dataStructureId;
 	}
 
 	@Override
 	public void setPrimaryKey(long primaryKey) {
-		setDataTypeId(primaryKey);
+		setDataStructureId(primaryKey);
 	}
 
 	@Override
 	public Serializable getPrimaryKeyObj() {
-		return _dataTypeId;
+		return _dataStructureId;
 	}
 
 	@Override
@@ -202,11 +264,101 @@ public class DataStructureModelImpl
 		Map<String, BiConsumer<DataStructure, ?>> attributeSetterBiConsumers =
 			new LinkedHashMap<String, BiConsumer<DataStructure, ?>>();
 
-		attributeGetterFunctions.put(
-			"dataTypeId", DataStructure::getDataTypeId);
+		attributeGetterFunctions.put("uuid", DataStructure::getUuid);
 		attributeSetterBiConsumers.put(
-			"dataTypeId",
-			(BiConsumer<DataStructure, Long>)DataStructure::setDataTypeId);
+			"uuid", (BiConsumer<DataStructure, String>)DataStructure::setUuid);
+		attributeGetterFunctions.put("companyId", DataStructure::getCompanyId);
+		attributeSetterBiConsumers.put(
+			"companyId",
+			(BiConsumer<DataStructure, Long>)DataStructure::setCompanyId);
+		attributeGetterFunctions.put("groupId", DataStructure::getGroupId);
+		attributeSetterBiConsumers.put(
+			"groupId",
+			(BiConsumer<DataStructure, Long>)DataStructure::setGroupId);
+		attributeGetterFunctions.put("userId", DataStructure::getUserId);
+		attributeSetterBiConsumers.put(
+			"userId",
+			(BiConsumer<DataStructure, Long>)DataStructure::setUserId);
+		attributeGetterFunctions.put("userName", DataStructure::getUserName);
+		attributeSetterBiConsumers.put(
+			"userName",
+			(BiConsumer<DataStructure, String>)DataStructure::setUserName);
+		attributeGetterFunctions.put(
+			"createDate", DataStructure::getCreateDate);
+		attributeSetterBiConsumers.put(
+			"createDate",
+			(BiConsumer<DataStructure, Date>)DataStructure::setCreateDate);
+		attributeGetterFunctions.put(
+			"modifiedDate", DataStructure::getModifiedDate);
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			(BiConsumer<DataStructure, Date>)DataStructure::setModifiedDate);
+		attributeGetterFunctions.put(
+			"lastPublishDate", DataStructure::getLastPublishDate);
+		attributeSetterBiConsumers.put(
+			"lastPublishDate",
+			(BiConsumer<DataStructure, Date>)DataStructure::setLastPublishDate);
+		attributeGetterFunctions.put("status", DataStructure::getStatus);
+		attributeSetterBiConsumers.put(
+			"status",
+			(BiConsumer<DataStructure, Integer>)DataStructure::setStatus);
+		attributeGetterFunctions.put(
+			"statusByUserId", DataStructure::getStatusByUserId);
+		attributeSetterBiConsumers.put(
+			"statusByUserId",
+			(BiConsumer<DataStructure, Long>)DataStructure::setStatusByUserId);
+		attributeGetterFunctions.put(
+			"statusByUserName", DataStructure::getStatusByUserName);
+		attributeSetterBiConsumers.put(
+			"statusByUserName",
+			(BiConsumer<DataStructure, String>)
+				DataStructure::setStatusByUserName);
+		attributeGetterFunctions.put(
+			"statusDate", DataStructure::getStatusDate);
+		attributeSetterBiConsumers.put(
+			"statusDate",
+			(BiConsumer<DataStructure, Date>)DataStructure::setStatusDate);
+		attributeGetterFunctions.put(
+			"dataStructureId", DataStructure::getDataStructureId);
+		attributeSetterBiConsumers.put(
+			"dataStructureId",
+			(BiConsumer<DataStructure, Long>)DataStructure::setDataStructureId);
+		attributeGetterFunctions.put(
+			"dataStructureName", DataStructure::getDataStructureName);
+		attributeSetterBiConsumers.put(
+			"dataStructureName",
+			(BiConsumer<DataStructure, String>)
+				DataStructure::setDataStructureName);
+		attributeGetterFunctions.put(
+			"dataStructureVersion", DataStructure::getDataStructureVersion);
+		attributeSetterBiConsumers.put(
+			"dataStructureVersion",
+			(BiConsumer<DataStructure, String>)
+				DataStructure::setDataStructureVersion);
+		attributeGetterFunctions.put(
+			"displayName", DataStructure::getDisplayName);
+		attributeSetterBiConsumers.put(
+			"displayName",
+			(BiConsumer<DataStructure, String>)DataStructure::setDisplayName);
+		attributeGetterFunctions.put(
+			"description", DataStructure::getDescription);
+		attributeSetterBiConsumers.put(
+			"description",
+			(BiConsumer<DataStructure, String>)DataStructure::setDescription);
+		attributeGetterFunctions.put("freezable", DataStructure::getFreezable);
+		attributeSetterBiConsumers.put(
+			"freezable",
+			(BiConsumer<DataStructure, Boolean>)DataStructure::setFreezable);
+		attributeGetterFunctions.put(
+			"verifiable", DataStructure::getVerifiable);
+		attributeSetterBiConsumers.put(
+			"verifiable",
+			(BiConsumer<DataStructure, Boolean>)DataStructure::setVerifiable);
+		attributeGetterFunctions.put(
+			"commentable", DataStructure::getCommentable);
+		attributeSetterBiConsumers.put(
+			"commentable",
+			(BiConsumer<DataStructure, Boolean>)DataStructure::setCommentable);
 		attributeGetterFunctions.put("structure", DataStructure::getStructure);
 		attributeSetterBiConsumers.put(
 			"structure",
@@ -219,13 +371,553 @@ public class DataStructureModelImpl
 	}
 
 	@Override
-	public long getDataTypeId() {
-		return _dataTypeId;
+	public String getUuid() {
+		if (_uuid == null) {
+			return "";
+		}
+		else {
+			return _uuid;
+		}
 	}
 
 	@Override
-	public void setDataTypeId(long dataTypeId) {
-		_dataTypeId = dataTypeId;
+	public void setUuid(String uuid) {
+		_columnBitmask |= UUID_COLUMN_BITMASK;
+
+		if (_originalUuid == null) {
+			_originalUuid = _uuid;
+		}
+
+		_uuid = uuid;
+	}
+
+	public String getOriginalUuid() {
+		return GetterUtil.getString(_originalUuid);
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
+		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+		if (!_setOriginalGroupId) {
+			_setOriginalGroupId = true;
+
+			_originalGroupId = _groupId;
+		}
+
+		_groupId = groupId;
+	}
+
+	public long getOriginalGroupId() {
+		return _originalGroupId;
+	}
+
+	@Override
+	public long getUserId() {
+		return _userId;
+	}
+
+	@Override
+	public void setUserId(long userId) {
+		_columnBitmask |= USERID_COLUMN_BITMASK;
+
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
+		_userId = userId;
+	}
+
+	@Override
+	public String getUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setUserUuid(String userUuid) {
+	}
+
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
+	@Override
+	public String getUserName() {
+		if (_userName == null) {
+			return "";
+		}
+		else {
+			return _userName;
+		}
+	}
+
+	@Override
+	public void setUserName(String userName) {
+		_userName = userName;
+	}
+
+	@Override
+	public Date getCreateDate() {
+		return _createDate;
+	}
+
+	@Override
+	public void setCreateDate(Date createDate) {
+		_createDate = createDate;
+	}
+
+	@Override
+	public Date getModifiedDate() {
+		return _modifiedDate;
+	}
+
+	public boolean hasSetModifiedDate() {
+		return _setModifiedDate;
+	}
+
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		_setModifiedDate = true;
+
+		_modifiedDate = modifiedDate;
+	}
+
+	@Override
+	public Date getLastPublishDate() {
+		return _lastPublishDate;
+	}
+
+	@Override
+	public void setLastPublishDate(Date lastPublishDate) {
+		_lastPublishDate = lastPublishDate;
+	}
+
+	@Override
+	public int getStatus() {
+		return _status;
+	}
+
+	@Override
+	public void setStatus(int status) {
+		_columnBitmask |= STATUS_COLUMN_BITMASK;
+
+		if (!_setOriginalStatus) {
+			_setOriginalStatus = true;
+
+			_originalStatus = _status;
+		}
+
+		_status = status;
+	}
+
+	public int getOriginalStatus() {
+		return _originalStatus;
+	}
+
+	@Override
+	public long getStatusByUserId() {
+		return _statusByUserId;
+	}
+
+	@Override
+	public void setStatusByUserId(long statusByUserId) {
+		_statusByUserId = statusByUserId;
+	}
+
+	@Override
+	public String getStatusByUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getStatusByUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid) {
+	}
+
+	@Override
+	public String getStatusByUserName() {
+		if (_statusByUserName == null) {
+			return "";
+		}
+		else {
+			return _statusByUserName;
+		}
+	}
+
+	@Override
+	public void setStatusByUserName(String statusByUserName) {
+		_statusByUserName = statusByUserName;
+	}
+
+	@Override
+	public Date getStatusDate() {
+		return _statusDate;
+	}
+
+	@Override
+	public void setStatusDate(Date statusDate) {
+		_statusDate = statusDate;
+	}
+
+	@Override
+	public long getDataStructureId() {
+		return _dataStructureId;
+	}
+
+	@Override
+	public void setDataStructureId(long dataStructureId) {
+		_dataStructureId = dataStructureId;
+	}
+
+	@Override
+	public String getDataStructureName() {
+		if (_dataStructureName == null) {
+			return "";
+		}
+		else {
+			return _dataStructureName;
+		}
+	}
+
+	@Override
+	public void setDataStructureName(String dataStructureName) {
+		_columnBitmask |= DATASTRUCTURENAME_COLUMN_BITMASK;
+
+		if (_originalDataStructureName == null) {
+			_originalDataStructureName = _dataStructureName;
+		}
+
+		_dataStructureName = dataStructureName;
+	}
+
+	public String getOriginalDataStructureName() {
+		return GetterUtil.getString(_originalDataStructureName);
+	}
+
+	@Override
+	public String getDataStructureVersion() {
+		if (_dataStructureVersion == null) {
+			return "";
+		}
+		else {
+			return _dataStructureVersion;
+		}
+	}
+
+	@Override
+	public void setDataStructureVersion(String dataStructureVersion) {
+		_columnBitmask |= DATASTRUCTUREVERSION_COLUMN_BITMASK;
+
+		if (_originalDataStructureVersion == null) {
+			_originalDataStructureVersion = _dataStructureVersion;
+		}
+
+		_dataStructureVersion = dataStructureVersion;
+	}
+
+	public String getOriginalDataStructureVersion() {
+		return GetterUtil.getString(_originalDataStructureVersion);
+	}
+
+	@Override
+	public String getDisplayName() {
+		if (_displayName == null) {
+			return "";
+		}
+		else {
+			return _displayName;
+		}
+	}
+
+	@Override
+	public String getDisplayName(Locale locale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getDisplayName(languageId);
+	}
+
+	@Override
+	public String getDisplayName(Locale locale, boolean useDefault) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getDisplayName(languageId, useDefault);
+	}
+
+	@Override
+	public String getDisplayName(String languageId) {
+		return LocalizationUtil.getLocalization(getDisplayName(), languageId);
+	}
+
+	@Override
+	public String getDisplayName(String languageId, boolean useDefault) {
+		return LocalizationUtil.getLocalization(
+			getDisplayName(), languageId, useDefault);
+	}
+
+	@Override
+	public String getDisplayNameCurrentLanguageId() {
+		return _displayNameCurrentLanguageId;
+	}
+
+	@JSON
+	@Override
+	public String getDisplayNameCurrentValue() {
+		Locale locale = getLocale(_displayNameCurrentLanguageId);
+
+		return getDisplayName(locale);
+	}
+
+	@Override
+	public Map<Locale, String> getDisplayNameMap() {
+		return LocalizationUtil.getLocalizationMap(getDisplayName());
+	}
+
+	@Override
+	public void setDisplayName(String displayName) {
+		_displayName = displayName;
+	}
+
+	@Override
+	public void setDisplayName(String displayName, Locale locale) {
+		setDisplayName(displayName, locale, LocaleUtil.getSiteDefault());
+	}
+
+	@Override
+	public void setDisplayName(
+		String displayName, Locale locale, Locale defaultLocale) {
+
+		String languageId = LocaleUtil.toLanguageId(locale);
+		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
+
+		if (Validator.isNotNull(displayName)) {
+			setDisplayName(
+				LocalizationUtil.updateLocalization(
+					getDisplayName(), "DisplayName", displayName, languageId,
+					defaultLanguageId));
+		}
+		else {
+			setDisplayName(
+				LocalizationUtil.removeLocalization(
+					getDisplayName(), "DisplayName", languageId));
+		}
+	}
+
+	@Override
+	public void setDisplayNameCurrentLanguageId(String languageId) {
+		_displayNameCurrentLanguageId = languageId;
+	}
+
+	@Override
+	public void setDisplayNameMap(Map<Locale, String> displayNameMap) {
+		setDisplayNameMap(displayNameMap, LocaleUtil.getSiteDefault());
+	}
+
+	@Override
+	public void setDisplayNameMap(
+		Map<Locale, String> displayNameMap, Locale defaultLocale) {
+
+		if (displayNameMap == null) {
+			return;
+		}
+
+		setDisplayName(
+			LocalizationUtil.updateLocalization(
+				displayNameMap, getDisplayName(), "DisplayName",
+				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	@Override
+	public String getDescription() {
+		if (_description == null) {
+			return "";
+		}
+		else {
+			return _description;
+		}
+	}
+
+	@Override
+	public String getDescription(Locale locale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getDescription(languageId);
+	}
+
+	@Override
+	public String getDescription(Locale locale, boolean useDefault) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getDescription(languageId, useDefault);
+	}
+
+	@Override
+	public String getDescription(String languageId) {
+		return LocalizationUtil.getLocalization(getDescription(), languageId);
+	}
+
+	@Override
+	public String getDescription(String languageId, boolean useDefault) {
+		return LocalizationUtil.getLocalization(
+			getDescription(), languageId, useDefault);
+	}
+
+	@Override
+	public String getDescriptionCurrentLanguageId() {
+		return _descriptionCurrentLanguageId;
+	}
+
+	@JSON
+	@Override
+	public String getDescriptionCurrentValue() {
+		Locale locale = getLocale(_descriptionCurrentLanguageId);
+
+		return getDescription(locale);
+	}
+
+	@Override
+	public Map<Locale, String> getDescriptionMap() {
+		return LocalizationUtil.getLocalizationMap(getDescription());
+	}
+
+	@Override
+	public void setDescription(String description) {
+		_description = description;
+	}
+
+	@Override
+	public void setDescription(String description, Locale locale) {
+		setDescription(description, locale, LocaleUtil.getSiteDefault());
+	}
+
+	@Override
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale) {
+
+		String languageId = LocaleUtil.toLanguageId(locale);
+		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
+
+		if (Validator.isNotNull(description)) {
+			setDescription(
+				LocalizationUtil.updateLocalization(
+					getDescription(), "Description", description, languageId,
+					defaultLanguageId));
+		}
+		else {
+			setDescription(
+				LocalizationUtil.removeLocalization(
+					getDescription(), "Description", languageId));
+		}
+	}
+
+	@Override
+	public void setDescriptionCurrentLanguageId(String languageId) {
+		_descriptionCurrentLanguageId = languageId;
+	}
+
+	@Override
+	public void setDescriptionMap(Map<Locale, String> descriptionMap) {
+		setDescriptionMap(descriptionMap, LocaleUtil.getSiteDefault());
+	}
+
+	@Override
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale) {
+
+		if (descriptionMap == null) {
+			return;
+		}
+
+		setDescription(
+			LocalizationUtil.updateLocalization(
+				descriptionMap, getDescription(), "Description",
+				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	@Override
+	public boolean getFreezable() {
+		return _freezable;
+	}
+
+	@Override
+	public boolean isFreezable() {
+		return _freezable;
+	}
+
+	@Override
+	public void setFreezable(boolean freezable) {
+		_freezable = freezable;
+	}
+
+	@Override
+	public boolean getVerifiable() {
+		return _verifiable;
+	}
+
+	@Override
+	public boolean isVerifiable() {
+		return _verifiable;
+	}
+
+	@Override
+	public void setVerifiable(boolean verifiable) {
+		_verifiable = verifiable;
+	}
+
+	@Override
+	public boolean getCommentable() {
+		return _commentable;
+	}
+
+	@Override
+	public boolean isCommentable() {
+		return _commentable;
+	}
+
+	@Override
+	public void setCommentable(boolean commentable) {
+		_commentable = commentable;
 	}
 
 	@JSON
@@ -245,9 +937,244 @@ public class DataStructureModelImpl
 	}
 
 	@Override
+	public StagedModelType getStagedModelType() {
+		return new StagedModelType(
+			PortalUtil.getClassNameId(DataStructure.class.getName()));
+	}
+
+	@Override
+	public com.liferay.trash.kernel.model.TrashEntry getTrashEntry()
+		throws PortalException {
+
+		if (!isInTrash()) {
+			return null;
+		}
+
+		com.liferay.trash.kernel.model.TrashEntry trashEntry =
+			com.liferay.trash.kernel.service.TrashEntryLocalServiceUtil.
+				fetchEntry(getModelClassName(), getTrashEntryClassPK());
+
+		if (trashEntry != null) {
+			return trashEntry;
+		}
+
+		com.liferay.portal.kernel.trash.TrashHandler trashHandler =
+			getTrashHandler();
+
+		if (Validator.isNotNull(
+				trashHandler.getContainerModelClassName(getPrimaryKey()))) {
+
+			ContainerModel containerModel = null;
+
+			try {
+				containerModel = trashHandler.getParentContainerModel(this);
+			}
+			catch (NoSuchModelException noSuchModelException) {
+				return null;
+			}
+
+			while (containerModel != null) {
+				if (containerModel instanceof TrashedModel) {
+					TrashedModel trashedModel = (TrashedModel)containerModel;
+
+					return trashedModel.getTrashEntry();
+				}
+
+				trashHandler =
+					com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil.
+						getTrashHandler(
+							trashHandler.getContainerModelClassName(
+								containerModel.getContainerModelId()));
+
+				if (trashHandler == null) {
+					return null;
+				}
+
+				containerModel = trashHandler.getContainerModel(
+					containerModel.getParentContainerModelId());
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public long getTrashEntryClassPK() {
+		return getPrimaryKey();
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
+		return com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil.
+			getTrashHandler(getModelClassName());
+	}
+
+	@Override
+	public boolean isInTrash() {
+		if (getStatus() == WorkflowConstants.STATUS_IN_TRASH) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isInTrashContainer() {
+		com.liferay.portal.kernel.trash.TrashHandler trashHandler =
+			getTrashHandler();
+
+		if ((trashHandler == null) ||
+			Validator.isNull(
+				trashHandler.getContainerModelClassName(getPrimaryKey()))) {
+
+			return false;
+		}
+
+		try {
+			ContainerModel containerModel =
+				trashHandler.getParentContainerModel(this);
+
+			if (containerModel == null) {
+				return false;
+			}
+
+			if (containerModel instanceof TrashedModel) {
+				return ((TrashedModel)containerModel).isInTrash();
+			}
+		}
+		catch (Exception exception) {
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean isInTrashExplicitly() {
+		if (!isInTrash()) {
+			return false;
+		}
+
+		com.liferay.trash.kernel.model.TrashEntry trashEntry =
+			com.liferay.trash.kernel.service.TrashEntryLocalServiceUtil.
+				fetchEntry(getModelClassName(), getTrashEntryClassPK());
+
+		if (trashEntry != null) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean isInTrashImplicitly() {
+		if (!isInTrash()) {
+			return false;
+		}
+
+		com.liferay.trash.kernel.model.TrashEntry trashEntry =
+			com.liferay.trash.kernel.service.TrashEntryLocalServiceUtil.
+				fetchEntry(getModelClassName(), getTrashEntryClassPK());
+
+		if (trashEntry != null) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean isApproved() {
+		if (getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isDenied() {
+		if (getStatus() == WorkflowConstants.STATUS_DENIED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isDraft() {
+		if (getStatus() == WorkflowConstants.STATUS_DRAFT) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isExpired() {
+		if (getStatus() == WorkflowConstants.STATUS_EXPIRED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isInactive() {
+		if (getStatus() == WorkflowConstants.STATUS_INACTIVE) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isIncomplete() {
+		if (getStatus() == WorkflowConstants.STATUS_INCOMPLETE) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isPending() {
+		if (getStatus() == WorkflowConstants.STATUS_PENDING) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isScheduled() {
+		if (getStatus() == WorkflowConstants.STATUS_SCHEDULED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
+	}
+
+	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return ExpandoBridgeFactoryUtil.getExpandoBridge(
-			0, DataStructure.class.getName(), getPrimaryKey());
+			getCompanyId(), DataStructure.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -255,6 +1182,96 @@ public class DataStructureModelImpl
 		ExpandoBridge expandoBridge = getExpandoBridge();
 
 		expandoBridge.setAttributes(serviceContext);
+	}
+
+	@Override
+	public String[] getAvailableLanguageIds() {
+		Set<String> availableLanguageIds = new TreeSet<String>();
+
+		Map<Locale, String> displayNameMap = getDisplayNameMap();
+
+		for (Map.Entry<Locale, String> entry : displayNameMap.entrySet()) {
+			Locale locale = entry.getKey();
+			String value = entry.getValue();
+
+			if (Validator.isNotNull(value)) {
+				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
+			}
+		}
+
+		Map<Locale, String> descriptionMap = getDescriptionMap();
+
+		for (Map.Entry<Locale, String> entry : descriptionMap.entrySet()) {
+			Locale locale = entry.getKey();
+			String value = entry.getValue();
+
+			if (Validator.isNotNull(value)) {
+				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
+			}
+		}
+
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
+	}
+
+	@Override
+	public String getDefaultLanguageId() {
+		String xml = getDisplayName();
+
+		if (xml == null) {
+			return "";
+		}
+
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
+
+		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
+	}
+
+	@Override
+	public void prepareLocalizedFieldsForImport() throws LocaleException {
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
+
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
+
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			DataStructure.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
+
+		prepareLocalizedFieldsForImport(defaultImportLocale);
+	}
+
+	@Override
+	@SuppressWarnings("unused")
+	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
+		throws LocaleException {
+
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
+
+		String modelDefaultLanguageId = getDefaultLanguageId();
+
+		String displayName = getDisplayName(defaultLocale);
+
+		if (Validator.isNull(displayName)) {
+			setDisplayName(
+				getDisplayName(modelDefaultLanguageId), defaultLocale);
+		}
+		else {
+			setDisplayName(
+				getDisplayName(defaultLocale), defaultLocale, defaultLocale);
+		}
+
+		String description = getDescription(defaultLocale);
+
+		if (Validator.isNull(description)) {
+			setDescription(
+				getDescription(modelDefaultLanguageId), defaultLocale);
+		}
+		else {
+			setDescription(
+				getDescription(defaultLocale), defaultLocale, defaultLocale);
+		}
 	}
 
 	@Override
@@ -276,7 +1293,26 @@ public class DataStructureModelImpl
 	public Object clone() {
 		DataStructureImpl dataStructureImpl = new DataStructureImpl();
 
-		dataStructureImpl.setDataTypeId(getDataTypeId());
+		dataStructureImpl.setUuid(getUuid());
+		dataStructureImpl.setCompanyId(getCompanyId());
+		dataStructureImpl.setGroupId(getGroupId());
+		dataStructureImpl.setUserId(getUserId());
+		dataStructureImpl.setUserName(getUserName());
+		dataStructureImpl.setCreateDate(getCreateDate());
+		dataStructureImpl.setModifiedDate(getModifiedDate());
+		dataStructureImpl.setLastPublishDate(getLastPublishDate());
+		dataStructureImpl.setStatus(getStatus());
+		dataStructureImpl.setStatusByUserId(getStatusByUserId());
+		dataStructureImpl.setStatusByUserName(getStatusByUserName());
+		dataStructureImpl.setStatusDate(getStatusDate());
+		dataStructureImpl.setDataStructureId(getDataStructureId());
+		dataStructureImpl.setDataStructureName(getDataStructureName());
+		dataStructureImpl.setDataStructureVersion(getDataStructureVersion());
+		dataStructureImpl.setDisplayName(getDisplayName());
+		dataStructureImpl.setDescription(getDescription());
+		dataStructureImpl.setFreezable(isFreezable());
+		dataStructureImpl.setVerifiable(isVerifiable());
+		dataStructureImpl.setCommentable(isCommentable());
 		dataStructureImpl.setStructure(getStructure());
 
 		dataStructureImpl.resetOriginalValues();
@@ -338,6 +1374,31 @@ public class DataStructureModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_originalUuid = _uuid;
+
+		_originalCompanyId = _companyId;
+
+		_setOriginalCompanyId = false;
+
+		_originalGroupId = _groupId;
+
+		_setOriginalGroupId = false;
+
+		_originalUserId = _userId;
+
+		_setOriginalUserId = false;
+
+		_setModifiedDate = false;
+
+		_originalStatus = _status;
+
+		_setOriginalStatus = false;
+
+		_originalDataStructureName = _dataStructureName;
+
+		_originalDataStructureVersion = _dataStructureVersion;
+
+		_columnBitmask = 0;
 	}
 
 	@Override
@@ -345,7 +1406,119 @@ public class DataStructureModelImpl
 		DataStructureCacheModel dataStructureCacheModel =
 			new DataStructureCacheModel();
 
-		dataStructureCacheModel.dataTypeId = getDataTypeId();
+		dataStructureCacheModel.uuid = getUuid();
+
+		String uuid = dataStructureCacheModel.uuid;
+
+		if ((uuid != null) && (uuid.length() == 0)) {
+			dataStructureCacheModel.uuid = null;
+		}
+
+		dataStructureCacheModel.companyId = getCompanyId();
+
+		dataStructureCacheModel.groupId = getGroupId();
+
+		dataStructureCacheModel.userId = getUserId();
+
+		dataStructureCacheModel.userName = getUserName();
+
+		String userName = dataStructureCacheModel.userName;
+
+		if ((userName != null) && (userName.length() == 0)) {
+			dataStructureCacheModel.userName = null;
+		}
+
+		Date createDate = getCreateDate();
+
+		if (createDate != null) {
+			dataStructureCacheModel.createDate = createDate.getTime();
+		}
+		else {
+			dataStructureCacheModel.createDate = Long.MIN_VALUE;
+		}
+
+		Date modifiedDate = getModifiedDate();
+
+		if (modifiedDate != null) {
+			dataStructureCacheModel.modifiedDate = modifiedDate.getTime();
+		}
+		else {
+			dataStructureCacheModel.modifiedDate = Long.MIN_VALUE;
+		}
+
+		Date lastPublishDate = getLastPublishDate();
+
+		if (lastPublishDate != null) {
+			dataStructureCacheModel.lastPublishDate = lastPublishDate.getTime();
+		}
+		else {
+			dataStructureCacheModel.lastPublishDate = Long.MIN_VALUE;
+		}
+
+		dataStructureCacheModel.status = getStatus();
+
+		dataStructureCacheModel.statusByUserId = getStatusByUserId();
+
+		dataStructureCacheModel.statusByUserName = getStatusByUserName();
+
+		String statusByUserName = dataStructureCacheModel.statusByUserName;
+
+		if ((statusByUserName != null) && (statusByUserName.length() == 0)) {
+			dataStructureCacheModel.statusByUserName = null;
+		}
+
+		Date statusDate = getStatusDate();
+
+		if (statusDate != null) {
+			dataStructureCacheModel.statusDate = statusDate.getTime();
+		}
+		else {
+			dataStructureCacheModel.statusDate = Long.MIN_VALUE;
+		}
+
+		dataStructureCacheModel.dataStructureId = getDataStructureId();
+
+		dataStructureCacheModel.dataStructureName = getDataStructureName();
+
+		String dataStructureName = dataStructureCacheModel.dataStructureName;
+
+		if ((dataStructureName != null) && (dataStructureName.length() == 0)) {
+			dataStructureCacheModel.dataStructureName = null;
+		}
+
+		dataStructureCacheModel.dataStructureVersion =
+			getDataStructureVersion();
+
+		String dataStructureVersion =
+			dataStructureCacheModel.dataStructureVersion;
+
+		if ((dataStructureVersion != null) &&
+			(dataStructureVersion.length() == 0)) {
+
+			dataStructureCacheModel.dataStructureVersion = null;
+		}
+
+		dataStructureCacheModel.displayName = getDisplayName();
+
+		String displayName = dataStructureCacheModel.displayName;
+
+		if ((displayName != null) && (displayName.length() == 0)) {
+			dataStructureCacheModel.displayName = null;
+		}
+
+		dataStructureCacheModel.description = getDescription();
+
+		String description = dataStructureCacheModel.description;
+
+		if ((description != null) && (description.length() == 0)) {
+			dataStructureCacheModel.description = null;
+		}
+
+		dataStructureCacheModel.freezable = isFreezable();
+
+		dataStructureCacheModel.verifiable = isVerifiable();
+
+		dataStructureCacheModel.commentable = isCommentable();
 
 		dataStructureCacheModel.structure = getStructure();
 
@@ -450,8 +1623,42 @@ public class DataStructureModelImpl
 	private static boolean _entityCacheEnabled;
 	private static boolean _finderCacheEnabled;
 
-	private long _dataTypeId;
+	private String _uuid;
+	private String _originalUuid;
+	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
+	private long _groupId;
+	private long _originalGroupId;
+	private boolean _setOriginalGroupId;
+	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
+	private String _userName;
+	private Date _createDate;
+	private Date _modifiedDate;
+	private boolean _setModifiedDate;
+	private Date _lastPublishDate;
+	private int _status;
+	private int _originalStatus;
+	private boolean _setOriginalStatus;
+	private long _statusByUserId;
+	private String _statusByUserName;
+	private Date _statusDate;
+	private long _dataStructureId;
+	private String _dataStructureName;
+	private String _originalDataStructureName;
+	private String _dataStructureVersion;
+	private String _originalDataStructureVersion;
+	private String _displayName;
+	private String _displayNameCurrentLanguageId;
+	private String _description;
+	private String _descriptionCurrentLanguageId;
+	private boolean _freezable;
+	private boolean _verifiable;
+	private boolean _commentable;
 	private String _structure;
+	private long _columnBitmask;
 	private DataStructure _escapedModel;
 
 }

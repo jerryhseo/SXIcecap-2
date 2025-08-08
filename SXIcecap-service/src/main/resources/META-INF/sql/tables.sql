@@ -1,3 +1,62 @@
+create table SX_ICECAP_ActionHistory (
+	actionHistoryId LONG not null primary key,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	structuredDataId LONG,
+	paramName VARCHAR(75) null,
+	prevValue VARCHAR(75) null,
+	changedValue VARCHAR(75) null,
+	action VARCHAR(75) null,
+	comment_ VARCHAR(75) null
+);
+
+create table SX_ICECAP_CollectionSetLink (
+	collectionSetLinkId LONG not null primary key,
+	dataCollectionId LONG,
+	dataCollection LONG,
+	dataSetId LONG,
+	dataSet LONG
+);
+
+create table SX_ICECAP_DataCollection (
+	uuid_ VARCHAR(75) null,
+	dataCollectionId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	lastPublishDate DATE null,
+	status INTEGER,
+	statusByUserId LONG,
+	statusByUserName VARCHAR(75) null,
+	statusDate DATE null,
+	dataCollectionName VARCHAR(75) null,
+	dataCollectionVersion VARCHAR(75) null,
+	displayName STRING null,
+	description STRING null,
+	freezeLevel VARCHAR(75) null,
+	verifyLevel VARCHAR(75) null,
+	commentLevel VARCHAR(75) null
+);
+
+create table SX_ICECAP_DataComment (
+	dataCommentId LONG not null primary key,
+	companyId LONG,
+	groupId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	structuredDataId LONG,
+	paramName VARCHAR(75) null,
+	parentCommentId LONG,
+	comment_ VARCHAR(75) null,
+	closed BOOLEAN
+);
+
 create table SX_ICECAP_DataSet (
 	uuid_ VARCHAR(75) null,
 	dataSetId LONG not null primary key,
@@ -15,15 +74,30 @@ create table SX_ICECAP_DataSet (
 	dataSetName VARCHAR(75) null,
 	dataSetVersion VARCHAR(75) null,
 	displayName STRING null,
-	description STRING null,
-	folderId LONG,
-	structure TEXT null,
-	verificationType VARCHAR(75) null,
-	multiEntryLevel INTEGER
+	description STRING null
 );
 
 create table SX_ICECAP_DataStructure (
-	dataTypeId LONG not null primary key,
+	uuid_ VARCHAR(75) null,
+	companyId LONG,
+	groupId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	lastPublishDate DATE null,
+	status INTEGER,
+	statusByUserId LONG,
+	statusByUserName VARCHAR(75) null,
+	statusDate DATE null,
+	dataStructureId LONG not null primary key,
+	dataStructureName VARCHAR(75) null,
+	dataStructureVersion VARCHAR(75) null,
+	displayName STRING null,
+	description STRING null,
+	freezable BOOLEAN,
+	verifiable BOOLEAN,
+	commentable BOOLEAN,
 	structure TEXT null
 );
 
@@ -48,32 +122,14 @@ create table SX_ICECAP_DataType (
 	sampleFileId LONG,
 	description STRING null,
 	tooltip STRING null,
-	visualizers VARCHAR(1024) null,
-	hasDataStructure BOOLEAN
+	freezable BOOLEAN,
+	verifiable BOOLEAN,
+	dataStructureId LONG
 );
 
 create table SX_ICECAP_DataTypeStructure (
 	dataTypeId LONG not null primary key,
 	structure TEXT null
-);
-
-create table SX_ICECAP_DisverifiedData (
-	disverifiedDataId LONG not null primary key,
-	groupId LONG,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	status INTEGER,
-	dataSetId LONG,
-	dataTypeId LONG,
-	folderId LONG,
-	tempDataTitle VARCHAR(75) null,
-	dataSetDisplayName STRING null,
-	dataTypeDisplayName STRING null,
-	folderName STRING null,
-	structuredData VARCHAR(75) null
 );
 
 create table SX_ICECAP_Parameter (
@@ -98,8 +154,16 @@ create table SX_ICECAP_Parameter (
 	definition STRING null,
 	tooltip STRING null,
 	synonyms VARCHAR(75) null,
-	attributesJSON TEXT null,
+	typeProperties VARCHAR(75) null,
 	standard BOOLEAN
+);
+
+create table SX_ICECAP_SetTypeLink (
+	setTypeLinkId LONG not null primary key,
+	dataSetId LONG,
+	dataSet LONG,
+	dataTypeId LONG,
+	dataType VARCHAR(75) null
 );
 
 create table SX_ICECAP_StructuredData (
@@ -115,49 +179,31 @@ create table SX_ICECAP_StructuredData (
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,
 	statusDate DATE null,
+	dataCollectionId LONG,
 	dataSetId LONG,
-	dataSetDisplayName STRING null,
 	dataTypeId LONG,
-	dataTypeDisplayName STRING null,
-	dataSetFolderId LONG,
-	dataSetFolderName STRING null,
-	recordType VARCHAR(75) null,
-	recordDelimiter VARCHAR(75) null,
-	recordFormat VARCHAR(75) null,
-	entryCount INTEGER,
-	startEntryNo INTEGER,
-	endEntryNo INTEGER,
-	structuredData TEXT null
+	multiple BOOLEAN,
+	startIndex LONG,
+	count INTEGER,
+	freezed BOOLEAN,
+	verified BOOLEAN,
+	comments BOOLEAN,
+	history BOOLEAN,
+	data_ VARCHAR(75) null
 );
 
-create table SX_ICECAP_Term (
-	uuid_ VARCHAR(75) null,
-	termId LONG not null primary key,
-	groupTermId VARCHAR(75) null,
-	groupId LONG,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	status INTEGER,
-	statusByUserId LONG,
-	statusByUserName VARCHAR(75) null,
-	statusDate DATE null,
-	lastPublishDate DATE null,
-	termName VARCHAR(75) null,
-	termVersion VARCHAR(75) null,
-	termType VARCHAR(75) null,
-	displayName STRING null,
-	definition STRING null,
-	tooltip STRING null,
-	synonyms VARCHAR(512) null,
-	attributesJSON TEXT null,
-	standard BOOLEAN
+create table SX_ICECAP_TypeParamLink (
+	typeParamLinkId LONG not null primary key,
+	dataTypeId LONG,
+	dataType LONG,
+	paramId LONG,
+	param VARCHAR(75) null
 );
 
-create table SX_ICECAP_VisualizerLink (
-	VisualizerLink LONG not null primary key,
+create table SX_ICECAP_TypeVisualizerLink (
+	typeVisualizerLinkId LONG not null primary key,
 	dataTypeId LONG,
-	visualizerId LONG
+	dataType LONG,
+	visualizerId LONG,
+	visualizer VARCHAR(75) null
 );

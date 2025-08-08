@@ -1,9 +1,10 @@
 import React from "react";
 import { Util } from "../../common/util";
-import { Event, ParamProperty, ValidationRule } from "../../common/station-x";
+import { ErrorClass, Event, ParamProperty, ParamType, ValidationRule } from "../../common/station-x";
 import { SXBoolean, SXInput, SXLocalizedInput } from "../../form/sxform";
 import LocalizedInput from "@clayui/localized-input";
 import { BooleanParameter, Parameter, StringParameter } from "../../parameter/parameter";
+import { SXModalDialog } from "../../modal/sxmodal";
 
 class SXDSBuilderBasicPropertiesPanel extends React.Component {
 	constructor(props) {
@@ -17,12 +18,17 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 		this.dataStructure = props.dataStructure;
 		this.spritemap = props.spritemap;
 
+		this.state = {
+			paramNameDuplicatedErrorDlg: false
+		};
+
 		this.fields = {
-			paramName: new StringParameter(
+			paramName: Parameter.createParameter(
 				this.namespace,
 				this.formIds.basicPropertiesFormId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.STRING,
 				{
 					paramName: ParamProperty.PARAM_NAME,
 					displayName: Util.getTranslationObject(this.languageId, "parameter-name"),
@@ -49,13 +55,14 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 					value: this.workingParam.paramName
 				}
 			),
-			paramVersion: new StringParameter(
+			paramVersion: Parameter.createParameter(
 				this.namespace,
 				this.formIds.basicPropertiesFormId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.STRING,
 				{
-					paramName: ParamProperty.VERSION,
+					paramName: ParamProperty.PARAM_VERSION,
 					displayName: Util.getTranslationObject(this.languageId, "version"),
 					placeholder: Util.getTranslationObject(this.languageId, "version-of-the-parameter"),
 					tooltip: Util.getTranslationObject(this.languageId, "version-of-the-parameter-tooltip"),
@@ -73,11 +80,12 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 					value: this.workingParam.paramVersion
 				}
 			),
-			displayName: new StringParameter(
+			displayName: Parameter.createParameter(
 				this.namespace,
 				this.formIds.basicPropertiesFormId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.STRING,
 				{
 					paramName: ParamProperty.DISPLAY_NAME,
 					localized: true,
@@ -101,11 +109,12 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 					value: this.workingParam.displayName ?? {}
 				}
 			),
-			definition: new StringParameter(
+			definition: Parameter.createParameter(
 				this.namespace,
 				this.formIds.basicPropertiesFormId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.STRING,
 				{
 					paramName: ParamProperty.DEFINITION,
 					localized: true,
@@ -122,11 +131,12 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 					value: this.workingParam.definition
 				}
 			),
-			showDefinition: new BooleanParameter(
+			showDefinition: Parameter.createParameter(
 				this.namespace,
 				this.formIds.basicPropertiesFormId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.BOOLEAN,
 				{
 					paramName: ParamProperty.SHOW_DEFINITION,
 					viewType: BooleanParameter.ViewTypes.CHECKBOX,
@@ -135,11 +145,12 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 					value: this.workingParam.showDefinition
 				}
 			),
-			tooltip: new StringParameter(
+			tooltip: Parameter.createParameter(
 				this.namespace,
 				this.formIds.basicPropertiesFormId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.STRING,
 				{
 					paramName: ParamProperty.TOOLTIP,
 					localized: true,
@@ -149,11 +160,12 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 					value: this.workingParam.tooltip
 				}
 			),
-			synonyms: new StringParameter(
+			synonyms: Parameter.createParameter(
 				this.namespace,
 				this.formIds.basicPropertiesFormId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.STRING,
 				{
 					paramName: ParamProperty.SYNONYMS,
 					displayName: Util.getTranslationObject(this.languageId, "synonyms"),
@@ -164,29 +176,42 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 			)
 		};
 
-		console.log("SXDSBuilderBasicPropertiesPanel: ", props);
+		//console.log("SXDSBuilderBasicPropertiesPanel: ", props);
 	}
 
-	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (
-				dataPacket.targetPortlet !== this.namespace ||
-				dataPacket.targetFormId !== this.formIds.basicPropertiesFormId
-			)
-				return;
-
+	valueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (
+			dataPacket.targetPortlet !== this.namespace ||
+			dataPacket.targetFormId !== this.formIds.basicPropertiesFormId
+		) {
+			/*
 			console.log(
-				"SXDSBuilderBasicPropertiesPanel SX_FIELD_VALUE_CHANGED RECEIVED: ",
+				"REJECTED - SXDSBuilderBasicPropertiesPanel SX_FIELD_VALUE_CHANGED: ",
 				dataPacket,
 				this.dataStructure,
-				this.workingParam
+				this.workingParam,
+				dataPacket.parameter
 			);
+			*/
+			return;
+		}
 
-			this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
-			/*
+		/*
+		console.log(
+			"RECEIVED - SXDSBuilderBasicPropertiesPanel SX_FIELD_VALUE_CHANGED: ",
+			dataPacket,
+			this.dataStructure,
+			this.workingParam,
+			dataPacket.parameter
+		);
+		*/
+
+		this.workingParam[dataPacket.paramName] = dataPacket.parameter.getValue();
+
+		/*
 			if (
-				this.workingParam.isGroup &&
+				(this.workingParam.paramType === paramType.GROUP || this.workingParam.paramType === paramType.GRID) &&
 				(dataPacket.paramName === ParamProperty.PARAM_NAME ||
 					dataPacket.paramName === ParamProperty.PARAM_VERSION)
 			) {
@@ -194,24 +219,46 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 			}
 				*/
 
-			if (this.workingParam.isRendered()) {
-				if (this.workingParam.displayType === Parameter.DisplayTypes.GRID_CELL) {
-					const gridParam = this.dataStructure.findParameter({
-						paramName: this.workingParam.parent.name,
-						paramVersion: this.workingParam.parent.version,
-						descendant: true
-					});
+		if (dataPacket.paramName === ParamProperty.PARAM_NAME) {
+			if (this.dataStructure.checkDuplicateParam(this.workingParam)) {
+				this.fields.paramName.errorClass = ErrorClass.ERROR;
+				this.fields.paramName.errorMessage = Util.translate("parameter-name-must-be-unique");
+				this.fields.paramName.dirty = true;
+				this.fields.paramName.refreshKey();
 
-					gridParam.fireRefreshPreview();
-				} else {
-					this.workingParam.fireRefreshPreview();
-				}
+				this.setState({ paramNameDuplicatedErrorDlg: true });
+				return;
 			}
-		});
+		}
+
+		if (this.workingParam.isRendered()) {
+			if (this.workingParam.displayType === Parameter.DisplayTypes.GRID_CELL) {
+				const gridParam = this.dataStructure.findParameter({
+					paramName: this.workingParam.parent.name,
+					paramVersion: this.workingParam.parent.version,
+					descendant: true
+				});
+
+				gridParam.fireRefreshPreview();
+			} else {
+				this.workingParam.fireRefreshPreview();
+			}
+		}
+	};
+
+	componentDidMount() {
+		//console.log("componentDidMount: SXDSBuilderBasicPropertiesPanel");
+
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.valueChangedHandler);
+		//Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, valueChangedHandler);
+	}
+
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.valueChangedHandler);
 	}
 
 	render() {
-		console.log("SXDSBuilderBasicPropertiesPanel: ", this.workingParam);
+		//console.log("SXDSBuilderBasicPropertiesPanel: ", this.workingParam);
 		const fields = Object.values(this.fields);
 
 		return (
@@ -220,6 +267,23 @@ class SXDSBuilderBasicPropertiesPanel extends React.Component {
 					field.renderField({
 						spritemap: this.spritemap
 					})
+				)}
+				{this.state.paramNameDuplicatedErrorDlg && (
+					<SXModalDialog
+						header="Error"
+						body={Util.translate("parameter-name-must-be-unique")}
+						buttons={[
+							{
+								onClick: () => {
+									this.setState({ paramNameDuplicatedErrorDlg: false });
+								},
+								label: Util.translate("ok"),
+								displayType: "primary"
+							}
+						]}
+						status="info"
+						spritemap={this.spritemap}
+					/>
 				)}
 			</>
 		);

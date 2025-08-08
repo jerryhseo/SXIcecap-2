@@ -16,7 +16,7 @@ import org.osgi.service.component.annotations.Reference;
 public class DataTypeResourcePermissionHelper {
 	
 	@Reference(
-			target = "(resource.name="+Constant.DATATYPE_RESOURCE_NAME+")", 
+			target = "(resource.name="+Constant.ICECAP_RESOURCE_NAME+")", 
 			unbind = "-"
 	)
 	protected void setPortletResourcePermission(PortletResourcePermission portletResourcePermission) {

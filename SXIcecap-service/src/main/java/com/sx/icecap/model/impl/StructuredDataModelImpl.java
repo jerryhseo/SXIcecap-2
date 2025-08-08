@@ -19,10 +19,8 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -32,8 +30,6 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -54,10 +50,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -89,13 +82,12 @@ public class StructuredDataModelImpl
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
 		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP},
-		{"dataSetId", Types.BIGINT}, {"dataSetDisplayName", Types.VARCHAR},
-		{"dataTypeId", Types.BIGINT}, {"dataTypeDisplayName", Types.VARCHAR},
-		{"dataSetFolderId", Types.BIGINT}, {"dataSetFolderName", Types.VARCHAR},
-		{"recordType", Types.VARCHAR}, {"recordDelimiter", Types.VARCHAR},
-		{"recordFormat", Types.VARCHAR}, {"entryCount", Types.INTEGER},
-		{"startEntryNo", Types.INTEGER}, {"endEntryNo", Types.INTEGER},
-		{"structuredData", Types.VARCHAR}
+		{"dataCollectionId", Types.BIGINT}, {"dataSetId", Types.BIGINT},
+		{"dataTypeId", Types.BIGINT}, {"multiple", Types.BOOLEAN},
+		{"startIndex", Types.BIGINT}, {"count", Types.INTEGER},
+		{"freezed", Types.BOOLEAN}, {"verified", Types.BOOLEAN},
+		{"comments", Types.BOOLEAN}, {"history", Types.BOOLEAN},
+		{"data_", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -114,23 +106,21 @@ public class StructuredDataModelImpl
 		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("dataCollectionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataSetId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("dataSetDisplayName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("dataTypeId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("dataTypeDisplayName", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("dataSetFolderId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("dataSetFolderName", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("recordType", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("recordDelimiter", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("recordFormat", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("entryCount", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("startEntryNo", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("endEntryNo", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("structuredData", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("multiple", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("startIndex", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("count", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("freezed", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("verified", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("comments", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("history", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("data_", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_StructuredData (uuid_ VARCHAR(75) null,structuredDataId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataSetId LONG,dataSetDisplayName STRING null,dataTypeId LONG,dataTypeDisplayName STRING null,dataSetFolderId LONG,dataSetFolderName STRING null,recordType VARCHAR(75) null,recordDelimiter VARCHAR(75) null,recordFormat VARCHAR(75) null,entryCount INTEGER,startEntryNo INTEGER,endEntryNo INTEGER,structuredData TEXT null)";
+		"create table SX_ICECAP_StructuredData (uuid_ VARCHAR(75) null,structuredDataId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionId LONG,dataSetId LONG,dataTypeId LONG,multiple BOOLEAN,startIndex LONG,count INTEGER,freezed BOOLEAN,verified BOOLEAN,comments BOOLEAN,history BOOLEAN,data_ VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_StructuredData";
@@ -149,7 +139,7 @@ public class StructuredDataModelImpl
 
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
-	public static final long DATASETFOLDERID_COLUMN_BITMASK = 2L;
+	public static final long DATACOLLECTIONID_COLUMN_BITMASK = 2L;
 
 	public static final long DATASETID_COLUMN_BITMASK = 4L;
 
@@ -329,78 +319,54 @@ public class StructuredDataModelImpl
 		attributeSetterBiConsumers.put(
 			"statusDate",
 			(BiConsumer<StructuredData, Date>)StructuredData::setStatusDate);
+		attributeGetterFunctions.put(
+			"dataCollectionId", StructuredData::getDataCollectionId);
+		attributeSetterBiConsumers.put(
+			"dataCollectionId",
+			(BiConsumer<StructuredData, Long>)
+				StructuredData::setDataCollectionId);
 		attributeGetterFunctions.put("dataSetId", StructuredData::getDataSetId);
 		attributeSetterBiConsumers.put(
 			"dataSetId",
 			(BiConsumer<StructuredData, Long>)StructuredData::setDataSetId);
 		attributeGetterFunctions.put(
-			"dataSetDisplayName", StructuredData::getDataSetDisplayName);
-		attributeSetterBiConsumers.put(
-			"dataSetDisplayName",
-			(BiConsumer<StructuredData, String>)
-				StructuredData::setDataSetDisplayName);
-		attributeGetterFunctions.put(
 			"dataTypeId", StructuredData::getDataTypeId);
 		attributeSetterBiConsumers.put(
 			"dataTypeId",
 			(BiConsumer<StructuredData, Long>)StructuredData::setDataTypeId);
-		attributeGetterFunctions.put(
-			"dataTypeDisplayName", StructuredData::getDataTypeDisplayName);
+		attributeGetterFunctions.put("multiple", StructuredData::getMultiple);
 		attributeSetterBiConsumers.put(
-			"dataTypeDisplayName",
-			(BiConsumer<StructuredData, String>)
-				StructuredData::setDataTypeDisplayName);
+			"multiple",
+			(BiConsumer<StructuredData, Boolean>)StructuredData::setMultiple);
 		attributeGetterFunctions.put(
-			"dataSetFolderId", StructuredData::getDataSetFolderId);
+			"startIndex", StructuredData::getStartIndex);
 		attributeSetterBiConsumers.put(
-			"dataSetFolderId",
-			(BiConsumer<StructuredData, Long>)
-				StructuredData::setDataSetFolderId);
-		attributeGetterFunctions.put(
-			"dataSetFolderName", StructuredData::getDataSetFolderName);
+			"startIndex",
+			(BiConsumer<StructuredData, Long>)StructuredData::setStartIndex);
+		attributeGetterFunctions.put("count", StructuredData::getCount);
 		attributeSetterBiConsumers.put(
-			"dataSetFolderName",
-			(BiConsumer<StructuredData, String>)
-				StructuredData::setDataSetFolderName);
-		attributeGetterFunctions.put(
-			"recordType", StructuredData::getRecordType);
+			"count",
+			(BiConsumer<StructuredData, Integer>)StructuredData::setCount);
+		attributeGetterFunctions.put("freezed", StructuredData::getFreezed);
 		attributeSetterBiConsumers.put(
-			"recordType",
-			(BiConsumer<StructuredData, String>)StructuredData::setRecordType);
-		attributeGetterFunctions.put(
-			"recordDelimiter", StructuredData::getRecordDelimiter);
+			"freezed",
+			(BiConsumer<StructuredData, Boolean>)StructuredData::setFreezed);
+		attributeGetterFunctions.put("verified", StructuredData::getVerified);
 		attributeSetterBiConsumers.put(
-			"recordDelimiter",
-			(BiConsumer<StructuredData, String>)
-				StructuredData::setRecordDelimiter);
-		attributeGetterFunctions.put(
-			"recordFormat", StructuredData::getRecordFormat);
+			"verified",
+			(BiConsumer<StructuredData, Boolean>)StructuredData::setVerified);
+		attributeGetterFunctions.put("comments", StructuredData::getComments);
 		attributeSetterBiConsumers.put(
-			"recordFormat",
-			(BiConsumer<StructuredData, String>)
-				StructuredData::setRecordFormat);
-		attributeGetterFunctions.put(
-			"entryCount", StructuredData::getEntryCount);
+			"comments",
+			(BiConsumer<StructuredData, Boolean>)StructuredData::setComments);
+		attributeGetterFunctions.put("history", StructuredData::getHistory);
 		attributeSetterBiConsumers.put(
-			"entryCount",
-			(BiConsumer<StructuredData, Integer>)StructuredData::setEntryCount);
-		attributeGetterFunctions.put(
-			"startEntryNo", StructuredData::getStartEntryNo);
+			"history",
+			(BiConsumer<StructuredData, Boolean>)StructuredData::setHistory);
+		attributeGetterFunctions.put("data", StructuredData::getData);
 		attributeSetterBiConsumers.put(
-			"startEntryNo",
-			(BiConsumer<StructuredData, Integer>)
-				StructuredData::setStartEntryNo);
-		attributeGetterFunctions.put(
-			"endEntryNo", StructuredData::getEndEntryNo);
-		attributeSetterBiConsumers.put(
-			"endEntryNo",
-			(BiConsumer<StructuredData, Integer>)StructuredData::setEndEntryNo);
-		attributeGetterFunctions.put(
-			"structuredData", StructuredData::getStructuredData);
-		attributeSetterBiConsumers.put(
-			"structuredData",
-			(BiConsumer<StructuredData, String>)
-				StructuredData::setStructuredData);
+			"data",
+			(BiConsumer<StructuredData, String>)StructuredData::setData);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -640,6 +606,28 @@ public class StructuredDataModelImpl
 	}
 
 	@Override
+	public long getDataCollectionId() {
+		return _dataCollectionId;
+	}
+
+	@Override
+	public void setDataCollectionId(long dataCollectionId) {
+		_columnBitmask |= DATACOLLECTIONID_COLUMN_BITMASK;
+
+		if (!_setOriginalDataCollectionId) {
+			_setOriginalDataCollectionId = true;
+
+			_originalDataCollectionId = _dataCollectionId;
+		}
+
+		_dataCollectionId = dataCollectionId;
+	}
+
+	public long getOriginalDataCollectionId() {
+		return _originalDataCollectionId;
+	}
+
+	@Override
 	public long getDataSetId() {
 		return _dataSetId;
 	}
@@ -659,120 +647,6 @@ public class StructuredDataModelImpl
 
 	public long getOriginalDataSetId() {
 		return _originalDataSetId;
-	}
-
-	@Override
-	public String getDataSetDisplayName() {
-		if (_dataSetDisplayName == null) {
-			return "";
-		}
-		else {
-			return _dataSetDisplayName;
-		}
-	}
-
-	@Override
-	public String getDataSetDisplayName(Locale locale) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getDataSetDisplayName(languageId);
-	}
-
-	@Override
-	public String getDataSetDisplayName(Locale locale, boolean useDefault) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getDataSetDisplayName(languageId, useDefault);
-	}
-
-	@Override
-	public String getDataSetDisplayName(String languageId) {
-		return LocalizationUtil.getLocalization(
-			getDataSetDisplayName(), languageId);
-	}
-
-	@Override
-	public String getDataSetDisplayName(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(
-			getDataSetDisplayName(), languageId, useDefault);
-	}
-
-	@Override
-	public String getDataSetDisplayNameCurrentLanguageId() {
-		return _dataSetDisplayNameCurrentLanguageId;
-	}
-
-	@JSON
-	@Override
-	public String getDataSetDisplayNameCurrentValue() {
-		Locale locale = getLocale(_dataSetDisplayNameCurrentLanguageId);
-
-		return getDataSetDisplayName(locale);
-	}
-
-	@Override
-	public Map<Locale, String> getDataSetDisplayNameMap() {
-		return LocalizationUtil.getLocalizationMap(getDataSetDisplayName());
-	}
-
-	@Override
-	public void setDataSetDisplayName(String dataSetDisplayName) {
-		_dataSetDisplayName = dataSetDisplayName;
-	}
-
-	@Override
-	public void setDataSetDisplayName(
-		String dataSetDisplayName, Locale locale) {
-
-		setDataSetDisplayName(
-			dataSetDisplayName, locale, LocaleUtil.getSiteDefault());
-	}
-
-	@Override
-	public void setDataSetDisplayName(
-		String dataSetDisplayName, Locale locale, Locale defaultLocale) {
-
-		String languageId = LocaleUtil.toLanguageId(locale);
-		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
-
-		if (Validator.isNotNull(dataSetDisplayName)) {
-			setDataSetDisplayName(
-				LocalizationUtil.updateLocalization(
-					getDataSetDisplayName(), "DataSetDisplayName",
-					dataSetDisplayName, languageId, defaultLanguageId));
-		}
-		else {
-			setDataSetDisplayName(
-				LocalizationUtil.removeLocalization(
-					getDataSetDisplayName(), "DataSetDisplayName", languageId));
-		}
-	}
-
-	@Override
-	public void setDataSetDisplayNameCurrentLanguageId(String languageId) {
-		_dataSetDisplayNameCurrentLanguageId = languageId;
-	}
-
-	@Override
-	public void setDataSetDisplayNameMap(
-		Map<Locale, String> dataSetDisplayNameMap) {
-
-		setDataSetDisplayNameMap(
-			dataSetDisplayNameMap, LocaleUtil.getSiteDefault());
-	}
-
-	@Override
-	public void setDataSetDisplayNameMap(
-		Map<Locale, String> dataSetDisplayNameMap, Locale defaultLocale) {
-
-		if (dataSetDisplayNameMap == null) {
-			return;
-		}
-
-		setDataSetDisplayName(
-			LocalizationUtil.updateLocalization(
-				dataSetDisplayNameMap, getDataSetDisplayName(),
-				"DataSetDisplayName", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
 	@Override
@@ -798,344 +672,113 @@ public class StructuredDataModelImpl
 	}
 
 	@Override
-	public String getDataTypeDisplayName() {
-		if (_dataTypeDisplayName == null) {
+	public boolean getMultiple() {
+		return _multiple;
+	}
+
+	@Override
+	public boolean isMultiple() {
+		return _multiple;
+	}
+
+	@Override
+	public void setMultiple(boolean multiple) {
+		_multiple = multiple;
+	}
+
+	@Override
+	public long getStartIndex() {
+		return _startIndex;
+	}
+
+	@Override
+	public void setStartIndex(long startIndex) {
+		_startIndex = startIndex;
+	}
+
+	@Override
+	public int getCount() {
+		return _count;
+	}
+
+	@Override
+	public void setCount(int count) {
+		_count = count;
+	}
+
+	@Override
+	public boolean getFreezed() {
+		return _freezed;
+	}
+
+	@Override
+	public boolean isFreezed() {
+		return _freezed;
+	}
+
+	@Override
+	public void setFreezed(boolean freezed) {
+		_freezed = freezed;
+	}
+
+	@Override
+	public boolean getVerified() {
+		return _verified;
+	}
+
+	@Override
+	public boolean isVerified() {
+		return _verified;
+	}
+
+	@Override
+	public void setVerified(boolean verified) {
+		_verified = verified;
+	}
+
+	@Override
+	public boolean getComments() {
+		return _comments;
+	}
+
+	@Override
+	public boolean isComments() {
+		return _comments;
+	}
+
+	@Override
+	public void setComments(boolean comments) {
+		_comments = comments;
+	}
+
+	@Override
+	public boolean getHistory() {
+		return _history;
+	}
+
+	@Override
+	public boolean isHistory() {
+		return _history;
+	}
+
+	@Override
+	public void setHistory(boolean history) {
+		_history = history;
+	}
+
+	@Override
+	public String getData() {
+		if (_data == null) {
 			return "";
 		}
 		else {
-			return _dataTypeDisplayName;
+			return _data;
 		}
 	}
 
 	@Override
-	public String getDataTypeDisplayName(Locale locale) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getDataTypeDisplayName(languageId);
-	}
-
-	@Override
-	public String getDataTypeDisplayName(Locale locale, boolean useDefault) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getDataTypeDisplayName(languageId, useDefault);
-	}
-
-	@Override
-	public String getDataTypeDisplayName(String languageId) {
-		return LocalizationUtil.getLocalization(
-			getDataTypeDisplayName(), languageId);
-	}
-
-	@Override
-	public String getDataTypeDisplayName(
-		String languageId, boolean useDefault) {
-
-		return LocalizationUtil.getLocalization(
-			getDataTypeDisplayName(), languageId, useDefault);
-	}
-
-	@Override
-	public String getDataTypeDisplayNameCurrentLanguageId() {
-		return _dataTypeDisplayNameCurrentLanguageId;
-	}
-
-	@JSON
-	@Override
-	public String getDataTypeDisplayNameCurrentValue() {
-		Locale locale = getLocale(_dataTypeDisplayNameCurrentLanguageId);
-
-		return getDataTypeDisplayName(locale);
-	}
-
-	@Override
-	public Map<Locale, String> getDataTypeDisplayNameMap() {
-		return LocalizationUtil.getLocalizationMap(getDataTypeDisplayName());
-	}
-
-	@Override
-	public void setDataTypeDisplayName(String dataTypeDisplayName) {
-		_dataTypeDisplayName = dataTypeDisplayName;
-	}
-
-	@Override
-	public void setDataTypeDisplayName(
-		String dataTypeDisplayName, Locale locale) {
-
-		setDataTypeDisplayName(
-			dataTypeDisplayName, locale, LocaleUtil.getSiteDefault());
-	}
-
-	@Override
-	public void setDataTypeDisplayName(
-		String dataTypeDisplayName, Locale locale, Locale defaultLocale) {
-
-		String languageId = LocaleUtil.toLanguageId(locale);
-		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
-
-		if (Validator.isNotNull(dataTypeDisplayName)) {
-			setDataTypeDisplayName(
-				LocalizationUtil.updateLocalization(
-					getDataTypeDisplayName(), "DataTypeDisplayName",
-					dataTypeDisplayName, languageId, defaultLanguageId));
-		}
-		else {
-			setDataTypeDisplayName(
-				LocalizationUtil.removeLocalization(
-					getDataTypeDisplayName(), "DataTypeDisplayName",
-					languageId));
-		}
-	}
-
-	@Override
-	public void setDataTypeDisplayNameCurrentLanguageId(String languageId) {
-		_dataTypeDisplayNameCurrentLanguageId = languageId;
-	}
-
-	@Override
-	public void setDataTypeDisplayNameMap(
-		Map<Locale, String> dataTypeDisplayNameMap) {
-
-		setDataTypeDisplayNameMap(
-			dataTypeDisplayNameMap, LocaleUtil.getSiteDefault());
-	}
-
-	@Override
-	public void setDataTypeDisplayNameMap(
-		Map<Locale, String> dataTypeDisplayNameMap, Locale defaultLocale) {
-
-		if (dataTypeDisplayNameMap == null) {
-			return;
-		}
-
-		setDataTypeDisplayName(
-			LocalizationUtil.updateLocalization(
-				dataTypeDisplayNameMap, getDataTypeDisplayName(),
-				"DataTypeDisplayName", LocaleUtil.toLanguageId(defaultLocale)));
-	}
-
-	@Override
-	public long getDataSetFolderId() {
-		return _dataSetFolderId;
-	}
-
-	@Override
-	public void setDataSetFolderId(long dataSetFolderId) {
-		_columnBitmask |= DATASETFOLDERID_COLUMN_BITMASK;
-
-		if (!_setOriginalDataSetFolderId) {
-			_setOriginalDataSetFolderId = true;
-
-			_originalDataSetFolderId = _dataSetFolderId;
-		}
-
-		_dataSetFolderId = dataSetFolderId;
-	}
-
-	public long getOriginalDataSetFolderId() {
-		return _originalDataSetFolderId;
-	}
-
-	@Override
-	public String getDataSetFolderName() {
-		if (_dataSetFolderName == null) {
-			return "";
-		}
-		else {
-			return _dataSetFolderName;
-		}
-	}
-
-	@Override
-	public String getDataSetFolderName(Locale locale) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getDataSetFolderName(languageId);
-	}
-
-	@Override
-	public String getDataSetFolderName(Locale locale, boolean useDefault) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getDataSetFolderName(languageId, useDefault);
-	}
-
-	@Override
-	public String getDataSetFolderName(String languageId) {
-		return LocalizationUtil.getLocalization(
-			getDataSetFolderName(), languageId);
-	}
-
-	@Override
-	public String getDataSetFolderName(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(
-			getDataSetFolderName(), languageId, useDefault);
-	}
-
-	@Override
-	public String getDataSetFolderNameCurrentLanguageId() {
-		return _dataSetFolderNameCurrentLanguageId;
-	}
-
-	@JSON
-	@Override
-	public String getDataSetFolderNameCurrentValue() {
-		Locale locale = getLocale(_dataSetFolderNameCurrentLanguageId);
-
-		return getDataSetFolderName(locale);
-	}
-
-	@Override
-	public Map<Locale, String> getDataSetFolderNameMap() {
-		return LocalizationUtil.getLocalizationMap(getDataSetFolderName());
-	}
-
-	@Override
-	public void setDataSetFolderName(String dataSetFolderName) {
-		_dataSetFolderName = dataSetFolderName;
-	}
-
-	@Override
-	public void setDataSetFolderName(String dataSetFolderName, Locale locale) {
-		setDataSetFolderName(
-			dataSetFolderName, locale, LocaleUtil.getSiteDefault());
-	}
-
-	@Override
-	public void setDataSetFolderName(
-		String dataSetFolderName, Locale locale, Locale defaultLocale) {
-
-		String languageId = LocaleUtil.toLanguageId(locale);
-		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
-
-		if (Validator.isNotNull(dataSetFolderName)) {
-			setDataSetFolderName(
-				LocalizationUtil.updateLocalization(
-					getDataSetFolderName(), "DataSetFolderName",
-					dataSetFolderName, languageId, defaultLanguageId));
-		}
-		else {
-			setDataSetFolderName(
-				LocalizationUtil.removeLocalization(
-					getDataSetFolderName(), "DataSetFolderName", languageId));
-		}
-	}
-
-	@Override
-	public void setDataSetFolderNameCurrentLanguageId(String languageId) {
-		_dataSetFolderNameCurrentLanguageId = languageId;
-	}
-
-	@Override
-	public void setDataSetFolderNameMap(
-		Map<Locale, String> dataSetFolderNameMap) {
-
-		setDataSetFolderNameMap(
-			dataSetFolderNameMap, LocaleUtil.getSiteDefault());
-	}
-
-	@Override
-	public void setDataSetFolderNameMap(
-		Map<Locale, String> dataSetFolderNameMap, Locale defaultLocale) {
-
-		if (dataSetFolderNameMap == null) {
-			return;
-		}
-
-		setDataSetFolderName(
-			LocalizationUtil.updateLocalization(
-				dataSetFolderNameMap, getDataSetFolderName(),
-				"DataSetFolderName", LocaleUtil.toLanguageId(defaultLocale)));
-	}
-
-	@Override
-	public String getRecordType() {
-		if (_recordType == null) {
-			return "";
-		}
-		else {
-			return _recordType;
-		}
-	}
-
-	@Override
-	public void setRecordType(String recordType) {
-		_recordType = recordType;
-	}
-
-	@Override
-	public String getRecordDelimiter() {
-		if (_recordDelimiter == null) {
-			return "";
-		}
-		else {
-			return _recordDelimiter;
-		}
-	}
-
-	@Override
-	public void setRecordDelimiter(String recordDelimiter) {
-		_recordDelimiter = recordDelimiter;
-	}
-
-	@Override
-	public String getRecordFormat() {
-		if (_recordFormat == null) {
-			return "";
-		}
-		else {
-			return _recordFormat;
-		}
-	}
-
-	@Override
-	public void setRecordFormat(String recordFormat) {
-		_recordFormat = recordFormat;
-	}
-
-	@Override
-	public int getEntryCount() {
-		return _entryCount;
-	}
-
-	@Override
-	public void setEntryCount(int entryCount) {
-		_entryCount = entryCount;
-	}
-
-	@Override
-	public int getStartEntryNo() {
-		return _startEntryNo;
-	}
-
-	@Override
-	public void setStartEntryNo(int startEntryNo) {
-		_startEntryNo = startEntryNo;
-	}
-
-	@Override
-	public int getEndEntryNo() {
-		return _endEntryNo;
-	}
-
-	@Override
-	public void setEndEntryNo(int endEntryNo) {
-		_endEntryNo = endEntryNo;
-	}
-
-	@Override
-	public String getStructuredData() {
-		if (_structuredData == null) {
-			return "";
-		}
-		else {
-			return _structuredData;
-		}
-	}
-
-	@Override
-	public void setStructuredData(String structuredData) {
-		_structuredData = structuredData;
+	public void setData(String data) {
+		_data = data;
 	}
 
 	@Override
@@ -1387,128 +1030,6 @@ public class StructuredDataModelImpl
 	}
 
 	@Override
-	public String[] getAvailableLanguageIds() {
-		Set<String> availableLanguageIds = new TreeSet<String>();
-
-		Map<Locale, String> dataSetDisplayNameMap = getDataSetDisplayNameMap();
-
-		for (Map.Entry<Locale, String> entry :
-				dataSetDisplayNameMap.entrySet()) {
-
-			Locale locale = entry.getKey();
-			String value = entry.getValue();
-
-			if (Validator.isNotNull(value)) {
-				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
-			}
-		}
-
-		Map<Locale, String> dataTypeDisplayNameMap =
-			getDataTypeDisplayNameMap();
-
-		for (Map.Entry<Locale, String> entry :
-				dataTypeDisplayNameMap.entrySet()) {
-
-			Locale locale = entry.getKey();
-			String value = entry.getValue();
-
-			if (Validator.isNotNull(value)) {
-				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
-			}
-		}
-
-		Map<Locale, String> dataSetFolderNameMap = getDataSetFolderNameMap();
-
-		for (Map.Entry<Locale, String> entry :
-				dataSetFolderNameMap.entrySet()) {
-
-			Locale locale = entry.getKey();
-			String value = entry.getValue();
-
-			if (Validator.isNotNull(value)) {
-				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
-			}
-		}
-
-		return availableLanguageIds.toArray(
-			new String[availableLanguageIds.size()]);
-	}
-
-	@Override
-	public String getDefaultLanguageId() {
-		String xml = getDataSetDisplayName();
-
-		if (xml == null) {
-			return "";
-		}
-
-		Locale defaultLocale = LocaleUtil.getSiteDefault();
-
-		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
-	}
-
-	@Override
-	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(
-			getDefaultLanguageId());
-
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
-			getAvailableLanguageIds());
-
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
-			StructuredData.class.getName(), getPrimaryKey(), defaultLocale,
-			availableLocales);
-
-		prepareLocalizedFieldsForImport(defaultImportLocale);
-	}
-
-	@Override
-	@SuppressWarnings("unused")
-	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
-		throws LocaleException {
-
-		Locale defaultLocale = LocaleUtil.getSiteDefault();
-
-		String modelDefaultLanguageId = getDefaultLanguageId();
-
-		String dataSetDisplayName = getDataSetDisplayName(defaultLocale);
-
-		if (Validator.isNull(dataSetDisplayName)) {
-			setDataSetDisplayName(
-				getDataSetDisplayName(modelDefaultLanguageId), defaultLocale);
-		}
-		else {
-			setDataSetDisplayName(
-				getDataSetDisplayName(defaultLocale), defaultLocale,
-				defaultLocale);
-		}
-
-		String dataTypeDisplayName = getDataTypeDisplayName(defaultLocale);
-
-		if (Validator.isNull(dataTypeDisplayName)) {
-			setDataTypeDisplayName(
-				getDataTypeDisplayName(modelDefaultLanguageId), defaultLocale);
-		}
-		else {
-			setDataTypeDisplayName(
-				getDataTypeDisplayName(defaultLocale), defaultLocale,
-				defaultLocale);
-		}
-
-		String dataSetFolderName = getDataSetFolderName(defaultLocale);
-
-		if (Validator.isNull(dataSetFolderName)) {
-			setDataSetFolderName(
-				getDataSetFolderName(modelDefaultLanguageId), defaultLocale);
-		}
-		else {
-			setDataSetFolderName(
-				getDataSetFolderName(defaultLocale), defaultLocale,
-				defaultLocale);
-		}
-	}
-
-	@Override
 	public StructuredData toEscapedModel() {
 		if (_escapedModel == null) {
 			Function<InvocationHandler, StructuredData>
@@ -1539,19 +1060,17 @@ public class StructuredDataModelImpl
 		structuredDataImpl.setStatusByUserId(getStatusByUserId());
 		structuredDataImpl.setStatusByUserName(getStatusByUserName());
 		structuredDataImpl.setStatusDate(getStatusDate());
+		structuredDataImpl.setDataCollectionId(getDataCollectionId());
 		structuredDataImpl.setDataSetId(getDataSetId());
-		structuredDataImpl.setDataSetDisplayName(getDataSetDisplayName());
 		structuredDataImpl.setDataTypeId(getDataTypeId());
-		structuredDataImpl.setDataTypeDisplayName(getDataTypeDisplayName());
-		structuredDataImpl.setDataSetFolderId(getDataSetFolderId());
-		structuredDataImpl.setDataSetFolderName(getDataSetFolderName());
-		structuredDataImpl.setRecordType(getRecordType());
-		structuredDataImpl.setRecordDelimiter(getRecordDelimiter());
-		structuredDataImpl.setRecordFormat(getRecordFormat());
-		structuredDataImpl.setEntryCount(getEntryCount());
-		structuredDataImpl.setStartEntryNo(getStartEntryNo());
-		structuredDataImpl.setEndEntryNo(getEndEntryNo());
-		structuredDataImpl.setStructuredData(getStructuredData());
+		structuredDataImpl.setMultiple(isMultiple());
+		structuredDataImpl.setStartIndex(getStartIndex());
+		structuredDataImpl.setCount(getCount());
+		structuredDataImpl.setFreezed(isFreezed());
+		structuredDataImpl.setVerified(isVerified());
+		structuredDataImpl.setComments(isComments());
+		structuredDataImpl.setHistory(isHistory());
+		structuredDataImpl.setData(getData());
 
 		structuredDataImpl.resetOriginalValues();
 
@@ -1631,6 +1150,10 @@ public class StructuredDataModelImpl
 
 		_setOriginalStatus = false;
 
+		_originalDataCollectionId = _dataCollectionId;
+
+		_setOriginalDataCollectionId = false;
+
 		_originalDataSetId = _dataSetId;
 
 		_setOriginalDataSetId = false;
@@ -1638,10 +1161,6 @@ public class StructuredDataModelImpl
 		_originalDataTypeId = _dataTypeId;
 
 		_setOriginalDataTypeId = false;
-
-		_originalDataSetFolderId = _dataSetFolderId;
-
-		_setOriginalDataSetFolderId = false;
 
 		_columnBitmask = 0;
 	}
@@ -1714,77 +1233,32 @@ public class StructuredDataModelImpl
 			structuredDataCacheModel.statusDate = Long.MIN_VALUE;
 		}
 
+		structuredDataCacheModel.dataCollectionId = getDataCollectionId();
+
 		structuredDataCacheModel.dataSetId = getDataSetId();
-
-		structuredDataCacheModel.dataSetDisplayName = getDataSetDisplayName();
-
-		String dataSetDisplayName = structuredDataCacheModel.dataSetDisplayName;
-
-		if ((dataSetDisplayName != null) &&
-			(dataSetDisplayName.length() == 0)) {
-
-			structuredDataCacheModel.dataSetDisplayName = null;
-		}
 
 		structuredDataCacheModel.dataTypeId = getDataTypeId();
 
-		structuredDataCacheModel.dataTypeDisplayName = getDataTypeDisplayName();
+		structuredDataCacheModel.multiple = isMultiple();
 
-		String dataTypeDisplayName =
-			structuredDataCacheModel.dataTypeDisplayName;
+		structuredDataCacheModel.startIndex = getStartIndex();
 
-		if ((dataTypeDisplayName != null) &&
-			(dataTypeDisplayName.length() == 0)) {
+		structuredDataCacheModel.count = getCount();
 
-			structuredDataCacheModel.dataTypeDisplayName = null;
-		}
+		structuredDataCacheModel.freezed = isFreezed();
 
-		structuredDataCacheModel.dataSetFolderId = getDataSetFolderId();
+		structuredDataCacheModel.verified = isVerified();
 
-		structuredDataCacheModel.dataSetFolderName = getDataSetFolderName();
+		structuredDataCacheModel.comments = isComments();
 
-		String dataSetFolderName = structuredDataCacheModel.dataSetFolderName;
+		structuredDataCacheModel.history = isHistory();
 
-		if ((dataSetFolderName != null) && (dataSetFolderName.length() == 0)) {
-			structuredDataCacheModel.dataSetFolderName = null;
-		}
+		structuredDataCacheModel.data = getData();
 
-		structuredDataCacheModel.recordType = getRecordType();
+		String data = structuredDataCacheModel.data;
 
-		String recordType = structuredDataCacheModel.recordType;
-
-		if ((recordType != null) && (recordType.length() == 0)) {
-			structuredDataCacheModel.recordType = null;
-		}
-
-		structuredDataCacheModel.recordDelimiter = getRecordDelimiter();
-
-		String recordDelimiter = structuredDataCacheModel.recordDelimiter;
-
-		if ((recordDelimiter != null) && (recordDelimiter.length() == 0)) {
-			structuredDataCacheModel.recordDelimiter = null;
-		}
-
-		structuredDataCacheModel.recordFormat = getRecordFormat();
-
-		String recordFormat = structuredDataCacheModel.recordFormat;
-
-		if ((recordFormat != null) && (recordFormat.length() == 0)) {
-			structuredDataCacheModel.recordFormat = null;
-		}
-
-		structuredDataCacheModel.entryCount = getEntryCount();
-
-		structuredDataCacheModel.startEntryNo = getStartEntryNo();
-
-		structuredDataCacheModel.endEntryNo = getEndEntryNo();
-
-		structuredDataCacheModel.structuredData = getStructuredData();
-
-		String structuredData = structuredDataCacheModel.structuredData;
-
-		if ((structuredData != null) && (structuredData.length() == 0)) {
-			structuredDataCacheModel.structuredData = null;
+		if ((data != null) && (data.length() == 0)) {
+			structuredDataCacheModel.data = null;
 		}
 
 		return structuredDataCacheModel;
@@ -1904,28 +1378,23 @@ public class StructuredDataModelImpl
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
+	private long _dataCollectionId;
+	private long _originalDataCollectionId;
+	private boolean _setOriginalDataCollectionId;
 	private long _dataSetId;
 	private long _originalDataSetId;
 	private boolean _setOriginalDataSetId;
-	private String _dataSetDisplayName;
-	private String _dataSetDisplayNameCurrentLanguageId;
 	private long _dataTypeId;
 	private long _originalDataTypeId;
 	private boolean _setOriginalDataTypeId;
-	private String _dataTypeDisplayName;
-	private String _dataTypeDisplayNameCurrentLanguageId;
-	private long _dataSetFolderId;
-	private long _originalDataSetFolderId;
-	private boolean _setOriginalDataSetFolderId;
-	private String _dataSetFolderName;
-	private String _dataSetFolderNameCurrentLanguageId;
-	private String _recordType;
-	private String _recordDelimiter;
-	private String _recordFormat;
-	private int _entryCount;
-	private int _startEntryNo;
-	private int _endEntryNo;
-	private String _structuredData;
+	private boolean _multiple;
+	private long _startIndex;
+	private int _count;
+	private boolean _freezed;
+	private boolean _verified;
+	private boolean _comments;
+	private boolean _history;
+	private String _data;
 	private long _columnBitmask;
 	private StructuredData _escapedModel;
 

@@ -17,6 +17,7 @@ package com.sx.icecap.model;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,7 +31,26 @@ public class DataStructureSoap implements Serializable {
 	public static DataStructureSoap toSoapModel(DataStructure model) {
 		DataStructureSoap soapModel = new DataStructureSoap();
 
-		soapModel.setDataTypeId(model.getDataTypeId());
+		soapModel.setUuid(model.getUuid());
+		soapModel.setCompanyId(model.getCompanyId());
+		soapModel.setGroupId(model.getGroupId());
+		soapModel.setUserId(model.getUserId());
+		soapModel.setUserName(model.getUserName());
+		soapModel.setCreateDate(model.getCreateDate());
+		soapModel.setModifiedDate(model.getModifiedDate());
+		soapModel.setLastPublishDate(model.getLastPublishDate());
+		soapModel.setStatus(model.getStatus());
+		soapModel.setStatusByUserId(model.getStatusByUserId());
+		soapModel.setStatusByUserName(model.getStatusByUserName());
+		soapModel.setStatusDate(model.getStatusDate());
+		soapModel.setDataStructureId(model.getDataStructureId());
+		soapModel.setDataStructureName(model.getDataStructureName());
+		soapModel.setDataStructureVersion(model.getDataStructureVersion());
+		soapModel.setDisplayName(model.getDisplayName());
+		soapModel.setDescription(model.getDescription());
+		soapModel.setFreezable(model.isFreezable());
+		soapModel.setVerifiable(model.isVerifiable());
+		soapModel.setCommentable(model.isCommentable());
 		soapModel.setStructure(model.getStructure());
 
 		return soapModel;
@@ -78,19 +98,183 @@ public class DataStructureSoap implements Serializable {
 	}
 
 	public long getPrimaryKey() {
-		return _dataTypeId;
+		return _dataStructureId;
 	}
 
 	public void setPrimaryKey(long pk) {
-		setDataTypeId(pk);
+		setDataStructureId(pk);
 	}
 
-	public long getDataTypeId() {
-		return _dataTypeId;
+	public String getUuid() {
+		return _uuid;
 	}
 
-	public void setDataTypeId(long dataTypeId) {
-		_dataTypeId = dataTypeId;
+	public void setUuid(String uuid) {
+		_uuid = uuid;
+	}
+
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
+	}
+
+	public long getUserId() {
+		return _userId;
+	}
+
+	public void setUserId(long userId) {
+		_userId = userId;
+	}
+
+	public String getUserName() {
+		return _userName;
+	}
+
+	public void setUserName(String userName) {
+		_userName = userName;
+	}
+
+	public Date getCreateDate() {
+		return _createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		_createDate = createDate;
+	}
+
+	public Date getModifiedDate() {
+		return _modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		_modifiedDate = modifiedDate;
+	}
+
+	public Date getLastPublishDate() {
+		return _lastPublishDate;
+	}
+
+	public void setLastPublishDate(Date lastPublishDate) {
+		_lastPublishDate = lastPublishDate;
+	}
+
+	public int getStatus() {
+		return _status;
+	}
+
+	public void setStatus(int status) {
+		_status = status;
+	}
+
+	public long getStatusByUserId() {
+		return _statusByUserId;
+	}
+
+	public void setStatusByUserId(long statusByUserId) {
+		_statusByUserId = statusByUserId;
+	}
+
+	public String getStatusByUserName() {
+		return _statusByUserName;
+	}
+
+	public void setStatusByUserName(String statusByUserName) {
+		_statusByUserName = statusByUserName;
+	}
+
+	public Date getStatusDate() {
+		return _statusDate;
+	}
+
+	public void setStatusDate(Date statusDate) {
+		_statusDate = statusDate;
+	}
+
+	public long getDataStructureId() {
+		return _dataStructureId;
+	}
+
+	public void setDataStructureId(long dataStructureId) {
+		_dataStructureId = dataStructureId;
+	}
+
+	public String getDataStructureName() {
+		return _dataStructureName;
+	}
+
+	public void setDataStructureName(String dataStructureName) {
+		_dataStructureName = dataStructureName;
+	}
+
+	public String getDataStructureVersion() {
+		return _dataStructureVersion;
+	}
+
+	public void setDataStructureVersion(String dataStructureVersion) {
+		_dataStructureVersion = dataStructureVersion;
+	}
+
+	public String getDisplayName() {
+		return _displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		_displayName = displayName;
+	}
+
+	public String getDescription() {
+		return _description;
+	}
+
+	public void setDescription(String description) {
+		_description = description;
+	}
+
+	public boolean getFreezable() {
+		return _freezable;
+	}
+
+	public boolean isFreezable() {
+		return _freezable;
+	}
+
+	public void setFreezable(boolean freezable) {
+		_freezable = freezable;
+	}
+
+	public boolean getVerifiable() {
+		return _verifiable;
+	}
+
+	public boolean isVerifiable() {
+		return _verifiable;
+	}
+
+	public void setVerifiable(boolean verifiable) {
+		_verifiable = verifiable;
+	}
+
+	public boolean getCommentable() {
+		return _commentable;
+	}
+
+	public boolean isCommentable() {
+		return _commentable;
+	}
+
+	public void setCommentable(boolean commentable) {
+		_commentable = commentable;
 	}
 
 	public String getStructure() {
@@ -101,7 +285,26 @@ public class DataStructureSoap implements Serializable {
 		_structure = structure;
 	}
 
-	private long _dataTypeId;
+	private String _uuid;
+	private long _companyId;
+	private long _groupId;
+	private long _userId;
+	private String _userName;
+	private Date _createDate;
+	private Date _modifiedDate;
+	private Date _lastPublishDate;
+	private int _status;
+	private long _statusByUserId;
+	private String _statusByUserName;
+	private Date _statusDate;
+	private long _dataStructureId;
+	private String _dataStructureName;
+	private String _dataStructureVersion;
+	private String _displayName;
+	private String _description;
+	private boolean _freezable;
+	private boolean _verifiable;
+	private boolean _commentable;
 	private String _structure;
 
 }

@@ -35,12 +35,15 @@ public class StructuredDataLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.StructuredData addStructuredData(
-			long dataSetId, long dataTypeId, String data, int status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			boolean multiple, long startIndex, int count, boolean freezed,
+			boolean verified, boolean comments, boolean history, String data,
+			int status, com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _structuredDataLocalService.addStructuredData(
-			dataSetId, dataTypeId, data, status, sc);
+			dataCollectionId, dataSetId, dataTypeId, multiple, startIndex,
+			count, freezed, verified, comments, history, data, status, sc);
 	}
 
 	/**
@@ -58,6 +61,23 @@ public class StructuredDataLocalServiceWrapper
 		com.sx.icecap.model.StructuredData structuredData) {
 
 		return _structuredDataLocalService.addStructuredData(structuredData);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONArray convertListToJSONArray(
+			java.util.List<com.sx.icecap.model.StructuredData> list)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return _structuredDataLocalService.convertListToJSONArray(list);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject convertModelToJSONObject(
+			com.sx.icecap.model.StructuredData structuredData)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return _structuredDataLocalService.convertModelToJSONObject(
+			structuredData);
 	}
 
 	@Override
@@ -473,15 +493,6 @@ public class StructuredDataLocalServiceWrapper
 
 		return _structuredDataLocalService.getStructuredDataByUuidAndGroupId(
 			uuid, groupId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.json.JSONObject getStructuredDataJSON(
-			long structuredDataId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _structuredDataLocalService.getStructuredDataJSON(
-			structuredDataId);
 	}
 
 	/**
@@ -930,12 +941,17 @@ public class StructuredDataLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.StructuredData updateStructuredData(
-			long structuredDataId, long dataSetId, long dataTypeId, String data,
-			int status, com.liferay.portal.kernel.service.ServiceContext sc)
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long dataTypeId, boolean multiple, long startIndex, int count,
+			boolean freezed, boolean verified, boolean comments,
+			boolean history, String data, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _structuredDataLocalService.updateStructuredData(
-			structuredDataId, dataSetId, dataTypeId, data, status, sc);
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, multiple,
+			startIndex, count, freezed, verified, comments, history, data,
+			status, sc);
 	}
 
 	/**

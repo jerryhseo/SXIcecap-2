@@ -685,19 +685,19 @@ public interface ParameterModel
 	public void setSynonyms(String synonyms);
 
 	/**
-	 * Returns the attributes json of this parameter.
+	 * Returns the type properties of this parameter.
 	 *
-	 * @return the attributes json of this parameter
+	 * @return the type properties of this parameter
 	 */
 	@AutoEscape
-	public String getAttributesJSON();
+	public String getTypeProperties();
 
 	/**
-	 * Sets the attributes json of this parameter.
+	 * Sets the type properties of this parameter.
 	 *
-	 * @param attributesJSON the attributes json of this parameter
+	 * @param typeProperties the type properties of this parameter
 	 */
-	public void setAttributesJSON(String attributesJSON);
+	public void setTypeProperties(String typeProperties);
 
 	/**
 	 * Returns the standard of this parameter.

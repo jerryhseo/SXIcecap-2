@@ -43,19 +43,17 @@ public class StructuredDataSoap implements Serializable {
 		soapModel.setStatusByUserId(model.getStatusByUserId());
 		soapModel.setStatusByUserName(model.getStatusByUserName());
 		soapModel.setStatusDate(model.getStatusDate());
+		soapModel.setDataCollectionId(model.getDataCollectionId());
 		soapModel.setDataSetId(model.getDataSetId());
-		soapModel.setDataSetDisplayName(model.getDataSetDisplayName());
 		soapModel.setDataTypeId(model.getDataTypeId());
-		soapModel.setDataTypeDisplayName(model.getDataTypeDisplayName());
-		soapModel.setDataSetFolderId(model.getDataSetFolderId());
-		soapModel.setDataSetFolderName(model.getDataSetFolderName());
-		soapModel.setRecordType(model.getRecordType());
-		soapModel.setRecordDelimiter(model.getRecordDelimiter());
-		soapModel.setRecordFormat(model.getRecordFormat());
-		soapModel.setEntryCount(model.getEntryCount());
-		soapModel.setStartEntryNo(model.getStartEntryNo());
-		soapModel.setEndEntryNo(model.getEndEntryNo());
-		soapModel.setStructuredData(model.getStructuredData());
+		soapModel.setMultiple(model.isMultiple());
+		soapModel.setStartIndex(model.getStartIndex());
+		soapModel.setCount(model.getCount());
+		soapModel.setFreezed(model.isFreezed());
+		soapModel.setVerified(model.isVerified());
+		soapModel.setComments(model.isComments());
+		soapModel.setHistory(model.isHistory());
+		soapModel.setData(model.getData());
 
 		return soapModel;
 	}
@@ -210,20 +208,20 @@ public class StructuredDataSoap implements Serializable {
 		_statusDate = statusDate;
 	}
 
+	public long getDataCollectionId() {
+		return _dataCollectionId;
+	}
+
+	public void setDataCollectionId(long dataCollectionId) {
+		_dataCollectionId = dataCollectionId;
+	}
+
 	public long getDataSetId() {
 		return _dataSetId;
 	}
 
 	public void setDataSetId(long dataSetId) {
 		_dataSetId = dataSetId;
-	}
-
-	public String getDataSetDisplayName() {
-		return _dataSetDisplayName;
-	}
-
-	public void setDataSetDisplayName(String dataSetDisplayName) {
-		_dataSetDisplayName = dataSetDisplayName;
 	}
 
 	public long getDataTypeId() {
@@ -234,84 +232,88 @@ public class StructuredDataSoap implements Serializable {
 		_dataTypeId = dataTypeId;
 	}
 
-	public String getDataTypeDisplayName() {
-		return _dataTypeDisplayName;
+	public boolean getMultiple() {
+		return _multiple;
 	}
 
-	public void setDataTypeDisplayName(String dataTypeDisplayName) {
-		_dataTypeDisplayName = dataTypeDisplayName;
+	public boolean isMultiple() {
+		return _multiple;
 	}
 
-	public long getDataSetFolderId() {
-		return _dataSetFolderId;
+	public void setMultiple(boolean multiple) {
+		_multiple = multiple;
 	}
 
-	public void setDataSetFolderId(long dataSetFolderId) {
-		_dataSetFolderId = dataSetFolderId;
+	public long getStartIndex() {
+		return _startIndex;
 	}
 
-	public String getDataSetFolderName() {
-		return _dataSetFolderName;
+	public void setStartIndex(long startIndex) {
+		_startIndex = startIndex;
 	}
 
-	public void setDataSetFolderName(String dataSetFolderName) {
-		_dataSetFolderName = dataSetFolderName;
+	public int getCount() {
+		return _count;
 	}
 
-	public String getRecordType() {
-		return _recordType;
+	public void setCount(int count) {
+		_count = count;
 	}
 
-	public void setRecordType(String recordType) {
-		_recordType = recordType;
+	public boolean getFreezed() {
+		return _freezed;
 	}
 
-	public String getRecordDelimiter() {
-		return _recordDelimiter;
+	public boolean isFreezed() {
+		return _freezed;
 	}
 
-	public void setRecordDelimiter(String recordDelimiter) {
-		_recordDelimiter = recordDelimiter;
+	public void setFreezed(boolean freezed) {
+		_freezed = freezed;
 	}
 
-	public String getRecordFormat() {
-		return _recordFormat;
+	public boolean getVerified() {
+		return _verified;
 	}
 
-	public void setRecordFormat(String recordFormat) {
-		_recordFormat = recordFormat;
+	public boolean isVerified() {
+		return _verified;
 	}
 
-	public int getEntryCount() {
-		return _entryCount;
+	public void setVerified(boolean verified) {
+		_verified = verified;
 	}
 
-	public void setEntryCount(int entryCount) {
-		_entryCount = entryCount;
+	public boolean getComments() {
+		return _comments;
 	}
 
-	public int getStartEntryNo() {
-		return _startEntryNo;
+	public boolean isComments() {
+		return _comments;
 	}
 
-	public void setStartEntryNo(int startEntryNo) {
-		_startEntryNo = startEntryNo;
+	public void setComments(boolean comments) {
+		_comments = comments;
 	}
 
-	public int getEndEntryNo() {
-		return _endEntryNo;
+	public boolean getHistory() {
+		return _history;
 	}
 
-	public void setEndEntryNo(int endEntryNo) {
-		_endEntryNo = endEntryNo;
+	public boolean isHistory() {
+		return _history;
 	}
 
-	public String getStructuredData() {
-		return _structuredData;
+	public void setHistory(boolean history) {
+		_history = history;
 	}
 
-	public void setStructuredData(String structuredData) {
-		_structuredData = structuredData;
+	public String getData() {
+		return _data;
+	}
+
+	public void setData(String data) {
+		_data = data;
 	}
 
 	private String _uuid;
@@ -326,18 +328,16 @@ public class StructuredDataSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
+	private long _dataCollectionId;
 	private long _dataSetId;
-	private String _dataSetDisplayName;
 	private long _dataTypeId;
-	private String _dataTypeDisplayName;
-	private long _dataSetFolderId;
-	private String _dataSetFolderName;
-	private String _recordType;
-	private String _recordDelimiter;
-	private String _recordFormat;
-	private int _entryCount;
-	private int _startEntryNo;
-	private int _endEntryNo;
-	private String _structuredData;
+	private boolean _multiple;
+	private long _startIndex;
+	private int _count;
+	private boolean _freezed;
+	private boolean _verified;
+	private boolean _comments;
+	private boolean _history;
+	private String _data;
 
 }

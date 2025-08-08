@@ -1,23 +1,11 @@
 package com.sx.icecap.constant;
 
 public class Constant {
-	public static final String TERM_RESOURCE_NAME = "com.sx.icecap";
-	public static final String TERM_ELEMENTS_DEFAULT_EVENT_HANDLER =
-			"TERM_ELEMENTS_DEFAULT_EVENT_HANDLER";
-
-	public static final String TERM_ASSET_ENTRY = "TERM_ASSET_ENTRY";
-	public static final String TERM_MANAGEMENT_TOOLBAR_COMPONENT_ID = "termManagementToolbar";
-
-	public static final String TERM_PORTLET_INSTANCE_CONFIGURATION =
-		"TERM_PORTLET_INSTANCE_CONFIGURATION";
+	public static final String ICECAP_RESOURCE_NAME = "com.sx.icecap";
 	
-	public static final String TERM_SEARCH_CONTAINER_ID="searchedTermsContainer";
-	
-	public static final String DATATYPE_RESOURCE_NAME = "com.sx.icecap";
 	public static final String DATATYPE_ELEMENTS_DEFAULT_EVENT_HANDLER =
 			"DATATYPE_ELEMENTS_DEFAULT_EVENT_HANDLER";
 
-	public static final String DATATYPE_CLASS_NAME = "com.sx.icecap.model.DataType";
 	public static final String DATATYPE_ASSET_ENTRY = "DATATYPE_ASSET_ENTRY";
 	public static final String DATATYPE_MANAGEMENT_TOOLBAR_COMPONENT_ID = "dataTypeManagementToolbar";
 
@@ -26,11 +14,9 @@ public class Constant {
 	
 	public static final String DATATYPE_SEARCH_CONTAINER_ID="searchedDataTypesContainer";
 	
-	public static final String STRUCTURED_DATA_RESOURCE_NAME = "com.sx.icecap";
 	public static final String STRUCTURED_DATA_ELEMENTS_DEFAULT_EVENT_HANDLER =
 			"STRUCTURED_DATA_ELEMENTS_DEFAULT_EVENT_HANDLER";
 
-	public static final String STRUCTURED_DATA_CLASS_NAME = "com.sx.icecap.model.StructuredData";
 	public static final String STRUCTURED_DATA_ASSET_ENTRY = "STRUCTURED_DATA_ASSET_ENTRY";
 	public static final String STRUCTURED_DATA_MANAGEMENT_TOOLBAR_COMPONENT_ID = "structuredDataManagementToolbar";
 

@@ -76,4 +76,9 @@ public interface Parameter extends ParameterModel, PersistedModel {
 
 		};
 
+	public com.liferay.portal.kernel.json.JSONObject toJSON();
+
+	public com.liferay.portal.kernel.json.JSONObject toJSON(
+		java.util.Locale locale);
+
 }

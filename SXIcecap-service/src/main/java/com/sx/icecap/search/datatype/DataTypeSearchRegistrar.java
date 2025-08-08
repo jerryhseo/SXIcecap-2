@@ -1,13 +1,10 @@
 package com.sx.icecap.search.datatype;
 
 import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 import com.liferay.portal.search.spi.model.result.contributor.ModelSummaryContributor;
-import com.sx.debug.Debug;
-import com.sx.icecap.constant.DataStructureProperty;
-import com.sx.icecap.constant.DataTypeProperty;
+import com.sx.icecap.constant.DataTypeProperties;
 import com.sx.icecap.model.DataType;
 
 import org.osgi.framework.BundleContext;
@@ -35,11 +32,10 @@ public class DataTypeSearchRegistrar {
 										Field.ENTRY_CLASS_PK,
 										Field.UID,
 										Field.SCOPE_GROUP_ID,
-										DataTypeProperty.DATATYPE_NAME,
-										DataStructureProperty.PARAMS); 
+										DataTypeProperties.DATATYPE_NAME); 
 								modelSearchDefinition.setDefaultSelectedLocalizedFieldNames(
-										DataTypeProperty.DESCRIPTION,
-										DataTypeProperty.DISPLAY_NAME);
+										DataTypeProperties.DESCRIPTION,
+										DataTypeProperties.DISPLAY_NAME);
 
 								modelSearchDefinition.setModelIndexWriteContributor(
 										_modelIndexWriterContributor);

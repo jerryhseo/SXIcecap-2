@@ -3,7 +3,7 @@ package com.sx.icecap.search.datatype;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.search.spi.model.result.contributor.ModelSummaryContributor;
-import com.sx.icecap.constant.DataTypeProperty;
+import com.sx.icecap.constant.DataTypeProperties;
 
 import java.util.Locale;
 
@@ -27,10 +27,10 @@ public class DataTypeModelSummaryContributor implements ModelSummaryContributor 
 
 	private Summary createSummary(Document document, Locale locale) {
 //		System.out.println("DataTypeModelSummaryContributor: createSummary");
-		String title = document.get(DataTypeProperty.DISPLAY_NAME, DataTypeProperty.DATATYPE_VERSION);
-		String content = document.get(
-				DataTypeProperty.DATATYPE_NAME +
-				DataTypeProperty.DESCRIPTION
+		String title = document.get(locale, DataTypeProperties.DISPLAY_NAME) + " v." +
+							  document.get(DataTypeProperties.DATATYPE_VERSION);
+		String content = document.get(locale, 
+				DataTypeProperties.DESCRIPTION
 		);
  
 		return new Summary(locale, title, content);

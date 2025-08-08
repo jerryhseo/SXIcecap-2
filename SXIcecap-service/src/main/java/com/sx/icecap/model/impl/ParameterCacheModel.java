@@ -106,8 +106,8 @@ public class ParameterCacheModel
 		sb.append(tooltip);
 		sb.append(", synonyms=");
 		sb.append(synonyms);
-		sb.append(", attributesJSON=");
-		sb.append(attributesJSON);
+		sb.append(", typeProperties=");
+		sb.append(typeProperties);
 		sb.append(", standard=");
 		sb.append(standard);
 		sb.append("}");
@@ -233,11 +233,11 @@ public class ParameterCacheModel
 			parameterImpl.setSynonyms(synonyms);
 		}
 
-		if (attributesJSON == null) {
-			parameterImpl.setAttributesJSON("");
+		if (typeProperties == null) {
+			parameterImpl.setTypeProperties("");
 		}
 		else {
-			parameterImpl.setAttributesJSON(attributesJSON);
+			parameterImpl.setTypeProperties(typeProperties);
 		}
 
 		parameterImpl.setStandard(standard);
@@ -276,7 +276,7 @@ public class ParameterCacheModel
 		definition = objectInput.readUTF();
 		tooltip = objectInput.readUTF();
 		synonyms = objectInput.readUTF();
-		attributesJSON = objectInput.readUTF();
+		typeProperties = objectInput.readUTF();
 
 		standard = objectInput.readBoolean();
 	}
@@ -378,11 +378,11 @@ public class ParameterCacheModel
 			objectOutput.writeUTF(synonyms);
 		}
 
-		if (attributesJSON == null) {
+		if (typeProperties == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(attributesJSON);
+			objectOutput.writeUTF(typeProperties);
 		}
 
 		objectOutput.writeBoolean(standard);
@@ -409,7 +409,7 @@ public class ParameterCacheModel
 	public String definition;
 	public String tooltip;
 	public String synonyms;
-	public String attributesJSON;
+	public String typeProperties;
 	public boolean standard;
 
 }

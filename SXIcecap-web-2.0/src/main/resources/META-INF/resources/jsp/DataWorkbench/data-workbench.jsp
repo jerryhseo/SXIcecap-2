@@ -24,6 +24,8 @@
 	
 	String portalURL = PortalUtil.getPortalURL(renderRequest);
 	
+	
+	
 	System.out.println("workingPortletId: " + workingPortletId );
 	System.out.println("workingPortletNamespace: " + workingPortletNamespace );
 	System.out.println("workbenchId: " + portletDisplay.getId() );
@@ -55,6 +57,8 @@
 		'<%=WebPortletKey.DATA_WORKBENCH%>',
 		{
 			namespace: '<portlet:namespace/>',
+			groupId: themeDisplay.getScopeGroupId(),
+			userId: themeDisplay.getUserId(),
 			dafaultLanguageId: '<%= defaultLocale.toLanguageTag() %>',
 			currentLanguageId: '<%= locale.toLanguageTag() %>',
 			availableLanguageIds: '<%= String.join( ",", locales.toArray(new String[0]) ) %>', 
@@ -68,15 +72,13 @@
 			baseActionURL: '<%=  baseActionURL %>',
 			baseResourceURL: '<%=  baseResourceURL %>',
 			params: { // initial parameters
-				groupId: themeDisplay.getScopeGroupId(),
-				userId: themeDisplay.getUserId(),
 				backURL: '<%= currentURL %>',
 				workingPortletName: '<%= workingPortletName %>',
 				workingPortletId: '<%= workingPortletId %>',
 				workingPortletNamespace: '<%= workingPortletNamespace %>',
 				workingPortletURL:'<%= workingPortletURL %>',
 				workbenchNamespace: '<portlet:namespace/>',
-				workbenchId: '<%= portletDisplay.getId() %>',
+				workbenchPortletId: '<%= portletDisplay.getId() %>',
 				workingPortletParams: JSON.parse('<%= params %>')
 			}
 		});

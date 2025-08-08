@@ -8541,7 +8541,7 @@ public class ParameterPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
 			ParameterModelImpl.UUID_COLUMN_BITMASK |
-			ParameterModelImpl.CREATEDATE_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
 
 		_finderPathCountByUuid = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8575,7 +8575,7 @@ public class ParameterPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			ParameterModelImpl.UUID_COLUMN_BITMASK |
 			ParameterModelImpl.COMPANYID_COLUMN_BITMASK |
-			ParameterModelImpl.CREATEDATE_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
 
 		_finderPathCountByUuid_C = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8595,7 +8595,7 @@ public class ParameterPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
 			ParameterModelImpl.GROUPID_COLUMN_BITMASK |
-			ParameterModelImpl.CREATEDATE_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
 
 		_finderPathCountByGroupId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8615,7 +8615,7 @@ public class ParameterPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
 			new String[] {Long.class.getName()},
 			ParameterModelImpl.USERID_COLUMN_BITMASK |
-			ParameterModelImpl.CREATEDATE_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
 
 		_finderPathCountByUserId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8635,7 +8635,7 @@ public class ParameterPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByStatus",
 			new String[] {Integer.class.getName()},
 			ParameterModelImpl.STATUS_COLUMN_BITMASK |
-			ParameterModelImpl.CREATEDATE_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
 
 		_finderPathCountByStatus = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8657,7 +8657,7 @@ public class ParameterPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			ParameterModelImpl.GROUPID_COLUMN_BITMASK |
 			ParameterModelImpl.USERID_COLUMN_BITMASK |
-			ParameterModelImpl.CREATEDATE_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
 
 		_finderPathCountByG_U = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8679,7 +8679,7 @@ public class ParameterPersistenceImpl
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			ParameterModelImpl.GROUPID_COLUMN_BITMASK |
 			ParameterModelImpl.STATUS_COLUMN_BITMASK |
-			ParameterModelImpl.CREATEDATE_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
 
 		_finderPathCountByG_S = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8701,7 +8701,7 @@ public class ParameterPersistenceImpl
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			ParameterModelImpl.USERID_COLUMN_BITMASK |
 			ParameterModelImpl.STATUS_COLUMN_BITMASK |
-			ParameterModelImpl.CREATEDATE_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
 
 		_finderPathCountByU_S = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8727,7 +8727,7 @@ public class ParameterPersistenceImpl
 			ParameterModelImpl.GROUPID_COLUMN_BITMASK |
 			ParameterModelImpl.USERID_COLUMN_BITMASK |
 			ParameterModelImpl.STATUS_COLUMN_BITMASK |
-			ParameterModelImpl.CREATEDATE_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
 
 		_finderPathCountByG_U_S = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8749,8 +8749,7 @@ public class ParameterPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, ParameterImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByName",
 			new String[] {String.class.getName()},
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK |
-			ParameterModelImpl.CREATEDATE_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
 
 		_finderPathCountByName = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,

@@ -1,25 +1,330 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { Util } from "../../common/util";
 import { Event, ParamProperty, ParamType } from "../../common/station-x";
 import SXFormField, { SXDualListBox, SXInput, SXLabel } from "../../form/sxform";
 import {
 	AddressParameter,
 	BooleanParameter,
-	DualListParameter,
 	GroupParameter,
-	NumericParameter,
 	Parameter,
-	SelectParameter,
-	StringParameter
+	SelectParameter
 } from "../../parameter/parameter";
 import { ClayButtonWithIcon } from "@clayui/button";
 import { Body, Button, Cell, Head, Icon, Table } from "@clayui/core";
-import DropDown from "@clayui/drop-down";
-import LocalizedInput from "@clayui/localized-input";
 import Form, { ClayInput, ClaySelectWithOption } from "@clayui/form";
 import { SXModalDialog } from "../../modal/sxmodal";
-import { Row } from "@clayui/core/lib/table/Row";
-import SXDropdown from "../../modal/sxdropdown";
+import SXActionDropdown from "../../modal/sxdropdown";
+
+class SXGroupBuilder extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.groupParam = props.groupParam;
+
+		this.namespace = this.groupParam.namespace;
+		this.languageId = this.groupParam.languageId;
+		this.availableLanguageIds = this.groupParam.availableLanguageIds;
+		this.spritemap = props.spritemap;
+		this.availableParamTypes = props.availableParamTypes;
+		this.memberDisplayType = props.memberDisplayType;
+
+		this.formId = this.namespace + "groupBuilder";
+
+		this.state = {
+			selectedMember: this.groupParam.getMember(0)
+		};
+
+		this.memberReadyTypes = [
+			{
+				label: Util.translate("select-to-add-member"),
+				value: ""
+			},
+			...this.availableParamTypes.map((paramType) => ({
+				label: paramType,
+				value: paramType
+			}))
+		];
+
+		this.fieldMemberCode = Parameter.createParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			ParamType.STRING,
+			{
+				paramName: "memberCode",
+				displayName: Util.getTranslationObject(this.languageId, "member-code"),
+				tooltip: Util.getTranslationObject(this.languageId, "member-code-tooltip"),
+				placeholder: Util.getTranslationObject(this.languageId, "code-name-for-member"),
+				value: this.state.selectedMember ? this.state.selectedMember.paramName : ""
+			}
+		);
+		this.fieldMemberDisplayName = Parameter.createParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			ParamType.STRING,
+			{
+				paramName: "memberDisplayName",
+				displayName: Util.getTranslationObject(this.languageId, "display-name"),
+				tooltip: Util.getTranslationObject(this.languageId, "display-name-tooltip"),
+				placeholder: Util.getTranslationObject(this.languageId, "translation-for-display-name"),
+				localized: true,
+				value: this.state.selectedMember ? this.state.selectedMember.displayName : {}
+			}
+		);
+
+		this.copyMember = this.copyMember.bind(this);
+	}
+
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace) {
+			return;
+		} else {
+			if (dataPacket.targetFormId === this.formId) {
+				/*
+				console.log(
+					"SXGroupBuilder SX_FIELD_VALUE_CHANGED: ",
+					dataPacket,
+					this.state.selectedMember,
+					this.fieldMemberCode,
+					this.fieldMemberDisplayName
+				);
+				*/
+
+				switch (dataPacket.paramName) {
+					case "memberCode": {
+						this.state.selectedMember.paramName = this.fieldMemberCode.getValue();
+
+						break;
+					}
+					case "memberDisplayName": {
+						this.state.selectedMember.displayName = this.fieldMemberDisplayName.getValue();
+
+						break;
+					}
+				}
+			} else if (dataPacket.targetFormId === this.groupParam.tagName) {
+			} else {
+				return;
+			}
+		}
+
+		if (this.groupParam.isRendered()) {
+			this.groupParam.fireRefreshPreview();
+		}
+
+		this.forceUpdate();
+	};
+
+	componentDidMount() {
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
+
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
+
+	moveMemberUp = (member) => {
+		this.groupParam.moveMemberUp(member.order);
+
+		this.groupParam.fireRefreshPreview();
+
+		this.forceUpdate();
+	};
+
+	moveMemberDown = (member) => {
+		this.groupParam.moveMemberDown(member.order);
+
+		this.groupParam.fireRefreshPreview();
+
+		this.forceUpdate();
+	};
+
+	removeMember = (member) => {
+		let memberCount = this.groupParam.removeMember({ paramName: member.paramName });
+
+		const firstMember = memberCount > 0 ? this.groupParam.members[0] : null;
+
+		this.setState({ selectedMember: firstMember });
+
+		this.groupParam.fireRefreshPreview();
+
+		this.forceUpdate();
+	};
+
+	copyMember(member) {
+		let copied = this.groupParam.copyMember({ memOrder: member.order - 1 });
+		this.groupParam.fireRefreshPreview();
+
+		this.setState({ selectedMember: copied });
+	}
+
+	handleMemberSelected(member) {
+		this.setState({ selectedMember: member });
+	}
+
+	handleMemberTypeSelect(memberType) {
+		if (!memberType) {
+			return;
+		}
+
+		const member = Parameter.createParameter(
+			this.namespace,
+			this.groupParam.tagName,
+			this.languageId,
+			this.availableLanguageIds,
+			memberType,
+			{
+				paramName: "member_" + Util.randomKey(8),
+				displayType: this.memberDisplayType
+			}
+		);
+
+		this.groupParam.addMember(member);
+
+		member.displayName = Util.getTranslationObject(
+			this.languageId,
+			"member_" + member.order.toString().padStart(2, "0")
+		);
+
+		this.groupParam.fireRefreshPreview();
+
+		this.setState({ selectedMember: member });
+	}
+
+	render() {
+		if (this.state.selectedMember) {
+			this.fieldMemberCode.setValue({ value: this.state.selectedMember.paramName });
+			this.fieldMemberCode.refreshKey();
+			this.fieldMemberDisplayName.setValue({ value: this.state.selectedMember.displayName });
+			this.fieldMemberDisplayName.refreshKey();
+		}
+
+		return (
+			<>
+				<div className="sx-option-builder-title">{Util.translate("group-builder")}</div>
+				<Form.Group className="form-group-sm">
+					<SXLabel
+						label={Util.translate("add-member")}
+						forHtml={this.namespace + "memberType"}
+						tooltip={Util.translate("add-member-tooltip")}
+						spritemap={this.spritemap}
+					/>
+					<div style={{ paddingLeft: "10px" }}>
+						<ClaySelectWithOption
+							aria-label={Util.translate("member-type")}
+							id={this.namespace + "memberType"}
+							options={this.memberReadyTypes}
+							value={this.state.selectedMember ? this.state.selectedMember.paramType : ""}
+							onChange={(e) => {
+								this.handleMemberTypeSelect(e.target.value);
+							}}
+							style={{ paddingLeft: "10px" }}
+							spritemap={this.spritemap}
+						/>
+					</div>
+				</Form.Group>
+				{this.groupParam.memberCount > 0 && (
+					<>
+						{this.fieldMemberCode.renderField({ spritemap: this.spritemap })}
+						{this.fieldMemberDisplayName.renderField({ spritemap: this.spritemap })}
+					</>
+				)}
+				<div className="sx-option-builder-label">
+					<SXLabel
+						label={Util.translate("members")}
+						forHtml=""
+						required={true}
+						style={{
+							fontWeight: "600",
+							fontSize: "0.875rem"
+						}}
+						spritemap={this.spritemap}
+					/>
+				</div>
+				<div
+					className="sx-table"
+					style={{ marginLeft: "10px" }}
+				>
+					<div>
+						{this.groupParam.members.map((member, index) => {
+							let actionItems = [
+								{ id: "copy", name: Util.translate("copy"), symbol: "copy", action: this.copyMember },
+								{
+									id: "delete",
+									name: Util.translate("delete"),
+									symbol: "times",
+									action: this.removeMember
+								}
+							];
+							if (member.order > 1) {
+								actionItems.push({
+									id: "up",
+									name: Util.translate("move-up"),
+									symbol: "caret-top",
+									action: this.moveMemberUp
+								});
+							}
+							if (member.order < this.groupParam.memberCount) {
+								actionItems.push({
+									id: "down",
+									name: Util.translate("move-down"),
+									symbol: "caret-bottom",
+									action: this.moveMemberDown
+								});
+							}
+
+							let className = "autofit-row";
+							if (member === this.state.selectedMember) {
+								className += " sx-option-focused";
+							}
+
+							return (
+								<div
+									key={member.paramName}
+									className={className}
+									onClick={(e) => {
+										this.handleMemberSelected(member);
+									}}
+								>
+									<div
+										className="autofit-col sx-table-cell"
+										style={{ width: "2rem" }}
+									>
+										{member.order}
+									</div>
+									<div
+										className="autofit-col sx-table-cell"
+										style={{ width: "4rem" }}
+									>
+										{member.paramType}
+									</div>
+									<div className="autofit-col autofit-col-expand sx-table-cell">{member.label}</div>
+									<div
+										className="autofit-col sx-table-cell"
+										style={{ width: "auto" }}
+									>
+										<SXActionDropdown
+											key={this.groupParam.memberCount - index}
+											namespace={this.namespace}
+											actionItems={actionItems}
+											dataKey={member}
+											symbol="ellipsis-v"
+											spritemap={this.spritemap}
+										/>
+									</div>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+			</>
+		);
+	}
+}
 
 class SXSelectOptionBuilder extends React.Component {
 	constructor(props) {
@@ -38,181 +343,133 @@ class SXSelectOptionBuilder extends React.Component {
 			symbol: locale.toLowerCase()
 		}));
 
-		this.selectedOption = {};
-		let selectedOptionIndex = -1;
-		if (Util.isNotEmpty(this.workingParam.options)) {
-			this.selectedOption = this.workingParam.getOption(0);
-			selectedOptionIndex = 0;
-		}
-
 		this.state = {
-			selectedOptionIndex: selectedOptionIndex,
-			duplicatedValueState: false
+			selectedOption: this.workingParam.getOption(0) ?? {},
+			optionValueDuplicated: false
 		};
 
 		this.formId = this.namespace + "selectOptionBuilder";
-		this.fieldOptionLabel = new StringParameter(
+		this.fieldOptionLabel = Parameter.createParameter(
 			this.namespace,
 			this.formId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.STRING,
 			{
 				paramName: "optionLabel",
 				localized: true,
 				displayName: Util.getTranslationObject(this.languageId, "option-label"),
 				placeholder: Util.getTranslationObject(this.languageId, "label-for-the-option"),
-				value: this.selectedOption.label
+				value: this.state.selectedOption.label
 			}
 		);
-
-		this.activeDropdown = false;
 	}
 
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = Event.pickUpDataPacket(e, this.namespace, this.formId, "optionLabel");
+
+		if (!dataPacket) {
+			return;
+		}
+
+		//console.log("SXSelectOptionBuilder SX_FIELD_VALUE_CHANGED: ", dataPacket);
+
+		this.state.selectedOption.label = this.fieldOptionLabel.getValue();
+		this.forceUpdate();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = Event.pickUpDataPacket(e, this.namespace, this.formId, "optionLabel");
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			if (!dataPacket) {
-				return;
-			}
-
-			console.log("SXSelectOptionBuilder SX_FIELD_VALUE_CHANGED: ", dataPacket);
-
-			this.selectedOption.label = this.fieldOptionLabel.getValue();
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_POP_ACTION_CLICKED, (e) => {
-			const dataPacket = e.dataPacket;
-
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
-
-			const rowIndex = dataPacket.targetData;
-
-			switch (dataPacket.actionId) {
-				case "copy": {
-					this.copyOption(rowIndex);
-					break;
-				}
-				case "delete": {
-					this.removeOption(rowIndex);
-					break;
-				}
-				case "up": {
-					this.moveUpOption(rowIndex);
-					break;
-				}
-				case "down": {
-					this.moveDownOption(rowIndex);
-					break;
-				}
-			}
-
-			this.activeDropdown = false;
-		});
-
-		Event.uniqueOn(Event.SX_POP_ACTION_CLICKED, (e) => {
-			const dataPacket = e.dataPacket;
-
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
-
-			this.activeDropdown = dataPacket.activeDropdown;
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	handleNewOption() {
-		this.selectedOption = {};
 		this.fieldOptionLabel.setValue({ value: {} });
 		this.fieldOptionLabel.refreshKey();
 
 		this.setState({
-			selectedOptionIndex: -1
+			selectedOption: {}
 		});
 	}
 
 	handleAddOption() {
-		const duplicated = this.workingParam.options.filter((option) => {
-			return option.value === this.selectedOption.value;
-		});
-
-		if (duplicated.length > 0) {
-			this.setState({
-				duplicatedValueState: true
-			});
-
+		const optionLength = this.workingParam.addOption(this.state.selectedOption);
+		if (optionLength.length === 0) {
 			return;
 		}
 
-		const optionLength = this.workingParam.addOption(this.selectedOption);
-
 		this.workingParam.fireRefreshPreview();
 
-		this.setState({
-			selectedOptionIndex: optionLength - 1
-		});
+		this.forceUpdate();
 	}
 
-	copyOption(index) {
+	copyOption = (index) => {
 		this.setState({
-			selectedOptionIndex: this.workingParam.copyOption(index)
+			selectedOption: this.workingParam.copyOption(index)
 		});
 
 		this.workingParam.fireRefreshPreview();
-	}
+	};
 
-	moveUpOption(index) {
-		this.setState({
-			selectedOptionIndex: this.workingParam.moveUpOption(index)
-		});
+	moveOptionUp = (index) => {
+		this.workingParam.moveOptionUp(index);
 
 		this.workingParam.fireRefreshPreview();
-	}
 
-	moveDownOption(index) {
-		this.setState({
-			selectedOptionIndex: this.workingParam.moveDownOption(index)
-		});
+		this.forceUpdate();
+	};
+
+	moveOptionDown = (index) => {
+		this.workingParam.moveOptionDown(index);
 
 		this.workingParam.fireRefreshPreview();
-	}
 
-	removeOption(index) {
+		this.forceUpdate();
+	};
+
+	removeOption = (index) => {
 		let optionCount = this.workingParam.removeOption(index);
-		let selectedOptionIndex = index === optionCount ? optionCount - 1 : index;
-		this.selectedOption = this.workingParam.getOption(selectedOptionIndex);
-
-		this.setState({
-			selectedOptionIndex: selectedOptionIndex
-		});
-
-		this.workingParam.fireRefreshPreview();
-	}
-
-	handleOptionSelected(index) {
-		this.selectedOption = this.workingParam.getOption(index);
-		this.fieldOptionLabel.setValue({ value: this.selectedOption.label });
+		this.fieldOptionLabel.setValue({ value: {} });
 		this.fieldOptionLabel.refreshKey();
 
 		this.setState({
-			selectedOptionIndex: index
+			selectedOption: {}
+		});
+
+		this.workingParam.fireRefreshPreview();
+	};
+
+	handleOptionSelected(option) {
+		this.fieldOptionLabel.setValue({ value: option.label });
+		this.fieldOptionLabel.refreshKey();
+
+		this.setState({
+			selectedOption: option
 		});
 	}
 
 	handleOptionValueChanged(val) {
-		this.selectedOption.value = val;
+		const duplicate = this.workingParam.checkDuplicatedOptionValue(val);
+		if (duplicate) {
+			this.setState({ optionValueDuplicated: true });
 
-		if (this.state.selectedOptionIndex > -1) {
-			this.workingParam.fireRefreshPreview();
+			return;
 		}
+
+		this.state.selectedOption.value = val;
+
+		this.workingParam.fireRefreshPreview();
 
 		this.forceUpdate();
 	}
 
 	render() {
+		this.fieldOptionLabel.setValue({ value: this.state.selectedOption.label });
+		this.fieldOptionLabel.refreshKey();
+
 		return (
 			<>
 				<div className="sx-option-builder-title">{Util.translate("option-builder")}</div>
@@ -231,33 +488,47 @@ class SXSelectOptionBuilder extends React.Component {
 				<div className="sx-option-preview">
 					{this.workingParam.options.map((option, index) => {
 						let actionItems = [
-							{ id: "copy", name: Util.translate("copy"), symbol: "copy" },
-							{ id: "delete", name: Util.translate("delete"), symbol: "times" }
+							{
+								id: "copy", //
+								name: Util.translate("copy"),
+								symbol: "copy",
+								action: this.copyOption
+							},
+							{
+								id: "delete", //
+								name: Util.translate("delete"),
+								symbol: "times",
+								action: this.removeOption
+							}
 						];
 						if (index > 0) {
-							actionItems.push({ id: "up", name: Util.translate("moveUp"), symbol: "order-arrow-up" });
+							actionItems.push({
+								id: "up",
+								name: Util.translate("moveUp"),
+								symbol: "order-arrow-up",
+								action: this.moveOptionUp
+							});
 						}
 						if (index < this.workingParam.options.length - 1) {
 							actionItems.push({
 								id: "down",
 								name: Util.translate("moveDown"),
-								symbol: "order-arrow-down"
+								symbol: "order-arrow-down",
+								action: this.moveOptionDown
 							});
 						}
 
 						return (
 							<div
-								key={index}
+								key={option.value}
 								aria-hidden="undefined"
 								className={
-									option.value === this.selectedOption.value
+									option === this.state.selectedOption
 										? "sx-option-preview-row sx-option-focused"
 										: "sx-option-preview-row"
 								}
 								onClick={(e) => {
-									//e.stopPropagation();
-
-									this.handleOptionSelected(index);
+									this.handleOptionSelected(option);
 								}}
 							>
 								<div
@@ -276,14 +547,12 @@ class SXSelectOptionBuilder extends React.Component {
 									className="sx-option-preview-cell"
 									style={{ width: "auto" }}
 								>
-									<SXDropdown
+									<SXActionDropdown
 										key={this.workingParam.options.length - index}
 										namespace={this.namespace}
-										formId={this.formId}
-										items={actionItems}
-										targetData={index}
+										actionItems={actionItems}
+										dataKey={index}
 										symbol="ellipsis-v"
-										activeDropdown={option === this.selectedOption && this.activeDropdown}
 										spritemap={this.spritemap}
 									/>
 								</div>
@@ -304,7 +573,7 @@ class SXSelectOptionBuilder extends React.Component {
 							this.handleAddOption();
 						}}
 						title={Util.translate("add-option")}
-						disabled={this.state.selectedOptionIndex > -1}
+						disabled={Util.isNotEmpty(this.state.selectedOption)}
 					>
 						<Icon
 							symbol="caret-top"
@@ -332,21 +601,19 @@ class SXSelectOptionBuilder extends React.Component {
 				<Form.Group>
 					<SXLabel
 						label={Util.translate("option-value")}
-						forHtml={this.props.namespace + "_" + "optionValue"}
 						spritemap={this.props.spritemap}
 					/>
 					<ClayInput
 						key={Util.randomKey()}
-						id={this.props.namespace + "_" + "optionValue"}
 						placeholder={Util.translate("option-value")}
-						defaultValue={this.selectedOption.value ?? ""}
+						defaultValue={this.state.selectedOption.value ?? ""}
 						onBlur={(e) => {
 							e.stopPropagation();
 							this.handleOptionValueChanged(e.target.value);
 						}}
 					/>
 				</Form.Group>
-				{this.state.duplicatedValueState && (
+				{this.state.optionValueDuplicated && (
 					<SXModalDialog
 						header={Util.translate("error")}
 						body={Util.translate("option-value-is-already-exist-try-another-value")}
@@ -354,7 +621,7 @@ class SXSelectOptionBuilder extends React.Component {
 							{
 								label: Util.translate("ok"),
 								onClick: (e) => {
-									this.setState({ duplicatedValueState: false });
+									this.setState({ optionValueDuplicated: false });
 								},
 								displayType: "secondary"
 							}
@@ -362,59 +629,6 @@ class SXSelectOptionBuilder extends React.Component {
 					/>
 				)}
 			</>
-		);
-	}
-}
-
-class SXGroupBuilder extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.dataStructure = props.dataStructure;
-		this.workingParam = props.workingParam;
-		this.namespace = this.workingParam.namespace;
-		this.languageId = this.workingParam.languageId;
-		this.availableLanguageIds = this.workingParam.availableLanguageIds;
-		this.spritemap = props.spritemap;
-		this.selectableTypes = props.selectableTypes ?? [];
-
-		this.state = {
-			showSelector: false
-		};
-
-		this.formId = this.namespace + "groupBuilder";
-	}
-
-	componentDidMount() {}
-
-	handleSelectChange(param) {
-		if (this.workingParam.isMember(param.paramName, param.paramVersion)) {
-			this.workingParam.removeMember(paramName, paramVersion);
-		} else {
-			this.workingParam.addMember(param);
-		}
-	}
-
-	render() {
-		return (
-			<SXDualListBox
-				parameter={
-					new DualListParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-						paramName: ParamProperty.MEMBERS,
-						displayName: Util.getTranslationObject(this.languageId, "members"),
-						required: true,
-						tooltip: Util.getTranslationObject(this.languageId, "members-tooltip"),
-						viewType: DualListParameter.ViewTypes.HORIZONTAL,
-						validation: {
-							required: {
-								value: true,
-								message: Util.getTranslationObject(this.languageId, "this-field-is-required")
-							}
-						},
-						options: []
-					})
-				}
-			/>
 		);
 	}
 }
@@ -433,20 +647,28 @@ class SXStringTypeOptionForm extends React.Component {
 		this.formId = this.workingParam.namespace + "stringTypeOptionForm";
 
 		this.fields = {
-			placeholder: new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.PLACEHOLDER,
-				localized: true,
-				displayName: Util.getTranslationObject(this.languageId, "placeholder"),
-				tooltip: Util.getTranslationObject(this.languageId, "placeholder-tooltip"),
-				placeholder: Util.getTranslationObject(this.languageId, "placeholder"),
-				value: this.workingParam.placeholder
-			}),
-
-			multipleLine: new BooleanParameter(
+			placeholder: Parameter.createParameter(
 				this.namespace,
 				this.formId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.STRING,
+				{
+					paramName: ParamProperty.PLACEHOLDER,
+					localized: true,
+					displayName: Util.getTranslationObject(this.languageId, "placeholder"),
+					tooltip: Util.getTranslationObject(this.languageId, "placeholder-tooltip"),
+					placeholder: Util.getTranslationObject(this.languageId, "placeholder"),
+					value: this.workingParam.placeholder
+				}
+			),
+
+			multipleLine: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.BOOLEAN,
 				{
 					paramName: ParamProperty.MULTIPLE_LINE,
 					viewType: BooleanParameter.ViewTypes.CHECKBOX,
@@ -457,48 +679,75 @@ class SXStringTypeOptionForm extends React.Component {
 				}
 			),
 
-			localized: new BooleanParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.LOCALIZED,
-				viewType: BooleanParameter.ViewTypes.CHECKBOX,
-				displayName: Util.getTranslationObject(this.languageId, "localized"),
-				tooltip: Util.getTranslationObject(this.languageId, "localized-tooltip"),
-				defalutValue: false,
-				value: this.workingParam.localized
-			}),
-			prefix: new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.PREFIX,
-				localized: true,
-				displayName: Util.getTranslationObject(this.languageId, "prefix"),
-				tooltip: Util.getTranslationObject(this.languageId, "prefix-tooltip"),
-				placeholder: Util.getTranslationObject(this.languageId, "prefix"),
-				value: this.workingParam.prefix
-			}),
-			postfix: new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.POSTFIX,
-				localized: true,
-				displayName: Util.getTranslationObject(this.languageId, "postfix"),
-				tooltip: Util.getTranslationObject(this.languageId, "postfix-tooltip"),
-				placeholder: Util.getTranslationObject(this.languageId, "postfix"),
-				value: this.workingParam.postfix
-			})
+			localized: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.BOOLEAN,
+				{
+					paramName: ParamProperty.LOCALIZED,
+					viewType: BooleanParameter.ViewTypes.CHECKBOX,
+					displayName: Util.getTranslationObject(this.languageId, "localized"),
+					tooltip: Util.getTranslationObject(this.languageId, "localized-tooltip"),
+					defalutValue: false,
+					value: this.workingParam.localized
+				}
+			),
+			prefix: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.STRING,
+				{
+					paramName: ParamProperty.PREFIX,
+					localized: true,
+					displayName: Util.getTranslationObject(this.languageId, "prefix"),
+					tooltip: Util.getTranslationObject(this.languageId, "prefix-tooltip"),
+					placeholder: Util.getTranslationObject(this.languageId, "prefix"),
+					value: this.workingParam.prefix
+				}
+			),
+			postfix: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.STRING,
+				{
+					paramName: ParamProperty.POSTFIX,
+					localized: true,
+					displayName: Util.getTranslationObject(this.languageId, "postfix"),
+					tooltip: Util.getTranslationObject(this.languageId, "postfix-tooltip"),
+					placeholder: Util.getTranslationObject(this.languageId, "postfix"),
+					value: this.workingParam.postfix
+				}
+			)
 		};
 	}
 
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+			return;
+		}
+
+		//("SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ", dataPacket, this.workingParam);
+
+		this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
+
+		if (this.workingParam.isRendered()) {
+			this.workingParam.fireRefreshPreview();
+		}
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			console.log("SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ", dataPacket, this.workingParam);
-
-			this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
-
-			if (this.workingParam.isRendered()) {
-				this.workingParam.fireRefreshPreview();
-			}
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	render() {
@@ -526,27 +775,42 @@ class SXNumericTypeOptionForm extends React.Component {
 		this.formId = this.workingParam.namespace + "numericTypeOptionForm";
 
 		this.fields = {
-			isInteger: new BooleanParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.IS_INTEGER,
-				viewType: BooleanParameter.ViewTypes.CHECKBOX,
-				displayName: Util.getTranslationObject(this.languageId, "integer"),
-				tooltip: Util.getTranslationObject(this.languageId, "integer-tooltip"),
-				value: this.workingParam.isInteger
-			}),
-
-			uncertainty: new BooleanParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.UNCERTAINTY,
-				viewType: BooleanParameter.ViewTypes.CHECKBOX,
-				displayName: Util.getTranslationObject(this.languageId, "uncertainty"),
-				tooltip: Util.getTranslationObject(this.languageId, "uncertainty-tooltip"),
-				value: this.workingParam.uncertainty
-			}),
-
-			decimalPlaces: new NumericParameter(
+			isInteger: Parameter.createParameter(
 				this.namespace,
 				this.formId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.BOOLEAN,
+				{
+					paramName: ParamProperty.IS_INTEGER,
+					viewType: BooleanParameter.ViewTypes.CHECKBOX,
+					displayName: Util.getTranslationObject(this.languageId, "integer"),
+					tooltip: Util.getTranslationObject(this.languageId, "integer-tooltip"),
+					value: this.workingParam.isInteger
+				}
+			),
+
+			uncertainty: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.BOOLEAN,
+				{
+					paramName: ParamProperty.UNCERTAINTY,
+					viewType: BooleanParameter.ViewTypes.CHECKBOX,
+					displayName: Util.getTranslationObject(this.languageId, "uncertainty"),
+					tooltip: Util.getTranslationObject(this.languageId, "uncertainty-tooltip"),
+					value: this.workingParam.uncertainty
+				}
+			),
+
+			decimalPlaces: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.NUMERIC,
 				{
 					paramName: ParamProperty.DECIMAL_PLACES,
 					isInteger: true,
@@ -556,51 +820,77 @@ class SXNumericTypeOptionForm extends React.Component {
 				}
 			),
 
-			unit: new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.UNIT,
-				displayName: Util.getTranslationObject(this.languageId, "unit"),
-				tooltip: Util.getTranslationObject(this.languageId, "unit-tooltip"),
-				value: this.workingParam.unit
-			}),
-			prefix: new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.PREFIX,
-				localized: true,
-				displayName: Util.getTranslationObject(this.languageId, "prefix"),
-				tooltip: Util.getTranslationObject(this.languageId, "prefix-tooltip"),
-				placeholder: Util.getTranslationObject(this.languageId, "prefix"),
-				value: this.workingParam.prefix
-			}),
-			postfix: new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.POSTFIX,
-				localized: true,
-				displayName: Util.getTranslationObject(this.languageId, "postfix"),
-				tooltip: Util.getTranslationObject(this.languageId, "postfix-tooltip"),
-				placeholder: Util.getTranslationObject(this.languageId, "postfix"),
-				value: this.workingParam.postfix
-			})
+			unit: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.STRING,
+				{
+					paramName: ParamProperty.UNIT,
+					displayName: Util.getTranslationObject(this.languageId, "unit"),
+					tooltip: Util.getTranslationObject(this.languageId, "unit-tooltip"),
+					value: this.workingParam.unit
+				}
+			),
+			prefix: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.STRING,
+				{
+					paramName: ParamProperty.PREFIX,
+					localized: true,
+					displayName: Util.getTranslationObject(this.languageId, "prefix"),
+					tooltip: Util.getTranslationObject(this.languageId, "prefix-tooltip"),
+					placeholder: Util.getTranslationObject(this.languageId, "prefix"),
+					value: this.workingParam.prefix
+				}
+			),
+			postfix: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.STRING,
+				{
+					paramName: ParamProperty.POSTFIX,
+					localized: true,
+					displayName: Util.getTranslationObject(this.languageId, "postfix"),
+					tooltip: Util.getTranslationObject(this.languageId, "postfix-tooltip"),
+					placeholder: Util.getTranslationObject(this.languageId, "postfix"),
+					value: this.workingParam.postfix
+				}
+			)
 		};
 	}
 
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+			return;
+		}
+
+		//console.log("SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ", dataPacket, this.workingParam);
+
+		this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
+
+		if (dataPacket.paramName === ParamProperty.IS_INTEGER) {
+			this.setState({ isInteger: this.workingParam.isInteger });
+		}
+
+		if (this.workingParam.isRendered()) {
+			this.workingParam.fireRefreshPreview();
+		}
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			console.log("SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED------: ", dataPacket, this.workingParam);
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			console.log("SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ", dataPacket, this.workingParam);
-
-			this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
-
-			if (dataPacket.paramName === ParamProperty.IS_INTEGER) {
-				this.setState({ isInteger: this.workingParam.isInteger });
-			}
-
-			if (this.workingParam.isRendered()) {
-				this.workingParam.fireRefreshPreview();
-			}
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	render() {
@@ -656,26 +946,34 @@ class SXSelectTypeOptionForm extends React.Component {
 		}
 
 		this.fields = {
-			viewType: new SelectParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.VIEW_TYPE,
-				viewType: BooleanParameter.ViewTypes.RADIO,
-				options: viewTypes,
-				optionsPerRow: 2,
-				displayName: Util.getTranslationObject(this.languageId, "view-type"),
-				tooltip: Util.getTranslationObject(this.languageId, "select-view-type-tooltip"),
-				value: this.workingParam.viewType ?? SelectParameter.ViewTypes.DROPDOWN,
-				validation: {
-					required: {
-						value: true,
-						message: Util.getTranslationObject(this.languageId, "this-field-is-required")
-					}
-				}
-			}),
-			optionsPerRow: new NumericParameter(
+			viewType: Parameter.createParameter(
 				this.namespace,
 				this.formId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.SELECT,
+				{
+					paramName: ParamProperty.VIEW_TYPE,
+					viewType: SelectParameter.ViewTypes.RADIO,
+					options: viewTypes,
+					optionsPerRow: 2,
+					displayName: Util.getTranslationObject(this.languageId, "view-type"),
+					tooltip: Util.getTranslationObject(this.languageId, "select-view-type-tooltip"),
+					value: this.workingParam.viewType ?? SelectParameter.ViewTypes.DROPDOWN,
+					validation: {
+						required: {
+							value: true,
+							message: Util.getTranslationObject(this.languageId, "this-field-is-required")
+						}
+					}
+				}
+			),
+			optionsPerRow: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.NUMERIC,
 				{
 					paramName: ParamProperty.OPTIONS_PER_ROW,
 					isInteger: true,
@@ -697,30 +995,38 @@ class SXSelectTypeOptionForm extends React.Component {
 		);
 	}
 
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+			return;
+		}
+
+		/*
+		console.log(
+			"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
+			dataPacket,
+			this.workingParam,
+			this.fields[dataPacket.paramName],
+			this.fields[dataPacket.paramName].getValue()
+		);
+		*/
+
+		this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
+		//this.workingParam.initValue();
+
+		this.forceUpdate();
+
+		if (this.workingParam.isRendered()) {
+			this.workingParam.fireRefreshPreview();
+		}
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			console.log(
-				"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
-				dataPacket,
-				this.workingParam,
-				this.fields[dataPacket.paramName],
-				this.fields[dataPacket.paramName].getValue()
-			);
-
-			this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
-			//this.workingParam.initValue();
-
-			this.forceUpdate();
-
-			if (this.workingParam.isRendered()) {
-				this.workingParam.fireRefreshPreview();
-			}
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	render() {
@@ -756,78 +1062,107 @@ class SXBooleanTypeOptionForm extends React.Component {
 		this.formId = this.workingParam.namespace + "booleanTypeOptionForm";
 
 		this.fields = {
-			viewType: new SelectParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.VIEW_TYPE,
-				viewType: SelectParameter.ViewTypes.RADIO,
-				options: [
-					{
-						label: Util.getTranslationObject(this.languageId, "Checkbox"),
-						value: BooleanParameter.ViewTypes.CHECKBOX
-					},
-					{
-						label: Util.getTranslationObject(this.languageId, "Toggle"),
-						value: BooleanParameter.ViewTypes.TOGGLE
-					},
-					{
-						label: Util.getTranslationObject(this.languageId, "Dropdown"),
-						value: BooleanParameter.ViewTypes.DROPDOWN
-					},
-					{
-						label: Util.getTranslationObject(this.languageId, "Radio"),
-						value: BooleanParameter.ViewTypes.RADIO
-					}
-				],
-				optionsPerRow: 2,
-				displayName: Util.getTranslationObject(this.languageId, "view-type"),
-				tooltip: Util.getTranslationObject(this.languageId, "select-view-type-tooltip"),
-				value: this.workingParam.viewType ?? SelectParameter.ViewTypes.CHECKBOX,
-				validation: {
-					required: {
-						value: true,
-						message: Util.getTranslationObject(this.languageId, "this-field-is-required")
+			viewType: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.SELECT,
+				{
+					paramName: ParamProperty.VIEW_TYPE,
+					viewType: SelectParameter.ViewTypes.RADIO,
+					options: [
+						{
+							label: Util.getTranslationObject(this.languageId, "Checkbox"),
+							value: BooleanParameter.ViewTypes.CHECKBOX
+						},
+						{
+							label: Util.getTranslationObject(this.languageId, "Toggle"),
+							value: BooleanParameter.ViewTypes.TOGGLE
+						},
+						{
+							label: Util.getTranslationObject(this.languageId, "Dropdown"),
+							value: BooleanParameter.ViewTypes.DROPDOWN
+						},
+						{
+							label: Util.getTranslationObject(this.languageId, "Radio"),
+							value: BooleanParameter.ViewTypes.RADIO
+						}
+					],
+					optionsPerRow: 2,
+					displayName: Util.getTranslationObject(this.languageId, "view-type"),
+					tooltip: Util.getTranslationObject(this.languageId, "select-view-type-tooltip"),
+					value: this.workingParam.viewType ?? SelectParameter.ViewTypes.CHECKBOX,
+					validation: {
+						required: {
+							value: true,
+							message: Util.getTranslationObject(this.languageId, "this-field-is-required")
+						}
 					}
 				}
-			}),
-			trueLabel: new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.TRUE_LABEL,
-				localized: true,
-				displayName: Util.getTranslationObject(this.languageId, "true-label"),
-				placeholder: Util.getTranslationObject(this.languageId, "label-for-true-option"),
-				tooltip: Util.getTranslationObject(this.languageId, "label-for-true-option-tooltip"),
-				value: this.workingParam.trueLabel
-			}),
+			),
+			trueLabel: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.STRING,
+				{
+					paramName: ParamProperty.TRUE_LABEL,
+					localized: true,
+					displayName: Util.getTranslationObject(this.languageId, "true-label"),
+					placeholder: Util.getTranslationObject(this.languageId, "label-for-true-option"),
+					tooltip: Util.getTranslationObject(this.languageId, "label-for-true-option-tooltip"),
+					value: this.workingParam.trueLabel
+				}
+			),
 
-			falseLabel: new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.FALSE_LABEL,
-				localized: true,
-				displayName: Util.getTranslationObject(this.languageId, "false-label"),
-				placeholder: Util.getTranslationObject(this.languageId, "label-for-false-option"),
-				tooltip: Util.getTranslationObject(this.languageId, "label-for-false-option-tooltip"),
-				value: this.workingParam.falseLabel
-			})
+			falseLabel: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.STRING,
+				{
+					paramName: ParamProperty.FALSE_LABEL,
+					localized: true,
+					displayName: Util.getTranslationObject(this.languageId, "false-label"),
+					placeholder: Util.getTranslationObject(this.languageId, "label-for-false-option"),
+					tooltip: Util.getTranslationObject(this.languageId, "label-for-false-option-tooltip"),
+					value: this.workingParam.falseLabel
+				}
+			)
 		};
 	}
 
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+			return;
+		}
+
+		/*
+		console.log(
+			"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
+			dataPacket,
+			this.workingParam,
+			this.fields[dataPacket.paramName].getValue()
+		);
+		*/
+
+		this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
+
+		if (this.workingParam.isRendered()) {
+			this.workingParam.fireRefreshPreview();
+		}
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			console.log(
-				"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
-				dataPacket,
-				this.workingParam,
-				this.fields[dataPacket.paramName].getValue()
-			);
-
-			this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
-
-			if (this.workingParam.isRendered()) {
-				this.workingParam.fireRefreshPreview();
-			}
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	render() {
@@ -855,11 +1190,12 @@ class SXPhoneTypeOptionForm extends React.Component {
 		this.formId = this.workingParam.namespace + "phoneTypeOptionForm";
 
 		this.fields = {
-			enableCountryNo: new BooleanParameter(
+			enableCountryNo: Parameter.createParameter(
 				this.namespace,
 				this.formId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.BOOLEAN,
 				{
 					paramName: ParamProperty.ENABLE_COUNTRY_NO,
 					viewType: BooleanParameter.ViewTypes.TOGGLE,
@@ -872,26 +1208,34 @@ class SXPhoneTypeOptionForm extends React.Component {
 		};
 	}
 
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+			return;
+		}
+
+		/*
+		console.log(
+			"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
+			dataPacket,
+			this.workingParam,
+			this.fields[dataPacket.paramName].getValue()
+		);
+		*/
+
+		this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
+
+		if (this.workingParam.isRendered()) {
+			this.workingParam.fireRefreshPreview();
+		}
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			console.log(
-				"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
-				dataPacket,
-				this.workingParam,
-				this.fields[dataPacket.paramName].getValue()
-			);
-
-			this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
-
-			if (this.workingParam.isRendered()) {
-				this.workingParam.fireRefreshPreview();
-			}
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	render() {
@@ -913,51 +1257,66 @@ class SXAddressTypeOptionForm extends React.Component {
 		this.formId = this.workingParam.namespace + "addressTypeOptionForm";
 
 		this.fields = {
-			viewType: new SelectParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.VIEW_TYPE,
-				viewType: SelectParameter.ViewTypes.RADIO,
-				displayName: Util.getTranslationObject(this.languageId, "view-type"),
-				options: [
-					{
-						label: Util.getTranslationObject(this.languageId, "Block"),
-						value: AddressParameter.ViewTypes.BLOCK
-					},
-					{
-						label: Util.getTranslationObject(this.languageId, "In Line"),
-						value: AddressParameter.ViewTypes.INLINE
-					},
-					{
-						label: Util.getTranslationObject(this.languageId, "One Line"),
-						value: AddressParameter.ViewTypes.ONE_LINE
-					}
-				],
-				tooltip: Util.getTranslationObject(this.languageId, "view-type-tooltip"),
-				defaultValue: AddressParameter.ViewTypes.BLOCK,
-				value: this.workingParam.viewType
-			})
+			viewType: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.SELECT,
+				{
+					paramName: ParamProperty.VIEW_TYPE,
+					viewType: SelectParameter.ViewTypes.RADIO,
+					displayName: Util.getTranslationObject(this.languageId, "view-type"),
+					options: [
+						{
+							label: Util.getTranslationObject(this.languageId, "Block"),
+							value: AddressParameter.ViewTypes.BLOCK
+						},
+						{
+							label: Util.getTranslationObject(this.languageId, "In Line"),
+							value: AddressParameter.ViewTypes.INLINE
+						},
+						{
+							label: Util.getTranslationObject(this.languageId, "One Line"),
+							value: AddressParameter.ViewTypes.ONE_LINE
+						}
+					],
+					tooltip: Util.getTranslationObject(this.languageId, "view-type-tooltip"),
+					defaultValue: AddressParameter.ViewTypes.BLOCK,
+					value: this.workingParam.viewType
+				}
+			)
 		};
 	}
 
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+			return;
+		}
+
+		/*
+		console.log(
+			"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
+			dataPacket,
+			this.workingParam,
+			this.fields[dataPacket.paramName].getValue()
+		);
+		*/
+
+		this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
+
+		if (this.workingParam.isRendered()) {
+			this.workingParam.fireRefreshPreview();
+		}
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			console.log(
-				"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
-				dataPacket,
-				this.workingParam,
-				this.fields[dataPacket.paramName].getValue()
-			);
-
-			this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
-
-			if (this.workingParam.isRendered()) {
-				this.workingParam.fireRefreshPreview();
-			}
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	render() {
@@ -979,53 +1338,82 @@ class SXDateTypeOptionForm extends React.Component {
 		this.formId = this.workingParam.namespace + "dateTypeOptionForm";
 
 		this.fields = {
-			enableTime: new BooleanParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.ENABLE_TIME,
-				viewType: BooleanParameter.ViewTypes.TOGGLE,
-				displayName: Util.getTranslationObject(this.languageId, "enable-time"),
-				tooltip: Util.getTranslationObject(this.languageId, "enable-time-tooltip"),
-				defaultValue: false,
-				value: this.workingParam.enableTime
-			}),
-			startYear: new NumericParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.START_YEAR,
-				displayName: Util.getTranslationObject(this.languageId, "start-year"),
-				isInteger: true,
-				tooltip: Util.getTranslationObject(this.languageId, "start-year-tooltip"),
-				defaultValue: "1970",
-				value: this.workingParam.startYear
-			}),
-			endYear: new NumericParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-				paramName: ParamProperty.END_YEAR,
-				displayName: Util.getTranslationObject(this.languageId, "end-year"),
-				isInteger: true,
-				tooltip: Util.getTranslationObject(this.languageId, "end-year-tooltip"),
-				value: this.workingParam.endYear
-			})
+			enableTime: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.BOOLEAN,
+				{
+					paramName: ParamProperty.ENABLE_TIME,
+					viewType: BooleanParameter.ViewTypes.TOGGLE,
+					displayName: Util.getTranslationObject(this.languageId, "enable-time"),
+					tooltip: Util.getTranslationObject(this.languageId, "enable-time-tooltip"),
+					defaultValue: false,
+					value: this.workingParam.enableTime
+				}
+			),
+			startYear: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.NUMERIC,
+				{
+					paramName: ParamProperty.START_YEAR,
+					displayName: Util.getTranslationObject(this.languageId, "start-year"),
+					isInteger: true,
+					tooltip: Util.getTranslationObject(this.languageId, "start-year-tooltip"),
+					defaultValue: "1970",
+					value: this.workingParam.startYear
+				}
+			),
+			endYear: Parameter.createParameter(
+				this.namespace,
+				this.formId,
+				this.languageId,
+				this.availableLanguageIds,
+				ParamType.NUMERIC,
+				{
+					paramName: ParamProperty.END_YEAR,
+					displayName: Util.getTranslationObject(this.languageId, "end-year"),
+					isInteger: true,
+					tooltip: Util.getTranslationObject(this.languageId, "end-year-tooltip"),
+					value: this.workingParam.endYear
+				}
+			)
 		};
 	}
 
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+			return;
+		}
+
+		/*
+		console.log(
+			"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
+			dataPacket,
+			this.workingParam,
+			this.fields[dataPacket.paramName].getValue()
+		);
+		*/
+
+		this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
+
+		if (this.workingParam.isRendered()) {
+			this.workingParam.initValue();
+			this.workingParam.fireRefreshPreview();
+		}
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			console.log(
-				"SXDSBuilderTypeSpecificPanel SX_FIELD_VALUE_CHANGED: ",
-				dataPacket,
-				this.workingParam,
-				this.fields[dataPacket.paramName].getValue()
-			);
-
-			this.workingParam[dataPacket.paramName] = this.fields[dataPacket.paramName].getValue();
-
-			if (this.workingParam.isRendered()) {
-				this.workingParam.initValue();
-				this.workingParam.fireRefreshPreview();
-			}
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	render() {
@@ -1053,11 +1441,14 @@ class SXGroupTypeOptionForm extends React.Component {
 
 		this.formId = this.workingParam.namespace + "groupTypeOptionForm";
 
-		this.fieldViewType = new SelectParameter(
+		this.availableMemberTypes = Object.keys(ParamType).map((key) => ParamType[key]);
+
+		this.fieldViewType = Parameter.createParameter(
 			this.namespace,
 			this.formId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.SELECT,
 			{
 				paramName: ParamProperty.VIEW_TYPE,
 				viewType: SelectParameter.ViewTypes.RADIO,
@@ -1070,6 +1461,10 @@ class SXGroupTypeOptionForm extends React.Component {
 					{
 						label: Util.getTranslationObject(this.languageId, "Panel"),
 						value: GroupParameter.ViewTypes.PANEL
+					},
+					{
+						label: Util.getTranslationObject(this.languageId, "Table"),
+						value: GroupParameter.ViewTypes.TABLE
 					}
 				],
 				optionsPerRow: 2,
@@ -1079,11 +1474,12 @@ class SXGroupTypeOptionForm extends React.Component {
 			}
 		);
 
-		this.fieldMembersPerRow = new NumericParameter(
+		this.fieldMembersPerRow = Parameter.createParameter(
 			this.namespace,
 			this.formId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.NUMERIC,
 			{
 				paramName: ParamProperty.MEMBERS_PER_ROW,
 				isInteger: true,
@@ -1094,11 +1490,12 @@ class SXGroupTypeOptionForm extends React.Component {
 			}
 		);
 
-		this.fieldExpanded = new BooleanParameter(
+		this.fieldExpanded = Parameter.createParameter(
 			this.namespace,
 			this.formIds.basicPropertiesFormId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.BOOLEAN,
 			{
 				paramName: ParamProperty.EXPANDED,
 				viewType: BooleanParameter.ViewTypes.CHECKBOX,
@@ -1109,48 +1506,68 @@ class SXGroupTypeOptionForm extends React.Component {
 		);
 	}
 
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
+			return;
+		}
+
+		/*
+		console.log(
+			"SXGroupTypeOptionForm SX_FIELD_VALUE_CHANGED: ",
+			dataPacket,
+			this.workingParam,
+			this.fieldMembersPerRow.getValue()
+		);
+		*/
+
+		switch (dataPacket.paramName) {
+			case ParamProperty.VIEW_TYPE: {
+				this.workingParam.viewType = this.fieldViewType.getValue();
+				break;
+			}
+			case ParamProperty.MEMBERS_PER_ROW: {
+				this.workingParam.membersPerRow = this.fieldMembersPerRow.getValue();
+				break;
+			}
+			case ParamProperty.EXPANDED: {
+				this.workingParam.expanded = this.fieldExpanded.getValue();
+				break;
+			}
+		}
+
+		if (this.workingParam.isRendered()) {
+			this.workingParam.fireRefreshPreview();
+		}
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			console.log(
-				"SXGroupTypeOptionForm SX_FIELD_VALUE_CHANGED: ",
-				dataPacket,
-				this.workingParam,
-				this.fieldMembersPerRow.getValue()
-			);
-
-			switch (dataPacket.paramName) {
-				case ParamProperty.VIEW_TYPE: {
-					this.workingParam.viewType = this.fieldViewType.getValue();
-					break;
-				}
-				case ParamProperty.MEMBERS_PER_ROW: {
-					this.workingParam.membersPerRow = this.fieldMembersPerRow.getValue();
-					break;
-				}
-				case ParamProperty.EXPANDED: {
-					this.workingParam.expanded = this.fieldMembersPerRow.getValue();
-					break;
-				}
-			}
-
-			if (this.workingParam.isRendered()) {
-				this.workingParam.fireRefreshPreview();
-			}
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	render() {
+		let memberDisplayType = Parameter.DisplayTypes.FORM_FIELD;
+
+		if (this.workingParam.viewType === GroupParameter.ViewTypes.TABLE) {
+			memberDisplayType = Parameter.DisplayTypes.TABLE_ROW;
+		}
+
 		return (
 			<>
 				{this.fieldViewType.renderField({ spritemap: this.spritemap })}
 				{this.workingParam.showMembersPerRow &&
 					this.fieldMembersPerRow.renderField({ spritemap: this.spritemap })}
 				{this.fieldExpanded.renderField({ spritemap: this.spritemap })}
+				<SXGroupBuilder
+					groupParam={this.workingParam}
+					spritemap={this.spritemap}
+					availableParamTypes={this.availableMemberTypes}
+					memberDisplayType={memberDisplayType}
+				/>
 			</>
 		);
 	}
@@ -1169,333 +1586,26 @@ class SXGridTypeOptionForm extends React.Component {
 
 		this.formId = this.workingParam.namespace + "gridTypeOptionForm";
 
-		this.state = {
-			selectedColumn: this.workingParam.columns[0]
-		};
-		this.activeDropdown = false;
-
-		this.paramNameFileds = {};
-		this.displayNameFileds = {};
-
-		this.columnReadyTypes = [
-			{
-				label: Util.translate("select-to-add-column"),
-				value: ""
-			},
-			...Object.keys(Parameter.ColumnReadyTypes).map((key) => ({
-				label: Parameter.ColumnReadyTypes[key],
-				value: Parameter.ColumnReadyTypes[key]
-			}))
+		this.availableColumnTypes = [
+			ParamType.STRING,
+			ParamType.NUMERIC,
+			ParamType.BOOLEAN,
+			ParamType.SELECT,
+			ParamType.ADDRESS,
+			ParamType.FILE,
+			ParamType.DATE,
+			ParamType.EMAIL
 		];
-
-		this.fieldColumnCode = new StringParameter(
-			this.namespace,
-			this.formId,
-			this.languageId,
-			this.availableLanguageIds,
-			{
-				paramName: "columnCode",
-				displayName: Util.getTranslationObject(this.languageId, "column-code"),
-				tooltip: Util.getTranslationObject(this.languageId, "column-code-tooltip"),
-				placeholder: Util.getTranslationObject(this.languageId, "code-name-for-column"),
-				value: this.state.selectedColumn ? this.state.selectedColumn.paramName : ""
-			}
-		);
-		this.fieldColumnDisplayName = new StringParameter(
-			this.namespace,
-			this.formId,
-			this.languageId,
-			this.availableLanguageIds,
-			{
-				paramName: "columnDisplayName",
-				displayName: Util.getTranslationObject(this.languageId, "display-name"),
-				tooltip: Util.getTranslationObject(this.languageId, "display-name-tooltip"),
-				placeholder: Util.getTranslationObject(this.languageId, "translation-for-display-name"),
-				localized: true,
-				value: this.state.selectedColumn ? this.state.selectedColumn.displayName : {}
-			}
-		);
-	}
-
-	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
-
-			console.log(
-				"SXGridTypeOptionForm SX_FIELD_VALUE_CHANGED: ",
-				dataPacket,
-				this.state.selectedColumn,
-				this.fieldColumnCode,
-				this.fieldColumnDisplayName
-			);
-
-			switch (dataPacket.paramName) {
-				case "columnCode": {
-					this.state.selectedColumn.paramName = this.fieldColumnCode.getValue();
-
-					break;
-				}
-				case "columnDisplayName": {
-					this.state.selectedColumn.displayName = this.fieldColumnDisplayName.getValue();
-
-					break;
-				}
-			}
-
-			if (this.workingParam.isRendered()) {
-				this.workingParam.fireRefreshPreview();
-			}
-
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_POP_ACTION_CLICKED, (e) => {
-			const dataPacket = e.dataPacket;
-
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
-
-			switch (dataPacket.actionId) {
-				case "copy": {
-					this.copyColumn(dataPacket.targetData);
-					break;
-				}
-				case "delete": {
-					this.removeColumn(dataPacket.targetData);
-					break;
-				}
-				case "left": {
-					this.moveColumnLeft(dataPacket.targetData);
-					break;
-				}
-				case "right": {
-					this.moveColumnRight(dataPacket.targetData);
-					break;
-				}
-			}
-
-			this.activeDropdown = false;
-		});
-
-		Event.uniqueOn(Event.SX_POP_BUTTON_CLICKED, (e) => {
-			const dataPacket = e.dataPacket;
-
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formId) {
-				return;
-			}
-
-			//this.handleColumnSelected(dataPacket.targetData);
-
-			this.activeDropdown = dataPacket.activeDropdown;
-		});
-	}
-
-	moveColumnLeft(column) {
-		this.workingParam.moveColumnLeft(column.order);
-
-		this.workingParam.fireRefreshPreview();
-
-		this.forceUpdate();
-	}
-
-	moveColumnRight(column) {
-		this.workingParam.moveColumnRight(column.order);
-
-		this.workingParam.fireRefreshPreview();
-
-		this.forceUpdate();
-	}
-
-	removeColumn(column) {
-		let columnCount = this.workingParam.removeColumn({ colName: column.paramName });
-
-		const firstColumn = columnCount > 0 ? this.workingParam.columns[0] : null;
-		this.setState({
-			selectedColumn: firstColumn
-		});
-
-		if (firstColumn) {
-			this.fieldColumnCode.setValue({ value: firstColumn.paramName });
-			this.fieldColumnDisplayName.setValue({ value: firstColumn.displayName });
-		}
-
-		this.workingParam.fireRefreshPreview();
-	}
-
-	copyColumn(column) {
-		let copied = column.copy();
-
-		this.workingParam.insertColumn(copied, column.order);
-
-		this.setState({
-			selectedColumn: copied
-		});
-
-		this.fieldColumnCode.setValue({ value: copied.paramName });
-		this.fieldColumnDisplayName.setValue({ value: copied.displayName });
-
-		this.workingParam.fireRefreshPreview();
-	}
-
-	handleColumnSelected(column) {
-		this.fieldColumnCode.setValue({ value: column.paramName });
-		this.fieldColumnDisplayName.setValue({ value: column.displayName });
-		this.fieldColumnCode.refreshKey();
-		this.fieldColumnDisplayName.refreshKey();
-
-		this.setState({ selectedColumn: column });
-	}
-
-	handleColumnTypeSelect(columnType) {
-		const column = new Parameter.createParameter(
-			this.namespace,
-			this.workingParam.formId,
-			this.languageId,
-			this.availableLanguageIds,
-			columnType,
-			{
-				paramName: "column_" + Util.randomKey(8)
-			}
-		);
-
-		this.workingParam.addColumn(column);
-
-		column.displayName = Util.getTranslationObject(
-			this.languageId,
-			"column_" + column.order.toString().padStart(2, "0")
-		);
-		column.value = [];
-
-		this.workingParam.fireRefreshPreview();
-
-		this.fieldColumnCode.setValue({ value: column.paramName });
-		this.fieldColumnCode.refreshKey();
-		this.fieldColumnDisplayName.setValue({ value: column.displayName });
-		this.fieldColumnDisplayName.refreshKey();
-
-		this.setState({
-			selectedColumn: column
-		});
 	}
 
 	render() {
 		return (
-			<>
-				<Form.Group className="form-group-sm">
-					<SXLabel
-						label={Util.translate("add-column")}
-						forHtml={this.namespace + "columnType"}
-						tooltip={Util.translate("add-column-tooltip")}
-						spritemap={this.spritemap}
-					/>
-					<div style={{ paddingLeft: "10px" }}>
-						<ClaySelectWithOption
-							aria-label={Util.translate("column-type")}
-							id={this.namespace + "columnType"}
-							options={this.columnReadyTypes}
-							value={this.state.selectedColumn ? this.state.selectedColumn.paramType : ""}
-							onChange={(e) => {
-								this.handleColumnTypeSelect(e.target.value);
-							}}
-							style={{ paddingLeft: "10px" }}
-							spritemap={this.spritemap}
-						/>
-					</div>
-				</Form.Group>
-				{this.workingParam.columnCount > 0 && (
-					<>
-						{this.fieldColumnCode.renderField({ spritemap: this.spritemap })}
-						{this.fieldColumnDisplayName.renderField({ spritemap: this.spritemap })}
-					</>
-				)}
-				<div className="sx-option-builder-label">
-					<SXLabel
-						label={Util.translate("columns")}
-						forHtml=""
-						required={true}
-						style={{
-							fontWeight: "600",
-							fontSize: "0.875rem"
-						}}
-						spritemap={this.spritemap}
-					/>
-				</div>
-				<div
-					className="sx-table"
-					style={{ marginLeft: "10px" }}
-				>
-					<div>
-						{this.workingParam.columns.map((column, index) => {
-							let actionItems = [
-								{ id: "copy", name: Util.translate("copy"), symbol: "copy" },
-								{ id: "delete", name: Util.translate("delete"), symbol: "times" }
-							];
-							if (column.order > 1) {
-								actionItems.push({
-									id: "left",
-									name: Util.translate("move-left"),
-									symbol: "caret-left"
-								});
-							}
-							if (column.order < this.workingParam.columnCount) {
-								actionItems.push({
-									id: "right",
-									name: Util.translate("move-right"),
-									symbol: "caret-right"
-								});
-							}
-
-							let className = "autofit-row";
-							if (column === this.state.selectedColumn) {
-								className += " sx-option-focused";
-							}
-
-							return (
-								<div
-									key={column.paramName}
-									className={className}
-									onClick={(e) => {
-										this.handleColumnSelected(column);
-									}}
-								>
-									<div
-										className="autofit-col sx-table-cell"
-										style={{ width: "2rem" }}
-									>
-										{column.order}
-									</div>
-									<div
-										className="autofit-col sx-table-cell"
-										style={{ width: "4rem" }}
-									>
-										{column.paramType}
-									</div>
-									<div className="autofit-col autofit-col-expand sx-table-cell">{column.label}</div>
-									<div
-										className="autofit-col sx-table-cell"
-										style={{ width: "auto" }}
-									>
-										<SXDropdown
-											key={this.workingParam.columnCount - index}
-											namespace={this.namespace}
-											formId={this.formId}
-											items={actionItems}
-											targetData={column}
-											symbol="ellipsis-v"
-											activeDropdown={column === this.state.selectedColumn && this.activeDropdown}
-											spritemap={this.spritemap}
-										/>
-									</div>
-								</div>
-							);
-						})}
-					</div>
-				</div>
-			</>
+			<SXGroupBuilder
+				groupParam={this.workingParam}
+				spritemap={this.spritemap}
+				availableParamTypes={this.availableColumnTypes}
+				memberDisplayType={Parameter.DisplayTypes.GRID_CELL}
+			/>
 		);
 	}
 }

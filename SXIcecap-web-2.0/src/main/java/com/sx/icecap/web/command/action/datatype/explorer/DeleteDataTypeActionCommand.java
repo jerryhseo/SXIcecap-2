@@ -2,7 +2,7 @@ package com.sx.icecap.web.command.action.datatype.explorer;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.sx.icecap.constant.DataTypeProperty;
+import com.sx.icecap.constant.DataTypeProperties;
 import com.sx.icecap.constant.MVCCommand;
 import com.sx.constant.StationXWebKeys;
 import com.sx.icecap.constant.WebPortletKey;
@@ -32,7 +32,7 @@ public class DeleteDataTypeActionCommand implements MVCActionCommand {
 		
 		String cmd = ParamUtil.getString(actionRequest, StationXWebKeys.CMD);
 		
-		long dataTypeId = dataTypeId = ParamUtil.getLong(actionRequest, DataTypeProperty.DATATYPE_ID, 0);
+		long dataTypeId = dataTypeId = ParamUtil.getLong(actionRequest, DataTypeProperties.DATATYPE_ID, 0);
 		
 		try {
 			_dataTypeLocalService.removeDataType(dataTypeId);

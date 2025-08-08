@@ -14,11 +14,8 @@
 
 package com.sx.icecap.model.impl;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Locale;
 import java.util.Map;
@@ -27,59 +24,35 @@ import java.util.Map;
  * @author Brian Wing Shun Chan
  */
 public class DataTypeImpl extends DataTypeBaseImpl {
-	
-	public String toJSONString() {
-		return toJSON().toJSONString();
-	}
-	
 	public JSONObject toJSON() {
-		JSONObject dataType = JSONFactoryUtil.createJSONObject();
-		Map<Locale, String> field = null;
-		
-		dataType.put("dataTypeId", this.getPrimaryKey());
-		
-		dataType.put("companyId", this.getCompanyId());
-		dataType.put("groupId", this.getGroupId());
-		dataType.put("userId", this.getUserId());
-		dataType.put("status", this.getStatus());
-		dataType.put("createDate", this.getCreateDate());
-		dataType.put("modifiedDate", this.getModifiedDate());
-		
-		dataType.put("dataTypeName", this.getDataTypeName());
-		dataType.put("dataTypeVersion", this.getDataTypeVersion());
-		dataType.put("extension", this.getExtension());
+		JSONObject dataType = _unlocalizedJSON();
 		
 		JSONObject localizedObj = null;
 		
-		field = this.getDisplayNameMap();
-		localizedObj = _mapToJSON( field );
+		localizedObj = _mapToJSON(  this.getDisplayNameMap() );
 		dataType.put("displayName", localizedObj);
 		
-		field = this.getDescriptionMap();
-		localizedObj = _mapToJSON( field );
+		localizedObj = _mapToJSON( this.getDescriptionMap() );
 		dataType.put("description", localizedObj);
 		
-		field = this.getTooltipMap();
-		localizedObj = _mapToJSON( field );
+		localizedObj = _mapToJSON( this.getTooltipMap() );
 		dataType.put("tooltip", localizedObj);
-		
-		String strVisualizers = this.getVisualizers();
-		if( !Validator.isBlank(strVisualizers)) {
-			try {
-				JSONArray visualizers = JSONFactoryUtil.createJSONArray(strVisualizers);
-				dataType.put("visualizers", visualizers);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		
 		return dataType;
 	}
 	
 	public JSONObject toJSON( Locale locale ) {
+		JSONObject dataType = _unlocalizedJSON();
+		
+		dataType.put("displayName", this.getDisplayName(locale));
+		dataType.put("description", this.getDescription(locale));
+		dataType.put("tooltip", this.getTooltip(locale));
+		
+		return dataType;
+	}
+	
+	private JSONObject _unlocalizedJSON() {
 		JSONObject dataType = JSONFactoryUtil.createJSONObject();
-		Map<Locale, String> field = null;
 		
 		dataType.put("dataTypeId", this.getPrimaryKey());
 		
@@ -89,25 +62,12 @@ public class DataTypeImpl extends DataTypeBaseImpl {
 		dataType.put("status", this.getStatus());
 		dataType.put("createDate", this.getCreateDate());
 		dataType.put("modifiedDate", this.getModifiedDate());
-		
 		dataType.put("dataTypeName", this.getDataTypeName());
 		dataType.put("dataTypeVersion", this.getDataTypeVersion());
 		dataType.put("extension", this.getExtension());
-		
-		dataType.put("displayName", this.getDisplayName(locale));
-		dataType.put("description", this.getDescription(locale));
-		dataType.put("tooltip", this.getTooltip(locale));
-		
-		String strVisualizers = this.getVisualizers();
-		if( Validator.isBlank(strVisualizers)) {
-			try {
-				JSONArray visualizers = JSONFactoryUtil.createJSONArray(strVisualizers);
-				dataType.put("visualizers", visualizers);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		dataType.put("freezable", this.getFreezable());
+		dataType.put("verifiable", this.getVerifiable());
+		dataType.put("dataStructureId", this.getDataStructureId());
 		
 		return dataType;
 	}

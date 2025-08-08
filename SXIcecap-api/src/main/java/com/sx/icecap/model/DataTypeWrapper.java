@@ -63,8 +63,9 @@ public class DataTypeWrapper
 		attributes.put("sampleFileId", getSampleFileId());
 		attributes.put("description", getDescription());
 		attributes.put("tooltip", getTooltip());
-		attributes.put("visualizers", getVisualizers());
-		attributes.put("hasDataStructure", isHasDataStructure());
+		attributes.put("freezable", isFreezable());
+		attributes.put("verifiable", isVerifiable());
+		attributes.put("dataStructureId", getDataStructureId());
 
 		return attributes;
 	}
@@ -191,16 +192,22 @@ public class DataTypeWrapper
 			setTooltip(tooltip);
 		}
 
-		String visualizers = (String)attributes.get("visualizers");
+		Boolean freezable = (Boolean)attributes.get("freezable");
 
-		if (visualizers != null) {
-			setVisualizers(visualizers);
+		if (freezable != null) {
+			setFreezable(freezable);
 		}
 
-		Boolean hasDataStructure = (Boolean)attributes.get("hasDataStructure");
+		Boolean verifiable = (Boolean)attributes.get("verifiable");
 
-		if (hasDataStructure != null) {
-			setHasDataStructure(hasDataStructure);
+		if (verifiable != null) {
+			setVerifiable(verifiable);
+		}
+
+		Long dataStructureId = (Long)attributes.get("dataStructureId");
+
+		if (dataStructureId != null) {
+			setDataStructureId(dataStructureId);
 		}
 	}
 
@@ -227,6 +234,16 @@ public class DataTypeWrapper
 	@Override
 	public Date getCreateDate() {
 		return model.getCreateDate();
+	}
+
+	/**
+	 * Returns the data structure ID of this data type.
+	 *
+	 * @return the data structure ID of this data type
+	 */
+	@Override
+	public long getDataStructureId() {
+		return model.getDataStructureId();
 	}
 
 	/**
@@ -427,6 +444,16 @@ public class DataTypeWrapper
 	}
 
 	/**
+	 * Returns the freezable of this data type.
+	 *
+	 * @return the freezable of this data type
+	 */
+	@Override
+	public boolean getFreezable() {
+		return model.getFreezable();
+	}
+
+	/**
 	 * Returns the group ID of this data type.
 	 *
 	 * @return the group ID of this data type
@@ -434,16 +461,6 @@ public class DataTypeWrapper
 	@Override
 	public long getGroupId() {
 		return model.getGroupId();
-	}
-
-	/**
-	 * Returns the has data structure of this data type.
-	 *
-	 * @return the has data structure of this data type
-	 */
-	@Override
-	public boolean getHasDataStructure() {
-		return model.getHasDataStructure();
 	}
 
 	/**
@@ -687,13 +704,13 @@ public class DataTypeWrapper
 	}
 
 	/**
-	 * Returns the visualizers of this data type.
+	 * Returns the verifiable of this data type.
 	 *
-	 * @return the visualizers of this data type
+	 * @return the verifiable of this data type
 	 */
 	@Override
-	public String getVisualizers() {
-		return model.getVisualizers();
+	public boolean getVerifiable() {
+		return model.getVerifiable();
 	}
 
 	/**
@@ -737,13 +754,13 @@ public class DataTypeWrapper
 	}
 
 	/**
-	 * Returns <code>true</code> if this data type is has data structure.
+	 * Returns <code>true</code> if this data type is freezable.
 	 *
-	 * @return <code>true</code> if this data type is has data structure; <code>false</code> otherwise
+	 * @return <code>true</code> if this data type is freezable; <code>false</code> otherwise
 	 */
 	@Override
-	public boolean isHasDataStructure() {
-		return model.isHasDataStructure();
+	public boolean isFreezable() {
+		return model.isFreezable();
 	}
 
 	/**
@@ -816,6 +833,16 @@ public class DataTypeWrapper
 		return model.isScheduled();
 	}
 
+	/**
+	 * Returns <code>true</code> if this data type is verifiable.
+	 *
+	 * @return <code>true</code> if this data type is verifiable; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isVerifiable() {
+		return model.isVerifiable();
+	}
+
 	@Override
 	public void persist() {
 		model.persist();
@@ -854,6 +881,16 @@ public class DataTypeWrapper
 	@Override
 	public void setCreateDate(Date createDate) {
 		model.setCreateDate(createDate);
+	}
+
+	/**
+	 * Sets the data structure ID of this data type.
+	 *
+	 * @param dataStructureId the data structure ID of this data type
+	 */
+	@Override
+	public void setDataStructureId(long dataStructureId) {
+		model.setDataStructureId(dataStructureId);
 	}
 
 	/**
@@ -1031,6 +1068,16 @@ public class DataTypeWrapper
 	}
 
 	/**
+	 * Sets whether this data type is freezable.
+	 *
+	 * @param freezable the freezable of this data type
+	 */
+	@Override
+	public void setFreezable(boolean freezable) {
+		model.setFreezable(freezable);
+	}
+
+	/**
 	 * Sets the group ID of this data type.
 	 *
 	 * @param groupId the group ID of this data type
@@ -1038,16 +1085,6 @@ public class DataTypeWrapper
 	@Override
 	public void setGroupId(long groupId) {
 		model.setGroupId(groupId);
-	}
-
-	/**
-	 * Sets whether this data type is has data structure.
-	 *
-	 * @param hasDataStructure the has data structure of this data type
-	 */
-	@Override
-	public void setHasDataStructure(boolean hasDataStructure) {
-		model.setHasDataStructure(hasDataStructure);
 	}
 
 	/**
@@ -1246,13 +1283,13 @@ public class DataTypeWrapper
 	}
 
 	/**
-	 * Sets the visualizers of this data type.
+	 * Sets whether this data type is verifiable.
 	 *
-	 * @param visualizers the visualizers of this data type
+	 * @param verifiable the verifiable of this data type
 	 */
 	@Override
-	public void setVisualizers(String visualizers) {
-		model.setVisualizers(visualizers);
+	public void setVerifiable(boolean verifiable) {
+		model.setVerifiable(verifiable);
 	}
 
 	@Override
@@ -1265,11 +1302,6 @@ public class DataTypeWrapper
 		java.util.Locale locale) {
 
 		return model.toJSON(locale);
-	}
-
-	@Override
-	public String toJSONString() {
-		return model.toJSONString();
 	}
 
 	@Override

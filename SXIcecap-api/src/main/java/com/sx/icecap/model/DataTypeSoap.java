@@ -51,8 +51,9 @@ public class DataTypeSoap implements Serializable {
 		soapModel.setSampleFileId(model.getSampleFileId());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setTooltip(model.getTooltip());
-		soapModel.setVisualizers(model.getVisualizers());
-		soapModel.setHasDataStructure(model.isHasDataStructure());
+		soapModel.setFreezable(model.isFreezable());
+		soapModel.setVerifiable(model.isVerifiable());
+		soapModel.setDataStructureId(model.getDataStructureId());
 
 		return soapModel;
 	}
@@ -266,24 +267,36 @@ public class DataTypeSoap implements Serializable {
 		_tooltip = tooltip;
 	}
 
-	public String getVisualizers() {
-		return _visualizers;
+	public boolean getFreezable() {
+		return _freezable;
 	}
 
-	public void setVisualizers(String visualizers) {
-		_visualizers = visualizers;
+	public boolean isFreezable() {
+		return _freezable;
 	}
 
-	public boolean getHasDataStructure() {
-		return _hasDataStructure;
+	public void setFreezable(boolean freezable) {
+		_freezable = freezable;
 	}
 
-	public boolean isHasDataStructure() {
-		return _hasDataStructure;
+	public boolean getVerifiable() {
+		return _verifiable;
 	}
 
-	public void setHasDataStructure(boolean hasDataStructure) {
-		_hasDataStructure = hasDataStructure;
+	public boolean isVerifiable() {
+		return _verifiable;
+	}
+
+	public void setVerifiable(boolean verifiable) {
+		_verifiable = verifiable;
+	}
+
+	public long getDataStructureId() {
+		return _dataStructureId;
+	}
+
+	public void setDataStructureId(long dataStructureId) {
+		_dataStructureId = dataStructureId;
 	}
 
 	private String _uuid;
@@ -306,7 +319,8 @@ public class DataTypeSoap implements Serializable {
 	private long _sampleFileId;
 	private String _description;
 	private String _tooltip;
-	private String _visualizers;
-	private boolean _hasDataStructure;
+	private boolean _freezable;
+	private boolean _verifiable;
+	private long _dataStructureId;
 
 }

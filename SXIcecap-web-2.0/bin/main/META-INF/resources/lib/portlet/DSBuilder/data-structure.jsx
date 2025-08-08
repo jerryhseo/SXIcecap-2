@@ -28,16 +28,8 @@ export class DataStructure extends GroupParameter {
 	#enableGoTo = false;
 	#hierarchicalData = false;
 
-	constructor(namespace, formId, languageId, availableLanguageIds, json) {
-		super(namespace, formId, languageId, availableLanguageIds);
-
-		if (json) {
-			this.parse(json);
-		}
-
-		this.paramName = GroupParameter.ROOT_GROUP;
-		this.viewType = DataStructure.ViewTypes.BAREBONE;
-		this.parent = null;
+	constructor(namespace, formId, languageId, availableLanguageIds, paramType = ParamType.GROUP) {
+		super(namespace, formId, languageId, availableLanguageIds, paramType);
 	}
 
 	get paramDelimiter() {
@@ -76,6 +68,24 @@ export class DataStructure extends GroupParameter {
 	}
 	set hierarchicalData(val) {
 		this.#hierarchicalData = val;
+	}
+
+	initProperties(json) {
+		this.parse(json);
+	}
+
+	checkDuplicateParam(param) {
+		let duplicated = false;
+
+		this.members.every((member) => {
+			if (param !== member) {
+				duplicated = member.checkDuplicateParam(param);
+			}
+
+			return duplicated ? Constant.STOP_EVERY : Constant.CONTINUE_EVERY;
+		});
+
+		return duplicated;
 	}
 
 	getSiblingParameters({ groupName = "", groupVersion = "", paramName, paramVersion }) {
@@ -183,12 +193,16 @@ export class DataStructure extends GroupParameter {
 		return items;
 	}
 
-	parse(json) {
+	parse(json = {}) {
 		super.parse(json);
 
-		this.paramDelimiter = json.paramDelimiter ?? this.paramDelimiter;
-		this.paramDelimiterPosition = json.paramDelimiterPosition ?? this.paramDelimiterPosition;
-		this.paramValueDelimiter = json.paramValueDelimiter ?? this.paramValueDelimiter;
+		this.paramName = json.paramName ?? GroupParameter.ROOT_GROUP;
+		this.viewType = DataStructure.ViewTypes.BAREBONE;
+		this.parent = null;
+
+		this.paramDelimiter = json.paramDelimiter ?? ";";
+		this.paramDelimiterPosition = json.paramDelimiterPosition ?? "end";
+		this.paramValueDelimiter = json.paramValueDelimiter ?? "=";
 
 		this.enableInputStatus = json.enableInputStatus ?? false;
 		this.enableGoTo = json.enableGoTo ?? false;

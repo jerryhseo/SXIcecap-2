@@ -50,17 +50,49 @@ public class DataStructureLocalServiceWrapper
 		return _dataStructureLocalService.addDataStructure(dataStructure);
 	}
 
+	@Override
+	public com.sx.icecap.model.DataStructure addDataStructure(
+			String dataStructureName, String dataStructureVersion,
+			java.util.Map<java.util.Locale, String> displayNameMap,
+			java.util.Map<java.util.Locale, String> descriptionMap,
+			String structure, boolean freezable, boolean verifiable,
+			boolean commentable, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dataStructureLocalService.addDataStructure(
+			dataStructureName, dataStructureVersion, displayNameMap,
+			descriptionMap, structure, freezable, verifiable, commentable,
+			status, sc);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONArray convertListToJSONArray(
+			java.util.List<com.sx.icecap.model.DataStructure> list)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return _dataStructureLocalService.convertListToJSONArray(list);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject convertModelToJSONObject(
+			com.sx.icecap.model.DataStructure structure)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return _dataStructureLocalService.convertModelToJSONObject(structure);
+	}
+
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
-	 * @param dataTypeId the primary key for the new data structure
+	 * @param dataStructureId the primary key for the new data structure
 	 * @return the new data structure
 	 */
 	@Override
 	public com.sx.icecap.model.DataStructure createDataStructure(
-		long dataTypeId) {
+		long dataStructureId) {
 
-		return _dataStructureLocalService.createDataStructure(dataTypeId);
+		return _dataStructureLocalService.createDataStructure(dataStructureId);
 	}
 
 	/**
@@ -87,16 +119,16 @@ public class DataStructureLocalServiceWrapper
 	 * <strong>Important:</strong> Inspect DataStructureLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param dataTypeId the primary key of the data structure
+	 * @param dataStructureId the primary key of the data structure
 	 * @return the data structure that was removed
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Override
 	public com.sx.icecap.model.DataStructure deleteDataStructure(
-			long dataTypeId)
+			long dataStructureId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _dataStructureLocalService.deleteDataStructure(dataTypeId);
+		return _dataStructureLocalService.deleteDataStructure(dataStructureId);
 	}
 
 	/**
@@ -203,9 +235,24 @@ public class DataStructureLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataStructure fetchDataStructure(
-		long dataTypeId) {
+		long dataStructureId) {
 
-		return _dataStructureLocalService.fetchDataStructure(dataTypeId);
+		return _dataStructureLocalService.fetchDataStructure(dataStructureId);
+	}
+
+	/**
+	 * Returns the data structure matching the UUID and group.
+	 *
+	 * @param uuid the data structure's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data structure, or <code>null</code> if a matching data structure could not be found
+	 */
+	@Override
+	public com.sx.icecap.model.DataStructure fetchDataStructureByUuidAndGroupId(
+		String uuid, long groupId) {
+
+		return _dataStructureLocalService.fetchDataStructureByUuidAndGroupId(
+			uuid, groupId);
 	}
 
 	@Override
@@ -218,15 +265,33 @@ public class DataStructureLocalServiceWrapper
 	/**
 	 * Returns the data structure with the primary key.
 	 *
-	 * @param dataTypeId the primary key of the data structure
+	 * @param dataStructureId the primary key of the data structure
 	 * @return the data structure
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Override
-	public com.sx.icecap.model.DataStructure getDataStructure(long dataTypeId)
+	public com.sx.icecap.model.DataStructure getDataStructure(
+			long dataStructureId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _dataStructureLocalService.getDataStructure(dataTypeId);
+		return _dataStructureLocalService.getDataStructure(dataStructureId);
+	}
+
+	/**
+	 * Returns the data structure matching the UUID and group.
+	 *
+	 * @param uuid the data structure's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data structure
+	 * @throws PortalException if a matching data structure could not be found
+	 */
+	@Override
+	public com.sx.icecap.model.DataStructure getDataStructureByUuidAndGroupId(
+			String uuid, long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dataStructureLocalService.getDataStructureByUuidAndGroupId(
+			uuid, groupId);
 	}
 
 	/**
@@ -248,6 +313,42 @@ public class DataStructureLocalServiceWrapper
 	}
 
 	/**
+	 * Returns all the data structures matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data structures
+	 * @param companyId the primary key of the company
+	 * @return the matching data structures, or an empty list if no matches were found
+	 */
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getDataStructuresByUuidAndCompanyId(String uuid, long companyId) {
+
+		return _dataStructureLocalService.getDataStructuresByUuidAndCompanyId(
+			uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of data structures matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data structures
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of data structures
+	 * @param end the upper bound of the range of data structures (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching data structures, or an empty list if no matches were found
+	 */
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getDataStructuresByUuidAndCompanyId(
+			String uuid, long companyId, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.sx.icecap.model.DataStructure> orderByComparator) {
+
+		return _dataStructureLocalService.getDataStructuresByUuidAndCompanyId(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
 	 * Returns the number of data structures.
 	 *
 	 * @return the number of data structures
@@ -255,6 +356,16 @@ public class DataStructureLocalServiceWrapper
 	@Override
 	public int getDataStructuresCount() {
 		return _dataStructureLocalService.getDataStructuresCount();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
+		getExportActionableDynamicQuery(
+			com.liferay.exportimport.kernel.lar.PortletDataContext
+				portletDataContext) {
+
+		return _dataStructureLocalService.getExportActionableDynamicQuery(
+			portletDataContext);
 	}
 
 	@Override
@@ -285,6 +396,21 @@ public class DataStructureLocalServiceWrapper
 		return _dataStructureLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public com.sx.icecap.model.DataStructure removeDataStructure(
+			long dataStructureId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dataStructureLocalService.removeDataStructure(dataStructureId);
+	}
+
+	@Override
+	public void removeDataStructures(long[] dataStructureIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_dataStructureLocalService.removeDataStructures(dataStructureIds);
+	}
+
 	/**
 	 * Updates the data structure in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -300,6 +426,43 @@ public class DataStructureLocalServiceWrapper
 		com.sx.icecap.model.DataStructure dataStructure) {
 
 		return _dataStructureLocalService.updateDataStructure(dataStructure);
+	}
+
+	@Override
+	public com.sx.icecap.model.DataStructure updateDataStructure(
+			long dataStructureId, String dataStructureName,
+			String dataStructureVersion,
+			java.util.Map<java.util.Locale, String> displayNameMap,
+			java.util.Map<java.util.Locale, String> descriptionMap,
+			String structure, boolean freezable, boolean verifiable,
+			boolean commentable, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dataStructureLocalService.updateDataStructure(
+			dataStructureId, dataStructureName, dataStructureVersion,
+			displayNameMap, descriptionMap, structure, freezable, verifiable,
+			commentable, status, sc);
+	}
+
+	@Override
+	public com.sx.icecap.model.DataStructure updateStatus(
+			long userId, long dataStructureId, Integer status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		return _dataStructureLocalService.updateStatus(
+			userId, dataStructureId, status, sc);
+	}
+
+	@Override
+	public com.sx.icecap.model.DataStructure updateStructure(
+			long dataStructureId, String structure)
+		throws com.sx.icecap.exception.NoSuchDataStructureException {
+
+		return _dataStructureLocalService.updateStructure(
+			dataStructureId, structure);
 	}
 
 	@Override

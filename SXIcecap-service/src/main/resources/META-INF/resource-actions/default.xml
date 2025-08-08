@@ -6,9 +6,18 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 	<model-resource>
 		<model-name>com.sx.icecap</model-name>
 		<portlet-ref>
+			<portlet-name>com_sx_icecap_web_portlet_DataCollectionExplorerPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataCollectionEditorPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataCollectionViewerPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataSetExplorerPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataSetEditorPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataSetViewerPortlet</portlet-name>
 			<portlet-name>com_sx_icecap_web_portlet_DataTypeExplorerPortlet</portlet-name>
 			<portlet-name>com_sx_icecap_web_portlet_DataTypeEditorPortlet</portlet-name>
 			<portlet-name>com_sx_icecap_web_portlet_DataTypeViewerPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_ParameterExplorerPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_ParameterEditorPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_ParameterViewerPortlet</portlet-name>
 			<portlet-name>com_sx_icecap_web_portlet_DataStructureBuilderPortlet</portlet-name>
 			<portlet-name>com_sx_icecap_web_portlet_StructuredDataViewerPortlet</portlet-name>
 			<portlet-name>com_sx_icecap_web_portlet_StructuredDataEditorPortlet</portlet-name>
@@ -19,35 +28,35 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 		<weight>1</weight>
 		<permissions>
 			<supports>
-				<action-key>ADD_PARAMETER</action-key>
+				<action-key>ADD_DATACOLLECTION</action-key>
+				<action-key>ADD_DATASET</action-key>
 				<action-key>ADD_DATATYPE</action-key>
+				<action-key>ADD_DATASTRUCTURE</action-key>
+				<action-key>ADD_PARAMETER</action-key>
 				<action-key>ADD_STRUCTURED_DATA</action-key>
-				<action-key>UPDATE_PARAMETER</action-key>
+				<action-key>UPDATE_DATACOLLECTION</action-key>
+				<action-key>UPDATE_DATASET</action-key>
 				<action-key>UPDATE_DATATYPE</action-key>
+				<action-key>UPDATE_DATASTRUCTURE</action-key>
+				<action-key>UPDATE_PARAMETER</action-key>
 				<action-key>UPDATE_STRUCTURED_DATA</action-key>
-				<action-key>DELETE_PARAMETER</action-key>
+				<action-key>DELETE_DATACOLLECTION</action-key>
+				<action-key>DELETE_DATASET</action-key>
 				<action-key>DELETE_DATATYPE</action-key>
+				<action-key>DELETE_DATASTRUCTURE</action-key>
+				<action-key>DELETE_PARAMETER</action-key>
 				<action-key>DELETE_STRUCTURED_DATA</action-key>
-				<action-key>REVIEW_PARAMETER</action-key>
+				<action-key>REVIEW_DATACOLLECTION</action-key>
+				<action-key>REVIEW_DATASET</action-key>
 				<action-key>REVIEW_DATATYPE</action-key>
+				<action-key>REVIEW_DATASTRUCTURE</action-key>
+				<action-key>REVIEW_PARAMETER</action-key>
 				<action-key>REVIEW_STRUCTURED_DATA</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>SUBSCRIBE</action-key>
 				<action-key>VIEW</action-key>
 			</supports>
 			<site-member-defaults>
-				<action-key>ADD_PARAMETER</action-key>
-				<action-key>ADD_DATATYPE</action-key>
-				<action-key>ADD_STRUCTURED_DATA</action-key>
-				<action-key>UPDATE_PARAMETER</action-key>
-				<action-key>UPDATE_DATATYPE</action-key>
-				<action-key>UPDATE_STRUCTURED_DATA</action-key>
-				<action-key>DELETE_PARAMETER</action-key>
-				<action-key>DELETE_DATATYPE</action-key>
-				<action-key>DELETE_STRUCTURED_DATA</action-key>
-				<action-key>REVIEW_PARAMETER</action-key>
-				<action-key>REVIEW_DATATYPE</action-key>
-				<action-key>REVIEW_STRUCTURED_DATA</action-key>
 				<action-key>VIEW</action-key>
 				<action-key>SUBSCRIBE</action-key>
 			</site-member-defaults>
@@ -55,17 +64,29 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 				<action-key>VIEW</action-key>
 			</guest-defaults>
 			<guest-unsupported>
-				<action-key>ADD_PARAMETER</action-key>
+				<action-key>ADD_DATACOLLECTION</action-key>
+				<action-key>ADD_DATASET</action-key>
 				<action-key>ADD_DATATYPE</action-key>
+				<action-key>ADD_DATASTRUCTURE</action-key>
+				<action-key>ADD_PARAMETER</action-key>
 				<action-key>ADD_STRUCTURED_DATA</action-key>
-				<action-key>UPDATE_PARAMETER</action-key>
+				<action-key>UPDATE_DATACOLLECTION</action-key>
+				<action-key>UPDATE_DATASET</action-key>
 				<action-key>UPDATE_DATATYPE</action-key>
+				<action-key>UPDATE_DATASTRUCTURE</action-key>
+				<action-key>UPDATE_PARAMETER</action-key>
 				<action-key>UPDATE_STRUCTURED_DATA</action-key>
-				<action-key>DELETE_PARAMETER</action-key>
+				<action-key>DELETE_DATACOLLECTION</action-key>
+				<action-key>DELETE_DATASET</action-key>
 				<action-key>DELETE_DATATYPE</action-key>
+				<action-key>DELETE_DATASTRUCTURE</action-key>
+				<action-key>DELETE_PARAMETER</action-key>
 				<action-key>DELETE_STRUCTURED_DATA</action-key>
-				<action-key>REVIEW_PARAMETER</action-key>
+				<action-key>REVIEW_DATACOLLECTION</action-key>
+				<action-key>REVIEW_DATASET</action-key>
 				<action-key>REVIEW_DATATYPE</action-key>
+				<action-key>REVIEW_DATASTRUCTURE</action-key>
+				<action-key>REVIEW_PARAMETER</action-key>
 				<action-key>REVIEW_STRUCTURED_DATA</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>SUBSCRIBE</action-key>
@@ -77,6 +98,94 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 		<model-name>com.sx.icecap.model.Parameter</model-name>
 		<portlet-ref>
 			<portlet-name>com_sx_icecap_web_portlet_DataStructureBuilderPortlet</portlet-name>
+		</portlet-ref>
+		<weight>2</weight>
+		<permissions>
+			<supports>
+				<action-key>ADD</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>REVIEW</action-key>
+				<action-key>APPROVE</action-key>
+				<action-key>ADD_DISCUSSION</action-key>
+				<action-key>DELETE_DISCUSSION</action-key>
+				<action-key>UPDATE_DISCUSSION</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>ADD</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>REVIEW</action-key>
+				<action-key>ADD_DISCUSSION</action-key>
+				<action-key>DELETE_DISCUSSION</action-key>
+				<action-key>UPDATE_DISCUSSION</action-key>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>PERMISSIONS</action-key>
+			</guest-unsupported>
+		</permissions>
+	</model-resource>
+	
+	<model-resource>
+		<model-name>com.sx.icecap.model.DataCollection</model-name>
+		<portlet-ref>
+			<portlet-name>com_sx_icecap_web_portlet_DataCollectionExplorerPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataCollectionEditorPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataCollectionViewerPortlet</portlet-name>
+		</portlet-ref>
+		<weight>2</weight>
+		<permissions>
+			<supports>
+				<action-key>ADD</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>REVIEW</action-key>
+				<action-key>APPROVE</action-key>
+				<action-key>ADD_DISCUSSION</action-key>
+				<action-key>DELETE_DISCUSSION</action-key>
+				<action-key>UPDATE_DISCUSSION</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>ADD</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>REVIEW</action-key>
+				<action-key>ADD_DISCUSSION</action-key>
+				<action-key>DELETE_DISCUSSION</action-key>
+				<action-key>UPDATE_DISCUSSION</action-key>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>ADD_DISCUSSION</action-key>
+				<action-key>UPDATE_DISCUSSION</action-key>
+				<action-key>DELETE_DISCUSSION</action-key>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>ADD</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>REVIEW</action-key>
+				<action-key>APPROVE</action-key>
+				<action-key>PERMISSIONS</action-key>
+			</guest-unsupported>
+		</permissions>
+	</model-resource>
+	
+	<model-resource>
+		<model-name>com.sx.icecap.model.DataSet</model-name>
+		<portlet-ref>
+			<portlet-name>com_sx_icecap_web_portlet_DataSetExplorerPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataSetEditorPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataSetViewerPortlet</portlet-name>
 		</portlet-ref>
 		<weight>2</weight>
 		<permissions>
@@ -125,6 +234,55 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 			<portlet-name>com_sx_icecap_web_portlet_DataTypeExplorerPortlet</portlet-name>
 			<portlet-name>com_sx_icecap_web_portlet_DataTypeEditorPortlet</portlet-name>
 			<portlet-name>com_sx_icecap_web_portlet_DataTypeViewerPortlet</portlet-name>
+		</portlet-ref>
+		<weight>2</weight>
+		<permissions>
+			<supports>
+				<action-key>ADD</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>REVIEW</action-key>
+				<action-key>APPROVE</action-key>
+				<action-key>ADD_DISCUSSION</action-key>
+				<action-key>DELETE_DISCUSSION</action-key>
+				<action-key>UPDATE_DISCUSSION</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>ADD</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>REVIEW</action-key>
+				<action-key>ADD_DISCUSSION</action-key>
+				<action-key>DELETE_DISCUSSION</action-key>
+				<action-key>UPDATE_DISCUSSION</action-key>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>ADD_DISCUSSION</action-key>
+				<action-key>UPDATE_DISCUSSION</action-key>
+				<action-key>DELETE_DISCUSSION</action-key>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>ADD</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>REVIEW</action-key>
+				<action-key>APPROVE</action-key>
+				<action-key>PERMISSIONS</action-key>
+			</guest-unsupported>
+		</permissions>
+	</model-resource>
+	
+	<model-resource>
+		<model-name>com.sx.icecap.model.DataStructure</model-name>
+		<portlet-ref>
+			<portlet-name>com_sx_icecap_web_portlet_DataStructureBuilderPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_StructuredDataExplorerPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_StructuredDataEditorPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_StructuredDataViewerPortlet</portlet-name>
 		</portlet-ref>
 		<weight>2</weight>
 		<permissions>

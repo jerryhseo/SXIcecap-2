@@ -65,34 +65,17 @@ public class DataTypeLocalServiceUtil {
 			String dataTypeName, String dataTypeVersion, String extension,
 			Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap,
-			Map<java.util.Locale, String> tooltipMap, String visualizers,
+			Map<java.util.Locale, String> tooltipMap, long dataStructureId,
 			int status, com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().addDataType(
 			dataTypeName, dataTypeVersion, extension, displayNameMap,
-			descriptionMap, tooltipMap, visualizers, status, sc);
-	}
-
-	public static com.sx.icecap.model.StructuredData addStructuredData(
-			long dataSetId, long dataTypeId, String data, int status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws PortalException {
-
-		return getService().addStructuredData(
-			dataSetId, dataTypeId, data, status, sc);
+			descriptionMap, tooltipMap, dataStructureId, status, sc);
 	}
 
 	public static boolean checkDataTypeNameUnique(String paramName) {
 		return getService().checkDataTypeNameUnique(paramName);
-	}
-
-	public static DataType copyDataType(
-			long dataTypeId,
-			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws PortalException {
-
-		return getService().copyDataType(dataTypeId, sc);
 	}
 
 	public static int countAllDataTypes() {
@@ -145,13 +128,6 @@ public class DataTypeLocalServiceUtil {
 	 */
 	public static DataType createDataType(long dataTypeId) {
 		return getService().createDataType(dataTypeId);
-	}
-
-	public static com.sx.icecap.model.DataStructure deleteDataStructure(
-			long dataTypeId)
-		throws com.sx.icecap.exception.NoSuchDataStructureException {
-
-		return getService().deleteDataStructure(dataTypeId);
 	}
 
 	/**
@@ -289,13 +265,6 @@ public class DataTypeLocalServiceUtil {
 		return getService().fetchDataTypeByUuidAndGroupId(uuid, groupId);
 	}
 
-	public static List<String> getAbstractFields(
-			long dataTypeId, boolean abstractKey)
-		throws com.liferay.portal.kernel.json.JSONException {
-
-		return getService().getAbstractFields(dataTypeId, abstractKey);
-	}
-
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -345,25 +314,6 @@ public class DataTypeLocalServiceUtil {
 		return getService().getDataFileFolderId(
 			repositoryId, parentFoderId, dataTypeName, dataTypeVersion, dataId,
 			paramName, paramVersion, sc, createWhenNoExist);
-	}
-
-	public static String getDataStructure(long dataTypeId)
-		throws com.sx.icecap.exception.NoSuchDataStructureException {
-
-		return getService().getDataStructure(dataTypeId);
-	}
-
-	/**
-	 * Get data structure as a JSON object.
-	 *
-	 * @return null,	if the data type has no structure
-	 JSONObject, if has a proper structure.
-	 */
-	public static com.liferay.portal.kernel.json.JSONObject
-			getDataStructureJSONObject(long dataTypeId)
-		throws com.liferay.portal.kernel.json.JSONException {
-
-		return getService().getDataStructureJSONObject(dataTypeId);
 	}
 
 	/**
@@ -596,17 +546,17 @@ public class DataTypeLocalServiceUtil {
 			groupId, userId, status, start, end, orderCol, orderType);
 	}
 
+	public static String getDisplayName(
+			long dataTypeId, java.util.Locale locale)
+		throws com.sx.icecap.exception.NoSuchDataTypeException {
+
+		return getService().getDisplayName(dataTypeId, locale);
+	}
+
 	public static com.liferay.portal.kernel.json.JSONArray getDLFolderFiles(
 		long repositoryId, long folderId) {
 
 		return getService().getDLFolderFiles(repositoryId, folderId);
-	}
-
-	public static List<String> getDownloadableFields(
-			long dataTypeId, boolean downloadable)
-		throws com.liferay.portal.kernel.json.JSONException {
-
-		return getService().getDownloadableFields(dataTypeId, downloadable);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
@@ -624,12 +574,6 @@ public class DataTypeLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
-	public static String getName(long dataTypeId, java.util.Locale locale)
-		throws com.sx.icecap.exception.NoSuchDataTypeException {
-
-		return getService().getName(dataTypeId, locale);
-	}
-
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -639,13 +583,6 @@ public class DataTypeLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.kernel.json.JSONObject getParameterByName(
-			long dataTypeId, String paramName)
-		throws com.liferay.portal.kernel.json.JSONException {
-
-		return getService().getParameterByName(dataTypeId, paramName);
-	}
-
 	/**
 	 * @throws PortalException
 	 */
@@ -653,13 +590,6 @@ public class DataTypeLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	public static List<String> getSearchableFields(
-			long dataTypeId, boolean searchable)
-		throws com.liferay.portal.kernel.json.JSONException {
-
-		return getService().getSearchableFields(dataTypeId, searchable);
 	}
 
 	public static com.liferay.portal.kernel.dao.search.SearchContainerResults
@@ -677,44 +607,6 @@ public class DataTypeLocalServiceUtil {
 		return getService().getSortOrderComparator(orderByCol, orderByType);
 	}
 
-	public static String getStructuredData(long structuredDataId) {
-		return getService().getStructuredData(structuredDataId);
-	}
-
-	public static List<com.sx.icecap.model.StructuredData> getStructuredDatas(
-		long dataTypeId) {
-
-		return getService().getStructuredDatas(dataTypeId);
-	}
-
-	public static List<com.sx.icecap.model.StructuredData> getStructuredDatas(
-		long dataTypeId, int start, int end) {
-
-		return getService().getStructuredDatas(dataTypeId, start, end);
-	}
-
-	public static com.liferay.portal.kernel.json.JSONArray
-		getStructuredDatasJSON(long dataTypeId) {
-
-		return getService().getStructuredDatasJSON(dataTypeId);
-	}
-
-	public static Map<String, Object> parseStructuredData(
-		String paramDelimiter, String valueDelimiter, String structuredData) {
-
-		return getService().parseStructuredData(
-			paramDelimiter, valueDelimiter, structuredData);
-	}
-
-	public static List<com.sx.icecap.model.StructuredData>
-			performAdvancedSearchOnStructuredData(
-				long dataTypeId, String advancedQuery, int start, int end)
-		throws com.liferay.portal.kernel.json.JSONException {
-
-		return getService().performAdvancedSearchOnStructuredData(
-			dataTypeId, advancedQuery, start, end);
-	}
-
 	public static DataType removeDataType(long dataTypeId)
 		throws PortalException {
 
@@ -725,31 +617,6 @@ public class DataTypeLocalServiceUtil {
 		throws PortalException {
 
 		getService().removeDataTypes(dataTypeIds);
-	}
-
-	public static com.sx.icecap.model.StructuredData removeStructuredData(
-			long structuredDataId, long dataFileFolderId)
-		throws PortalException {
-
-		return getService().removeStructuredData(
-			structuredDataId, dataFileFolderId);
-	}
-
-	/**
-	 * @throws NoSuchDataStructureException
-	 Set the data structure for the dataType specified by dataTypeId.
-	 * @since 1.0
-	 * @see com.sx.icecap.datatype.service
-	 * @author Jerry H. Seo
-	 * @param long Datatype ID
-	 String Data Structure
-	 * @throws void
-	 * @return void
-	 */
-	public static com.sx.icecap.model.DataStructure updateDataStructure(
-		long dataTypeId, String strDataStructure) {
-
-		return getService().updateDataStructure(dataTypeId, strDataStructure);
 	}
 
 	/**
@@ -770,13 +637,13 @@ public class DataTypeLocalServiceUtil {
 			long dataTypeId, String dataTypeName, String dataTypeVersion,
 			String extension, Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap,
-			Map<java.util.Locale, String> tooltipMap, String visualizers,
+			Map<java.util.Locale, String> tooltipMap, long dataStructureId,
 			int status, com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().updateDataType(
 			dataTypeId, dataTypeName, dataTypeVersion, extension,
-			displayNameMap, descriptionMap, tooltipMap, visualizers, status,
+			displayNameMap, descriptionMap, tooltipMap, dataStructureId, status,
 			sc);
 	}
 
@@ -786,24 +653,6 @@ public class DataTypeLocalServiceUtil {
 		throws PortalException, SystemException {
 
 		return getService().updateStatus(userId, dataTypeId, status, sc);
-	}
-
-	public static com.sx.icecap.model.StructuredData updateStructuredData(
-			long structuredDataId, long dataSetId, long dataTypeId, String data,
-			int status, com.liferay.portal.kernel.service.ServiceContext sc)
-		throws PortalException {
-
-		return getService().updateStructuredData(
-			structuredDataId, dataSetId, dataTypeId, data, status, sc);
-	}
-
-	public static com.sx.icecap.model.StructuredData updateStructuredDataStatus(
-			long userId, long structuredDataId, Integer status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws PortalException, SystemException {
-
-		return getService().updateStructuredDataStatus(
-			userId, structuredDataId, status, sc);
 	}
 
 	public static DataTypeLocalService getService() {

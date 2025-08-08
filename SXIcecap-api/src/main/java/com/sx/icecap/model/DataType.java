@@ -76,8 +76,6 @@ public interface DataType extends DataTypeModel, PersistedModel {
 
 		};
 
-	public String toJSONString();
-
 	public com.liferay.portal.kernel.json.JSONObject toJSON();
 
 	public com.liferay.portal.kernel.json.JSONObject toJSON(

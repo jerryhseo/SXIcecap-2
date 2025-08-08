@@ -60,10 +60,6 @@ public class DataSetWrapper
 		attributes.put("dataSetVersion", getDataSetVersion());
 		attributes.put("displayName", getDisplayName());
 		attributes.put("description", getDescription());
-		attributes.put("folderId", getFolderId());
-		attributes.put("structure", getStructure());
-		attributes.put("verificationType", getVerificationType());
-		attributes.put("multiEntryLevel", getMultiEntryLevel());
 
 		return attributes;
 	}
@@ -170,30 +166,6 @@ public class DataSetWrapper
 
 		if (description != null) {
 			setDescription(description);
-		}
-
-		Long folderId = (Long)attributes.get("folderId");
-
-		if (folderId != null) {
-			setFolderId(folderId);
-		}
-
-		String structure = (String)attributes.get("structure");
-
-		if (structure != null) {
-			setStructure(structure);
-		}
-
-		String verificationType = (String)attributes.get("verificationType");
-
-		if (verificationType != null) {
-			setVerificationType(verificationType);
-		}
-
-		Integer multiEntryLevel = (Integer)attributes.get("multiEntryLevel");
-
-		if (multiEntryLevel != null) {
-			setMultiEntryLevel(multiEntryLevel);
 		}
 	}
 
@@ -410,16 +382,6 @@ public class DataSetWrapper
 	}
 
 	/**
-	 * Returns the folder ID of this data set.
-	 *
-	 * @return the folder ID of this data set
-	 */
-	@Override
-	public long getFolderId() {
-		return model.getFolderId();
-	}
-
-	/**
 	 * Returns the group ID of this data set.
 	 *
 	 * @return the group ID of this data set
@@ -447,16 +409,6 @@ public class DataSetWrapper
 	@Override
 	public Date getModifiedDate() {
 		return model.getModifiedDate();
-	}
-
-	/**
-	 * Returns the multi entry level of this data set.
-	 *
-	 * @return the multi entry level of this data set
-	 */
-	@Override
-	public int getMultiEntryLevel() {
-		return model.getMultiEntryLevel();
 	}
 
 	/**
@@ -517,16 +469,6 @@ public class DataSetWrapper
 	@Override
 	public Date getStatusDate() {
 		return model.getStatusDate();
-	}
-
-	/**
-	 * Returns the structure of this data set.
-	 *
-	 * @return the structure of this data set
-	 */
-	@Override
-	public String getStructure() {
-		return model.getStructure();
 	}
 
 	/**
@@ -601,16 +543,6 @@ public class DataSetWrapper
 	@Override
 	public String getUuid() {
 		return model.getUuid();
-	}
-
-	/**
-	 * Returns the verification type of this data set.
-	 *
-	 * @return the verification type of this data set
-	 */
-	@Override
-	public String getVerificationType() {
-		return model.getVerificationType();
 	}
 
 	/**
@@ -928,16 +860,6 @@ public class DataSetWrapper
 	}
 
 	/**
-	 * Sets the folder ID of this data set.
-	 *
-	 * @param folderId the folder ID of this data set
-	 */
-	@Override
-	public void setFolderId(long folderId) {
-		model.setFolderId(folderId);
-	}
-
-	/**
 	 * Sets the group ID of this data set.
 	 *
 	 * @param groupId the group ID of this data set
@@ -965,16 +887,6 @@ public class DataSetWrapper
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		model.setModifiedDate(modifiedDate);
-	}
-
-	/**
-	 * Sets the multi entry level of this data set.
-	 *
-	 * @param multiEntryLevel the multi entry level of this data set
-	 */
-	@Override
-	public void setMultiEntryLevel(int multiEntryLevel) {
-		model.setMultiEntryLevel(multiEntryLevel);
 	}
 
 	/**
@@ -1038,16 +950,6 @@ public class DataSetWrapper
 	}
 
 	/**
-	 * Sets the structure of this data set.
-	 *
-	 * @param structure the structure of this data set
-	 */
-	@Override
-	public void setStructure(String structure) {
-		model.setStructure(structure);
-	}
-
-	/**
 	 * Sets the user ID of this data set.
 	 *
 	 * @param userId the user ID of this data set
@@ -1087,14 +989,16 @@ public class DataSetWrapper
 		model.setUuid(uuid);
 	}
 
-	/**
-	 * Sets the verification type of this data set.
-	 *
-	 * @param verificationType the verification type of this data set
-	 */
 	@Override
-	public void setVerificationType(String verificationType) {
-		model.setVerificationType(verificationType);
+	public com.liferay.portal.kernel.json.JSONObject toJSON() {
+		return model.toJSON();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject toJSON(
+		java.util.Locale locale) {
+
+		return model.toJSON(locale);
 	}
 
 	@Override

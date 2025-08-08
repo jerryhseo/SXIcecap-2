@@ -91,7 +91,7 @@ class GroupSelectorBody extends React.Component {
 							style={{ width: "100%", display: "inline-flex", gap: "1.5rem" }}
 						>
 							{row.map((option) => {
-								console.log("option: ", option);
+								//console.log("option: ", option);
 								return (
 									<ClayRadio
 										key={Util.randomKey()}
@@ -150,24 +150,34 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 		this.formId = this.formIds.propertyPanelId;
 	}
 
+	selectGroupHandler = (e) => {
+		if (e.dataPacket.targetPortlet !== this.namespace || e.dataPacket.targetFormId !== this.formId) {
+			return;
+		}
+
+		this.setState({ openSelectGroupModal: true });
+	};
+
+	refreshPropertyPanelHandler = (e) => {
+		if (e.dataPacket.targetPortlet !== this.namespace || e.dataPacket.targetFormId !== this.formId) {
+			return;
+		}
+
+		this.workingParam = e.dataPacket.workingParam;
+
+		this.setState({ paramType: this.workingParam.paramType });
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_SELECT_GROUP, (e) => {
-			if (e.dataPacket.targetPortlet !== this.namespace || e.dataPacket.targetFormId !== this.formId) {
-				return;
-			}
+		//console.log("componentDidMount: SXDSBuilderPropertiesPanel");
 
-			this.setState({ openSelectGroupModal: true });
-		});
+		Event.on(Event.SX_SELECT_GROUP, this.selectGroupHandler);
+		Event.on(Event.SX_REFRESH_PROPERTY_PANEL, this.refreshPropertyPanelHandler);
+	}
 
-		Event.uniqueOn(Event.SX_REFRESH_PROPERTY_PANEL, (e) => {
-			if (e.dataPacket.targetPortlet !== this.namespace || e.dataPacket.targetFormId !== this.formId) {
-				return;
-			}
-
-			this.workingParam = e.dataPacket.workingParam;
-
-			this.setState({ paramType: this.workingParam.paramType });
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_SELECT_GROUP, this.selectGroupHandler);
+		Event.detach(Event.SX_REFRESH_PROPERTY_PANEL, this.refreshPropertyPanelHandler);
 	}
 
 	handlePanelStepChange(step) {
@@ -237,7 +247,7 @@ class SXDSBuilderPropertiesPanel extends React.Component {
 	}
 
 	render() {
-		console.log("SXDSBuilderPropertiesPanel rendered");
+		//console.log("SXDSBuilderPropertiesPanel rendered");
 		return (
 			<>
 				<Form.Group className="form-group-sm">

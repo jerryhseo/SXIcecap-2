@@ -16,6 +16,7 @@ package com.sx.icecap.service;
 
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
@@ -24,6 +25,7 @@ import com.sx.icecap.model.DataStructure;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service utility for DataStructure. This utility wraps
@@ -59,14 +61,42 @@ public class DataStructureLocalServiceUtil {
 		return getService().addDataStructure(dataStructure);
 	}
 
+	public static DataStructure addDataStructure(
+			String dataStructureName, String dataStructureVersion,
+			Map<java.util.Locale, String> displayNameMap,
+			Map<java.util.Locale, String> descriptionMap, String structure,
+			boolean freezable, boolean verifiable, boolean commentable,
+			int status, com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
+
+		return getService().addDataStructure(
+			dataStructureName, dataStructureVersion, displayNameMap,
+			descriptionMap, structure, freezable, verifiable, commentable,
+			status, sc);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONArray
+			convertListToJSONArray(List<DataStructure> list)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return getService().convertListToJSONArray(list);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject
+			convertModelToJSONObject(DataStructure structure)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return getService().convertModelToJSONObject(structure);
+	}
+
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
-	 * @param dataTypeId the primary key for the new data structure
+	 * @param dataStructureId the primary key for the new data structure
 	 * @return the new data structure
 	 */
-	public static DataStructure createDataStructure(long dataTypeId) {
-		return getService().createDataStructure(dataTypeId);
+	public static DataStructure createDataStructure(long dataStructureId) {
+		return getService().createDataStructure(dataStructureId);
 	}
 
 	/**
@@ -92,14 +122,14 @@ public class DataStructureLocalServiceUtil {
 	 * <strong>Important:</strong> Inspect DataStructureLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param dataTypeId the primary key of the data structure
+	 * @param dataStructureId the primary key of the data structure
 	 * @return the data structure that was removed
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
-	public static DataStructure deleteDataStructure(long dataTypeId)
+	public static DataStructure deleteDataStructure(long dataStructureId)
 		throws PortalException {
 
-		return getService().deleteDataStructure(dataTypeId);
+		return getService().deleteDataStructure(dataStructureId);
 	}
 
 	/**
@@ -189,8 +219,21 @@ public class DataStructureLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static DataStructure fetchDataStructure(long dataTypeId) {
-		return getService().fetchDataStructure(dataTypeId);
+	public static DataStructure fetchDataStructure(long dataStructureId) {
+		return getService().fetchDataStructure(dataStructureId);
+	}
+
+	/**
+	 * Returns the data structure matching the UUID and group.
+	 *
+	 * @param uuid the data structure's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data structure, or <code>null</code> if a matching data structure could not be found
+	 */
+	public static DataStructure fetchDataStructureByUuidAndGroupId(
+		String uuid, long groupId) {
+
+		return getService().fetchDataStructureByUuidAndGroupId(uuid, groupId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
@@ -202,14 +245,29 @@ public class DataStructureLocalServiceUtil {
 	/**
 	 * Returns the data structure with the primary key.
 	 *
-	 * @param dataTypeId the primary key of the data structure
+	 * @param dataStructureId the primary key of the data structure
 	 * @return the data structure
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
-	public static DataStructure getDataStructure(long dataTypeId)
+	public static DataStructure getDataStructure(long dataStructureId)
 		throws PortalException {
 
-		return getService().getDataStructure(dataTypeId);
+		return getService().getDataStructure(dataStructureId);
+	}
+
+	/**
+	 * Returns the data structure matching the UUID and group.
+	 *
+	 * @param uuid the data structure's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data structure
+	 * @throws PortalException if a matching data structure could not be found
+	 */
+	public static DataStructure getDataStructureByUuidAndGroupId(
+			String uuid, long groupId)
+		throws PortalException {
+
+		return getService().getDataStructureByUuidAndGroupId(uuid, groupId);
 	}
 
 	/**
@@ -228,12 +286,52 @@ public class DataStructureLocalServiceUtil {
 	}
 
 	/**
+	 * Returns all the data structures matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data structures
+	 * @param companyId the primary key of the company
+	 * @return the matching data structures, or an empty list if no matches were found
+	 */
+	public static List<DataStructure> getDataStructuresByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		return getService().getDataStructuresByUuidAndCompanyId(
+			uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of data structures matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data structures
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of data structures
+	 * @param end the upper bound of the range of data structures (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching data structures, or an empty list if no matches were found
+	 */
+	public static List<DataStructure> getDataStructuresByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DataStructure> orderByComparator) {
+
+		return getService().getDataStructuresByUuidAndCompanyId(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
 	 * Returns the number of data structures.
 	 *
 	 * @return the number of data structures
 	 */
 	public static int getDataStructuresCount() {
 		return getService().getDataStructuresCount();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
+		getExportActionableDynamicQuery(
+			com.liferay.exportimport.kernel.lar.PortletDataContext
+				portletDataContext) {
+
+		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	public static
@@ -261,6 +359,18 @@ public class DataStructureLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static DataStructure removeDataStructure(long dataStructureId)
+		throws PortalException {
+
+		return getService().removeDataStructure(dataStructureId);
+	}
+
+	public static void removeDataStructures(long[] dataStructureIds)
+		throws PortalException {
+
+		getService().removeDataStructures(dataStructureIds);
+	}
+
 	/**
 	 * Updates the data structure in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -275,6 +385,36 @@ public class DataStructureLocalServiceUtil {
 		DataStructure dataStructure) {
 
 		return getService().updateDataStructure(dataStructure);
+	}
+
+	public static DataStructure updateDataStructure(
+			long dataStructureId, String dataStructureName,
+			String dataStructureVersion,
+			Map<java.util.Locale, String> displayNameMap,
+			Map<java.util.Locale, String> descriptionMap, String structure,
+			boolean freezable, boolean verifiable, boolean commentable,
+			int status, com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
+
+		return getService().updateDataStructure(
+			dataStructureId, dataStructureName, dataStructureVersion,
+			displayNameMap, descriptionMap, structure, freezable, verifiable,
+			commentable, status, sc);
+	}
+
+	public static DataStructure updateStatus(
+			long userId, long dataStructureId, Integer status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException, SystemException {
+
+		return getService().updateStatus(userId, dataStructureId, status, sc);
+	}
+
+	public static DataStructure updateStructure(
+			long dataStructureId, String structure)
+		throws com.sx.icecap.exception.NoSuchDataStructureException {
+
+		return getService().updateStructure(dataStructureId, structure);
 	}
 
 	public static DataStructureLocalService getService() {

@@ -669,40 +669,60 @@ public interface DataTypeModel
 		Map<Locale, String> tooltipMap, Locale defaultLocale);
 
 	/**
-	 * Returns the visualizers of this data type.
+	 * Returns the freezable of this data type.
 	 *
-	 * @return the visualizers of this data type
+	 * @return the freezable of this data type
 	 */
-	@AutoEscape
-	public String getVisualizers();
+	public boolean getFreezable();
 
 	/**
-	 * Sets the visualizers of this data type.
+	 * Returns <code>true</code> if this data type is freezable.
 	 *
-	 * @param visualizers the visualizers of this data type
+	 * @return <code>true</code> if this data type is freezable; <code>false</code> otherwise
 	 */
-	public void setVisualizers(String visualizers);
+	public boolean isFreezable();
 
 	/**
-	 * Returns the has data structure of this data type.
+	 * Sets whether this data type is freezable.
 	 *
-	 * @return the has data structure of this data type
+	 * @param freezable the freezable of this data type
 	 */
-	public boolean getHasDataStructure();
+	public void setFreezable(boolean freezable);
 
 	/**
-	 * Returns <code>true</code> if this data type is has data structure.
+	 * Returns the verifiable of this data type.
 	 *
-	 * @return <code>true</code> if this data type is has data structure; <code>false</code> otherwise
+	 * @return the verifiable of this data type
 	 */
-	public boolean isHasDataStructure();
+	public boolean getVerifiable();
 
 	/**
-	 * Sets whether this data type is has data structure.
+	 * Returns <code>true</code> if this data type is verifiable.
 	 *
-	 * @param hasDataStructure the has data structure of this data type
+	 * @return <code>true</code> if this data type is verifiable; <code>false</code> otherwise
 	 */
-	public void setHasDataStructure(boolean hasDataStructure);
+	public boolean isVerifiable();
+
+	/**
+	 * Sets whether this data type is verifiable.
+	 *
+	 * @param verifiable the verifiable of this data type
+	 */
+	public void setVerifiable(boolean verifiable);
+
+	/**
+	 * Returns the data structure ID of this data type.
+	 *
+	 * @return the data structure ID of this data type
+	 */
+	public long getDataStructureId();
+
+	/**
+	 * Sets the data structure ID of this data type.
+	 *
+	 * @param dataStructureId the data structure ID of this data type
+	 */
+	public void setDataStructureId(long dataStructureId);
 
 	/**
 	 * Returns the trash entry created when this data type was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this data type.

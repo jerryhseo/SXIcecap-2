@@ -58,12 +58,18 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.service.DataTypeLocalService;
 import com.sx.icecap.service.DataTypeLocalServiceUtil;
+import com.sx.icecap.service.persistence.ActionHistoryPersistence;
+import com.sx.icecap.service.persistence.CollectionSetLinkPersistence;
+import com.sx.icecap.service.persistence.DataCollectionPersistence;
+import com.sx.icecap.service.persistence.DataCommentPersistence;
 import com.sx.icecap.service.persistence.DataSetPersistence;
 import com.sx.icecap.service.persistence.DataStructurePersistence;
 import com.sx.icecap.service.persistence.DataTypePersistence;
 import com.sx.icecap.service.persistence.ParameterPersistence;
+import com.sx.icecap.service.persistence.SetTypeLinkPersistence;
 import com.sx.icecap.service.persistence.StructuredDataPersistence;
-import com.sx.icecap.service.persistence.VisualizerLinkPersistence;
+import com.sx.icecap.service.persistence.TypeParamLinkPersistence;
+import com.sx.icecap.service.persistence.TypeVisualizerLinkPersistence;
 
 import java.io.Serializable;
 
@@ -637,6 +643,18 @@ public abstract class DataTypeLocalServiceBaseImpl
 	}
 
 	@Reference
+	protected ActionHistoryPersistence actionHistoryPersistence;
+
+	@Reference
+	protected CollectionSetLinkPersistence collectionSetLinkPersistence;
+
+	@Reference
+	protected DataCollectionPersistence dataCollectionPersistence;
+
+	@Reference
+	protected DataCommentPersistence dataCommentPersistence;
+
+	@Reference
 	protected DataSetPersistence dataSetPersistence;
 
 	@Reference
@@ -651,10 +669,16 @@ public abstract class DataTypeLocalServiceBaseImpl
 	protected ParameterPersistence parameterPersistence;
 
 	@Reference
+	protected SetTypeLinkPersistence setTypeLinkPersistence;
+
+	@Reference
 	protected StructuredDataPersistence structuredDataPersistence;
 
 	@Reference
-	protected VisualizerLinkPersistence visualizerLinkPersistence;
+	protected TypeParamLinkPersistence typeParamLinkPersistence;
+
+	@Reference
+	protected TypeVisualizerLinkPersistence typeVisualizerLinkPersistence;
 
 	@Reference
 	protected com.liferay.counter.kernel.service.CounterLocalService

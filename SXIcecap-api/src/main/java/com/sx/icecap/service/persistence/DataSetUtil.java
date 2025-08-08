@@ -674,6 +674,73 @@ public class DataSetUtil {
 	}
 
 	/**
+	 * Returns all the data sets that the user has permission to view where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByGroupId(long groupId) {
+		return getPersistence().filterFindByGroupId(groupId);
+	}
+
+	/**
+	 * Returns a range of all the data sets that the user has permission to view where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of data sets
+	 * @param end the upper bound of the range of data sets (not inclusive)
+	 * @return the range of matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByGroupId(
+		long groupId, int start, int end) {
+
+		return getPersistence().filterFindByGroupId(groupId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the data sets that the user has permissions to view where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of data sets
+	 * @param end the upper bound of the range of data sets (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<DataSet> orderByComparator) {
+
+		return getPersistence().filterFindByGroupId(
+			groupId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the data sets before and after the current data set in the ordered set of data sets that the user has permission to view where groupId = &#63;.
+	 *
+	 * @param dataSetId the primary key of the current data set
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next data set
+	 * @throws NoSuchDataSetException if a data set with the primary key could not be found
+	 */
+	public static DataSet[] filterFindByGroupId_PrevAndNext(
+			long dataSetId, long groupId,
+			OrderByComparator<DataSet> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchDataSetException {
+
+		return getPersistence().filterFindByGroupId_PrevAndNext(
+			dataSetId, groupId, orderByComparator);
+	}
+
+	/**
 	 * Removes all the data sets where groupId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
@@ -690,6 +757,16 @@ public class DataSetUtil {
 	 */
 	public static int countByGroupId(long groupId) {
 		return getPersistence().countByGroupId(groupId);
+	}
+
+	/**
+	 * Returns the number of data sets that the user has permission to view where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the number of matching data sets that the user has permission to view
+	 */
+	public static int filterCountByGroupId(long groupId) {
+		return getPersistence().filterCountByGroupId(groupId);
 	}
 
 	/**
@@ -1179,6 +1256,77 @@ public class DataSetUtil {
 	}
 
 	/**
+	 * Returns all the data sets that the user has permission to view where groupId = &#63; and userId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByG_U(long groupId, long userId) {
+		return getPersistence().filterFindByG_U(groupId, userId);
+	}
+
+	/**
+	 * Returns a range of all the data sets that the user has permission to view where groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of data sets
+	 * @param end the upper bound of the range of data sets (not inclusive)
+	 * @return the range of matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByG_U(
+		long groupId, long userId, int start, int end) {
+
+		return getPersistence().filterFindByG_U(groupId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the data sets that the user has permissions to view where groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of data sets
+	 * @param end the upper bound of the range of data sets (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByG_U(
+		long groupId, long userId, int start, int end,
+		OrderByComparator<DataSet> orderByComparator) {
+
+		return getPersistence().filterFindByG_U(
+			groupId, userId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the data sets before and after the current data set in the ordered set of data sets that the user has permission to view where groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the primary key of the current data set
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next data set
+	 * @throws NoSuchDataSetException if a data set with the primary key could not be found
+	 */
+	public static DataSet[] filterFindByG_U_PrevAndNext(
+			long dataSetId, long groupId, long userId,
+			OrderByComparator<DataSet> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchDataSetException {
+
+		return getPersistence().filterFindByG_U_PrevAndNext(
+			dataSetId, groupId, userId, orderByComparator);
+	}
+
+	/**
 	 * Removes all the data sets where groupId = &#63; and userId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
@@ -1197,6 +1345,17 @@ public class DataSetUtil {
 	 */
 	public static int countByG_U(long groupId, long userId) {
 		return getPersistence().countByG_U(groupId, userId);
+	}
+
+	/**
+	 * Returns the number of data sets that the user has permission to view where groupId = &#63; and userId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the number of matching data sets that the user has permission to view
+	 */
+	public static int filterCountByG_U(long groupId, long userId) {
+		return getPersistence().filterCountByG_U(groupId, userId);
 	}
 
 	/**
@@ -1362,6 +1521,77 @@ public class DataSetUtil {
 	}
 
 	/**
+	 * Returns all the data sets that the user has permission to view where groupId = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByG_S(long groupId, int status) {
+		return getPersistence().filterFindByG_S(groupId, status);
+	}
+
+	/**
+	 * Returns a range of all the data sets that the user has permission to view where groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of data sets
+	 * @param end the upper bound of the range of data sets (not inclusive)
+	 * @return the range of matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByG_S(
+		long groupId, int status, int start, int end) {
+
+		return getPersistence().filterFindByG_S(groupId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the data sets that the user has permissions to view where groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of data sets
+	 * @param end the upper bound of the range of data sets (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<DataSet> orderByComparator) {
+
+		return getPersistence().filterFindByG_S(
+			groupId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the data sets before and after the current data set in the ordered set of data sets that the user has permission to view where groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the primary key of the current data set
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next data set
+	 * @throws NoSuchDataSetException if a data set with the primary key could not be found
+	 */
+	public static DataSet[] filterFindByG_S_PrevAndNext(
+			long dataSetId, long groupId, int status,
+			OrderByComparator<DataSet> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchDataSetException {
+
+		return getPersistence().filterFindByG_S_PrevAndNext(
+			dataSetId, groupId, status, orderByComparator);
+	}
+
+	/**
 	 * Removes all the data sets where groupId = &#63; and status = &#63; from the database.
 	 *
 	 * @param groupId the group ID
@@ -1380,6 +1610,17 @@ public class DataSetUtil {
 	 */
 	public static int countByG_S(long groupId, int status) {
 		return getPersistence().countByG_S(groupId, status);
+	}
+
+	/**
+	 * Returns the number of data sets that the user has permission to view where groupId = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching data sets that the user has permission to view
+	 */
+	public static int filterCountByG_S(long groupId, int status) {
+		return getPersistence().filterCountByG_S(groupId, status);
 	}
 
 	/**
@@ -1739,6 +1980,84 @@ public class DataSetUtil {
 	}
 
 	/**
+	 * Returns all the data sets that the user has permission to view where groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByG_U_S(
+		long groupId, long userId, int status) {
+
+		return getPersistence().filterFindByG_U_S(groupId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the data sets that the user has permission to view where groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of data sets
+	 * @param end the upper bound of the range of data sets (not inclusive)
+	 * @return the range of matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByG_U_S(
+		long groupId, long userId, int status, int start, int end) {
+
+		return getPersistence().filterFindByG_U_S(
+			groupId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the data sets that the user has permissions to view where groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of data sets
+	 * @param end the upper bound of the range of data sets (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching data sets that the user has permission to view
+	 */
+	public static List<DataSet> filterFindByG_U_S(
+		long groupId, long userId, int status, int start, int end,
+		OrderByComparator<DataSet> orderByComparator) {
+
+		return getPersistence().filterFindByG_U_S(
+			groupId, userId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the data sets before and after the current data set in the ordered set of data sets that the user has permission to view where groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the primary key of the current data set
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next data set
+	 * @throws NoSuchDataSetException if a data set with the primary key could not be found
+	 */
+	public static DataSet[] filterFindByG_U_S_PrevAndNext(
+			long dataSetId, long groupId, long userId, int status,
+			OrderByComparator<DataSet> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchDataSetException {
+
+		return getPersistence().filterFindByG_U_S_PrevAndNext(
+			dataSetId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
 	 * Removes all the data sets where groupId = &#63; and userId = &#63; and status = &#63; from the database.
 	 *
 	 * @param groupId the group ID
@@ -1759,6 +2078,20 @@ public class DataSetUtil {
 	 */
 	public static int countByG_U_S(long groupId, long userId, int status) {
 		return getPersistence().countByG_U_S(groupId, userId, status);
+	}
+
+	/**
+	 * Returns the number of data sets that the user has permission to view where groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching data sets that the user has permission to view
+	 */
+	public static int filterCountByG_U_S(
+		long groupId, long userId, int status) {
+
+		return getPersistence().filterCountByG_U_S(groupId, userId, status);
 	}
 
 	/**

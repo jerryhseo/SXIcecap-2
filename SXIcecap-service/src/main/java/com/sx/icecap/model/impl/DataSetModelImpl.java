@@ -91,9 +91,7 @@ public class DataSetModelImpl
 		{"statusByUserId", Types.BIGINT}, {"statusByUserName", Types.VARCHAR},
 		{"statusDate", Types.TIMESTAMP}, {"dataSetName", Types.VARCHAR},
 		{"dataSetVersion", Types.VARCHAR}, {"displayName", Types.VARCHAR},
-		{"description", Types.VARCHAR}, {"folderId", Types.BIGINT},
-		{"structure", Types.VARCHAR}, {"verificationType", Types.VARCHAR},
-		{"multiEntryLevel", Types.INTEGER}
+		{"description", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -117,14 +115,10 @@ public class DataSetModelImpl
 		TABLE_COLUMNS_MAP.put("dataSetVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("folderId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("structure", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("verificationType", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("multiEntryLevel", Types.INTEGER);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataSet (uuid_ VARCHAR(75) null,dataSetId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataSetName VARCHAR(75) null,dataSetVersion VARCHAR(75) null,displayName STRING null,description STRING null,folderId LONG,structure TEXT null,verificationType VARCHAR(75) null,multiEntryLevel INTEGER)";
+		"create table SX_ICECAP_DataSet (uuid_ VARCHAR(75) null,dataSetId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataSetName VARCHAR(75) null,dataSetVersion VARCHAR(75) null,displayName STRING null,description STRING null)";
 
 	public static final String TABLE_SQL_DROP = "drop table SX_ICECAP_DataSet";
 
@@ -325,22 +319,6 @@ public class DataSetModelImpl
 		attributeSetterBiConsumers.put(
 			"description",
 			(BiConsumer<DataSet, String>)DataSet::setDescription);
-		attributeGetterFunctions.put("folderId", DataSet::getFolderId);
-		attributeSetterBiConsumers.put(
-			"folderId", (BiConsumer<DataSet, Long>)DataSet::setFolderId);
-		attributeGetterFunctions.put("structure", DataSet::getStructure);
-		attributeSetterBiConsumers.put(
-			"structure", (BiConsumer<DataSet, String>)DataSet::setStructure);
-		attributeGetterFunctions.put(
-			"verificationType", DataSet::getVerificationType);
-		attributeSetterBiConsumers.put(
-			"verificationType",
-			(BiConsumer<DataSet, String>)DataSet::setVerificationType);
-		attributeGetterFunctions.put(
-			"multiEntryLevel", DataSet::getMultiEntryLevel);
-		attributeSetterBiConsumers.put(
-			"multiEntryLevel",
-			(BiConsumer<DataSet, Integer>)DataSet::setMultiEntryLevel);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -854,56 +832,6 @@ public class DataSetModelImpl
 	}
 
 	@Override
-	public long getFolderId() {
-		return _folderId;
-	}
-
-	@Override
-	public void setFolderId(long folderId) {
-		_folderId = folderId;
-	}
-
-	@Override
-	public String getStructure() {
-		if (_structure == null) {
-			return "";
-		}
-		else {
-			return _structure;
-		}
-	}
-
-	@Override
-	public void setStructure(String structure) {
-		_structure = structure;
-	}
-
-	@Override
-	public String getVerificationType() {
-		if (_verificationType == null) {
-			return "";
-		}
-		else {
-			return _verificationType;
-		}
-	}
-
-	@Override
-	public void setVerificationType(String verificationType) {
-		_verificationType = verificationType;
-	}
-
-	@Override
-	public int getMultiEntryLevel() {
-		return _multiEntryLevel;
-	}
-
-	@Override
-	public void setMultiEntryLevel(int multiEntryLevel) {
-		_multiEntryLevel = multiEntryLevel;
-	}
-
-	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(
 			PortalUtil.getClassNameId(DataSet.class.getName()));
@@ -1277,10 +1205,6 @@ public class DataSetModelImpl
 		dataSetImpl.setDataSetVersion(getDataSetVersion());
 		dataSetImpl.setDisplayName(getDisplayName());
 		dataSetImpl.setDescription(getDescription());
-		dataSetImpl.setFolderId(getFolderId());
-		dataSetImpl.setStructure(getStructure());
-		dataSetImpl.setVerificationType(getVerificationType());
-		dataSetImpl.setMultiEntryLevel(getMultiEntryLevel());
 
 		dataSetImpl.resetOriginalValues();
 
@@ -1476,26 +1400,6 @@ public class DataSetModelImpl
 			dataSetCacheModel.description = null;
 		}
 
-		dataSetCacheModel.folderId = getFolderId();
-
-		dataSetCacheModel.structure = getStructure();
-
-		String structure = dataSetCacheModel.structure;
-
-		if ((structure != null) && (structure.length() == 0)) {
-			dataSetCacheModel.structure = null;
-		}
-
-		dataSetCacheModel.verificationType = getVerificationType();
-
-		String verificationType = dataSetCacheModel.verificationType;
-
-		if ((verificationType != null) && (verificationType.length() == 0)) {
-			dataSetCacheModel.verificationType = null;
-		}
-
-		dataSetCacheModel.multiEntryLevel = getMultiEntryLevel();
-
 		return dataSetCacheModel;
 	}
 
@@ -1622,10 +1526,6 @@ public class DataSetModelImpl
 	private String _displayNameCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
-	private long _folderId;
-	private String _structure;
-	private String _verificationType;
-	private int _multiEntryLevel;
 	private long _columnBitmask;
 	private DataSet _escapedModel;
 

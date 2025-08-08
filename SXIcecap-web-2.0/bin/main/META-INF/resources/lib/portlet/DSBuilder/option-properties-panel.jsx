@@ -23,11 +23,12 @@ class SXDSBuilderOptionPropertiesPanel extends React.Component {
 		this.dataStructure = props.dataStructure;
 
 		this.toggleFields = {
-			abstractKey: new BooleanParameter(
+			abstractKey: Parameter.createParameter(
 				this.namespace,
 				this.formIds.optionsFormId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.BOOLEAN,
 				{
 					paramName: ParamProperty.ABSTRACT_KEY,
 					viewType: BooleanParameter.ViewTypes.TOGGLE,
@@ -36,11 +37,12 @@ class SXDSBuilderOptionPropertiesPanel extends React.Component {
 					value: this.workingParam.abstractKey
 				}
 			),
-			downloadable: new BooleanParameter(
+			downloadable: Parameter.createParameter(
 				this.namespace,
 				this.formIds.optionsFormId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.BOOLEAN,
 				{
 					paramName: ParamProperty.DOWNLOADABLE,
 					viewType: BooleanParameter.ViewTypes.TOGGLE,
@@ -49,11 +51,12 @@ class SXDSBuilderOptionPropertiesPanel extends React.Component {
 					value: this.workingParam.downloadable
 				}
 			),
-			searchable: new BooleanParameter(
+			searchable: Parameter.createParameter(
 				this.namespace,
 				this.formIds.optionsFormId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.BOOLEAN,
 				{
 					paramName: ParamProperty.SEARCHABLE,
 					viewType: BooleanParameter.ViewTypes.TOGGLE,
@@ -62,11 +65,12 @@ class SXDSBuilderOptionPropertiesPanel extends React.Component {
 					value: this.workingParam.searchable
 				}
 			),
-			disabled: new BooleanParameter(
+			disabled: Parameter.createParameter(
 				this.namespace,
 				this.formIds.optionsFormId,
 				this.languageId,
 				this.availableLanguageIds,
+				ParamType.BOOLEAN,
 				{
 					paramName: ParamProperty.DISABLED,
 					viewType: BooleanParameter.ViewTypes.TOGGLE,
@@ -77,11 +81,12 @@ class SXDSBuilderOptionPropertiesPanel extends React.Component {
 			)
 		};
 
-		this.fieldToggleGroup = new GroupParameter(
+		this.fieldToggleGroup = Parameter.createParameter(
 			this.namespace,
 			this.formIds.optionsFormId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.GROUP,
 			{
 				paramName: "toggleGroup",
 				viewType: GroupParameter.ViewTypes.ARRANGEMENT,
@@ -90,11 +95,12 @@ class SXDSBuilderOptionPropertiesPanel extends React.Component {
 			}
 		);
 
-		this.fieldCssWidth = new StringParameter(
+		this.fieldCssWidth = Parameter.createParameter(
 			this.namespace,
 			this.formIds.optionsFormId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.STRING,
 			{
 				paramName: ParamProperty.CSS_WIDTH,
 				displayName: Util.getTranslationObject(this.languageId, "width"),
@@ -105,29 +111,37 @@ class SXDSBuilderOptionPropertiesPanel extends React.Component {
 		);
 	}
 
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.optionsFormId)
+			return;
+
+		/*
+		console.log(
+			"DataStructureBuilder SX_FIELD_VALUE_CHANGED RECEIVED: ",
+			dataPacket,
+			this.dataStructure,
+			this.workingParam
+		);
+		*/
+
+		if (dataPacket.paramName === ParamProperty.CSS_WIDTH) {
+			this.workingParam.cssWidth = this.fieldCssWidth.getValue();
+		} else {
+			this.workingParam[dataPacket.paramName] = this.toggleFields[dataPacket.paramName].getValue();
+		}
+
+		if (this.workingParam.isRendered()) {
+			this.workingParam.fireRefreshPreview();
+		}
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.optionsFormId)
-				return;
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			console.log(
-				"DataStructureBuilder SX_FIELD_VALUE_CHANGED RECEIVED: ",
-				dataPacket,
-				this.dataStructure,
-				this.workingParam
-			);
-
-			if (dataPacket.paramName === ParamProperty.CSS_WIDTH) {
-				this.workingParam.cssWidth = this.fieldCssWidth.getValue();
-			} else {
-				this.workingParam[dataPacket.paramName] = this.toggleFields[dataPacket.paramName].getValue();
-			}
-
-			if (this.workingParam.isRendered()) {
-				this.workingParam.fireRefreshPreview();
-			}
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	render() {

@@ -49,6 +49,37 @@ public class ParameterLocalServiceWrapper
 		return _parameterLocalService.addParameter(parameter);
 	}
 
+	@Override
+	public com.sx.icecap.model.Parameter addParameter(
+			String paramType, String paramName, String paramVersion,
+			java.util.Map<java.util.Locale, String> displayNameMap,
+			java.util.Map<java.util.Locale, String> definitionMap,
+			java.util.Map<java.util.Locale, String> tooltipMap, String synonyms,
+			String typeProperties, boolean standard, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _parameterLocalService.addParameter(
+			paramType, paramName, paramVersion, displayNameMap, definitionMap,
+			tooltipMap, synonyms, typeProperties, standard, status, sc);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONArray convertListToJSONArray(
+			java.util.List<com.sx.icecap.model.Parameter> list)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return _parameterLocalService.convertListToJSONArray(list);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject convertModelToJSONObject(
+			com.sx.icecap.model.Parameter parameter)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return _parameterLocalService.convertModelToJSONObject(parameter);
+	}
+
 	/**
 	 * Creates a new parameter with the primary key. Does not add the parameter to the database.
 	 *
@@ -356,6 +387,37 @@ public class ParameterLocalServiceWrapper
 		return _parameterLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public com.sx.icecap.model.Parameter removeParameter(long parameterId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _parameterLocalService.removeParameter(parameterId);
+	}
+
+	@Override
+	public void removeParameters(long[] parameterIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_parameterLocalService.removeParameters(parameterIds);
+	}
+
+	@Override
+	public com.sx.icecap.model.Parameter updateParameter(
+			long parameterId, String paramType, String paramName,
+			String paramVersion,
+			java.util.Map<java.util.Locale, String> displayNameMap,
+			java.util.Map<java.util.Locale, String> definitionMap,
+			java.util.Map<java.util.Locale, String> tooltipMap, String synonyms,
+			String typeProperties, boolean standard, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _parameterLocalService.updateParameter(
+			parameterId, paramType, paramName, paramVersion, displayNameMap,
+			definitionMap, tooltipMap, synonyms, typeProperties, standard,
+			status, sc);
+	}
+
 	/**
 	 * Updates the parameter in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -371,6 +433,17 @@ public class ParameterLocalServiceWrapper
 		com.sx.icecap.model.Parameter parameter) {
 
 		return _parameterLocalService.updateParameter(parameter);
+	}
+
+	@Override
+	public com.sx.icecap.model.Parameter updateStatus(
+			long userId, long parameterId, Integer status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		return _parameterLocalService.updateStatus(
+			userId, parameterId, status, sc);
 	}
 
 	@Override

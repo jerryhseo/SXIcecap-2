@@ -16,6 +16,7 @@ package com.sx.icecap.service;
 
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
@@ -24,6 +25,7 @@ import com.sx.icecap.model.Parameter;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service utility for Parameter. This utility wraps
@@ -57,6 +59,34 @@ public class ParameterLocalServiceUtil {
 	 */
 	public static Parameter addParameter(Parameter parameter) {
 		return getService().addParameter(parameter);
+	}
+
+	public static Parameter addParameter(
+			String paramType, String paramName, String paramVersion,
+			Map<java.util.Locale, String> displayNameMap,
+			Map<java.util.Locale, String> definitionMap,
+			Map<java.util.Locale, String> tooltipMap, String synonyms,
+			String typeProperties, boolean standard, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
+
+		return getService().addParameter(
+			paramType, paramName, paramVersion, displayNameMap, definitionMap,
+			tooltipMap, synonyms, typeProperties, standard, status, sc);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONArray
+			convertListToJSONArray(List<Parameter> list)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return getService().convertListToJSONArray(list);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject
+			convertModelToJSONObject(Parameter parameter)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return getService().convertModelToJSONObject(parameter);
 	}
 
 	/**
@@ -326,6 +356,33 @@ public class ParameterLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static Parameter removeParameter(long parameterId)
+		throws PortalException {
+
+		return getService().removeParameter(parameterId);
+	}
+
+	public static void removeParameters(long[] parameterIds)
+		throws PortalException {
+
+		getService().removeParameters(parameterIds);
+	}
+
+	public static Parameter updateParameter(
+			long parameterId, String paramType, String paramName,
+			String paramVersion, Map<java.util.Locale, String> displayNameMap,
+			Map<java.util.Locale, String> definitionMap,
+			Map<java.util.Locale, String> tooltipMap, String synonyms,
+			String typeProperties, boolean standard, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
+
+		return getService().updateParameter(
+			parameterId, paramType, paramName, paramVersion, displayNameMap,
+			definitionMap, tooltipMap, synonyms, typeProperties, standard,
+			status, sc);
+	}
+
 	/**
 	 * Updates the parameter in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -338,6 +395,14 @@ public class ParameterLocalServiceUtil {
 	 */
 	public static Parameter updateParameter(Parameter parameter) {
 		return getService().updateParameter(parameter);
+	}
+
+	public static Parameter updateStatus(
+			long userId, long parameterId, Integer status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException, SystemException {
+
+		return getService().updateStatus(userId, parameterId, status, sc);
 	}
 
 	public static ParameterLocalService getService() {

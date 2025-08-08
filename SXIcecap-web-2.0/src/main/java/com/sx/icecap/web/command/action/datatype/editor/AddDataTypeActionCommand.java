@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.sx.constant.StationXWebKeys;
-import com.sx.icecap.constant.DataTypeProperty;
+import com.sx.icecap.constant.DataTypeProperties;
 import com.sx.icecap.constant.Constant;
 import com.sx.icecap.constant.MVCCommand;
 import com.sx.constant.StationXWebKeys;
@@ -45,7 +45,7 @@ public class AddDataTypeActionCommand extends BaseMVCActionCommand {
 		
 		System.out.println("AddDataTypeActionCommand"); 
 		
-		long dataTypeId = ParamUtil.getLong(actionRequest, DataTypeProperty.DATATYPE_ID, 0);
+		long dataTypeId = ParamUtil.getLong(actionRequest, DataTypeProperties.DATATYPE_ID, 0);
 		String strDataType = ParamUtil.getString(actionRequest, "dataType", "{}");
 		
 		System.out.println("dataTypeId: " + dataTypeId);

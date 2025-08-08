@@ -177,6 +177,16 @@ export const Util = {
 		return transObject;
 	},
 
+	getTranslationsObject(languageIds, key) {
+		const transObject = {};
+
+		languageIds.forEach((lang) => {
+			transObject[lang] = Liferay.Language.get(key);
+		});
+
+		return transObject;
+	},
+
 	convertArrayToRows: (ary, colsPerRow) => {
 		let rows = [];
 

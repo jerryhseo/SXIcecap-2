@@ -14,17 +14,31 @@
 
 package com.sx.icecap.service.base;
 
+import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
+import com.liferay.exportimport.kernel.lar.ManifestSummary;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Conjunction;
+import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Disjunction;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
+import com.liferay.portal.kernel.dao.orm.Property;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -39,16 +53,23 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.service.DataStructureLocalService;
 import com.sx.icecap.service.DataStructureLocalServiceUtil;
+import com.sx.icecap.service.persistence.ActionHistoryPersistence;
+import com.sx.icecap.service.persistence.CollectionSetLinkPersistence;
+import com.sx.icecap.service.persistence.DataCollectionPersistence;
+import com.sx.icecap.service.persistence.DataCommentPersistence;
 import com.sx.icecap.service.persistence.DataSetPersistence;
 import com.sx.icecap.service.persistence.DataStructurePersistence;
 import com.sx.icecap.service.persistence.DataTypePersistence;
 import com.sx.icecap.service.persistence.ParameterPersistence;
+import com.sx.icecap.service.persistence.SetTypeLinkPersistence;
 import com.sx.icecap.service.persistence.StructuredDataPersistence;
-import com.sx.icecap.service.persistence.VisualizerLinkPersistence;
+import com.sx.icecap.service.persistence.TypeParamLinkPersistence;
+import com.sx.icecap.service.persistence.TypeVisualizerLinkPersistence;
 
 import java.io.Serializable;
 
@@ -103,13 +124,13 @@ public abstract class DataStructureLocalServiceBaseImpl
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
-	 * @param dataTypeId the primary key for the new data structure
+	 * @param dataStructureId the primary key for the new data structure
 	 * @return the new data structure
 	 */
 	@Override
 	@Transactional(enabled = false)
-	public DataStructure createDataStructure(long dataTypeId) {
-		return dataStructurePersistence.create(dataTypeId);
+	public DataStructure createDataStructure(long dataStructureId) {
+		return dataStructurePersistence.create(dataStructureId);
 	}
 
 	/**
@@ -119,16 +140,16 @@ public abstract class DataStructureLocalServiceBaseImpl
 	 * <strong>Important:</strong> Inspect DataStructureLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param dataTypeId the primary key of the data structure
+	 * @param dataStructureId the primary key of the data structure
 	 * @return the data structure that was removed
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public DataStructure deleteDataStructure(long dataTypeId)
+	public DataStructure deleteDataStructure(long dataStructureId)
 		throws PortalException {
 
-		return dataStructurePersistence.remove(dataTypeId);
+		return dataStructurePersistence.remove(dataStructureId);
 	}
 
 	/**
@@ -235,22 +256,36 @@ public abstract class DataStructureLocalServiceBaseImpl
 	}
 
 	@Override
-	public DataStructure fetchDataStructure(long dataTypeId) {
-		return dataStructurePersistence.fetchByPrimaryKey(dataTypeId);
+	public DataStructure fetchDataStructure(long dataStructureId) {
+		return dataStructurePersistence.fetchByPrimaryKey(dataStructureId);
+	}
+
+	/**
+	 * Returns the data structure matching the UUID and group.
+	 *
+	 * @param uuid the data structure's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data structure, or <code>null</code> if a matching data structure could not be found
+	 */
+	@Override
+	public DataStructure fetchDataStructureByUuidAndGroupId(
+		String uuid, long groupId) {
+
+		return dataStructurePersistence.fetchByUUID_G(uuid, groupId);
 	}
 
 	/**
 	 * Returns the data structure with the primary key.
 	 *
-	 * @param dataTypeId the primary key of the data structure
+	 * @param dataStructureId the primary key of the data structure
 	 * @return the data structure
 	 * @throws PortalException if a data structure with the primary key could not be found
 	 */
 	@Override
-	public DataStructure getDataStructure(long dataTypeId)
+	public DataStructure getDataStructure(long dataStructureId)
 		throws PortalException {
 
-		return dataStructurePersistence.findByPrimaryKey(dataTypeId);
+		return dataStructurePersistence.findByPrimaryKey(dataStructureId);
 	}
 
 	@Override
@@ -262,7 +297,7 @@ public abstract class DataStructureLocalServiceBaseImpl
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(DataStructure.class);
 
-		actionableDynamicQuery.setPrimaryKeyPropertyName("dataTypeId");
+		actionableDynamicQuery.setPrimaryKeyPropertyName("dataStructureId");
 
 		return actionableDynamicQuery;
 	}
@@ -279,7 +314,8 @@ public abstract class DataStructureLocalServiceBaseImpl
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(DataStructure.class);
 
-		indexableActionableDynamicQuery.setPrimaryKeyPropertyName("dataTypeId");
+		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
+			"dataStructureId");
 
 		return indexableActionableDynamicQuery;
 	}
@@ -291,7 +327,134 @@ public abstract class DataStructureLocalServiceBaseImpl
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(DataStructure.class);
 
-		actionableDynamicQuery.setPrimaryKeyPropertyName("dataTypeId");
+		actionableDynamicQuery.setPrimaryKeyPropertyName("dataStructureId");
+	}
+
+	@Override
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		final PortletDataContext portletDataContext) {
+
+		final ExportActionableDynamicQuery exportActionableDynamicQuery =
+			new ExportActionableDynamicQuery() {
+
+				@Override
+				public long performCount() throws PortalException {
+					ManifestSummary manifestSummary =
+						portletDataContext.getManifestSummary();
+
+					StagedModelType stagedModelType = getStagedModelType();
+
+					long modelAdditionCount = super.performCount();
+
+					manifestSummary.addModelAdditionCount(
+						stagedModelType, modelAdditionCount);
+
+					long modelDeletionCount =
+						ExportImportHelperUtil.getModelDeletionCount(
+							portletDataContext, stagedModelType);
+
+					manifestSummary.addModelDeletionCount(
+						stagedModelType, modelDeletionCount);
+
+					return modelAdditionCount;
+				}
+
+			};
+
+		initActionableDynamicQuery(exportActionableDynamicQuery);
+
+		exportActionableDynamicQuery.setAddCriteriaMethod(
+			new ActionableDynamicQuery.AddCriteriaMethod() {
+
+				@Override
+				public void addCriteria(DynamicQuery dynamicQuery) {
+					Criterion modifiedDateCriterion =
+						portletDataContext.getDateRangeCriteria("modifiedDate");
+
+					if (modifiedDateCriterion != null) {
+						Conjunction conjunction =
+							RestrictionsFactoryUtil.conjunction();
+
+						conjunction.add(modifiedDateCriterion);
+
+						Disjunction disjunction =
+							RestrictionsFactoryUtil.disjunction();
+
+						disjunction.add(
+							RestrictionsFactoryUtil.gtProperty(
+								"modifiedDate", "lastPublishDate"));
+
+						Property lastPublishDateProperty =
+							PropertyFactoryUtil.forName("lastPublishDate");
+
+						disjunction.add(lastPublishDateProperty.isNull());
+
+						conjunction.add(disjunction);
+
+						modifiedDateCriterion = conjunction;
+					}
+
+					Criterion statusDateCriterion =
+						portletDataContext.getDateRangeCriteria("statusDate");
+
+					if ((modifiedDateCriterion != null) &&
+						(statusDateCriterion != null)) {
+
+						Disjunction disjunction =
+							RestrictionsFactoryUtil.disjunction();
+
+						disjunction.add(modifiedDateCriterion);
+						disjunction.add(statusDateCriterion);
+
+						dynamicQuery.add(disjunction);
+					}
+
+					Property workflowStatusProperty =
+						PropertyFactoryUtil.forName("status");
+
+					if (portletDataContext.isInitialPublication()) {
+						dynamicQuery.add(
+							workflowStatusProperty.ne(
+								WorkflowConstants.STATUS_IN_TRASH));
+					}
+					else {
+						StagedModelDataHandler<?> stagedModelDataHandler =
+							StagedModelDataHandlerRegistryUtil.
+								getStagedModelDataHandler(
+									DataStructure.class.getName());
+
+						dynamicQuery.add(
+							workflowStatusProperty.in(
+								stagedModelDataHandler.
+									getExportableStatuses()));
+					}
+				}
+
+			});
+
+		exportActionableDynamicQuery.setCompanyId(
+			portletDataContext.getCompanyId());
+
+		exportActionableDynamicQuery.setGroupId(
+			portletDataContext.getScopeGroupId());
+
+		exportActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<DataStructure>() {
+
+				@Override
+				public void performAction(DataStructure dataStructure)
+					throws PortalException {
+
+					StagedModelDataHandlerUtil.exportStagedModel(
+						portletDataContext, dataStructure);
+				}
+
+			});
+		exportActionableDynamicQuery.setStagedModelType(
+			new StagedModelType(
+				PortalUtil.getClassNameId(DataStructure.class.getName())));
+
+		return exportActionableDynamicQuery;
 	}
 
 	/**
@@ -317,6 +480,55 @@ public abstract class DataStructureLocalServiceBaseImpl
 		throws PortalException {
 
 		return dataStructurePersistence.findByPrimaryKey(primaryKeyObj);
+	}
+
+	/**
+	 * Returns all the data structures matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data structures
+	 * @param companyId the primary key of the company
+	 * @return the matching data structures, or an empty list if no matches were found
+	 */
+	@Override
+	public List<DataStructure> getDataStructuresByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		return dataStructurePersistence.findByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of data structures matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data structures
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of data structures
+	 * @param end the upper bound of the range of data structures (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching data structures, or an empty list if no matches were found
+	 */
+	@Override
+	public List<DataStructure> getDataStructuresByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DataStructure> orderByComparator) {
+
+		return dataStructurePersistence.findByUuid_C(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the data structure matching the UUID and group.
+	 *
+	 * @param uuid the data structure's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data structure
+	 * @throws PortalException if a matching data structure could not be found
+	 */
+	@Override
+	public DataStructure getDataStructureByUuidAndGroupId(
+			String uuid, long groupId)
+		throws PortalException {
+
+		return dataStructurePersistence.findByUUID_G(uuid, groupId);
 	}
 
 	/**
@@ -440,6 +652,18 @@ public abstract class DataStructureLocalServiceBaseImpl
 	}
 
 	@Reference
+	protected ActionHistoryPersistence actionHistoryPersistence;
+
+	@Reference
+	protected CollectionSetLinkPersistence collectionSetLinkPersistence;
+
+	@Reference
+	protected DataCollectionPersistence dataCollectionPersistence;
+
+	@Reference
+	protected DataCommentPersistence dataCommentPersistence;
+
+	@Reference
 	protected DataSetPersistence dataSetPersistence;
 
 	protected DataStructureLocalService dataStructureLocalService;
@@ -454,10 +678,16 @@ public abstract class DataStructureLocalServiceBaseImpl
 	protected ParameterPersistence parameterPersistence;
 
 	@Reference
+	protected SetTypeLinkPersistence setTypeLinkPersistence;
+
+	@Reference
 	protected StructuredDataPersistence structuredDataPersistence;
 
 	@Reference
-	protected VisualizerLinkPersistence visualizerLinkPersistence;
+	protected TypeParamLinkPersistence typeParamLinkPersistence;
+
+	@Reference
+	protected TypeVisualizerLinkPersistence typeVisualizerLinkPersistence;
 
 	@Reference
 	protected com.liferay.counter.kernel.service.CounterLocalService
@@ -474,6 +704,30 @@ public abstract class DataStructureLocalServiceBaseImpl
 	@Reference
 	protected com.liferay.portal.kernel.service.UserLocalService
 		userLocalService;
+
+	@Reference
+	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService
+		workflowInstanceLinkLocalService;
+
+	@Reference
+	protected com.liferay.asset.kernel.service.AssetEntryLocalService
+		assetEntryLocalService;
+
+	@Reference
+	protected com.liferay.asset.kernel.service.AssetLinkLocalService
+		assetLinkLocalService;
+
+	@Reference
+	protected com.liferay.ratings.kernel.service.RatingsStatsLocalService
+		ratingsStatsLocalService;
+
+	@Reference
+	protected com.liferay.trash.kernel.service.TrashEntryLocalService
+		trashEntryLocalService;
+
+	@Reference
+	protected com.liferay.trash.kernel.service.TrashVersionLocalService
+		trashVersionLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DataStructureLocalServiceBaseImpl.class);

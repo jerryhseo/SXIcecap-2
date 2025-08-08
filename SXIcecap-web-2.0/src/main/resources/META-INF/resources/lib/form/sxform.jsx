@@ -45,14 +45,6 @@ import { DataStructure } from "../portlet/DSBuilder/data-structure";
 import { Body, Cell, Head, Table } from "@clayui/core";
 import SXDropdown from "../modal/sxdropdown";
 
-export const SelectDisplayStyle = {
-	DUAL_LISTBOX: "DUAL_LISTBOX",
-	DROP_LIST: "DROP_LIST",
-	CHECKBOX: "CHECKBOX",
-	RADIO_BUTTON: "RADIO_BUTTON",
-	MULTI_SELECT: "MULTI_SELECT"
-};
-
 export const SXRequiredMark = ({ spritemap }) => {
 	return (
 		<sup>
@@ -103,6 +95,10 @@ export const SXLabel = ({ label, forHtml = "", required = false, tooltip = "", s
 			) : undefined}
 		</label>
 	);
+};
+
+export const SXTitleBar = ({ title, required = false, tooltip = "", style, spritemap }) => {
+	return <></>;
 };
 
 export const SXLabeledText = ({ label, text, viewType = "INLINE_ATTACH" }) => {
@@ -254,21 +250,27 @@ export class SXDataStatusBar extends React.Component {
 		};
 	}
 
+	fieldValueChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.canvasId) return;
+
+		console.log(
+			"SXDataStructurePreviewer SX_FIELD_VALUE_CHANGED RECEIVED: ",
+			dataPacket,
+			this.dataStructure,
+			this.dataStructure.members
+		);
+
+		this.forceUpdate();
+	};
+
 	componentDidMount() {
 		console.log("=== SXDataStatusBar componentDidMount executed ===");
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.canvasId) return;
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			console.log(
-				"SXDataStructurePreviewer SX_FIELD_VALUE_CHANGED RECEIVED: ",
-				dataPacket,
-				this.dataStructure,
-				this.dataStructure.members
-			);
-
-			this.forceUpdate();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	goTo() {
@@ -426,6 +428,34 @@ export class SXPreviewRow extends React.Component {
 		this.events = {};
 	}
 
+	refreshPreviewHandler = (e) => {
+		let dataPacket = Event.pickUpDataPacket(
+			e,
+			this.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (!dataPacket && this.parameter.paramType === ParamType.GRID) {
+			dataPacket = Event.pickUpDataPacket(
+				e,
+				this.namespace,
+				this.parameter.tagName,
+				this.parameter.paramName,
+				this.parameter.paramVersion
+			);
+		}
+
+		if (!dataPacket) {
+			//console.log("Rejected SXPreviewRow SX_REFRESH_PREVIEW: ", e.dataPacket, this.parameter);
+			return;
+		}
+
+		//console.log("SXPreviewRow SX_REFRESH_PREVIEW: ", dataPacket, this.parameter);
+		this.forceUpdate();
+	};
+
 	componentDidMount() {
 		/*
 		console.log("=== SXPreviewRow componentDidMount executed ===");
@@ -433,38 +463,11 @@ export class SXPreviewRow extends React.Component {
 		console.log("\n");
 		*/
 
-		Event.uniqueOn(Event.SX_REFRESH_PREVIEW, (e) => {
-			const dataPacket = Event.pickUpDataPacket(
-				e,
-				this.namespace,
-				this.previewCanvasId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH_PREVIEW, this.refreshPreviewHandler);
+	}
 
-			if (!dataPacket) {
-				return;
-			}
-
-			console.log("SXPreviewRow SX_REFRESH_PREVIEW: ", dataPacket);
-			this.forceUpdate();
-		});
-
-		/*
-		Event.uniqueOn(Event.SX_FOCUS, (e) => {
-			const dataPacket = e.dataPacket;
-			if (
-				dataPacket.targetPortlet !== this.namespace ||
-				dataPacket.targetFormId !== this.previewCanvasId ||
-				dataPacket.paramName !== this.parameter.paramName ||
-				dataPacket.paramVersion !== dataPacket.paramVersion
-			) {
-				return;
-			}
-
-			this.setState({ focus: true });
-		});
-		*/
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH_PREVIEW, this.refreshPreviewHandler);
 	}
 
 	handleClick(e) {
@@ -668,51 +671,59 @@ export class SXInput extends React.Component {
 		this.focusRef = createRef();
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.forceUpdate();
+				return;
+			}
+		}
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.focusRef.current.focus();
+				return;
+			}
+		}
+
+		this.focusRef.current.focus();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.forceUpdate();
-					return;
-				}
-			}
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.focusRef.current.focus();
-					return;
-				}
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
 	}
 
 	handleChange(value) {
@@ -788,7 +799,9 @@ export class SXInput extends React.Component {
 							value={this.state.value}
 							disabled={this.parameter.disabled}
 							onChange={(e) => this.handleChange(e.target.value)}
-							onBlur={(e) => this.fireValueChanged(e.target.value)}
+							onBlur={(e) => {
+								this.fireValueChanged(e.target.value);
+							}}
 							ref={this.focusRef}
 						/>
 					</ClayInput.GroupItem>
@@ -837,51 +850,59 @@ export class SXLocalizedInput extends React.Component {
 		this.focusRef = createRef();
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.forceUpdate();
+				return;
+			}
+		}
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.focusRef.current.focus();
+				return;
+			}
+		}
+
+		this.focusRef.current.focus();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.forceUpdate();
-					return;
-				}
-			}
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.focusRef.current.focus();
-					return;
-				}
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
 	}
 
 	handleChange(value) {
@@ -1066,51 +1087,59 @@ export class SXNumeric extends React.Component {
 		this.focusRef = createRef();
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.forceUpdate();
+				return;
+			}
+		}
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.focusRef.current.focus();
+				return;
+			}
+		}
+
+		this.focusRef.current.focus();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (this.parameter.isGridCell(this.cellIndex)) {
-				if (dataPacket.cellIndex === this.cellIndex) {
-					this.forceUpdate();
-					return;
-				}
-			}
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (this.parameter.isGridCell(this.cellIndex)) {
-				if (dataPacket.cellIndex === this.cellIndex) {
-					this.focusRef.current.focus();
-					return;
-				}
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
 	}
 
 	toNumber(val) {
@@ -1149,7 +1178,7 @@ export class SXNumeric extends React.Component {
 		return (
 			<>
 				<ClayInput.Group stacked>
-					{this.parameter.checkValidationEnabled(ValidationKeys.MIN) && (
+					{this.parameter.validationMin && (
 						<>
 							<ClayInput.GroupItem
 								prepend
@@ -1226,7 +1255,7 @@ export class SXNumeric extends React.Component {
 							<ClayInput.GroupText>{this.parameter.unit}</ClayInput.GroupText>
 						</ClayInput.GroupItem>
 					)}
-					{this.parameter.checkValidationEnabled(ValidationKeys.MAX) && (
+					{this.parameter.validationMax && (
 						<>
 							<ClayInput.GroupItem
 								append
@@ -1331,51 +1360,59 @@ export class SXBoolean extends React.Component {
 		};
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.forceUpdate();
+				return;
+			}
+		}
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.focusRef.current.focus();
+				return;
+			}
+		}
+
+		this.focusRef.current.focus();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.forceUpdate();
-					return;
-				}
-			}
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.focusRef.current.focus();
-					return;
-				}
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
 	}
 
 	setValue(value) {
@@ -1675,51 +1712,59 @@ export class SXSelect extends React.Component {
 		this.focusRef = createRef();
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.forceUpdate();
+				return;
+			}
+		}
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.focusRef.current.focus();
+				return;
+			}
+		}
+
+		this.focusRef.current.focus();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (this.parameter.isGridCell(this.cellIndex)) {
-				if (dataPacket.cellIndex === this.cellIndex) {
-					this.forceUpdate();
-					return;
-				}
-			}
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (this.parameter.isGridCell(this.cellIndex)) {
-				if (dataPacket.cellIndex === this.cellIndex) {
-					this.focusRef.current.focus();
-					return;
-				}
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
 	}
 
 	setValue(value) {
@@ -2083,51 +2128,59 @@ export class SXDualListBox extends React.Component {
 		};
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.forceUpdate();
+				return;
+			}
+		}
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.focusRef.current.focus();
+				return;
+			}
+		}
+
+		this.focusRef.current.focus();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.forceUpdate();
-					return;
-				}
-			}
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.focusRef.current.focus();
-					return;
-				}
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
 	}
 
 	handleLeftSelectChange(selects, a) {
@@ -2298,51 +2351,59 @@ export class SXFile extends React.Component {
 		this.focusRef = React.createRef();
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.forceUpdate();
+				return;
+			}
+		}
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.focusRef.current.focus();
+				return;
+			}
+		}
+
+		this.focusRef.current.focus();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (this.parameter.isGridCell(this.cellIndex)) {
-				if (dataPacket.cellIndex === this.cellIndex) {
-					this.forceUpdate();
-					return;
-				}
-			}
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (this.parameter.isGridCell(this.cellIndex)) {
-				if (dataPacket.cellIndex === this.cellIndex) {
-					this.focusRef.current.focus();
-					return;
-				}
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
 	}
 
 	handleFileSelectionChanged(files) {
@@ -2606,51 +2667,59 @@ export class SXAddress extends React.Component {
 		return address.trim();
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.forceUpdate();
+				return;
+			}
+		}
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.focusRef.current.focus();
+				return;
+			}
+		}
+
+		this.focusRef.current.focus();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.forceUpdate();
-					return;
-				}
-			}
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.focusRef.current.focus();
-					return;
-				}
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
 	}
 
 	handleAddressSearch() {
@@ -2916,51 +2985,59 @@ export class SXDate extends React.Component {
 		this.focusRef = createRef();
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.forceUpdate();
+				return;
+			}
+		}
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.focusRef.current.focus();
+				return;
+			}
+		}
+
+		this.focusRef.current.focus();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.forceUpdate();
-					return;
-				}
-			}
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.focusRef.current.focus();
-					return;
-				}
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
 	}
 
 	handleDateChanged(value) {
@@ -2977,7 +3054,7 @@ export class SXDate extends React.Component {
 				onChange={(val) => this.handleDateChanged(val)}
 				placeholder={this.parameter.enableTime ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD"}
 				time={this.parameter.enableTime}
-				defaultValue={this.parameter.getValue(this.cellIndex) ?? ""}
+				value={this.parameter.getValue(this.cellIndex) ?? ""}
 				disabled={this.parameter.disabled}
 				years={{
 					end: Number(this.parameter.endYear),
@@ -3054,51 +3131,59 @@ export class SXPhone extends React.Component {
 		};
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.forceUpdate();
+				return;
+			}
+		}
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.focusRef.current.focus();
+				return;
+			}
+		}
+
+		this.focusRef.current.focus();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.forceUpdate();
-					return;
-				}
-			}
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.focusRef.current.focus();
-					return;
-				}
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
 	}
 
 	checkFullNo() {
@@ -3262,51 +3347,59 @@ export class SXEMail extends React.Component {
 		};
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.forceUpdate();
+				return;
+			}
+		}
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		if (this.parameter.isGridCell(this.cellIndex)) {
+			if (dataPacket.cellIndex === this.cellIndex) {
+				this.focusRef.current.focus();
+				return;
+			}
+		}
+
+		this.focusRef.current.focus();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.forceUpdate();
-					return;
-				}
-			}
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			if (Util.isNotEmpty(this.cellIndex)) {
-				if (this.cellIndex >= 0 && dataPacket.cellIndex === this.cellIndex) {
-					this.focusRef.current.focus();
-					return;
-				}
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
 	}
 
 	checkFullAddress() {
@@ -3459,38 +3552,64 @@ export class SXGroup extends React.Component {
 		this.focusRef = createRef();
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		this.focusRef.current.focus();
+	};
+
+	fieldValueChangedHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.tagName,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		this.parameter.fireValueChanged();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			this.focusRef.current.focus();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	renderMember(member) {
@@ -3599,7 +3718,10 @@ export class SXGroup extends React.Component {
 				displayType="secondary"
 				showCollapseIcon={true}
 				defaultExpanded={this.state.expanded}
-				onExpandedChange={(expanded) => this.setState({ expanded: expanded })}
+				onExpandedChange={(expanded) => {
+					this.parameter.expanded = expanded;
+					this.setState({ expanded: expanded });
+				}}
 				spritemap={this.spritemap}
 				style={{
 					...this.style,
@@ -3613,6 +3735,64 @@ export class SXGroup extends React.Component {
 		);
 	}
 
+	renderTable() {
+		return (
+			<div
+				style={{
+					...this.style,
+					...this.parameter.style
+				}}
+			>
+				{this.parameter.renderLabel({ spritemap: this.spritemap })}
+				<Table
+					displayTitle={
+						<Panel.Title>
+							<div className="autofit-row autofit-row-center">
+								<div className="autofit-col">
+									<h3>{this.parameter.label}</h3>
+								</div>
+								<div className="autofit-col">
+									{this.parameter.inputStatus && (
+										<div className="autofit-section">
+											<span>
+												{"(" +
+													this.parameter.valuedFieldsCount +
+													"/" +
+													this.parameter.totalFieldsCount +
+													")"}
+											</span>
+										</div>
+									)}
+								</div>
+							</div>
+							{this.parameter.showDefinition && this.state.expanded && (
+								<div
+									className="autofit-row"
+									style={{ paddingLeft: "10px" }}
+								>
+									<pre className="autofit-col">{this.parameter.getDefinition()}</pre>
+								</div>
+							)}
+						</Panel.Title>
+					}
+					displayType="secondary"
+					showCollapseIcon={true}
+					defaultExpanded={this.state.expanded}
+					onExpandedChange={(expanded) => this.setState({ expanded: expanded })}
+					spritemap={this.spritemap}
+					style={{
+						...this.style,
+						...this.parameter.style,
+						backgroundColor: "rgba(123, 233, 78, 0.1)",
+						marginBottom: "0"
+					}}
+				>
+					<Panel.Body style={{ backgroundColor: "#ffffff" }}>{this.renderArrangeMent()}</Panel.Body>
+				</Table>
+			</div>
+		);
+	}
+
 	render() {
 		switch (this.parameter.viewType) {
 			case GroupParameter.ViewTypes.ARRANGEMENT: {
@@ -3620,6 +3800,9 @@ export class SXGroup extends React.Component {
 			}
 			case GroupParameter.ViewTypes.PANEL: {
 				return this.renderPanel();
+			}
+			case GroupParameter.ViewTypes.TABLE: {
+				return this.renderTable();
 			}
 			default: {
 				return this.renderPanel();
@@ -3652,58 +3835,67 @@ export class SXGrid extends React.Component {
 		this.focusRef = createRef();
 	}
 
+	refreshHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		this.forceUpdate();
+	};
+
+	focusHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(
+			event,
+			this.parameter.namespace,
+			this.parameter.formId,
+			this.parameter.paramName,
+			this.parameter.paramVersion
+		);
+
+		if (Util.isEmpty(dataPacket)) {
+			return;
+		}
+
+		this.focusRef.current.focus();
+	};
+
+	fieldValueChangedHandler = (event) => {
+		const dataPacket = event.dataPacket;
+		if (dataPacket.targetPortlet !== this.parameter.namespace || dataPacket.targetFormId !== this.parameter.tagName)
+			return;
+
+		console.log("SXGrid SX_FIELD_VALUE_CHANGED RECEIVED: ", dataPacket, this.parameter);
+
+		const value = {};
+		this.parameter.columns.map((column) => {
+			value[column.paramName] = column.value;
+		});
+		this.parameter.setValue({ value: value });
+
+		console.log("SXGrid value: ", this.parameter.hasValue());
+
+		this.parameter.fireValueChanged();
+		this.forceUpdate();
+	};
+
 	componentDidMount() {
-		Event.uniqueOn(Event.SX_REFRESH, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
+		Event.on(Event.SX_REFRESH, this.refreshHandler);
+		Event.on(Event.SX_FOCUS, this.focusHandler);
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			this.forceUpdate();
-		});
-
-		Event.uniqueOn(Event.SX_FOCUS, (event) => {
-			const dataPacket = Event.pickUpDataPacket(
-				event,
-				this.parameter.namespace,
-				this.parameter.formId,
-				this.parameter.paramName,
-				this.parameter.paramVersion
-			);
-
-			if (Util.isEmpty(dataPacket)) {
-				return;
-			}
-
-			this.focusRef.current.focus();
-		});
-
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (
-				dataPacket.targetPortlet !== this.parameter.namespace ||
-				dataPacket.targetFormId !== this.parameter.tagName
-			)
-				return;
-
-			console.log("SXGrid SX_FIELD_VALUE_CHANGED RECEIVED: ", dataPacket, this.parameter);
-
-			const value = {};
-			this.parameter.columns.map((column) => {
-				value[column.paramName] = column.value;
-			});
-			this.parameter.setValue({ value: value });
-
-			console.log("SXGrid value: ", this.parameter.hasValue());
-			this.forceUpdate();
-		});
+	componentWillUnmount() {
+		Event.detach(Event.SX_REFRESH, this.refreshHandler);
+		Event.detach(Event.SX_FOCUS, this.focusHandler);
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
 	handleRowActionClick(event, actionId, rowIndex) {

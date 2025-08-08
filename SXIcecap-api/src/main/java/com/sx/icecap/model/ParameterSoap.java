@@ -52,7 +52,7 @@ public class ParameterSoap implements Serializable {
 		soapModel.setDefinition(model.getDefinition());
 		soapModel.setTooltip(model.getTooltip());
 		soapModel.setSynonyms(model.getSynonyms());
-		soapModel.setAttributesJSON(model.getAttributesJSON());
+		soapModel.setTypeProperties(model.getTypeProperties());
 		soapModel.setStandard(model.isStandard());
 
 		return soapModel;
@@ -275,12 +275,12 @@ public class ParameterSoap implements Serializable {
 		_synonyms = synonyms;
 	}
 
-	public String getAttributesJSON() {
-		return _attributesJSON;
+	public String getTypeProperties() {
+		return _typeProperties;
 	}
 
-	public void setAttributesJSON(String attributesJSON) {
-		_attributesJSON = attributesJSON;
+	public void setTypeProperties(String typeProperties) {
+		_typeProperties = typeProperties;
 	}
 
 	public boolean getStandard() {
@@ -316,7 +316,7 @@ public class ParameterSoap implements Serializable {
 	private String _definition;
 	private String _tooltip;
 	private String _synonyms;
-	private String _attributesJSON;
+	private String _typeProperties;
 	private boolean _standard;
 
 }

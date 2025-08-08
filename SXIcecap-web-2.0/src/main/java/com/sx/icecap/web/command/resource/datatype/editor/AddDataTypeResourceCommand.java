@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.sx.icecap.constant.DataTypeProperty;
+import com.sx.icecap.constant.DataTypeProperties;
 import com.sx.icecap.constant.MVCCommand;
 import com.sx.icecap.constant.WebKey;
 import com.sx.constant.StationXConstants;
@@ -57,14 +57,14 @@ public class AddDataTypeResourceCommand extends BaseMVCResourceCommand{
 		JSONObject jsonDataType = JSONFactoryUtil.createJSONObject(strFormData);
 		System.out.println("JSON DataType: " + jsonDataType.toJSONString());
 		
-		String name = jsonDataType.getString(DataTypeProperty.DATATYPE_NAME);
-		String version = jsonDataType.getString(DataTypeProperty.DATATYPE_VERSION);
-		String extension = jsonDataType.getString(DataTypeProperty.EXTENSION);
-		JSONObject displayName =jsonDataType.getJSONObject((DataTypeProperty.DISPLAY_NAME));
-		JSONObject description =jsonDataType.getJSONObject((DataTypeProperty.DESCRIPTION));
-		JSONObject tooltip =jsonDataType.getJSONObject((DataTypeProperty.TOOLTIP));
-		//JSONObject visualizers =jsonDataType.getJSONObject((DataTypeProperty.VISUALIZERS));
-		String visualizers =jsonDataType.getString((DataTypeProperty.VISUALIZERS));
+		String name = jsonDataType.getString(DataTypeProperties.DATATYPE_NAME);
+		String version = jsonDataType.getString(DataTypeProperties.DATATYPE_VERSION);
+		String extension = jsonDataType.getString(DataTypeProperties.EXTENSION);
+		JSONObject displayName =jsonDataType.getJSONObject((DataTypeProperties.DISPLAY_NAME));
+		JSONObject description =jsonDataType.getJSONObject((DataTypeProperties.DESCRIPTION));
+		JSONObject tooltip =jsonDataType.getJSONObject((DataTypeProperties.TOOLTIP));
+		long dataStructureId =jsonDataType.getLong((DataTypeProperties.DATA_STRUCTURE_ID));
+		JSONObject visualizers =jsonDataType.getJSONObject("visualizers");
 		
 		PrintWriter pw = resourceResponse.getWriter();
 		JSONObject result = JSONFactoryUtil.createJSONObject();
@@ -80,7 +80,7 @@ public class AddDataTypeResourceCommand extends BaseMVCResourceCommand{
 					SXLocalizationUtil.jsonToLocalizedMap(displayName), 
 					SXLocalizationUtil.jsonToLocalizedMap(description), 
 					SXLocalizationUtil.jsonToLocalizedMap(tooltip), 
-					visualizers, 
+					dataStructureId,
 					WorkflowConstants.STATUS_APPROVED,
 					sc
 			);
@@ -90,9 +90,6 @@ public class AddDataTypeResourceCommand extends BaseMVCResourceCommand{
 		} catch( DuplicatedDataTypeNameException e ) {
 			result.put("error", 1);
 			result.put("message", "Duplicated data type name: " + name);
-		} catch( InvalidDataTypeNameException e ) {
-			result.put("error", 1);
-			result.put("message", "Invalid data type name: " + name);
 		} catch( PortalException e) {
 			result.put("error", 1);
 			result.put("message", e.getMessage());

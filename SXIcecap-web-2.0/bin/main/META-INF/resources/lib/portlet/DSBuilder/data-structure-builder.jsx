@@ -114,114 +114,120 @@ class DataStructureBuilder extends React.Component {
 			});
 	}
 
-	componentDidMount() {
-		this.loadDataStructure();
+	parameterSelectedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId) {
+			console.log("SX_PARAMETER_SELECTED rejected: ", dataPacket);
+			return;
+		}
 
-		Event.uniqueOn(Event.SX_PARAMETER_SELECTED, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId) {
-				console.log("SX_PARAMETER_SELECTED rejected: ", dataPacket);
-				return;
-			}
+		const selectedParam = dataPacket.parameter;
+		console.log("SX_PARAMETER_SELECTED: ", dataPacket, selectedParam, this.workingParam);
+		if (selectedParam === this.workingParam) {
+			return;
+		}
 
-			const selectedParam = dataPacket.parameter;
-			console.log("SX_PARAMETER_SELECTED: ", dataPacket, selectedParam, this.workingParam);
-			if (selectedParam === this.workingParam) {
-				return;
-			}
+		selectedParam.focused = true;
+		this.workingParam.focused = false;
+		this.workingParam.fireRefreshPreview();
 
-			selectedParam.focused = true;
-			this.workingParam.focused = false;
-			this.workingParam.fireRefreshPreview();
+		this.workingParam = selectedParam;
 
-			this.workingParam = selectedParam;
-
-			if (selectedParam.displayType === Parameter.DisplayTypes.GRID_CELL) {
-				const gridParam = this.dataStructure.findParameter({
-					paramName: this.workingParam.parent.name,
-					paramVersion: this.workingParam.parent.version,
-					descendant: true
-				});
-
-				gridParam.fireRefreshPreview();
-			}
-
-			this.fireRefreshPropertyPanel();
-		});
-
-		Event.uniqueOn(Event.SX_PARAM_TYPE_CHANGED, (e) => {
-			const dataPacket = e.dataPacket;
-			console.log("SX_PARAM_TYPE_CHANGED: ", dataPacket);
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId)
-				return;
-
-			if (
-				dataPacket.paramType === ParamType.MATRIX ||
-				dataPacket.paramType === ParamType.DUALLIST ||
-				dataPacket.paramType === ParamType.TABLE ||
-				dataPacket.paramType === ParamType.CALCULATOR ||
-				dataPacket.paramType === ParamType.IMAGE ||
-				dataPacket.paramType === ParamType.LINKER ||
-				dataPacket.paramType === ParamType.REFERENCE
-			) {
-				this.setState({ underConstruction: true });
-				return;
-			}
-
-			this.workingParam = Parameter.createParameter(
-				this.namespace,
-				this.formIds.previewCanvasId,
-				this.languageId,
-				this.availableLanguageIds,
-				dataPacket.paramType
-			);
-
-			this.fireRefreshPropertyPanel();
-		});
-
-		Event.uniqueOn(Event.SX_COPY_PARAMETER, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId)
-				return;
-
-			const copied = this.workingParam.copy();
-			this.workingParam.focused = false;
-			this.workingParam.refreshKey();
-			copied.focused = true;
-			copied.refreshKey();
-
-			const group = this.dataStructure.findParameter({
-				paramName: copied.parentName,
-				paramVersion: copied.paramVersion,
+		if (selectedParam.displayType === Parameter.DisplayTypes.GRID_CELL) {
+			const gridParam = this.dataStructure.findParameter({
+				paramName: this.workingParam.parent.name,
+				paramVersion: this.workingParam.parent.version,
 				descendant: true
 			});
 
-			console.log("SX_COPY_PARAMETER group: ", group, this.workingParam, copied);
-			group.insertMember(copied, this.workingParam.order);
+			gridParam.fireRefreshPreview();
+		}
 
-			this.workingParam = copied;
+		this.fireRefreshPropertyPanel();
+	};
 
-			this.fireRefreshPropertyPanel();
-			this.forceUpdate();
+	parameterTypeChangedHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		console.log("SX_PARAM_TYPE_CHANGED: ", dataPacket);
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId) return;
+
+		if (
+			dataPacket.paramType === ParamType.MATRIX ||
+			dataPacket.paramType === ParamType.DUALLIST ||
+			dataPacket.paramType === ParamType.TABLE ||
+			dataPacket.paramType === ParamType.CALCULATOR ||
+			dataPacket.paramType === ParamType.IMAGE ||
+			dataPacket.paramType === ParamType.LINKER ||
+			dataPacket.paramType === ParamType.REFERENCE
+		) {
+			this.setState({ underConstruction: true });
+			return;
+		}
+
+		this.workingParam = Parameter.createParameter(
+			this.namespace,
+			this.formIds.previewCanvasId,
+			this.languageId,
+			this.availableLanguageIds,
+			dataPacket.paramType
+		);
+
+		this.fireRefreshPropertyPanel();
+	};
+
+	copyParameterHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId) return;
+
+		const copied = this.workingParam.copy();
+		this.workingParam.focused = false;
+		this.workingParam.refreshKey();
+		copied.focused = true;
+		copied.refreshKey();
+
+		const group = this.dataStructure.findParameter({
+			paramName: copied.parentName,
+			paramVersion: copied.paramVersion,
+			descendant: true
 		});
 
-		Event.uniqueOn(Event.SX_DELETE_PARAMETER, (e) => {
-			const dataPacket = e.dataPacket;
-			if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId)
-				return;
+		console.log("SX_COPY_PARAMETER group: ", group, this.workingParam, copied);
+		group.insertMember(copied, this.workingParam.order);
 
-			this.setState({
-				confirmParamDeleteDlg: true,
-				confirmDlgBody: (
-					<div>
-						{Util.translate("are-you-sure-delete-the-parameter") +
-							': "' +
-							this.workingParam.paramName +
-							'"?'}
-					</div>
-				)
-			});
+		this.workingParam = copied;
+
+		this.fireRefreshPropertyPanel();
+		this.forceUpdate();
+	};
+
+	deleteParameterHandler = (e) => {
+		const dataPacket = e.dataPacket;
+		if (dataPacket.targetPortlet !== this.namespace || dataPacket.targetFormId !== this.formIds.dsbuilderId) return;
+
+		this.setState({
+			confirmParamDeleteDlg: true,
+			confirmDlgBody: (
+				<div>
+					{Util.translate("are-you-sure-delete-the-parameter") + ': "' + this.workingParam.paramName + '"?'}
+				</div>
+			)
 		});
+	};
+
+	componentDidMount() {
+		this.loadDataStructure();
+
+		Event.on(Event.SX_PARAMETER_SELECTED, this.parameterSelectedHandler);
+		Event.on(Event.SX_PARAM_TYPE_CHANGED, this.parameterTypeChangedHandler);
+		Event.on(Event.SX_COPY_PARAMETER, this.copyParameterHandler);
+		Event.on(Event.SX_DELETE_PARAMETER, this.deleteParameterHandler);
+	}
+
+	componentWillUnmount() {
+		Event.detach(Event.SX_PARAMETER_SELECTED, this.parameterSelectedHandler);
+		Event.detach(Event.SX_PARAM_TYPE_CHANGED, this.parameterTypeChangedHandler);
+		Event.detach(Event.SX_COPY_PARAMETER, this.copyParameterHandler);
+		Event.detach(Event.SX_DELETE_PARAMETER, this.deleteParameterHandler);
 	}
 
 	loadDataStructure() {
@@ -235,22 +241,17 @@ class DataStructureBuilder extends React.Component {
 			successFunc: (result) => {
 				this.dataType = result.dataType;
 
+				this.dataStructure = new DataStructure(
+					this.namespace,
+					this.formIds.previewCanvasId,
+					this.languageId,
+					this.availableLanguageIds
+				);
+
 				if (Util.isNotEmpty(result.dataStructure)) {
-					this.dataStructure = new DataStructure(
-						this.namespace,
-						this.formIds.previewCanvasId,
-						this.languageId,
-						this.availableLanguageIds,
-						result.dataStructure
-					);
+					this.dataStructure.initProperties(result.dataStructure);
 					this.editPhase = "update";
 				} else {
-					this.dataStructure = new DataStructure(
-						this.namespace,
-						this.formIds.previewCanvasId,
-						this.languageId,
-						this.availableLanguageIds
-					);
 					this.editPhase = "create";
 				}
 

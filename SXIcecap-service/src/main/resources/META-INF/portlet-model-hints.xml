@@ -1,6 +1,61 @@
 <?xml version="1.0"?>
 
 <model-hints>
+	<model name="com.sx.icecap.model.ActionHistory">
+		<field name="actionHistoryId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="structuredDataId" type="long" />
+		<field name="paramName" type="String" />
+		<field name="prevValue" type="String" />
+		<field name="changedValue" type="String" />
+		<field name="action" type="String" />
+		<field name="comment" type="String" />
+	</model>
+	<model name="com.sx.icecap.model.CollectionSetLink">
+		<field name="collectionSetLinkId" type="long" />
+		<field name="dataCollectionId" type="long" />
+		<field name="dataCollection" type="long" />
+		<field name="dataSetId" type="long" />
+		<field name="dataSet" type="long" />
+	</model>
+	<model name="com.sx.icecap.model.DataCollection">
+		<field name="uuid" type="String" />
+		<field name="dataCollectionId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="lastPublishDate" type="Date" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="dataCollectionName" type="String" />
+		<field name="dataCollectionVersion" type="String" />
+		<field localized="true" name="displayName" type="String" />
+		<field localized="true" name="description" type="String" />
+		<field name="freezeLevel" type="String" />
+		<field name="verifyLevel" type="String" />
+		<field name="commentLevel" type="String" />
+	</model>
+	<model name="com.sx.icecap.model.DataComment">
+		<field name="dataCommentId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="structuredDataId" type="long" />
+		<field name="paramName" type="String" />
+		<field name="parentCommentId" type="long" />
+		<field name="comment" type="String" />
+		<field name="closed" type="boolean" />
+	</model>
 	<model name="com.sx.icecap.model.DataSet">
 		<field name="uuid" type="String" />
 		<field name="dataSetId" type="long" />
@@ -19,15 +74,28 @@
 		<field name="dataSetVersion" type="String" />
 		<field localized="true" name="displayName" type="String" />
 		<field localized="true" name="description" type="String" />
-		<field name="folderId" type="long" />
-		<field name="structure" type="String">
-			<hint name="max-length">40960</hint>
-		</field>
-		<field name="verificationType" type="String" />
-		<field name="multiEntryLevel" type="int" />
 	</model>
 	<model name="com.sx.icecap.model.DataStructure">
-		<field name="dataTypeId" type="long" />
+		<field name="uuid" type="String" />
+		<field name="companyId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="lastPublishDate" type="Date" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="dataStructureId" type="long" />
+		<field name="dataStructureName" type="String" />
+		<field name="dataStructureVersion" type="String" />
+		<field localized="true" name="displayName" type="String" />
+		<field localized="true" name="description" type="String" />
+		<field name="freezable" type="boolean" />
+		<field name="verifiable" type="boolean" />
+		<field name="commentable" type="boolean" />
 		<field name="structure" type="String">
 			<hint name="max-length">40960</hint>
 		</field>
@@ -53,10 +121,9 @@
 		<field name="sampleFileId" type="long" />
 		<field localized="true" name="description" type="String" />
 		<field localized="true" name="tooltip" type="String" />
-		<field name="visualizers" type="String">
-			<hint name="max-length">1024</hint>
-		</field>
-		<field name="hasDataStructure" type="boolean" />
+		<field name="freezable" type="boolean" />
+		<field name="verifiable" type="boolean" />
+		<field name="dataStructureId" type="long" />
 	</model>
 	<model name="com.sx.icecap.model.Parameter">
 		<field name="uuid" type="String" />
@@ -80,10 +147,15 @@
 		<field localized="true" name="definition" type="String" />
 		<field localized="true" name="tooltip" type="String" />
 		<field name="synonyms" type="String" />
-		<field name="attributesJSON" type="String">
-			<hint name="max-length">4096</hint>
-		</field>
+		<field name="typeProperties" type="String" />
 		<field name="standard" type="boolean" />
+	</model>
+	<model name="com.sx.icecap.model.SetTypeLink">
+		<field name="setTypeLinkId" type="long" />
+		<field name="dataSetId" type="long" />
+		<field name="dataSet" type="long" />
+		<field name="dataTypeId" type="long" />
+		<field name="dataType" type="String" />
 	</model>
 	<model name="com.sx.icecap.model.StructuredData">
 		<field name="uuid" type="String" />
@@ -98,25 +170,30 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
+		<field name="dataCollectionId" type="long" />
 		<field name="dataSetId" type="long" />
-		<field localized="true" name="dataSetDisplayName" type="String" />
 		<field name="dataTypeId" type="long" />
-		<field localized="true" name="dataTypeDisplayName" type="String" />
-		<field name="dataSetFolderId" type="long" />
-		<field localized="true" name="dataSetFolderName" type="String" />
-		<field name="recordType" type="String" />
-		<field name="recordDelimiter" type="String" />
-		<field name="recordFormat" type="String" />
-		<field name="entryCount" type="int" />
-		<field name="startEntryNo" type="int" />
-		<field name="endEntryNo" type="int" />
-		<field name="structuredData" type="String">
-			<hint name="max-length">40960</hint>
-		</field>
+		<field name="multiple" type="boolean" />
+		<field name="startIndex" type="long" />
+		<field name="count" type="int" />
+		<field name="freezed" type="boolean" />
+		<field name="verified" type="boolean" />
+		<field name="comments" type="boolean" />
+		<field name="history" type="boolean" />
+		<field name="data" type="String" />
 	</model>
-	<model name="com.sx.icecap.model.VisualizerLink">
-		<field name="VisualizerLink" type="long" />
+	<model name="com.sx.icecap.model.TypeParamLink">
+		<field name="typeParamLinkId" type="long" />
 		<field name="dataTypeId" type="long" />
+		<field name="dataType" type="long" />
+		<field name="paramId" type="long" />
+		<field name="param" type="String" />
+	</model>
+	<model name="com.sx.icecap.model.TypeVisualizerLink">
+		<field name="typeVisualizerLinkId" type="long" />
+		<field name="dataTypeId" type="long" />
+		<field name="dataType" type="long" />
 		<field name="visualizerId" type="long" />
+		<field name="visualizer" type="String" />
 	</model>
 </model-hints>

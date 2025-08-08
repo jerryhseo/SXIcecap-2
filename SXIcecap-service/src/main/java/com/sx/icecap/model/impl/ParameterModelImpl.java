@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
@@ -98,7 +97,7 @@ public class ParameterModelImpl
 		{"paramName", Types.VARCHAR}, {"paramVersion", Types.VARCHAR},
 		{"paramType", Types.VARCHAR}, {"displayName", Types.VARCHAR},
 		{"definition", Types.VARCHAR}, {"tooltip", Types.VARCHAR},
-		{"synonyms", Types.VARCHAR}, {"attributesJSON", Types.VARCHAR},
+		{"synonyms", Types.VARCHAR}, {"typeProperties", Types.VARCHAR},
 		{"standard", Types.BOOLEAN}
 	};
 
@@ -127,21 +126,21 @@ public class ParameterModelImpl
 		TABLE_COLUMNS_MAP.put("definition", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("tooltip", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("synonyms", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("attributesJSON", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("typeProperties", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("standard", Types.BOOLEAN);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_Parameter (uuid_ VARCHAR(75) null,parameterId LONG not null primary key,groupParameterId VARCHAR(75) null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,lastPublishDate DATE null,paramName VARCHAR(75) null,paramVersion VARCHAR(75) null,paramType VARCHAR(75) null,displayName STRING null,definition STRING null,tooltip STRING null,synonyms VARCHAR(75) null,attributesJSON TEXT null,standard BOOLEAN)";
+		"create table SX_ICECAP_Parameter (uuid_ VARCHAR(75) null,parameterId LONG not null primary key,groupParameterId VARCHAR(75) null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,lastPublishDate DATE null,paramName VARCHAR(75) null,paramVersion VARCHAR(75) null,paramType VARCHAR(75) null,displayName STRING null,definition STRING null,tooltip STRING null,synonyms VARCHAR(75) null,typeProperties VARCHAR(75) null,standard BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_Parameter";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY parameter.createDate DESC";
+		" ORDER BY parameter.paramName ASC";
 
 	public static final String ORDER_BY_SQL =
-		" ORDER BY SX_ICECAP_Parameter.createDate DESC";
+		" ORDER BY SX_ICECAP_Parameter.paramName ASC";
 
 	public static final String DATA_SOURCE = "liferayDataSource";
 
@@ -162,8 +161,6 @@ public class ParameterModelImpl
 	public static final long USERID_COLUMN_BITMASK = 32L;
 
 	public static final long UUID_COLUMN_BITMASK = 64L;
-
-	public static final long CREATEDATE_COLUMN_BITMASK = 128L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -207,7 +204,7 @@ public class ParameterModelImpl
 		model.setDefinition(soapModel.getDefinition());
 		model.setTooltip(soapModel.getTooltip());
 		model.setSynonyms(soapModel.getSynonyms());
-		model.setAttributesJSON(soapModel.getAttributesJSON());
+		model.setTypeProperties(soapModel.getTypeProperties());
 		model.setStandard(soapModel.isStandard());
 
 		return model;
@@ -414,10 +411,10 @@ public class ParameterModelImpl
 		attributeSetterBiConsumers.put(
 			"synonyms", (BiConsumer<Parameter, String>)Parameter::setSynonyms);
 		attributeGetterFunctions.put(
-			"attributesJSON", Parameter::getAttributesJSON);
+			"typeProperties", Parameter::getTypeProperties);
 		attributeSetterBiConsumers.put(
-			"attributesJSON",
-			(BiConsumer<Parameter, String>)Parameter::setAttributesJSON);
+			"typeProperties",
+			(BiConsumer<Parameter, String>)Parameter::setTypeProperties);
 		attributeGetterFunctions.put("standard", Parameter::getStandard);
 		attributeSetterBiConsumers.put(
 			"standard", (BiConsumer<Parameter, Boolean>)Parameter::setStandard);
@@ -590,8 +587,6 @@ public class ParameterModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
-
 		_createDate = createDate;
 	}
 
@@ -713,7 +708,7 @@ public class ParameterModelImpl
 
 	@Override
 	public void setParamName(String paramName) {
-		_columnBitmask |= PARAMNAME_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (_originalParamName == null) {
 			_originalParamName = _paramName;
@@ -1110,18 +1105,18 @@ public class ParameterModelImpl
 
 	@JSON
 	@Override
-	public String getAttributesJSON() {
-		if (_attributesJSON == null) {
+	public String getTypeProperties() {
+		if (_typeProperties == null) {
 			return "";
 		}
 		else {
-			return _attributesJSON;
+			return _typeProperties;
 		}
 	}
 
 	@Override
-	public void setAttributesJSON(String attributesJSON) {
-		_attributesJSON = attributesJSON;
+	public void setTypeProperties(String typeProperties) {
+		_typeProperties = typeProperties;
 	}
 
 	@JSON
@@ -1538,7 +1533,7 @@ public class ParameterModelImpl
 		parameterImpl.setDefinition(getDefinition());
 		parameterImpl.setTooltip(getTooltip());
 		parameterImpl.setSynonyms(getSynonyms());
-		parameterImpl.setAttributesJSON(getAttributesJSON());
+		parameterImpl.setTypeProperties(getTypeProperties());
 		parameterImpl.setStandard(isStandard());
 
 		parameterImpl.resetOriginalValues();
@@ -1550,9 +1545,7 @@ public class ParameterModelImpl
 	public int compareTo(Parameter parameter) {
 		int value = 0;
 
-		value = DateUtil.compareTo(getCreateDate(), parameter.getCreateDate());
-
-		value = value * -1;
+		value = getParamName().compareTo(parameter.getParamName());
 
 		if (value != 0) {
 			return value;
@@ -1766,12 +1759,12 @@ public class ParameterModelImpl
 			parameterCacheModel.synonyms = null;
 		}
 
-		parameterCacheModel.attributesJSON = getAttributesJSON();
+		parameterCacheModel.typeProperties = getTypeProperties();
 
-		String attributesJSON = parameterCacheModel.attributesJSON;
+		String typeProperties = parameterCacheModel.typeProperties;
 
-		if ((attributesJSON != null) && (attributesJSON.length() == 0)) {
-			parameterCacheModel.attributesJSON = null;
+		if ((typeProperties != null) && (typeProperties.length() == 0)) {
+			parameterCacheModel.typeProperties = null;
 		}
 
 		parameterCacheModel.standard = isStandard();
@@ -1907,7 +1900,7 @@ public class ParameterModelImpl
 	private String _tooltip;
 	private String _tooltipCurrentLanguageId;
 	private String _synonyms;
-	private String _attributesJSON;
+	private String _typeProperties;
 	private boolean _standard;
 	private long _columnBitmask;
 	private Parameter _escapedModel;

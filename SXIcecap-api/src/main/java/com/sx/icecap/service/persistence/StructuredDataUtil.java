@@ -2118,6 +2118,1989 @@ public class StructuredDataUtil {
 	}
 
 	/**
+	 * Returns all the structured datas where dataCollectionId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId(
+		long dataCollectionId) {
+
+		return getPersistence().findByDataCollectionId(dataCollectionId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId(
+		long dataCollectionId, int start, int end) {
+
+		return getPersistence().findByDataCollectionId(
+			dataCollectionId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId(
+		long dataCollectionId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataCollectionId(
+			dataCollectionId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId(
+		long dataCollectionId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataCollectionId(
+			dataCollectionId, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_First(
+			long dataCollectionId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_First(
+			dataCollectionId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_First(
+		long dataCollectionId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_First(
+			dataCollectionId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_Last(
+			long dataCollectionId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_Last(
+			dataCollectionId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_Last(
+		long dataCollectionId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_Last(
+			dataCollectionId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataCollectionId_PrevAndNext(
+			long structuredDataId, long dataCollectionId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_PrevAndNext(
+			structuredDataId, dataCollectionId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 */
+	public static void removeByDataCollectionId(long dataCollectionId) {
+		getPersistence().removeByDataCollectionId(dataCollectionId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataCollectionId(long dataCollectionId) {
+		return getPersistence().countByDataCollectionId(dataCollectionId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G(
+		long dataCollectionId, long groupId) {
+
+		return getPersistence().findByDataCollectionId_G(
+			dataCollectionId, groupId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G(
+		long dataCollectionId, long groupId, int start, int end) {
+
+		return getPersistence().findByDataCollectionId_G(
+			dataCollectionId, groupId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G(
+		long dataCollectionId, long groupId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataCollectionId_G(
+			dataCollectionId, groupId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G(
+		long dataCollectionId, long groupId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataCollectionId_G(
+			dataCollectionId, groupId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_G_First(
+			long dataCollectionId, long groupId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_First(
+			dataCollectionId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_G_First(
+		long dataCollectionId, long groupId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_G_First(
+			dataCollectionId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_G_Last(
+			long dataCollectionId, long groupId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_Last(
+			dataCollectionId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_G_Last(
+		long dataCollectionId, long groupId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_G_Last(
+			dataCollectionId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataCollectionId_G_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long groupId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_PrevAndNext(
+			structuredDataId, dataCollectionId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G(
+		long dataCollectionId, long groupId) {
+
+		return getPersistence().filterFindByDataCollectionId_G(
+			dataCollectionId, groupId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G(
+		long dataCollectionId, long groupId, int start, int end) {
+
+		return getPersistence().filterFindByDataCollectionId_G(
+			dataCollectionId, groupId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G(
+		long dataCollectionId, long groupId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByDataCollectionId_G(
+			dataCollectionId, groupId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByDataCollectionId_G_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long groupId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByDataCollectionId_G_PrevAndNext(
+			structuredDataId, dataCollectionId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and groupId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 */
+	public static void removeByDataCollectionId_G(
+		long dataCollectionId, long groupId) {
+
+		getPersistence().removeByDataCollectionId_G(dataCollectionId, groupId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataCollectionId_G(
+		long dataCollectionId, long groupId) {
+
+		return getPersistence().countByDataCollectionId_G(
+			dataCollectionId, groupId);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByDataCollectionId_G(
+		long dataCollectionId, long groupId) {
+
+		return getPersistence().filterCountByDataCollectionId_G(
+			dataCollectionId, groupId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_U(
+		long dataCollectionId, long userId) {
+
+		return getPersistence().findByDataCollectionId_U(
+			dataCollectionId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_U(
+		long dataCollectionId, long userId, int start, int end) {
+
+		return getPersistence().findByDataCollectionId_U(
+			dataCollectionId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_U(
+		long dataCollectionId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataCollectionId_U(
+			dataCollectionId, userId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_U(
+		long dataCollectionId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataCollectionId_U(
+			dataCollectionId, userId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_U_First(
+			long dataCollectionId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_U_First(
+			dataCollectionId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_U_First(
+		long dataCollectionId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_U_First(
+			dataCollectionId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_U_Last(
+			long dataCollectionId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_U_Last(
+			dataCollectionId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_U_Last(
+		long dataCollectionId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_U_Last(
+			dataCollectionId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataCollectionId_U_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_U_PrevAndNext(
+			structuredDataId, dataCollectionId, userId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 */
+	public static void removeByDataCollectionId_U(
+		long dataCollectionId, long userId) {
+
+		getPersistence().removeByDataCollectionId_U(dataCollectionId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataCollectionId_U(
+		long dataCollectionId, long userId) {
+
+		return getPersistence().countByDataCollectionId_U(
+			dataCollectionId, userId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_S(
+		long dataCollectionId, int status) {
+
+		return getPersistence().findByDataCollectionId_S(
+			dataCollectionId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_S(
+		long dataCollectionId, int status, int start, int end) {
+
+		return getPersistence().findByDataCollectionId_S(
+			dataCollectionId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_S(
+		long dataCollectionId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataCollectionId_S(
+			dataCollectionId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_S(
+		long dataCollectionId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataCollectionId_S(
+			dataCollectionId, status, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_S_First(
+			long dataCollectionId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_S_First(
+			dataCollectionId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_S_First(
+		long dataCollectionId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_S_First(
+			dataCollectionId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_S_Last(
+			long dataCollectionId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_S_Last(
+			dataCollectionId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_S_Last(
+		long dataCollectionId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_S_Last(
+			dataCollectionId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataCollectionId_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_S_PrevAndNext(
+			structuredDataId, dataCollectionId, status, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param status the status
+	 */
+	public static void removeByDataCollectionId_S(
+		long dataCollectionId, int status) {
+
+		getPersistence().removeByDataCollectionId_S(dataCollectionId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataCollectionId_S(
+		long dataCollectionId, int status) {
+
+		return getPersistence().countByDataCollectionId_S(
+			dataCollectionId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_U(
+		long dataCollectionId, long groupId, long userId) {
+
+		return getPersistence().findByDataCollectionId_G_U(
+			dataCollectionId, groupId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_U(
+		long dataCollectionId, long groupId, long userId, int start, int end) {
+
+		return getPersistence().findByDataCollectionId_G_U(
+			dataCollectionId, groupId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_U(
+		long dataCollectionId, long groupId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataCollectionId_G_U(
+			dataCollectionId, groupId, userId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_U(
+		long dataCollectionId, long groupId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataCollectionId_G_U(
+			dataCollectionId, groupId, userId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_G_U_First(
+			long dataCollectionId, long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_U_First(
+			dataCollectionId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_G_U_First(
+		long dataCollectionId, long groupId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_G_U_First(
+			dataCollectionId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_G_U_Last(
+			long dataCollectionId, long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_U_Last(
+			dataCollectionId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_G_U_Last(
+		long dataCollectionId, long groupId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_G_U_Last(
+			dataCollectionId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataCollectionId_G_U_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long groupId,
+			long userId, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_U_PrevAndNext(
+			structuredDataId, dataCollectionId, groupId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G_U(
+		long dataCollectionId, long groupId, long userId) {
+
+		return getPersistence().filterFindByDataCollectionId_G_U(
+			dataCollectionId, groupId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G_U(
+		long dataCollectionId, long groupId, long userId, int start, int end) {
+
+		return getPersistence().filterFindByDataCollectionId_G_U(
+			dataCollectionId, groupId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G_U(
+		long dataCollectionId, long groupId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByDataCollectionId_G_U(
+			dataCollectionId, groupId, userId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByDataCollectionId_G_U_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long groupId,
+			long userId, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByDataCollectionId_G_U_PrevAndNext(
+			structuredDataId, dataCollectionId, groupId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 */
+	public static void removeByDataCollectionId_G_U(
+		long dataCollectionId, long groupId, long userId) {
+
+		getPersistence().removeByDataCollectionId_G_U(
+			dataCollectionId, groupId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataCollectionId_G_U(
+		long dataCollectionId, long groupId, long userId) {
+
+		return getPersistence().countByDataCollectionId_G_U(
+			dataCollectionId, groupId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByDataCollectionId_G_U(
+		long dataCollectionId, long groupId, long userId) {
+
+		return getPersistence().filterCountByDataCollectionId_G_U(
+			dataCollectionId, groupId, userId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_S(
+		long dataCollectionId, long groupId, int status) {
+
+		return getPersistence().findByDataCollectionId_G_S(
+			dataCollectionId, groupId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_S(
+		long dataCollectionId, long groupId, int status, int start, int end) {
+
+		return getPersistence().findByDataCollectionId_G_S(
+			dataCollectionId, groupId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_S(
+		long dataCollectionId, long groupId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataCollectionId_G_S(
+			dataCollectionId, groupId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_S(
+		long dataCollectionId, long groupId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataCollectionId_G_S(
+			dataCollectionId, groupId, status, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_G_S_First(
+			long dataCollectionId, long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_S_First(
+			dataCollectionId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_G_S_First(
+		long dataCollectionId, long groupId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_G_S_First(
+			dataCollectionId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_G_S_Last(
+			long dataCollectionId, long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_S_Last(
+			dataCollectionId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_G_S_Last(
+		long dataCollectionId, long groupId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_G_S_Last(
+			dataCollectionId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataCollectionId_G_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long groupId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_S_PrevAndNext(
+			structuredDataId, dataCollectionId, groupId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G_S(
+		long dataCollectionId, long groupId, int status) {
+
+		return getPersistence().filterFindByDataCollectionId_G_S(
+			dataCollectionId, groupId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G_S(
+		long dataCollectionId, long groupId, int status, int start, int end) {
+
+		return getPersistence().filterFindByDataCollectionId_G_S(
+			dataCollectionId, groupId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G_S(
+		long dataCollectionId, long groupId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByDataCollectionId_G_S(
+			dataCollectionId, groupId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByDataCollectionId_G_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long groupId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByDataCollectionId_G_S_PrevAndNext(
+			structuredDataId, dataCollectionId, groupId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and groupId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 */
+	public static void removeByDataCollectionId_G_S(
+		long dataCollectionId, long groupId, int status) {
+
+		getPersistence().removeByDataCollectionId_G_S(
+			dataCollectionId, groupId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataCollectionId_G_S(
+		long dataCollectionId, long groupId, int status) {
+
+		return getPersistence().countByDataCollectionId_G_S(
+			dataCollectionId, groupId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByDataCollectionId_G_S(
+		long dataCollectionId, long groupId, int status) {
+
+		return getPersistence().filterCountByDataCollectionId_G_S(
+			dataCollectionId, groupId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_U_S(
+		long dataCollectionId, long userId, int status) {
+
+		return getPersistence().findByDataCollectionId_U_S(
+			dataCollectionId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_U_S(
+		long dataCollectionId, long userId, int status, int start, int end) {
+
+		return getPersistence().findByDataCollectionId_U_S(
+			dataCollectionId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_U_S(
+		long dataCollectionId, long userId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataCollectionId_U_S(
+			dataCollectionId, userId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_U_S(
+		long dataCollectionId, long userId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataCollectionId_U_S(
+			dataCollectionId, userId, status, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_U_S_First(
+			long dataCollectionId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_U_S_First(
+			dataCollectionId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_U_S_First(
+		long dataCollectionId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_U_S_First(
+			dataCollectionId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_U_S_Last(
+			long dataCollectionId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_U_S_Last(
+			dataCollectionId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_U_S_Last(
+		long dataCollectionId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_U_S_Last(
+			dataCollectionId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataCollectionId_U_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long userId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_U_S_PrevAndNext(
+			structuredDataId, dataCollectionId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and userId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param status the status
+	 */
+	public static void removeByDataCollectionId_U_S(
+		long dataCollectionId, long userId, int status) {
+
+		getPersistence().removeByDataCollectionId_U_S(
+			dataCollectionId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataCollectionId_U_S(
+		long dataCollectionId, long userId, int status) {
+
+		return getPersistence().countByDataCollectionId_U_S(
+			dataCollectionId, userId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_U_S(
+		long dataCollectionId, long groupId, long userId, int status) {
+
+		return getPersistence().findByDataCollectionId_G_U_S(
+			dataCollectionId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_U_S(
+		long dataCollectionId, long groupId, long userId, int status, int start,
+		int end) {
+
+		return getPersistence().findByDataCollectionId_G_U_S(
+			dataCollectionId, groupId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_U_S(
+		long dataCollectionId, long groupId, long userId, int status, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataCollectionId_G_U_S(
+			dataCollectionId, groupId, userId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataCollectionId_G_U_S(
+		long dataCollectionId, long groupId, long userId, int status, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataCollectionId_G_U_S(
+			dataCollectionId, groupId, userId, status, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_G_U_S_First(
+			long dataCollectionId, long groupId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_U_S_First(
+			dataCollectionId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_G_U_S_First(
+		long dataCollectionId, long groupId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_G_U_S_First(
+			dataCollectionId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataCollectionId_G_U_S_Last(
+			long dataCollectionId, long groupId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_U_S_Last(
+			dataCollectionId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataCollectionId_G_U_S_Last(
+		long dataCollectionId, long groupId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataCollectionId_G_U_S_Last(
+			dataCollectionId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataCollectionId_G_U_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long groupId,
+			long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataCollectionId_G_U_S_PrevAndNext(
+			structuredDataId, dataCollectionId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G_U_S(
+		long dataCollectionId, long groupId, long userId, int status) {
+
+		return getPersistence().filterFindByDataCollectionId_G_U_S(
+			dataCollectionId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G_U_S(
+		long dataCollectionId, long groupId, long userId, int status, int start,
+		int end) {
+
+		return getPersistence().filterFindByDataCollectionId_G_U_S(
+			dataCollectionId, groupId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataCollectionId_G_U_S(
+		long dataCollectionId, long groupId, long userId, int status, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByDataCollectionId_G_U_S(
+			dataCollectionId, groupId, userId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[]
+			filterFindByDataCollectionId_G_U_S_PrevAndNext(
+				long structuredDataId, long dataCollectionId, long groupId,
+				long userId, int status,
+				OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByDataCollectionId_G_U_S_PrevAndNext(
+			structuredDataId, dataCollectionId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 */
+	public static void removeByDataCollectionId_G_U_S(
+		long dataCollectionId, long groupId, long userId, int status) {
+
+		getPersistence().removeByDataCollectionId_G_U_S(
+			dataCollectionId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataCollectionId_G_U_S(
+		long dataCollectionId, long groupId, long userId, int status) {
+
+		return getPersistence().countByDataCollectionId_G_U_S(
+			dataCollectionId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByDataCollectionId_G_U_S(
+		long dataCollectionId, long groupId, long userId, int status) {
+
+		return getPersistence().filterCountByDataCollectionId_G_U_S(
+			dataCollectionId, groupId, userId, status);
+	}
+
+	/**
 	 * Returns all the structured datas where dataSetId = &#63;.
 	 *
 	 * @param dataSetId the data set ID
@@ -2287,179 +4270,8333 @@ public class StructuredDataUtil {
 	}
 
 	/**
-	 * Returns all the structured datas where dataSetFolderId = &#63;.
+	 * Returns all the structured datas where dataSetId = &#63; and groupId = &#63;.
 	 *
-	 * @param dataSetFolderId the data set folder ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
 	 * @return the matching structured datas
 	 */
-	public static List<StructuredData> findByDataSetFolderId(
-		long dataSetFolderId) {
+	public static List<StructuredData> findByDataSetId_G(
+		long dataSetId, long groupId) {
 
-		return getPersistence().findByDataSetFolderId(dataSetFolderId);
+		return getPersistence().findByDataSetId_G(dataSetId, groupId);
 	}
 
 	/**
-	 * Returns a range of all the structured datas where dataSetFolderId = &#63;.
+	 * Returns a range of all the structured datas where dataSetId = &#63; and groupId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetFolderId the data set folder ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
 	 * @param start the lower bound of the range of structured datas
 	 * @param end the upper bound of the range of structured datas (not inclusive)
 	 * @return the range of matching structured datas
 	 */
-	public static List<StructuredData> findByDataSetFolderId(
-		long dataSetFolderId, int start, int end) {
+	public static List<StructuredData> findByDataSetId_G(
+		long dataSetId, long groupId, int start, int end) {
 
-		return getPersistence().findByDataSetFolderId(
-			dataSetFolderId, start, end);
+		return getPersistence().findByDataSetId_G(
+			dataSetId, groupId, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the structured datas where dataSetFolderId = &#63;.
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and groupId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetFolderId the data set folder ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
 	 * @param start the lower bound of the range of structured datas
 	 * @param end the upper bound of the range of structured datas (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching structured datas
 	 */
-	public static List<StructuredData> findByDataSetFolderId(
-		long dataSetFolderId, int start, int end,
+	public static List<StructuredData> findByDataSetId_G(
+		long dataSetId, long groupId, int start, int end,
 		OrderByComparator<StructuredData> orderByComparator) {
 
-		return getPersistence().findByDataSetFolderId(
-			dataSetFolderId, start, end, orderByComparator);
+		return getPersistence().findByDataSetId_G(
+			dataSetId, groupId, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the structured datas where dataSetFolderId = &#63;.
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and groupId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetFolderId the data set folder ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
 	 * @param start the lower bound of the range of structured datas
 	 * @param end the upper bound of the range of structured datas (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching structured datas
 	 */
-	public static List<StructuredData> findByDataSetFolderId(
-		long dataSetFolderId, int start, int end,
+	public static List<StructuredData> findByDataSetId_G(
+		long dataSetId, long groupId, int start, int end,
 		OrderByComparator<StructuredData> orderByComparator,
 		boolean useFinderCache) {
 
-		return getPersistence().findByDataSetFolderId(
-			dataSetFolderId, start, end, orderByComparator, useFinderCache);
+		return getPersistence().findByDataSetId_G(
+			dataSetId, groupId, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	 * Returns the first structured data in the ordered set where dataSetFolderId = &#63;.
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and groupId = &#63;.
 	 *
-	 * @param dataSetFolderId the data set folder ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching structured data
 	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
 	 */
-	public static StructuredData findByDataSetFolderId_First(
-			long dataSetFolderId,
+	public static StructuredData findByDataSetId_G_First(
+			long dataSetId, long groupId,
 			OrderByComparator<StructuredData> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchStructuredDataException {
 
-		return getPersistence().findByDataSetFolderId_First(
-			dataSetFolderId, orderByComparator);
+		return getPersistence().findByDataSetId_G_First(
+			dataSetId, groupId, orderByComparator);
 	}
 
 	/**
-	 * Returns the first structured data in the ordered set where dataSetFolderId = &#63;.
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and groupId = &#63;.
 	 *
-	 * @param dataSetFolderId the data set folder ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
 	 */
-	public static StructuredData fetchByDataSetFolderId_First(
-		long dataSetFolderId,
+	public static StructuredData fetchByDataSetId_G_First(
+		long dataSetId, long groupId,
 		OrderByComparator<StructuredData> orderByComparator) {
 
-		return getPersistence().fetchByDataSetFolderId_First(
-			dataSetFolderId, orderByComparator);
+		return getPersistence().fetchByDataSetId_G_First(
+			dataSetId, groupId, orderByComparator);
 	}
 
 	/**
-	 * Returns the last structured data in the ordered set where dataSetFolderId = &#63;.
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and groupId = &#63;.
 	 *
-	 * @param dataSetFolderId the data set folder ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching structured data
 	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
 	 */
-	public static StructuredData findByDataSetFolderId_Last(
-			long dataSetFolderId,
+	public static StructuredData findByDataSetId_G_Last(
+			long dataSetId, long groupId,
 			OrderByComparator<StructuredData> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchStructuredDataException {
 
-		return getPersistence().findByDataSetFolderId_Last(
-			dataSetFolderId, orderByComparator);
+		return getPersistence().findByDataSetId_G_Last(
+			dataSetId, groupId, orderByComparator);
 	}
 
 	/**
-	 * Returns the last structured data in the ordered set where dataSetFolderId = &#63;.
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and groupId = &#63;.
 	 *
-	 * @param dataSetFolderId the data set folder ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
 	 */
-	public static StructuredData fetchByDataSetFolderId_Last(
-		long dataSetFolderId,
+	public static StructuredData fetchByDataSetId_G_Last(
+		long dataSetId, long groupId,
 		OrderByComparator<StructuredData> orderByComparator) {
 
-		return getPersistence().fetchByDataSetFolderId_Last(
-			dataSetFolderId, orderByComparator);
+		return getPersistence().fetchByDataSetId_G_Last(
+			dataSetId, groupId, orderByComparator);
 	}
 
 	/**
-	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetFolderId = &#63;.
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and groupId = &#63;.
 	 *
 	 * @param structuredDataId the primary key of the current structured data
-	 * @param dataSetFolderId the data set folder ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next structured data
 	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
 	 */
-	public static StructuredData[] findByDataSetFolderId_PrevAndNext(
-			long structuredDataId, long dataSetFolderId,
+	public static StructuredData[] findByDataSetId_G_PrevAndNext(
+			long structuredDataId, long dataSetId, long groupId,
 			OrderByComparator<StructuredData> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchStructuredDataException {
 
-		return getPersistence().findByDataSetFolderId_PrevAndNext(
-			structuredDataId, dataSetFolderId, orderByComparator);
+		return getPersistence().findByDataSetId_G_PrevAndNext(
+			structuredDataId, dataSetId, groupId, orderByComparator);
 	}
 
 	/**
-	 * Removes all the structured datas where dataSetFolderId = &#63; from the database.
+	 * Returns all the structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63;.
 	 *
-	 * @param dataSetFolderId the data set folder ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @return the matching structured datas that the user has permission to view
 	 */
-	public static void removeByDataSetFolderId(long dataSetFolderId) {
-		getPersistence().removeByDataSetFolderId(dataSetFolderId);
+	public static List<StructuredData> filterFindByDataSetId_G(
+		long dataSetId, long groupId) {
+
+		return getPersistence().filterFindByDataSetId_G(dataSetId, groupId);
 	}
 
 	/**
-	 * Returns the number of structured datas where dataSetFolderId = &#63;.
+	 * Returns a range of all the structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63;.
 	 *
-	 * @param dataSetFolderId the data set folder ID
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataSetId_G(
+		long dataSetId, long groupId, int start, int end) {
+
+		return getPersistence().filterFindByDataSetId_G(
+			dataSetId, groupId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataSetId_G(
+		long dataSetId, long groupId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByDataSetId_G(
+			dataSetId, groupId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByDataSetId_G_PrevAndNext(
+			long structuredDataId, long dataSetId, long groupId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByDataSetId_G_PrevAndNext(
+			structuredDataId, dataSetId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and groupId = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 */
+	public static void removeByDataSetId_G(long dataSetId, long groupId) {
+		getPersistence().removeByDataSetId_G(dataSetId, groupId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
 	 * @return the number of matching structured datas
 	 */
-	public static int countByDataSetFolderId(long dataSetFolderId) {
-		return getPersistence().countByDataSetFolderId(dataSetFolderId);
+	public static int countByDataSetId_G(long dataSetId, long groupId) {
+		return getPersistence().countByDataSetId_G(dataSetId, groupId);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByDataSetId_G(long dataSetId, long groupId) {
+		return getPersistence().filterCountByDataSetId_G(dataSetId, groupId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_U(
+		long dataSetId, long userId) {
+
+		return getPersistence().findByDataSetId_U(dataSetId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_U(
+		long dataSetId, long userId, int start, int end) {
+
+		return getPersistence().findByDataSetId_U(
+			dataSetId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_U(
+		long dataSetId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataSetId_U(
+			dataSetId, userId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_U(
+		long dataSetId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataSetId_U(
+			dataSetId, userId, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_U_First(
+			long dataSetId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_U_First(
+			dataSetId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_U_First(
+		long dataSetId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_U_First(
+			dataSetId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_U_Last(
+			long dataSetId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_U_Last(
+			dataSetId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_U_Last(
+		long dataSetId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_U_Last(
+			dataSetId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataSetId_U_PrevAndNext(
+			long structuredDataId, long dataSetId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_U_PrevAndNext(
+			structuredDataId, dataSetId, userId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 */
+	public static void removeByDataSetId_U(long dataSetId, long userId) {
+		getPersistence().removeByDataSetId_U(dataSetId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataSetId_U(long dataSetId, long userId) {
+		return getPersistence().countByDataSetId_U(dataSetId, userId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_S(
+		long dataSetId, int status) {
+
+		return getPersistence().findByDataSetId_S(dataSetId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_S(
+		long dataSetId, int status, int start, int end) {
+
+		return getPersistence().findByDataSetId_S(
+			dataSetId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_S(
+		long dataSetId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataSetId_S(
+			dataSetId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_S(
+		long dataSetId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataSetId_S(
+			dataSetId, status, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_S_First(
+			long dataSetId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_S_First(
+			dataSetId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_S_First(
+		long dataSetId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_S_First(
+			dataSetId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_S_Last(
+			long dataSetId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_S_Last(
+			dataSetId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_S_Last(
+		long dataSetId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_S_Last(
+			dataSetId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataSetId_S_PrevAndNext(
+			long structuredDataId, long dataSetId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_S_PrevAndNext(
+			structuredDataId, dataSetId, status, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 */
+	public static void removeByDataSetId_S(long dataSetId, int status) {
+		getPersistence().removeByDataSetId_S(dataSetId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataSetId_S(long dataSetId, int status) {
+		return getPersistence().countByDataSetId_S(dataSetId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_U(
+		long dataSetId, long groupId, long userId) {
+
+		return getPersistence().findByDataSetId_G_U(dataSetId, groupId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_U(
+		long dataSetId, long groupId, long userId, int start, int end) {
+
+		return getPersistence().findByDataSetId_G_U(
+			dataSetId, groupId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_U(
+		long dataSetId, long groupId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataSetId_G_U(
+			dataSetId, groupId, userId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_U(
+		long dataSetId, long groupId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataSetId_G_U(
+			dataSetId, groupId, userId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_G_U_First(
+			long dataSetId, long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_G_U_First(
+			dataSetId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_G_U_First(
+		long dataSetId, long groupId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_G_U_First(
+			dataSetId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_G_U_Last(
+			long dataSetId, long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_G_U_Last(
+			dataSetId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_G_U_Last(
+		long dataSetId, long groupId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_G_U_Last(
+			dataSetId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataSetId_G_U_PrevAndNext(
+			long structuredDataId, long dataSetId, long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_G_U_PrevAndNext(
+			structuredDataId, dataSetId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataSetId_G_U(
+		long dataSetId, long groupId, long userId) {
+
+		return getPersistence().filterFindByDataSetId_G_U(
+			dataSetId, groupId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataSetId_G_U(
+		long dataSetId, long groupId, long userId, int start, int end) {
+
+		return getPersistence().filterFindByDataSetId_G_U(
+			dataSetId, groupId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataSetId_G_U(
+		long dataSetId, long groupId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByDataSetId_G_U(
+			dataSetId, groupId, userId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByDataSetId_G_U_PrevAndNext(
+			long structuredDataId, long dataSetId, long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByDataSetId_G_U_PrevAndNext(
+			structuredDataId, dataSetId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 */
+	public static void removeByDataSetId_G_U(
+		long dataSetId, long groupId, long userId) {
+
+		getPersistence().removeByDataSetId_G_U(dataSetId, groupId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataSetId_G_U(
+		long dataSetId, long groupId, long userId) {
+
+		return getPersistence().countByDataSetId_G_U(
+			dataSetId, groupId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByDataSetId_G_U(
+		long dataSetId, long groupId, long userId) {
+
+		return getPersistence().filterCountByDataSetId_G_U(
+			dataSetId, groupId, userId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_S(
+		long dataSetId, long groupId, int status) {
+
+		return getPersistence().findByDataSetId_G_S(dataSetId, groupId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_S(
+		long dataSetId, long groupId, int status, int start, int end) {
+
+		return getPersistence().findByDataSetId_G_S(
+			dataSetId, groupId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_S(
+		long dataSetId, long groupId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataSetId_G_S(
+			dataSetId, groupId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_S(
+		long dataSetId, long groupId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataSetId_G_S(
+			dataSetId, groupId, status, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_G_S_First(
+			long dataSetId, long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_G_S_First(
+			dataSetId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_G_S_First(
+		long dataSetId, long groupId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_G_S_First(
+			dataSetId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_G_S_Last(
+			long dataSetId, long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_G_S_Last(
+			dataSetId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_G_S_Last(
+		long dataSetId, long groupId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_G_S_Last(
+			dataSetId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataSetId_G_S_PrevAndNext(
+			long structuredDataId, long dataSetId, long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_G_S_PrevAndNext(
+			structuredDataId, dataSetId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataSetId_G_S(
+		long dataSetId, long groupId, int status) {
+
+		return getPersistence().filterFindByDataSetId_G_S(
+			dataSetId, groupId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataSetId_G_S(
+		long dataSetId, long groupId, int status, int start, int end) {
+
+		return getPersistence().filterFindByDataSetId_G_S(
+			dataSetId, groupId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataSetId_G_S(
+		long dataSetId, long groupId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByDataSetId_G_S(
+			dataSetId, groupId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByDataSetId_G_S_PrevAndNext(
+			long structuredDataId, long dataSetId, long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByDataSetId_G_S_PrevAndNext(
+			structuredDataId, dataSetId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and groupId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 */
+	public static void removeByDataSetId_G_S(
+		long dataSetId, long groupId, int status) {
+
+		getPersistence().removeByDataSetId_G_S(dataSetId, groupId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataSetId_G_S(
+		long dataSetId, long groupId, int status) {
+
+		return getPersistence().countByDataSetId_G_S(
+			dataSetId, groupId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByDataSetId_G_S(
+		long dataSetId, long groupId, int status) {
+
+		return getPersistence().filterCountByDataSetId_G_S(
+			dataSetId, groupId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_U_S(
+		long dataSetId, long userId, int status) {
+
+		return getPersistence().findByDataSetId_U_S(dataSetId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_U_S(
+		long dataSetId, long userId, int status, int start, int end) {
+
+		return getPersistence().findByDataSetId_U_S(
+			dataSetId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_U_S(
+		long dataSetId, long userId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataSetId_U_S(
+			dataSetId, userId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_U_S(
+		long dataSetId, long userId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataSetId_U_S(
+			dataSetId, userId, status, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_U_S_First(
+			long dataSetId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_U_S_First(
+			dataSetId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_U_S_First(
+		long dataSetId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_U_S_First(
+			dataSetId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_U_S_Last(
+			long dataSetId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_U_S_Last(
+			dataSetId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_U_S_Last(
+		long dataSetId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_U_S_Last(
+			dataSetId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataSetId_U_S_PrevAndNext(
+			long structuredDataId, long dataSetId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_U_S_PrevAndNext(
+			structuredDataId, dataSetId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and userId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 */
+	public static void removeByDataSetId_U_S(
+		long dataSetId, long userId, int status) {
+
+		getPersistence().removeByDataSetId_U_S(dataSetId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataSetId_U_S(
+		long dataSetId, long userId, int status) {
+
+		return getPersistence().countByDataSetId_U_S(dataSetId, userId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_U_S(
+		long dataSetId, long groupId, long userId, int status) {
+
+		return getPersistence().findByDataSetId_G_U_S(
+			dataSetId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_U_S(
+		long dataSetId, long groupId, long userId, int status, int start,
+		int end) {
+
+		return getPersistence().findByDataSetId_G_U_S(
+			dataSetId, groupId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_U_S(
+		long dataSetId, long groupId, long userId, int status, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByDataSetId_G_U_S(
+			dataSetId, groupId, userId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByDataSetId_G_U_S(
+		long dataSetId, long groupId, long userId, int status, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByDataSetId_G_U_S(
+			dataSetId, groupId, userId, status, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_G_U_S_First(
+			long dataSetId, long groupId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_G_U_S_First(
+			dataSetId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_G_U_S_First(
+		long dataSetId, long groupId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_G_U_S_First(
+			dataSetId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByDataSetId_G_U_S_Last(
+			long dataSetId, long groupId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_G_U_S_Last(
+			dataSetId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByDataSetId_G_U_S_Last(
+		long dataSetId, long groupId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByDataSetId_G_U_S_Last(
+			dataSetId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByDataSetId_G_U_S_PrevAndNext(
+			long structuredDataId, long dataSetId, long groupId, long userId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByDataSetId_G_U_S_PrevAndNext(
+			structuredDataId, dataSetId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataSetId_G_U_S(
+		long dataSetId, long groupId, long userId, int status) {
+
+		return getPersistence().filterFindByDataSetId_G_U_S(
+			dataSetId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataSetId_G_U_S(
+		long dataSetId, long groupId, long userId, int status, int start,
+		int end) {
+
+		return getPersistence().filterFindByDataSetId_G_U_S(
+			dataSetId, groupId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByDataSetId_G_U_S(
+		long dataSetId, long groupId, long userId, int status, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByDataSetId_G_U_S(
+			dataSetId, groupId, userId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByDataSetId_G_U_S_PrevAndNext(
+			long structuredDataId, long dataSetId, long groupId, long userId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByDataSetId_G_U_S_PrevAndNext(
+			structuredDataId, dataSetId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 */
+	public static void removeByDataSetId_G_U_S(
+		long dataSetId, long groupId, long userId, int status) {
+
+		getPersistence().removeByDataSetId_G_U_S(
+			dataSetId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByDataSetId_G_U_S(
+		long dataSetId, long groupId, long userId, int status) {
+
+		return getPersistence().countByDataSetId_G_U_S(
+			dataSetId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByDataSetId_G_U_S(
+		long dataSetId, long groupId, long userId, int status) {
+
+		return getPersistence().filterCountByDataSetId_G_U_S(
+			dataSetId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet(
+		long dataCollectionId, long dataSetId) {
+
+		return getPersistence().findByCollectionSet(
+			dataCollectionId, dataSetId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet(
+		long dataCollectionId, long dataSetId, int start, int end) {
+
+		return getPersistence().findByCollectionSet(
+			dataCollectionId, dataSetId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet(
+		long dataCollectionId, long dataSetId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSet(
+			dataCollectionId, dataSetId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet(
+		long dataCollectionId, long dataSetId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSet(
+			dataCollectionId, dataSetId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_First(
+			long dataCollectionId, long dataSetId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_First(
+			dataCollectionId, dataSetId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_First(
+		long dataCollectionId, long dataSetId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_First(
+			dataCollectionId, dataSetId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_Last(
+			long dataCollectionId, long dataSetId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_Last(
+			dataCollectionId, dataSetId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_Last(
+		long dataCollectionId, long dataSetId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_Last(
+			dataCollectionId, dataSetId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSet_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 */
+	public static void removeByCollectionSet(
+		long dataCollectionId, long dataSetId) {
+
+		getPersistence().removeByCollectionSet(dataCollectionId, dataSetId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSet(
+		long dataCollectionId, long dataSetId) {
+
+		return getPersistence().countByCollectionSet(
+			dataCollectionId, dataSetId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G(
+		long dataCollectionId, long dataSetId, long groupId) {
+
+		return getPersistence().findByCollectionSet_G(
+			dataCollectionId, dataSetId, groupId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G(
+		long dataCollectionId, long dataSetId, long groupId, int start,
+		int end) {
+
+		return getPersistence().findByCollectionSet_G(
+			dataCollectionId, dataSetId, groupId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G(
+		long dataCollectionId, long dataSetId, long groupId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSet_G(
+			dataCollectionId, dataSetId, groupId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G(
+		long dataCollectionId, long dataSetId, long groupId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSet_G(
+			dataCollectionId, dataSetId, groupId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_G_First(
+			long dataCollectionId, long dataSetId, long groupId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_First(
+			dataCollectionId, dataSetId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_G_First(
+		long dataCollectionId, long dataSetId, long groupId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_G_First(
+			dataCollectionId, dataSetId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_G_Last(
+			long dataCollectionId, long dataSetId, long groupId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_Last(
+			dataCollectionId, dataSetId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_G_Last(
+		long dataCollectionId, long dataSetId, long groupId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_G_Last(
+			dataCollectionId, dataSetId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSet_G_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long groupId, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, groupId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G(
+		long dataCollectionId, long dataSetId, long groupId) {
+
+		return getPersistence().filterFindByCollectionSet_G(
+			dataCollectionId, dataSetId, groupId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G(
+		long dataCollectionId, long dataSetId, long groupId, int start,
+		int end) {
+
+		return getPersistence().filterFindByCollectionSet_G(
+			dataCollectionId, dataSetId, groupId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G(
+		long dataCollectionId, long dataSetId, long groupId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByCollectionSet_G(
+			dataCollectionId, dataSetId, groupId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByCollectionSet_G_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long groupId, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByCollectionSet_G_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, groupId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 */
+	public static void removeByCollectionSet_G(
+		long dataCollectionId, long dataSetId, long groupId) {
+
+		getPersistence().removeByCollectionSet_G(
+			dataCollectionId, dataSetId, groupId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSet_G(
+		long dataCollectionId, long dataSetId, long groupId) {
+
+		return getPersistence().countByCollectionSet_G(
+			dataCollectionId, dataSetId, groupId);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByCollectionSet_G(
+		long dataCollectionId, long dataSetId, long groupId) {
+
+		return getPersistence().filterCountByCollectionSet_G(
+			dataCollectionId, dataSetId, groupId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_U(
+		long dataCollectionId, long dataSetId, long userId) {
+
+		return getPersistence().findByCollectionSet_U(
+			dataCollectionId, dataSetId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_U(
+		long dataCollectionId, long dataSetId, long userId, int start,
+		int end) {
+
+		return getPersistence().findByCollectionSet_U(
+			dataCollectionId, dataSetId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_U(
+		long dataCollectionId, long dataSetId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSet_U(
+			dataCollectionId, dataSetId, userId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_U(
+		long dataCollectionId, long dataSetId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSet_U(
+			dataCollectionId, dataSetId, userId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_U_First(
+			long dataCollectionId, long dataSetId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_U_First(
+			dataCollectionId, dataSetId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_U_First(
+		long dataCollectionId, long dataSetId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_U_First(
+			dataCollectionId, dataSetId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_U_Last(
+			long dataCollectionId, long dataSetId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_U_Last(
+			dataCollectionId, dataSetId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_U_Last(
+		long dataCollectionId, long dataSetId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_U_Last(
+			dataCollectionId, dataSetId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSet_U_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long userId, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_U_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 */
+	public static void removeByCollectionSet_U(
+		long dataCollectionId, long dataSetId, long userId) {
+
+		getPersistence().removeByCollectionSet_U(
+			dataCollectionId, dataSetId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSet_U(
+		long dataCollectionId, long dataSetId, long userId) {
+
+		return getPersistence().countByCollectionSet_U(
+			dataCollectionId, dataSetId, userId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_S(
+		long dataCollectionId, long dataSetId, int status) {
+
+		return getPersistence().findByCollectionSet_S(
+			dataCollectionId, dataSetId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_S(
+		long dataCollectionId, long dataSetId, int status, int start, int end) {
+
+		return getPersistence().findByCollectionSet_S(
+			dataCollectionId, dataSetId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_S(
+		long dataCollectionId, long dataSetId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSet_S(
+			dataCollectionId, dataSetId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_S(
+		long dataCollectionId, long dataSetId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSet_S(
+			dataCollectionId, dataSetId, status, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_S_First(
+			long dataCollectionId, long dataSetId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_S_First(
+			dataCollectionId, dataSetId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_S_First(
+		long dataCollectionId, long dataSetId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_S_First(
+			dataCollectionId, dataSetId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_S_Last(
+			long dataCollectionId, long dataSetId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_S_Last(
+			dataCollectionId, dataSetId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_S_Last(
+		long dataCollectionId, long dataSetId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_S_Last(
+			dataCollectionId, dataSetId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSet_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 */
+	public static void removeByCollectionSet_S(
+		long dataCollectionId, long dataSetId, int status) {
+
+		getPersistence().removeByCollectionSet_S(
+			dataCollectionId, dataSetId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSet_S(
+		long dataCollectionId, long dataSetId, int status) {
+
+		return getPersistence().countByCollectionSet_S(
+			dataCollectionId, dataSetId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_U(
+		long dataCollectionId, long dataSetId, long groupId, long userId) {
+
+		return getPersistence().findByCollectionSet_G_U(
+			dataCollectionId, dataSetId, groupId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_U(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int start, int end) {
+
+		return getPersistence().findByCollectionSet_G_U(
+			dataCollectionId, dataSetId, groupId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_U(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSet_G_U(
+			dataCollectionId, dataSetId, groupId, userId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_U(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int start, int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSet_G_U(
+			dataCollectionId, dataSetId, groupId, userId, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_G_U_First(
+			long dataCollectionId, long dataSetId, long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_U_First(
+			dataCollectionId, dataSetId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_G_U_First(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_G_U_First(
+			dataCollectionId, dataSetId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_G_U_Last(
+			long dataCollectionId, long dataSetId, long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_U_Last(
+			dataCollectionId, dataSetId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_G_U_Last(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_G_U_Last(
+			dataCollectionId, dataSetId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSet_G_U_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_U_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, groupId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G_U(
+		long dataCollectionId, long dataSetId, long groupId, long userId) {
+
+		return getPersistence().filterFindByCollectionSet_G_U(
+			dataCollectionId, dataSetId, groupId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G_U(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int start, int end) {
+
+		return getPersistence().filterFindByCollectionSet_G_U(
+			dataCollectionId, dataSetId, groupId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G_U(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByCollectionSet_G_U(
+			dataCollectionId, dataSetId, groupId, userId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByCollectionSet_G_U_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByCollectionSet_G_U_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, groupId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 */
+	public static void removeByCollectionSet_G_U(
+		long dataCollectionId, long dataSetId, long groupId, long userId) {
+
+		getPersistence().removeByCollectionSet_G_U(
+			dataCollectionId, dataSetId, groupId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSet_G_U(
+		long dataCollectionId, long dataSetId, long groupId, long userId) {
+
+		return getPersistence().countByCollectionSet_G_U(
+			dataCollectionId, dataSetId, groupId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByCollectionSet_G_U(
+		long dataCollectionId, long dataSetId, long groupId, long userId) {
+
+		return getPersistence().filterCountByCollectionSet_G_U(
+			dataCollectionId, dataSetId, groupId, userId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_S(
+		long dataCollectionId, long dataSetId, long groupId, int status) {
+
+		return getPersistence().findByCollectionSet_G_S(
+			dataCollectionId, dataSetId, groupId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_S(
+		long dataCollectionId, long dataSetId, long groupId, int status,
+		int start, int end) {
+
+		return getPersistence().findByCollectionSet_G_S(
+			dataCollectionId, dataSetId, groupId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_S(
+		long dataCollectionId, long dataSetId, long groupId, int status,
+		int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSet_G_S(
+			dataCollectionId, dataSetId, groupId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_S(
+		long dataCollectionId, long dataSetId, long groupId, int status,
+		int start, int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSet_G_S(
+			dataCollectionId, dataSetId, groupId, status, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_G_S_First(
+			long dataCollectionId, long dataSetId, long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_S_First(
+			dataCollectionId, dataSetId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_G_S_First(
+		long dataCollectionId, long dataSetId, long groupId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_G_S_First(
+			dataCollectionId, dataSetId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_G_S_Last(
+			long dataCollectionId, long dataSetId, long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_S_Last(
+			dataCollectionId, dataSetId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_G_S_Last(
+		long dataCollectionId, long dataSetId, long groupId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_G_S_Last(
+			dataCollectionId, dataSetId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSet_G_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, groupId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G_S(
+		long dataCollectionId, long dataSetId, long groupId, int status) {
+
+		return getPersistence().filterFindByCollectionSet_G_S(
+			dataCollectionId, dataSetId, groupId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G_S(
+		long dataCollectionId, long dataSetId, long groupId, int status,
+		int start, int end) {
+
+		return getPersistence().filterFindByCollectionSet_G_S(
+			dataCollectionId, dataSetId, groupId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G_S(
+		long dataCollectionId, long dataSetId, long groupId, int status,
+		int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByCollectionSet_G_S(
+			dataCollectionId, dataSetId, groupId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByCollectionSet_G_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByCollectionSet_G_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, groupId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 */
+	public static void removeByCollectionSet_G_S(
+		long dataCollectionId, long dataSetId, long groupId, int status) {
+
+		getPersistence().removeByCollectionSet_G_S(
+			dataCollectionId, dataSetId, groupId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSet_G_S(
+		long dataCollectionId, long dataSetId, long groupId, int status) {
+
+		return getPersistence().countByCollectionSet_G_S(
+			dataCollectionId, dataSetId, groupId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByCollectionSet_G_S(
+		long dataCollectionId, long dataSetId, long groupId, int status) {
+
+		return getPersistence().filterCountByCollectionSet_G_S(
+			dataCollectionId, dataSetId, groupId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_U_S(
+		long dataCollectionId, long dataSetId, long userId, int status) {
+
+		return getPersistence().findByCollectionSet_U_S(
+			dataCollectionId, dataSetId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_U_S(
+		long dataCollectionId, long dataSetId, long userId, int status,
+		int start, int end) {
+
+		return getPersistence().findByCollectionSet_U_S(
+			dataCollectionId, dataSetId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_U_S(
+		long dataCollectionId, long dataSetId, long userId, int status,
+		int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSet_U_S(
+			dataCollectionId, dataSetId, userId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_U_S(
+		long dataCollectionId, long dataSetId, long userId, int status,
+		int start, int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSet_U_S(
+			dataCollectionId, dataSetId, userId, status, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_U_S_First(
+			long dataCollectionId, long dataSetId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_U_S_First(
+			dataCollectionId, dataSetId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_U_S_First(
+		long dataCollectionId, long dataSetId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_U_S_First(
+			dataCollectionId, dataSetId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_U_S_Last(
+			long dataCollectionId, long dataSetId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_U_S_Last(
+			dataCollectionId, dataSetId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_U_S_Last(
+		long dataCollectionId, long dataSetId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_U_S_Last(
+			dataCollectionId, dataSetId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSet_U_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_U_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 */
+	public static void removeByCollectionSet_U_S(
+		long dataCollectionId, long dataSetId, long userId, int status) {
+
+		getPersistence().removeByCollectionSet_U_S(
+			dataCollectionId, dataSetId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSet_U_S(
+		long dataCollectionId, long dataSetId, long userId, int status) {
+
+		return getPersistence().countByCollectionSet_U_S(
+			dataCollectionId, dataSetId, userId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_U_S(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status) {
+
+		return getPersistence().findByCollectionSet_G_U_S(
+			dataCollectionId, dataSetId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_U_S(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status, int start, int end) {
+
+		return getPersistence().findByCollectionSet_G_U_S(
+			dataCollectionId, dataSetId, groupId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_U_S(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSet_G_U_S(
+			dataCollectionId, dataSetId, groupId, userId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSet_G_U_S(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSet_G_U_S(
+			dataCollectionId, dataSetId, groupId, userId, status, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_G_U_S_First(
+			long dataCollectionId, long dataSetId, long groupId, long userId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_U_S_First(
+			dataCollectionId, dataSetId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_G_U_S_First(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_G_U_S_First(
+			dataCollectionId, dataSetId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSet_G_U_S_Last(
+			long dataCollectionId, long dataSetId, long groupId, long userId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_U_S_Last(
+			dataCollectionId, dataSetId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSet_G_U_S_Last(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_G_U_S_Last(
+			dataCollectionId, dataSetId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSet_G_U_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long groupId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSet_G_U_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, groupId, userId,
+			status, orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G_U_S(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status) {
+
+		return getPersistence().filterFindByCollectionSet_G_U_S(
+			dataCollectionId, dataSetId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G_U_S(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status, int start, int end) {
+
+		return getPersistence().filterFindByCollectionSet_G_U_S(
+			dataCollectionId, dataSetId, groupId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSet_G_U_S(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByCollectionSet_G_U_S(
+			dataCollectionId, dataSetId, groupId, userId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByCollectionSet_G_U_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long groupId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByCollectionSet_G_U_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, groupId, userId,
+			status, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 */
+	public static void removeByCollectionSet_G_U_S(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status) {
+
+		getPersistence().removeByCollectionSet_G_U_S(
+			dataCollectionId, dataSetId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSet_G_U_S(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status) {
+
+		return getPersistence().countByCollectionSet_G_U_S(
+			dataCollectionId, dataSetId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByCollectionSet_G_U_S(
+		long dataCollectionId, long dataSetId, long groupId, long userId,
+		int status) {
+
+		return getPersistence().filterCountByCollectionSet_G_U_S(
+			dataCollectionId, dataSetId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findBySetType(
+		long dataSetId, long dataTypeId) {
+
+		return getPersistence().findBySetType(dataSetId, dataTypeId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType(
+		long dataSetId, long dataTypeId, int start, int end) {
+
+		return getPersistence().findBySetType(
+			dataSetId, dataTypeId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType(
+		long dataSetId, long dataTypeId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findBySetType(
+			dataSetId, dataTypeId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType(
+		long dataSetId, long dataTypeId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findBySetType(
+			dataSetId, dataTypeId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_First(
+			long dataSetId, long dataTypeId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_First(
+			dataSetId, dataTypeId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_First(
+		long dataSetId, long dataTypeId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_First(
+			dataSetId, dataTypeId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_Last(
+			long dataSetId, long dataTypeId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_Last(
+			dataSetId, dataTypeId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_Last(
+		long dataSetId, long dataTypeId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_Last(
+			dataSetId, dataTypeId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findBySetType_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and dataTypeId = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 */
+	public static void removeBySetType(long dataSetId, long dataTypeId) {
+		getPersistence().removeBySetType(dataSetId, dataTypeId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countBySetType(long dataSetId, long dataTypeId) {
+		return getPersistence().countBySetType(dataSetId, dataTypeId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G(
+		long dataSetId, long dataTypeId, long groupId) {
+
+		return getPersistence().findBySetType_G(dataSetId, dataTypeId, groupId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G(
+		long dataSetId, long dataTypeId, long groupId, int start, int end) {
+
+		return getPersistence().findBySetType_G(
+			dataSetId, dataTypeId, groupId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G(
+		long dataSetId, long dataTypeId, long groupId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findBySetType_G(
+			dataSetId, dataTypeId, groupId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G(
+		long dataSetId, long dataTypeId, long groupId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findBySetType_G(
+			dataSetId, dataTypeId, groupId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_G_First(
+			long dataSetId, long dataTypeId, long groupId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_First(
+			dataSetId, dataTypeId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_G_First(
+		long dataSetId, long dataTypeId, long groupId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_G_First(
+			dataSetId, dataTypeId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_G_Last(
+			long dataSetId, long dataTypeId, long groupId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_Last(
+			dataSetId, dataTypeId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_G_Last(
+		long dataSetId, long dataTypeId, long groupId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_G_Last(
+			dataSetId, dataTypeId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findBySetType_G_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId,
+			long groupId, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, groupId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G(
+		long dataSetId, long dataTypeId, long groupId) {
+
+		return getPersistence().filterFindBySetType_G(
+			dataSetId, dataTypeId, groupId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G(
+		long dataSetId, long dataTypeId, long groupId, int start, int end) {
+
+		return getPersistence().filterFindBySetType_G(
+			dataSetId, dataTypeId, groupId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G(
+		long dataSetId, long dataTypeId, long groupId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindBySetType_G(
+			dataSetId, dataTypeId, groupId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindBySetType_G_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId,
+			long groupId, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindBySetType_G_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, groupId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 */
+	public static void removeBySetType_G(
+		long dataSetId, long dataTypeId, long groupId) {
+
+		getPersistence().removeBySetType_G(dataSetId, dataTypeId, groupId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countBySetType_G(
+		long dataSetId, long dataTypeId, long groupId) {
+
+		return getPersistence().countBySetType_G(
+			dataSetId, dataTypeId, groupId);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountBySetType_G(
+		long dataSetId, long dataTypeId, long groupId) {
+
+		return getPersistence().filterCountBySetType_G(
+			dataSetId, dataTypeId, groupId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_U(
+		long dataSetId, long dataTypeId, long userId) {
+
+		return getPersistence().findBySetType_U(dataSetId, dataTypeId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_U(
+		long dataSetId, long dataTypeId, long userId, int start, int end) {
+
+		return getPersistence().findBySetType_U(
+			dataSetId, dataTypeId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_U(
+		long dataSetId, long dataTypeId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findBySetType_U(
+			dataSetId, dataTypeId, userId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_U(
+		long dataSetId, long dataTypeId, long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findBySetType_U(
+			dataSetId, dataTypeId, userId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_U_First(
+			long dataSetId, long dataTypeId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_U_First(
+			dataSetId, dataTypeId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_U_First(
+		long dataSetId, long dataTypeId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_U_First(
+			dataSetId, dataTypeId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_U_Last(
+			long dataSetId, long dataTypeId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_U_Last(
+			dataSetId, dataTypeId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_U_Last(
+		long dataSetId, long dataTypeId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_U_Last(
+			dataSetId, dataTypeId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findBySetType_U_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_U_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, userId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 */
+	public static void removeBySetType_U(
+		long dataSetId, long dataTypeId, long userId) {
+
+		getPersistence().removeBySetType_U(dataSetId, dataTypeId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countBySetType_U(
+		long dataSetId, long dataTypeId, long userId) {
+
+		return getPersistence().countBySetType_U(dataSetId, dataTypeId, userId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_S(
+		long dataSetId, long dataTypeId, int status) {
+
+		return getPersistence().findBySetType_S(dataSetId, dataTypeId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_S(
+		long dataSetId, long dataTypeId, int status, int start, int end) {
+
+		return getPersistence().findBySetType_S(
+			dataSetId, dataTypeId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_S(
+		long dataSetId, long dataTypeId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findBySetType_S(
+			dataSetId, dataTypeId, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_S(
+		long dataSetId, long dataTypeId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findBySetType_S(
+			dataSetId, dataTypeId, status, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_S_First(
+			long dataSetId, long dataTypeId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_S_First(
+			dataSetId, dataTypeId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_S_First(
+		long dataSetId, long dataTypeId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_S_First(
+			dataSetId, dataTypeId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_S_Last(
+			long dataSetId, long dataTypeId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_S_Last(
+			dataSetId, dataTypeId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_S_Last(
+		long dataSetId, long dataTypeId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_S_Last(
+			dataSetId, dataTypeId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findBySetType_S_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_S_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, status, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 */
+	public static void removeBySetType_S(
+		long dataSetId, long dataTypeId, int status) {
+
+		getPersistence().removeBySetType_S(dataSetId, dataTypeId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countBySetType_S(
+		long dataSetId, long dataTypeId, int status) {
+
+		return getPersistence().countBySetType_S(dataSetId, dataTypeId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_U(
+		long dataSetId, long dataTypeId, long groupId, long userId) {
+
+		return getPersistence().findBySetType_G_U(
+			dataSetId, dataTypeId, groupId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_U(
+		long dataSetId, long dataTypeId, long groupId, long userId, int start,
+		int end) {
+
+		return getPersistence().findBySetType_G_U(
+			dataSetId, dataTypeId, groupId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_U(
+		long dataSetId, long dataTypeId, long groupId, long userId, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findBySetType_G_U(
+			dataSetId, dataTypeId, groupId, userId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_U(
+		long dataSetId, long dataTypeId, long groupId, long userId, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findBySetType_G_U(
+			dataSetId, dataTypeId, groupId, userId, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_G_U_First(
+			long dataSetId, long dataTypeId, long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_U_First(
+			dataSetId, dataTypeId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_G_U_First(
+		long dataSetId, long dataTypeId, long groupId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_G_U_First(
+			dataSetId, dataTypeId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_G_U_Last(
+			long dataSetId, long dataTypeId, long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_U_Last(
+			dataSetId, dataTypeId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_G_U_Last(
+		long dataSetId, long dataTypeId, long groupId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_G_U_Last(
+			dataSetId, dataTypeId, groupId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findBySetType_G_U_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId,
+			long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_U_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, groupId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G_U(
+		long dataSetId, long dataTypeId, long groupId, long userId) {
+
+		return getPersistence().filterFindBySetType_G_U(
+			dataSetId, dataTypeId, groupId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G_U(
+		long dataSetId, long dataTypeId, long groupId, long userId, int start,
+		int end) {
+
+		return getPersistence().filterFindBySetType_G_U(
+			dataSetId, dataTypeId, groupId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G_U(
+		long dataSetId, long dataTypeId, long groupId, long userId, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindBySetType_G_U(
+			dataSetId, dataTypeId, groupId, userId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindBySetType_G_U_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId,
+			long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindBySetType_G_U_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, groupId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 */
+	public static void removeBySetType_G_U(
+		long dataSetId, long dataTypeId, long groupId, long userId) {
+
+		getPersistence().removeBySetType_G_U(
+			dataSetId, dataTypeId, groupId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countBySetType_G_U(
+		long dataSetId, long dataTypeId, long groupId, long userId) {
+
+		return getPersistence().countBySetType_G_U(
+			dataSetId, dataTypeId, groupId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountBySetType_G_U(
+		long dataSetId, long dataTypeId, long groupId, long userId) {
+
+		return getPersistence().filterCountBySetType_G_U(
+			dataSetId, dataTypeId, groupId, userId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_S(
+		long dataSetId, long dataTypeId, long groupId, int status) {
+
+		return getPersistence().findBySetType_G_S(
+			dataSetId, dataTypeId, groupId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_S(
+		long dataSetId, long dataTypeId, long groupId, int status, int start,
+		int end) {
+
+		return getPersistence().findBySetType_G_S(
+			dataSetId, dataTypeId, groupId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_S(
+		long dataSetId, long dataTypeId, long groupId, int status, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findBySetType_G_S(
+			dataSetId, dataTypeId, groupId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_S(
+		long dataSetId, long dataTypeId, long groupId, int status, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findBySetType_G_S(
+			dataSetId, dataTypeId, groupId, status, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_G_S_First(
+			long dataSetId, long dataTypeId, long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_S_First(
+			dataSetId, dataTypeId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_G_S_First(
+		long dataSetId, long dataTypeId, long groupId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_G_S_First(
+			dataSetId, dataTypeId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_G_S_Last(
+			long dataSetId, long dataTypeId, long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_S_Last(
+			dataSetId, dataTypeId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_G_S_Last(
+		long dataSetId, long dataTypeId, long groupId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_G_S_Last(
+			dataSetId, dataTypeId, groupId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findBySetType_G_S_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId,
+			long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_S_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, groupId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G_S(
+		long dataSetId, long dataTypeId, long groupId, int status) {
+
+		return getPersistence().filterFindBySetType_G_S(
+			dataSetId, dataTypeId, groupId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G_S(
+		long dataSetId, long dataTypeId, long groupId, int status, int start,
+		int end) {
+
+		return getPersistence().filterFindBySetType_G_S(
+			dataSetId, dataTypeId, groupId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G_S(
+		long dataSetId, long dataTypeId, long groupId, int status, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindBySetType_G_S(
+			dataSetId, dataTypeId, groupId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindBySetType_G_S_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId,
+			long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindBySetType_G_S_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, groupId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 */
+	public static void removeBySetType_G_S(
+		long dataSetId, long dataTypeId, long groupId, int status) {
+
+		getPersistence().removeBySetType_G_S(
+			dataSetId, dataTypeId, groupId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countBySetType_G_S(
+		long dataSetId, long dataTypeId, long groupId, int status) {
+
+		return getPersistence().countBySetType_G_S(
+			dataSetId, dataTypeId, groupId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountBySetType_G_S(
+		long dataSetId, long dataTypeId, long groupId, int status) {
+
+		return getPersistence().filterCountBySetType_G_S(
+			dataSetId, dataTypeId, groupId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_U_S(
+		long dataSetId, long dataTypeId, long userId, int status) {
+
+		return getPersistence().findBySetType_U_S(
+			dataSetId, dataTypeId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_U_S(
+		long dataSetId, long dataTypeId, long userId, int status, int start,
+		int end) {
+
+		return getPersistence().findBySetType_U_S(
+			dataSetId, dataTypeId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_U_S(
+		long dataSetId, long dataTypeId, long userId, int status, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findBySetType_U_S(
+			dataSetId, dataTypeId, userId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_U_S(
+		long dataSetId, long dataTypeId, long userId, int status, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findBySetType_U_S(
+			dataSetId, dataTypeId, userId, status, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_U_S_First(
+			long dataSetId, long dataTypeId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_U_S_First(
+			dataSetId, dataTypeId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_U_S_First(
+		long dataSetId, long dataTypeId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_U_S_First(
+			dataSetId, dataTypeId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_U_S_Last(
+			long dataSetId, long dataTypeId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_U_S_Last(
+			dataSetId, dataTypeId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_U_S_Last(
+		long dataSetId, long dataTypeId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_U_S_Last(
+			dataSetId, dataTypeId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findBySetType_U_S_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId, long userId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_U_S_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 */
+	public static void removeBySetType_U_S(
+		long dataSetId, long dataTypeId, long userId, int status) {
+
+		getPersistence().removeBySetType_U_S(
+			dataSetId, dataTypeId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countBySetType_U_S(
+		long dataSetId, long dataTypeId, long userId, int status) {
+
+		return getPersistence().countBySetType_U_S(
+			dataSetId, dataTypeId, userId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_U_S(
+		long dataSetId, long dataTypeId, long groupId, long userId,
+		int status) {
+
+		return getPersistence().findBySetType_G_U_S(
+			dataSetId, dataTypeId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_U_S(
+		long dataSetId, long dataTypeId, long groupId, long userId, int status,
+		int start, int end) {
+
+		return getPersistence().findBySetType_G_U_S(
+			dataSetId, dataTypeId, groupId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_U_S(
+		long dataSetId, long dataTypeId, long groupId, long userId, int status,
+		int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findBySetType_G_U_S(
+			dataSetId, dataTypeId, groupId, userId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findBySetType_G_U_S(
+		long dataSetId, long dataTypeId, long groupId, long userId, int status,
+		int start, int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findBySetType_G_U_S(
+			dataSetId, dataTypeId, groupId, userId, status, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_G_U_S_First(
+			long dataSetId, long dataTypeId, long groupId, long userId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_U_S_First(
+			dataSetId, dataTypeId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_G_U_S_First(
+		long dataSetId, long dataTypeId, long groupId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_G_U_S_First(
+			dataSetId, dataTypeId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findBySetType_G_U_S_Last(
+			long dataSetId, long dataTypeId, long groupId, long userId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_U_S_Last(
+			dataSetId, dataTypeId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchBySetType_G_U_S_Last(
+		long dataSetId, long dataTypeId, long groupId, long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchBySetType_G_U_S_Last(
+			dataSetId, dataTypeId, groupId, userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findBySetType_G_U_S_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId,
+			long groupId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findBySetType_G_U_S_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G_U_S(
+		long dataSetId, long dataTypeId, long groupId, long userId,
+		int status) {
+
+		return getPersistence().filterFindBySetType_G_U_S(
+			dataSetId, dataTypeId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G_U_S(
+		long dataSetId, long dataTypeId, long groupId, long userId, int status,
+		int start, int end) {
+
+		return getPersistence().filterFindBySetType_G_U_S(
+			dataSetId, dataTypeId, groupId, userId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindBySetType_G_U_S(
+		long dataSetId, long dataTypeId, long groupId, long userId, int status,
+		int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindBySetType_G_U_S(
+			dataSetId, dataTypeId, groupId, userId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindBySetType_G_U_S_PrevAndNext(
+			long structuredDataId, long dataSetId, long dataTypeId,
+			long groupId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindBySetType_G_U_S_PrevAndNext(
+			structuredDataId, dataSetId, dataTypeId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 */
+	public static void removeBySetType_G_U_S(
+		long dataSetId, long dataTypeId, long groupId, long userId,
+		int status) {
+
+		getPersistence().removeBySetType_G_U_S(
+			dataSetId, dataTypeId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countBySetType_G_U_S(
+		long dataSetId, long dataTypeId, long groupId, long userId,
+		int status) {
+
+		return getPersistence().countBySetType_G_U_S(
+			dataSetId, dataTypeId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountBySetType_G_U_S(
+		long dataSetId, long dataTypeId, long groupId, long userId,
+		int status) {
+
+		return getPersistence().filterCountBySetType_G_U_S(
+			dataSetId, dataTypeId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType(
+		long dataCollectionId, long dataSetId, long dataTypeId) {
+
+		return getPersistence().findByCollectionSetType(
+			dataCollectionId, dataSetId, dataTypeId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType(
+		long dataCollectionId, long dataSetId, long dataTypeId, int start,
+		int end) {
+
+		return getPersistence().findByCollectionSetType(
+			dataCollectionId, dataSetId, dataTypeId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType(
+		long dataCollectionId, long dataSetId, long dataTypeId, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSetType(
+			dataCollectionId, dataSetId, dataTypeId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType(
+		long dataCollectionId, long dataSetId, long dataTypeId, int start,
+		int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSetType(
+			dataCollectionId, dataSetId, dataTypeId, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_First(
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_First(
+			dataCollectionId, dataSetId, dataTypeId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_First(
+		long dataCollectionId, long dataSetId, long dataTypeId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_First(
+			dataCollectionId, dataSetId, dataTypeId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_Last(
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_Last(
+			dataCollectionId, dataSetId, dataTypeId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_Last(
+		long dataCollectionId, long dataSetId, long dataTypeId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_Last(
+			dataCollectionId, dataSetId, dataTypeId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSetType_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long dataTypeId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 */
+	public static void removeByCollectionSetType(
+		long dataCollectionId, long dataSetId, long dataTypeId) {
+
+		getPersistence().removeByCollectionSetType(
+			dataCollectionId, dataSetId, dataTypeId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSetType(
+		long dataCollectionId, long dataSetId, long dataTypeId) {
+
+		return getPersistence().countByCollectionSetType(
+			dataCollectionId, dataSetId, dataTypeId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId) {
+
+		return getPersistence().findByCollectionSetType_G(
+			dataCollectionId, dataSetId, dataTypeId, groupId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int start, int end) {
+
+		return getPersistence().findByCollectionSetType_G(
+			dataCollectionId, dataSetId, dataTypeId, groupId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSetType_G(
+			dataCollectionId, dataSetId, dataTypeId, groupId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int start, int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSetType_G(
+			dataCollectionId, dataSetId, dataTypeId, groupId, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_G_First(
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			long groupId, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_First(
+			dataCollectionId, dataSetId, dataTypeId, groupId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_G_First(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_G_First(
+			dataCollectionId, dataSetId, dataTypeId, groupId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_G_Last(
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			long groupId, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_Last(
+			dataCollectionId, dataSetId, dataTypeId, groupId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_G_Last(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_G_Last(
+			dataCollectionId, dataSetId, dataTypeId, groupId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSetType_G_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long dataTypeId, long groupId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, groupId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId) {
+
+		return getPersistence().filterFindByCollectionSetType_G(
+			dataCollectionId, dataSetId, dataTypeId, groupId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int start, int end) {
+
+		return getPersistence().filterFindByCollectionSetType_G(
+			dataCollectionId, dataSetId, dataTypeId, groupId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByCollectionSetType_G(
+			dataCollectionId, dataSetId, dataTypeId, groupId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] filterFindByCollectionSetType_G_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long dataTypeId, long groupId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByCollectionSetType_G_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, groupId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 */
+	public static void removeByCollectionSetType_G(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId) {
+
+		getPersistence().removeByCollectionSetType_G(
+			dataCollectionId, dataSetId, dataTypeId, groupId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSetType_G(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId) {
+
+		return getPersistence().countByCollectionSetType_G(
+			dataCollectionId, dataSetId, dataTypeId, groupId);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByCollectionSetType_G(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId) {
+
+		return getPersistence().filterCountByCollectionSetType_G(
+			dataCollectionId, dataSetId, dataTypeId, groupId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId) {
+
+		return getPersistence().findByCollectionSetType_U(
+			dataCollectionId, dataSetId, dataTypeId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		int start, int end) {
+
+		return getPersistence().findByCollectionSetType_U(
+			dataCollectionId, dataSetId, dataTypeId, userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSetType_U(
+			dataCollectionId, dataSetId, dataTypeId, userId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		int start, int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSetType_U(
+			dataCollectionId, dataSetId, dataTypeId, userId, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_U_First(
+			long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_U_First(
+			dataCollectionId, dataSetId, dataTypeId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_U_First(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_U_First(
+			dataCollectionId, dataSetId, dataTypeId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_U_Last(
+			long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_U_Last(
+			dataCollectionId, dataSetId, dataTypeId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_U_Last(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_U_Last(
+			dataCollectionId, dataSetId, dataTypeId, userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSetType_U_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long dataTypeId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_U_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 */
+	public static void removeByCollectionSetType_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId) {
+
+		getPersistence().removeByCollectionSetType_U(
+			dataCollectionId, dataSetId, dataTypeId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSetType_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId) {
+
+		return getPersistence().countByCollectionSetType_U(
+			dataCollectionId, dataSetId, dataTypeId, userId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, int status) {
+
+		return getPersistence().findByCollectionSetType_S(
+			dataCollectionId, dataSetId, dataTypeId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, int status,
+		int start, int end) {
+
+		return getPersistence().findByCollectionSetType_S(
+			dataCollectionId, dataSetId, dataTypeId, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, int status,
+		int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSetType_S(
+			dataCollectionId, dataSetId, dataTypeId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, int status,
+		int start, int end, OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSetType_S(
+			dataCollectionId, dataSetId, dataTypeId, status, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_S_First(
+			long dataCollectionId, long dataSetId, long dataTypeId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_S_First(
+			dataCollectionId, dataSetId, dataTypeId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_S_First(
+		long dataCollectionId, long dataSetId, long dataTypeId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_S_First(
+			dataCollectionId, dataSetId, dataTypeId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_S_Last(
+			long dataCollectionId, long dataSetId, long dataTypeId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_S_Last(
+			dataCollectionId, dataSetId, dataTypeId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_S_Last(
+		long dataCollectionId, long dataSetId, long dataTypeId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_S_Last(
+			dataCollectionId, dataSetId, dataTypeId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSetType_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long dataTypeId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 */
+	public static void removeByCollectionSetType_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, int status) {
+
+		getPersistence().removeByCollectionSetType_S(
+			dataCollectionId, dataSetId, dataTypeId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSetType_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, int status) {
+
+		return getPersistence().countByCollectionSetType_S(
+			dataCollectionId, dataSetId, dataTypeId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId) {
+
+		return getPersistence().findByCollectionSetType_G_U(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int start, int end) {
+
+		return getPersistence().findByCollectionSetType_G_U(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, start,
+			end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSetType_G_U(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, start,
+			end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSetType_G_U(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, start,
+			end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_G_U_First(
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_U_First(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_G_U_First(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_G_U_First(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_G_U_Last(
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_U_Last(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_G_U_Last(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_G_U_Last(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSetType_G_U_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long dataTypeId, long groupId, long userId,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_U_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, groupId,
+			userId, orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId) {
+
+		return getPersistence().filterFindByCollectionSetType_G_U(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int start, int end) {
+
+		return getPersistence().filterFindByCollectionSetType_G_U(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, start,
+			end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByCollectionSetType_G_U(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, start,
+			end, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[]
+			filterFindByCollectionSetType_G_U_PrevAndNext(
+				long structuredDataId, long dataCollectionId, long dataSetId,
+				long dataTypeId, long groupId, long userId,
+				OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByCollectionSetType_G_U_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, groupId,
+			userId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 */
+	public static void removeByCollectionSetType_G_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId) {
+
+		getPersistence().removeByCollectionSetType_G_U(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSetType_G_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId) {
+
+		return getPersistence().countByCollectionSetType_G_U(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByCollectionSetType_G_U(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId) {
+
+		return getPersistence().filterCountByCollectionSetType_G_U(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status) {
+
+		return getPersistence().findByCollectionSetType_G_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status, int start, int end) {
+
+		return getPersistence().findByCollectionSetType_G_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status, start,
+			end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSetType_G_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status, start,
+			end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSetType_G_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status, start,
+			end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_G_S_First(
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_S_First(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_G_S_First(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_G_S_First(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_G_S_Last(
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_S_Last(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_G_S_Last(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_G_S_Last(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSetType_G_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long dataTypeId, long groupId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, groupId,
+			status, orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status) {
+
+		return getPersistence().filterFindByCollectionSetType_G_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status, int start, int end) {
+
+		return getPersistence().filterFindByCollectionSetType_G_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status, start,
+			end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByCollectionSetType_G_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status, start,
+			end, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[]
+			filterFindByCollectionSetType_G_S_PrevAndNext(
+				long structuredDataId, long dataCollectionId, long dataSetId,
+				long dataTypeId, long groupId, int status,
+				OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByCollectionSetType_G_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, groupId,
+			status, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 */
+	public static void removeByCollectionSetType_G_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status) {
+
+		getPersistence().removeByCollectionSetType_G_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSetType_G_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status) {
+
+		return getPersistence().countByCollectionSetType_G_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByCollectionSetType_G_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		int status) {
+
+		return getPersistence().filterCountByCollectionSetType_G_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		int status) {
+
+		return getPersistence().findByCollectionSetType_U_S(
+			dataCollectionId, dataSetId, dataTypeId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		int status, int start, int end) {
+
+		return getPersistence().findByCollectionSetType_U_S(
+			dataCollectionId, dataSetId, dataTypeId, userId, status, start,
+			end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSetType_U_S(
+			dataCollectionId, dataSetId, dataTypeId, userId, status, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSetType_U_S(
+			dataCollectionId, dataSetId, dataTypeId, userId, status, start, end,
+			orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_U_S_First(
+			long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_U_S_First(
+			dataCollectionId, dataSetId, dataTypeId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_U_S_First(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		int status, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_U_S_First(
+			dataCollectionId, dataSetId, dataTypeId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_U_S_Last(
+			long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+			int status, OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_U_S_Last(
+			dataCollectionId, dataSetId, dataTypeId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_U_S_Last(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		int status, OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_U_S_Last(
+			dataCollectionId, dataSetId, dataTypeId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSetType_U_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long dataTypeId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_U_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, userId,
+			status, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 */
+	public static void removeByCollectionSetType_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		int status) {
+
+		getPersistence().removeByCollectionSetType_U_S(
+			dataCollectionId, dataSetId, dataTypeId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSetType_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long userId,
+		int status) {
+
+		return getPersistence().countByCollectionSetType_U_S(
+			dataCollectionId, dataSetId, dataTypeId, userId, status);
+	}
+
+	/**
+	 * Returns all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status) {
+
+		return getPersistence().findByCollectionSetType_G_U_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status, int start, int end) {
+
+		return getPersistence().findByCollectionSetType_G_U_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status,
+			start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().findByCollectionSetType_G_U_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status,
+			start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public static List<StructuredData> findByCollectionSetType_G_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollectionSetType_G_U_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status,
+			start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_G_U_S_First(
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			long groupId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_U_S_First(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the first structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_G_U_S_First(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_G_U_S_First(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public static StructuredData findByCollectionSetType_G_U_S_Last(
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			long groupId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_U_S_Last(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the last structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public static StructuredData fetchByCollectionSetType_G_U_S_Last(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSetType_G_U_S_Last(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[] findByCollectionSetType_G_U_S_PrevAndNext(
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long dataTypeId, long groupId, long userId, int status,
+			OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().findByCollectionSetType_G_U_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, groupId,
+			userId, status, orderByComparator);
+	}
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status) {
+
+		return getPersistence().filterFindByCollectionSetType_G_U_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status, int start, int end) {
+
+		return getPersistence().filterFindByCollectionSetType_G_U_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status,
+			start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public static List<StructuredData> filterFindByCollectionSetType_G_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status, int start, int end,
+		OrderByComparator<StructuredData> orderByComparator) {
+
+		return getPersistence().filterFindByCollectionSetType_G_U_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status,
+			start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public static StructuredData[]
+			filterFindByCollectionSetType_G_U_S_PrevAndNext(
+				long structuredDataId, long dataCollectionId, long dataSetId,
+				long dataTypeId, long groupId, long userId, int status,
+				OrderByComparator<StructuredData> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchStructuredDataException {
+
+		return getPersistence().filterFindByCollectionSetType_G_U_S_PrevAndNext(
+			structuredDataId, dataCollectionId, dataSetId, dataTypeId, groupId,
+			userId, status, orderByComparator);
+	}
+
+	/**
+	 * Removes all the structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 */
+	public static void removeByCollectionSetType_G_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status) {
+
+		getPersistence().removeByCollectionSetType_G_U_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public static int countByCollectionSetType_G_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status) {
+
+		return getPersistence().countByCollectionSetType_G_U_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status);
+	}
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and groupId = &#63; and userId = &#63; and status = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param groupId the group ID
+	 * @param userId the user ID
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public static int filterCountByCollectionSetType_G_U_S(
+		long dataCollectionId, long dataSetId, long dataTypeId, long groupId,
+		long userId, int status) {
+
+		return getPersistence().filterCountByCollectionSetType_G_U_S(
+			dataCollectionId, dataSetId, dataTypeId, groupId, userId, status);
 	}
 
 	/**

@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.dao.search.SearchContainerResults;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
@@ -70,8 +72,10 @@ public interface StructuredDataLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public StructuredData addStructuredData(
-			long dataSetId, long dataTypeId, String data, int status,
-			ServiceContext sc)
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			boolean multiple, long startIndex, int count, boolean freezed,
+			boolean verified, boolean comments, boolean history, String data,
+			int status, ServiceContext sc)
 		throws PortalException;
 
 	/**
@@ -86,6 +90,12 @@ public interface StructuredDataLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public StructuredData addStructuredData(StructuredData structuredData);
+
+	public JSONArray convertListToJSONArray(List<StructuredData> list)
+		throws JSONException;
+
+	public JSONObject convertModelToJSONObject(StructuredData structuredData)
+		throws JSONException;
 
 	public int countAllStructuredDatas();
 
@@ -322,10 +332,6 @@ public interface StructuredDataLocalService
 			String uuid, long groupId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public JSONObject getStructuredDataJSON(long structuredDataId)
-		throws PortalException;
-
 	/**
 	 * Returns a range of all the structured datas.
 	 *
@@ -553,8 +559,10 @@ public interface StructuredDataLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public StructuredData updateStructuredData(
-			long structuredDataId, long dataSetId, long dataTypeId, String data,
-			int status, ServiceContext sc)
+			long structuredDataId, long dataCollectionId, long dataSetId,
+			long dataTypeId, boolean multiple, long startIndex, int count,
+			boolean freezed, boolean verified, boolean comments,
+			boolean history, String data, int status, ServiceContext sc)
 		throws PortalException;
 
 	/**

@@ -64,7 +64,7 @@ public class ParameterWrapper
 		attributes.put("definition", getDefinition());
 		attributes.put("tooltip", getTooltip());
 		attributes.put("synonyms", getSynonyms());
-		attributes.put("attributesJSON", getAttributesJSON());
+		attributes.put("typeProperties", getTypeProperties());
 		attributes.put("standard", isStandard());
 
 		return attributes;
@@ -198,10 +198,10 @@ public class ParameterWrapper
 			setSynonyms(synonyms);
 		}
 
-		String attributesJSON = (String)attributes.get("attributesJSON");
+		String typeProperties = (String)attributes.get("typeProperties");
 
-		if (attributesJSON != null) {
-			setAttributesJSON(attributesJSON);
+		if (typeProperties != null) {
+			setTypeProperties(typeProperties);
 		}
 
 		Boolean standard = (Boolean)attributes.get("standard");
@@ -209,16 +209,6 @@ public class ParameterWrapper
 		if (standard != null) {
 			setStandard(standard);
 		}
-	}
-
-	/**
-	 * Returns the attributes json of this parameter.
-	 *
-	 * @return the attributes json of this parameter
-	 */
-	@Override
-	public String getAttributesJSON() {
-		return model.getAttributesJSON();
 	}
 
 	@Override
@@ -674,6 +664,16 @@ public class ParameterWrapper
 	}
 
 	/**
+	 * Returns the type properties of this parameter.
+	 *
+	 * @return the type properties of this parameter
+	 */
+	@Override
+	public String getTypeProperties() {
+		return model.getTypeProperties();
+	}
+
+	/**
 	 * Returns the user ID of this parameter.
 	 *
 	 * @return the user ID of this parameter
@@ -851,16 +851,6 @@ public class ParameterWrapper
 		throws com.liferay.portal.kernel.exception.LocaleException {
 
 		model.prepareLocalizedFieldsForImport(defaultImportLocale);
-	}
-
-	/**
-	 * Sets the attributes json of this parameter.
-	 *
-	 * @param attributesJSON the attributes json of this parameter
-	 */
-	@Override
-	public void setAttributesJSON(String attributesJSON) {
-		model.setAttributesJSON(attributesJSON);
 	}
 
 	/**
@@ -1241,6 +1231,16 @@ public class ParameterWrapper
 	}
 
 	/**
+	 * Sets the type properties of this parameter.
+	 *
+	 * @param typeProperties the type properties of this parameter
+	 */
+	@Override
+	public void setTypeProperties(String typeProperties) {
+		model.setTypeProperties(typeProperties);
+	}
+
+	/**
 	 * Sets the user ID of this parameter.
 	 *
 	 * @param userId the user ID of this parameter
@@ -1278,6 +1278,18 @@ public class ParameterWrapper
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject toJSON() {
+		return model.toJSON();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject toJSON(
+		java.util.Locale locale) {
+
+		return model.toJSON(locale);
 	}
 
 	@Override

@@ -32,12 +32,12 @@ public class DataTypeAdminPortletResourcePermissionRegistrar {
 		
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
-		properties.put("resource.name", Constant.DATATYPE_RESOURCE_NAME);
+		properties.put("resource.name", Constant.ICECAP_RESOURCE_NAME);
 
 		_serviceRegistration = bundleContext.registerService(
 				PortletResourcePermission.class,
 				PortletResourcePermissionFactory.create(
-						Constant.DATATYPE_RESOURCE_NAME,
+						Constant.ICECAP_RESOURCE_NAME,
 						new StagedPortletPermissionLogic(
 								_stagingPermission, 
 								WebPortletKey.DATATYPE_EDITOR)),

@@ -183,6 +183,14 @@ span.toggle-switch-bar {
 	font-weight: 600;
 }
 
+.sx-titlebar-query {
+	width: 16px;
+	height: 16px;
+	background-image: url("../asset/images/letter-q-svgrepo-com.svg");
+	background-size: cover;
+	background-position: center;
+}
+
 div .not-found {
 	display: flex;
 	align-items: center;

@@ -62,7 +62,7 @@ public class DataTypeCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(45);
+		StringBundler sb = new StringBundler(47);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -104,10 +104,12 @@ public class DataTypeCacheModel
 		sb.append(description);
 		sb.append(", tooltip=");
 		sb.append(tooltip);
-		sb.append(", visualizers=");
-		sb.append(visualizers);
-		sb.append(", hasDataStructure=");
-		sb.append(hasDataStructure);
+		sb.append(", freezable=");
+		sb.append(freezable);
+		sb.append(", verifiable=");
+		sb.append(verifiable);
+		sb.append(", dataStructureId=");
+		sb.append(dataStructureId);
 		sb.append("}");
 
 		return sb.toString();
@@ -218,14 +220,9 @@ public class DataTypeCacheModel
 			dataTypeImpl.setTooltip(tooltip);
 		}
 
-		if (visualizers == null) {
-			dataTypeImpl.setVisualizers("");
-		}
-		else {
-			dataTypeImpl.setVisualizers(visualizers);
-		}
-
-		dataTypeImpl.setHasDataStructure(hasDataStructure);
+		dataTypeImpl.setFreezable(freezable);
+		dataTypeImpl.setVerifiable(verifiable);
+		dataTypeImpl.setDataStructureId(dataStructureId);
 
 		dataTypeImpl.resetOriginalValues();
 
@@ -261,9 +258,12 @@ public class DataTypeCacheModel
 		sampleFileId = objectInput.readLong();
 		description = objectInput.readUTF();
 		tooltip = objectInput.readUTF();
-		visualizers = objectInput.readUTF();
 
-		hasDataStructure = objectInput.readBoolean();
+		freezable = objectInput.readBoolean();
+
+		verifiable = objectInput.readBoolean();
+
+		dataStructureId = objectInput.readLong();
 	}
 
 	@Override
@@ -351,14 +351,11 @@ public class DataTypeCacheModel
 			objectOutput.writeUTF(tooltip);
 		}
 
-		if (visualizers == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(visualizers);
-		}
+		objectOutput.writeBoolean(freezable);
 
-		objectOutput.writeBoolean(hasDataStructure);
+		objectOutput.writeBoolean(verifiable);
+
+		objectOutput.writeLong(dataStructureId);
 	}
 
 	public String uuid;
@@ -381,7 +378,8 @@ public class DataTypeCacheModel
 	public long sampleFileId;
 	public String description;
 	public String tooltip;
-	public String visualizers;
-	public boolean hasDataStructure;
+	public boolean freezable;
+	public boolean verifiable;
+	public long dataStructureId;
 
 }

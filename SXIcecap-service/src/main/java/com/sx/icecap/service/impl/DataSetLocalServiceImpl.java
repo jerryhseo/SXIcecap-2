@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
-import com.sx.icecap.exception.InvalidDataSetNameException;
 import com.sx.icecap.exception.NoSuchDataSetException;
 import com.sx.icecap.model.DataSet;
 import com.sx.icecap.service.base.DataSetLocalServiceBaseImpl;
@@ -56,10 +55,6 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		int status,
 		ServiceContext sc ) throws PortalException {
 	
-		if( !_verifyDataSetName(dataSetName) ) {
-			throw new InvalidDataSetNameException(dataSetName+" "+dataSetVersion+" Invalid"); 
-		}
-		
 		long dataSetId = super.counterLocalService.increment();
 		DataSet dataSet = super.dataSetLocalService.createDataSet(dataSetId);
 		
@@ -441,10 +436,5 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 	}
 	public int countDataSetsByName( String dataSetName ){
 		return super.dataSetPersistence.countByName(dataSetName);
-	}
-	
-	private boolean _verifyDataSetName( String dataSetName ) {
-		
-		return true;
 	}
 }

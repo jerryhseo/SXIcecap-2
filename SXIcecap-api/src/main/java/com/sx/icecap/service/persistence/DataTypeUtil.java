@@ -2339,6 +2339,174 @@ public class DataTypeUtil {
 	}
 
 	/**
+	 * Returns all the data types where dataStructureId = &#63;.
+	 *
+	 * @param dataStructureId the data structure ID
+	 * @return the matching data types
+	 */
+	public static List<DataType> findBystructureId(long dataStructureId) {
+		return getPersistence().findBystructureId(dataStructureId);
+	}
+
+	/**
+	 * Returns a range of all the data types where dataStructureId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataStructureId the data structure ID
+	 * @param start the lower bound of the range of data types
+	 * @param end the upper bound of the range of data types (not inclusive)
+	 * @return the range of matching data types
+	 */
+	public static List<DataType> findBystructureId(
+		long dataStructureId, int start, int end) {
+
+		return getPersistence().findBystructureId(dataStructureId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the data types where dataStructureId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataStructureId the data structure ID
+	 * @param start the lower bound of the range of data types
+	 * @param end the upper bound of the range of data types (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching data types
+	 */
+	public static List<DataType> findBystructureId(
+		long dataStructureId, int start, int end,
+		OrderByComparator<DataType> orderByComparator) {
+
+		return getPersistence().findBystructureId(
+			dataStructureId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the data types where dataStructureId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataStructureId the data structure ID
+	 * @param start the lower bound of the range of data types
+	 * @param end the upper bound of the range of data types (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching data types
+	 */
+	public static List<DataType> findBystructureId(
+		long dataStructureId, int start, int end,
+		OrderByComparator<DataType> orderByComparator, boolean useFinderCache) {
+
+		return getPersistence().findBystructureId(
+			dataStructureId, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first data type in the ordered set where dataStructureId = &#63;.
+	 *
+	 * @param dataStructureId the data structure ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching data type
+	 * @throws NoSuchDataTypeException if a matching data type could not be found
+	 */
+	public static DataType findBystructureId_First(
+			long dataStructureId, OrderByComparator<DataType> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchDataTypeException {
+
+		return getPersistence().findBystructureId_First(
+			dataStructureId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first data type in the ordered set where dataStructureId = &#63;.
+	 *
+	 * @param dataStructureId the data structure ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching data type, or <code>null</code> if a matching data type could not be found
+	 */
+	public static DataType fetchBystructureId_First(
+		long dataStructureId, OrderByComparator<DataType> orderByComparator) {
+
+		return getPersistence().fetchBystructureId_First(
+			dataStructureId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last data type in the ordered set where dataStructureId = &#63;.
+	 *
+	 * @param dataStructureId the data structure ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching data type
+	 * @throws NoSuchDataTypeException if a matching data type could not be found
+	 */
+	public static DataType findBystructureId_Last(
+			long dataStructureId, OrderByComparator<DataType> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchDataTypeException {
+
+		return getPersistence().findBystructureId_Last(
+			dataStructureId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last data type in the ordered set where dataStructureId = &#63;.
+	 *
+	 * @param dataStructureId the data structure ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching data type, or <code>null</code> if a matching data type could not be found
+	 */
+	public static DataType fetchBystructureId_Last(
+		long dataStructureId, OrderByComparator<DataType> orderByComparator) {
+
+		return getPersistence().fetchBystructureId_Last(
+			dataStructureId, orderByComparator);
+	}
+
+	/**
+	 * Returns the data types before and after the current data type in the ordered set where dataStructureId = &#63;.
+	 *
+	 * @param dataTypeId the primary key of the current data type
+	 * @param dataStructureId the data structure ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next data type
+	 * @throws NoSuchDataTypeException if a data type with the primary key could not be found
+	 */
+	public static DataType[] findBystructureId_PrevAndNext(
+			long dataTypeId, long dataStructureId,
+			OrderByComparator<DataType> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchDataTypeException {
+
+		return getPersistence().findBystructureId_PrevAndNext(
+			dataTypeId, dataStructureId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the data types where dataStructureId = &#63; from the database.
+	 *
+	 * @param dataStructureId the data structure ID
+	 */
+	public static void removeBystructureId(long dataStructureId) {
+		getPersistence().removeBystructureId(dataStructureId);
+	}
+
+	/**
+	 * Returns the number of data types where dataStructureId = &#63;.
+	 *
+	 * @param dataStructureId the data structure ID
+	 * @return the number of matching data types
+	 */
+	public static int countBystructureId(long dataStructureId) {
+		return getPersistence().countBystructureId(dataStructureId);
+	}
+
+	/**
 	 * Caches the data type in the entity cache if it is enabled.
 	 *
 	 * @param dataType the data type

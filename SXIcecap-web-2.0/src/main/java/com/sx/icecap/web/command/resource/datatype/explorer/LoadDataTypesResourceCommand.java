@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.sx.icecap.constant.Constant;
-import com.sx.icecap.constant.DataTypeProperty;
+import com.sx.icecap.constant.DataTypeProperties;
 import com.sx.icecap.constant.MVCCommand;
 import com.sx.constant.StationXConstants;
 import com.sx.constant.StationXWebKeys;
@@ -55,7 +55,7 @@ public class LoadDataTypesResourceCommand extends BaseMVCResourceCommand{
 		long userId = ParamUtil.getLong(resourceRequest, StationXWebKeys.USER_ID, 0);
 		int status = ParamUtil.getInteger(resourceRequest, StationXWebKeys.STATUS, WorkflowConstants.STATUS_APPROVED);
 		String navigation = ParamUtil.getString(resourceRequest, StationXWebKeys.NAVIGATION, StationXConstants.NAVIGATION_MINE);
-		String orderCol = ParamUtil.getString(resourceRequest, StationXWebKeys.ORDER_BY_COL, DataTypeProperty.DATATYPE_NAME);
+		String orderCol = ParamUtil.getString(resourceRequest, StationXWebKeys.ORDER_BY_COL, DataTypeProperties.DATATYPE_NAME);
 		String orderType = ParamUtil.getString(resourceRequest, StationXWebKeys.ORDER_BY_TYPE, StationXConstants.ASC);
 		String keywords = ParamUtil.getString(resourceRequest, StationXWebKeys.KEYWORDS, "");
 		
@@ -68,7 +68,7 @@ public class LoadDataTypesResourceCommand extends BaseMVCResourceCommand{
 		JSONArray jsonDataTypes = JSONFactoryUtil.createJSONArray();
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(WebKeys.THEME_DISPLAY);
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-		List<ResourceAction> resourceActions = _resouceActionLocalService.getResourceActions(Constant.DATATYPE_CLASS_NAME);
+		List<ResourceAction> resourceActions = _resouceActionLocalService.getResourceActions(Constant.ICECAP_RESOURCE_NAME);
 		System.out.println("Model Actions: " + resourceActions);
 		
 		for(int i=0; i<dataTypes.size(); i++) {

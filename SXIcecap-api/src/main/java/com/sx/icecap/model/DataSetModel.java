@@ -540,64 +540,6 @@ public interface DataSetModel
 		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
-	 * Returns the folder ID of this data set.
-	 *
-	 * @return the folder ID of this data set
-	 */
-	public long getFolderId();
-
-	/**
-	 * Sets the folder ID of this data set.
-	 *
-	 * @param folderId the folder ID of this data set
-	 */
-	public void setFolderId(long folderId);
-
-	/**
-	 * Returns the structure of this data set.
-	 *
-	 * @return the structure of this data set
-	 */
-	@AutoEscape
-	public String getStructure();
-
-	/**
-	 * Sets the structure of this data set.
-	 *
-	 * @param structure the structure of this data set
-	 */
-	public void setStructure(String structure);
-
-	/**
-	 * Returns the verification type of this data set.
-	 *
-	 * @return the verification type of this data set
-	 */
-	@AutoEscape
-	public String getVerificationType();
-
-	/**
-	 * Sets the verification type of this data set.
-	 *
-	 * @param verificationType the verification type of this data set
-	 */
-	public void setVerificationType(String verificationType);
-
-	/**
-	 * Returns the multi entry level of this data set.
-	 *
-	 * @return the multi entry level of this data set
-	 */
-	public int getMultiEntryLevel();
-
-	/**
-	 * Sets the multi entry level of this data set.
-	 *
-	 * @param multiEntryLevel the multi entry level of this data set
-	 */
-	public void setMultiEntryLevel(int multiEntryLevel);
-
-	/**
 	 * Returns the trash entry created when this data set was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this data set.
 	 *
 	 * @return the trash entry created when this data set was moved to the Recycle Bin

@@ -126,18 +126,19 @@ class DataTypeEditor extends React.Component {
 
 		this.fields = [];
 
-		this.parameterCode = new StringParameter(
+		this.parameterCode = Parameter.createParameter(
 			this.namespace,
 			this.formId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.STRING,
 			{
 				paramName: DataTypeProperty.NAME,
-				displayName: Util.getTranslationObject(this.languageId, "parameter-code"),
+				displayName: Util.getTranslationObject(this.languageId, "datatype-code"),
 				required: true,
 				viewType: ViewTypes.NORMAL,
-				placeholder: Util.getTranslationObject(this.languageId, "code-name"),
-				tooltip: Util.getTranslationObject(this.languageId, "code-name-tooltip"),
+				placeholder: Util.getTranslationObject(this.languageId, "datatype-code"),
+				tooltip: Util.getTranslationObject(this.languageId, "datatype-code-tooltip"),
 				validation: {
 					required: {
 						value: true,
@@ -161,11 +162,12 @@ class DataTypeEditor extends React.Component {
 
 		const versionPlaceholder = {};
 		versionPlaceholder[this.languageId] = "1.0.0";
-		this.parameterVersion = new StringParameter(
+		this.parameterVersion = Parameter.createParameter(
 			this.namespace,
 			this.formId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.STRING,
 			{
 				paramName: DataTypeProperty.VERSION,
 				displayName: Util.getTranslationObject(this.languageId, "version"),
@@ -196,37 +198,45 @@ class DataTypeEditor extends React.Component {
 
 		const versionExt = {};
 		versionExt[this.languageId] = "ext";
-		this.extension = new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-			paramName: DataTypeProperty.EXTENSION,
-			displayName: Util.getTranslationObject(this.languageId, "extension"),
-			required: true,
-			placeholder: versionExt,
-			tooltip: Util.getTranslationObject(this.languageId, "extension"),
-			validation: {
-				required: {
-					value: true,
-					message: Util.getTranslationObject(this.languageId, "this-field-is-required")
-				},
-				pattern: {
-					value: ValidationRule.EXTENSION,
-					message: Util.getTranslationObject(this.languageId, "invalid-extension")
-				},
-				min: {
-					value: 2,
-					message: Util.getTranslationObject(this.languageId, "should-be-at-least-x")
-				},
-				max: {
-					value: 16,
-					message: Util.getTranslationObject(this.languageId, "should-be-shorter-than-x")
-				}
-			}
-		});
-
-		this.displayName = new StringParameter(
+		this.extension = Parameter.createParameter(
 			this.namespace,
 			this.formId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.STRING,
+			{
+				paramName: DataTypeProperty.EXTENSION,
+				displayName: Util.getTranslationObject(this.languageId, "extension"),
+				required: true,
+				placeholder: versionExt,
+				tooltip: Util.getTranslationObject(this.languageId, "extension"),
+				validation: {
+					required: {
+						value: true,
+						message: Util.getTranslationObject(this.languageId, "this-field-is-required")
+					},
+					pattern: {
+						value: ValidationRule.EXTENSION,
+						message: Util.getTranslationObject(this.languageId, "invalid-extension")
+					},
+					min: {
+						value: 2,
+						message: Util.getTranslationObject(this.languageId, "should-be-at-least-x")
+					},
+					max: {
+						value: 16,
+						message: Util.getTranslationObject(this.languageId, "should-be-shorter-than-x")
+					}
+				}
+			}
+		);
+
+		this.displayName = Parameter.createParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			ParamType.STRING,
 			{
 				paramName: DataTypeProperty.DISPLAY_NAME,
 				localized: true,
@@ -251,11 +261,12 @@ class DataTypeEditor extends React.Component {
 			}
 		);
 
-		this.description = new StringParameter(
+		this.description = Parameter.createParameter(
 			this.namespace,
 			this.formId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.STRING,
 			{
 				paramName: DataTypeProperty.DESCRIPTION,
 				localized: true,
@@ -266,25 +277,33 @@ class DataTypeEditor extends React.Component {
 			}
 		);
 
-		this.tooltip = new StringParameter(this.namespace, this.formId, this.languageId, this.availableLanguageIds, {
-			paramName: DataTypeProperty.TOOLTIP,
-			localized: true,
-			displayName: Util.getTranslationObject(this.languageId, "tooltip"),
-			placeholder: Util.getTranslationObject(this.languageId, "tooltip"),
-			tooltip: Util.getTranslationObject(this.languageId, "tooltip-tooltip"),
-			validation: {
-				max: {
-					value: 64,
-					message: Util.getTranslationObject(this.languageId, "should-be-shorter-than-x")
-				}
-			}
-		});
-
-		this.visualizers = new DualListParameter(
+		this.tooltip = Parameter.createParameter(
 			this.namespace,
 			this.formId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.STRING,
+			{
+				paramName: DataTypeProperty.TOOLTIP,
+				localized: true,
+				displayName: Util.getTranslationObject(this.languageId, "tooltip"),
+				placeholder: Util.getTranslationObject(this.languageId, "tooltip"),
+				tooltip: Util.getTranslationObject(this.languageId, "tooltip-tooltip"),
+				validation: {
+					max: {
+						value: 64,
+						message: Util.getTranslationObject(this.languageId, "should-be-shorter-than-x")
+					}
+				}
+			}
+		);
+
+		this.visualizers = Parameter.createParameter(
+			this.namespace,
+			this.formId,
+			this.languageId,
+			this.availableLanguageIds,
+			ParamType.DUALLIST,
 			{
 				paramName: DataTypeProperty.VISUALIZERS,
 				displayName: Util.getTranslationObject(this.languageId, "associated-visualizers"),
@@ -301,11 +320,12 @@ class DataTypeEditor extends React.Component {
 			}
 		);
 
-		this.groupParameter = new GroupParameter(
+		this.groupParameter = Parameter.createParameter(
 			this.namespace,
 			this.formId,
 			this.languageId,
 			this.availableLanguageIds,
+			ParamType.GROUP,
 			{
 				paramName: "basicProps",
 				paramVersion: "1.0.0",
@@ -321,6 +341,41 @@ class DataTypeEditor extends React.Component {
 		this.fields.push(this.tooltip);
 		this.fields.push(this.visualizers);
 	}
+
+	fieldValueChangedHandler = (event) => {
+		const dataPacket = Event.pickUpDataPacket(event, this.namespace, this.formId);
+
+		if (!dataPacket) {
+			return;
+		}
+
+		if (dataPacket.paramName === DataTypeProperty.NAME) {
+			if (Util.isNotEmpty(this.parameterCode.value)) {
+				Util.ajax({
+					namespace: this.namespace,
+					baseResourceURL: this.baseResourceURL,
+					resourceId: ResourceIds.CHECK_DATATYPE_NAME_UNIQUE,
+					type: "post",
+					dataType: "json",
+					params: {
+						parameterCode: this.parameterCode.value
+					},
+					successFunc: (result) => {
+						if (!result) {
+							this.parameterCode.errorClass = ErrorClass.ERROR;
+							this.parameterCode.errorMessage = Util.translate("datatype-code-duplicated");
+
+							this.setState({ dataTypeNameDuplicated: true });
+						}
+					},
+					errorFunc: (err) => {
+						this.loadingFailMessage = "Error while loading visualizers: ";
+						this.setState({ loadingStatus: LoadingStatus.FAIL });
+					}
+				});
+			}
+		}
+	};
 
 	componentDidMount() {
 		//Loading dataType
@@ -381,43 +436,12 @@ class DataTypeEditor extends React.Component {
 			});
 		}
 
-		Event.uniqueOn(Event.SX_FIELD_VALUE_CHANGED, (event) => {
-			const dataPacket = Event.pickUpDataPacket(event, this.namespace, this.formId);
-
-			if (!dataPacket) {
-				return;
-			}
-
-			if (dataPacket.paramName === DataTypeProperty.NAME) {
-				if (Util.isNotEmpty(this.parameterCode.value)) {
-					Util.ajax({
-						namespace: this.namespace,
-						baseResourceURL: this.baseResourceURL,
-						resourceId: ResourceIds.CHECK_DATATYPE_NAME_UNIQUE,
-						type: "post",
-						dataType: "json",
-						params: {
-							parameterCode: this.parameterCode.value
-						},
-						successFunc: (result) => {
-							if (!result) {
-								this.parameterCode.errorClass = ErrorClass.ERROR;
-								this.parameterCode.errorMessage = Util.translate("parameter-code-duplicated");
-
-								this.setState({ dataTypeNameDuplicated: true });
-							}
-						},
-						errorFunc: (err) => {
-							this.loadingFailMessage = "Error while loading visualizers: ";
-							this.setState({ loadingStatus: LoadingStatus.FAIL });
-						}
-					});
-				}
-			}
-		});
+		Event.on(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
 	}
 
-	componentDidUpdate(prevProps, prevState) {}
+	componentWillUnmount() {
+		Event.detach(Event.SX_FIELD_VALUE_CHANGED, this.fieldValueChangedHandler);
+	}
 
 	getField(fields, fieldName) {
 		let found = null;
@@ -463,13 +487,19 @@ class DataTypeEditor extends React.Component {
 		this.fields.forEach((field) => {
 			const data = field.toData();
 
+			console.log("toData: ", data);
 			if (Util.isNotEmpty(data)) {
 				formValues = { ...formValues, ...data };
 			}
 		});
 
-		console.log("DataTypeEditor.formValues: ", formValues);
-		return formValues;
+		let dataTypeValues = {};
+		for (const fieldName in formValues) {
+			dataTypeValues[fieldName] = formValues[fieldName].value;
+		}
+
+		console.log("DataTypeEditor.dataTypeValues: ", dataTypeValues);
+		return dataTypeValues;
 	}
 
 	validateFormValues(fields) {

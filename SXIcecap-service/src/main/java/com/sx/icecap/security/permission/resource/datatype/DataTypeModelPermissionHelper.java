@@ -3,7 +3,7 @@ package com.sx.icecap.security.permission.resource.datatype;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.sx.icecap.constant.ClassName;
+import com.sx.icecap.constant.IcecapModelNames;
 import com.sx.icecap.model.DataType;
 
 import org.osgi.service.component.annotations.Component;
@@ -15,7 +15,7 @@ import org.osgi.service.component.annotations.Reference;
 public class DataTypeModelPermissionHelper{
 	
 	@Reference(
-			target = "(model.class.name="+ ClassName.DATATYPE+")",
+			target = "(model.class.name="+ IcecapModelNames.DATATYPE+")",
 			unbind = "-"
 			)
 	protected void setDataTypeModelResourcePermission(

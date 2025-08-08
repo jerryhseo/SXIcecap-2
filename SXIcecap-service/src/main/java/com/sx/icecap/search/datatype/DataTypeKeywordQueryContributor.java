@@ -1,13 +1,11 @@
 package com.sx.icecap.search.datatype;
 
 import com.liferay.portal.kernel.search.BooleanQuery;
-import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.search.query.QueryHelper;
 import com.liferay.portal.search.spi.model.query.contributor.KeywordQueryContributor;
 import com.liferay.portal.search.spi.model.query.contributor.helper.KeywordQueryContributorHelper;
-import com.sx.debug.Debug;
-import com.sx.icecap.constant.DataTypeProperty;
+import com.sx.icecap.constant.DataTypeProperties;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -31,12 +29,11 @@ public class DataTypeKeywordQueryContributor implements KeywordQueryContributor 
 		
 		SearchContext searchContext = keywordQueryContributorHelper.getSearchContext();
 
-		queryHelper.addSearchTerm(booleanQuery, searchContext, DataTypeProperty.DATATYPE_NAME, true);
+		queryHelper.addSearchTerm(booleanQuery, searchContext, DataTypeProperties.DATATYPE_NAME, true);
 		queryHelper.addSearchLocalizedTerm(
-				booleanQuery, searchContext, DataTypeProperty.DISPLAY_NAME, false);
+				booleanQuery, searchContext, DataTypeProperties.DISPLAY_NAME, false);
 		queryHelper.addSearchLocalizedTerm(
-				booleanQuery, searchContext, DataTypeProperty.DESCRIPTION, false);
-		queryHelper.addSearchTerm(booleanQuery, searchContext, "terms", false);
+				booleanQuery, searchContext, DataTypeProperties.DESCRIPTION, false);
 		
 //		Debug.printFooter("DataTypeKeywordQueryContributor");
 		

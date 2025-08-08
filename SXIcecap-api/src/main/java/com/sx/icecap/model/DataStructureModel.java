@@ -15,7 +15,18 @@
 package com.sx.icecap.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.LocalizedModel;
+import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.model.StagedGroupedModel;
+import com.liferay.portal.kernel.model.TrashedModel;
+import com.liferay.portal.kernel.model.WorkflowedModel;
+
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -31,7 +42,9 @@ import org.osgi.annotation.versioning.ProviderType;
  * @generated
  */
 @ProviderType
-public interface DataStructureModel extends BaseModel<DataStructure> {
+public interface DataStructureModel
+	extends BaseModel<DataStructure>, LocalizedModel, ShardedModel,
+			StagedGroupedModel, TrashedModel, WorkflowedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -54,18 +67,540 @@ public interface DataStructureModel extends BaseModel<DataStructure> {
 	public void setPrimaryKey(long primaryKey);
 
 	/**
-	 * Returns the data type ID of this data structure.
+	 * Returns the uuid of this data structure.
 	 *
-	 * @return the data type ID of this data structure
+	 * @return the uuid of this data structure
 	 */
-	public long getDataTypeId();
+	@AutoEscape
+	@Override
+	public String getUuid();
 
 	/**
-	 * Sets the data type ID of this data structure.
+	 * Sets the uuid of this data structure.
 	 *
-	 * @param dataTypeId the data type ID of this data structure
+	 * @param uuid the uuid of this data structure
 	 */
-	public void setDataTypeId(long dataTypeId);
+	@Override
+	public void setUuid(String uuid);
+
+	/**
+	 * Returns the company ID of this data structure.
+	 *
+	 * @return the company ID of this data structure
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this data structure.
+	 *
+	 * @param companyId the company ID of this data structure
+	 */
+	@Override
+	public void setCompanyId(long companyId);
+
+	/**
+	 * Returns the group ID of this data structure.
+	 *
+	 * @return the group ID of this data structure
+	 */
+	@Override
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this data structure.
+	 *
+	 * @param groupId the group ID of this data structure
+	 */
+	@Override
+	public void setGroupId(long groupId);
+
+	/**
+	 * Returns the user ID of this data structure.
+	 *
+	 * @return the user ID of this data structure
+	 */
+	@Override
+	public long getUserId();
+
+	/**
+	 * Sets the user ID of this data structure.
+	 *
+	 * @param userId the user ID of this data structure
+	 */
+	@Override
+	public void setUserId(long userId);
+
+	/**
+	 * Returns the user uuid of this data structure.
+	 *
+	 * @return the user uuid of this data structure
+	 */
+	@Override
+	public String getUserUuid();
+
+	/**
+	 * Sets the user uuid of this data structure.
+	 *
+	 * @param userUuid the user uuid of this data structure
+	 */
+	@Override
+	public void setUserUuid(String userUuid);
+
+	/**
+	 * Returns the user name of this data structure.
+	 *
+	 * @return the user name of this data structure
+	 */
+	@AutoEscape
+	@Override
+	public String getUserName();
+
+	/**
+	 * Sets the user name of this data structure.
+	 *
+	 * @param userName the user name of this data structure
+	 */
+	@Override
+	public void setUserName(String userName);
+
+	/**
+	 * Returns the create date of this data structure.
+	 *
+	 * @return the create date of this data structure
+	 */
+	@Override
+	public Date getCreateDate();
+
+	/**
+	 * Sets the create date of this data structure.
+	 *
+	 * @param createDate the create date of this data structure
+	 */
+	@Override
+	public void setCreateDate(Date createDate);
+
+	/**
+	 * Returns the modified date of this data structure.
+	 *
+	 * @return the modified date of this data structure
+	 */
+	@Override
+	public Date getModifiedDate();
+
+	/**
+	 * Sets the modified date of this data structure.
+	 *
+	 * @param modifiedDate the modified date of this data structure
+	 */
+	@Override
+	public void setModifiedDate(Date modifiedDate);
+
+	/**
+	 * Returns the last publish date of this data structure.
+	 *
+	 * @return the last publish date of this data structure
+	 */
+	@Override
+	public Date getLastPublishDate();
+
+	/**
+	 * Sets the last publish date of this data structure.
+	 *
+	 * @param lastPublishDate the last publish date of this data structure
+	 */
+	@Override
+	public void setLastPublishDate(Date lastPublishDate);
+
+	/**
+	 * Returns the status of this data structure.
+	 *
+	 * @return the status of this data structure
+	 */
+	@Override
+	public int getStatus();
+
+	/**
+	 * Sets the status of this data structure.
+	 *
+	 * @param status the status of this data structure
+	 */
+	@Override
+	public void setStatus(int status);
+
+	/**
+	 * Returns the status by user ID of this data structure.
+	 *
+	 * @return the status by user ID of this data structure
+	 */
+	@Override
+	public long getStatusByUserId();
+
+	/**
+	 * Sets the status by user ID of this data structure.
+	 *
+	 * @param statusByUserId the status by user ID of this data structure
+	 */
+	@Override
+	public void setStatusByUserId(long statusByUserId);
+
+	/**
+	 * Returns the status by user uuid of this data structure.
+	 *
+	 * @return the status by user uuid of this data structure
+	 */
+	@Override
+	public String getStatusByUserUuid();
+
+	/**
+	 * Sets the status by user uuid of this data structure.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this data structure
+	 */
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid);
+
+	/**
+	 * Returns the status by user name of this data structure.
+	 *
+	 * @return the status by user name of this data structure
+	 */
+	@AutoEscape
+	@Override
+	public String getStatusByUserName();
+
+	/**
+	 * Sets the status by user name of this data structure.
+	 *
+	 * @param statusByUserName the status by user name of this data structure
+	 */
+	@Override
+	public void setStatusByUserName(String statusByUserName);
+
+	/**
+	 * Returns the status date of this data structure.
+	 *
+	 * @return the status date of this data structure
+	 */
+	@Override
+	public Date getStatusDate();
+
+	/**
+	 * Sets the status date of this data structure.
+	 *
+	 * @param statusDate the status date of this data structure
+	 */
+	@Override
+	public void setStatusDate(Date statusDate);
+
+	/**
+	 * Returns the data structure ID of this data structure.
+	 *
+	 * @return the data structure ID of this data structure
+	 */
+	public long getDataStructureId();
+
+	/**
+	 * Sets the data structure ID of this data structure.
+	 *
+	 * @param dataStructureId the data structure ID of this data structure
+	 */
+	public void setDataStructureId(long dataStructureId);
+
+	/**
+	 * Returns the data structure name of this data structure.
+	 *
+	 * @return the data structure name of this data structure
+	 */
+	@AutoEscape
+	public String getDataStructureName();
+
+	/**
+	 * Sets the data structure name of this data structure.
+	 *
+	 * @param dataStructureName the data structure name of this data structure
+	 */
+	public void setDataStructureName(String dataStructureName);
+
+	/**
+	 * Returns the data structure version of this data structure.
+	 *
+	 * @return the data structure version of this data structure
+	 */
+	@AutoEscape
+	public String getDataStructureVersion();
+
+	/**
+	 * Sets the data structure version of this data structure.
+	 *
+	 * @param dataStructureVersion the data structure version of this data structure
+	 */
+	public void setDataStructureVersion(String dataStructureVersion);
+
+	/**
+	 * Returns the display name of this data structure.
+	 *
+	 * @return the display name of this data structure
+	 */
+	public String getDisplayName();
+
+	/**
+	 * Returns the localized display name of this data structure in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized display name of this data structure
+	 */
+	@AutoEscape
+	public String getDisplayName(Locale locale);
+
+	/**
+	 * Returns the localized display name of this data structure in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized display name of this data structure. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
+	@AutoEscape
+	public String getDisplayName(Locale locale, boolean useDefault);
+
+	/**
+	 * Returns the localized display name of this data structure in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized display name of this data structure
+	 */
+	@AutoEscape
+	public String getDisplayName(String languageId);
+
+	/**
+	 * Returns the localized display name of this data structure in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized display name of this data structure
+	 */
+	@AutoEscape
+	public String getDisplayName(String languageId, boolean useDefault);
+
+	@AutoEscape
+	public String getDisplayNameCurrentLanguageId();
+
+	@AutoEscape
+	public String getDisplayNameCurrentValue();
+
+	/**
+	 * Returns a map of the locales and localized display names of this data structure.
+	 *
+	 * @return the locales and localized display names of this data structure
+	 */
+	public Map<Locale, String> getDisplayNameMap();
+
+	/**
+	 * Sets the display name of this data structure.
+	 *
+	 * @param displayName the display name of this data structure
+	 */
+	public void setDisplayName(String displayName);
+
+	/**
+	 * Sets the localized display name of this data structure in the language.
+	 *
+	 * @param displayName the localized display name of this data structure
+	 * @param locale the locale of the language
+	 */
+	public void setDisplayName(String displayName, Locale locale);
+
+	/**
+	 * Sets the localized display name of this data structure in the language, and sets the default locale.
+	 *
+	 * @param displayName the localized display name of this data structure
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
+	public void setDisplayName(
+		String displayName, Locale locale, Locale defaultLocale);
+
+	public void setDisplayNameCurrentLanguageId(String languageId);
+
+	/**
+	 * Sets the localized display names of this data structure from the map of locales and localized display names.
+	 *
+	 * @param displayNameMap the locales and localized display names of this data structure
+	 */
+	public void setDisplayNameMap(Map<Locale, String> displayNameMap);
+
+	/**
+	 * Sets the localized display names of this data structure from the map of locales and localized display names, and sets the default locale.
+	 *
+	 * @param displayNameMap the locales and localized display names of this data structure
+	 * @param defaultLocale the default locale
+	 */
+	public void setDisplayNameMap(
+		Map<Locale, String> displayNameMap, Locale defaultLocale);
+
+	/**
+	 * Returns the description of this data structure.
+	 *
+	 * @return the description of this data structure
+	 */
+	public String getDescription();
+
+	/**
+	 * Returns the localized description of this data structure in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized description of this data structure
+	 */
+	@AutoEscape
+	public String getDescription(Locale locale);
+
+	/**
+	 * Returns the localized description of this data structure in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized description of this data structure. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
+	@AutoEscape
+	public String getDescription(Locale locale, boolean useDefault);
+
+	/**
+	 * Returns the localized description of this data structure in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized description of this data structure
+	 */
+	@AutoEscape
+	public String getDescription(String languageId);
+
+	/**
+	 * Returns the localized description of this data structure in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized description of this data structure
+	 */
+	@AutoEscape
+	public String getDescription(String languageId, boolean useDefault);
+
+	@AutoEscape
+	public String getDescriptionCurrentLanguageId();
+
+	@AutoEscape
+	public String getDescriptionCurrentValue();
+
+	/**
+	 * Returns a map of the locales and localized descriptions of this data structure.
+	 *
+	 * @return the locales and localized descriptions of this data structure
+	 */
+	public Map<Locale, String> getDescriptionMap();
+
+	/**
+	 * Sets the description of this data structure.
+	 *
+	 * @param description the description of this data structure
+	 */
+	public void setDescription(String description);
+
+	/**
+	 * Sets the localized description of this data structure in the language.
+	 *
+	 * @param description the localized description of this data structure
+	 * @param locale the locale of the language
+	 */
+	public void setDescription(String description, Locale locale);
+
+	/**
+	 * Sets the localized description of this data structure in the language, and sets the default locale.
+	 *
+	 * @param description the localized description of this data structure
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale);
+
+	public void setDescriptionCurrentLanguageId(String languageId);
+
+	/**
+	 * Sets the localized descriptions of this data structure from the map of locales and localized descriptions.
+	 *
+	 * @param descriptionMap the locales and localized descriptions of this data structure
+	 */
+	public void setDescriptionMap(Map<Locale, String> descriptionMap);
+
+	/**
+	 * Sets the localized descriptions of this data structure from the map of locales and localized descriptions, and sets the default locale.
+	 *
+	 * @param descriptionMap the locales and localized descriptions of this data structure
+	 * @param defaultLocale the default locale
+	 */
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale);
+
+	/**
+	 * Returns the freezable of this data structure.
+	 *
+	 * @return the freezable of this data structure
+	 */
+	public boolean getFreezable();
+
+	/**
+	 * Returns <code>true</code> if this data structure is freezable.
+	 *
+	 * @return <code>true</code> if this data structure is freezable; <code>false</code> otherwise
+	 */
+	public boolean isFreezable();
+
+	/**
+	 * Sets whether this data structure is freezable.
+	 *
+	 * @param freezable the freezable of this data structure
+	 */
+	public void setFreezable(boolean freezable);
+
+	/**
+	 * Returns the verifiable of this data structure.
+	 *
+	 * @return the verifiable of this data structure
+	 */
+	public boolean getVerifiable();
+
+	/**
+	 * Returns <code>true</code> if this data structure is verifiable.
+	 *
+	 * @return <code>true</code> if this data structure is verifiable; <code>false</code> otherwise
+	 */
+	public boolean isVerifiable();
+
+	/**
+	 * Sets whether this data structure is verifiable.
+	 *
+	 * @param verifiable the verifiable of this data structure
+	 */
+	public void setVerifiable(boolean verifiable);
+
+	/**
+	 * Returns the commentable of this data structure.
+	 *
+	 * @return the commentable of this data structure
+	 */
+	public boolean getCommentable();
+
+	/**
+	 * Returns <code>true</code> if this data structure is commentable.
+	 *
+	 * @return <code>true</code> if this data structure is commentable; <code>false</code> otherwise
+	 */
+	public boolean isCommentable();
+
+	/**
+	 * Sets whether this data structure is commentable.
+	 *
+	 * @param commentable the commentable of this data structure
+	 */
+	public void setCommentable(boolean commentable);
 
 	/**
 	 * Returns the structure of this data structure.
@@ -81,5 +616,131 @@ public interface DataStructureModel extends BaseModel<DataStructure> {
 	 * @param structure the structure of this data structure
 	 */
 	public void setStructure(String structure);
+
+	/**
+	 * Returns the trash entry created when this data structure was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this data structure.
+	 *
+	 * @return the trash entry created when this data structure was moved to the Recycle Bin
+	 */
+	@Override
+	public com.liferay.trash.kernel.model.TrashEntry getTrashEntry()
+		throws PortalException;
+
+	/**
+	 * Returns the class primary key of the trash entry for this data structure.
+	 *
+	 * @return the class primary key of the trash entry for this data structure
+	 */
+	@Override
+	public long getTrashEntryClassPK();
+
+	/**
+	 * Returns the trash handler for this data structure.
+	 *
+	 * @return the trash handler for this data structure
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler();
+
+	/**
+	 * Returns <code>true</code> if this data structure is in the Recycle Bin.
+	 *
+	 * @return <code>true</code> if this data structure is in the Recycle Bin; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInTrash();
+
+	/**
+	 * Returns <code>true</code> if the parent of this data structure is in the Recycle Bin.
+	 *
+	 * @return <code>true</code> if the parent of this data structure is in the Recycle Bin; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInTrashContainer();
+
+	@Override
+	public boolean isInTrashExplicitly();
+
+	@Override
+	public boolean isInTrashImplicitly();
+
+	/**
+	 * Returns <code>true</code> if this data structure is approved.
+	 *
+	 * @return <code>true</code> if this data structure is approved; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isApproved();
+
+	/**
+	 * Returns <code>true</code> if this data structure is denied.
+	 *
+	 * @return <code>true</code> if this data structure is denied; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDenied();
+
+	/**
+	 * Returns <code>true</code> if this data structure is a draft.
+	 *
+	 * @return <code>true</code> if this data structure is a draft; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDraft();
+
+	/**
+	 * Returns <code>true</code> if this data structure is expired.
+	 *
+	 * @return <code>true</code> if this data structure is expired; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isExpired();
+
+	/**
+	 * Returns <code>true</code> if this data structure is inactive.
+	 *
+	 * @return <code>true</code> if this data structure is inactive; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInactive();
+
+	/**
+	 * Returns <code>true</code> if this data structure is incomplete.
+	 *
+	 * @return <code>true</code> if this data structure is incomplete; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIncomplete();
+
+	/**
+	 * Returns <code>true</code> if this data structure is pending.
+	 *
+	 * @return <code>true</code> if this data structure is pending; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isPending();
+
+	/**
+	 * Returns <code>true</code> if this data structure is scheduled.
+	 *
+	 * @return <code>true</code> if this data structure is scheduled; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isScheduled();
+
+	@Override
+	public String[] getAvailableLanguageIds();
+
+	@Override
+	public String getDefaultLanguageId();
+
+	@Override
+	public void prepareLocalizedFieldsForImport() throws LocaleException;
+
+	@Override
+	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
+		throws LocaleException;
 
 }

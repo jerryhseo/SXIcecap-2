@@ -61,7 +61,7 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -97,14 +97,6 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 		sb.append(displayName);
 		sb.append(", description=");
 		sb.append(description);
-		sb.append(", folderId=");
-		sb.append(folderId);
-		sb.append(", structure=");
-		sb.append(structure);
-		sb.append(", verificationType=");
-		sb.append(verificationType);
-		sb.append(", multiEntryLevel=");
-		sb.append(multiEntryLevel);
 		sb.append("}");
 
 		return sb.toString();
@@ -199,24 +191,6 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 			dataSetImpl.setDescription(description);
 		}
 
-		dataSetImpl.setFolderId(folderId);
-
-		if (structure == null) {
-			dataSetImpl.setStructure("");
-		}
-		else {
-			dataSetImpl.setStructure(structure);
-		}
-
-		if (verificationType == null) {
-			dataSetImpl.setVerificationType("");
-		}
-		else {
-			dataSetImpl.setVerificationType(verificationType);
-		}
-
-		dataSetImpl.setMultiEntryLevel(multiEntryLevel);
-
 		dataSetImpl.resetOriginalValues();
 
 		return dataSetImpl;
@@ -247,12 +221,6 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 		dataSetVersion = objectInput.readUTF();
 		displayName = objectInput.readUTF();
 		description = objectInput.readUTF();
-
-		folderId = objectInput.readLong();
-		structure = objectInput.readUTF();
-		verificationType = objectInput.readUTF();
-
-		multiEntryLevel = objectInput.readInt();
 	}
 
 	@Override
@@ -323,24 +291,6 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 		else {
 			objectOutput.writeUTF(description);
 		}
-
-		objectOutput.writeLong(folderId);
-
-		if (structure == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(structure);
-		}
-
-		if (verificationType == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(verificationType);
-		}
-
-		objectOutput.writeInt(multiEntryLevel);
 	}
 
 	public String uuid;
@@ -360,9 +310,5 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 	public String dataSetVersion;
 	public String displayName;
 	public String description;
-	public long folderId;
-	public String structure;
-	public String verificationType;
-	public int multiEntryLevel;
 
 }

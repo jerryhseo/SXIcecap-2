@@ -68,7 +68,7 @@ public class EditDataTypeRenderCommand implements MVCRenderCommand {
 				"mainRequire",
 				_npmResolver.resolveModuleName("sx-icecap-web") + " as main");
 		
-		return JSPPath.EDIT_DATATYPE;
+		return JSPPath.DATATYPE_EDITOR;
 	}
 	
 	

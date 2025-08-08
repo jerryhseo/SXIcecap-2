@@ -73,7 +73,7 @@ public class DataTypeStagedModelDataHandler extends BaseStagedModelDataHandler<D
 						dataType.getDisplayNameMap(),
 						dataType.getDescriptionMap(),
 						dataType.getTooltipMap(),
-						dataType.getVisualizers(),
+						dataType.getDataStructureId(),
 						dataType.getStatus(),
 						serviceContext);
 			}
@@ -86,7 +86,7 @@ public class DataTypeStagedModelDataHandler extends BaseStagedModelDataHandler<D
 						dataType.getDisplayNameMap(),
 						dataType.getDescriptionMap(),
 						dataType.getTooltipMap(),
-						dataType.getVisualizers(),
+						dataType.getDataStructureId(),
 						dataType.getStatus(),
 						serviceContext);
 
@@ -100,7 +100,7 @@ public class DataTypeStagedModelDataHandler extends BaseStagedModelDataHandler<D
 					dataType.getDisplayNameMap(),
 					dataType.getDescriptionMap(),
 					dataType.getTooltipMap(),
-					dataType.getVisualizers(),
+					dataType.getDataStructureId(),
 					dataType.getStatus(),
 					serviceContext);
 		}

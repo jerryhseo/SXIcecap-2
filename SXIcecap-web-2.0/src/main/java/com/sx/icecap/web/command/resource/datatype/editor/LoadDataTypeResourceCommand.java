@@ -6,12 +6,12 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.sx.icecap.constant.DataTypeProperty;
 import com.sx.icecap.constant.MVCCommand;
 import com.sx.icecap.constant.WebKey;
 import com.sx.icecap.constant.WebPortletKey;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.service.DataTypeLocalService;
+import com.sx.icecap.service.TypeVisualizerLinkLocalService;
 
 import java.io.PrintWriter;
 import java.util.Iterator;
@@ -41,14 +41,11 @@ public class LoadDataTypeResourceCommand extends BaseMVCResourceCommand{
 		
 		
 		DataType dataType = _dataTypeLocalService.getDataType(dataTypeId );
-		String strDataType = dataType.toJSONString();
+		JSONObject jsonDataType = dataType.toJSON();
 		
-		System.out.println("dataType: " + strDataType);
+		System.out.println("dataType: " + jsonDataType.toString());
 		
 		JSONObject result = JSONFactoryUtil.createJSONObject();
-		
-		JSONObject jsonDataType = dataType.toJSON();
-		JSONArray visualizers = jsonDataType.getJSONArray(DataTypeProperty.VISUALIZERS);
 		
 		result.put("dataType", jsonDataType);
 		
@@ -119,4 +116,7 @@ public class LoadDataTypeResourceCommand extends BaseMVCResourceCommand{
 	
 	@Reference
 	private DataTypeLocalService _dataTypeLocalService;
+	
+	@Reference
+	private TypeVisualizerLinkLocalService _typeVisualizerLinkLocalService;
 }

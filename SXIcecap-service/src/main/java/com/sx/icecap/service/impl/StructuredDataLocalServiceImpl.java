@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.dao.search.SearchContainerResults;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -41,6 +42,7 @@ import com.sx.icecap.service.base.StructuredDataLocalServiceBaseImpl;
 import com.sx.util.SXPortalUtil;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -61,8 +63,16 @@ public class StructuredDataLocalServiceImpl
 	
 	@Indexable(type = IndexableType.REINDEX)
 	public StructuredData addStructuredData( 
+			long dataCollectionId, 
 			long dataSetId, 
 			long dataTypeId,
+			boolean multiple,
+			long startIndex,
+			int count,
+			boolean freezed,
+			boolean verified,
+			boolean comments,
+			boolean history,
 			String data,
 			int status,
 			ServiceContext sc) throws PortalException  {
@@ -94,21 +104,18 @@ public class StructuredDataLocalServiceImpl
 
 		structuredData.setExpandoBridgeAttributes(sc);
 
-		DataType dataType = super.dataTypePersistence.findByPrimaryKey(dataTypeId);
-		String dataTypeDisplayName = dataType.getDisplayName();
+		structuredData.setDataCollectionId(dataCollectionId);
+		structuredData.setDataSetId(dataSetId);
 		structuredData.setDataTypeId(dataTypeId);
-		structuredData.setDataTypeDisplayName(dataTypeDisplayName);
-		
-		/* Must implement data set display name save processes and replace the very next codes.
-		DataSet dataSet = super.dataSetPersistence.findByPrimaryKey(dataSetId);
-		String dataSetDisplayName = dataSet.getDisplayName();
-		structuredData.setDataSetId(dataTypeId);
-		structuredData.setDataSetDisplayName( dataSetDisplayname );
-		 */
-		structuredData.setDataSetId(dataTypeId);
-		structuredData.setDataSetDisplayName(dataTypeDisplayName);
-		
-		structuredData.setStructuredData(data);
+				
+		structuredData.setMultiple(multiple);
+		structuredData.setStartIndex(startIndex);
+		structuredData.setCount(count);
+		structuredData.setFreezed(freezed);
+		structuredData.setVerified(verified);
+		structuredData.setComments(comments);
+		structuredData.setHistory(history);
+		structuredData.setData(data);
 		
 		super.structuredDataPersistence.update(structuredData);
 		
@@ -161,29 +168,34 @@ public class StructuredDataLocalServiceImpl
 	
 	@Indexable(type = IndexableType.REINDEX)
 	public StructuredData updateStructuredData(
-			long structuredDataId, 
+			long structuredDataId,
+			long dataCollectionId, 
 			long dataSetId, 
-			long dataTypeId, 
+			long dataTypeId,
+			boolean multiple,
+			long startIndex,
+			int count,
+			boolean freezed,
+			boolean verified,
+			boolean comments,
+			boolean history,
 			String data,
 			int status,
 			ServiceContext sc) throws PortalException {
 		StructuredData structuredData = super.structuredDataPersistence.findByPrimaryKey(structuredDataId);
 		
-		DataType dataType = super.dataTypePersistence.findByPrimaryKey(dataTypeId);
-		String dataTypeDisplayName = dataType.getDisplayName();
+		structuredData.setDataCollectionId(dataCollectionId);
+		structuredData.setDataSetId(dataSetId);
 		structuredData.setDataTypeId(dataTypeId);
-		structuredData.setDataTypeDisplayName(dataTypeDisplayName);
-		
-		/* Must implement data set display name save processes and replace the very next codes.
-		DataSet dataSet = super.dataSetPersistence.findByPrimaryKey(dataSetId);
-		String dataSetDisplayName = dataSet.getDisplayName();
-		structuredData.setDataSetId(dataTypeId);
-		structuredData.setDataSetDisplayName( dataSetDisplayname );
-		 */
-		structuredData.setDataSetId(dataTypeId);
-		structuredData.setDataSetDisplayName(dataTypeDisplayName);
-		
-		structuredData.setStructuredData(data);
+				
+		structuredData.setMultiple(multiple);
+		structuredData.setStartIndex(startIndex);
+		structuredData.setCount(count);
+		structuredData.setFreezed(freezed);
+		structuredData.setVerified(verified);
+		structuredData.setComments(comments);
+		structuredData.setHistory(history);
+		structuredData.setData(data);
 		
 		super.structuredDataPersistence.update(structuredData);
 		
@@ -304,21 +316,6 @@ public class StructuredDataLocalServiceImpl
 		}
 	}
 	*/
-	
-	public JSONObject getStructuredDataJSON( long structuredDataId ) throws PortalException {
-		
-		StructuredData structuredData = super.getStructuredData(structuredDataId);
-		
-		JSONObject jsonStructuredData = null;
-		
-		try {
-			jsonStructuredData = JSONFactoryUtil.createJSONObject( structuredData.getStructuredData() );
-		} catch (JSONException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		return jsonStructuredData;
-	}
 	
 	public List<StructuredData> getAllStructuredDatas(){
 		return super.structuredDataPersistence.findAll();
@@ -628,5 +625,29 @@ public class StructuredDataLocalServiceImpl
 			assetEntryQuery);
 
 		return new SearchContainerResults<AssetEntry>(assetEntries, total);
+		
 	}
+	
+	public JSONObject convertModelToJSONObject(StructuredData structuredData) throws JSONException {
+		JSONObject jsonData = JSONFactoryUtil.createJSONObject(structuredData.getData()); 
+		String serializedData = JSONFactoryUtil.looseSerialize(structuredData);
+		
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject( serializedData);
+
+		jsonObject.put("data", jsonData);
+		
+		return jsonObject;
+	}
+	
+	public JSONArray convertListToJSONArray(List<StructuredData> list) throws JSONException {
+		JSONArray array = JSONFactoryUtil.createJSONArray();
+		
+		Iterator<StructuredData> iter = list.iterator();
+		while( iter.hasNext()) {
+			array.put(convertModelToJSONObject(iter.next()));
+		}
+		
+		return array;
+	}
+
 }

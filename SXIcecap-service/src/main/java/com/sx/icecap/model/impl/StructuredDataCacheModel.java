@@ -63,7 +63,7 @@ public class StructuredDataCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(51);
+		StringBundler sb = new StringBundler(47);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -89,32 +89,28 @@ public class StructuredDataCacheModel
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
+		sb.append(", dataCollectionId=");
+		sb.append(dataCollectionId);
 		sb.append(", dataSetId=");
 		sb.append(dataSetId);
-		sb.append(", dataSetDisplayName=");
-		sb.append(dataSetDisplayName);
 		sb.append(", dataTypeId=");
 		sb.append(dataTypeId);
-		sb.append(", dataTypeDisplayName=");
-		sb.append(dataTypeDisplayName);
-		sb.append(", dataSetFolderId=");
-		sb.append(dataSetFolderId);
-		sb.append(", dataSetFolderName=");
-		sb.append(dataSetFolderName);
-		sb.append(", recordType=");
-		sb.append(recordType);
-		sb.append(", recordDelimiter=");
-		sb.append(recordDelimiter);
-		sb.append(", recordFormat=");
-		sb.append(recordFormat);
-		sb.append(", entryCount=");
-		sb.append(entryCount);
-		sb.append(", startEntryNo=");
-		sb.append(startEntryNo);
-		sb.append(", endEntryNo=");
-		sb.append(endEntryNo);
-		sb.append(", structuredData=");
-		sb.append(structuredData);
+		sb.append(", multiple=");
+		sb.append(multiple);
+		sb.append(", startIndex=");
+		sb.append(startIndex);
+		sb.append(", count=");
+		sb.append(count);
+		sb.append(", freezed=");
+		sb.append(freezed);
+		sb.append(", verified=");
+		sb.append(verified);
+		sb.append(", comments=");
+		sb.append(comments);
+		sb.append(", history=");
+		sb.append(history);
+		sb.append(", data=");
+		sb.append(data);
 		sb.append("}");
 
 		return sb.toString();
@@ -174,63 +170,22 @@ public class StructuredDataCacheModel
 			structuredDataImpl.setStatusDate(new Date(statusDate));
 		}
 
+		structuredDataImpl.setDataCollectionId(dataCollectionId);
 		structuredDataImpl.setDataSetId(dataSetId);
-
-		if (dataSetDisplayName == null) {
-			structuredDataImpl.setDataSetDisplayName("");
-		}
-		else {
-			structuredDataImpl.setDataSetDisplayName(dataSetDisplayName);
-		}
-
 		structuredDataImpl.setDataTypeId(dataTypeId);
+		structuredDataImpl.setMultiple(multiple);
+		structuredDataImpl.setStartIndex(startIndex);
+		structuredDataImpl.setCount(count);
+		structuredDataImpl.setFreezed(freezed);
+		structuredDataImpl.setVerified(verified);
+		structuredDataImpl.setComments(comments);
+		structuredDataImpl.setHistory(history);
 
-		if (dataTypeDisplayName == null) {
-			structuredDataImpl.setDataTypeDisplayName("");
+		if (data == null) {
+			structuredDataImpl.setData("");
 		}
 		else {
-			structuredDataImpl.setDataTypeDisplayName(dataTypeDisplayName);
-		}
-
-		structuredDataImpl.setDataSetFolderId(dataSetFolderId);
-
-		if (dataSetFolderName == null) {
-			structuredDataImpl.setDataSetFolderName("");
-		}
-		else {
-			structuredDataImpl.setDataSetFolderName(dataSetFolderName);
-		}
-
-		if (recordType == null) {
-			structuredDataImpl.setRecordType("");
-		}
-		else {
-			structuredDataImpl.setRecordType(recordType);
-		}
-
-		if (recordDelimiter == null) {
-			structuredDataImpl.setRecordDelimiter("");
-		}
-		else {
-			structuredDataImpl.setRecordDelimiter(recordDelimiter);
-		}
-
-		if (recordFormat == null) {
-			structuredDataImpl.setRecordFormat("");
-		}
-		else {
-			structuredDataImpl.setRecordFormat(recordFormat);
-		}
-
-		structuredDataImpl.setEntryCount(entryCount);
-		structuredDataImpl.setStartEntryNo(startEntryNo);
-		structuredDataImpl.setEndEntryNo(endEntryNo);
-
-		if (structuredData == null) {
-			structuredDataImpl.setStructuredData("");
-		}
-		else {
-			structuredDataImpl.setStructuredData(structuredData);
+			structuredDataImpl.setData(data);
 		}
 
 		structuredDataImpl.resetOriginalValues();
@@ -259,24 +214,26 @@ public class StructuredDataCacheModel
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
 
+		dataCollectionId = objectInput.readLong();
+
 		dataSetId = objectInput.readLong();
-		dataSetDisplayName = objectInput.readUTF();
 
 		dataTypeId = objectInput.readLong();
-		dataTypeDisplayName = objectInput.readUTF();
 
-		dataSetFolderId = objectInput.readLong();
-		dataSetFolderName = objectInput.readUTF();
-		recordType = objectInput.readUTF();
-		recordDelimiter = objectInput.readUTF();
-		recordFormat = objectInput.readUTF();
+		multiple = objectInput.readBoolean();
 
-		entryCount = objectInput.readInt();
+		startIndex = objectInput.readLong();
 
-		startEntryNo = objectInput.readInt();
+		count = objectInput.readInt();
 
-		endEntryNo = objectInput.readInt();
-		structuredData = objectInput.readUTF();
+		freezed = objectInput.readBoolean();
+
+		verified = objectInput.readBoolean();
+
+		comments = objectInput.readBoolean();
+
+		history = objectInput.readBoolean();
+		data = objectInput.readUTF();
 	}
 
 	@Override
@@ -319,65 +276,31 @@ public class StructuredDataCacheModel
 
 		objectOutput.writeLong(statusDate);
 
-		objectOutput.writeLong(dataSetId);
+		objectOutput.writeLong(dataCollectionId);
 
-		if (dataSetDisplayName == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(dataSetDisplayName);
-		}
+		objectOutput.writeLong(dataSetId);
 
 		objectOutput.writeLong(dataTypeId);
 
-		if (dataTypeDisplayName == null) {
+		objectOutput.writeBoolean(multiple);
+
+		objectOutput.writeLong(startIndex);
+
+		objectOutput.writeInt(count);
+
+		objectOutput.writeBoolean(freezed);
+
+		objectOutput.writeBoolean(verified);
+
+		objectOutput.writeBoolean(comments);
+
+		objectOutput.writeBoolean(history);
+
+		if (data == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(dataTypeDisplayName);
-		}
-
-		objectOutput.writeLong(dataSetFolderId);
-
-		if (dataSetFolderName == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(dataSetFolderName);
-		}
-
-		if (recordType == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(recordType);
-		}
-
-		if (recordDelimiter == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(recordDelimiter);
-		}
-
-		if (recordFormat == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(recordFormat);
-		}
-
-		objectOutput.writeInt(entryCount);
-
-		objectOutput.writeInt(startEntryNo);
-
-		objectOutput.writeInt(endEntryNo);
-
-		if (structuredData == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(structuredData);
+			objectOutput.writeUTF(data);
 		}
 	}
 
@@ -393,18 +316,16 @@ public class StructuredDataCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
+	public long dataCollectionId;
 	public long dataSetId;
-	public String dataSetDisplayName;
 	public long dataTypeId;
-	public String dataTypeDisplayName;
-	public long dataSetFolderId;
-	public String dataSetFolderName;
-	public String recordType;
-	public String recordDelimiter;
-	public String recordFormat;
-	public int entryCount;
-	public int startEntryNo;
-	public int endEntryNo;
-	public String structuredData;
+	public boolean multiple;
+	public long startIndex;
+	public int count;
+	public boolean freezed;
+	public boolean verified;
+	public boolean comments;
+	public boolean history;
+	public String data;
 
 }

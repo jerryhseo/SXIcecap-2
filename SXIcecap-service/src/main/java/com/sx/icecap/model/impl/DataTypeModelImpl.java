@@ -93,7 +93,8 @@ public class DataTypeModelImpl
 		{"dataTypeVersion", Types.VARCHAR}, {"displayName", Types.VARCHAR},
 		{"extension", Types.VARCHAR}, {"sampleFileId", Types.BIGINT},
 		{"description", Types.VARCHAR}, {"tooltip", Types.VARCHAR},
-		{"visualizers", Types.VARCHAR}, {"hasDataStructure", Types.BOOLEAN}
+		{"freezable", Types.BOOLEAN}, {"verifiable", Types.BOOLEAN},
+		{"dataStructureId", Types.BIGINT}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -120,12 +121,13 @@ public class DataTypeModelImpl
 		TABLE_COLUMNS_MAP.put("sampleFileId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("tooltip", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("visualizers", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("hasDataStructure", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("freezable", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("verifiable", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("dataStructureId", Types.BIGINT);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataType (uuid_ VARCHAR(75) null,dataTypeId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataTypeName VARCHAR(75) null,dataTypeVersion VARCHAR(75) null,displayName STRING null,extension VARCHAR(75) null,sampleFileId LONG,description STRING null,tooltip STRING null,visualizers VARCHAR(1024) null,hasDataStructure BOOLEAN)";
+		"create table SX_ICECAP_DataType (uuid_ VARCHAR(75) null,dataTypeId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataTypeName VARCHAR(75) null,dataTypeVersion VARCHAR(75) null,displayName STRING null,extension VARCHAR(75) null,sampleFileId LONG,description STRING null,tooltip STRING null,freezable BOOLEAN,verifiable BOOLEAN,dataStructureId LONG)";
 
 	public static final String TABLE_SQL_DROP = "drop table SX_ICECAP_DataType";
 
@@ -143,19 +145,21 @@ public class DataTypeModelImpl
 
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
-	public static final long DATATYPENAME_COLUMN_BITMASK = 2L;
+	public static final long DATASTRUCTUREID_COLUMN_BITMASK = 2L;
 
-	public static final long DATATYPEVERSION_COLUMN_BITMASK = 4L;
+	public static final long DATATYPENAME_COLUMN_BITMASK = 4L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 8L;
+	public static final long DATATYPEVERSION_COLUMN_BITMASK = 8L;
 
-	public static final long STATUS_COLUMN_BITMASK = 16L;
+	public static final long GROUPID_COLUMN_BITMASK = 16L;
 
-	public static final long USERID_COLUMN_BITMASK = 32L;
+	public static final long STATUS_COLUMN_BITMASK = 32L;
 
-	public static final long UUID_COLUMN_BITMASK = 64L;
+	public static final long USERID_COLUMN_BITMASK = 64L;
 
-	public static final long DATATYPEID_COLUMN_BITMASK = 128L;
+	public static final long UUID_COLUMN_BITMASK = 128L;
+
+	public static final long DATATYPEID_COLUMN_BITMASK = 256L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -336,15 +340,18 @@ public class DataTypeModelImpl
 		attributeGetterFunctions.put("tooltip", DataType::getTooltip);
 		attributeSetterBiConsumers.put(
 			"tooltip", (BiConsumer<DataType, String>)DataType::setTooltip);
-		attributeGetterFunctions.put("visualizers", DataType::getVisualizers);
+		attributeGetterFunctions.put("freezable", DataType::getFreezable);
 		attributeSetterBiConsumers.put(
-			"visualizers",
-			(BiConsumer<DataType, String>)DataType::setVisualizers);
+			"freezable", (BiConsumer<DataType, Boolean>)DataType::setFreezable);
+		attributeGetterFunctions.put("verifiable", DataType::getVerifiable);
+		attributeSetterBiConsumers.put(
+			"verifiable",
+			(BiConsumer<DataType, Boolean>)DataType::setVerifiable);
 		attributeGetterFunctions.put(
-			"hasDataStructure", DataType::getHasDataStructure);
+			"dataStructureId", DataType::getDataStructureId);
 		attributeSetterBiConsumers.put(
-			"hasDataStructure",
-			(BiConsumer<DataType, Boolean>)DataType::setHasDataStructure);
+			"dataStructureId",
+			(BiConsumer<DataType, Long>)DataType::setDataStructureId);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -990,33 +997,55 @@ public class DataTypeModelImpl
 	}
 
 	@Override
-	public String getVisualizers() {
-		if (_visualizers == null) {
-			return "";
+	public boolean getFreezable() {
+		return _freezable;
+	}
+
+	@Override
+	public boolean isFreezable() {
+		return _freezable;
+	}
+
+	@Override
+	public void setFreezable(boolean freezable) {
+		_freezable = freezable;
+	}
+
+	@Override
+	public boolean getVerifiable() {
+		return _verifiable;
+	}
+
+	@Override
+	public boolean isVerifiable() {
+		return _verifiable;
+	}
+
+	@Override
+	public void setVerifiable(boolean verifiable) {
+		_verifiable = verifiable;
+	}
+
+	@Override
+	public long getDataStructureId() {
+		return _dataStructureId;
+	}
+
+	@Override
+	public void setDataStructureId(long dataStructureId) {
+		_columnBitmask |= DATASTRUCTUREID_COLUMN_BITMASK;
+
+		if (!_setOriginalDataStructureId) {
+			_setOriginalDataStructureId = true;
+
+			_originalDataStructureId = _dataStructureId;
 		}
-		else {
-			return _visualizers;
-		}
+
+		_dataStructureId = dataStructureId;
 	}
 
-	@Override
-	public void setVisualizers(String visualizers) {
-		_visualizers = visualizers;
-	}
-
-	@Override
-	public boolean getHasDataStructure() {
-		return _hasDataStructure;
-	}
-
-	@Override
-	public boolean isHasDataStructure() {
-		return _hasDataStructure;
-	}
-
-	@Override
-	public void setHasDataStructure(boolean hasDataStructure) {
-		_hasDataStructure = hasDataStructure;
+	public long getOriginalDataStructureId() {
+		return _originalDataStructureId;
 	}
 
 	@Override
@@ -1416,8 +1445,9 @@ public class DataTypeModelImpl
 		dataTypeImpl.setSampleFileId(getSampleFileId());
 		dataTypeImpl.setDescription(getDescription());
 		dataTypeImpl.setTooltip(getTooltip());
-		dataTypeImpl.setVisualizers(getVisualizers());
-		dataTypeImpl.setHasDataStructure(isHasDataStructure());
+		dataTypeImpl.setFreezable(isFreezable());
+		dataTypeImpl.setVerifiable(isVerifiable());
+		dataTypeImpl.setDataStructureId(getDataStructureId());
 
 		dataTypeImpl.resetOriginalValues();
 
@@ -1501,6 +1531,10 @@ public class DataTypeModelImpl
 		_originalDataTypeName = _dataTypeName;
 
 		_originalDataTypeVersion = _dataTypeVersion;
+
+		_originalDataStructureId = _dataStructureId;
+
+		_setOriginalDataStructureId = false;
 
 		_columnBitmask = 0;
 	}
@@ -1631,15 +1665,11 @@ public class DataTypeModelImpl
 			dataTypeCacheModel.tooltip = null;
 		}
 
-		dataTypeCacheModel.visualizers = getVisualizers();
+		dataTypeCacheModel.freezable = isFreezable();
 
-		String visualizers = dataTypeCacheModel.visualizers;
+		dataTypeCacheModel.verifiable = isVerifiable();
 
-		if ((visualizers != null) && (visualizers.length() == 0)) {
-			dataTypeCacheModel.visualizers = null;
-		}
-
-		dataTypeCacheModel.hasDataStructure = isHasDataStructure();
+		dataTypeCacheModel.dataStructureId = getDataStructureId();
 
 		return dataTypeCacheModel;
 	}
@@ -1771,8 +1801,11 @@ public class DataTypeModelImpl
 	private String _descriptionCurrentLanguageId;
 	private String _tooltip;
 	private String _tooltipCurrentLanguageId;
-	private String _visualizers;
-	private boolean _hasDataStructure;
+	private boolean _freezable;
+	private boolean _verifiable;
+	private long _dataStructureId;
+	private long _originalDataStructureId;
+	private boolean _setOriginalDataStructureId;
 	private long _columnBitmask;
 	private DataType _escapedModel;
 

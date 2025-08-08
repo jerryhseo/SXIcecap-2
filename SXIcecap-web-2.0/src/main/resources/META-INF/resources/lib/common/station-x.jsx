@@ -88,6 +88,7 @@ export const ValidationSectionProperty = {
 export const ErrorClass = {
 	ERROR: "has-error",
 	WARNING: "has-warning",
+	CRITICAL: "has-critical",
 	SUCCESS: "has-success"
 };
 
@@ -467,17 +468,20 @@ export const Constant = {
 		CALCULATOR: "CALCULATOR",
 		VISUALIZER: "VISUALIZER"
 	},
-	WorkflowStatus: {
-		INITIALIZE: { code: "INITIALIZE", value: 1702001 },
-		CREATED: { code: "CREATED", value: 1702002 },
-		UPLOAD: { code: "UPLOAD", value: 1702003 },
-		QUEUED: { code: "QUEUED", value: 1702004 },
-		RUNNING: { code: "RUNNING", value: 1702005 },
-		TRANSFER: { code: "TRANSFER", value: 1702006 },
-		PAUSED: { code: "PAUSED", value: 1702009 },
-		CANCELED: { code: "CANCELED", value: 1702010 },
-		SUCCESS: { code: "SUCCESS", value: 1702011 },
-		FAILED: { code: "FAILED", value: 1702012 }
+	Status: {
+		APPROVED: 0,
+		PENDING: 1,
+		DRAFT: 2,
+		EXPIRED: 3,
+		DENIED: 4,
+		INCOMPLETE: 6,
+		SCHEDULED: 7,
+		IN_TRASH: 8
+	},
+	State: {
+		INACTIVE: -1,
+		ACTIVE: 1,
+		DISABLED: 0
 	},
 	Position: {
 		DEAD_END: "deadEnd",
@@ -524,6 +528,7 @@ export const Event = {
 	SX_REMOVE_SLAVE_PARAMS: "SX_REMOVE_SLAVE_PARAMS",
 	SX_UNFOCUS: "SX_UNFOCUS",
 	SX_VIEW_TYPE_CHANGED: "SX_VIEW_TYPE_CHANGED",
+	SX_SET_SELECTED_MEMBER: "SX_SET_SELECTED_MEMBER",
 
 	SEARCH_FROM_DATE_CHANGED: "SEARCH_FROM_DATE_CHANGED",
 	SEARCH_TO_DATE_CHANGED: "SEARCH_TO_DATE_CHANGED",
@@ -681,6 +686,9 @@ export const Event = {
 	},
 	on: (event, handler) => {
 		Liferay.on(event, handler);
+	},
+	detach: (event, handler) => {
+		Liferay.detach(event, handler);
 	},
 	createEventDataPacket: (sourcePortlet, targetPortlet, params) => {
 		return {

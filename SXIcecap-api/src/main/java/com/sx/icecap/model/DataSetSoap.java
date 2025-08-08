@@ -48,10 +48,6 @@ public class DataSetSoap implements Serializable {
 		soapModel.setDataSetVersion(model.getDataSetVersion());
 		soapModel.setDisplayName(model.getDisplayName());
 		soapModel.setDescription(model.getDescription());
-		soapModel.setFolderId(model.getFolderId());
-		soapModel.setStructure(model.getStructure());
-		soapModel.setVerificationType(model.getVerificationType());
-		soapModel.setMultiEntryLevel(model.getMultiEntryLevel());
 
 		return soapModel;
 	}
@@ -241,38 +237,6 @@ public class DataSetSoap implements Serializable {
 		_description = description;
 	}
 
-	public long getFolderId() {
-		return _folderId;
-	}
-
-	public void setFolderId(long folderId) {
-		_folderId = folderId;
-	}
-
-	public String getStructure() {
-		return _structure;
-	}
-
-	public void setStructure(String structure) {
-		_structure = structure;
-	}
-
-	public String getVerificationType() {
-		return _verificationType;
-	}
-
-	public void setVerificationType(String verificationType) {
-		_verificationType = verificationType;
-	}
-
-	public int getMultiEntryLevel() {
-		return _multiEntryLevel;
-	}
-
-	public void setMultiEntryLevel(int multiEntryLevel) {
-		_multiEntryLevel = multiEntryLevel;
-	}
-
 	private String _uuid;
 	private long _dataSetId;
 	private long _companyId;
@@ -290,9 +254,5 @@ public class DataSetSoap implements Serializable {
 	private String _dataSetVersion;
 	private String _displayName;
 	private String _description;
-	private long _folderId;
-	private String _structure;
-	private String _verificationType;
-	private int _multiEntryLevel;
 
 }

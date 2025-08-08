@@ -36,12 +36,32 @@ public interface DataStructure extends DataStructureModel, PersistedModel {
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.sx.icecap.model.impl.DataStructureImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<DataStructure, Long> DATA_TYPE_ID_ACCESSOR =
-		new Accessor<DataStructure, Long>() {
+	public static final Accessor<DataStructure, String> UUID_ACCESSOR =
+		new Accessor<DataStructure, String>() {
+
+			@Override
+			public String get(DataStructure dataStructure) {
+				return dataStructure.getUuid();
+			}
+
+			@Override
+			public Class<String> getAttributeClass() {
+				return String.class;
+			}
+
+			@Override
+			public Class<DataStructure> getTypeClass() {
+				return DataStructure.class;
+			}
+
+		};
+
+	public static final Accessor<DataStructure, Long>
+		DATA_STRUCTURE_ID_ACCESSOR = new Accessor<DataStructure, Long>() {
 
 			@Override
 			public Long get(DataStructure dataStructure) {
-				return dataStructure.getDataTypeId();
+				return dataStructure.getDataStructureId();
 			}
 
 			@Override
@@ -55,5 +75,10 @@ public interface DataStructure extends DataStructureModel, PersistedModel {
 			}
 
 		};
+
+	public com.liferay.portal.kernel.json.JSONObject toJSON();
+
+	public com.liferay.portal.kernel.json.JSONObject toJSON(
+		java.util.Locale locale);
 
 }

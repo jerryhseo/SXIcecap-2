@@ -7,32 +7,20 @@ import Icon from "@clayui/icon";
 /**
  *
  */
-class SXDropdown extends React.Component {
+class SXActionDropdown extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.namespace = props.namespace;
-		this.items = props.items;
+		this.actionItems = props.actionItems;
 		this.formId = props.formId;
 		this.symbol = props.symbol;
 		this.spritemap = props.spritemap;
-		this.targetData = props.targetData;
+		this.dataKey = props.dataKey;
 
 		this.state = {
-			activeDropdown: props.activeDropdown ?? false
+			activeDropdown: false
 		};
-	}
-
-	handleActionClick(e, actionId) {
-		e.stopPropagation();
-
-		Event.fire(Event.SX_POP_ACTION_CLICKED, this.namespace, this.namespace, {
-			targetFormId: this.formId,
-			targetData: this.targetData,
-			actionId: actionId
-		});
-
-		this.setState({ activeDropdown: false });
 	}
 
 	render() {
@@ -51,20 +39,14 @@ class SXDropdown extends React.Component {
 				}
 				onActiveChange={(val) => {
 					this.setState({ activeDropdown: val });
-
-					Event.fire(Event.SX_POP_BUTTON_CLICKED, this.namespace, this.namespace, {
-						targetFormId: this.formId,
-						targetData: this.targetData,
-						activeDropdown: val
-					});
 				}}
 				menuWidth="shrink"
 			>
-				<DropDown.ItemList items={this.items}>
+				<DropDown.ItemList items={this.actionItems}>
 					{(actionItem) => (
 						<DropDown.Item
 							key={actionItem.id}
-							onClick={(e) => this.handleActionClick(e, actionItem.id)}
+							onClick={(e) => actionItem.action(this.dataKey)}
 						>
 							<Icon
 								spritemap={this.spritemap}
@@ -80,4 +62,4 @@ class SXDropdown extends React.Component {
 	}
 }
 
-export default SXDropdown;
+export default SXActionDropdown;

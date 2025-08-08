@@ -17,10 +17,8 @@ package com.sx.icecap.service.impl;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
-import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppService;
-import com.liferay.document.library.kernel.service.DLAppServiceUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -28,7 +26,6 @@ import com.liferay.portal.kernel.dao.search.SearchContainerResults;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -36,27 +33,18 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.sx.constant.StationXConstants;
-import com.sx.icecap.constant.DataStructureProperty;
-import com.sx.icecap.constant.Constant;
-import com.sx.icecap.constant.DataTypeProperty;
-import com.sx.icecap.constant.ParameterProperty;
-import com.sx.icecap.constant.ParameterType;
+import com.sx.icecap.constant.DataTypeProperties;
 import com.sx.icecap.exception.DuplicatedDataTypeNameException;
 import com.sx.icecap.exception.InvalidDataTypeNameException;
-import com.sx.icecap.exception.NoSuchDataStructureException;
 import com.sx.icecap.exception.NoSuchDataTypeException;
-import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.model.DataType;
-import com.sx.icecap.model.StructuredData;
 import com.sx.icecap.service.DataStructureLocalService;
-import com.sx.icecap.service.StructuredDataLocalServiceUtil;
 import com.sx.icecap.service.base.DataTypeLocalServiceBaseImpl;
 import com.sx.icecap.util.comparator.GroupIdComparator;
 import com.sx.icecap.util.comparator.ModifiedDateComparator;
@@ -65,17 +53,10 @@ import com.sx.icecap.util.comparator.datatype.DataTypeNameComparator;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-
-import javax.portlet.PortletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -100,7 +81,7 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
 			Map<Locale, String> tooltipMap,
-			String visualizers,
+			long dataStructureId,
 			int status,
 			ServiceContext sc) throws PortalException {
 		
@@ -123,8 +104,7 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		dataType.setDisplayNameMap(displayNameMap, defaultLocale);
 		dataType.setDescriptionMap(descriptionMap, defaultLocale);
 		dataType.setTooltipMap(tooltipMap, defaultLocale);
-		dataType.setVisualizers(visualizers);
-		dataType.setHasDataStructure(false);
+		dataType.setDataStructureId(dataStructureId);
 		
 		Date now = new Date();
 		User user = super.userLocalService.getUser(sc.getUserId());
@@ -207,7 +187,7 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
 			Map<Locale, String> tooltipMap,
-			String visualizers,
+			long dataStructureId,
 			int status,
 			ServiceContext sc) throws PortalException {
 		DataType dataType = super.dataTypePersistence.findByPrimaryKey(dataTypeId);
@@ -218,7 +198,7 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		dataType.setDisplayNameMap(displayNameMap, sc.getLocale());
 		dataType.setDescriptionMap(descriptionMap, sc.getLocale());
 		dataType.setTooltipMap(tooltipMap, sc.getLocale());
-		dataType.setVisualizers(visualizers);
+		dataType.setDataStructureId(dataStructureId);
 		
 		dataType.setUserId(sc.getUserId());
 		dataType.setGroupId(sc.getScopeGroupId());
@@ -311,9 +291,7 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	public DataType removeDataType( long dataTypeId ) throws PortalException {
 		DataType dataType = super.dataTypePersistence.remove(dataTypeId);
 		
-		if( dataType.getHasDataStructure() ) {
-			dataStructurePersistence.remove(dataTypeId);
-		}
+		dataStructurePersistence.remove(dataTypeId);
 		
 		super.assetEntryLocalService.deleteEntry(DataType.class.getName(), dataType.getPrimaryKey());
 
@@ -334,66 +312,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		for( long dataTypeId : dataTypeIds ) {
 			this.removeDataType(dataTypeId);
 		}
-	}
-	
-	public DataType copyDataType( long dataTypeId, ServiceContext sc ) throws PortalException {
-		DataType dataType = super.dataTypePersistence.fetchByPrimaryKey(dataTypeId);
-		if( Validator.isNull(dataType) ) {
-			throw new PortalException( "Cannot find data type to be copied: " + dataTypeId );
-		}
-		
-		DataType copiedDataType = this.addDataType(
-							dataType.getDataTypeName() + "_copied", 
-							"1.0.0", 
-							dataType.getExtension(), 
-							dataType.getDisplayNameMap(), 
-							dataType.getDescriptionMap(), 
-							dataType.getTooltipMap(),
-							dataType.getVisualizers(),
-							WorkflowConstants.STATUS_DRAFT, 
-							sc);
-		
-		return copiedDataType;
-	}
-	
-	/**
-	 * @throws NoSuchDataStructureException 
-	 *  Set the data structure for the dataType specified by dataTypeId.
-	 *  
-	 *  @since 1.0
-	 *  @see com.sx.icecap.datatype.service
-	 *  @author Jerry H. Seo
-	 *  @param
-	 *  	long Datatype ID
-	 *  	String Data Structure
-	 *  @throws
-	 *  	void
-	 *  @return
-	 *  	void
-	 */
-	public DataStructure updateDataStructure( long dataTypeId, String strDataStructure ){
-		
-		// Set data structure and update the table
-		DataStructure dataStructure = null;
-		
-		try{
-			dataStructure = dataStructurePersistence.findByPrimaryKey(dataTypeId);
-		} catch( NoSuchDataStructureException e ) {
-			dataStructure = _dataStructureLocalService.createDataStructure(dataTypeId);
-		}
-		dataStructure.setStructure(strDataStructure);
-		// Update the property, hasDataStructure,  of the data type as true
-		dataStructure = dataStructurePersistence.update(dataStructure);
-		_updateHasDataStructure( dataTypeId, true );
-		
-		return dataStructure;
-	}
-	
-	public DataStructure deleteDataStructure( long dataTypeId ) throws NoSuchDataStructureException {
-		DataStructure dataStructure =  dataStructurePersistence.remove(dataTypeId);
-		_updateHasDataStructure( dataTypeId, false );
-		
-		return dataStructure;
 	}
 	
 	public boolean checkDataTypeNameUnique(String paramName) {
@@ -615,7 +533,7 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		return super.dataTypePersistence.countByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
 	}
 	
-	public String getName( long dataTypeId, Locale locale ) throws NoSuchDataTypeException {
+	public String getDisplayName( long dataTypeId, Locale locale ) throws NoSuchDataTypeException {
 		DataType dataType = super.dataTypePersistence.findByPrimaryKey(dataTypeId);
 		
 		return dataType.getDisplayName(locale);
@@ -632,7 +550,7 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 
 		OrderByComparator<DataType> orderByComparator = null;
 
-		if (orderByCol.equals(DataTypeProperty.DATATYPE_NAME)) {
+		if (orderByCol.equals(DataTypeProperties.DATATYPE_NAME)) {
 			orderByComparator = new DataTypeNameComparator(orderByAsc);
 		}
 		else if( orderByCol.equalsIgnoreCase("modifiedDate")) {
@@ -648,290 +566,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		return orderByComparator;
 	}
 	
-	public String getDataStructure( long dataTypeId ) throws NoSuchDataStructureException{
-		DataStructure dataStructure = super.dataStructurePersistence.findByPrimaryKey(dataTypeId);
-		String structure = dataStructure.getStructure();
-		return Validator.isNull(structure) ? StringPool.BLANK : structure;
-	}
-	
-	/**
-	 * Get data structure as a JSON object.
-	 * 
-	 *  @return
-	 *  	null,	if the data type has no structure
-	 *  	JSONObject, if has a proper structure.
-	 */
-	
-	public JSONObject getDataStructureJSONObject( long dataTypeId ) throws JSONException{
-		String dataStructureString = "";
-		
-		try {
-			dataStructureString = getDataStructure( dataTypeId );
-		} catch (NoSuchDataStructureException e) {
-			dataStructureString = "";
-		}
-		
-		JSONObject jsonObject = null;
-		if( !dataStructureString.isEmpty() ) {
-				jsonObject = JSONFactoryUtil.createJSONObject( dataStructureString );
-		}
-		
-		return jsonObject;
-	}
-	
-	public JSONObject getParameterByName( long dataTypeId, String paramName ) throws JSONException {
-		JSONObject param = null;
-		
-		JSONObject structure = getDataStructureJSONObject(dataTypeId);
-		
-		JSONArray params = structure.getJSONArray(DataStructureProperty.PARAMS);
-		
-		for( int i=0; i<params.length(); i++ ) {
-			param = params.getJSONObject(i);
-			
-			if( paramName.equalsIgnoreCase( param.getString(ParameterProperty.NAME)) ) {
-				break;
-			}
-		}
-		
-		return param;
-	}
-	
-	public StructuredData addStructuredData(
-			long dataSetId, 
-			long dataTypeId,
-			String data,
-			int status,
-			ServiceContext sc) throws PortalException  {
-		return StructuredDataLocalServiceUtil.addStructuredData(dataSetId, dataTypeId, data, status, sc);
-	}
-
-	public StructuredData updateStructuredData(
-			long structuredDataId,
-			long dataSetId, 
-			long dataTypeId,
-			String data,
-			int status,
-			ServiceContext sc) throws PortalException  {
-		return StructuredDataLocalServiceUtil.updateStructuredData(structuredDataId, dataSetId, dataTypeId, data, status, sc);
-	}
-	
-	public StructuredData updateStructuredDataStatus(
-			long userId, 
-			long structuredDataId, 
-			Integer status,
-			ServiceContext sc) throws PortalException, SystemException {
-		return StructuredDataLocalServiceUtil.updateStatus(userId, structuredDataId, status, sc);
-	}
-	
-	public StructuredData removeStructuredData( long structuredDataId, long dataFileFolderId ) throws PortalException {
-		return StructuredDataLocalServiceUtil.removeStructuredData( 
-				structuredDataId, dataFileFolderId);
-	}
-	
-	/*
-	public void removeStructuredDatas( long[] structuredDataIds ) throws PortalException {
-		StructuredDataLocalServiceUtil.removeStructuredDatas(structuredDataIds);
-	}
-	*/
-
-	public String getStructuredData( long structuredDataId ){
-		StructuredData data = super.structuredDataPersistence.fetchByPrimaryKey(structuredDataId);
-		return data.getStructuredData();
-	}
-	
-	public List<StructuredData> getStructuredDatas( long dataTypeId ){
-		return super.structuredDataPersistence.findByDataTypeId(dataTypeId);
-	}
-	public List<StructuredData> getStructuredDatas( long dataTypeId, int start, int end ){
-		return super.structuredDataPersistence.findByDataTypeId(dataTypeId, start, end);
-	}
-	
-	public JSONArray getStructuredDatasJSON( long dataTypeId ) {
-		List<StructuredData> listDatas = this.getStructuredDatas(dataTypeId);
-		
-		JSONArray datas = JSONFactoryUtil.createJSONArray( listDatas );
-		
-		return datas;
-	}
-	
-	public List<StructuredData> performAdvancedSearchOnStructuredData( long dataTypeId, String advancedQuery, int start, int end ) throws JSONException{
-		
-		JSONObject dataStructure = this.getDataStructureJSONObject(dataTypeId);
-		if( Validator.isNull(dataStructure) ) {
-			return null;
-		}
-		
-		List<StructuredData> results = new ArrayList<>();
-		
-		List<StructuredData> allData = getStructuredDatas(dataTypeId);
-		JSONObject jsonQuery = JSONFactoryUtil.createJSONObject(advancedQuery);
-		String fieldOperator = jsonQuery.getString("fieldOperator");
-		JSONObject jsonClauses = jsonQuery.getJSONObject("clauses");
-		
-		for( int i=0; i<allData.size(); i++ ) {
-			StructuredData data = allData.get(i);
-			String structuredData = data.getStructuredData();
-			JSONObject dataJson = JSONFactoryUtil.createJSONObject( structuredData );
-			
-			Iterator<String> fieldIter = jsonClauses.keys();
-			while( fieldIter.hasNext() ) {
-				String field = fieldIter.next();
-				
-				JSONObject clause = jsonClauses.getJSONObject(field);
-				
-				String inFieldOperator = clause.getString("operator");
-				boolean rangeSearch = clause.getBoolean("searchType");
-				
-				if( rangeSearch == true ) {
-					
-				}
-				else {
-					JSONArray keywords;
-				}
-			}
-		}
-		
-		try {
-			JSONObject query = JSONFactoryUtil.createJSONObject(advancedQuery);
-			
-			JSONObject andQuery = null;
-			if( query.has("and") ) {
-				andQuery = query.getJSONObject("and");
-				_processAndQuery( allData, dataStructure, andQuery, start, end );
-			}
-			
-			JSONObject orQuery = null;
-			if( query.has("or") ) {
-				orQuery = query.getJSONObject("or");
-				_processOrQuery( allData, dataStructure, orQuery, start, end );
-			}
-			
-			boolean hit = false;
-			
-			Iterator<String> queryIter = query.keys();
-			while( queryIter.hasNext() ) {
-				String key = queryIter.next();
-				
-				String queryVal = query.getString(key);
-				
-				for( int i=0; i<allData.size(); i++ ) {
-					StructuredData structuredData = allData.get(i);
-					JSONObject data = JSONFactoryUtil.createJSONObject(structuredData.getStructuredData());
-					
-				}
-				
-			}
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return results;
-	}
-	
-	private List<StructuredData> _processAndQuery( List<StructuredData> dataList, JSONObject dataStructure, JSONObject query, int start, int end ) {
-		List<StructuredData> results = new ArrayList<>();
-		
-		int delta =end - start + 1;
-		int resultCount = 0;
-		
-		Iterator<String> queryIter = query.keys();
-		
-		List<StructuredData> qualifiedDataList = dataList;
-		
-		while( queryIter.hasNext() ) {
-			String field = queryIter.next();
-			
-			JSONObject fieldQuery = query.getJSONObject(field);
-			String operator = fieldQuery.getString("operator");
-			
-			if( operator.equalsIgnoreCase("and") ) {
-				
-			}
-			else {
-				
-			}
-		}
-		
-		return results;
-	}
-	
-	private List<StructuredData> _processOrQuery( List<StructuredData> dataList, 	JSONObject dataStructure, JSONObject andQuery, int start, int end ) {
-		List<StructuredData> results = new ArrayList<>();
-		
-		return results;
-	}
-	
-	public List<String> getAbstractFields( long dataTypeId, boolean abstractKey ) throws JSONException{
-		List<String> abstractFieldList = new ArrayList<String>();
-		
-		JSONObject dataStructure = getDataStructureJSONObject(dataTypeId);
-		
-		if( Validator.isNotNull(dataStructure) ) {
-			JSONArray params = dataStructure.getJSONArray(DataStructureProperty.PARAMS);
-			
-			for( int i=0; i<params.length(); i++ ) {
-				JSONObject param = params.getJSONObject(i);
-				
-				boolean definedValue = (param.has(ParameterProperty.ABSTRACT_KEY) 
-										&& param.getBoolean(ParameterProperty.ABSTRACT_KEY) == true) ? true : false;
-				if( definedValue == abstractKey ) {
-					abstractFieldList.add(param.getString(ParameterProperty.NAME));
-				}
-			}
-		}
-		
-		return abstractFieldList;
-	}
-	
-	public List<String> getSearchableFields( long dataTypeId, boolean searchable ) throws JSONException{
-		List<String> searchableFieldList = new ArrayList<String>();
-		
-		JSONObject dataStructure = getDataStructureJSONObject(dataTypeId);
-		
-		if( Validator.isNotNull(dataStructure) ) {
-			JSONArray params = dataStructure.getJSONArray(DataStructureProperty.PARAMS);
-	
-			for( int i=0; i<params.length(); i++ ) {
-				JSONObject param = params.getJSONObject(i);
-				if( param.getString(ParameterProperty.TYPE).equalsIgnoreCase(ParameterType.GROUP)) {
-					continue;
-				}
-	
-				boolean definedValue = (param.has(ParameterProperty.SEARCHABLE) 
-											&& param.getBoolean(ParameterProperty.SEARCHABLE) == false) ? false : true;
-				if( definedValue == searchable ) {
-					searchableFieldList.add(param.getString(ParameterProperty.NAME));
-				}
-			}
-		}
-		
-		return searchableFieldList;
-	}
-	
-	public List<String> getDownloadableFields( long dataTypeId, boolean downloadable ) throws JSONException{
-		List<String> downloadableFieldList = new ArrayList<String>();
-		JSONObject dataStructure = getDataStructureJSONObject(dataTypeId);
-		
-		if( Validator.isNotNull(dataStructure) ) {
-			JSONArray params = dataStructure.getJSONArray(DataStructureProperty.PARAMS);
-	
-			for( int i=0; i<params.length(); i++ ) {
-				JSONObject param = params.getJSONObject(i);
-	
-				boolean definedValue = (param.has(ParameterProperty.DOWNLOADABLE) 
-										&& param.getBoolean(ParameterProperty.DOWNLOADABLE) == false) ? false : true;
-				if(  definedValue == downloadable ) {
-					downloadableFieldList.add(param.getString(ParameterProperty.NAME));
-				}
-			}
-		}
-		
-		return downloadableFieldList;
-	}
-
 	public final long getDataFileFolderId(
 			long repositoryId,
 			long parentFoderId,
@@ -1003,27 +637,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		return files;
 	}
 	
-	public Map<String, Object> parseStructuredData( 
-			String paramDelimiter, String valueDelimiter, String structuredData ){
-		
-		Map<String, Object> valueMap = new HashMap<String, Object>();
-		
-		String[] lines = structuredData.split(paramDelimiter);
-		for( int i=0; i<lines.length; i++ ) {
-			String line = lines[i].trim();
-			
-			if(! line.isEmpty() ) {
-				String[] tokens = line.split(valueDelimiter);
-				List<String> tokenList = Arrays.asList( tokens );
-				tokens = Arrays.stream(tokens).filter(token -> token.isEmpty() ).toArray(String[]::new);
-				System.out.println();
-				valueMap.put( tokens[0].trim(), tokens[2].trim() );
-			}
-		}
-		
-		return valueMap;
-	}
-	
 	public SearchContainerResults<AssetEntry> getSearchContainerResults(
 			SearchContainer<DataType> searchContainer)
 		throws PortalException {
@@ -1048,37 +661,15 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 
 		return new SearchContainerResults<AssetEntry>(assetEntries, total);
 	}
-	
-	/**
-	 * 
-	 * @param dataTypeName
-	 * @param dataTypeVersion
-	 * @return true if the dataType is verified.
-	 * @throws DuplicatedDataTypeNameException 
-	 */
 	private boolean _verifyDataTypeName( String dataTypeName ) throws DuplicatedDataTypeNameException {
 		// Check uniqueness of the dataTypeName
 		if( super.dataTypePersistence.countByName(dataTypeName) > 0 ) {
 			throw new DuplicatedDataTypeNameException( dataTypeName + " exists already." );
 		}
 		
-		// Check if the naming convention of the dataType name is followed
-		String pattern = "[a-zA-Z]([a-zA-Z0-9_]*)";
-		return dataTypeName.matches(pattern);
+		return true;
 	}
 	
-	private boolean _isNotEmpty( String str ) {
-		return Validator.isNotNull(str) && !str.isEmpty();
-	}
-	
-	private DataType _updateHasDataStructure( long dataTypeId, boolean has ) {
-		DataType dataType = super.dataTypeLocalService.fetchDataType(dataTypeId);
-		dataType.setHasDataStructure(has);
-		super.dataTypePersistence.update(dataType);
-		
-		return dataType;
-	}
-
 	@Reference
 	private DataStructureLocalService _dataStructureLocalService;
 }

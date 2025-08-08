@@ -32,7 +32,7 @@ public class DataTypeModelResourcePermissionRegistrar {
 	private DataTypeLocalService _dataTypeLocalService;
 
 	@Reference(
-			target = "(resource.name=" + Constant.DATATYPE_RESOURCE_NAME + ")"
+			target = "(resource.name=" + Constant.ICECAP_RESOURCE_NAME + ")"
 	)
 	private PortletResourcePermission _portletResourcePermission;
 	

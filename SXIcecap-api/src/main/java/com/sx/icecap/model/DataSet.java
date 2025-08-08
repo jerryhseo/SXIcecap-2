@@ -76,4 +76,9 @@ public interface DataSet extends DataSetModel, PersistedModel {
 
 		};
 
+	public com.liferay.portal.kernel.json.JSONObject toJSON();
+
+	public com.liferay.portal.kernel.json.JSONObject toJSON(
+		java.util.Locale locale);
+
 }
