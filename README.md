@@ -33,6 +33,15 @@
 |typeProperties|String|파라메터 타입에 따라서 정의될 수 있는 추가 속성들. JSON 문자열|
 |standard|boolean|표준화 여부|
 
+#### 2) DataCollection Table
+- 자산 등록 테이블
+
+|필드|타입|설명|
+|------|------|------|
+|dataCollectionName|String|데이터콜렉션 코드 명. 향후 데이터를 이용한 프로그램의 변수로 사용|
+|dataCollectionVersion|String|데이터콜렉션 버전|
+|displayName|String|[다국어] UI 상에 표시되는 데이터콜렉션 표시명|
+|description|String|[다국어] 데이터콜렉션에 대한 설명|
 
 
 
