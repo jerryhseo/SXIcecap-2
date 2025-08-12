@@ -1,6 +1,6 @@
 ## 개발자 노트
 
-### Tables
+### 1. Tables
 - 테이블은 자산 테이블과 비자산 테이블로 구분
 모든 자산 테이블은 다음의 공통 컬럼을 가진다.
 
@@ -18,7 +18,7 @@
 |statusDate|Date|데이터 상태 최종 변경일|
 |lastPublishDate|Date|최종 공개일|
 
-#### Parameter Table
+#### 1) Parameter Table
 - 자산 등록 테이블
 
 |필드|타입|설명|
