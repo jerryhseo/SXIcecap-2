@@ -2,8 +2,9 @@
 
 ### 1. Tables
 - 테이블은 자산 테이블과 비자산 테이블로 구분
-- Table Diagram
-<img width="1024" height="768" alt="image" src="https://github.com/user-attachments/assets/f24f440a-e7af-4e3d-b3d2-bd0f678f4827" />
+- ERD Diagram
+<img width="1000" height="700" alt="image" src="https://github.com/user-attachments/assets/d7fbc13e-4524-4fd8-9383-6ae3d58df304" />
+
 
 
 모든 자산 테이블은 다음의 공통 컬럼을 가진다.
