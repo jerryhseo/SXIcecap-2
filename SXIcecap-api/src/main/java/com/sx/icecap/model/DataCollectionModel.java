@@ -540,51 +540,6 @@ public interface DataCollectionModel
 		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
-	 * Returns the freeze level of this data collection.
-	 *
-	 * @return the freeze level of this data collection
-	 */
-	@AutoEscape
-	public String getFreezeLevel();
-
-	/**
-	 * Sets the freeze level of this data collection.
-	 *
-	 * @param freezeLevel the freeze level of this data collection
-	 */
-	public void setFreezeLevel(String freezeLevel);
-
-	/**
-	 * Returns the verify level of this data collection.
-	 *
-	 * @return the verify level of this data collection
-	 */
-	@AutoEscape
-	public String getVerifyLevel();
-
-	/**
-	 * Sets the verify level of this data collection.
-	 *
-	 * @param verifyLevel the verify level of this data collection
-	 */
-	public void setVerifyLevel(String verifyLevel);
-
-	/**
-	 * Returns the comment level of this data collection.
-	 *
-	 * @return the comment level of this data collection
-	 */
-	@AutoEscape
-	public String getCommentLevel();
-
-	/**
-	 * Sets the comment level of this data collection.
-	 *
-	 * @param commentLevel the comment level of this data collection
-	 */
-	public void setCommentLevel(String commentLevel);
-
-	/**
 	 * Returns the trash entry created when this data collection was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this data collection.
 	 *
 	 * @return the trash entry created when this data collection was moved to the Recycle Bin

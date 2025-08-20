@@ -37,13 +37,13 @@ public class StructuredDataLocalServiceWrapper
 	public com.sx.icecap.model.StructuredData addStructuredData(
 			long dataCollectionId, long dataSetId, long dataTypeId,
 			boolean multiple, long startIndex, int count, boolean freezed,
-			boolean verified, boolean comments, boolean history, String data,
-			int status, com.liferay.portal.kernel.service.ServiceContext sc)
+			boolean verified, String data, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _structuredDataLocalService.addStructuredData(
 			dataCollectionId, dataSetId, dataTypeId, multiple, startIndex,
-			count, freezed, verified, comments, history, data, status, sc);
+			count, freezed, verified, data, status, sc);
 	}
 
 	/**
@@ -943,15 +943,13 @@ public class StructuredDataLocalServiceWrapper
 	public com.sx.icecap.model.StructuredData updateStructuredData(
 			long structuredDataId, long dataCollectionId, long dataSetId,
 			long dataTypeId, boolean multiple, long startIndex, int count,
-			boolean freezed, boolean verified, boolean comments,
-			boolean history, String data, int status,
+			boolean freezed, boolean verified, String data, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _structuredDataLocalService.updateStructuredData(
 			structuredDataId, dataCollectionId, dataSetId, dataTypeId, multiple,
-			startIndex, count, freezed, verified, comments, history, data,
-			status, sc);
+			startIndex, count, freezed, verified, data, status, sc);
 	}
 
 	/**

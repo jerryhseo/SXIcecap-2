@@ -22,7 +22,10 @@ import com.sx.icecap.constant.WebPortletKey;
 import com.sx.icecap.exception.DuplicatedDataTypeNameException;
 import com.sx.icecap.exception.InvalidDataTypeNameException;
 import com.sx.icecap.model.DataType;
+import com.sx.icecap.model.TypeStructureLink;
 import com.sx.icecap.service.DataTypeLocalService;
+import com.sx.icecap.service.TypeStructureLinkLocalService;
+import com.sx.icecap.service.TypeVisualizerLinkLocalService;
 import com.sx.util.SXLocalizationUtil;
 
 import java.io.PrintWriter;
@@ -63,14 +66,29 @@ public class AddDataTypeResourceCommand extends BaseMVCResourceCommand{
 		JSONObject displayName =jsonDataType.getJSONObject((DataTypeProperties.DISPLAY_NAME));
 		JSONObject description =jsonDataType.getJSONObject((DataTypeProperties.DESCRIPTION));
 		JSONObject tooltip =jsonDataType.getJSONObject((DataTypeProperties.TOOLTIP));
+		
 		long dataStructureId =jsonDataType.getLong((DataTypeProperties.DATA_STRUCTURE_ID));
-		JSONObject visualizers =jsonDataType.getJSONObject("visualizers");
+		boolean commentable = jsonDataType.getBoolean("commentable");
+		boolean verifiable = jsonDataType.getBoolean("verifiable");
+		boolean freezable = jsonDataType.getBoolean("freezable");
+		
+		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(WebKeys.THEME_DISPLAY);
+		
+		boolean freezed = jsonDataType.getBoolean("freezed");
+		long freezedUserId = 0;
+		if(freezed) {
+			freezedUserId = themeDisplay.getUserId();
+		}
+		boolean verified = jsonDataType.getBoolean("verified");
+		long verifiedUserId = 0;
+		if(verified) {
+			verifiedUserId = themeDisplay.getUserId();
+		}
 		
 		PrintWriter pw = resourceResponse.getWriter();
 		JSONObject result = JSONFactoryUtil.createJSONObject();
 		
 		try {
-			ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(WebKeys.THEME_DISPLAY);
 			ServiceContext sc = ServiceContextFactory.getInstance(DataType.class.getName(), resourceRequest);
 			
 			DataType dataType =_dataTypeLocalService.addDataType(
@@ -84,6 +102,26 @@ public class AddDataTypeResourceCommand extends BaseMVCResourceCommand{
 					WorkflowConstants.STATUS_APPROVED,
 					sc
 			);
+			
+			if( dataStructureId > 0 ) {
+				TypeStructureLink structureLink = _typeStructureLinkLocalService.addTypeDataStructureLink(
+								dataType.getDataTypeId(), 
+								dataStructureId, 
+								commentable, 
+								verifiable, 
+								freezable, 
+								verified, 
+								verifiedUserId, 
+								freezed, 
+								freezedUserId);
+			}
+			
+			JSONArray visualizers =jsonDataType.getJSONArray("visualizers");
+			for(int i=0; i<visualizers.length(); i++) {
+				JSONObject visualizer = visualizers.getJSONObject(i);
+				
+				_typeVisualizerLinkLocalService.addTypeVisualizerLink(dataType.getDataTypeId(), visualizer.getLong("id"));
+			}
 			
 			result.put("dataTypeId", dataType.getDataTypeId());
 			result.put("error", 0);
@@ -103,4 +141,10 @@ public class AddDataTypeResourceCommand extends BaseMVCResourceCommand{
 	
 	@Reference
 	private DataTypeLocalService _dataTypeLocalService;
+	
+	@Reference
+	private TypeStructureLinkLocalService _typeStructureLinkLocalService;
+	
+	@Reference
+	private TypeVisualizerLinkLocalService _typeVisualizerLinkLocalService;
 }

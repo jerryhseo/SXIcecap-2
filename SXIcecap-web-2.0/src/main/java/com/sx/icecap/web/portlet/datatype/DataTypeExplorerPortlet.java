@@ -9,13 +9,16 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.sx.icecap.constant.ActionKey;
 import com.sx.icecap.constant.Constant;
+import com.sx.icecap.constant.IcecapModelNames;
 import com.sx.icecap.constant.JSPPath;
 import com.sx.icecap.constant.WebPortletKey;
 import com.sx.icecap.security.permission.resource.datatype.DataTypeResourcePermissionHelper;
 import com.sx.icecap.service.DataTypeLocalService;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.portlet.Portlet;
@@ -32,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"com.liferay.portlet.display-category=category.hidden",
+		"com.liferay.portlet.display-category=category.sx.icecap",
 		"com.liferay.portlet.header-portlet-css=/css/index.css",
 		"com.liferay.portlet.instanceable=true",
 		"com.liferay.portlet.add-default-resource=true",
@@ -57,9 +60,20 @@ public class DataTypeExplorerPortlet extends MVCPortlet {
 
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		
-		List<ResourceAction> resourceActions = _resouceActionLocalService.getResourceActions(Constant.ICECAP_RESOURCE_NAME);
-		
 		JSONArray permissions = JSONFactoryUtil.createJSONArray();
+		Field[] fields = ActionKey.class.getDeclaredFields();
+		for(int i=0; i<fields.length; i++) {
+			Field field = fields[i];
+			
+			boolean hasPermission = DataTypeResourcePermissionHelper.contains(permissionChecker, themeDisplay.getScopeGroupId(), field.getName());
+			if (hasPermission) {
+				permissions.put(field.getName());
+			}
+		}
+
+		/*
+		List<ResourceAction> resourceActions = _resouceActionLocalService.getResourceActions(IcecapModelNames.DATATYPE);
+		
 		for (ResourceAction resourceAction : resourceActions) {
 			String actionId = resourceAction.getActionId();
 
@@ -70,6 +84,7 @@ public class DataTypeExplorerPortlet extends MVCPortlet {
 				permissions.put(actionId);
 			}
 		}
+		*/
 		
 		renderRequest.setAttribute(
 			"mainRequire",

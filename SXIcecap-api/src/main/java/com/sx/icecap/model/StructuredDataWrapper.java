@@ -63,8 +63,6 @@ public class StructuredDataWrapper
 		attributes.put("count", getCount());
 		attributes.put("freezed", isFreezed());
 		attributes.put("verified", isVerified());
-		attributes.put("comments", isComments());
-		attributes.put("history", isHistory());
 		attributes.put("data", getData());
 
 		return attributes;
@@ -192,33 +190,11 @@ public class StructuredDataWrapper
 			setVerified(verified);
 		}
 
-		Boolean comments = (Boolean)attributes.get("comments");
-
-		if (comments != null) {
-			setComments(comments);
-		}
-
-		Boolean history = (Boolean)attributes.get("history");
-
-		if (history != null) {
-			setHistory(history);
-		}
-
 		String data = (String)attributes.get("data");
 
 		if (data != null) {
 			setData(data);
 		}
-	}
-
-	/**
-	 * Returns the comments of this structured data.
-	 *
-	 * @return the comments of this structured data
-	 */
-	@Override
-	public boolean getComments() {
-		return model.getComments();
 	}
 
 	/**
@@ -309,16 +285,6 @@ public class StructuredDataWrapper
 	@Override
 	public long getGroupId() {
 		return model.getGroupId();
-	}
-
-	/**
-	 * Returns the history of this structured data.
-	 *
-	 * @return the history of this structured data
-	 */
-	@Override
-	public boolean getHistory() {
-		return model.getHistory();
 	}
 
 	/**
@@ -516,16 +482,6 @@ public class StructuredDataWrapper
 	}
 
 	/**
-	 * Returns <code>true</code> if this structured data is comments.
-	 *
-	 * @return <code>true</code> if this structured data is comments; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isComments() {
-		return model.isComments();
-	}
-
-	/**
 	 * Returns <code>true</code> if this structured data is denied.
 	 *
 	 * @return <code>true</code> if this structured data is denied; <code>false</code> otherwise
@@ -563,16 +519,6 @@ public class StructuredDataWrapper
 	@Override
 	public boolean isFreezed() {
 		return model.isFreezed();
-	}
-
-	/**
-	 * Returns <code>true</code> if this structured data is history.
-	 *
-	 * @return <code>true</code> if this structured data is history; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isHistory() {
-		return model.isHistory();
 	}
 
 	/**
@@ -671,16 +617,6 @@ public class StructuredDataWrapper
 	}
 
 	/**
-	 * Sets whether this structured data is comments.
-	 *
-	 * @param comments the comments of this structured data
-	 */
-	@Override
-	public void setComments(boolean comments) {
-		model.setComments(comments);
-	}
-
-	/**
 	 * Sets the company ID of this structured data.
 	 *
 	 * @param companyId the company ID of this structured data
@@ -768,16 +704,6 @@ public class StructuredDataWrapper
 	@Override
 	public void setGroupId(long groupId) {
 		model.setGroupId(groupId);
-	}
-
-	/**
-	 * Sets whether this structured data is history.
-	 *
-	 * @param history the history of this structured data
-	 */
-	@Override
-	public void setHistory(boolean history) {
-		model.setHistory(history);
 	}
 
 	/**

@@ -65,8 +65,6 @@ public class DataTypeImpl extends DataTypeBaseImpl {
 		dataType.put("dataTypeName", this.getDataTypeName());
 		dataType.put("dataTypeVersion", this.getDataTypeVersion());
 		dataType.put("extension", this.getExtension());
-		dataType.put("freezable", this.getFreezable());
-		dataType.put("verifiable", this.getVerifiable());
 		dataType.put("dataStructureId", this.getDataStructureId());
 		
 		return dataType;

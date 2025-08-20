@@ -35,7 +35,7 @@
 <aui:script require="<%=mainRequire%>">
 	main.default(
 		'<portlet:namespace />-root', 
-		'<%=WebPortletKey.DATA_STRUCTURE_BUILDER%>', 
+		'<%=WebPortletKey.DATA_STRUCTURE_EXPLORER%>', 
 		{
 			namespace: '<portlet:namespace/>',
 			dafaultLanguageId: '<%= defaultLocale.toLanguageTag() %>',

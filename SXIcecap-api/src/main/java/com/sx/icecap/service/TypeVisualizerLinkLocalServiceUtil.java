@@ -44,6 +44,11 @@ public class TypeVisualizerLinkLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.sx.icecap.service.impl.TypeVisualizerLinkLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static TypeVisualizerLink addTypeVisualizerLink(
+		long dataTypeId, long visualizerId) {
+
+		return getService().addTypeVisualizerLink(dataTypeId, visualizerId);
+	}
 
 	/**
 	 * Adds the type visualizer link to the database. Also notifies the appropriate model listeners.
@@ -245,6 +250,12 @@ public class TypeVisualizerLinkLocalServiceUtil {
 		return getService().getTypeVisualizerLink(typeVisualizerLinkId);
 	}
 
+	public static List<TypeVisualizerLink> getTypeVisualizerLinkList(
+		long dataTypeId) {
+
+		return getService().getTypeVisualizerLinkList(dataTypeId);
+	}
+
 	/**
 	 * Returns a range of all the type visualizer links.
 	 *
@@ -269,6 +280,24 @@ public class TypeVisualizerLinkLocalServiceUtil {
 	 */
 	public static int getTypeVisualizerLinksCount() {
 		return getService().getTypeVisualizerLinksCount();
+	}
+
+	public static void removeByDataTypeId(long dataTypeId) {
+		getService().removeByDataTypeId(dataTypeId);
+	}
+
+	public static TypeVisualizerLink removeTypeVisualizerLink(long linkId)
+		throws PortalException {
+
+		return getService().removeTypeVisualizerLink(linkId);
+	}
+
+	public static TypeVisualizerLink updateTypeVisualizerLink(
+			long linkId, long dataTypeId, long visualizerId)
+		throws PortalException {
+
+		return getService().updateTypeVisualizerLink(
+			linkId, dataTypeId, visualizerId);
 	}
 
 	/**

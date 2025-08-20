@@ -62,7 +62,7 @@ public class DataTypeCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(47);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -104,10 +104,6 @@ public class DataTypeCacheModel
 		sb.append(description);
 		sb.append(", tooltip=");
 		sb.append(tooltip);
-		sb.append(", freezable=");
-		sb.append(freezable);
-		sb.append(", verifiable=");
-		sb.append(verifiable);
 		sb.append(", dataStructureId=");
 		sb.append(dataStructureId);
 		sb.append("}");
@@ -220,8 +216,6 @@ public class DataTypeCacheModel
 			dataTypeImpl.setTooltip(tooltip);
 		}
 
-		dataTypeImpl.setFreezable(freezable);
-		dataTypeImpl.setVerifiable(verifiable);
 		dataTypeImpl.setDataStructureId(dataStructureId);
 
 		dataTypeImpl.resetOriginalValues();
@@ -258,10 +252,6 @@ public class DataTypeCacheModel
 		sampleFileId = objectInput.readLong();
 		description = objectInput.readUTF();
 		tooltip = objectInput.readUTF();
-
-		freezable = objectInput.readBoolean();
-
-		verifiable = objectInput.readBoolean();
 
 		dataStructureId = objectInput.readLong();
 	}
@@ -351,10 +341,6 @@ public class DataTypeCacheModel
 			objectOutput.writeUTF(tooltip);
 		}
 
-		objectOutput.writeBoolean(freezable);
-
-		objectOutput.writeBoolean(verifiable);
-
 		objectOutput.writeLong(dataStructureId);
 	}
 
@@ -378,8 +364,6 @@ public class DataTypeCacheModel
 	public long sampleFileId;
 	public String description;
 	public String tooltip;
-	public boolean freezable;
-	public boolean verifiable;
 	public long dataStructureId;
 
 }

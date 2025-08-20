@@ -540,69 +540,6 @@ public interface DataStructureModel
 		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
-	 * Returns the freezable of this data structure.
-	 *
-	 * @return the freezable of this data structure
-	 */
-	public boolean getFreezable();
-
-	/**
-	 * Returns <code>true</code> if this data structure is freezable.
-	 *
-	 * @return <code>true</code> if this data structure is freezable; <code>false</code> otherwise
-	 */
-	public boolean isFreezable();
-
-	/**
-	 * Sets whether this data structure is freezable.
-	 *
-	 * @param freezable the freezable of this data structure
-	 */
-	public void setFreezable(boolean freezable);
-
-	/**
-	 * Returns the verifiable of this data structure.
-	 *
-	 * @return the verifiable of this data structure
-	 */
-	public boolean getVerifiable();
-
-	/**
-	 * Returns <code>true</code> if this data structure is verifiable.
-	 *
-	 * @return <code>true</code> if this data structure is verifiable; <code>false</code> otherwise
-	 */
-	public boolean isVerifiable();
-
-	/**
-	 * Sets whether this data structure is verifiable.
-	 *
-	 * @param verifiable the verifiable of this data structure
-	 */
-	public void setVerifiable(boolean verifiable);
-
-	/**
-	 * Returns the commentable of this data structure.
-	 *
-	 * @return the commentable of this data structure
-	 */
-	public boolean getCommentable();
-
-	/**
-	 * Returns <code>true</code> if this data structure is commentable.
-	 *
-	 * @return <code>true</code> if this data structure is commentable; <code>false</code> otherwise
-	 */
-	public boolean isCommentable();
-
-	/**
-	 * Sets whether this data structure is commentable.
-	 *
-	 * @param commentable the commentable of this data structure
-	 */
-	public void setCommentable(boolean commentable);
-
-	/**
 	 * Returns the structure of this data structure.
 	 *
 	 * @return the structure of this data structure

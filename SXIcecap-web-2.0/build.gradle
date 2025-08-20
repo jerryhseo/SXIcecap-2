@@ -8,6 +8,7 @@ dependencies {
 	
 	compile project(":modules:StationX:StationX-api")
 	
+	compile project(":modules:SXSpyglass:SXSpyglass-api")
 	compile project(":modules:SXIcecap-2:SXIcecap-api")
 	compile project(":modules:SXIcecap-2:SXIcecap-service")
 	compile project(":modules:StationXPanelCategories")

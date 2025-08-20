@@ -19,4 +19,5 @@ public class WebKey {
 	public static final String STRUCTURED_DATA_ID = "structuredDataId";	
 	public static final String DATATYPE_LIST = "dataTypeList";	
 	public static final String DATATYPE_COUNT = "dataTypeCount";	
+	public static final String LOAD_TYPE = "loadType";	
 }

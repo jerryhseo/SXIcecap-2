@@ -43,9 +43,9 @@ public class CollectionSetLinkWrapper
 
 		attributes.put("collectionSetLinkId", getCollectionSetLinkId());
 		attributes.put("dataCollectionId", getDataCollectionId());
-		attributes.put("dataCollection", getDataCollection());
 		attributes.put("dataSetId", getDataSetId());
-		attributes.put("dataSet", getDataSet());
+		attributes.put("freezed", isFreezed());
+		attributes.put("verified", isVerified());
 
 		return attributes;
 	}
@@ -64,22 +64,22 @@ public class CollectionSetLinkWrapper
 			setDataCollectionId(dataCollectionId);
 		}
 
-		Long dataCollection = (Long)attributes.get("dataCollection");
-
-		if (dataCollection != null) {
-			setDataCollection(dataCollection);
-		}
-
 		Long dataSetId = (Long)attributes.get("dataSetId");
 
 		if (dataSetId != null) {
 			setDataSetId(dataSetId);
 		}
 
-		Long dataSet = (Long)attributes.get("dataSet");
+		Boolean freezed = (Boolean)attributes.get("freezed");
 
-		if (dataSet != null) {
-			setDataSet(dataSet);
+		if (freezed != null) {
+			setFreezed(freezed);
+		}
+
+		Boolean verified = (Boolean)attributes.get("verified");
+
+		if (verified != null) {
+			setVerified(verified);
 		}
 	}
 
@@ -94,16 +94,6 @@ public class CollectionSetLinkWrapper
 	}
 
 	/**
-	 * Returns the data collection of this collection set link.
-	 *
-	 * @return the data collection of this collection set link
-	 */
-	@Override
-	public long getDataCollection() {
-		return model.getDataCollection();
-	}
-
-	/**
 	 * Returns the data collection ID of this collection set link.
 	 *
 	 * @return the data collection ID of this collection set link
@@ -111,16 +101,6 @@ public class CollectionSetLinkWrapper
 	@Override
 	public long getDataCollectionId() {
 		return model.getDataCollectionId();
-	}
-
-	/**
-	 * Returns the data set of this collection set link.
-	 *
-	 * @return the data set of this collection set link
-	 */
-	@Override
-	public long getDataSet() {
-		return model.getDataSet();
 	}
 
 	/**
@@ -134,6 +114,16 @@ public class CollectionSetLinkWrapper
 	}
 
 	/**
+	 * Returns the freezed of this collection set link.
+	 *
+	 * @return the freezed of this collection set link
+	 */
+	@Override
+	public boolean getFreezed() {
+		return model.getFreezed();
+	}
+
+	/**
 	 * Returns the primary key of this collection set link.
 	 *
 	 * @return the primary key of this collection set link
@@ -141,6 +131,36 @@ public class CollectionSetLinkWrapper
 	@Override
 	public long getPrimaryKey() {
 		return model.getPrimaryKey();
+	}
+
+	/**
+	 * Returns the verified of this collection set link.
+	 *
+	 * @return the verified of this collection set link
+	 */
+	@Override
+	public boolean getVerified() {
+		return model.getVerified();
+	}
+
+	/**
+	 * Returns <code>true</code> if this collection set link is freezed.
+	 *
+	 * @return <code>true</code> if this collection set link is freezed; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isFreezed() {
+		return model.isFreezed();
+	}
+
+	/**
+	 * Returns <code>true</code> if this collection set link is verified.
+	 *
+	 * @return <code>true</code> if this collection set link is verified; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isVerified() {
+		return model.isVerified();
 	}
 
 	@Override
@@ -159,16 +179,6 @@ public class CollectionSetLinkWrapper
 	}
 
 	/**
-	 * Sets the data collection of this collection set link.
-	 *
-	 * @param dataCollection the data collection of this collection set link
-	 */
-	@Override
-	public void setDataCollection(long dataCollection) {
-		model.setDataCollection(dataCollection);
-	}
-
-	/**
 	 * Sets the data collection ID of this collection set link.
 	 *
 	 * @param dataCollectionId the data collection ID of this collection set link
@@ -176,16 +186,6 @@ public class CollectionSetLinkWrapper
 	@Override
 	public void setDataCollectionId(long dataCollectionId) {
 		model.setDataCollectionId(dataCollectionId);
-	}
-
-	/**
-	 * Sets the data set of this collection set link.
-	 *
-	 * @param dataSet the data set of this collection set link
-	 */
-	@Override
-	public void setDataSet(long dataSet) {
-		model.setDataSet(dataSet);
 	}
 
 	/**
@@ -199,6 +199,16 @@ public class CollectionSetLinkWrapper
 	}
 
 	/**
+	 * Sets whether this collection set link is freezed.
+	 *
+	 * @param freezed the freezed of this collection set link
+	 */
+	@Override
+	public void setFreezed(boolean freezed) {
+		model.setFreezed(freezed);
+	}
+
+	/**
 	 * Sets the primary key of this collection set link.
 	 *
 	 * @param primaryKey the primary key of this collection set link
@@ -206,6 +216,16 @@ public class CollectionSetLinkWrapper
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	 * Sets whether this collection set link is verified.
+	 *
+	 * @param verified the verified of this collection set link
+	 */
+	@Override
+	public void setVerified(boolean verified) {
+		model.setVerified(verified);
 	}
 
 	@Override

@@ -32,9 +32,7 @@ public class TypeVisualizerLinkSoap implements Serializable {
 
 		soapModel.setTypeVisualizerLinkId(model.getTypeVisualizerLinkId());
 		soapModel.setDataTypeId(model.getDataTypeId());
-		soapModel.setDataType(model.getDataType());
 		soapModel.setVisualizerId(model.getVisualizerId());
-		soapModel.setVisualizer(model.getVisualizer());
 
 		return soapModel;
 	}
@@ -113,14 +111,6 @@ public class TypeVisualizerLinkSoap implements Serializable {
 		_dataTypeId = dataTypeId;
 	}
 
-	public long getDataType() {
-		return _dataType;
-	}
-
-	public void setDataType(long dataType) {
-		_dataType = dataType;
-	}
-
 	public long getVisualizerId() {
 		return _visualizerId;
 	}
@@ -129,18 +119,8 @@ public class TypeVisualizerLinkSoap implements Serializable {
 		_visualizerId = visualizerId;
 	}
 
-	public String getVisualizer() {
-		return _visualizer;
-	}
-
-	public void setVisualizer(String visualizer) {
-		_visualizer = visualizer;
-	}
-
 	private long _typeVisualizerLinkId;
 	private long _dataTypeId;
-	private long _dataType;
 	private long _visualizerId;
-	private String _visualizer;
 
 }

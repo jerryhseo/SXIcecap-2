@@ -51,8 +51,6 @@ public class StructuredDataSoap implements Serializable {
 		soapModel.setCount(model.getCount());
 		soapModel.setFreezed(model.isFreezed());
 		soapModel.setVerified(model.isVerified());
-		soapModel.setComments(model.isComments());
-		soapModel.setHistory(model.isHistory());
 		soapModel.setData(model.getData());
 
 		return soapModel;
@@ -284,30 +282,6 @@ public class StructuredDataSoap implements Serializable {
 		_verified = verified;
 	}
 
-	public boolean getComments() {
-		return _comments;
-	}
-
-	public boolean isComments() {
-		return _comments;
-	}
-
-	public void setComments(boolean comments) {
-		_comments = comments;
-	}
-
-	public boolean getHistory() {
-		return _history;
-	}
-
-	public boolean isHistory() {
-		return _history;
-	}
-
-	public void setHistory(boolean history) {
-		_history = history;
-	}
-
 	public String getData() {
 		return _data;
 	}
@@ -336,8 +310,6 @@ public class StructuredDataSoap implements Serializable {
 	private int _count;
 	private boolean _freezed;
 	private boolean _verified;
-	private boolean _comments;
-	private boolean _history;
 	private String _data;
 
 }

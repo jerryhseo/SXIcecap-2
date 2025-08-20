@@ -95,9 +95,7 @@ public class DataCollectionModelImpl
 		{"statusByUserId", Types.BIGINT}, {"statusByUserName", Types.VARCHAR},
 		{"statusDate", Types.TIMESTAMP}, {"dataCollectionName", Types.VARCHAR},
 		{"dataCollectionVersion", Types.VARCHAR},
-		{"displayName", Types.VARCHAR}, {"description", Types.VARCHAR},
-		{"freezeLevel", Types.VARCHAR}, {"verifyLevel", Types.VARCHAR},
-		{"commentLevel", Types.VARCHAR}
+		{"displayName", Types.VARCHAR}, {"description", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -121,13 +119,10 @@ public class DataCollectionModelImpl
 		TABLE_COLUMNS_MAP.put("dataCollectionVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("freezeLevel", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("verifyLevel", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("commentLevel", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataCollection (uuid_ VARCHAR(75) null,dataCollectionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionName VARCHAR(75) null,dataCollectionVersion VARCHAR(75) null,displayName STRING null,description STRING null,freezeLevel VARCHAR(75) null,verifyLevel VARCHAR(75) null,commentLevel VARCHAR(75) null)";
+		"create table SX_ICECAP_DataCollection (uuid_ VARCHAR(75) null,dataCollectionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionName VARCHAR(75) null,dataCollectionVersion VARCHAR(75) null,displayName STRING null,description STRING null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_DataCollection";
@@ -196,9 +191,6 @@ public class DataCollectionModelImpl
 		model.setDataCollectionVersion(soapModel.getDataCollectionVersion());
 		model.setDisplayName(soapModel.getDisplayName());
 		model.setDescription(soapModel.getDescription());
-		model.setFreezeLevel(soapModel.getFreezeLevel());
-		model.setVerifyLevel(soapModel.getVerifyLevel());
-		model.setCommentLevel(soapModel.getCommentLevel());
 
 		return model;
 	}
@@ -410,22 +402,6 @@ public class DataCollectionModelImpl
 		attributeSetterBiConsumers.put(
 			"description",
 			(BiConsumer<DataCollection, String>)DataCollection::setDescription);
-		attributeGetterFunctions.put(
-			"freezeLevel", DataCollection::getFreezeLevel);
-		attributeSetterBiConsumers.put(
-			"freezeLevel",
-			(BiConsumer<DataCollection, String>)DataCollection::setFreezeLevel);
-		attributeGetterFunctions.put(
-			"verifyLevel", DataCollection::getVerifyLevel);
-		attributeSetterBiConsumers.put(
-			"verifyLevel",
-			(BiConsumer<DataCollection, String>)DataCollection::setVerifyLevel);
-		attributeGetterFunctions.put(
-			"commentLevel", DataCollection::getCommentLevel);
-		attributeSetterBiConsumers.put(
-			"commentLevel",
-			(BiConsumer<DataCollection, String>)
-				DataCollection::setCommentLevel);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -945,54 +921,6 @@ public class DataCollectionModelImpl
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
-	@Override
-	public String getFreezeLevel() {
-		if (_freezeLevel == null) {
-			return "";
-		}
-		else {
-			return _freezeLevel;
-		}
-	}
-
-	@Override
-	public void setFreezeLevel(String freezeLevel) {
-		_freezeLevel = freezeLevel;
-	}
-
-	@JSON
-	@Override
-	public String getVerifyLevel() {
-		if (_verifyLevel == null) {
-			return "";
-		}
-		else {
-			return _verifyLevel;
-		}
-	}
-
-	@Override
-	public void setVerifyLevel(String verifyLevel) {
-		_verifyLevel = verifyLevel;
-	}
-
-	@JSON
-	@Override
-	public String getCommentLevel() {
-		if (_commentLevel == null) {
-			return "";
-		}
-		else {
-			return _commentLevel;
-		}
-	}
-
-	@Override
-	public void setCommentLevel(String commentLevel) {
-		_commentLevel = commentLevel;
-	}
-
 	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(
@@ -1367,9 +1295,6 @@ public class DataCollectionModelImpl
 		dataCollectionImpl.setDataCollectionVersion(getDataCollectionVersion());
 		dataCollectionImpl.setDisplayName(getDisplayName());
 		dataCollectionImpl.setDescription(getDescription());
-		dataCollectionImpl.setFreezeLevel(getFreezeLevel());
-		dataCollectionImpl.setVerifyLevel(getVerifyLevel());
-		dataCollectionImpl.setCommentLevel(getCommentLevel());
 
 		dataCollectionImpl.resetOriginalValues();
 
@@ -1571,30 +1496,6 @@ public class DataCollectionModelImpl
 			dataCollectionCacheModel.description = null;
 		}
 
-		dataCollectionCacheModel.freezeLevel = getFreezeLevel();
-
-		String freezeLevel = dataCollectionCacheModel.freezeLevel;
-
-		if ((freezeLevel != null) && (freezeLevel.length() == 0)) {
-			dataCollectionCacheModel.freezeLevel = null;
-		}
-
-		dataCollectionCacheModel.verifyLevel = getVerifyLevel();
-
-		String verifyLevel = dataCollectionCacheModel.verifyLevel;
-
-		if ((verifyLevel != null) && (verifyLevel.length() == 0)) {
-			dataCollectionCacheModel.verifyLevel = null;
-		}
-
-		dataCollectionCacheModel.commentLevel = getCommentLevel();
-
-		String commentLevel = dataCollectionCacheModel.commentLevel;
-
-		if ((commentLevel != null) && (commentLevel.length() == 0)) {
-			dataCollectionCacheModel.commentLevel = null;
-		}
-
 		return dataCollectionCacheModel;
 	}
 
@@ -1720,9 +1621,6 @@ public class DataCollectionModelImpl
 	private String _displayNameCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
-	private String _freezeLevel;
-	private String _verifyLevel;
-	private String _commentLevel;
 	private long _columnBitmask;
 	private DataCollection _escapedModel;
 

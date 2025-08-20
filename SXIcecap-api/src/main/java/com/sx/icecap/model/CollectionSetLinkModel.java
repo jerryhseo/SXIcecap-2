@@ -81,20 +81,6 @@ public interface CollectionSetLinkModel extends BaseModel<CollectionSetLink> {
 	public void setDataCollectionId(long dataCollectionId);
 
 	/**
-	 * Returns the data collection of this collection set link.
-	 *
-	 * @return the data collection of this collection set link
-	 */
-	public long getDataCollection();
-
-	/**
-	 * Sets the data collection of this collection set link.
-	 *
-	 * @param dataCollection the data collection of this collection set link
-	 */
-	public void setDataCollection(long dataCollection);
-
-	/**
 	 * Returns the data set ID of this collection set link.
 	 *
 	 * @return the data set ID of this collection set link
@@ -109,17 +95,45 @@ public interface CollectionSetLinkModel extends BaseModel<CollectionSetLink> {
 	public void setDataSetId(long dataSetId);
 
 	/**
-	 * Returns the data set of this collection set link.
+	 * Returns the freezed of this collection set link.
 	 *
-	 * @return the data set of this collection set link
+	 * @return the freezed of this collection set link
 	 */
-	public long getDataSet();
+	public boolean getFreezed();
 
 	/**
-	 * Sets the data set of this collection set link.
+	 * Returns <code>true</code> if this collection set link is freezed.
 	 *
-	 * @param dataSet the data set of this collection set link
+	 * @return <code>true</code> if this collection set link is freezed; <code>false</code> otherwise
 	 */
-	public void setDataSet(long dataSet);
+	public boolean isFreezed();
+
+	/**
+	 * Sets whether this collection set link is freezed.
+	 *
+	 * @param freezed the freezed of this collection set link
+	 */
+	public void setFreezed(boolean freezed);
+
+	/**
+	 * Returns the verified of this collection set link.
+	 *
+	 * @return the verified of this collection set link
+	 */
+	public boolean getVerified();
+
+	/**
+	 * Returns <code>true</code> if this collection set link is verified.
+	 *
+	 * @return <code>true</code> if this collection set link is verified; <code>false</code> otherwise
+	 */
+	public boolean isVerified();
+
+	/**
+	 * Sets whether this collection set link is verified.
+	 *
+	 * @param verified the verified of this collection set link
+	 */
+	public void setVerified(boolean verified);
 
 }

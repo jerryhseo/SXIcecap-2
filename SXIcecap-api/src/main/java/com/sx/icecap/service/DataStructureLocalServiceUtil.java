@@ -65,14 +65,12 @@ public class DataStructureLocalServiceUtil {
 			String dataStructureName, String dataStructureVersion,
 			Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap, String structure,
-			boolean freezable, boolean verifiable, boolean commentable,
 			int status, com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().addDataStructure(
 			dataStructureName, dataStructureVersion, displayNameMap,
-			descriptionMap, structure, freezable, verifiable, commentable,
-			status, sc);
+			descriptionMap, structure, status, sc);
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray
@@ -392,14 +390,12 @@ public class DataStructureLocalServiceUtil {
 			String dataStructureVersion,
 			Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap, String structure,
-			boolean freezable, boolean verifiable, boolean commentable,
 			int status, com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().updateDataStructure(
 			dataStructureId, dataStructureName, dataStructureVersion,
-			displayNameMap, descriptionMap, structure, freezable, verifiable,
-			commentable, status, sc);
+			displayNameMap, descriptionMap, structure, status, sc);
 	}
 
 	public static DataStructure updateStatus(

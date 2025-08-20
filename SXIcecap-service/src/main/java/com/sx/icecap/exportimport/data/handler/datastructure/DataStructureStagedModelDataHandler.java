@@ -72,9 +72,6 @@ public class DataStructureStagedModelDataHandler extends BaseStagedModelDataHand
 						dataStructure.getDisplayNameMap(),
 						dataStructure.getDescriptionMap(),
 						dataStructure.getStructure(),
-						dataStructure.getFreezable(),
-						dataStructure.getVerifiable(),
-						dataStructure.getCommentable(),
 						dataStructure.getStatus(),
 						serviceContext);
 			}
@@ -86,9 +83,6 @@ public class DataStructureStagedModelDataHandler extends BaseStagedModelDataHand
 						dataStructure.getDisplayNameMap(),
 						dataStructure.getDescriptionMap(),
 						dataStructure.getStructure(),
-						dataStructure.getFreezable(),
-						dataStructure.getVerifiable(),
-						dataStructure.getCommentable(),
 						dataStructure.getStatus(),
 						serviceContext);
 
@@ -101,9 +95,6 @@ public class DataStructureStagedModelDataHandler extends BaseStagedModelDataHand
 					dataStructure.getDisplayNameMap(),
 					dataStructure.getDescriptionMap(),
 					dataStructure.getStructure(),
-					dataStructure.getFreezable(),
-					dataStructure.getVerifiable(),
-					dataStructure.getCommentable(),
 					dataStructure.getStatus(),
 					serviceContext);
 		}

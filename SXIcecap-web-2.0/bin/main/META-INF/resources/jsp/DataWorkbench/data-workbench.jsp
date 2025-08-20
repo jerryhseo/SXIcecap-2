@@ -20,19 +20,18 @@
 	String workingPortletId = PortletIdCodec.encode(workingPortletName);
 	String workingPortletNamespace = "_" + workingPortletId + "_";
 	
-	String params = ParamUtil.getString(renderRequest, StationXWebKeys.PARAMS, "{}");
+	String workingPortletParams = ParamUtil.getString(renderRequest, StationXWebKeys.WORKING_PORTLET_PARAMS, "{}");
 	
 	String portalURL = PortalUtil.getPortalURL(renderRequest);
-	
-	
 	
 	System.out.println("workingPortletId: " + workingPortletId );
 	System.out.println("workingPortletNamespace: " + workingPortletNamespace );
 	System.out.println("workbenchId: " + portletDisplay.getId() );
 	
-	System.out.println("params: " + params );
+	System.out.println("workingPortletParams: " + workingPortletParams );
 %>
 
+<h3>agbsdfgadfgsdfgasdfg</h3>
 <div id="<portlet:namespace/>-root"></div>
 
 <portlet:renderURL  var="baseRenderURL">
@@ -71,15 +70,22 @@
 			baseRenderURL: '<%=  baseRenderURL %>',
 			baseActionURL: '<%=  baseActionURL %>',
 			baseResourceURL: '<%=  baseResourceURL %>',
-			params: { // initial parameters
+			redirectURLs: {
 				backURL: '<%= currentURL %>',
-				workingPortletName: '<%= workingPortletName %>',
-				workingPortletId: '<%= workingPortletId %>',
-				workingPortletNamespace: '<%= workingPortletNamespace %>',
-				workingPortletURL:'<%= workingPortletURL %>',
-				workbenchNamespace: '<portlet:namespace/>',
-				workbenchPortletId: '<%= portletDisplay.getId() %>',
-				workingPortletParams: JSON.parse('<%= params %>')
+			},
+			workbench:{
+				url: '<%= baseRenderURL%>',
+				namespace: '<portlet:namespace/>',
+				portletId: '<%= portletDisplay.getId() %>',
+			},
+			workingPortlet:{
+				portletId: '<%= workingPortletId %>',
+				portletName: '<%= workingPortletName %>',
+				namespace: '<%= workingPortletNamespace %>',
+				url: '<%= workingPortletURL %>',
+				params: JSON.parse('<%= workingPortletParams %>')
+			},
+			params: { // initial parameters
 			}
 		});
 </aui:script>

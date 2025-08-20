@@ -63,9 +63,6 @@ public class DataStructureImpl extends DataStructureBaseImpl {
 		
 		dataStructure.put(DataStructureProperties.DATA_STRUCTURE_NAME, this.getDataStructureName());
 		dataStructure.put(DataStructureProperties.DATA_STRUCTURE_VERSION, this.getDataStructureVersion());
-		dataStructure.put(DataStructureProperties.FREEZABLE, this.getFreezable());
-		dataStructure.put(DataStructureProperties.VERIFIABLE, this.getVerifiable());
-		dataStructure.put(DataStructureProperties.COMMENTABLE, this.getCommentable());
 		
 		JSONObject structure;
 		try {

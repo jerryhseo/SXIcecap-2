@@ -92,7 +92,7 @@ public class DataTypeAssetRenderer extends BaseJSPAssetRenderer<DataType> {
 			
 			httpServletRequest.setAttribute(StationXWebKeys.DATATYPE, _dataType);
 			
-			return JSPPath.DATATYPE_VIEWER_TEMPLATE_PATH +  template + ".jsp";
+			return JSPPath.DATATYPE_VIEWER_TEMPLATE_PATH +  "datatype-viewer.jsp";
 		}
 		return null;
 	}

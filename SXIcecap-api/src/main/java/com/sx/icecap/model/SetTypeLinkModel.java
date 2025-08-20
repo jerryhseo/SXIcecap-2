@@ -14,7 +14,6 @@
 
 package com.sx.icecap.model;
 
-import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -82,20 +81,6 @@ public interface SetTypeLinkModel extends BaseModel<SetTypeLink> {
 	public void setDataSetId(long dataSetId);
 
 	/**
-	 * Returns the data set of this set type link.
-	 *
-	 * @return the data set of this set type link
-	 */
-	public long getDataSet();
-
-	/**
-	 * Sets the data set of this set type link.
-	 *
-	 * @param dataSet the data set of this set type link
-	 */
-	public void setDataSet(long dataSet);
-
-	/**
 	 * Returns the data type ID of this set type link.
 	 *
 	 * @return the data type ID of this set type link
@@ -110,18 +95,45 @@ public interface SetTypeLinkModel extends BaseModel<SetTypeLink> {
 	public void setDataTypeId(long dataTypeId);
 
 	/**
-	 * Returns the data type of this set type link.
+	 * Returns the freezed of this set type link.
 	 *
-	 * @return the data type of this set type link
+	 * @return the freezed of this set type link
 	 */
-	@AutoEscape
-	public String getDataType();
+	public boolean getFreezed();
 
 	/**
-	 * Sets the data type of this set type link.
+	 * Returns <code>true</code> if this set type link is freezed.
 	 *
-	 * @param dataType the data type of this set type link
+	 * @return <code>true</code> if this set type link is freezed; <code>false</code> otherwise
 	 */
-	public void setDataType(String dataType);
+	public boolean isFreezed();
+
+	/**
+	 * Sets whether this set type link is freezed.
+	 *
+	 * @param freezed the freezed of this set type link
+	 */
+	public void setFreezed(boolean freezed);
+
+	/**
+	 * Returns the verified of this set type link.
+	 *
+	 * @return the verified of this set type link
+	 */
+	public boolean getVerified();
+
+	/**
+	 * Returns <code>true</code> if this set type link is verified.
+	 *
+	 * @return <code>true</code> if this set type link is verified; <code>false</code> otherwise
+	 */
+	public boolean isVerified();
+
+	/**
+	 * Sets whether this set type link is verified.
+	 *
+	 * @param verified the verified of this set type link
+	 */
+	public void setVerified(boolean verified);
 
 }

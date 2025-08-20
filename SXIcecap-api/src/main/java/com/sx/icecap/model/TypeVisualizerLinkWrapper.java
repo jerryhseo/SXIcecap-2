@@ -43,9 +43,7 @@ public class TypeVisualizerLinkWrapper
 
 		attributes.put("typeVisualizerLinkId", getTypeVisualizerLinkId());
 		attributes.put("dataTypeId", getDataTypeId());
-		attributes.put("dataType", getDataType());
 		attributes.put("visualizerId", getVisualizerId());
-		attributes.put("visualizer", getVisualizer());
 
 		return attributes;
 	}
@@ -65,33 +63,11 @@ public class TypeVisualizerLinkWrapper
 			setDataTypeId(dataTypeId);
 		}
 
-		Long dataType = (Long)attributes.get("dataType");
-
-		if (dataType != null) {
-			setDataType(dataType);
-		}
-
 		Long visualizerId = (Long)attributes.get("visualizerId");
 
 		if (visualizerId != null) {
 			setVisualizerId(visualizerId);
 		}
-
-		String visualizer = (String)attributes.get("visualizer");
-
-		if (visualizer != null) {
-			setVisualizer(visualizer);
-		}
-	}
-
-	/**
-	 * Returns the data type of this type visualizer link.
-	 *
-	 * @return the data type of this type visualizer link
-	 */
-	@Override
-	public long getDataType() {
-		return model.getDataType();
 	}
 
 	/**
@@ -125,16 +101,6 @@ public class TypeVisualizerLinkWrapper
 	}
 
 	/**
-	 * Returns the visualizer of this type visualizer link.
-	 *
-	 * @return the visualizer of this type visualizer link
-	 */
-	@Override
-	public String getVisualizer() {
-		return model.getVisualizer();
-	}
-
-	/**
 	 * Returns the visualizer ID of this type visualizer link.
 	 *
 	 * @return the visualizer ID of this type visualizer link
@@ -147,16 +113,6 @@ public class TypeVisualizerLinkWrapper
 	@Override
 	public void persist() {
 		model.persist();
-	}
-
-	/**
-	 * Sets the data type of this type visualizer link.
-	 *
-	 * @param dataType the data type of this type visualizer link
-	 */
-	@Override
-	public void setDataType(long dataType) {
-		model.setDataType(dataType);
 	}
 
 	/**
@@ -187,16 +143,6 @@ public class TypeVisualizerLinkWrapper
 	@Override
 	public void setTypeVisualizerLinkId(long typeVisualizerLinkId) {
 		model.setTypeVisualizerLinkId(typeVisualizerLinkId);
-	}
-
-	/**
-	 * Sets the visualizer of this type visualizer link.
-	 *
-	 * @param visualizer the visualizer of this type visualizer link
-	 */
-	@Override
-	public void setVisualizer(String visualizer) {
-		model.setVisualizer(visualizer);
 	}
 
 	/**

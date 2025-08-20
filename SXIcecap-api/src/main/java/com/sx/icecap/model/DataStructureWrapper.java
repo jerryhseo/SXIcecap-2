@@ -60,9 +60,6 @@ public class DataStructureWrapper
 		attributes.put("dataStructureVersion", getDataStructureVersion());
 		attributes.put("displayName", getDisplayName());
 		attributes.put("description", getDescription());
-		attributes.put("freezable", isFreezable());
-		attributes.put("verifiable", isVerifiable());
-		attributes.put("commentable", isCommentable());
 		attributes.put("structure", getStructure());
 
 		return attributes;
@@ -173,24 +170,6 @@ public class DataStructureWrapper
 			setDescription(description);
 		}
 
-		Boolean freezable = (Boolean)attributes.get("freezable");
-
-		if (freezable != null) {
-			setFreezable(freezable);
-		}
-
-		Boolean verifiable = (Boolean)attributes.get("verifiable");
-
-		if (verifiable != null) {
-			setVerifiable(verifiable);
-		}
-
-		Boolean commentable = (Boolean)attributes.get("commentable");
-
-		if (commentable != null) {
-			setCommentable(commentable);
-		}
-
 		String structure = (String)attributes.get("structure");
 
 		if (structure != null) {
@@ -201,16 +180,6 @@ public class DataStructureWrapper
 	@Override
 	public String[] getAvailableLanguageIds() {
 		return model.getAvailableLanguageIds();
-	}
-
-	/**
-	 * Returns the commentable of this data structure.
-	 *
-	 * @return the commentable of this data structure
-	 */
-	@Override
-	public boolean getCommentable() {
-		return model.getCommentable();
 	}
 
 	/**
@@ -421,16 +390,6 @@ public class DataStructureWrapper
 	}
 
 	/**
-	 * Returns the freezable of this data structure.
-	 *
-	 * @return the freezable of this data structure
-	 */
-	@Override
-	public boolean getFreezable() {
-		return model.getFreezable();
-	}
-
-	/**
 	 * Returns the group ID of this data structure.
 	 *
 	 * @return the group ID of this data structure
@@ -605,16 +564,6 @@ public class DataStructureWrapper
 	}
 
 	/**
-	 * Returns the verifiable of this data structure.
-	 *
-	 * @return the verifiable of this data structure
-	 */
-	@Override
-	public boolean getVerifiable() {
-		return model.getVerifiable();
-	}
-
-	/**
 	 * Returns <code>true</code> if this data structure is approved.
 	 *
 	 * @return <code>true</code> if this data structure is approved; <code>false</code> otherwise
@@ -622,16 +571,6 @@ public class DataStructureWrapper
 	@Override
 	public boolean isApproved() {
 		return model.isApproved();
-	}
-
-	/**
-	 * Returns <code>true</code> if this data structure is commentable.
-	 *
-	 * @return <code>true</code> if this data structure is commentable; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isCommentable() {
-		return model.isCommentable();
 	}
 
 	/**
@@ -662,16 +601,6 @@ public class DataStructureWrapper
 	@Override
 	public boolean isExpired() {
 		return model.isExpired();
-	}
-
-	/**
-	 * Returns <code>true</code> if this data structure is freezable.
-	 *
-	 * @return <code>true</code> if this data structure is freezable; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isFreezable() {
-		return model.isFreezable();
 	}
 
 	/**
@@ -744,16 +673,6 @@ public class DataStructureWrapper
 		return model.isScheduled();
 	}
 
-	/**
-	 * Returns <code>true</code> if this data structure is verifiable.
-	 *
-	 * @return <code>true</code> if this data structure is verifiable; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isVerifiable() {
-		return model.isVerifiable();
-	}
-
 	@Override
 	public void persist() {
 		model.persist();
@@ -772,16 +691,6 @@ public class DataStructureWrapper
 		throws com.liferay.portal.kernel.exception.LocaleException {
 
 		model.prepareLocalizedFieldsForImport(defaultImportLocale);
-	}
-
-	/**
-	 * Sets whether this data structure is commentable.
-	 *
-	 * @param commentable the commentable of this data structure
-	 */
-	@Override
-	public void setCommentable(boolean commentable) {
-		model.setCommentable(commentable);
 	}
 
 	/**
@@ -969,16 +878,6 @@ public class DataStructureWrapper
 	}
 
 	/**
-	 * Sets whether this data structure is freezable.
-	 *
-	 * @param freezable the freezable of this data structure
-	 */
-	@Override
-	public void setFreezable(boolean freezable) {
-		model.setFreezable(freezable);
-	}
-
-	/**
 	 * Sets the group ID of this data structure.
 	 *
 	 * @param groupId the group ID of this data structure
@@ -1116,16 +1015,6 @@ public class DataStructureWrapper
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
-	}
-
-	/**
-	 * Sets whether this data structure is verifiable.
-	 *
-	 * @param verifiable the verifiable of this data structure
-	 */
-	@Override
-	public void setVerifiable(boolean verifiable) {
-		model.setVerifiable(verifiable);
 	}
 
 	@Override

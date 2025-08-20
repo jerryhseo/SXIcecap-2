@@ -32,9 +32,9 @@ public class CollectionSetLinkSoap implements Serializable {
 
 		soapModel.setCollectionSetLinkId(model.getCollectionSetLinkId());
 		soapModel.setDataCollectionId(model.getDataCollectionId());
-		soapModel.setDataCollection(model.getDataCollection());
 		soapModel.setDataSetId(model.getDataSetId());
-		soapModel.setDataSet(model.getDataSet());
+		soapModel.setFreezed(model.isFreezed());
+		soapModel.setVerified(model.isVerified());
 
 		return soapModel;
 	}
@@ -112,14 +112,6 @@ public class CollectionSetLinkSoap implements Serializable {
 		_dataCollectionId = dataCollectionId;
 	}
 
-	public long getDataCollection() {
-		return _dataCollection;
-	}
-
-	public void setDataCollection(long dataCollection) {
-		_dataCollection = dataCollection;
-	}
-
 	public long getDataSetId() {
 		return _dataSetId;
 	}
@@ -128,18 +120,34 @@ public class CollectionSetLinkSoap implements Serializable {
 		_dataSetId = dataSetId;
 	}
 
-	public long getDataSet() {
-		return _dataSet;
+	public boolean getFreezed() {
+		return _freezed;
 	}
 
-	public void setDataSet(long dataSet) {
-		_dataSet = dataSet;
+	public boolean isFreezed() {
+		return _freezed;
+	}
+
+	public void setFreezed(boolean freezed) {
+		_freezed = freezed;
+	}
+
+	public boolean getVerified() {
+		return _verified;
+	}
+
+	public boolean isVerified() {
+		return _verified;
+	}
+
+	public void setVerified(boolean verified) {
+		_verified = verified;
 	}
 
 	private long _collectionSetLinkId;
 	private long _dataCollectionId;
-	private long _dataCollection;
 	private long _dataSetId;
-	private long _dataSet;
+	private boolean _freezed;
+	private boolean _verified;
 
 }

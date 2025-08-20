@@ -51,8 +51,6 @@ public class DataTypeSoap implements Serializable {
 		soapModel.setSampleFileId(model.getSampleFileId());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setTooltip(model.getTooltip());
-		soapModel.setFreezable(model.isFreezable());
-		soapModel.setVerifiable(model.isVerifiable());
 		soapModel.setDataStructureId(model.getDataStructureId());
 
 		return soapModel;
@@ -267,30 +265,6 @@ public class DataTypeSoap implements Serializable {
 		_tooltip = tooltip;
 	}
 
-	public boolean getFreezable() {
-		return _freezable;
-	}
-
-	public boolean isFreezable() {
-		return _freezable;
-	}
-
-	public void setFreezable(boolean freezable) {
-		_freezable = freezable;
-	}
-
-	public boolean getVerifiable() {
-		return _verifiable;
-	}
-
-	public boolean isVerifiable() {
-		return _verifiable;
-	}
-
-	public void setVerifiable(boolean verifiable) {
-		_verifiable = verifiable;
-	}
-
 	public long getDataStructureId() {
 		return _dataStructureId;
 	}
@@ -319,8 +293,6 @@ public class DataTypeSoap implements Serializable {
 	private long _sampleFileId;
 	private String _description;
 	private String _tooltip;
-	private boolean _freezable;
-	private boolean _verifiable;
 	private long _dataStructureId;
 
 }

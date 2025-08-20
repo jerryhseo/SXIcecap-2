@@ -61,6 +61,9 @@ public interface TypeVisualizerLinkLocalService
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.sx.icecap.service.impl.TypeVisualizerLinkLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the type visualizer link local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link TypeVisualizerLinkLocalServiceUtil} if injection and service tracking are not available.
 	 */
+	@Indexable(type = IndexableType.REINDEX)
+	public TypeVisualizerLink addTypeVisualizerLink(
+		long dataTypeId, long visualizerId);
 
 	/**
 	 * Adds the type visualizer link to the database. Also notifies the appropriate model listeners.
@@ -225,6 +228,9 @@ public interface TypeVisualizerLinkLocalService
 	public TypeVisualizerLink getTypeVisualizerLink(long typeVisualizerLinkId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TypeVisualizerLink> getTypeVisualizerLinkList(long dataTypeId);
+
 	/**
 	 * Returns a range of all the type visualizer links.
 	 *
@@ -246,6 +252,18 @@ public interface TypeVisualizerLinkLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTypeVisualizerLinksCount();
+
+	@Indexable(type = IndexableType.REINDEX)
+	public void removeByDataTypeId(long dataTypeId);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public TypeVisualizerLink removeTypeVisualizerLink(long linkId)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.REINDEX)
+	public TypeVisualizerLink updateTypeVisualizerLink(
+			long linkId, long dataTypeId, long visualizerId)
+		throws PortalException;
 
 	/**
 	 * Updates the type visualizer link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

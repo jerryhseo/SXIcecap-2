@@ -98,19 +98,20 @@ public interface ParameterModel
 	public void setParameterId(long parameterId);
 
 	/**
-	 * Returns the group parameter ID of this parameter.
+	 * Returns the company ID of this parameter.
 	 *
-	 * @return the group parameter ID of this parameter
+	 * @return the company ID of this parameter
 	 */
-	@AutoEscape
-	public String getGroupParameterId();
+	@Override
+	public long getCompanyId();
 
 	/**
-	 * Sets the group parameter ID of this parameter.
+	 * Sets the company ID of this parameter.
 	 *
-	 * @param groupParameterId the group parameter ID of this parameter
+	 * @param companyId the company ID of this parameter
 	 */
-	public void setGroupParameterId(String groupParameterId);
+	@Override
+	public void setCompanyId(long companyId);
 
 	/**
 	 * Returns the group ID of this parameter.
@@ -127,22 +128,6 @@ public interface ParameterModel
 	 */
 	@Override
 	public void setGroupId(long groupId);
-
-	/**
-	 * Returns the company ID of this parameter.
-	 *
-	 * @return the company ID of this parameter
-	 */
-	@Override
-	public long getCompanyId();
-
-	/**
-	 * Sets the company ID of this parameter.
-	 *
-	 * @param companyId the company ID of this parameter
-	 */
-	@Override
-	public void setCompanyId(long companyId);
 
 	/**
 	 * Returns the user ID of this parameter.

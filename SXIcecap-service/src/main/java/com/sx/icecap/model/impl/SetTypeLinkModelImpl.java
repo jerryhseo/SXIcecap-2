@@ -66,8 +66,8 @@ public class SetTypeLinkModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"setTypeLinkId", Types.BIGINT}, {"dataSetId", Types.BIGINT},
-		{"dataSet", Types.BIGINT}, {"dataTypeId", Types.BIGINT},
-		{"dataType", Types.VARCHAR}
+		{"dataTypeId", Types.BIGINT}, {"freezed", Types.BOOLEAN},
+		{"verified", Types.BOOLEAN}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -76,13 +76,13 @@ public class SetTypeLinkModelImpl
 	static {
 		TABLE_COLUMNS_MAP.put("setTypeLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataSetId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("dataSet", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataTypeId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("dataType", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("freezed", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("verified", Types.BOOLEAN);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_SetTypeLink (setTypeLinkId LONG not null primary key,dataSetId LONG,dataSet LONG,dataTypeId LONG,dataType VARCHAR(75) null)";
+		"create table SX_ICECAP_SetTypeLink (setTypeLinkId LONG not null primary key,dataSetId LONG,dataTypeId LONG,freezed BOOLEAN,verified BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_SetTypeLink";
@@ -221,17 +221,18 @@ public class SetTypeLinkModelImpl
 		attributeSetterBiConsumers.put(
 			"dataSetId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setDataSetId);
-		attributeGetterFunctions.put("dataSet", SetTypeLink::getDataSet);
-		attributeSetterBiConsumers.put(
-			"dataSet", (BiConsumer<SetTypeLink, Long>)SetTypeLink::setDataSet);
 		attributeGetterFunctions.put("dataTypeId", SetTypeLink::getDataTypeId);
 		attributeSetterBiConsumers.put(
 			"dataTypeId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setDataTypeId);
-		attributeGetterFunctions.put("dataType", SetTypeLink::getDataType);
+		attributeGetterFunctions.put("freezed", SetTypeLink::getFreezed);
 		attributeSetterBiConsumers.put(
-			"dataType",
-			(BiConsumer<SetTypeLink, String>)SetTypeLink::setDataType);
+			"freezed",
+			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setFreezed);
+		attributeGetterFunctions.put("verified", SetTypeLink::getVerified);
+		attributeSetterBiConsumers.put(
+			"verified",
+			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setVerified);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -272,16 +273,6 @@ public class SetTypeLinkModelImpl
 	}
 
 	@Override
-	public long getDataSet() {
-		return _dataSet;
-	}
-
-	@Override
-	public void setDataSet(long dataSet) {
-		_dataSet = dataSet;
-	}
-
-	@Override
 	public long getDataTypeId() {
 		return _dataTypeId;
 	}
@@ -304,18 +295,33 @@ public class SetTypeLinkModelImpl
 	}
 
 	@Override
-	public String getDataType() {
-		if (_dataType == null) {
-			return "";
-		}
-		else {
-			return _dataType;
-		}
+	public boolean getFreezed() {
+		return _freezed;
 	}
 
 	@Override
-	public void setDataType(String dataType) {
-		_dataType = dataType;
+	public boolean isFreezed() {
+		return _freezed;
+	}
+
+	@Override
+	public void setFreezed(boolean freezed) {
+		_freezed = freezed;
+	}
+
+	@Override
+	public boolean getVerified() {
+		return _verified;
+	}
+
+	@Override
+	public boolean isVerified() {
+		return _verified;
+	}
+
+	@Override
+	public void setVerified(boolean verified) {
+		_verified = verified;
 	}
 
 	public long getColumnBitmask() {
@@ -356,9 +362,9 @@ public class SetTypeLinkModelImpl
 
 		setTypeLinkImpl.setSetTypeLinkId(getSetTypeLinkId());
 		setTypeLinkImpl.setDataSetId(getDataSetId());
-		setTypeLinkImpl.setDataSet(getDataSet());
 		setTypeLinkImpl.setDataTypeId(getDataTypeId());
-		setTypeLinkImpl.setDataType(getDataType());
+		setTypeLinkImpl.setFreezed(isFreezed());
+		setTypeLinkImpl.setVerified(isVerified());
 
 		setTypeLinkImpl.resetOriginalValues();
 
@@ -439,17 +445,11 @@ public class SetTypeLinkModelImpl
 
 		setTypeLinkCacheModel.dataSetId = getDataSetId();
 
-		setTypeLinkCacheModel.dataSet = getDataSet();
-
 		setTypeLinkCacheModel.dataTypeId = getDataTypeId();
 
-		setTypeLinkCacheModel.dataType = getDataType();
+		setTypeLinkCacheModel.freezed = isFreezed();
 
-		String dataType = setTypeLinkCacheModel.dataType;
-
-		if ((dataType != null) && (dataType.length() == 0)) {
-			setTypeLinkCacheModel.dataType = null;
-		}
+		setTypeLinkCacheModel.verified = isVerified();
 
 		return setTypeLinkCacheModel;
 	}
@@ -550,11 +550,11 @@ public class SetTypeLinkModelImpl
 	private long _dataSetId;
 	private long _originalDataSetId;
 	private boolean _setOriginalDataSetId;
-	private long _dataSet;
 	private long _dataTypeId;
 	private long _originalDataTypeId;
 	private boolean _setOriginalDataTypeId;
-	private String _dataType;
+	private boolean _freezed;
+	private boolean _verified;
 	private long _columnBitmask;
 	private SetTypeLink _escapedModel;
 

@@ -88,17 +88,16 @@ public class ParameterModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"uuid_", Types.VARCHAR}, {"parameterId", Types.BIGINT},
-		{"groupParameterId", Types.VARCHAR}, {"groupId", Types.BIGINT},
-		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
-		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"modifiedDate", Types.TIMESTAMP}, {"status", Types.INTEGER},
-		{"statusByUserId", Types.BIGINT}, {"statusByUserName", Types.VARCHAR},
-		{"statusDate", Types.TIMESTAMP}, {"lastPublishDate", Types.TIMESTAMP},
-		{"paramName", Types.VARCHAR}, {"paramVersion", Types.VARCHAR},
-		{"paramType", Types.VARCHAR}, {"displayName", Types.VARCHAR},
-		{"definition", Types.VARCHAR}, {"tooltip", Types.VARCHAR},
-		{"synonyms", Types.VARCHAR}, {"typeProperties", Types.VARCHAR},
-		{"standard", Types.BOOLEAN}
+		{"companyId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
+		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
+		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
+		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP},
+		{"lastPublishDate", Types.TIMESTAMP}, {"paramName", Types.VARCHAR},
+		{"paramVersion", Types.VARCHAR}, {"paramType", Types.VARCHAR},
+		{"displayName", Types.VARCHAR}, {"definition", Types.VARCHAR},
+		{"tooltip", Types.VARCHAR}, {"synonyms", Types.VARCHAR},
+		{"typeProperties", Types.VARCHAR}, {"standard", Types.BOOLEAN}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -107,9 +106,8 @@ public class ParameterModelImpl
 	static {
 		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("parameterId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("groupParameterId", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
@@ -131,7 +129,7 @@ public class ParameterModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_Parameter (uuid_ VARCHAR(75) null,parameterId LONG not null primary key,groupParameterId VARCHAR(75) null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,lastPublishDate DATE null,paramName VARCHAR(75) null,paramVersion VARCHAR(75) null,paramType VARCHAR(75) null,displayName STRING null,definition STRING null,tooltip STRING null,synonyms VARCHAR(75) null,typeProperties VARCHAR(75) null,standard BOOLEAN)";
+		"create table SX_ICECAP_Parameter (uuid_ VARCHAR(75) null,parameterId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,lastPublishDate DATE null,paramName VARCHAR(75) null,paramVersion VARCHAR(75) null,paramType VARCHAR(75) null,displayName STRING null,definition STRING null,tooltip STRING null,synonyms VARCHAR(75) null,typeProperties VARCHAR(75) null,standard BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_Parameter";
@@ -185,9 +183,8 @@ public class ParameterModelImpl
 
 		model.setUuid(soapModel.getUuid());
 		model.setParameterId(soapModel.getParameterId());
-		model.setGroupParameterId(soapModel.getGroupParameterId());
-		model.setGroupId(soapModel.getGroupId());
 		model.setCompanyId(soapModel.getCompanyId());
+		model.setGroupId(soapModel.getGroupId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
@@ -335,17 +332,12 @@ public class ParameterModelImpl
 		attributeSetterBiConsumers.put(
 			"parameterId",
 			(BiConsumer<Parameter, Long>)Parameter::setParameterId);
-		attributeGetterFunctions.put(
-			"groupParameterId", Parameter::getGroupParameterId);
-		attributeSetterBiConsumers.put(
-			"groupParameterId",
-			(BiConsumer<Parameter, String>)Parameter::setGroupParameterId);
-		attributeGetterFunctions.put("groupId", Parameter::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId", (BiConsumer<Parameter, Long>)Parameter::setGroupId);
 		attributeGetterFunctions.put("companyId", Parameter::getCompanyId);
 		attributeSetterBiConsumers.put(
 			"companyId", (BiConsumer<Parameter, Long>)Parameter::setCompanyId);
+		attributeGetterFunctions.put("groupId", Parameter::getGroupId);
+		attributeSetterBiConsumers.put(
+			"groupId", (BiConsumer<Parameter, Long>)Parameter::setGroupId);
 		attributeGetterFunctions.put("userId", Parameter::getUserId);
 		attributeSetterBiConsumers.put(
 			"userId", (BiConsumer<Parameter, Long>)Parameter::setUserId);
@@ -464,18 +456,25 @@ public class ParameterModelImpl
 
 	@JSON
 	@Override
-	public String getGroupParameterId() {
-		if (_groupParameterId == null) {
-			return "";
-		}
-		else {
-			return _groupParameterId;
-		}
+	public long getCompanyId() {
+		return _companyId;
 	}
 
 	@Override
-	public void setGroupParameterId(String groupParameterId) {
-		_groupParameterId = groupParameterId;
+	public void setCompanyId(long companyId) {
+		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
+		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -499,29 +498,6 @@ public class ParameterModelImpl
 
 	public long getOriginalGroupId() {
 		return _originalGroupId;
-	}
-
-	@JSON
-	@Override
-	public long getCompanyId() {
-		return _companyId;
-	}
-
-	@Override
-	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
-
-		_companyId = companyId;
-	}
-
-	public long getOriginalCompanyId() {
-		return _originalCompanyId;
 	}
 
 	@JSON
@@ -1514,9 +1490,8 @@ public class ParameterModelImpl
 
 		parameterImpl.setUuid(getUuid());
 		parameterImpl.setParameterId(getParameterId());
-		parameterImpl.setGroupParameterId(getGroupParameterId());
-		parameterImpl.setGroupId(getGroupId());
 		parameterImpl.setCompanyId(getCompanyId());
+		parameterImpl.setGroupId(getGroupId());
 		parameterImpl.setUserId(getUserId());
 		parameterImpl.setUserName(getUserName());
 		parameterImpl.setCreateDate(getCreateDate());
@@ -1595,13 +1570,13 @@ public class ParameterModelImpl
 	public void resetOriginalValues() {
 		_originalUuid = _uuid;
 
-		_originalGroupId = _groupId;
-
-		_setOriginalGroupId = false;
-
 		_originalCompanyId = _companyId;
 
 		_setOriginalCompanyId = false;
+
+		_originalGroupId = _groupId;
+
+		_setOriginalGroupId = false;
 
 		_originalUserId = _userId;
 
@@ -1633,17 +1608,9 @@ public class ParameterModelImpl
 
 		parameterCacheModel.parameterId = getParameterId();
 
-		parameterCacheModel.groupParameterId = getGroupParameterId();
-
-		String groupParameterId = parameterCacheModel.groupParameterId;
-
-		if ((groupParameterId != null) && (groupParameterId.length() == 0)) {
-			parameterCacheModel.groupParameterId = null;
-		}
+		parameterCacheModel.companyId = getCompanyId();
 
 		parameterCacheModel.groupId = getGroupId();
-
-		parameterCacheModel.companyId = getCompanyId();
 
 		parameterCacheModel.userId = getUserId();
 
@@ -1867,13 +1834,12 @@ public class ParameterModelImpl
 	private String _uuid;
 	private String _originalUuid;
 	private long _parameterId;
-	private String _groupParameterId;
-	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
+	private long _groupId;
+	private long _originalGroupId;
+	private boolean _setOriginalGroupId;
 	private long _userId;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;

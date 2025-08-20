@@ -7,7 +7,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@clayui/css/lib/css/atlas.css">
 <%@ include file="../../init.jsp" %>
 <%
+	JSONArray permissions = (JSONArray)renderRequest.getAttribute("permissions");
 	long dataTypeId = ParamUtil.getLong(renderRequest, WebKey.DATATYPE_ID, 0);
+	long dataStructureId = ParamUtil.getLong(renderRequest, WebKey.DATASTRUCTURE_ID, 0);
 	
 	String workbenchNamespace = ParamUtil.getString(renderRequest, StationXWebKeys.WORKBENCH_NAMESPACE, StringPool.BLANK);
 	String workbenchId = ParamUtil.getString(renderRequest, StationXWebKeys.WORKBENCH_ID, StringPool.BLANK);
@@ -50,12 +52,20 @@
 			baseRenderURL: '<%=  baseRenderURL %>',
 			baseActionURL: '<%=  baseActionURL %>',
 			baseResourceURL: '<%=  baseResourceURL %>',
-			params: { // initial parameters
-				backURL: '<%= currentURL %>',
+			redirectURLs:{
 				workbenchURL: '<%= workbenchURL %>',
-				workbenchId: '<%= workbenchId %>',
-				workbenchNamespace: '<%= workbenchNamespace %>',
-				dataTypeId: JSON.parse('<%= String.valueOf(dataTypeId) %>')
+				dataTypeEditorURL:"",
+				backURL:'<%= currentURL %>',
+			},
+			permissions: JSON.parse('<%= permissions.toJSONString() %>'),
+			workbench:{
+				url: '<%= workbenchURL %>',
+			 	namespace: '<%= workbenchNamespace %>',
+				portletId: '<%= workbenchId %>',
+			},
+			params: { // initial parameters
+				dataTypeId: JSON.parse('<%= String.valueOf(dataTypeId) %>'),
+				dataStructureId: JSON.parse('<%= String.valueOf(dataStructureId) %>')
 			}
 		}
 	);

@@ -59,9 +59,6 @@ public class DataStructureLocalServiceImpl
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
 			String structure,
-			boolean freezable,
-			boolean verifiable,
-			boolean commentable,
 			int status,
 			ServiceContext sc) throws PortalException {
 		
@@ -75,9 +72,6 @@ public class DataStructureLocalServiceImpl
 		dataStructure.setDisplayNameMap(displayNameMap, defaultLocale);
 		dataStructure.setDescriptionMap(descriptionMap, defaultLocale);
 		dataStructure.setStructure(structure);
-		dataStructure.setFreezable(freezable);
-		dataStructure.setVerifiable(verifiable);
-		dataStructure.setCommentable(commentable);
 		
 		Date now = new Date();
 		User user = super.userLocalService.getUser(sc.getUserId());
@@ -159,9 +153,6 @@ public class DataStructureLocalServiceImpl
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
 			String structure,
-			boolean freezable,
-			boolean verifiable,
-			boolean commentable,
 			int status,
 			ServiceContext sc) throws PortalException {
 		DataStructure dataStructure = super.dataStructurePersistence.findByPrimaryKey(dataStructureId);
@@ -171,9 +162,6 @@ public class DataStructureLocalServiceImpl
 		dataStructure.setDisplayNameMap(displayNameMap, sc.getLocale());
 		dataStructure.setDescriptionMap(descriptionMap, sc.getLocale());
 		dataStructure.setStructure(structure);
-		dataStructure.setFreezable(freezable);
-		dataStructure.setVerifiable(verifiable);
-		dataStructure.setCommentable(commentable);
 		
 		dataStructure.setUserId(sc.getUserId());
 		dataStructure.setGroupId(sc.getScopeGroupId());

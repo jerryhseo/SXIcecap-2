@@ -63,18 +63,14 @@ public class TypeVisualizerLinkCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(7);
 
 		sb.append("{typeVisualizerLinkId=");
 		sb.append(typeVisualizerLinkId);
 		sb.append(", dataTypeId=");
 		sb.append(dataTypeId);
-		sb.append(", dataType=");
-		sb.append(dataType);
 		sb.append(", visualizerId=");
 		sb.append(visualizerId);
-		sb.append(", visualizer=");
-		sb.append(visualizer);
 		sb.append("}");
 
 		return sb.toString();
@@ -87,15 +83,7 @@ public class TypeVisualizerLinkCacheModel
 
 		typeVisualizerLinkImpl.setTypeVisualizerLinkId(typeVisualizerLinkId);
 		typeVisualizerLinkImpl.setDataTypeId(dataTypeId);
-		typeVisualizerLinkImpl.setDataType(dataType);
 		typeVisualizerLinkImpl.setVisualizerId(visualizerId);
-
-		if (visualizer == null) {
-			typeVisualizerLinkImpl.setVisualizer("");
-		}
-		else {
-			typeVisualizerLinkImpl.setVisualizer(visualizer);
-		}
 
 		typeVisualizerLinkImpl.resetOriginalValues();
 
@@ -108,10 +96,7 @@ public class TypeVisualizerLinkCacheModel
 
 		dataTypeId = objectInput.readLong();
 
-		dataType = objectInput.readLong();
-
 		visualizerId = objectInput.readLong();
-		visualizer = objectInput.readUTF();
 	}
 
 	@Override
@@ -120,22 +105,11 @@ public class TypeVisualizerLinkCacheModel
 
 		objectOutput.writeLong(dataTypeId);
 
-		objectOutput.writeLong(dataType);
-
 		objectOutput.writeLong(visualizerId);
-
-		if (visualizer == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(visualizer);
-		}
 	}
 
 	public long typeVisualizerLinkId;
 	public long dataTypeId;
-	public long dataType;
 	public long visualizerId;
-	public String visualizer;
 
 }

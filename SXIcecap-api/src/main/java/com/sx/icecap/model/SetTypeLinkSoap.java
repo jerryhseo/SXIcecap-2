@@ -32,9 +32,9 @@ public class SetTypeLinkSoap implements Serializable {
 
 		soapModel.setSetTypeLinkId(model.getSetTypeLinkId());
 		soapModel.setDataSetId(model.getDataSetId());
-		soapModel.setDataSet(model.getDataSet());
 		soapModel.setDataTypeId(model.getDataTypeId());
-		soapModel.setDataType(model.getDataType());
+		soapModel.setFreezed(model.isFreezed());
+		soapModel.setVerified(model.isVerified());
 
 		return soapModel;
 	}
@@ -104,14 +104,6 @@ public class SetTypeLinkSoap implements Serializable {
 		_dataSetId = dataSetId;
 	}
 
-	public long getDataSet() {
-		return _dataSet;
-	}
-
-	public void setDataSet(long dataSet) {
-		_dataSet = dataSet;
-	}
-
 	public long getDataTypeId() {
 		return _dataTypeId;
 	}
@@ -120,18 +112,34 @@ public class SetTypeLinkSoap implements Serializable {
 		_dataTypeId = dataTypeId;
 	}
 
-	public String getDataType() {
-		return _dataType;
+	public boolean getFreezed() {
+		return _freezed;
 	}
 
-	public void setDataType(String dataType) {
-		_dataType = dataType;
+	public boolean isFreezed() {
+		return _freezed;
+	}
+
+	public void setFreezed(boolean freezed) {
+		_freezed = freezed;
+	}
+
+	public boolean getVerified() {
+		return _verified;
+	}
+
+	public boolean isVerified() {
+		return _verified;
+	}
+
+	public void setVerified(boolean verified) {
+		_verified = verified;
 	}
 
 	private long _setTypeLinkId;
 	private long _dataSetId;
-	private long _dataSet;
 	private long _dataTypeId;
-	private String _dataType;
+	private boolean _freezed;
+	private boolean _verified;
 
 }

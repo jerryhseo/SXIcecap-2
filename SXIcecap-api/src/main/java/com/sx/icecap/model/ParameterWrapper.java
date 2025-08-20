@@ -45,9 +45,8 @@ public class ParameterWrapper
 
 		attributes.put("uuid", getUuid());
 		attributes.put("parameterId", getParameterId());
-		attributes.put("groupParameterId", getGroupParameterId());
-		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -84,22 +83,16 @@ public class ParameterWrapper
 			setParameterId(parameterId);
 		}
 
-		String groupParameterId = (String)attributes.get("groupParameterId");
+		Long companyId = (Long)attributes.get("companyId");
 
-		if (groupParameterId != null) {
-			setGroupParameterId(groupParameterId);
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long groupId = (Long)attributes.get("groupId");
 
 		if (groupId != null) {
 			setGroupId(groupId);
-		}
-
-		Long companyId = (Long)attributes.get("companyId");
-
-		if (companyId != null) {
-			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -401,16 +394,6 @@ public class ParameterWrapper
 	@Override
 	public long getGroupId() {
 		return model.getGroupId();
-	}
-
-	/**
-	 * Returns the group parameter ID of this parameter.
-	 *
-	 * @return the group parameter ID of this parameter
-	 */
-	@Override
-	public String getGroupParameterId() {
-		return model.getGroupParameterId();
 	}
 
 	/**
@@ -1013,16 +996,6 @@ public class ParameterWrapper
 	@Override
 	public void setGroupId(long groupId) {
 		model.setGroupId(groupId);
-	}
-
-	/**
-	 * Sets the group parameter ID of this parameter.
-	 *
-	 * @param groupParameterId the group parameter ID of this parameter
-	 */
-	@Override
-	public void setGroupParameterId(String groupParameterId) {
-		model.setGroupParameterId(groupParameterId);
 	}
 
 	/**

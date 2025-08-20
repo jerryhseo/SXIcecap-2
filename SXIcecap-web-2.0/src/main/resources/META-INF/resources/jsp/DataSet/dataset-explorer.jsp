@@ -59,7 +59,7 @@
 
 	main.default(
 		'<portlet:namespace />-root', 
-		'<%=WebPortletKey.DATATYPE_EXPLORER%>', 
+		'<%=WebPortletKey.DATASET_EXPLORER%>', 
 		{
 			namespace: '<portlet:namespace/>',
 			dafaultLanguageId: '<%= defaultLocale.toLanguageTag() %>',

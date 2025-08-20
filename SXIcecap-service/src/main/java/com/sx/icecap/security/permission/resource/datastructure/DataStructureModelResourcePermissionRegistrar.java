@@ -64,7 +64,7 @@ public class DataStructureModelResourcePermissionRegistrar {
 							consumer.accept(
 									new StagedModelPermissionLogic<>(
 											_stagingPermission, 
-											WebPortletKey.DATA_STRUCTURE_BUILDER,
+											WebPortletKey.SXDataStructureBuilderPortlet,
 											DataStructure::getDataStructureId)
 							);
 							consumer.accept(

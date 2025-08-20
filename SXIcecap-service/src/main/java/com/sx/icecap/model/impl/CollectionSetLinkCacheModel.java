@@ -69,12 +69,12 @@ public class CollectionSetLinkCacheModel
 		sb.append(collectionSetLinkId);
 		sb.append(", dataCollectionId=");
 		sb.append(dataCollectionId);
-		sb.append(", dataCollection=");
-		sb.append(dataCollection);
 		sb.append(", dataSetId=");
 		sb.append(dataSetId);
-		sb.append(", dataSet=");
-		sb.append(dataSet);
+		sb.append(", freezed=");
+		sb.append(freezed);
+		sb.append(", verified=");
+		sb.append(verified);
 		sb.append("}");
 
 		return sb.toString();
@@ -87,9 +87,9 @@ public class CollectionSetLinkCacheModel
 
 		collectionSetLinkImpl.setCollectionSetLinkId(collectionSetLinkId);
 		collectionSetLinkImpl.setDataCollectionId(dataCollectionId);
-		collectionSetLinkImpl.setDataCollection(dataCollection);
 		collectionSetLinkImpl.setDataSetId(dataSetId);
-		collectionSetLinkImpl.setDataSet(dataSet);
+		collectionSetLinkImpl.setFreezed(freezed);
+		collectionSetLinkImpl.setVerified(verified);
 
 		collectionSetLinkImpl.resetOriginalValues();
 
@@ -102,11 +102,11 @@ public class CollectionSetLinkCacheModel
 
 		dataCollectionId = objectInput.readLong();
 
-		dataCollection = objectInput.readLong();
-
 		dataSetId = objectInput.readLong();
 
-		dataSet = objectInput.readLong();
+		freezed = objectInput.readBoolean();
+
+		verified = objectInput.readBoolean();
 	}
 
 	@Override
@@ -115,17 +115,17 @@ public class CollectionSetLinkCacheModel
 
 		objectOutput.writeLong(dataCollectionId);
 
-		objectOutput.writeLong(dataCollection);
-
 		objectOutput.writeLong(dataSetId);
 
-		objectOutput.writeLong(dataSet);
+		objectOutput.writeBoolean(freezed);
+
+		objectOutput.writeBoolean(verified);
 	}
 
 	public long collectionSetLinkId;
 	public long dataCollectionId;
-	public long dataCollection;
 	public long dataSetId;
-	public long dataSet;
+	public boolean freezed;
+	public boolean verified;
 
 }

@@ -74,8 +74,7 @@ public interface StructuredDataLocalService
 	public StructuredData addStructuredData(
 			long dataCollectionId, long dataSetId, long dataTypeId,
 			boolean multiple, long startIndex, int count, boolean freezed,
-			boolean verified, boolean comments, boolean history, String data,
-			int status, ServiceContext sc)
+			boolean verified, String data, int status, ServiceContext sc)
 		throws PortalException;
 
 	/**
@@ -561,8 +560,8 @@ public interface StructuredDataLocalService
 	public StructuredData updateStructuredData(
 			long structuredDataId, long dataCollectionId, long dataSetId,
 			long dataTypeId, boolean multiple, long startIndex, int count,
-			boolean freezed, boolean verified, boolean comments,
-			boolean history, String data, int status, ServiceContext sc)
+			boolean freezed, boolean verified, String data, int status,
+			ServiceContext sc)
 		throws PortalException;
 
 	/**

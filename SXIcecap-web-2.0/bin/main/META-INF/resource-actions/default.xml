@@ -4,7 +4,7 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 
 <resource-action-mapping>
 	<portlet-resource>
-		<portlet-name>com.sx.icecap.web.portlet_DataWorkbenchPortlet</portlet-name>
+		<portlet-name>com_sx_icecap_web_portlet_DataWorkbenchPortlet</portlet-name>
 		<permissions>
 			<supports>
 				<action-key>ADD_TO_PAGE</action-key>
@@ -25,7 +25,7 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 	</portlet-resource>
 	
 	<portlet-resource>
-		<portlet-name>com.sx.icecap.web.portlet_DataCollectionExplorerPortlet</portlet-name>
+		<portlet-name>com_sx_icecap_web_portlet_DataCollectionExplorerPortlet</portlet-name>
 		<permissions>
 			<supports>
 				<action-key>ADD_TO_PAGE</action-key>
@@ -65,7 +65,6 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 			</guest-unsupported>
 		</permissions>
 	</portlet-resource>
-	
 	<portlet-resource>
 		<portlet-name>com_sx_icecap_web_portlet_DataCollectionViewerPortlet</portlet-name>
 		<permissions>
@@ -88,7 +87,69 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 	</portlet-resource>
 	
 	<portlet-resource>
-		<portlet-name>com.sx.icecap.web.portlet_DataTypeExplorerPortlet</portlet-name>
+		<portlet-name>com_sx_icecap_web_portlet_DataSetExplorerPortlet</portlet-name>
+		<permissions>
+			<supports>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+			</guest-unsupported>
+		</permissions>
+	</portlet-resource>
+	<portlet-resource>
+		<portlet-name>com_sx_icecap_web_portlet_DataSetEditorPortlet</portlet-name>
+		<permissions>
+			<supports>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+			</guest-unsupported>
+		</permissions>
+	</portlet-resource>
+	<portlet-resource>
+		<portlet-name>com_sx_icecap_web_portlet_DataSetViewerPortlet</portlet-name>
+		<permissions>
+			<supports>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+			</guest-unsupported>
+		</permissions>
+	</portlet-resource>
+	
+	
+	<portlet-resource>
+		<portlet-name>com_sx_icecap_web_portlet_DataTypeExplorerPortlet</portlet-name>
 		<permissions>
 			<supports>
 				<action-key>ADD_TO_PAGE</action-key>
@@ -170,6 +231,46 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 			</guest-unsupported>
 		</permissions>
 	</portlet-resource>
+	<portlet-resource>
+		<portlet-name>com_sx_icecap_web_portlet_DataStructureExplorerPortlet</portlet-name>
+		<permissions>
+			<supports>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+			</guest-unsupported>
+		</permissions>
+	</portlet-resource>
+	<portlet-resource>
+		<portlet-name>com_sx_icecap_web_portlet_DataStructureViewerPortlet</portlet-name>
+		<permissions>
+			<supports>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+			</guest-unsupported>
+		</permissions>
+	</portlet-resource>
 	
 	<portlet-resource>
 		<portlet-name>com_sx_icecap_web_portlet_StructuredDataViewerPortlet</portlet-name>
@@ -215,6 +316,67 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 	
 	<portlet-resource>
 		<portlet-name>com_sx_icecap_web_portlet_StructuredDataExplorerPortlet</portlet-name>
+		<permissions>
+			<supports>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+			</guest-unsupported>
+		</permissions>
+	</portlet-resource>
+	
+	<portlet-resource>
+		<portlet-name>com_sx_icecap_web_portlet_ParameterExplorerPortlet</portlet-name>
+		<permissions>
+			<supports>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+			</guest-unsupported>
+		</permissions>
+	</portlet-resource>
+	<portlet-resource>
+		<portlet-name>com_sx_icecap_web_portlet_ParameterEditorPortlet</portlet-name>
+		<permissions>
+			<supports>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>ADD_TO_PAGE</action-key>
+				<action-key>CONFIGURATION</action-key>
+			</guest-unsupported>
+		</permissions>
+	</portlet-resource>
+	<portlet-resource>
+		<portlet-name>com_sx_icecap_web_portlet_ParameterViewerPortlet</portlet-name>
 		<permissions>
 			<supports>
 				<action-key>ADD_TO_PAGE</action-key>

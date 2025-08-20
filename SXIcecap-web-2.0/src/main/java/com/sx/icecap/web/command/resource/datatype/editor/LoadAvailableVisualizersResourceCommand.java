@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.sx.icecap.constant.MVCCommand;
 import com.sx.icecap.constant.WebPortletKey;
 import com.sx.icecap.service.DataTypeLocalService;
+import com.sx.spyglass.service.ScienceAppLocalService;
 
 import java.io.PrintWriter;
 
@@ -34,53 +35,8 @@ public class LoadAvailableVisualizersResourceCommand extends BaseMVCResourceComm
 		System.out.println("LoadAvailableVisualizersResourceCommand");
 		
 		
-		JSONArray availables = JSONFactoryUtil.createJSONArray();
-		
-		JSONObject item = JSONFactoryUtil.createJSONObject();
-		item.put( "value", 123456);
-		JSONObject displayName = JSONFactoryUtil.createJSONObject();
-		displayName.put("en-US", "Text Viewer");
-		displayName.put("ko-KR", "텍스트 뷰어");
-		item.put( "displayName", displayName);
-		
-		availables.put(item);
-		
-		item = JSONFactoryUtil.createJSONObject();
-		item.put( "value", 234567);
-		displayName = JSONFactoryUtil.createJSONObject();
-		displayName.put("en-US", "Structured Data Editor");
-		displayName.put("ko-KR", "구조데이터 편집기");
-		item.put( "displayName", displayName);
-		
-		availables.put(item);
-		
-		item = JSONFactoryUtil.createJSONObject();
-		item.put( "value", 345678);
-		displayName = JSONFactoryUtil.createJSONObject();
-		displayName.put("en-US", "Image Viewer");
-		displayName.put("ko-KR", "이미지 뷰어");
-		item.put( "displayName", displayName);
-		
-		availables.put(item);
-		
-		item = JSONFactoryUtil.createJSONObject();
-		item.put( "value", 456789);
-		displayName = JSONFactoryUtil.createJSONObject();
-		displayName.put("en-US", "Text Editor");
-		displayName.put("ko-KR", "텍스트 편집기");
-		item.put( "displayName", displayName);
-		
-		availables.put(item);
-		
-		item = JSONFactoryUtil.createJSONObject();
-		item.put( "value", 567890);
-		displayName = JSONFactoryUtil.createJSONObject();
-		displayName.put("en-US", "Image Editor");
-		displayName.put("ko-KR", "이미지 편집기");
-		item.put( "displayName", displayName);
-		
-		availables.put(item);
-		
+		JSONArray availables = _scienceAppLocalService.getScienceAppList("visualizer");
+			
 		PrintWriter pw = resourceResponse.getWriter();
 		pw.write(availables.toJSONString());
 		
@@ -90,4 +46,7 @@ public class LoadAvailableVisualizersResourceCommand extends BaseMVCResourceComm
 	
 	@Reference
 	private DataTypeLocalService _dataTypeLocalService;
+	
+	@Reference
+	private ScienceAppLocalService _scienceAppLocalService;
 }

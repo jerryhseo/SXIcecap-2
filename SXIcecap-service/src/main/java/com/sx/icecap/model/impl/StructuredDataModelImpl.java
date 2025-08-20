@@ -86,7 +86,6 @@ public class StructuredDataModelImpl
 		{"dataTypeId", Types.BIGINT}, {"multiple", Types.BOOLEAN},
 		{"startIndex", Types.BIGINT}, {"count", Types.INTEGER},
 		{"freezed", Types.BOOLEAN}, {"verified", Types.BOOLEAN},
-		{"comments", Types.BOOLEAN}, {"history", Types.BOOLEAN},
 		{"data_", Types.VARCHAR}
 	};
 
@@ -114,13 +113,11 @@ public class StructuredDataModelImpl
 		TABLE_COLUMNS_MAP.put("count", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("freezed", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("verified", Types.BOOLEAN);
-		TABLE_COLUMNS_MAP.put("comments", Types.BOOLEAN);
-		TABLE_COLUMNS_MAP.put("history", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("data_", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_StructuredData (uuid_ VARCHAR(75) null,structuredDataId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionId LONG,dataSetId LONG,dataTypeId LONG,multiple BOOLEAN,startIndex LONG,count INTEGER,freezed BOOLEAN,verified BOOLEAN,comments BOOLEAN,history BOOLEAN,data_ VARCHAR(75) null)";
+		"create table SX_ICECAP_StructuredData (uuid_ VARCHAR(75) null,structuredDataId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionId LONG,dataSetId LONG,dataTypeId LONG,multiple BOOLEAN,startIndex LONG,count INTEGER,freezed BOOLEAN,verified BOOLEAN,data_ VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_StructuredData";
@@ -355,14 +352,6 @@ public class StructuredDataModelImpl
 		attributeSetterBiConsumers.put(
 			"verified",
 			(BiConsumer<StructuredData, Boolean>)StructuredData::setVerified);
-		attributeGetterFunctions.put("comments", StructuredData::getComments);
-		attributeSetterBiConsumers.put(
-			"comments",
-			(BiConsumer<StructuredData, Boolean>)StructuredData::setComments);
-		attributeGetterFunctions.put("history", StructuredData::getHistory);
-		attributeSetterBiConsumers.put(
-			"history",
-			(BiConsumer<StructuredData, Boolean>)StructuredData::setHistory);
 		attributeGetterFunctions.put("data", StructuredData::getData);
 		attributeSetterBiConsumers.put(
 			"data",
@@ -737,36 +726,6 @@ public class StructuredDataModelImpl
 	}
 
 	@Override
-	public boolean getComments() {
-		return _comments;
-	}
-
-	@Override
-	public boolean isComments() {
-		return _comments;
-	}
-
-	@Override
-	public void setComments(boolean comments) {
-		_comments = comments;
-	}
-
-	@Override
-	public boolean getHistory() {
-		return _history;
-	}
-
-	@Override
-	public boolean isHistory() {
-		return _history;
-	}
-
-	@Override
-	public void setHistory(boolean history) {
-		_history = history;
-	}
-
-	@Override
 	public String getData() {
 		if (_data == null) {
 			return "";
@@ -1068,8 +1027,6 @@ public class StructuredDataModelImpl
 		structuredDataImpl.setCount(getCount());
 		structuredDataImpl.setFreezed(isFreezed());
 		structuredDataImpl.setVerified(isVerified());
-		structuredDataImpl.setComments(isComments());
-		structuredDataImpl.setHistory(isHistory());
 		structuredDataImpl.setData(getData());
 
 		structuredDataImpl.resetOriginalValues();
@@ -1249,10 +1206,6 @@ public class StructuredDataModelImpl
 
 		structuredDataCacheModel.verified = isVerified();
 
-		structuredDataCacheModel.comments = isComments();
-
-		structuredDataCacheModel.history = isHistory();
-
 		structuredDataCacheModel.data = getData();
 
 		String data = structuredDataCacheModel.data;
@@ -1392,8 +1345,6 @@ public class StructuredDataModelImpl
 	private int _count;
 	private boolean _freezed;
 	private boolean _verified;
-	private boolean _comments;
-	private boolean _history;
 	private String _data;
 	private long _columnBitmask;
 	private StructuredData _escapedModel;

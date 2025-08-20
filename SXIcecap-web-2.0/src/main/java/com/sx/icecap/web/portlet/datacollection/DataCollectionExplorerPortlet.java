@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.sx.icecap.constant.Constant;
+import com.sx.icecap.constant.IcecapModelNames;
 import com.sx.icecap.constant.JSPPath;
 import com.sx.icecap.constant.WebPortletKey;
 import com.sx.icecap.security.permission.resource.datacollection.DataCollectionResourcePermissionHelper;
@@ -32,11 +33,11 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"com.liferay.portlet.display-category=category.hidden",
+		"com.liferay.portlet.display-category=category.sx.icecap",
 		"com.liferay.portlet.header-portlet-css=/css/index.css",
 		"com.liferay.portlet.instanceable=true",
 		"com.liferay.portlet.add-default-resource=true",
-		"javax.portlet.display-name=Data Type Explorer",
+		"javax.portlet.display-name=Data Collection Explorer",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=" + JSPPath.DATA_COLLECTION_EXPLORER,
 		"javax.portlet.name=" + WebPortletKey.DATA_COLLECTION_EXPLORER,
@@ -57,7 +58,7 @@ public class DataCollectionExplorerPortlet extends MVCPortlet {
 
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		
-		List<ResourceAction> resourceActions = _resouceActionLocalService.getResourceActions(Constant.ICECAP_RESOURCE_NAME);
+		List<ResourceAction> resourceActions = _resouceActionLocalService.getResourceActions(IcecapModelNames.DATA_COLLECTION);
 		
 		JSONArray permissions = JSONFactoryUtil.createJSONArray();
 		for (ResourceAction resourceAction : resourceActions) {

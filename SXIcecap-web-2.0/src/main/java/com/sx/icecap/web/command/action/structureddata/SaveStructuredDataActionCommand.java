@@ -52,8 +52,6 @@ public class SaveStructuredDataActionCommand extends BaseMVCActionCommand {
 		int count = ParamUtil.getInteger(actionRequest, StructuredDataProperties.COUNT,  0);
 		boolean freezed = ParamUtil.getBoolean(actionRequest, StructuredDataProperties.FREEZED,  false);
 		boolean verified = ParamUtil.getBoolean(actionRequest, StructuredDataProperties.VERIFIED,  true);
-		boolean comments = ParamUtil.getBoolean(actionRequest, StructuredDataProperties.COMMENTS,  false);
-		boolean history = ParamUtil.getBoolean(actionRequest, StructuredDataProperties.HISTORY,  false);
 		
 		String dataContent = ParamUtil.getString(actionRequest, "dataContent", "");
 		
@@ -68,8 +66,6 @@ public class SaveStructuredDataActionCommand extends BaseMVCActionCommand {
 																		count,
 																		freezed,
 																		verified,
-																		comments,
-																		history,
 																		dataContent, 
 																		WorkflowConstants.STATUS_APPROVED, 
 																		serviceContext);
@@ -86,8 +82,6 @@ public class SaveStructuredDataActionCommand extends BaseMVCActionCommand {
 					count,
 					freezed,
 					verified,
-					comments,
-					history,
 					dataContent, 
 					WorkflowConstants.STATUS_APPROVED, serviceContext);
 		}

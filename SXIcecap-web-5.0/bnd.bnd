@@ -1,0 +1,5 @@
+Bundle-Name: SXIcecap-web-5.0
+Bundle-SymbolicName: com.sx.icecap.web
+Bundle-Version: 5.0.0
+Export-Package: com.sx.icecap.web.constants
+Web-ContextPath: /SXIcecap-web-5.0

@@ -16,9 +16,9 @@
 	<model name="com.sx.icecap.model.CollectionSetLink">
 		<field name="collectionSetLinkId" type="long" />
 		<field name="dataCollectionId" type="long" />
-		<field name="dataCollection" type="long" />
 		<field name="dataSetId" type="long" />
-		<field name="dataSet" type="long" />
+		<field name="freezed" type="boolean" />
+		<field name="verified" type="boolean" />
 	</model>
 	<model name="com.sx.icecap.model.DataCollection">
 		<field name="uuid" type="String" />
@@ -38,9 +38,6 @@
 		<field name="dataCollectionVersion" type="String" />
 		<field localized="true" name="displayName" type="String" />
 		<field localized="true" name="description" type="String" />
-		<field name="freezeLevel" type="String" />
-		<field name="verifyLevel" type="String" />
-		<field name="commentLevel" type="String" />
 	</model>
 	<model name="com.sx.icecap.model.DataComment">
 		<field name="dataCommentId" type="long" />
@@ -93,9 +90,6 @@
 		<field name="dataStructureVersion" type="String" />
 		<field localized="true" name="displayName" type="String" />
 		<field localized="true" name="description" type="String" />
-		<field name="freezable" type="boolean" />
-		<field name="verifiable" type="boolean" />
-		<field name="commentable" type="boolean" />
 		<field name="structure" type="String">
 			<hint name="max-length">40960</hint>
 		</field>
@@ -121,16 +115,13 @@
 		<field name="sampleFileId" type="long" />
 		<field localized="true" name="description" type="String" />
 		<field localized="true" name="tooltip" type="String" />
-		<field name="freezable" type="boolean" />
-		<field name="verifiable" type="boolean" />
 		<field name="dataStructureId" type="long" />
 	</model>
 	<model name="com.sx.icecap.model.Parameter">
 		<field name="uuid" type="String" />
 		<field name="parameterId" type="long" />
-		<field name="groupParameterId" type="String" />
-		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
@@ -153,9 +144,9 @@
 	<model name="com.sx.icecap.model.SetTypeLink">
 		<field name="setTypeLinkId" type="long" />
 		<field name="dataSetId" type="long" />
-		<field name="dataSet" type="long" />
 		<field name="dataTypeId" type="long" />
-		<field name="dataType" type="String" />
+		<field name="freezed" type="boolean" />
+		<field name="verified" type="boolean" />
 	</model>
 	<model name="com.sx.icecap.model.StructuredData">
 		<field name="uuid" type="String" />
@@ -178,22 +169,31 @@
 		<field name="count" type="int" />
 		<field name="freezed" type="boolean" />
 		<field name="verified" type="boolean" />
-		<field name="comments" type="boolean" />
-		<field name="history" type="boolean" />
 		<field name="data" type="String" />
 	</model>
-	<model name="com.sx.icecap.model.TypeParamLink">
-		<field name="typeParamLinkId" type="long" />
+	<model name="com.sx.icecap.model.StructureParamLink">
+		<field name="structureParamLinkId" type="long" />
+		<field name="dataStructureId" type="long" />
+		<field name="parameterId" type="long" />
+	</model>
+	<model name="com.sx.icecap.model.TypeStructureLink">
 		<field name="dataTypeId" type="long" />
-		<field name="dataType" type="long" />
-		<field name="paramId" type="long" />
-		<field name="param" type="String" />
+		<field name="dataStructureId" type="long" />
+		<field name="commentable" type="boolean" />
+		<field name="verifiable" type="boolean" />
+		<field name="freezable" type="boolean" />
+		<field name="freezed" type="boolean" />
+		<field name="freezedUserId" type="long" />
+		<field name="freezedDate" type="Date" />
+		<field name="verified" type="boolean" />
+		<field name="verifiedUserId" type="long" />
+		<field name="verifiedDate" type="Date" />
+		<field name="inputStatus" type="boolean" />
+		<field name="jumpTo" type="boolean" />
 	</model>
 	<model name="com.sx.icecap.model.TypeVisualizerLink">
 		<field name="typeVisualizerLinkId" type="long" />
 		<field name="dataTypeId" type="long" />
-		<field name="dataType" type="long" />
 		<field name="visualizerId" type="long" />
-		<field name="visualizer" type="String" />
 	</model>
 </model-hints>

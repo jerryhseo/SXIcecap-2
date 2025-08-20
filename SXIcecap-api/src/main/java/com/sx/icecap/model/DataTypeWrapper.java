@@ -63,8 +63,6 @@ public class DataTypeWrapper
 		attributes.put("sampleFileId", getSampleFileId());
 		attributes.put("description", getDescription());
 		attributes.put("tooltip", getTooltip());
-		attributes.put("freezable", isFreezable());
-		attributes.put("verifiable", isVerifiable());
 		attributes.put("dataStructureId", getDataStructureId());
 
 		return attributes;
@@ -190,18 +188,6 @@ public class DataTypeWrapper
 
 		if (tooltip != null) {
 			setTooltip(tooltip);
-		}
-
-		Boolean freezable = (Boolean)attributes.get("freezable");
-
-		if (freezable != null) {
-			setFreezable(freezable);
-		}
-
-		Boolean verifiable = (Boolean)attributes.get("verifiable");
-
-		if (verifiable != null) {
-			setVerifiable(verifiable);
 		}
 
 		Long dataStructureId = (Long)attributes.get("dataStructureId");
@@ -441,16 +427,6 @@ public class DataTypeWrapper
 	@Override
 	public String getExtension() {
 		return model.getExtension();
-	}
-
-	/**
-	 * Returns the freezable of this data type.
-	 *
-	 * @return the freezable of this data type
-	 */
-	@Override
-	public boolean getFreezable() {
-		return model.getFreezable();
 	}
 
 	/**
@@ -704,16 +680,6 @@ public class DataTypeWrapper
 	}
 
 	/**
-	 * Returns the verifiable of this data type.
-	 *
-	 * @return the verifiable of this data type
-	 */
-	@Override
-	public boolean getVerifiable() {
-		return model.getVerifiable();
-	}
-
-	/**
 	 * Returns <code>true</code> if this data type is approved.
 	 *
 	 * @return <code>true</code> if this data type is approved; <code>false</code> otherwise
@@ -751,16 +717,6 @@ public class DataTypeWrapper
 	@Override
 	public boolean isExpired() {
 		return model.isExpired();
-	}
-
-	/**
-	 * Returns <code>true</code> if this data type is freezable.
-	 *
-	 * @return <code>true</code> if this data type is freezable; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isFreezable() {
-		return model.isFreezable();
 	}
 
 	/**
@@ -831,16 +787,6 @@ public class DataTypeWrapper
 	@Override
 	public boolean isScheduled() {
 		return model.isScheduled();
-	}
-
-	/**
-	 * Returns <code>true</code> if this data type is verifiable.
-	 *
-	 * @return <code>true</code> if this data type is verifiable; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isVerifiable() {
-		return model.isVerifiable();
 	}
 
 	@Override
@@ -1068,16 +1014,6 @@ public class DataTypeWrapper
 	}
 
 	/**
-	 * Sets whether this data type is freezable.
-	 *
-	 * @param freezable the freezable of this data type
-	 */
-	@Override
-	public void setFreezable(boolean freezable) {
-		model.setFreezable(freezable);
-	}
-
-	/**
 	 * Sets the group ID of this data type.
 	 *
 	 * @param groupId the group ID of this data type
@@ -1280,16 +1216,6 @@ public class DataTypeWrapper
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
-	}
-
-	/**
-	 * Sets whether this data type is verifiable.
-	 *
-	 * @param verifiable the verifiable of this data type
-	 */
-	@Override
-	public void setVerifiable(boolean verifiable) {
-		model.setVerifiable(verifiable);
 	}
 
 	@Override

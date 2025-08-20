@@ -26,11 +26,11 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"com.liferay.portlet.display-category=category.hidden",
+		"com.liferay.portlet.display-category=category.sx.icecap",
 		"com.liferay.portlet.header-portlet-css=/css/index.css",
 		"com.liferay.portlet.instanceable=true",
 		"com.liferay.portlet.add-default-resource=true",
-		"javax.portlet.display-name=Data Type Editor",
+		"javax.portlet.display-name=Data Structure Explorer",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template="+JSPPath.DATA_STRUCTURE_EXPLORER,
 		"javax.portlet.name=" + WebPortletKey.DATA_STRUCTURE_EXPLORER,

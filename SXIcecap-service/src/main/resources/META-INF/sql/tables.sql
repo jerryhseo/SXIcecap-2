@@ -14,9 +14,9 @@ create table SX_ICECAP_ActionHistory (
 create table SX_ICECAP_CollectionSetLink (
 	collectionSetLinkId LONG not null primary key,
 	dataCollectionId LONG,
-	dataCollection LONG,
 	dataSetId LONG,
-	dataSet LONG
+	freezed BOOLEAN,
+	verified BOOLEAN
 );
 
 create table SX_ICECAP_DataCollection (
@@ -36,10 +36,7 @@ create table SX_ICECAP_DataCollection (
 	dataCollectionName VARCHAR(75) null,
 	dataCollectionVersion VARCHAR(75) null,
 	displayName STRING null,
-	description STRING null,
-	freezeLevel VARCHAR(75) null,
-	verifyLevel VARCHAR(75) null,
-	commentLevel VARCHAR(75) null
+	description STRING null
 );
 
 create table SX_ICECAP_DataComment (
@@ -95,9 +92,6 @@ create table SX_ICECAP_DataStructure (
 	dataStructureVersion VARCHAR(75) null,
 	displayName STRING null,
 	description STRING null,
-	freezable BOOLEAN,
-	verifiable BOOLEAN,
-	commentable BOOLEAN,
 	structure TEXT null
 );
 
@@ -122,22 +116,14 @@ create table SX_ICECAP_DataType (
 	sampleFileId LONG,
 	description STRING null,
 	tooltip STRING null,
-	freezable BOOLEAN,
-	verifiable BOOLEAN,
 	dataStructureId LONG
-);
-
-create table SX_ICECAP_DataTypeStructure (
-	dataTypeId LONG not null primary key,
-	structure TEXT null
 );
 
 create table SX_ICECAP_Parameter (
 	uuid_ VARCHAR(75) null,
 	parameterId LONG not null primary key,
-	groupParameterId VARCHAR(75) null,
-	groupId LONG,
 	companyId LONG,
+	groupId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
@@ -161,9 +147,15 @@ create table SX_ICECAP_Parameter (
 create table SX_ICECAP_SetTypeLink (
 	setTypeLinkId LONG not null primary key,
 	dataSetId LONG,
-	dataSet LONG,
 	dataTypeId LONG,
-	dataType VARCHAR(75) null
+	freezed BOOLEAN,
+	verified BOOLEAN
+);
+
+create table SX_ICECAP_StructureParamLink (
+	structureParamLinkId LONG not null primary key,
+	dataStructureId LONG,
+	parameterId LONG
 );
 
 create table SX_ICECAP_StructuredData (
@@ -187,23 +179,27 @@ create table SX_ICECAP_StructuredData (
 	count INTEGER,
 	freezed BOOLEAN,
 	verified BOOLEAN,
-	comments BOOLEAN,
-	history BOOLEAN,
 	data_ VARCHAR(75) null
 );
 
-create table SX_ICECAP_TypeParamLink (
-	typeParamLinkId LONG not null primary key,
-	dataTypeId LONG,
-	dataType LONG,
-	paramId LONG,
-	param VARCHAR(75) null
+create table SX_ICECAP_TypeStructureLink (
+	dataTypeId LONG not null primary key,
+	dataStructureId LONG,
+	commentable BOOLEAN,
+	verifiable BOOLEAN,
+	freezable BOOLEAN,
+	freezed BOOLEAN,
+	freezedUserId LONG,
+	freezedDate DATE null,
+	verified BOOLEAN,
+	verifiedUserId LONG,
+	verifiedDate DATE null,
+	inputStatus BOOLEAN,
+	jumpTo BOOLEAN
 );
 
 create table SX_ICECAP_TypeVisualizerLink (
 	typeVisualizerLinkId LONG not null primary key,
 	dataTypeId LONG,
-	dataType LONG,
-	visualizerId LONG,
-	visualizer VARCHAR(75) null
+	visualizerId LONG
 );

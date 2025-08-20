@@ -9,12 +9,9 @@
 		<!-- PK fields -->
 		<column name="parameterId" primary="true" type="long"></column>
 
-		<!-- FK fields -->
-		<column name="groupParameterId" type="String"></column>
-
 		<!-- Audit fields -->
-		<column name="groupId" type="long"></column>
 		<column name="companyId" type="long"></column>
+		<column name="groupId" type="long"></column>
 		<column name="userId" type="long"></column>
 		<column name="userName" type="String"></column>
 		<column name="createDate" type="Date"></column>
@@ -122,9 +119,6 @@
 		<column name="dataCollectionVersion" type="String" ></column>
 		<column name="displayName" type="String" localized="true"></column>
 		<column name="description" type="String" localized="true"></column>
-		<column name="freezeLevel" type="String"></column>
-		<column name="verifyLevel" type="String"></column>
-		<column name="commentLevel" type="String"></column>
 		
 		<!-- Finders -->
 		
@@ -279,8 +273,6 @@
 		<column name="sampleFileId" type="long"></column>
 		<column name="description" type="String" localized="true"></column>
 		<column name="tooltip" type="String" localized="true"></column>
-		<column name="freezable" type="boolean"></column>
-        <column name="verifiable" type="boolean"></column>
 		
 		<column name="dataStructureId" type="long" ></column>
 		
@@ -362,9 +354,6 @@
 		<column name="displayName" type="String" localized="true"></column>
 		<column name="description" type="String" localized="true"></column>
 		
-		<column name="freezable" type="boolean"></column>
-        <column name="verifiable" type="boolean"></column>
-        <column name="commentable" type="boolean"></column>
 		<column name="structure" type="String" json-enabled="true"></column><!--  typeContent: JSON -->
 		
 		<!-- Finders -->
@@ -451,8 +440,6 @@
         <column name="count" type="int"></column>
         <column name="freezed" type="boolean"></column>
         <column name="verified" type="boolean"></column>
-        <column name="comments" type="boolean"></column>
-        <column name="history" type="boolean"></column>
         <column name="data" type="String"></column>
  
  		<!-- Finders -->
@@ -816,9 +803,9 @@
 		remote-service="false">
 		<column name="collectionSetLinkId" primary="true" type="long"></column>
 		<column name="dataCollectionId" type="long"></column>
-		<column name="dataCollection" type="long"></column>
 		<column name="dataSetId" type="long"></column>
-		<column name="dataSet" type="long"></column>
+		<column name="freezed" type="boolean"></column>
+		<column name="verified" type="boolean"></column>
 		
 		<finder name="CollectionId" return-type="Collection">
 			<finder-column name="dataCollectionId" ></finder-column>
@@ -832,9 +819,9 @@
 		remote-service="false">
 		<column name="setTypeLinkId" primary="true" type="long"></column>
 		<column name="dataSetId" type="long"></column>
-		<column name="dataSet" type="long"></column>
 		<column name="dataTypeId" type="long"></column>
-		<column name="dataType" type="String"></column>
+		<column name="freezed" type="boolean"></column>
+		<column name="verified" type="boolean"></column>
 		
 		<finder name="DataSetId" return-type="Collection">
 			<finder-column name="dataSetId" ></finder-column>
@@ -843,29 +830,46 @@
 			<finder-column name="dataTypeId" ></finder-column>
 		</finder>
 	</entity>
-	
-	<entity name="TypeParamLink" local-service="true" uuid="false"
+
+	<entity name="TypeStructureLink" local-service="true" uuid="false"
 		remote-service="false">
-		<column name="typeParamLinkId" primary="true" type="long"></column>
-		<column name="dataTypeId" type="long"></column>
-		<column name="dataType" type="long"></column>
-		<column name="paramId" type="long"></column>
-		<column name="param" type="String"></column>
+		<column name="dataTypeId" primary="true" type="long"></column>
+		<column name="dataStructureId" type="long"></column>
+		<column name="commentable" type="boolean"></column>
+		<column name="verifiable" type="boolean"></column>
+		<column name="freezable" type="boolean"></column>
+		<column name="freezed" type="boolean"></column>
+		<column name="freezedUserId" type="long"></column>
+		<column name="freezedDate" type="Date"></column>
+		<column name="verified" type="boolean"></column>
+		<column name="verifiedUserId" type="long"></column>
+		<column name="verifiedDate" type="Date"></column>
+        <column name="inputStatus" type="boolean"></column>
+        <column name="jumpTo" type="boolean"></column>
 		
-		  <finder name="DataTypeId" return-type="Collection">
-			<finder-column name="dataTypeId" ></finder-column>
+		<finder name="DataStructureId" return-type="TypeStructureLink">
+			<finder-column name="dataStructureId" ></finder-column>
 		</finder>
-        <finder name="ParamId" return-type="Collection">
-			<finder-column name="paramId" ></finder-column>
+	</entity>
+	
+	<entity name="StructureParamLink" local-service="true" uuid="false"
+		remote-service="false">
+		<column name="structureParamLinkId" primary="true" type="long"></column>
+		<column name="dataStructureId" type="long"></column>
+		<column name="parameterId" type="long"></column>
+		
+		  <finder name="DataStructureId" return-type="Collection">
+			<finder-column name="dataStructureId" ></finder-column>
+		</finder>
+        <finder name="ParameterId" return-type="Collection">
+			<finder-column name="parameterId" ></finder-column>
 		</finder>
 	</entity>
 	
     <entity name="TypeVisualizerLink" local-service="true" uuid="false">
         <column name="typeVisualizerLinkId" type="long" primary="true"></column>
         <column name="dataTypeId" type="long"></column>
-        <column name="dataType" type="long"></column>
         <column name="visualizerId" type="long"></column>
-        <column name="visualizer" type="String"></column>
         
         <finder name="DataTypeId" return-type="Collection">
 			<finder-column name="dataTypeId" ></finder-column>

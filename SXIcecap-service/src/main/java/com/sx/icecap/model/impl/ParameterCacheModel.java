@@ -62,18 +62,16 @@ public class ParameterCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(47);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
 		sb.append(", parameterId=");
 		sb.append(parameterId);
-		sb.append(", groupParameterId=");
-		sb.append(groupParameterId);
-		sb.append(", groupId=");
-		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
+		sb.append(", groupId=");
+		sb.append(groupId);
 		sb.append(", userId=");
 		sb.append(userId);
 		sb.append(", userName=");
@@ -127,16 +125,8 @@ public class ParameterCacheModel
 		}
 
 		parameterImpl.setParameterId(parameterId);
-
-		if (groupParameterId == null) {
-			parameterImpl.setGroupParameterId("");
-		}
-		else {
-			parameterImpl.setGroupParameterId(groupParameterId);
-		}
-
-		parameterImpl.setGroupId(groupId);
 		parameterImpl.setCompanyId(companyId);
+		parameterImpl.setGroupId(groupId);
 		parameterImpl.setUserId(userId);
 
 		if (userName == null) {
@@ -252,11 +242,10 @@ public class ParameterCacheModel
 		uuid = objectInput.readUTF();
 
 		parameterId = objectInput.readLong();
-		groupParameterId = objectInput.readUTF();
-
-		groupId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
+
+		groupId = objectInput.readLong();
 
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
@@ -292,16 +281,9 @@ public class ParameterCacheModel
 
 		objectOutput.writeLong(parameterId);
 
-		if (groupParameterId == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(groupParameterId);
-		}
+		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(groupId);
-
-		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(userId);
 
@@ -390,9 +372,8 @@ public class ParameterCacheModel
 
 	public String uuid;
 	public long parameterId;
-	public String groupParameterId;
-	public long groupId;
 	public long companyId;
+	public long groupId;
 	public long userId;
 	public String userName;
 	public long createDate;

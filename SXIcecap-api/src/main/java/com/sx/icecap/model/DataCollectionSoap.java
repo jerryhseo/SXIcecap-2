@@ -48,9 +48,6 @@ public class DataCollectionSoap implements Serializable {
 		soapModel.setDataCollectionVersion(model.getDataCollectionVersion());
 		soapModel.setDisplayName(model.getDisplayName());
 		soapModel.setDescription(model.getDescription());
-		soapModel.setFreezeLevel(model.getFreezeLevel());
-		soapModel.setVerifyLevel(model.getVerifyLevel());
-		soapModel.setCommentLevel(model.getCommentLevel());
 
 		return soapModel;
 	}
@@ -245,30 +242,6 @@ public class DataCollectionSoap implements Serializable {
 		_description = description;
 	}
 
-	public String getFreezeLevel() {
-		return _freezeLevel;
-	}
-
-	public void setFreezeLevel(String freezeLevel) {
-		_freezeLevel = freezeLevel;
-	}
-
-	public String getVerifyLevel() {
-		return _verifyLevel;
-	}
-
-	public void setVerifyLevel(String verifyLevel) {
-		_verifyLevel = verifyLevel;
-	}
-
-	public String getCommentLevel() {
-		return _commentLevel;
-	}
-
-	public void setCommentLevel(String commentLevel) {
-		_commentLevel = commentLevel;
-	}
-
 	private String _uuid;
 	private long _dataCollectionId;
 	private long _groupId;
@@ -286,8 +259,5 @@ public class DataCollectionSoap implements Serializable {
 	private String _dataCollectionVersion;
 	private String _displayName;
 	private String _description;
-	private String _freezeLevel;
-	private String _verifyLevel;
-	private String _commentLevel;
 
 }

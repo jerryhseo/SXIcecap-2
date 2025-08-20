@@ -422,48 +422,6 @@ public interface StructuredDataModel
 	public void setVerified(boolean verified);
 
 	/**
-	 * Returns the comments of this structured data.
-	 *
-	 * @return the comments of this structured data
-	 */
-	public boolean getComments();
-
-	/**
-	 * Returns <code>true</code> if this structured data is comments.
-	 *
-	 * @return <code>true</code> if this structured data is comments; <code>false</code> otherwise
-	 */
-	public boolean isComments();
-
-	/**
-	 * Sets whether this structured data is comments.
-	 *
-	 * @param comments the comments of this structured data
-	 */
-	public void setComments(boolean comments);
-
-	/**
-	 * Returns the history of this structured data.
-	 *
-	 * @return the history of this structured data
-	 */
-	public boolean getHistory();
-
-	/**
-	 * Returns <code>true</code> if this structured data is history.
-	 *
-	 * @return <code>true</code> if this structured data is history; <code>false</code> otherwise
-	 */
-	public boolean isHistory();
-
-	/**
-	 * Sets whether this structured data is history.
-	 *
-	 * @param history the history of this structured data
-	 */
-	public void setHistory(boolean history);
-
-	/**
 	 * Returns the data of this structured data.
 	 *
 	 * @return the data of this structured data

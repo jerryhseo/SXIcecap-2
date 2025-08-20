@@ -33,6 +33,14 @@ public class TypeVisualizerLinkLocalServiceWrapper
 		_typeVisualizerLinkLocalService = typeVisualizerLinkLocalService;
 	}
 
+	@Override
+	public com.sx.icecap.model.TypeVisualizerLink addTypeVisualizerLink(
+		long dataTypeId, long visualizerId) {
+
+		return _typeVisualizerLinkLocalService.addTypeVisualizerLink(
+			dataTypeId, visualizerId);
+	}
+
 	/**
 	 * Adds the type visualizer link to the database. Also notifies the appropriate model listeners.
 	 *
@@ -266,6 +274,14 @@ public class TypeVisualizerLinkLocalServiceWrapper
 			typeVisualizerLinkId);
 	}
 
+	@Override
+	public java.util.List<com.sx.icecap.model.TypeVisualizerLink>
+		getTypeVisualizerLinkList(long dataTypeId) {
+
+		return _typeVisualizerLinkLocalService.getTypeVisualizerLinkList(
+			dataTypeId);
+	}
+
 	/**
 	 * Returns a range of all the type visualizer links.
 	 *
@@ -293,6 +309,28 @@ public class TypeVisualizerLinkLocalServiceWrapper
 	@Override
 	public int getTypeVisualizerLinksCount() {
 		return _typeVisualizerLinkLocalService.getTypeVisualizerLinksCount();
+	}
+
+	@Override
+	public void removeByDataTypeId(long dataTypeId) {
+		_typeVisualizerLinkLocalService.removeByDataTypeId(dataTypeId);
+	}
+
+	@Override
+	public com.sx.icecap.model.TypeVisualizerLink removeTypeVisualizerLink(
+			long linkId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _typeVisualizerLinkLocalService.removeTypeVisualizerLink(linkId);
+	}
+
+	@Override
+	public com.sx.icecap.model.TypeVisualizerLink updateTypeVisualizerLink(
+			long linkId, long dataTypeId, long visualizerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _typeVisualizerLinkLocalService.updateTypeVisualizerLink(
+			linkId, dataTypeId, visualizerId);
 	}
 
 	/**

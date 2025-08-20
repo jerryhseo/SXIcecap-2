@@ -93,7 +93,6 @@ public class DataTypeModelImpl
 		{"dataTypeVersion", Types.VARCHAR}, {"displayName", Types.VARCHAR},
 		{"extension", Types.VARCHAR}, {"sampleFileId", Types.BIGINT},
 		{"description", Types.VARCHAR}, {"tooltip", Types.VARCHAR},
-		{"freezable", Types.BOOLEAN}, {"verifiable", Types.BOOLEAN},
 		{"dataStructureId", Types.BIGINT}
 	};
 
@@ -121,13 +120,11 @@ public class DataTypeModelImpl
 		TABLE_COLUMNS_MAP.put("sampleFileId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("tooltip", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("freezable", Types.BOOLEAN);
-		TABLE_COLUMNS_MAP.put("verifiable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("dataStructureId", Types.BIGINT);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataType (uuid_ VARCHAR(75) null,dataTypeId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataTypeName VARCHAR(75) null,dataTypeVersion VARCHAR(75) null,displayName STRING null,extension VARCHAR(75) null,sampleFileId LONG,description STRING null,tooltip STRING null,freezable BOOLEAN,verifiable BOOLEAN,dataStructureId LONG)";
+		"create table SX_ICECAP_DataType (uuid_ VARCHAR(75) null,dataTypeId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataTypeName VARCHAR(75) null,dataTypeVersion VARCHAR(75) null,displayName STRING null,extension VARCHAR(75) null,sampleFileId LONG,description STRING null,tooltip STRING null,dataStructureId LONG)";
 
 	public static final String TABLE_SQL_DROP = "drop table SX_ICECAP_DataType";
 
@@ -340,13 +337,6 @@ public class DataTypeModelImpl
 		attributeGetterFunctions.put("tooltip", DataType::getTooltip);
 		attributeSetterBiConsumers.put(
 			"tooltip", (BiConsumer<DataType, String>)DataType::setTooltip);
-		attributeGetterFunctions.put("freezable", DataType::getFreezable);
-		attributeSetterBiConsumers.put(
-			"freezable", (BiConsumer<DataType, Boolean>)DataType::setFreezable);
-		attributeGetterFunctions.put("verifiable", DataType::getVerifiable);
-		attributeSetterBiConsumers.put(
-			"verifiable",
-			(BiConsumer<DataType, Boolean>)DataType::setVerifiable);
 		attributeGetterFunctions.put(
 			"dataStructureId", DataType::getDataStructureId);
 		attributeSetterBiConsumers.put(
@@ -997,36 +987,6 @@ public class DataTypeModelImpl
 	}
 
 	@Override
-	public boolean getFreezable() {
-		return _freezable;
-	}
-
-	@Override
-	public boolean isFreezable() {
-		return _freezable;
-	}
-
-	@Override
-	public void setFreezable(boolean freezable) {
-		_freezable = freezable;
-	}
-
-	@Override
-	public boolean getVerifiable() {
-		return _verifiable;
-	}
-
-	@Override
-	public boolean isVerifiable() {
-		return _verifiable;
-	}
-
-	@Override
-	public void setVerifiable(boolean verifiable) {
-		_verifiable = verifiable;
-	}
-
-	@Override
 	public long getDataStructureId() {
 		return _dataStructureId;
 	}
@@ -1445,8 +1405,6 @@ public class DataTypeModelImpl
 		dataTypeImpl.setSampleFileId(getSampleFileId());
 		dataTypeImpl.setDescription(getDescription());
 		dataTypeImpl.setTooltip(getTooltip());
-		dataTypeImpl.setFreezable(isFreezable());
-		dataTypeImpl.setVerifiable(isVerifiable());
 		dataTypeImpl.setDataStructureId(getDataStructureId());
 
 		dataTypeImpl.resetOriginalValues();
@@ -1665,10 +1623,6 @@ public class DataTypeModelImpl
 			dataTypeCacheModel.tooltip = null;
 		}
 
-		dataTypeCacheModel.freezable = isFreezable();
-
-		dataTypeCacheModel.verifiable = isVerifiable();
-
 		dataTypeCacheModel.dataStructureId = getDataStructureId();
 
 		return dataTypeCacheModel;
@@ -1801,8 +1755,6 @@ public class DataTypeModelImpl
 	private String _descriptionCurrentLanguageId;
 	private String _tooltip;
 	private String _tooltipCurrentLanguageId;
-	private boolean _freezable;
-	private boolean _verifiable;
 	private long _dataStructureId;
 	private long _originalDataStructureId;
 	private boolean _setOriginalDataStructureId;

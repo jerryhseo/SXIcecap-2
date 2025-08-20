@@ -64,7 +64,7 @@ public class DataTypeModelResourcePermissionRegistrar {
 							consumer.accept(
 									new StagedModelPermissionLogic<>(
 											_stagingPermission, 
-											WebPortletKey.DATATYPE_EDITOR,
+											WebPortletKey.SXDataTypeEditorPortlet,
 											DataType::getDataTypeId)
 							);
 							consumer.accept(

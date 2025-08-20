@@ -48,9 +48,6 @@ public class DataStructureSoap implements Serializable {
 		soapModel.setDataStructureVersion(model.getDataStructureVersion());
 		soapModel.setDisplayName(model.getDisplayName());
 		soapModel.setDescription(model.getDescription());
-		soapModel.setFreezable(model.isFreezable());
-		soapModel.setVerifiable(model.isVerifiable());
-		soapModel.setCommentable(model.isCommentable());
 		soapModel.setStructure(model.getStructure());
 
 		return soapModel;
@@ -241,42 +238,6 @@ public class DataStructureSoap implements Serializable {
 		_description = description;
 	}
 
-	public boolean getFreezable() {
-		return _freezable;
-	}
-
-	public boolean isFreezable() {
-		return _freezable;
-	}
-
-	public void setFreezable(boolean freezable) {
-		_freezable = freezable;
-	}
-
-	public boolean getVerifiable() {
-		return _verifiable;
-	}
-
-	public boolean isVerifiable() {
-		return _verifiable;
-	}
-
-	public void setVerifiable(boolean verifiable) {
-		_verifiable = verifiable;
-	}
-
-	public boolean getCommentable() {
-		return _commentable;
-	}
-
-	public boolean isCommentable() {
-		return _commentable;
-	}
-
-	public void setCommentable(boolean commentable) {
-		_commentable = commentable;
-	}
-
 	public String getStructure() {
 		return _structure;
 	}
@@ -302,9 +263,6 @@ public class DataStructureSoap implements Serializable {
 	private String _dataStructureVersion;
 	private String _displayName;
 	private String _description;
-	private boolean _freezable;
-	private boolean _verifiable;
-	private boolean _commentable;
 	private String _structure;
 
 }

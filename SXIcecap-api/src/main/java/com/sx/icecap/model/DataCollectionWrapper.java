@@ -60,9 +60,6 @@ public class DataCollectionWrapper
 		attributes.put("dataCollectionVersion", getDataCollectionVersion());
 		attributes.put("displayName", getDisplayName());
 		attributes.put("description", getDescription());
-		attributes.put("freezeLevel", getFreezeLevel());
-		attributes.put("verifyLevel", getVerifyLevel());
-		attributes.put("commentLevel", getCommentLevel());
 
 		return attributes;
 	}
@@ -172,39 +169,11 @@ public class DataCollectionWrapper
 		if (description != null) {
 			setDescription(description);
 		}
-
-		String freezeLevel = (String)attributes.get("freezeLevel");
-
-		if (freezeLevel != null) {
-			setFreezeLevel(freezeLevel);
-		}
-
-		String verifyLevel = (String)attributes.get("verifyLevel");
-
-		if (verifyLevel != null) {
-			setVerifyLevel(verifyLevel);
-		}
-
-		String commentLevel = (String)attributes.get("commentLevel");
-
-		if (commentLevel != null) {
-			setCommentLevel(commentLevel);
-		}
 	}
 
 	@Override
 	public String[] getAvailableLanguageIds() {
 		return model.getAvailableLanguageIds();
-	}
-
-	/**
-	 * Returns the comment level of this data collection.
-	 *
-	 * @return the comment level of this data collection
-	 */
-	@Override
-	public String getCommentLevel() {
-		return model.getCommentLevel();
 	}
 
 	/**
@@ -415,16 +384,6 @@ public class DataCollectionWrapper
 	}
 
 	/**
-	 * Returns the freeze level of this data collection.
-	 *
-	 * @return the freeze level of this data collection
-	 */
-	@Override
-	public String getFreezeLevel() {
-		return model.getFreezeLevel();
-	}
-
-	/**
 	 * Returns the group ID of this data collection.
 	 *
 	 * @return the group ID of this data collection
@@ -589,16 +548,6 @@ public class DataCollectionWrapper
 	}
 
 	/**
-	 * Returns the verify level of this data collection.
-	 *
-	 * @return the verify level of this data collection
-	 */
-	@Override
-	public String getVerifyLevel() {
-		return model.getVerifyLevel();
-	}
-
-	/**
 	 * Returns <code>true</code> if this data collection is approved.
 	 *
 	 * @return <code>true</code> if this data collection is approved; <code>false</code> otherwise
@@ -726,16 +675,6 @@ public class DataCollectionWrapper
 		throws com.liferay.portal.kernel.exception.LocaleException {
 
 		model.prepareLocalizedFieldsForImport(defaultImportLocale);
-	}
-
-	/**
-	 * Sets the comment level of this data collection.
-	 *
-	 * @param commentLevel the comment level of this data collection
-	 */
-	@Override
-	public void setCommentLevel(String commentLevel) {
-		model.setCommentLevel(commentLevel);
 	}
 
 	/**
@@ -923,16 +862,6 @@ public class DataCollectionWrapper
 	}
 
 	/**
-	 * Sets the freeze level of this data collection.
-	 *
-	 * @param freezeLevel the freeze level of this data collection
-	 */
-	@Override
-	public void setFreezeLevel(String freezeLevel) {
-		model.setFreezeLevel(freezeLevel);
-	}
-
-	/**
 	 * Sets the group ID of this data collection.
 	 *
 	 * @param groupId the group ID of this data collection
@@ -1060,16 +989,6 @@ public class DataCollectionWrapper
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
-	}
-
-	/**
-	 * Sets the verify level of this data collection.
-	 *
-	 * @param verifyLevel the verify level of this data collection
-	 */
-	@Override
-	public void setVerifyLevel(String verifyLevel) {
-		model.setVerifyLevel(verifyLevel);
 	}
 
 	@Override

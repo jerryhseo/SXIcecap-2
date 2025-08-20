@@ -52,8 +52,9 @@ import com.sx.icecap.service.persistence.DataStructurePersistence;
 import com.sx.icecap.service.persistence.DataTypePersistence;
 import com.sx.icecap.service.persistence.ParameterPersistence;
 import com.sx.icecap.service.persistence.SetTypeLinkPersistence;
+import com.sx.icecap.service.persistence.StructureParamLinkPersistence;
 import com.sx.icecap.service.persistence.StructuredDataPersistence;
-import com.sx.icecap.service.persistence.TypeParamLinkPersistence;
+import com.sx.icecap.service.persistence.TypeStructureLinkPersistence;
 import com.sx.icecap.service.persistence.TypeVisualizerLinkPersistence;
 
 import java.io.Serializable;
@@ -479,7 +480,10 @@ public abstract class DataCommentLocalServiceBaseImpl
 	protected StructuredDataPersistence structuredDataPersistence;
 
 	@Reference
-	protected TypeParamLinkPersistence typeParamLinkPersistence;
+	protected StructureParamLinkPersistence structureParamLinkPersistence;
+
+	@Reference
+	protected TypeStructureLinkPersistence typeStructureLinkPersistence;
 
 	@Reference
 	protected TypeVisualizerLinkPersistence typeVisualizerLinkPersistence;

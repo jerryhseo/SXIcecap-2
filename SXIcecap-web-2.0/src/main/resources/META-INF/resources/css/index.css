@@ -47,7 +47,6 @@
 .sx-table td {
 	padding: 2px;
 	border: solid 1px #646466;
-	text-align: center;
 }
 
 .sx-table td div {
@@ -398,8 +397,23 @@ div .under-construction {
 	width: 100%;
 }
 
+.modal-open .modal {
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: block !important;
+	position: fixed !important;
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
+	z-index: 9999 !important;
+}
+
 .modal.show .modal-dialog {
 	justify-self: anchor-center;
+}
+
+.table-list thead th {
+	background-color: #e6f8e6;
 }
 
 .clay-reorder {
@@ -460,7 +474,7 @@ div .under-construction {
 }
 
 .toggle-switch-check-bar {
-	margin-right: 20px;
+	margin-right: 0.5rem;
 }
 
 .simple-toggle-switch.toggle-switch {

@@ -63,7 +63,7 @@ public class DataStructureCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -99,12 +99,6 @@ public class DataStructureCacheModel
 		sb.append(displayName);
 		sb.append(", description=");
 		sb.append(description);
-		sb.append(", freezable=");
-		sb.append(freezable);
-		sb.append(", verifiable=");
-		sb.append(verifiable);
-		sb.append(", commentable=");
-		sb.append(commentable);
 		sb.append(", structure=");
 		sb.append(structure);
 		sb.append("}");
@@ -202,10 +196,6 @@ public class DataStructureCacheModel
 			dataStructureImpl.setDescription(description);
 		}
 
-		dataStructureImpl.setFreezable(freezable);
-		dataStructureImpl.setVerifiable(verifiable);
-		dataStructureImpl.setCommentable(commentable);
-
 		if (structure == null) {
 			dataStructureImpl.setStructure("");
 		}
@@ -243,12 +233,6 @@ public class DataStructureCacheModel
 		dataStructureVersion = objectInput.readUTF();
 		displayName = objectInput.readUTF();
 		description = objectInput.readUTF();
-
-		freezable = objectInput.readBoolean();
-
-		verifiable = objectInput.readBoolean();
-
-		commentable = objectInput.readBoolean();
 		structure = objectInput.readUTF();
 	}
 
@@ -321,12 +305,6 @@ public class DataStructureCacheModel
 			objectOutput.writeUTF(description);
 		}
 
-		objectOutput.writeBoolean(freezable);
-
-		objectOutput.writeBoolean(verifiable);
-
-		objectOutput.writeBoolean(commentable);
-
 		if (structure == null) {
 			objectOutput.writeUTF("");
 		}
@@ -352,9 +330,6 @@ public class DataStructureCacheModel
 	public String dataStructureVersion;
 	public String displayName;
 	public String description;
-	public boolean freezable;
-	public boolean verifiable;
-	public boolean commentable;
 	public String structure;
 
 }

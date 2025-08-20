@@ -1,35 +1,33 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
-import { Util } from "../../common/util";
-import { loadWorkingPortlet } from "./workbench-util";
-import { WindowState } from "../../common/station-x";
+import React from "react";
+import { WindowState, Workbench } from "../../stationx/station-x";
 
-const DataWorkbench = ({ portletParameters }) => {
-	console.log("DataWorkbench: ", portletParameters);
-	const { baseRenderURL, namespace, portletId } = portletParameters;
-	const { workingPortletNamespace, workingPortletURL, workingPortletParams } = portletParameters.params;
+class DataWorkbench extends React.Component {
+	constructor(props) {
+		super(props);
 
-	const workingPortletSectionId = Util.namespace(portletParameters.namespace, "portletParametersPortletCanvas");
+		this.namespace = props.namespace;
+		this.redirectURLs = props.redirectURLs;
+		this.workbench = props.workbench;
+		this.workingPortlet = props.workingPortlet;
+		this.params = props.params;
 
-	console.log("workingPortletParams: ", workingPortletParams);
-	useEffect(() => {
-		console.log("DataWorkbench: useEffect running....");
-		loadWorkingPortlet({
-			portletSectionId: workingPortletSectionId,
-			baseURL: workingPortletURL,
-			namespace: workingPortletNamespace,
+		this.workingPortletSectionId = this.namespace + "workingPortletSection";
+	}
+
+	componentDidMount() {
+		/*
+		Workbench.loadWorkingPortlet({
+			portletSectionId: this.workingPortletSectionId,
 			WindowState: WindowState.EXCLUSIVE,
-			workbenchURL: baseRenderURL,
-			workbenchNamespace: namespace,
-			workbenchId: portletId,
-			params: workingPortletParams
+			workingPortlet: this.workingPortlet,
+			workbench: this.workbench
 		});
-	}, []);
+		*/
+	}
 
-	return (
-		<div id={workingPortletSectionId}>
-			<h3>Loading......</h3>
-		</div>
-	);
-};
+	render() {
+		return <div id={this.workingPortletSectionId}></div>;
+	}
+}
 
 export default DataWorkbench;

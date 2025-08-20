@@ -43,9 +43,9 @@ public class SetTypeLinkWrapper
 
 		attributes.put("setTypeLinkId", getSetTypeLinkId());
 		attributes.put("dataSetId", getDataSetId());
-		attributes.put("dataSet", getDataSet());
 		attributes.put("dataTypeId", getDataTypeId());
-		attributes.put("dataType", getDataType());
+		attributes.put("freezed", isFreezed());
+		attributes.put("verified", isVerified());
 
 		return attributes;
 	}
@@ -64,33 +64,23 @@ public class SetTypeLinkWrapper
 			setDataSetId(dataSetId);
 		}
 
-		Long dataSet = (Long)attributes.get("dataSet");
-
-		if (dataSet != null) {
-			setDataSet(dataSet);
-		}
-
 		Long dataTypeId = (Long)attributes.get("dataTypeId");
 
 		if (dataTypeId != null) {
 			setDataTypeId(dataTypeId);
 		}
 
-		String dataType = (String)attributes.get("dataType");
+		Boolean freezed = (Boolean)attributes.get("freezed");
 
-		if (dataType != null) {
-			setDataType(dataType);
+		if (freezed != null) {
+			setFreezed(freezed);
 		}
-	}
 
-	/**
-	 * Returns the data set of this set type link.
-	 *
-	 * @return the data set of this set type link
-	 */
-	@Override
-	public long getDataSet() {
-		return model.getDataSet();
+		Boolean verified = (Boolean)attributes.get("verified");
+
+		if (verified != null) {
+			setVerified(verified);
+		}
 	}
 
 	/**
@@ -104,16 +94,6 @@ public class SetTypeLinkWrapper
 	}
 
 	/**
-	 * Returns the data type of this set type link.
-	 *
-	 * @return the data type of this set type link
-	 */
-	@Override
-	public String getDataType() {
-		return model.getDataType();
-	}
-
-	/**
 	 * Returns the data type ID of this set type link.
 	 *
 	 * @return the data type ID of this set type link
@@ -121,6 +101,16 @@ public class SetTypeLinkWrapper
 	@Override
 	public long getDataTypeId() {
 		return model.getDataTypeId();
+	}
+
+	/**
+	 * Returns the freezed of this set type link.
+	 *
+	 * @return the freezed of this set type link
+	 */
+	@Override
+	public boolean getFreezed() {
+		return model.getFreezed();
 	}
 
 	/**
@@ -143,19 +133,39 @@ public class SetTypeLinkWrapper
 		return model.getSetTypeLinkId();
 	}
 
+	/**
+	 * Returns the verified of this set type link.
+	 *
+	 * @return the verified of this set type link
+	 */
 	@Override
-	public void persist() {
-		model.persist();
+	public boolean getVerified() {
+		return model.getVerified();
 	}
 
 	/**
-	 * Sets the data set of this set type link.
+	 * Returns <code>true</code> if this set type link is freezed.
 	 *
-	 * @param dataSet the data set of this set type link
+	 * @return <code>true</code> if this set type link is freezed; <code>false</code> otherwise
 	 */
 	@Override
-	public void setDataSet(long dataSet) {
-		model.setDataSet(dataSet);
+	public boolean isFreezed() {
+		return model.isFreezed();
+	}
+
+	/**
+	 * Returns <code>true</code> if this set type link is verified.
+	 *
+	 * @return <code>true</code> if this set type link is verified; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isVerified() {
+		return model.isVerified();
+	}
+
+	@Override
+	public void persist() {
+		model.persist();
 	}
 
 	/**
@@ -169,16 +179,6 @@ public class SetTypeLinkWrapper
 	}
 
 	/**
-	 * Sets the data type of this set type link.
-	 *
-	 * @param dataType the data type of this set type link
-	 */
-	@Override
-	public void setDataType(String dataType) {
-		model.setDataType(dataType);
-	}
-
-	/**
 	 * Sets the data type ID of this set type link.
 	 *
 	 * @param dataTypeId the data type ID of this set type link
@@ -186,6 +186,16 @@ public class SetTypeLinkWrapper
 	@Override
 	public void setDataTypeId(long dataTypeId) {
 		model.setDataTypeId(dataTypeId);
+	}
+
+	/**
+	 * Sets whether this set type link is freezed.
+	 *
+	 * @param freezed the freezed of this set type link
+	 */
+	@Override
+	public void setFreezed(boolean freezed) {
+		model.setFreezed(freezed);
 	}
 
 	/**
@@ -206,6 +216,16 @@ public class SetTypeLinkWrapper
 	@Override
 	public void setSetTypeLinkId(long setTypeLinkId) {
 		model.setSetTypeLinkId(setTypeLinkId);
+	}
+
+	/**
+	 * Sets whether this set type link is verified.
+	 *
+	 * @param verified the verified of this set type link
+	 */
+	@Override
+	public void setVerified(boolean verified) {
+		model.setVerified(verified);
 	}
 
 	@Override

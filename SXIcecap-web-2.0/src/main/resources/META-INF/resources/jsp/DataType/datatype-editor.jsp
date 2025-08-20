@@ -12,6 +12,7 @@
 
 <%
 	long dataTypeId = ParamUtil.getLong(renderRequest, WebKey.DATATYPE_ID, 0);
+	JSONArray permissions = (JSONArray)renderRequest.getAttribute("permissions");
 
 	String workbenchNamespace = ParamUtil.getString(renderRequest, StationXWebKeys.WORKBENCH_NAMESPACE, StringPool.BLANK);
 	String workbenchId = ParamUtil.getString(renderRequest, StationXWebKeys.WORKBENCH_ID, StringPool.BLANK);
@@ -42,6 +43,8 @@
 		'<%=WebPortletKey.DATATYPE_EDITOR%>',
 		 {
 			namespace: '<portlet:namespace/>',
+			groupId: themeDisplay.getScopeGroupId(),
+			userId: themeDisplay.getUserId(),
 			dafaultLanguageId: '<%= defaultLocale.toLanguageTag() %>',
 			languageId: '<%= locale.toLanguageTag() %>',
 			availableLanguageIds: '<%= String.join( ",", locales.toArray(new String[0]) ) %>'.split(','), 
@@ -54,15 +57,19 @@
 			baseRenderURL: '<%=  baseRenderURL %>',
 			baseActionURL: '<%=  baseActionURL %>',
 			baseResourceURL: '<%=  baseResourceURL %>',
+			permissions: JSON.parse('<%= permissions.toJSONString() %>'),
+			redirectURLs:{
+				workbenchURL: '<%= workbenchURL %>',
+				dataTypeEditorURL:"",
+				backURL:'<%= currentURL %>',
+			},
+			workbench:{
+				url: '<%= workbenchURL %>',
+			 	namespace: '<%= workbenchNamespace %>',
+				portletId: '<%= workbenchId %>',
+			},
 			params: { // initial parameters
 				dataTypeId: Number('<%= dataTypeId %>'),
-				//dataTypeId: 100,
-				groupId: themeDisplay.getScopeGroupId(),
-				userId: themeDisplay.getUserId(),
-				backURL: '<%= currentURL %>',
-				workbenchURL: '<%= workbenchURL %>',
-				workbenchId: '<%= workbenchId %>',
-				workbenchNamespace: '<%= workbenchNamespace %>'
 			}
 		}
 	);

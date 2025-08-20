@@ -63,7 +63,7 @@ public class StructuredDataCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(47);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -105,10 +105,6 @@ public class StructuredDataCacheModel
 		sb.append(freezed);
 		sb.append(", verified=");
 		sb.append(verified);
-		sb.append(", comments=");
-		sb.append(comments);
-		sb.append(", history=");
-		sb.append(history);
 		sb.append(", data=");
 		sb.append(data);
 		sb.append("}");
@@ -178,8 +174,6 @@ public class StructuredDataCacheModel
 		structuredDataImpl.setCount(count);
 		structuredDataImpl.setFreezed(freezed);
 		structuredDataImpl.setVerified(verified);
-		structuredDataImpl.setComments(comments);
-		structuredDataImpl.setHistory(history);
 
 		if (data == null) {
 			structuredDataImpl.setData("");
@@ -229,10 +223,6 @@ public class StructuredDataCacheModel
 		freezed = objectInput.readBoolean();
 
 		verified = objectInput.readBoolean();
-
-		comments = objectInput.readBoolean();
-
-		history = objectInput.readBoolean();
 		data = objectInput.readUTF();
 	}
 
@@ -292,10 +282,6 @@ public class StructuredDataCacheModel
 
 		objectOutput.writeBoolean(verified);
 
-		objectOutput.writeBoolean(comments);
-
-		objectOutput.writeBoolean(history);
-
 		if (data == null) {
 			objectOutput.writeUTF("");
 		}
@@ -324,8 +310,6 @@ public class StructuredDataCacheModel
 	public int count;
 	public boolean freezed;
 	public boolean verified;
-	public boolean comments;
-	public boolean history;
 	public String data;
 
 }

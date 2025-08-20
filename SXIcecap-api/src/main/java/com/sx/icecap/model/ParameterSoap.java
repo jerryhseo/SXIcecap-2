@@ -33,9 +33,8 @@ public class ParameterSoap implements Serializable {
 
 		soapModel.setUuid(model.getUuid());
 		soapModel.setParameterId(model.getParameterId());
-		soapModel.setGroupParameterId(model.getGroupParameterId());
-		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
+		soapModel.setGroupId(model.getGroupId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
@@ -123,12 +122,12 @@ public class ParameterSoap implements Serializable {
 		_parameterId = parameterId;
 	}
 
-	public String getGroupParameterId() {
-		return _groupParameterId;
+	public long getCompanyId() {
+		return _companyId;
 	}
 
-	public void setGroupParameterId(String groupParameterId) {
-		_groupParameterId = groupParameterId;
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	public long getGroupId() {
@@ -137,14 +136,6 @@ public class ParameterSoap implements Serializable {
 
 	public void setGroupId(long groupId) {
 		_groupId = groupId;
-	}
-
-	public long getCompanyId() {
-		return _companyId;
-	}
-
-	public void setCompanyId(long companyId) {
-		_companyId = companyId;
 	}
 
 	public long getUserId() {
@@ -297,9 +288,8 @@ public class ParameterSoap implements Serializable {
 
 	private String _uuid;
 	private long _parameterId;
-	private String _groupParameterId;
-	private long _groupId;
 	private long _companyId;
+	private long _groupId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

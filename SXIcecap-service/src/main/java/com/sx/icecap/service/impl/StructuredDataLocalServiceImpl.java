@@ -71,8 +71,6 @@ public class StructuredDataLocalServiceImpl
 			int count,
 			boolean freezed,
 			boolean verified,
-			boolean comments,
-			boolean history,
 			String data,
 			int status,
 			ServiceContext sc) throws PortalException  {
@@ -113,8 +111,6 @@ public class StructuredDataLocalServiceImpl
 		structuredData.setCount(count);
 		structuredData.setFreezed(freezed);
 		structuredData.setVerified(verified);
-		structuredData.setComments(comments);
-		structuredData.setHistory(history);
 		structuredData.setData(data);
 		
 		super.structuredDataPersistence.update(structuredData);
@@ -177,8 +173,6 @@ public class StructuredDataLocalServiceImpl
 			int count,
 			boolean freezed,
 			boolean verified,
-			boolean comments,
-			boolean history,
 			String data,
 			int status,
 			ServiceContext sc) throws PortalException {
@@ -193,8 +187,6 @@ public class StructuredDataLocalServiceImpl
 		structuredData.setCount(count);
 		structuredData.setFreezed(freezed);
 		structuredData.setVerified(verified);
-		structuredData.setComments(comments);
-		structuredData.setHistory(history);
 		structuredData.setData(data);
 		
 		super.structuredDataPersistence.update(structuredData);

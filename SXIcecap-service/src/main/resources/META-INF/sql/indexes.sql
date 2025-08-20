@@ -49,6 +49,9 @@ create unique index IX_93F6A5C7 on SX_ICECAP_Parameter (uuid_[$COLUMN_LENGTH:75$
 create index IX_CB6CF005 on SX_ICECAP_SetTypeLink (dataSetId);
 create index IX_26BAA3B1 on SX_ICECAP_SetTypeLink (dataTypeId);
 
+create index IX_6A13153C on SX_ICECAP_StructureParamLink (dataStructureId);
+create index IX_D7648EFC on SX_ICECAP_StructureParamLink (parameterId);
+
 create index IX_679E78B0 on SX_ICECAP_StructuredData (dataCollectionId, dataSetId, dataTypeId, groupId, status);
 create index IX_7CBB8CEA on SX_ICECAP_StructuredData (dataCollectionId, dataSetId, dataTypeId, groupId, userId, status);
 create index IX_90FDABC6 on SX_ICECAP_StructuredData (dataCollectionId, dataSetId, dataTypeId, status);
@@ -80,8 +83,7 @@ create index IX_C97E0DF on SX_ICECAP_StructuredData (userId, status);
 create index IX_9A33B1F3 on SX_ICECAP_StructuredData (uuid_[$COLUMN_LENGTH:75$], companyId);
 create unique index IX_B0D61935 on SX_ICECAP_StructuredData (uuid_[$COLUMN_LENGTH:75$], groupId);
 
-create index IX_1AF67228 on SX_ICECAP_TypeParamLink (dataTypeId);
-create index IX_642246A3 on SX_ICECAP_TypeParamLink (paramId);
+create index IX_D471D059 on SX_ICECAP_TypeStructureLink (dataStructureId);
 
 create index IX_D217CC29 on SX_ICECAP_TypeVisualizerLink (dataTypeId);
 create index IX_2BC9FC03 on SX_ICECAP_TypeVisualizerLink (visualizerId);

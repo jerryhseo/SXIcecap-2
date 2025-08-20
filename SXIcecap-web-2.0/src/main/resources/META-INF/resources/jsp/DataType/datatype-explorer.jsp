@@ -19,6 +19,7 @@
 <%@page import="java.util.List"%>
 <%@ include file="../../init.jsp" %>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@clayui/css/lib/css/atlas.css">
 <%
 	JSONArray permissions = (JSONArray)renderRequest.getAttribute("permissions");
 	int start = GetterUtil.getInteger(renderRequest.getAttribute(StationXWebKeys.START), StationXConstants.DEFAULT_START);
@@ -35,7 +36,6 @@
 	
 	String portalURL = PortalUtil.getPortalURL(renderRequest);
 	
-	System.out.println("workbenchNamespace: " + workbenchNamespace);
 	System.out.println("workbenchId: " + workbenchId);
 	System.out.println("permissions: " + permissions.toString());
 %>
@@ -76,7 +76,17 @@
 			baseRenderURL: '<%=  baseRenderURL %>',
 			baseActionURL: '<%=  baseActionURL %>',
 			baseResourceURL: '<%=  baseResourceURL %>',
+			redirectURLs:{
+				workbenchURL: '<%= workbenchURL %>',
+				dataTypeEditorURL:"",
+				backURL:'<%= currentURL %>',
+			},
 			permissions: JSON.parse('<%= permissions.toJSONString() %>'),
+			workbench:{
+				url: '<%= workbenchURL %>',
+			 	namespace: '<%= workbenchNamespace %>',
+				portletId: '<%= workbenchId %>',
+			},
 			params: { // initial parameters
 				start: Number('<%= start %>'),
 				delta: Number('<%= delta %>'),
@@ -86,21 +96,6 @@
 				sortType: '<%= orderType %>',
 				keywords: '<%= keywords %>',
 				viewType: '<%= DisplayStyle.TABLE %>',
-				imageURLs:{
-					notFound: '<%= contextPath %>/asset/images/not-found.png',
-					underConstruction: '<%= contextPath %>/asset/images/under-construction.jpg',
-					actionHistory: '<%= contextPath %>/asset/images/action-history.svg',
-					freezing: '<%= contextPath %>/asset/images/freezing.svg',
-					unfreezing: '<%= contextPath %>/asset/images/unfreezing.svg',
-					verify: '<%= contextPath %>/asset/images/verify.svg',
-					verified: '<%= contextPath %>/asset/images/verified.svg',
-					comments: '<%= contextPath %>/asset/images/comments.svg',
-					qMark: '<%= contextPath %>/asset/images/q-mark.svg',
-				},
-				backURL: '<%= currentURL %>',
-				workbenchURL: '<%= workbenchURL %>',
-				workbenchNamespace: '<%= workbenchNamespace %>',
-				workbenchId: '<%= workbenchId %>',
 			}
 		}
 	);

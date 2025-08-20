@@ -63,7 +63,7 @@ public class DataCollectionCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(41);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -99,12 +99,6 @@ public class DataCollectionCacheModel
 		sb.append(displayName);
 		sb.append(", description=");
 		sb.append(description);
-		sb.append(", freezeLevel=");
-		sb.append(freezeLevel);
-		sb.append(", verifyLevel=");
-		sb.append(verifyLevel);
-		sb.append(", commentLevel=");
-		sb.append(commentLevel);
 		sb.append("}");
 
 		return sb.toString();
@@ -199,27 +193,6 @@ public class DataCollectionCacheModel
 			dataCollectionImpl.setDescription(description);
 		}
 
-		if (freezeLevel == null) {
-			dataCollectionImpl.setFreezeLevel("");
-		}
-		else {
-			dataCollectionImpl.setFreezeLevel(freezeLevel);
-		}
-
-		if (verifyLevel == null) {
-			dataCollectionImpl.setVerifyLevel("");
-		}
-		else {
-			dataCollectionImpl.setVerifyLevel(verifyLevel);
-		}
-
-		if (commentLevel == null) {
-			dataCollectionImpl.setCommentLevel("");
-		}
-		else {
-			dataCollectionImpl.setCommentLevel(commentLevel);
-		}
-
 		dataCollectionImpl.resetOriginalValues();
 
 		return dataCollectionImpl;
@@ -250,9 +223,6 @@ public class DataCollectionCacheModel
 		dataCollectionVersion = objectInput.readUTF();
 		displayName = objectInput.readUTF();
 		description = objectInput.readUTF();
-		freezeLevel = objectInput.readUTF();
-		verifyLevel = objectInput.readUTF();
-		commentLevel = objectInput.readUTF();
 	}
 
 	@Override
@@ -323,27 +293,6 @@ public class DataCollectionCacheModel
 		else {
 			objectOutput.writeUTF(description);
 		}
-
-		if (freezeLevel == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(freezeLevel);
-		}
-
-		if (verifyLevel == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(verifyLevel);
-		}
-
-		if (commentLevel == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(commentLevel);
-		}
 	}
 
 	public String uuid;
@@ -363,8 +312,5 @@ public class DataCollectionCacheModel
 	public String dataCollectionVersion;
 	public String displayName;
 	public String description;
-	public String freezeLevel;
-	public String verifyLevel;
-	public String commentLevel;
 
 }

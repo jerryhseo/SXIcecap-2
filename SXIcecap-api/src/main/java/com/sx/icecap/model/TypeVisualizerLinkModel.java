@@ -14,7 +14,6 @@
 
 package com.sx.icecap.model;
 
-import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -82,20 +81,6 @@ public interface TypeVisualizerLinkModel extends BaseModel<TypeVisualizerLink> {
 	public void setDataTypeId(long dataTypeId);
 
 	/**
-	 * Returns the data type of this type visualizer link.
-	 *
-	 * @return the data type of this type visualizer link
-	 */
-	public long getDataType();
-
-	/**
-	 * Sets the data type of this type visualizer link.
-	 *
-	 * @param dataType the data type of this type visualizer link
-	 */
-	public void setDataType(long dataType);
-
-	/**
 	 * Returns the visualizer ID of this type visualizer link.
 	 *
 	 * @return the visualizer ID of this type visualizer link
@@ -108,20 +93,5 @@ public interface TypeVisualizerLinkModel extends BaseModel<TypeVisualizerLink> {
 	 * @param visualizerId the visualizer ID of this type visualizer link
 	 */
 	public void setVisualizerId(long visualizerId);
-
-	/**
-	 * Returns the visualizer of this type visualizer link.
-	 *
-	 * @return the visualizer of this type visualizer link
-	 */
-	@AutoEscape
-	public String getVisualizer();
-
-	/**
-	 * Sets the visualizer of this type visualizer link.
-	 *
-	 * @param visualizer the visualizer of this type visualizer link
-	 */
-	public void setVisualizer(String visualizer);
 
 }

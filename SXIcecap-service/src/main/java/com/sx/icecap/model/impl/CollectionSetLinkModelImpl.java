@@ -66,8 +66,8 @@ public class CollectionSetLinkModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"collectionSetLinkId", Types.BIGINT},
-		{"dataCollectionId", Types.BIGINT}, {"dataCollection", Types.BIGINT},
-		{"dataSetId", Types.BIGINT}, {"dataSet", Types.BIGINT}
+		{"dataCollectionId", Types.BIGINT}, {"dataSetId", Types.BIGINT},
+		{"freezed", Types.BOOLEAN}, {"verified", Types.BOOLEAN}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -76,13 +76,13 @@ public class CollectionSetLinkModelImpl
 	static {
 		TABLE_COLUMNS_MAP.put("collectionSetLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataCollectionId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("dataCollection", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataSetId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("dataSet", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("freezed", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("verified", Types.BOOLEAN);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_CollectionSetLink (collectionSetLinkId LONG not null primary key,dataCollectionId LONG,dataCollection LONG,dataSetId LONG,dataSet LONG)";
+		"create table SX_ICECAP_CollectionSetLink (collectionSetLinkId LONG not null primary key,dataCollectionId LONG,dataSetId LONG,freezed BOOLEAN,verified BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_CollectionSetLink";
@@ -228,21 +228,22 @@ public class CollectionSetLinkModelImpl
 			(BiConsumer<CollectionSetLink, Long>)
 				CollectionSetLink::setDataCollectionId);
 		attributeGetterFunctions.put(
-			"dataCollection", CollectionSetLink::getDataCollection);
-		attributeSetterBiConsumers.put(
-			"dataCollection",
-			(BiConsumer<CollectionSetLink, Long>)
-				CollectionSetLink::setDataCollection);
-		attributeGetterFunctions.put(
 			"dataSetId", CollectionSetLink::getDataSetId);
 		attributeSetterBiConsumers.put(
 			"dataSetId",
 			(BiConsumer<CollectionSetLink, Long>)
 				CollectionSetLink::setDataSetId);
-		attributeGetterFunctions.put("dataSet", CollectionSetLink::getDataSet);
+		attributeGetterFunctions.put("freezed", CollectionSetLink::getFreezed);
 		attributeSetterBiConsumers.put(
-			"dataSet",
-			(BiConsumer<CollectionSetLink, Long>)CollectionSetLink::setDataSet);
+			"freezed",
+			(BiConsumer<CollectionSetLink, Boolean>)
+				CollectionSetLink::setFreezed);
+		attributeGetterFunctions.put(
+			"verified", CollectionSetLink::getVerified);
+		attributeSetterBiConsumers.put(
+			"verified",
+			(BiConsumer<CollectionSetLink, Boolean>)
+				CollectionSetLink::setVerified);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -283,16 +284,6 @@ public class CollectionSetLinkModelImpl
 	}
 
 	@Override
-	public long getDataCollection() {
-		return _dataCollection;
-	}
-
-	@Override
-	public void setDataCollection(long dataCollection) {
-		_dataCollection = dataCollection;
-	}
-
-	@Override
 	public long getDataSetId() {
 		return _dataSetId;
 	}
@@ -315,13 +306,33 @@ public class CollectionSetLinkModelImpl
 	}
 
 	@Override
-	public long getDataSet() {
-		return _dataSet;
+	public boolean getFreezed() {
+		return _freezed;
 	}
 
 	@Override
-	public void setDataSet(long dataSet) {
-		_dataSet = dataSet;
+	public boolean isFreezed() {
+		return _freezed;
+	}
+
+	@Override
+	public void setFreezed(boolean freezed) {
+		_freezed = freezed;
+	}
+
+	@Override
+	public boolean getVerified() {
+		return _verified;
+	}
+
+	@Override
+	public boolean isVerified() {
+		return _verified;
+	}
+
+	@Override
+	public void setVerified(boolean verified) {
+		_verified = verified;
 	}
 
 	public long getColumnBitmask() {
@@ -363,9 +374,9 @@ public class CollectionSetLinkModelImpl
 
 		collectionSetLinkImpl.setCollectionSetLinkId(getCollectionSetLinkId());
 		collectionSetLinkImpl.setDataCollectionId(getDataCollectionId());
-		collectionSetLinkImpl.setDataCollection(getDataCollection());
 		collectionSetLinkImpl.setDataSetId(getDataSetId());
-		collectionSetLinkImpl.setDataSet(getDataSet());
+		collectionSetLinkImpl.setFreezed(isFreezed());
+		collectionSetLinkImpl.setVerified(isVerified());
 
 		collectionSetLinkImpl.resetOriginalValues();
 
@@ -447,11 +458,11 @@ public class CollectionSetLinkModelImpl
 
 		collectionSetLinkCacheModel.dataCollectionId = getDataCollectionId();
 
-		collectionSetLinkCacheModel.dataCollection = getDataCollection();
-
 		collectionSetLinkCacheModel.dataSetId = getDataSetId();
 
-		collectionSetLinkCacheModel.dataSet = getDataSet();
+		collectionSetLinkCacheModel.freezed = isFreezed();
+
+		collectionSetLinkCacheModel.verified = isVerified();
 
 		return collectionSetLinkCacheModel;
 	}
@@ -553,11 +564,11 @@ public class CollectionSetLinkModelImpl
 	private long _dataCollectionId;
 	private long _originalDataCollectionId;
 	private boolean _setOriginalDataCollectionId;
-	private long _dataCollection;
 	private long _dataSetId;
 	private long _originalDataSetId;
 	private boolean _setOriginalDataSetId;
-	private long _dataSet;
+	private boolean _freezed;
+	private boolean _verified;
 	private long _columnBitmask;
 	private CollectionSetLink _escapedModel;
 

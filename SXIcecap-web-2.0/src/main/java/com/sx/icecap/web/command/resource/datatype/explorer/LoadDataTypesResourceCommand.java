@@ -94,60 +94,7 @@ public class LoadDataTypesResourceCommand extends BaseMVCResourceCommand{
 		result.put("dataTypes", jsonDataTypes);
 		//result.put("dataTypes", JSONFactoryUtil.createJSONArray(dataTypes));
 		
-		//This is only for test while developing.
-		// JSONArray availableVisualizers = _AppLocalService.getAllVisualizers();
-		JSONArray availableVisualizers = JSONFactoryUtil.createJSONArray();
 		
-		JSONObject item = JSONFactoryUtil.createJSONObject();
-		item.put( "id", 345678);
-		item.put( "portletName", "com_sx_visualizer_ImageViewer");
-		JSONObject displayName = JSONFactoryUtil.createJSONObject();
-		displayName.put("en-US", "Image Viewer");
-		displayName.put("ko-KR", "이미지 뷰어");
-		item.put( "displayName", displayName);
-		
-		availableVisualizers.put(item);
-		
-		item = JSONFactoryUtil.createJSONObject();
-		item.put( "id", 456789);
-		item.put( "portletName", "com_sx_visualizer_TextEditor");
-		displayName = JSONFactoryUtil.createJSONObject();
-		displayName.put("en-US", "Text Editor");
-		displayName.put("ko-KR", "텍스트 편집기");
-		item.put( "displayName", displayName);
-		
-		availableVisualizers.put(item);
-		
-		item = JSONFactoryUtil.createJSONObject();
-		item.put( "id", 567890);
-		item.put( "portletName", "com_sx_visualizer_ImageEditor");
-		displayName = JSONFactoryUtil.createJSONObject();
-		displayName.put("en-US", "Image Editor");
-		displayName.put("ko-KR", "이미지 편집기");
-		item.put( "displayName", displayName);
-		
-		availableVisualizers.put(item);
-		
-		item = JSONFactoryUtil.createJSONObject();
-		item.put( "id", 123456);
-		item.put( "portletName", "com_sx_visualizer_TextViewer");
-		displayName = JSONFactoryUtil.createJSONObject();
-		displayName.put("en-US", "Text Viewer");
-		displayName.put("ko-KR", "텍스트 뷰어");
-		item.put( "displayName", displayName);
-		
-		availableVisualizers.put(item);
-		
-		item = JSONFactoryUtil.createJSONObject();
-		item.put( "id", 234567);
-		item.put( "portletName", "com_sx_visualizer_StructuredDataEditor");
-		displayName = JSONFactoryUtil.createJSONObject();
-		displayName.put("en-US", "Structured Data Editor");
-		displayName.put("ko-KR", "구조데이터 편집기");
-		item.put( "displayName", displayName);
-		availableVisualizers.put(item);
-		
-		result.put("availableVisualizers", availableVisualizers);
 		
 		PrintWriter pw = resourceResponse.getWriter();
 		pw.write(result.toJSONString());

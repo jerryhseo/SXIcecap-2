@@ -61,9 +61,6 @@ public class DataCollectionImpl extends DataCollectionBaseImpl {
 		dataCollection.put("modifiedDate", this.getModifiedDate());
 		dataCollection.put(DataCollectionProperties.DATA_COLLECTION_NAME, this.getDataCollectionName());
 		dataCollection.put(DataCollectionProperties.DATA_COLLECTION_VERSION, this.getDataCollectionVersion());
-		dataCollection.put(DataCollectionProperties.FREEZE_LEVEL, this.getFreezeLevel());
-		dataCollection.put(DataCollectionProperties.VERIFY_LEVEL, this.getVerifyLevel());
-		dataCollection.put(DataCollectionProperties.COMMENT_LEVEL, this.getCommentLevel());
 		
 		return dataCollection;
 	}

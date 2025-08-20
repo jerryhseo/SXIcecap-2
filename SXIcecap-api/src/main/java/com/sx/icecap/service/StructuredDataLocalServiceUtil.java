@@ -48,13 +48,13 @@ public class StructuredDataLocalServiceUtil {
 	public static StructuredData addStructuredData(
 			long dataCollectionId, long dataSetId, long dataTypeId,
 			boolean multiple, long startIndex, int count, boolean freezed,
-			boolean verified, boolean comments, boolean history, String data,
-			int status, com.liferay.portal.kernel.service.ServiceContext sc)
+			boolean verified, String data, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().addStructuredData(
 			dataCollectionId, dataSetId, dataTypeId, multiple, startIndex,
-			count, freezed, verified, comments, history, data, status, sc);
+			count, freezed, verified, data, status, sc);
 	}
 
 	/**
@@ -774,15 +774,13 @@ public class StructuredDataLocalServiceUtil {
 	public static StructuredData updateStructuredData(
 			long structuredDataId, long dataCollectionId, long dataSetId,
 			long dataTypeId, boolean multiple, long startIndex, int count,
-			boolean freezed, boolean verified, boolean comments,
-			boolean history, String data, int status,
+			boolean freezed, boolean verified, String data, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().updateStructuredData(
 			structuredDataId, dataCollectionId, dataSetId, dataTypeId, multiple,
-			startIndex, count, freezed, verified, comments, history, data,
-			status, sc);
+			startIndex, count, freezed, verified, data, status, sc);
 	}
 
 	/**

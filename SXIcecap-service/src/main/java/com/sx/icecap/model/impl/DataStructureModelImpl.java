@@ -91,9 +91,7 @@ public class DataStructureModelImpl
 		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP},
 		{"dataStructureId", Types.BIGINT}, {"dataStructureName", Types.VARCHAR},
 		{"dataStructureVersion", Types.VARCHAR}, {"displayName", Types.VARCHAR},
-		{"description", Types.VARCHAR}, {"freezable", Types.BOOLEAN},
-		{"verifiable", Types.BOOLEAN}, {"commentable", Types.BOOLEAN},
-		{"structure", Types.VARCHAR}
+		{"description", Types.VARCHAR}, {"structure", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -117,14 +115,11 @@ public class DataStructureModelImpl
 		TABLE_COLUMNS_MAP.put("dataStructureVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("freezable", Types.BOOLEAN);
-		TABLE_COLUMNS_MAP.put("verifiable", Types.BOOLEAN);
-		TABLE_COLUMNS_MAP.put("commentable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("structure", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataStructure (uuid_ VARCHAR(75) null,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataStructureId LONG not null primary key,dataStructureName VARCHAR(75) null,dataStructureVersion VARCHAR(75) null,displayName STRING null,description STRING null,freezable BOOLEAN,verifiable BOOLEAN,commentable BOOLEAN,structure TEXT null)";
+		"create table SX_ICECAP_DataStructure (uuid_ VARCHAR(75) null,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataStructureId LONG not null primary key,dataStructureName VARCHAR(75) null,dataStructureVersion VARCHAR(75) null,displayName STRING null,description STRING null,structure TEXT null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_DataStructure";
@@ -345,20 +340,6 @@ public class DataStructureModelImpl
 		attributeSetterBiConsumers.put(
 			"description",
 			(BiConsumer<DataStructure, String>)DataStructure::setDescription);
-		attributeGetterFunctions.put("freezable", DataStructure::getFreezable);
-		attributeSetterBiConsumers.put(
-			"freezable",
-			(BiConsumer<DataStructure, Boolean>)DataStructure::setFreezable);
-		attributeGetterFunctions.put(
-			"verifiable", DataStructure::getVerifiable);
-		attributeSetterBiConsumers.put(
-			"verifiable",
-			(BiConsumer<DataStructure, Boolean>)DataStructure::setVerifiable);
-		attributeGetterFunctions.put(
-			"commentable", DataStructure::getCommentable);
-		attributeSetterBiConsumers.put(
-			"commentable",
-			(BiConsumer<DataStructure, Boolean>)DataStructure::setCommentable);
 		attributeGetterFunctions.put("structure", DataStructure::getStructure);
 		attributeSetterBiConsumers.put(
 			"structure",
@@ -875,51 +856,6 @@ public class DataStructureModelImpl
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@Override
-	public boolean getFreezable() {
-		return _freezable;
-	}
-
-	@Override
-	public boolean isFreezable() {
-		return _freezable;
-	}
-
-	@Override
-	public void setFreezable(boolean freezable) {
-		_freezable = freezable;
-	}
-
-	@Override
-	public boolean getVerifiable() {
-		return _verifiable;
-	}
-
-	@Override
-	public boolean isVerifiable() {
-		return _verifiable;
-	}
-
-	@Override
-	public void setVerifiable(boolean verifiable) {
-		_verifiable = verifiable;
-	}
-
-	@Override
-	public boolean getCommentable() {
-		return _commentable;
-	}
-
-	@Override
-	public boolean isCommentable() {
-		return _commentable;
-	}
-
-	@Override
-	public void setCommentable(boolean commentable) {
-		_commentable = commentable;
-	}
-
 	@JSON
 	@Override
 	public String getStructure() {
@@ -1310,9 +1246,6 @@ public class DataStructureModelImpl
 		dataStructureImpl.setDataStructureVersion(getDataStructureVersion());
 		dataStructureImpl.setDisplayName(getDisplayName());
 		dataStructureImpl.setDescription(getDescription());
-		dataStructureImpl.setFreezable(isFreezable());
-		dataStructureImpl.setVerifiable(isVerifiable());
-		dataStructureImpl.setCommentable(isCommentable());
 		dataStructureImpl.setStructure(getStructure());
 
 		dataStructureImpl.resetOriginalValues();
@@ -1514,12 +1447,6 @@ public class DataStructureModelImpl
 			dataStructureCacheModel.description = null;
 		}
 
-		dataStructureCacheModel.freezable = isFreezable();
-
-		dataStructureCacheModel.verifiable = isVerifiable();
-
-		dataStructureCacheModel.commentable = isCommentable();
-
 		dataStructureCacheModel.structure = getStructure();
 
 		String structure = dataStructureCacheModel.structure;
@@ -1654,9 +1581,6 @@ public class DataStructureModelImpl
 	private String _displayNameCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
-	private boolean _freezable;
-	private boolean _verifiable;
-	private boolean _commentable;
 	private String _structure;
 	private long _columnBitmask;
 	private DataStructure _escapedModel;

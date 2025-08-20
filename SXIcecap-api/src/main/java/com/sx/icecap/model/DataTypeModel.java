@@ -669,48 +669,6 @@ public interface DataTypeModel
 		Map<Locale, String> tooltipMap, Locale defaultLocale);
 
 	/**
-	 * Returns the freezable of this data type.
-	 *
-	 * @return the freezable of this data type
-	 */
-	public boolean getFreezable();
-
-	/**
-	 * Returns <code>true</code> if this data type is freezable.
-	 *
-	 * @return <code>true</code> if this data type is freezable; <code>false</code> otherwise
-	 */
-	public boolean isFreezable();
-
-	/**
-	 * Sets whether this data type is freezable.
-	 *
-	 * @param freezable the freezable of this data type
-	 */
-	public void setFreezable(boolean freezable);
-
-	/**
-	 * Returns the verifiable of this data type.
-	 *
-	 * @return the verifiable of this data type
-	 */
-	public boolean getVerifiable();
-
-	/**
-	 * Returns <code>true</code> if this data type is verifiable.
-	 *
-	 * @return <code>true</code> if this data type is verifiable; <code>false</code> otherwise
-	 */
-	public boolean isVerifiable();
-
-	/**
-	 * Sets whether this data type is verifiable.
-	 *
-	 * @param verifiable the verifiable of this data type
-	 */
-	public void setVerifiable(boolean verifiable);
-
-	/**
 	 * Returns the data structure ID of this data type.
 	 *
 	 * @return the data structure ID of this data type

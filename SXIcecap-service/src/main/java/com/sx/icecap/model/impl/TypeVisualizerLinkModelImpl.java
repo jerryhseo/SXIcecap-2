@@ -72,8 +72,7 @@ public class TypeVisualizerLinkModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"typeVisualizerLinkId", Types.BIGINT}, {"dataTypeId", Types.BIGINT},
-		{"dataType", Types.BIGINT}, {"visualizerId", Types.BIGINT},
-		{"visualizer", Types.VARCHAR}
+		{"visualizerId", Types.BIGINT}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -82,13 +81,11 @@ public class TypeVisualizerLinkModelImpl
 	static {
 		TABLE_COLUMNS_MAP.put("typeVisualizerLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataTypeId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("dataType", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("visualizerId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("visualizer", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_TypeVisualizerLink (typeVisualizerLinkId LONG not null primary key,dataTypeId LONG,dataType LONG,visualizerId LONG,visualizer VARCHAR(75) null)";
+		"create table SX_ICECAP_TypeVisualizerLink (typeVisualizerLinkId LONG not null primary key,dataTypeId LONG,visualizerId LONG)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_TypeVisualizerLink";
@@ -134,9 +131,7 @@ public class TypeVisualizerLinkModelImpl
 
 		model.setTypeVisualizerLinkId(soapModel.getTypeVisualizerLinkId());
 		model.setDataTypeId(soapModel.getDataTypeId());
-		model.setDataType(soapModel.getDataType());
 		model.setVisualizerId(soapModel.getVisualizerId());
-		model.setVisualizer(soapModel.getVisualizer());
 
 		return model;
 	}
@@ -280,23 +275,11 @@ public class TypeVisualizerLinkModelImpl
 			(BiConsumer<TypeVisualizerLink, Long>)
 				TypeVisualizerLink::setDataTypeId);
 		attributeGetterFunctions.put(
-			"dataType", TypeVisualizerLink::getDataType);
-		attributeSetterBiConsumers.put(
-			"dataType",
-			(BiConsumer<TypeVisualizerLink, Long>)
-				TypeVisualizerLink::setDataType);
-		attributeGetterFunctions.put(
 			"visualizerId", TypeVisualizerLink::getVisualizerId);
 		attributeSetterBiConsumers.put(
 			"visualizerId",
 			(BiConsumer<TypeVisualizerLink, Long>)
 				TypeVisualizerLink::setVisualizerId);
-		attributeGetterFunctions.put(
-			"visualizer", TypeVisualizerLink::getVisualizer);
-		attributeSetterBiConsumers.put(
-			"visualizer",
-			(BiConsumer<TypeVisualizerLink, String>)
-				TypeVisualizerLink::setVisualizer);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -340,17 +323,6 @@ public class TypeVisualizerLinkModelImpl
 
 	@JSON
 	@Override
-	public long getDataType() {
-		return _dataType;
-	}
-
-	@Override
-	public void setDataType(long dataType) {
-		_dataType = dataType;
-	}
-
-	@JSON
-	@Override
 	public long getVisualizerId() {
 		return _visualizerId;
 	}
@@ -370,22 +342,6 @@ public class TypeVisualizerLinkModelImpl
 
 	public long getOriginalVisualizerId() {
 		return _originalVisualizerId;
-	}
-
-	@JSON
-	@Override
-	public String getVisualizer() {
-		if (_visualizer == null) {
-			return "";
-		}
-		else {
-			return _visualizer;
-		}
-	}
-
-	@Override
-	public void setVisualizer(String visualizer) {
-		_visualizer = visualizer;
 	}
 
 	public long getColumnBitmask() {
@@ -428,9 +384,7 @@ public class TypeVisualizerLinkModelImpl
 		typeVisualizerLinkImpl.setTypeVisualizerLinkId(
 			getTypeVisualizerLinkId());
 		typeVisualizerLinkImpl.setDataTypeId(getDataTypeId());
-		typeVisualizerLinkImpl.setDataType(getDataType());
 		typeVisualizerLinkImpl.setVisualizerId(getVisualizerId());
-		typeVisualizerLinkImpl.setVisualizer(getVisualizer());
 
 		typeVisualizerLinkImpl.resetOriginalValues();
 
@@ -512,17 +466,7 @@ public class TypeVisualizerLinkModelImpl
 
 		typeVisualizerLinkCacheModel.dataTypeId = getDataTypeId();
 
-		typeVisualizerLinkCacheModel.dataType = getDataType();
-
 		typeVisualizerLinkCacheModel.visualizerId = getVisualizerId();
-
-		typeVisualizerLinkCacheModel.visualizer = getVisualizer();
-
-		String visualizer = typeVisualizerLinkCacheModel.visualizer;
-
-		if ((visualizer != null) && (visualizer.length() == 0)) {
-			typeVisualizerLinkCacheModel.visualizer = null;
-		}
 
 		return typeVisualizerLinkCacheModel;
 	}
@@ -624,11 +568,9 @@ public class TypeVisualizerLinkModelImpl
 	private long _dataTypeId;
 	private long _originalDataTypeId;
 	private boolean _setOriginalDataTypeId;
-	private long _dataType;
 	private long _visualizerId;
 	private long _originalVisualizerId;
 	private boolean _setOriginalVisualizerId;
-	private String _visualizer;
 	private long _columnBitmask;
 	private TypeVisualizerLink _escapedModel;
 

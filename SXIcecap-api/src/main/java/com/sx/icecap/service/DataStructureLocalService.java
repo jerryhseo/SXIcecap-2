@@ -88,9 +88,8 @@ public interface DataStructureLocalService
 	public DataStructure addDataStructure(
 			String dataStructureName, String dataStructureVersion,
 			Map<Locale, String> displayNameMap,
-			Map<Locale, String> descriptionMap, String structure,
-			boolean freezable, boolean verifiable, boolean commentable,
-			int status, ServiceContext sc)
+			Map<Locale, String> descriptionMap, String structure, int status,
+			ServiceContext sc)
 		throws PortalException;
 
 	public JSONArray convertListToJSONArray(List<DataStructure> list)
@@ -344,9 +343,8 @@ public interface DataStructureLocalService
 	public DataStructure updateDataStructure(
 			long dataStructureId, String dataStructureName,
 			String dataStructureVersion, Map<Locale, String> displayNameMap,
-			Map<Locale, String> descriptionMap, String structure,
-			boolean freezable, boolean verifiable, boolean commentable,
-			int status, ServiceContext sc)
+			Map<Locale, String> descriptionMap, String structure, int status,
+			ServiceContext sc)
 		throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)

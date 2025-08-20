@@ -55,15 +55,13 @@ public class DataStructureLocalServiceWrapper
 			String dataStructureName, String dataStructureVersion,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap,
-			String structure, boolean freezable, boolean verifiable,
-			boolean commentable, int status,
+			String structure, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataStructureLocalService.addDataStructure(
 			dataStructureName, dataStructureVersion, displayNameMap,
-			descriptionMap, structure, freezable, verifiable, commentable,
-			status, sc);
+			descriptionMap, structure, status, sc);
 	}
 
 	@Override
@@ -434,15 +432,13 @@ public class DataStructureLocalServiceWrapper
 			String dataStructureVersion,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap,
-			String structure, boolean freezable, boolean verifiable,
-			boolean commentable, int status,
+			String structure, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataStructureLocalService.updateDataStructure(
 			dataStructureId, dataStructureName, dataStructureVersion,
-			displayNameMap, descriptionMap, structure, freezable, verifiable,
-			commentable, status, sc);
+			displayNameMap, descriptionMap, structure, status, sc);
 	}
 
 	@Override

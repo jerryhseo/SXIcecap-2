@@ -40,7 +40,7 @@ public class DataStructurePortletResourcePermissionRegistrar {
 						Constant.ICECAP_RESOURCE_NAME,
 						new StagedPortletPermissionLogic(
 								_stagingPermission, 
-								WebPortletKey.DATA_STRUCTURE_BUILDER)),
+								WebPortletKey.SXDataStructureBuilderPortlet)),
 				properties);
 		
 	};

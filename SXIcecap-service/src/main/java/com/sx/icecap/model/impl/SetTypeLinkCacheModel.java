@@ -67,12 +67,12 @@ public class SetTypeLinkCacheModel
 		sb.append(setTypeLinkId);
 		sb.append(", dataSetId=");
 		sb.append(dataSetId);
-		sb.append(", dataSet=");
-		sb.append(dataSet);
 		sb.append(", dataTypeId=");
 		sb.append(dataTypeId);
-		sb.append(", dataType=");
-		sb.append(dataType);
+		sb.append(", freezed=");
+		sb.append(freezed);
+		sb.append(", verified=");
+		sb.append(verified);
 		sb.append("}");
 
 		return sb.toString();
@@ -84,15 +84,9 @@ public class SetTypeLinkCacheModel
 
 		setTypeLinkImpl.setSetTypeLinkId(setTypeLinkId);
 		setTypeLinkImpl.setDataSetId(dataSetId);
-		setTypeLinkImpl.setDataSet(dataSet);
 		setTypeLinkImpl.setDataTypeId(dataTypeId);
-
-		if (dataType == null) {
-			setTypeLinkImpl.setDataType("");
-		}
-		else {
-			setTypeLinkImpl.setDataType(dataType);
-		}
+		setTypeLinkImpl.setFreezed(freezed);
+		setTypeLinkImpl.setVerified(verified);
 
 		setTypeLinkImpl.resetOriginalValues();
 
@@ -105,10 +99,11 @@ public class SetTypeLinkCacheModel
 
 		dataSetId = objectInput.readLong();
 
-		dataSet = objectInput.readLong();
-
 		dataTypeId = objectInput.readLong();
-		dataType = objectInput.readUTF();
+
+		freezed = objectInput.readBoolean();
+
+		verified = objectInput.readBoolean();
 	}
 
 	@Override
@@ -117,22 +112,17 @@ public class SetTypeLinkCacheModel
 
 		objectOutput.writeLong(dataSetId);
 
-		objectOutput.writeLong(dataSet);
-
 		objectOutput.writeLong(dataTypeId);
 
-		if (dataType == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(dataType);
-		}
+		objectOutput.writeBoolean(freezed);
+
+		objectOutput.writeBoolean(verified);
 	}
 
 	public long setTypeLinkId;
 	public long dataSetId;
-	public long dataSet;
 	public long dataTypeId;
-	public String dataType;
+	public boolean freezed;
+	public boolean verified;
 
 }

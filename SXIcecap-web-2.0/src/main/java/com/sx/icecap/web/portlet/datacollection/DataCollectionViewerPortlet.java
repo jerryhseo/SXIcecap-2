@@ -25,7 +25,7 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.display-category=category.sx.icecap",
 		"com.liferay.portlet.header-portlet-css=/css/index.css",
 		"com.liferay.portlet.instanceable=true",
-		"javax.portlet.display-name=Data Type Viewer",
+		"javax.portlet.display-name=Data Collection Viewer",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=" + JSPPath.DATA_COLLECTION_VIEWER,
 		"javax.portlet.name=" + WebPortletKey.DATA_COLLECTION_VIEWER,
