@@ -59,13 +59,13 @@ public class DataTypeImpl extends DataTypeBaseImpl {
 		dataType.put("companyId", this.getCompanyId());
 		dataType.put("groupId", this.getGroupId());
 		dataType.put("userId", this.getUserId());
+		dataType.put("userName", this.getUserName());
 		dataType.put("status", this.getStatus());
 		dataType.put("createDate", this.getCreateDate());
 		dataType.put("modifiedDate", this.getModifiedDate());
-		dataType.put("dataTypeName", this.getDataTypeName());
+		dataType.put("dataTypeCode", this.getDataTypeCode());
 		dataType.put("dataTypeVersion", this.getDataTypeVersion());
 		dataType.put("extension", this.getExtension());
-		dataType.put("dataStructureId", this.getDataStructureId());
 		
 		return dataType;
 	}

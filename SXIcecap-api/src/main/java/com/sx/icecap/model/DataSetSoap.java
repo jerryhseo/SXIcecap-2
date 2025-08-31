@@ -44,7 +44,7 @@ public class DataSetSoap implements Serializable {
 		soapModel.setStatusByUserId(model.getStatusByUserId());
 		soapModel.setStatusByUserName(model.getStatusByUserName());
 		soapModel.setStatusDate(model.getStatusDate());
-		soapModel.setDataSetName(model.getDataSetName());
+		soapModel.setDataSetCode(model.getDataSetCode());
 		soapModel.setDataSetVersion(model.getDataSetVersion());
 		soapModel.setDisplayName(model.getDisplayName());
 		soapModel.setDescription(model.getDescription());
@@ -205,12 +205,12 @@ public class DataSetSoap implements Serializable {
 		_statusDate = statusDate;
 	}
 
-	public String getDataSetName() {
-		return _dataSetName;
+	public String getDataSetCode() {
+		return _dataSetCode;
 	}
 
-	public void setDataSetName(String dataSetName) {
-		_dataSetName = dataSetName;
+	public void setDataSetCode(String dataSetCode) {
+		_dataSetCode = dataSetCode;
 	}
 
 	public String getDataSetVersion() {
@@ -250,7 +250,7 @@ public class DataSetSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private String _dataSetName;
+	private String _dataSetCode;
 	private String _dataSetVersion;
 	private String _displayName;
 	private String _description;

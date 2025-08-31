@@ -39,7 +39,7 @@ public class DataCommentSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setStructuredDataId(model.getStructuredDataId());
-		soapModel.setParamName(model.getParamName());
+		soapModel.setParamCode(model.getParamCode());
 		soapModel.setParentCommentId(model.getParentCommentId());
 		soapModel.setComment(model.getComment());
 		soapModel.setClosed(model.isClosed());
@@ -160,12 +160,12 @@ public class DataCommentSoap implements Serializable {
 		_structuredDataId = structuredDataId;
 	}
 
-	public String getParamName() {
-		return _paramName;
+	public String getParamCode() {
+		return _paramCode;
 	}
 
-	public void setParamName(String paramName) {
-		_paramName = paramName;
+	public void setParamCode(String paramCode) {
+		_paramCode = paramCode;
 	}
 
 	public long getParentCommentId() {
@@ -204,7 +204,7 @@ public class DataCommentSoap implements Serializable {
 	private Date _createDate;
 	private Date _modifiedDate;
 	private long _structuredDataId;
-	private String _paramName;
+	private String _paramCode;
 	private long _parentCommentId;
 	private String _comment;
 	private boolean _closed;

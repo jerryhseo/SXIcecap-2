@@ -29,7 +29,7 @@ public class DataStructureKeywordQueryContributor implements KeywordQueryContrib
 		
 		SearchContext searchContext = keywordQueryContributorHelper.getSearchContext();
 
-		queryHelper.addSearchTerm(booleanQuery, searchContext, DataStructureProperties.DATA_STRUCTURE_NAME, true);
+		queryHelper.addSearchTerm(booleanQuery, searchContext, DataStructureProperties.DATA_STRUCTURE_CODE, true);
 		queryHelper.addSearchLocalizedTerm(
 				booleanQuery, searchContext, DataStructureProperties.DISPLAY_NAME, false);
 		queryHelper.addSearchLocalizedTerm(

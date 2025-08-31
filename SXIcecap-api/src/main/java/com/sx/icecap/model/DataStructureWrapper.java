@@ -56,7 +56,7 @@ public class DataStructureWrapper
 		attributes.put("statusByUserName", getStatusByUserName());
 		attributes.put("statusDate", getStatusDate());
 		attributes.put("dataStructureId", getDataStructureId());
-		attributes.put("dataStructureName", getDataStructureName());
+		attributes.put("dataStructureCode", getDataStructureCode());
 		attributes.put("dataStructureVersion", getDataStructureVersion());
 		attributes.put("displayName", getDisplayName());
 		attributes.put("description", getDescription());
@@ -145,10 +145,10 @@ public class DataStructureWrapper
 			setDataStructureId(dataStructureId);
 		}
 
-		String dataStructureName = (String)attributes.get("dataStructureName");
+		String dataStructureCode = (String)attributes.get("dataStructureCode");
 
-		if (dataStructureName != null) {
-			setDataStructureName(dataStructureName);
+		if (dataStructureCode != null) {
+			setDataStructureCode(dataStructureCode);
 		}
 
 		String dataStructureVersion = (String)attributes.get(
@@ -203,6 +203,16 @@ public class DataStructureWrapper
 	}
 
 	/**
+	 * Returns the data structure code of this data structure.
+	 *
+	 * @return the data structure code of this data structure
+	 */
+	@Override
+	public String getDataStructureCode() {
+		return model.getDataStructureCode();
+	}
+
+	/**
 	 * Returns the data structure ID of this data structure.
 	 *
 	 * @return the data structure ID of this data structure
@@ -210,16 +220,6 @@ public class DataStructureWrapper
 	@Override
 	public long getDataStructureId() {
 		return model.getDataStructureId();
-	}
-
-	/**
-	 * Returns the data structure name of this data structure.
-	 *
-	 * @return the data structure name of this data structure
-	 */
-	@Override
-	public String getDataStructureName() {
-		return model.getDataStructureName();
 	}
 
 	/**
@@ -714,6 +714,16 @@ public class DataStructureWrapper
 	}
 
 	/**
+	 * Sets the data structure code of this data structure.
+	 *
+	 * @param dataStructureCode the data structure code of this data structure
+	 */
+	@Override
+	public void setDataStructureCode(String dataStructureCode) {
+		model.setDataStructureCode(dataStructureCode);
+	}
+
+	/**
 	 * Sets the data structure ID of this data structure.
 	 *
 	 * @param dataStructureId the data structure ID of this data structure
@@ -721,16 +731,6 @@ public class DataStructureWrapper
 	@Override
 	public void setDataStructureId(long dataStructureId) {
 		model.setDataStructureId(dataStructureId);
-	}
-
-	/**
-	 * Sets the data structure name of this data structure.
-	 *
-	 * @param dataStructureName the data structure name of this data structure
-	 */
-	@Override
-	public void setDataStructureName(String dataStructureName) {
-		model.setDataStructureName(dataStructureName);
 	}
 
 	/**

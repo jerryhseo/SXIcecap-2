@@ -51,22 +51,21 @@ public class DataTypeLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataType addDataType(
-			String dataTypeName, String dataTypeVersion, String extension,
+			String dataTypeCode, String dataTypeVersion, String extension,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap,
-			java.util.Map<java.util.Locale, String> tooltipMap,
-			long dataStructureId, int status,
+			java.util.Map<java.util.Locale, String> tooltipMap, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataTypeLocalService.addDataType(
-			dataTypeName, dataTypeVersion, extension, displayNameMap,
-			descriptionMap, tooltipMap, dataStructureId, status, sc);
+			dataTypeCode, dataTypeVersion, extension, displayNameMap,
+			descriptionMap, tooltipMap, status, sc);
 	}
 
 	@Override
-	public boolean checkDataTypeNameUnique(String paramName) {
-		return _dataTypeLocalService.checkDataTypeNameUnique(paramName);
+	public boolean checkDataTypeCodeUnique(String paramCode) {
+		return _dataTypeLocalService.checkDataTypeCodeUnique(paramCode);
 	}
 
 	@Override
@@ -82,6 +81,11 @@ public class DataTypeLocalServiceWrapper
 	@Override
 	public int countDataTypes(long groupId, long userId, int status) {
 		return _dataTypeLocalService.countDataTypes(groupId, userId, status);
+	}
+
+	@Override
+	public int countDataTypesByCode(String dataTypeCode) {
+		return _dataTypeLocalService.countDataTypesByCode(dataTypeCode);
 	}
 
 	@Override
@@ -341,16 +345,16 @@ public class DataTypeLocalServiceWrapper
 
 	@Override
 	public long getDataFileFolderId(
-			long repositoryId, long parentFoderId, String dataTypeName,
-			String dataTypeVersion, long dataId, String paramName,
+			long repositoryId, long parentFoderId, String dataTypeCode,
+			String dataTypeVersion, long dataId, String paramCode,
 			String paramVersion,
 			com.liferay.portal.kernel.service.ServiceContext sc,
 			boolean createWhenNoExist)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataTypeLocalService.getDataFileFolderId(
-			repositoryId, parentFoderId, dataTypeName, dataTypeVersion, dataId,
-			paramName, paramVersion, sc, createWhenNoExist);
+			repositoryId, parentFoderId, dataTypeCode, dataTypeVersion, dataId,
+			paramCode, paramVersion, sc, createWhenNoExist);
 	}
 
 	/**
@@ -365,6 +369,14 @@ public class DataTypeLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataTypeLocalService.getDataType(dataTypeId);
+	}
+
+	@Override
+	public com.sx.icecap.model.DataType getDataType(
+			String dataTypeCode, String dataTypeVersion)
+		throws com.sx.icecap.exception.NoSuchDataTypeException {
+
+		return _dataTypeLocalService.getDataType(dataTypeCode, dataTypeVersion);
 	}
 
 	/**
@@ -408,6 +420,13 @@ public class DataTypeLocalServiceWrapper
 
 		return _dataTypeLocalService.getDataTypes(
 			groupId, userId, status, start, end, orderCol, orderType);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataType> getDataTypesByCode(
+		String dataTypeCode) {
+
+		return _dataTypeLocalService.getDataTypesByCode(dataTypeCode);
 	}
 
 	@Override
@@ -508,13 +527,6 @@ public class DataTypeLocalServiceWrapper
 
 		return _dataTypeLocalService.getDataTypesByGroupId(
 			groupId, start, end, comparator);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.DataType> getDataTypesByName(
-		String dataTypeName) {
-
-		return _dataTypeLocalService.getDataTypesByName(dataTypeName);
 	}
 
 	@Override
@@ -749,19 +761,17 @@ public class DataTypeLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataType updateDataType(
-			long dataTypeId, String dataTypeName, String dataTypeVersion,
+			long dataTypeId, String dataTypeCode, String dataTypeVersion,
 			String extension,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap,
-			java.util.Map<java.util.Locale, String> tooltipMap,
-			long dataStructureId, int status,
+			java.util.Map<java.util.Locale, String> tooltipMap, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataTypeLocalService.updateDataType(
-			dataTypeId, dataTypeName, dataTypeVersion, extension,
-			displayNameMap, descriptionMap, tooltipMap, dataStructureId, status,
-			sc);
+			dataTypeId, dataTypeCode, dataTypeVersion, extension,
+			displayNameMap, descriptionMap, tooltipMap, status, sc);
 	}
 
 	@Override

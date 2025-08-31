@@ -308,19 +308,19 @@ public interface DataTypeModel
 	public void setStatusDate(Date statusDate);
 
 	/**
-	 * Returns the data type name of this data type.
+	 * Returns the data type code of this data type.
 	 *
-	 * @return the data type name of this data type
+	 * @return the data type code of this data type
 	 */
 	@AutoEscape
-	public String getDataTypeName();
+	public String getDataTypeCode();
 
 	/**
-	 * Sets the data type name of this data type.
+	 * Sets the data type code of this data type.
 	 *
-	 * @param dataTypeName the data type name of this data type
+	 * @param dataTypeCode the data type code of this data type
 	 */
-	public void setDataTypeName(String dataTypeName);
+	public void setDataTypeCode(String dataTypeCode);
 
 	/**
 	 * Returns the data type version of this data type.
@@ -667,20 +667,6 @@ public interface DataTypeModel
 	 */
 	public void setTooltipMap(
 		Map<Locale, String> tooltipMap, Locale defaultLocale);
-
-	/**
-	 * Returns the data structure ID of this data type.
-	 *
-	 * @return the data structure ID of this data type
-	 */
-	public long getDataStructureId();
-
-	/**
-	 * Sets the data structure ID of this data type.
-	 *
-	 * @param dataStructureId the data structure ID of this data type
-	 */
-	public void setDataStructureId(long dataStructureId);
 
 	/**
 	 * Returns the trash entry created when this data type was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this data type.

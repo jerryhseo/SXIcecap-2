@@ -14,6 +14,7 @@
 
 package com.sx.icecap.model;
 
+import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 
 import java.util.Date;
@@ -67,6 +68,48 @@ public interface TypeStructureLinkModel extends BaseModel<TypeStructureLink> {
 	 * @param dataTypeId the data type ID of this type structure link
 	 */
 	public void setDataTypeId(long dataTypeId);
+
+	/**
+	 * Returns the user ID of this type structure link.
+	 *
+	 * @return the user ID of this type structure link
+	 */
+	public long getUserId();
+
+	/**
+	 * Sets the user ID of this type structure link.
+	 *
+	 * @param userId the user ID of this type structure link
+	 */
+	public void setUserId(long userId);
+
+	/**
+	 * Returns the user uuid of this type structure link.
+	 *
+	 * @return the user uuid of this type structure link
+	 */
+	public String getUserUuid();
+
+	/**
+	 * Sets the user uuid of this type structure link.
+	 *
+	 * @param userUuid the user uuid of this type structure link
+	 */
+	public void setUserUuid(String userUuid);
+
+	/**
+	 * Returns the group ID of this type structure link.
+	 *
+	 * @return the group ID of this type structure link
+	 */
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this type structure link.
+	 *
+	 * @param groupId the group ID of this type structure link
+	 */
+	public void setGroupId(long groupId);
 
 	/**
 	 * Returns the data structure ID of this type structure link.
@@ -195,6 +238,21 @@ public interface TypeStructureLinkModel extends BaseModel<TypeStructureLink> {
 	public void setFreezedUserUuid(String freezedUserUuid);
 
 	/**
+	 * Returns the freezed user name of this type structure link.
+	 *
+	 * @return the freezed user name of this type structure link
+	 */
+	@AutoEscape
+	public String getFreezedUserName();
+
+	/**
+	 * Sets the freezed user name of this type structure link.
+	 *
+	 * @param freezedUserName the freezed user name of this type structure link
+	 */
+	public void setFreezedUserName(String freezedUserName);
+
+	/**
 	 * Returns the freezed date of this type structure link.
 	 *
 	 * @return the freezed date of this type structure link
@@ -256,6 +314,21 @@ public interface TypeStructureLinkModel extends BaseModel<TypeStructureLink> {
 	 * @param verifiedUserUuid the verified user uuid of this type structure link
 	 */
 	public void setVerifiedUserUuid(String verifiedUserUuid);
+
+	/**
+	 * Returns the verified user name of this type structure link.
+	 *
+	 * @return the verified user name of this type structure link
+	 */
+	@AutoEscape
+	public String getVerifiedUserName();
+
+	/**
+	 * Sets the verified user name of this type structure link.
+	 *
+	 * @param verifiedUserName the verified user name of this type structure link
+	 */
+	public void setVerifiedUserName(String verifiedUserName);
 
 	/**
 	 * Returns the verified date of this type structure link.

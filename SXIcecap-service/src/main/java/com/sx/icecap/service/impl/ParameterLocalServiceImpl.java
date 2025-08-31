@@ -52,7 +52,7 @@ public class ParameterLocalServiceImpl extends ParameterLocalServiceBaseImpl {
 	@Indexable(type = IndexableType.REINDEX)
 	public Parameter addParameter(
 			String paramType,
-			String paramName,
+			String paramCode,
 			String paramVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap,
@@ -69,7 +69,7 @@ public class ParameterLocalServiceImpl extends ParameterLocalServiceBaseImpl {
 		Parameter parameter = super.parameterLocalService.createParameter(parameterId);
 		
 		parameter.setParamType(paramType);
-		parameter.setParamName(paramName);
+		parameter.setParamCode(paramCode);
 		parameter.setParamVersion(paramVersion);
 		parameter.setDisplayNameMap(displayNameMap, defaultLocale);
 		parameter.setDefinitionMap(definitionMap, defaultLocale);
@@ -131,7 +131,7 @@ public class ParameterLocalServiceImpl extends ParameterLocalServiceBaseImpl {
 			parameter.getCreateDate(),
 			null, 
 			ContentTypes.TEXT_HTML_UTF8, 
-			parameter.getParamName(),
+			parameter.getParamCode(),
 			null, 
 			null, 
 			null, 
@@ -154,7 +154,7 @@ public class ParameterLocalServiceImpl extends ParameterLocalServiceBaseImpl {
 	public Parameter updateParameter(
 			long parameterId, 
 			String paramType,
-			String paramName,
+			String paramCode,
 			String paramVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap,
@@ -169,7 +169,7 @@ public class ParameterLocalServiceImpl extends ParameterLocalServiceBaseImpl {
 		Locale defaultLocale = sc.getThemeDisplay().getLocale();
 		
 		parameter.setParamType(paramType);
-		parameter.setParamName(paramName);
+		parameter.setParamCode(paramCode);
 		parameter.setParamVersion(paramVersion);
 		parameter.setDisplayNameMap(displayNameMap, defaultLocale);
 		parameter.setDefinitionMap(definitionMap, defaultLocale);
@@ -221,7 +221,7 @@ public class ParameterLocalServiceImpl extends ParameterLocalServiceBaseImpl {
 				parameter.getCreateDate(),
 				null, 
 				ContentTypes.TEXT_HTML_UTF8, 
-				parameter.getParamName(),
+				parameter.getParamCode(),
 				null, 
 				null, 
 				null, 

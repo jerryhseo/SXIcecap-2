@@ -1727,147 +1727,147 @@ public interface DataCollectionPersistence
 	public int filterCountByG_U_S(long groupId, long userId, int status);
 
 	/**
-	 * Returns all the data collections where dataCollectionName = &#63;.
+	 * Returns all the data collections where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @return the matching data collections
 	 */
-	public java.util.List<DataCollection> findByName(String dataCollectionName);
+	public java.util.List<DataCollection> findByCode(String dataCollectionCode);
 
 	/**
-	 * Returns a range of all the data collections where dataCollectionName = &#63;.
+	 * Returns a range of all the data collections where dataCollectionCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCollectionModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param start the lower bound of the range of data collections
 	 * @param end the upper bound of the range of data collections (not inclusive)
 	 * @return the range of matching data collections
 	 */
-	public java.util.List<DataCollection> findByName(
-		String dataCollectionName, int start, int end);
+	public java.util.List<DataCollection> findByCode(
+		String dataCollectionCode, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the data collections where dataCollectionName = &#63;.
+	 * Returns an ordered range of all the data collections where dataCollectionCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCollectionModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param start the lower bound of the range of data collections
 	 * @param end the upper bound of the range of data collections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data collections
 	 */
-	public java.util.List<DataCollection> findByName(
-		String dataCollectionName, int start, int end,
+	public java.util.List<DataCollection> findByCode(
+		String dataCollectionCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DataCollection>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the data collections where dataCollectionName = &#63;.
+	 * Returns an ordered range of all the data collections where dataCollectionCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCollectionModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param start the lower bound of the range of data collections
 	 * @param end the upper bound of the range of data collections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching data collections
 	 */
-	public java.util.List<DataCollection> findByName(
-		String dataCollectionName, int start, int end,
+	public java.util.List<DataCollection> findByCode(
+		String dataCollectionCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DataCollection>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the first data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data collection
 	 * @throws NoSuchDataCollectionException if a matching data collection could not be found
 	 */
-	public DataCollection findByName_First(
-			String dataCollectionName,
+	public DataCollection findByCode_First(
+			String dataCollectionCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataCollection>
 				orderByComparator)
 		throws NoSuchDataCollectionException;
 
 	/**
-	 * Returns the first data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the first data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data collection, or <code>null</code> if a matching data collection could not be found
 	 */
-	public DataCollection fetchByName_First(
-		String dataCollectionName,
+	public DataCollection fetchByCode_First(
+		String dataCollectionCode,
 		com.liferay.portal.kernel.util.OrderByComparator<DataCollection>
 			orderByComparator);
 
 	/**
-	 * Returns the last data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the last data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data collection
 	 * @throws NoSuchDataCollectionException if a matching data collection could not be found
 	 */
-	public DataCollection findByName_Last(
-			String dataCollectionName,
+	public DataCollection findByCode_Last(
+			String dataCollectionCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataCollection>
 				orderByComparator)
 		throws NoSuchDataCollectionException;
 
 	/**
-	 * Returns the last data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the last data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data collection, or <code>null</code> if a matching data collection could not be found
 	 */
-	public DataCollection fetchByName_Last(
-		String dataCollectionName,
+	public DataCollection fetchByCode_Last(
+		String dataCollectionCode,
 		com.liferay.portal.kernel.util.OrderByComparator<DataCollection>
 			orderByComparator);
 
 	/**
-	 * Returns the data collections before and after the current data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the data collections before and after the current data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
 	 * @param dataCollectionId the primary key of the current data collection
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data collection
 	 * @throws NoSuchDataCollectionException if a data collection with the primary key could not be found
 	 */
-	public DataCollection[] findByName_PrevAndNext(
-			long dataCollectionId, String dataCollectionName,
+	public DataCollection[] findByCode_PrevAndNext(
+			long dataCollectionId, String dataCollectionCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataCollection>
 				orderByComparator)
 		throws NoSuchDataCollectionException;
 
 	/**
-	 * Removes all the data collections where dataCollectionName = &#63; from the database.
+	 * Removes all the data collections where dataCollectionCode = &#63; from the database.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 */
-	public void removeByName(String dataCollectionName);
+	public void removeByCode(String dataCollectionCode);
 
 	/**
-	 * Returns the number of data collections where dataCollectionName = &#63;.
+	 * Returns the number of data collections where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @return the number of matching data collections
 	 */
-	public int countByName(String dataCollectionName);
+	public int countByCode(String dataCollectionCode);
 
 	/**
 	 * Caches the data collection in the entity cache if it is enabled.

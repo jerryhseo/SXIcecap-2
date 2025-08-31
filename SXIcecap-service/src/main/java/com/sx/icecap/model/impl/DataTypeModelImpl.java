@@ -89,11 +89,10 @@ public class DataTypeModelImpl
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"lastPublishDate", Types.TIMESTAMP}, {"status", Types.INTEGER},
 		{"statusByUserId", Types.BIGINT}, {"statusByUserName", Types.VARCHAR},
-		{"statusDate", Types.TIMESTAMP}, {"dataTypeName", Types.VARCHAR},
+		{"statusDate", Types.TIMESTAMP}, {"dataTypeCode", Types.VARCHAR},
 		{"dataTypeVersion", Types.VARCHAR}, {"displayName", Types.VARCHAR},
 		{"extension", Types.VARCHAR}, {"sampleFileId", Types.BIGINT},
-		{"description", Types.VARCHAR}, {"tooltip", Types.VARCHAR},
-		{"dataStructureId", Types.BIGINT}
+		{"description", Types.VARCHAR}, {"tooltip", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -113,18 +112,17 @@ public class DataTypeModelImpl
 		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("dataTypeName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("dataTypeCode", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("dataTypeVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("extension", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("sampleFileId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("tooltip", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("dataStructureId", Types.BIGINT);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataType (uuid_ VARCHAR(75) null,dataTypeId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataTypeName VARCHAR(75) null,dataTypeVersion VARCHAR(75) null,displayName STRING null,extension VARCHAR(75) null,sampleFileId LONG,description STRING null,tooltip STRING null,dataStructureId LONG)";
+		"create table SX_ICECAP_DataType (uuid_ VARCHAR(75) null,dataTypeId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataTypeCode VARCHAR(75) null,dataTypeVersion VARCHAR(75) null,displayName STRING null,extension VARCHAR(75) null,sampleFileId LONG,description STRING null,tooltip STRING null)";
 
 	public static final String TABLE_SQL_DROP = "drop table SX_ICECAP_DataType";
 
@@ -142,21 +140,19 @@ public class DataTypeModelImpl
 
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
-	public static final long DATASTRUCTUREID_COLUMN_BITMASK = 2L;
+	public static final long DATATYPECODE_COLUMN_BITMASK = 2L;
 
-	public static final long DATATYPENAME_COLUMN_BITMASK = 4L;
+	public static final long DATATYPEVERSION_COLUMN_BITMASK = 4L;
 
-	public static final long DATATYPEVERSION_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 16L;
+	public static final long STATUS_COLUMN_BITMASK = 16L;
 
-	public static final long STATUS_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long USERID_COLUMN_BITMASK = 64L;
+	public static final long UUID_COLUMN_BITMASK = 64L;
 
-	public static final long UUID_COLUMN_BITMASK = 128L;
-
-	public static final long DATATYPEID_COLUMN_BITMASK = 256L;
+	public static final long DATATYPEID_COLUMN_BITMASK = 128L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -310,10 +306,10 @@ public class DataTypeModelImpl
 		attributeGetterFunctions.put("statusDate", DataType::getStatusDate);
 		attributeSetterBiConsumers.put(
 			"statusDate", (BiConsumer<DataType, Date>)DataType::setStatusDate);
-		attributeGetterFunctions.put("dataTypeName", DataType::getDataTypeName);
+		attributeGetterFunctions.put("dataTypeCode", DataType::getDataTypeCode);
 		attributeSetterBiConsumers.put(
-			"dataTypeName",
-			(BiConsumer<DataType, String>)DataType::setDataTypeName);
+			"dataTypeCode",
+			(BiConsumer<DataType, String>)DataType::setDataTypeCode);
 		attributeGetterFunctions.put(
 			"dataTypeVersion", DataType::getDataTypeVersion);
 		attributeSetterBiConsumers.put(
@@ -337,11 +333,6 @@ public class DataTypeModelImpl
 		attributeGetterFunctions.put("tooltip", DataType::getTooltip);
 		attributeSetterBiConsumers.put(
 			"tooltip", (BiConsumer<DataType, String>)DataType::setTooltip);
-		attributeGetterFunctions.put(
-			"dataStructureId", DataType::getDataStructureId);
-		attributeSetterBiConsumers.put(
-			"dataStructureId",
-			(BiConsumer<DataType, Long>)DataType::setDataStructureId);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -591,28 +582,28 @@ public class DataTypeModelImpl
 	}
 
 	@Override
-	public String getDataTypeName() {
-		if (_dataTypeName == null) {
+	public String getDataTypeCode() {
+		if (_dataTypeCode == null) {
 			return "";
 		}
 		else {
-			return _dataTypeName;
+			return _dataTypeCode;
 		}
 	}
 
 	@Override
-	public void setDataTypeName(String dataTypeName) {
-		_columnBitmask |= DATATYPENAME_COLUMN_BITMASK;
+	public void setDataTypeCode(String dataTypeCode) {
+		_columnBitmask |= DATATYPECODE_COLUMN_BITMASK;
 
-		if (_originalDataTypeName == null) {
-			_originalDataTypeName = _dataTypeName;
+		if (_originalDataTypeCode == null) {
+			_originalDataTypeCode = _dataTypeCode;
 		}
 
-		_dataTypeName = dataTypeName;
+		_dataTypeCode = dataTypeCode;
 	}
 
-	public String getOriginalDataTypeName() {
-		return GetterUtil.getString(_originalDataTypeName);
+	public String getOriginalDataTypeCode() {
+		return GetterUtil.getString(_originalDataTypeCode);
 	}
 
 	@Override
@@ -984,28 +975,6 @@ public class DataTypeModelImpl
 			LocalizationUtil.updateLocalization(
 				tooltipMap, getTooltip(), "Tooltip",
 				LocaleUtil.toLanguageId(defaultLocale)));
-	}
-
-	@Override
-	public long getDataStructureId() {
-		return _dataStructureId;
-	}
-
-	@Override
-	public void setDataStructureId(long dataStructureId) {
-		_columnBitmask |= DATASTRUCTUREID_COLUMN_BITMASK;
-
-		if (!_setOriginalDataStructureId) {
-			_setOriginalDataStructureId = true;
-
-			_originalDataStructureId = _dataStructureId;
-		}
-
-		_dataStructureId = dataStructureId;
-	}
-
-	public long getOriginalDataStructureId() {
-		return _originalDataStructureId;
 	}
 
 	@Override
@@ -1398,14 +1367,13 @@ public class DataTypeModelImpl
 		dataTypeImpl.setStatusByUserId(getStatusByUserId());
 		dataTypeImpl.setStatusByUserName(getStatusByUserName());
 		dataTypeImpl.setStatusDate(getStatusDate());
-		dataTypeImpl.setDataTypeName(getDataTypeName());
+		dataTypeImpl.setDataTypeCode(getDataTypeCode());
 		dataTypeImpl.setDataTypeVersion(getDataTypeVersion());
 		dataTypeImpl.setDisplayName(getDisplayName());
 		dataTypeImpl.setExtension(getExtension());
 		dataTypeImpl.setSampleFileId(getSampleFileId());
 		dataTypeImpl.setDescription(getDescription());
 		dataTypeImpl.setTooltip(getTooltip());
-		dataTypeImpl.setDataStructureId(getDataStructureId());
 
 		dataTypeImpl.resetOriginalValues();
 
@@ -1486,13 +1454,9 @@ public class DataTypeModelImpl
 
 		_setOriginalStatus = false;
 
-		_originalDataTypeName = _dataTypeName;
+		_originalDataTypeCode = _dataTypeCode;
 
 		_originalDataTypeVersion = _dataTypeVersion;
-
-		_originalDataStructureId = _dataStructureId;
-
-		_setOriginalDataStructureId = false;
 
 		_columnBitmask = 0;
 	}
@@ -1573,12 +1537,12 @@ public class DataTypeModelImpl
 			dataTypeCacheModel.statusDate = Long.MIN_VALUE;
 		}
 
-		dataTypeCacheModel.dataTypeName = getDataTypeName();
+		dataTypeCacheModel.dataTypeCode = getDataTypeCode();
 
-		String dataTypeName = dataTypeCacheModel.dataTypeName;
+		String dataTypeCode = dataTypeCacheModel.dataTypeCode;
 
-		if ((dataTypeName != null) && (dataTypeName.length() == 0)) {
-			dataTypeCacheModel.dataTypeName = null;
+		if ((dataTypeCode != null) && (dataTypeCode.length() == 0)) {
+			dataTypeCacheModel.dataTypeCode = null;
 		}
 
 		dataTypeCacheModel.dataTypeVersion = getDataTypeVersion();
@@ -1622,8 +1586,6 @@ public class DataTypeModelImpl
 		if ((tooltip != null) && (tooltip.length() == 0)) {
 			dataTypeCacheModel.tooltip = null;
 		}
-
-		dataTypeCacheModel.dataStructureId = getDataStructureId();
 
 		return dataTypeCacheModel;
 	}
@@ -1743,8 +1705,8 @@ public class DataTypeModelImpl
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private String _dataTypeName;
-	private String _originalDataTypeName;
+	private String _dataTypeCode;
+	private String _originalDataTypeCode;
 	private String _dataTypeVersion;
 	private String _originalDataTypeVersion;
 	private String _displayName;
@@ -1755,9 +1717,6 @@ public class DataTypeModelImpl
 	private String _descriptionCurrentLanguageId;
 	private String _tooltip;
 	private String _tooltipCurrentLanguageId;
-	private long _dataStructureId;
-	private long _originalDataStructureId;
-	private boolean _setOriginalDataStructureId;
 	private long _columnBitmask;
 	private DataType _escapedModel;
 

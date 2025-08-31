@@ -56,14 +56,13 @@ public class DataTypeWrapper
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
 		attributes.put("statusDate", getStatusDate());
-		attributes.put("dataTypeName", getDataTypeName());
+		attributes.put("dataTypeCode", getDataTypeCode());
 		attributes.put("dataTypeVersion", getDataTypeVersion());
 		attributes.put("displayName", getDisplayName());
 		attributes.put("extension", getExtension());
 		attributes.put("sampleFileId", getSampleFileId());
 		attributes.put("description", getDescription());
 		attributes.put("tooltip", getTooltip());
-		attributes.put("dataStructureId", getDataStructureId());
 
 		return attributes;
 	}
@@ -148,10 +147,10 @@ public class DataTypeWrapper
 			setStatusDate(statusDate);
 		}
 
-		String dataTypeName = (String)attributes.get("dataTypeName");
+		String dataTypeCode = (String)attributes.get("dataTypeCode");
 
-		if (dataTypeName != null) {
-			setDataTypeName(dataTypeName);
+		if (dataTypeCode != null) {
+			setDataTypeCode(dataTypeCode);
 		}
 
 		String dataTypeVersion = (String)attributes.get("dataTypeVersion");
@@ -189,12 +188,6 @@ public class DataTypeWrapper
 		if (tooltip != null) {
 			setTooltip(tooltip);
 		}
-
-		Long dataStructureId = (Long)attributes.get("dataStructureId");
-
-		if (dataStructureId != null) {
-			setDataStructureId(dataStructureId);
-		}
 	}
 
 	@Override
@@ -223,13 +216,13 @@ public class DataTypeWrapper
 	}
 
 	/**
-	 * Returns the data structure ID of this data type.
+	 * Returns the data type code of this data type.
 	 *
-	 * @return the data structure ID of this data type
+	 * @return the data type code of this data type
 	 */
 	@Override
-	public long getDataStructureId() {
-		return model.getDataStructureId();
+	public String getDataTypeCode() {
+		return model.getDataTypeCode();
 	}
 
 	/**
@@ -240,16 +233,6 @@ public class DataTypeWrapper
 	@Override
 	public long getDataTypeId() {
 		return model.getDataTypeId();
-	}
-
-	/**
-	 * Returns the data type name of this data type.
-	 *
-	 * @return the data type name of this data type
-	 */
-	@Override
-	public String getDataTypeName() {
-		return model.getDataTypeName();
 	}
 
 	/**
@@ -830,13 +813,13 @@ public class DataTypeWrapper
 	}
 
 	/**
-	 * Sets the data structure ID of this data type.
+	 * Sets the data type code of this data type.
 	 *
-	 * @param dataStructureId the data structure ID of this data type
+	 * @param dataTypeCode the data type code of this data type
 	 */
 	@Override
-	public void setDataStructureId(long dataStructureId) {
-		model.setDataStructureId(dataStructureId);
+	public void setDataTypeCode(String dataTypeCode) {
+		model.setDataTypeCode(dataTypeCode);
 	}
 
 	/**
@@ -847,16 +830,6 @@ public class DataTypeWrapper
 	@Override
 	public void setDataTypeId(long dataTypeId) {
 		model.setDataTypeId(dataTypeId);
-	}
-
-	/**
-	 * Sets the data type name of this data type.
-	 *
-	 * @param dataTypeName the data type name of this data type
-	 */
-	@Override
-	public void setDataTypeName(String dataTypeName) {
-		model.setDataTypeName(dataTypeName);
 	}
 
 	/**

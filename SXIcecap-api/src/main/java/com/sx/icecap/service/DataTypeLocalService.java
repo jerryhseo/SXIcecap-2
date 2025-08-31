@@ -87,19 +87,21 @@ public interface DataTypeLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DataType addDataType(
-			String dataTypeName, String dataTypeVersion, String extension,
+			String dataTypeCode, String dataTypeVersion, String extension,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap, Map<Locale, String> tooltipMap,
-			long dataStructureId, int status, ServiceContext sc)
+			int status, ServiceContext sc)
 		throws PortalException;
 
-	public boolean checkDataTypeNameUnique(String paramName);
+	public boolean checkDataTypeCodeUnique(String paramCode);
 
 	public int countAllDataTypes();
 
 	public int countApprovedDataTypes(long groupId);
 
 	public int countDataTypes(long groupId, long userId, int status);
+
+	public int countDataTypesByCode(String dataTypeCode);
 
 	public int countDataTypesByG_S(long groupId, int status);
 
@@ -264,8 +266,8 @@ public interface DataTypeLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getDataFileFolderId(
-			long repositoryId, long parentFoderId, String dataTypeName,
-			String dataTypeVersion, long dataId, String paramName,
+			long repositoryId, long parentFoderId, String dataTypeCode,
+			String dataTypeVersion, long dataId, String paramCode,
 			String paramVersion, ServiceContext sc, boolean createWhenNoExist)
 		throws PortalException;
 
@@ -278,6 +280,10 @@ public interface DataTypeLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DataType getDataType(long dataTypeId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DataType getDataType(String dataTypeCode, String dataTypeVersion)
+		throws NoSuchDataTypeException;
 
 	/**
 	 * Returns the data type matching the UUID and group.
@@ -309,6 +315,9 @@ public interface DataTypeLocalService
 	public List<DataType> getDataTypes(
 		long groupId, long userId, int status, int start, int end,
 		String orderCol, String orderType);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataType> getDataTypesByCode(String dataTypeCode);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DataType> getDataTypesByG_S(long groupId, int status);
@@ -358,9 +367,6 @@ public interface DataTypeLocalService
 	public List<DataType> getDataTypesByGroupId(
 		long groupId, int start, int end,
 		OrderByComparator<DataType> comparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DataType> getDataTypesByName(String dataTypeName);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DataType> getDataTypesByStatus(int status);
@@ -492,10 +498,10 @@ public interface DataTypeLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DataType updateDataType(
-			long dataTypeId, String dataTypeName, String dataTypeVersion,
+			long dataTypeId, String dataTypeCode, String dataTypeVersion,
 			String extension, Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap, Map<Locale, String> tooltipMap,
-			long dataStructureId, int status, ServiceContext sc)
+			int status, ServiceContext sc)
 		throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)

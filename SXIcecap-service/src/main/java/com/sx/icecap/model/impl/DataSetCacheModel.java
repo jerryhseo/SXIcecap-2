@@ -89,8 +89,8 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
-		sb.append(", dataSetName=");
-		sb.append(dataSetName);
+		sb.append(", dataSetCode=");
+		sb.append(dataSetCode);
 		sb.append(", dataSetVersion=");
 		sb.append(dataSetVersion);
 		sb.append(", displayName=");
@@ -163,11 +163,11 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 			dataSetImpl.setStatusDate(new Date(statusDate));
 		}
 
-		if (dataSetName == null) {
-			dataSetImpl.setDataSetName("");
+		if (dataSetCode == null) {
+			dataSetImpl.setDataSetCode("");
 		}
 		else {
-			dataSetImpl.setDataSetName(dataSetName);
+			dataSetImpl.setDataSetCode(dataSetCode);
 		}
 
 		if (dataSetVersion == null) {
@@ -217,7 +217,7 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
-		dataSetName = objectInput.readUTF();
+		dataSetCode = objectInput.readUTF();
 		dataSetVersion = objectInput.readUTF();
 		displayName = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -264,11 +264,11 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 
 		objectOutput.writeLong(statusDate);
 
-		if (dataSetName == null) {
+		if (dataSetCode == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(dataSetName);
+			objectOutput.writeUTF(dataSetCode);
 		}
 
 		if (dataSetVersion == null) {
@@ -306,7 +306,7 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-	public String dataSetName;
+	public String dataSetCode;
 	public String dataSetVersion;
 	public String displayName;
 	public String description;

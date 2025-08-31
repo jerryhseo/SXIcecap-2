@@ -43,15 +43,19 @@ public class TypeStructureLinkWrapper
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("dataTypeId", getDataTypeId());
+		attributes.put("userId", getUserId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("dataStructureId", getDataStructureId());
 		attributes.put("commentable", isCommentable());
 		attributes.put("verifiable", isVerifiable());
 		attributes.put("freezable", isFreezable());
 		attributes.put("freezed", isFreezed());
 		attributes.put("freezedUserId", getFreezedUserId());
+		attributes.put("freezedUserName", getFreezedUserName());
 		attributes.put("freezedDate", getFreezedDate());
 		attributes.put("verified", isVerified());
 		attributes.put("verifiedUserId", getVerifiedUserId());
+		attributes.put("verifiedUserName", getVerifiedUserName());
 		attributes.put("verifiedDate", getVerifiedDate());
 		attributes.put("inputStatus", isInputStatus());
 		attributes.put("jumpTo", isJumpTo());
@@ -65,6 +69,18 @@ public class TypeStructureLinkWrapper
 
 		if (dataTypeId != null) {
 			setDataTypeId(dataTypeId);
+		}
+
+		Long userId = (Long)attributes.get("userId");
+
+		if (userId != null) {
+			setUserId(userId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long dataStructureId = (Long)attributes.get("dataStructureId");
@@ -103,6 +119,12 @@ public class TypeStructureLinkWrapper
 			setFreezedUserId(freezedUserId);
 		}
 
+		String freezedUserName = (String)attributes.get("freezedUserName");
+
+		if (freezedUserName != null) {
+			setFreezedUserName(freezedUserName);
+		}
+
 		Date freezedDate = (Date)attributes.get("freezedDate");
 
 		if (freezedDate != null) {
@@ -119,6 +141,12 @@ public class TypeStructureLinkWrapper
 
 		if (verifiedUserId != null) {
 			setVerifiedUserId(verifiedUserId);
+		}
+
+		String verifiedUserName = (String)attributes.get("verifiedUserName");
+
+		if (verifiedUserName != null) {
+			setVerifiedUserName(verifiedUserName);
 		}
 
 		Date verifiedDate = (Date)attributes.get("verifiedDate");
@@ -211,6 +239,16 @@ public class TypeStructureLinkWrapper
 	}
 
 	/**
+	 * Returns the freezed user name of this type structure link.
+	 *
+	 * @return the freezed user name of this type structure link
+	 */
+	@Override
+	public String getFreezedUserName() {
+		return model.getFreezedUserName();
+	}
+
+	/**
 	 * Returns the freezed user uuid of this type structure link.
 	 *
 	 * @return the freezed user uuid of this type structure link
@@ -218,6 +256,16 @@ public class TypeStructureLinkWrapper
 	@Override
 	public String getFreezedUserUuid() {
 		return model.getFreezedUserUuid();
+	}
+
+	/**
+	 * Returns the group ID of this type structure link.
+	 *
+	 * @return the group ID of this type structure link
+	 */
+	@Override
+	public long getGroupId() {
+		return model.getGroupId();
 	}
 
 	/**
@@ -248,6 +296,26 @@ public class TypeStructureLinkWrapper
 	@Override
 	public long getPrimaryKey() {
 		return model.getPrimaryKey();
+	}
+
+	/**
+	 * Returns the user ID of this type structure link.
+	 *
+	 * @return the user ID of this type structure link
+	 */
+	@Override
+	public long getUserId() {
+		return model.getUserId();
+	}
+
+	/**
+	 * Returns the user uuid of this type structure link.
+	 *
+	 * @return the user uuid of this type structure link
+	 */
+	@Override
+	public String getUserUuid() {
+		return model.getUserUuid();
 	}
 
 	/**
@@ -288,6 +356,16 @@ public class TypeStructureLinkWrapper
 	@Override
 	public long getVerifiedUserId() {
 		return model.getVerifiedUserId();
+	}
+
+	/**
+	 * Returns the verified user name of this type structure link.
+	 *
+	 * @return the verified user name of this type structure link
+	 */
+	@Override
+	public String getVerifiedUserName() {
+		return model.getVerifiedUserName();
 	}
 
 	/**
@@ -446,6 +524,16 @@ public class TypeStructureLinkWrapper
 	}
 
 	/**
+	 * Sets the freezed user name of this type structure link.
+	 *
+	 * @param freezedUserName the freezed user name of this type structure link
+	 */
+	@Override
+	public void setFreezedUserName(String freezedUserName) {
+		model.setFreezedUserName(freezedUserName);
+	}
+
+	/**
 	 * Sets the freezed user uuid of this type structure link.
 	 *
 	 * @param freezedUserUuid the freezed user uuid of this type structure link
@@ -453,6 +541,16 @@ public class TypeStructureLinkWrapper
 	@Override
 	public void setFreezedUserUuid(String freezedUserUuid) {
 		model.setFreezedUserUuid(freezedUserUuid);
+	}
+
+	/**
+	 * Sets the group ID of this type structure link.
+	 *
+	 * @param groupId the group ID of this type structure link
+	 */
+	@Override
+	public void setGroupId(long groupId) {
+		model.setGroupId(groupId);
 	}
 
 	/**
@@ -483,6 +581,26 @@ public class TypeStructureLinkWrapper
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	 * Sets the user ID of this type structure link.
+	 *
+	 * @param userId the user ID of this type structure link
+	 */
+	@Override
+	public void setUserId(long userId) {
+		model.setUserId(userId);
+	}
+
+	/**
+	 * Sets the user uuid of this type structure link.
+	 *
+	 * @param userUuid the user uuid of this type structure link
+	 */
+	@Override
+	public void setUserUuid(String userUuid) {
+		model.setUserUuid(userUuid);
 	}
 
 	/**
@@ -523,6 +641,16 @@ public class TypeStructureLinkWrapper
 	@Override
 	public void setVerifiedUserId(long verifiedUserId) {
 		model.setVerifiedUserId(verifiedUserId);
+	}
+
+	/**
+	 * Sets the verified user name of this type structure link.
+	 *
+	 * @param verifiedUserName the verified user name of this type structure link
+	 */
+	@Override
+	public void setVerifiedUserName(String verifiedUserName) {
+		model.setVerifiedUserName(verifiedUserName);
 	}
 
 	/**

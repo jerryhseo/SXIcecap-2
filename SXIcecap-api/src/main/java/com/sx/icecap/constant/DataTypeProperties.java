@@ -2,7 +2,7 @@ package com.sx.icecap.constant;
 
 public class DataTypeProperties {
 	public static final String DATATYPE_ID = "dataTypeId";
-	public static final String DATATYPE_NAME = "dataTypeName";
+	public static final String DATATYPE_CODE = "dataTypeCode";
 	public static final String DATATYPE_VERSION = "dataTypeVersion";
 	public static final String DISPLAY_NAME = "displayName";
 	public static final String EXTENSION = "extension";

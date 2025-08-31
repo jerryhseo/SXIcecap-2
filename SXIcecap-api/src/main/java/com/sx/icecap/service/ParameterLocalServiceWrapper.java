@@ -51,7 +51,7 @@ public class ParameterLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.Parameter addParameter(
-			String paramType, String paramName, String paramVersion,
+			String paramType, String paramCode, String paramVersion,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> definitionMap,
 			java.util.Map<java.util.Locale, String> tooltipMap, String synonyms,
@@ -60,7 +60,7 @@ public class ParameterLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _parameterLocalService.addParameter(
-			paramType, paramName, paramVersion, displayNameMap, definitionMap,
+			paramType, paramCode, paramVersion, displayNameMap, definitionMap,
 			tooltipMap, synonyms, typeProperties, standard, status, sc);
 	}
 
@@ -403,7 +403,7 @@ public class ParameterLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.Parameter updateParameter(
-			long parameterId, String paramType, String paramName,
+			long parameterId, String paramType, String paramCode,
 			String paramVersion,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> definitionMap,
@@ -413,7 +413,7 @@ public class ParameterLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _parameterLocalService.updateParameter(
-			parameterId, paramType, paramName, paramVersion, displayNameMap,
+			parameterId, paramType, paramCode, paramVersion, displayNameMap,
 			definitionMap, tooltipMap, synonyms, typeProperties, standard,
 			status, sc);
 	}

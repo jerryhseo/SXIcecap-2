@@ -18,15 +18,16 @@ public class MVCCommand {
 	public static final String RESOURCE_DELETE_DATATYPE = "/ajax/DataType/delete-datatype";
 	public static final String RESOURCE_ADD_DATATYPE = "/ajax/DataType/add-datatype";
 	public static final String RESOURCE_LOAD_DATATYPE = "/ajax/DataType/load-datatype";
-	public static final String RESOURCE_CHECK_DATATYPE_NAME_UNIQUE = "/ajax/DataType/check-datatype-name-unique";
+	public static final String RESOURCE_CHECK_DATATYPE_UNIQUE = "/ajax/DataType/check-datatype-unique";
+	public static final String RESOURCE_SAVE_TYPE_STRUCTURE_LINK = "/ajax/DataType/save-type-structure-link";
 
-	public static final String ACTION_DELETE_DATA_STRUCTURE = "/action/DataType/delete-data-structure";
+	public static final String ACTION_DELETE_DATASTRUCTURE = "/action/DataType/delete-datastructure";
 	public static final String RESOURCE_LOAD_AVAILABLE_VISUALIZERS = "/ajax/DataType/load-available-visualizers";
 
 	public static final String RENDER_DATA_STRUCTURE_BUILDER = "/jsp/DataStructure/data-structure-builder";
-	public static final String RESOURCE_LOAD_DATA_STRUCTURE = "/ajax/DataStructure/load-data-structure";
-	public static final String RESOURCE_UPDATE_DATA_STRUCTURE = "/ajax/DataStructure/save-data-structure";
-	public static final String RESOURCE_DELETE_DATA_STRUCTURE = "/ajax/DataStructure/delete-data-structure";
+	public static final String RESOURCE_LOAD_DATASTRUCTURE = "/ajax/DataStructure/load-datastructure";
+	public static final String RESOURCE_UPDATE_DATASTRUCTURE = "/ajax/DataStructure/save-datastructure";
+	public static final String RESOURCE_DELETE_DATASTRUCTURE = "/ajax/DataStructure/delete-datastructure";
 	
 	
 	public static final String RENDER_STRUCTURED_DATA_EXPLORER = "/jsp/StructuredData/structured-data-explorer";

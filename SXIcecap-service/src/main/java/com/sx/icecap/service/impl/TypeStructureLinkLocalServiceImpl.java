@@ -16,13 +16,16 @@ package com.sx.icecap.service.impl;
 
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.sx.icecap.exception.NoSuchTypeStructureLinkException;
 import com.sx.icecap.model.TypeStructureLink;
 import com.sx.icecap.service.base.TypeStructureLinkLocalServiceBaseImpl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -44,9 +47,10 @@ public class TypeStructureLinkLocalServiceImpl
 			boolean verifiable,
 			boolean freezable,
 			boolean verified,
-			long verifiedUserId,
 			boolean freezed,
-			long freezedUserId) {
+			boolean inputStatus,
+			boolean jumpTo,
+			ServiceContext sc) throws PortalException {
 		
 		TypeStructureLink link = super.typeStructureLinkLocalService.createTypeStructureLink(dataTypeId);
 		
@@ -58,15 +62,28 @@ public class TypeStructureLinkLocalServiceImpl
 		
 		link.setVerified(verified);
 		Date date = new Date();
+		User user = super.userLocalService.getUser(sc.getUserId());
+		
 		if(verified == true) {
-			link.setVerifiedUserId(verifiedUserId);
+			link.setVerifiedUserId(user.getUserId());
+			link.setVerifiedUserName(user.getFullName());
 			link.setVerifiedDate(date);
 		}
+		
 		link.setFreezed(freezed);
 		if(freezed == true) {
-			link.setFreezedUserId(freezedUserId);
+			link.setFreezedUserId(user.getUserId());
+			link.setFreezedUserName(user.getFullName());
 			link.setVerifiedDate(date);
 		}
+		
+		link.setInputStatus(inputStatus);
+		link.setJumpTo(jumpTo);
+		
+		link.setGroupId(sc.getScopeGroupId());
+		link.setUserId(sc.getUserId());
+		
+		super.typeStructureLinkPersistence.update(link, sc);
 		
 		return link;
 	}
@@ -79,9 +96,10 @@ public class TypeStructureLinkLocalServiceImpl
 			boolean verifiable,
 			boolean freezable,
 			boolean verified,
-			long verifiedUserId,
 			boolean freezed,
-			long freezedUserId) throws PortalException {
+			boolean inputStatus,
+			boolean jumpTo,
+			ServiceContext sc) throws PortalException {
 		
 		TypeStructureLink link = super.typeStructureLinkLocalService.getTypeStructureLink(dataTypeId);
 		
@@ -92,20 +110,89 @@ public class TypeStructureLinkLocalServiceImpl
 		link.setFreezable(freezable);
 		
 		Date date = new Date();
+		User user = super.userLocalService.getUser(sc.getUserId());
+		
 		if(link.getVerified() != verified) {
 			link.setVerified(verified);
+			link.setVerifiedUserId(user.getUserId());
+			link.setVerifiedUserName(user.getFullName());
 			link.setVerifiedDate(date);
 		}
+		
 		if(link.getFreezed() != freezed) {
 			link.setFreezed(freezed);
+			link.setFreezedUserId(user.getUserId());
+			link.setFreezedUserName(user.getFullName());
 			link.setFreezedDate(date);
 		}
+		
+		link.setInputStatus(inputStatus);
+		link.setJumpTo(jumpTo);
+		
+		link.setGroupId(sc.getScopeGroupId());
+		link.setUserId(sc.getUserId());
+		
+		super.typeStructureLinkPersistence.update(link, sc);
 		
 		return link;
 	}
 	
 	@Indexable(type = IndexableType.REINDEX)
 	public TypeStructureLink removeTypeStructureLink(long dataTypeId) throws PortalException {
-		return super.typeStructureLinkLocalService.deleteTypeStructureLink(dataTypeId);
+		return super.typeStructureLinkPersistence.remove(dataTypeId);
+	}
+	
+	@Indexable(type = IndexableType.REINDEX)
+	public TypeStructureLink verifyLink(long dataTypeId, long userId, boolean veryfication) throws PortalException {
+		TypeStructureLink link = typeStructureLinkPersistence.findByPrimaryKey(dataTypeId);
+		
+		Date now = new Date();
+		User user = super.userLocalService.getUser(userId);
+		
+		link.setVerified(veryfication);
+		link.setVerifiedUserId(userId);
+		link.setVerifiedUserName(user.getFullName());
+		link.setVerifiedDate(now);
+		
+		super.typeStructureLinkPersistence.update(link);
+		
+		return link;
+	}
+	
+	@Indexable(type = IndexableType.REINDEX)
+	public TypeStructureLink freezeLink(long dataTypeId, long userId, boolean freeze) throws PortalException {
+		TypeStructureLink link = typeStructureLinkPersistence.findByPrimaryKey(dataTypeId);
+		
+		Date now = new Date();
+		User user = super.userLocalService.getUser(userId);
+		
+		link.setFreezable(freeze);;
+		link.setFreezedUserId(userId);
+		link.setFreezedUserName(user.getFullName());
+		link.setFreezedDate(now);
+		
+		updateTypeStructureLink(link);
+		
+		return link;
+	}
+	
+	public List<TypeStructureLink> getTypeStructureLinkByGroup(long groupId){
+		return typeStructureLinkPersistence.findByGroupId(groupId);
+	}
+	public List<TypeStructureLink> getTypeStructureLinkByGroup(long groupId, int start, int end){
+		return typeStructureLinkPersistence.findByGroupId(groupId, start, end);
+	}
+	public int countTypeStructureLinkByGroup(long groupId){
+		return typeStructureLinkPersistence.countByGroupId(groupId);
+	}
+	
+	public List<TypeStructureLink> getTypeStructureLinkByUser(long userId){
+		return typeStructureLinkPersistence.findByUserId(userId);
+	}
+	public List<TypeStructureLink> getTypeStructureLinkByUser(long userId, int start, int end){
+		return typeStructureLinkPersistence.findByUserId(userId, start, end);
+	}
+	public int countTypeStructureLinkByUser(long userId){
+		return typeStructureLinkPersistence.countByUserId(userId);
 	}
 }

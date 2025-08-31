@@ -2118,176 +2118,176 @@ public class DataCollectionUtil {
 	}
 
 	/**
-	 * Returns all the data collections where dataCollectionName = &#63;.
+	 * Returns all the data collections where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @return the matching data collections
 	 */
-	public static List<DataCollection> findByName(String dataCollectionName) {
-		return getPersistence().findByName(dataCollectionName);
+	public static List<DataCollection> findByCode(String dataCollectionCode) {
+		return getPersistence().findByCode(dataCollectionCode);
 	}
 
 	/**
-	 * Returns a range of all the data collections where dataCollectionName = &#63;.
+	 * Returns a range of all the data collections where dataCollectionCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCollectionModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param start the lower bound of the range of data collections
 	 * @param end the upper bound of the range of data collections (not inclusive)
 	 * @return the range of matching data collections
 	 */
-	public static List<DataCollection> findByName(
-		String dataCollectionName, int start, int end) {
+	public static List<DataCollection> findByCode(
+		String dataCollectionCode, int start, int end) {
 
-		return getPersistence().findByName(dataCollectionName, start, end);
+		return getPersistence().findByCode(dataCollectionCode, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the data collections where dataCollectionName = &#63;.
+	 * Returns an ordered range of all the data collections where dataCollectionCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCollectionModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param start the lower bound of the range of data collections
 	 * @param end the upper bound of the range of data collections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data collections
 	 */
-	public static List<DataCollection> findByName(
-		String dataCollectionName, int start, int end,
+	public static List<DataCollection> findByCode(
+		String dataCollectionCode, int start, int end,
 		OrderByComparator<DataCollection> orderByComparator) {
 
-		return getPersistence().findByName(
-			dataCollectionName, start, end, orderByComparator);
+		return getPersistence().findByCode(
+			dataCollectionCode, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the data collections where dataCollectionName = &#63;.
+	 * Returns an ordered range of all the data collections where dataCollectionCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCollectionModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param start the lower bound of the range of data collections
 	 * @param end the upper bound of the range of data collections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching data collections
 	 */
-	public static List<DataCollection> findByName(
-		String dataCollectionName, int start, int end,
+	public static List<DataCollection> findByCode(
+		String dataCollectionCode, int start, int end,
 		OrderByComparator<DataCollection> orderByComparator,
 		boolean useFinderCache) {
 
-		return getPersistence().findByName(
-			dataCollectionName, start, end, orderByComparator, useFinderCache);
+		return getPersistence().findByCode(
+			dataCollectionCode, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	 * Returns the first data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the first data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data collection
 	 * @throws NoSuchDataCollectionException if a matching data collection could not be found
 	 */
-	public static DataCollection findByName_First(
-			String dataCollectionName,
+	public static DataCollection findByCode_First(
+			String dataCollectionCode,
 			OrderByComparator<DataCollection> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataCollectionException {
 
-		return getPersistence().findByName_First(
-			dataCollectionName, orderByComparator);
+		return getPersistence().findByCode_First(
+			dataCollectionCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the first data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the first data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data collection, or <code>null</code> if a matching data collection could not be found
 	 */
-	public static DataCollection fetchByName_First(
-		String dataCollectionName,
+	public static DataCollection fetchByCode_First(
+		String dataCollectionCode,
 		OrderByComparator<DataCollection> orderByComparator) {
 
-		return getPersistence().fetchByName_First(
-			dataCollectionName, orderByComparator);
+		return getPersistence().fetchByCode_First(
+			dataCollectionCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the last data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data collection
 	 * @throws NoSuchDataCollectionException if a matching data collection could not be found
 	 */
-	public static DataCollection findByName_Last(
-			String dataCollectionName,
+	public static DataCollection findByCode_Last(
+			String dataCollectionCode,
 			OrderByComparator<DataCollection> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataCollectionException {
 
-		return getPersistence().findByName_Last(
-			dataCollectionName, orderByComparator);
+		return getPersistence().findByCode_Last(
+			dataCollectionCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the last data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data collection, or <code>null</code> if a matching data collection could not be found
 	 */
-	public static DataCollection fetchByName_Last(
-		String dataCollectionName,
+	public static DataCollection fetchByCode_Last(
+		String dataCollectionCode,
 		OrderByComparator<DataCollection> orderByComparator) {
 
-		return getPersistence().fetchByName_Last(
-			dataCollectionName, orderByComparator);
+		return getPersistence().fetchByCode_Last(
+			dataCollectionCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the data collections before and after the current data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the data collections before and after the current data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
 	 * @param dataCollectionId the primary key of the current data collection
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data collection
 	 * @throws NoSuchDataCollectionException if a data collection with the primary key could not be found
 	 */
-	public static DataCollection[] findByName_PrevAndNext(
-			long dataCollectionId, String dataCollectionName,
+	public static DataCollection[] findByCode_PrevAndNext(
+			long dataCollectionId, String dataCollectionCode,
 			OrderByComparator<DataCollection> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataCollectionException {
 
-		return getPersistence().findByName_PrevAndNext(
-			dataCollectionId, dataCollectionName, orderByComparator);
+		return getPersistence().findByCode_PrevAndNext(
+			dataCollectionId, dataCollectionCode, orderByComparator);
 	}
 
 	/**
-	 * Removes all the data collections where dataCollectionName = &#63; from the database.
+	 * Removes all the data collections where dataCollectionCode = &#63; from the database.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 */
-	public static void removeByName(String dataCollectionName) {
-		getPersistence().removeByName(dataCollectionName);
+	public static void removeByCode(String dataCollectionCode) {
+		getPersistence().removeByCode(dataCollectionCode);
 	}
 
 	/**
-	 * Returns the number of data collections where dataCollectionName = &#63;.
+	 * Returns the number of data collections where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @return the number of matching data collections
 	 */
-	public static int countByName(String dataCollectionName) {
-		return getPersistence().countByName(dataCollectionName);
+	public static int countByCode(String dataCollectionCode) {
+		return getPersistence().countByCode(dataCollectionCode);
 	}
 
 	/**

@@ -6791,71 +6791,71 @@ public class DataCollectionPersistenceImpl
 	private static final String _FINDER_COLUMN_G_U_S_STATUS_2 =
 		"dataCollection.status = ?";
 
-	private FinderPath _finderPathWithPaginationFindByName;
-	private FinderPath _finderPathWithoutPaginationFindByName;
-	private FinderPath _finderPathCountByName;
+	private FinderPath _finderPathWithPaginationFindByCode;
+	private FinderPath _finderPathWithoutPaginationFindByCode;
+	private FinderPath _finderPathCountByCode;
 
 	/**
-	 * Returns all the data collections where dataCollectionName = &#63;.
+	 * Returns all the data collections where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @return the matching data collections
 	 */
 	@Override
-	public List<DataCollection> findByName(String dataCollectionName) {
-		return findByName(
-			dataCollectionName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public List<DataCollection> findByCode(String dataCollectionCode) {
+		return findByCode(
+			dataCollectionCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the data collections where dataCollectionName = &#63;.
+	 * Returns a range of all the data collections where dataCollectionCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCollectionModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param start the lower bound of the range of data collections
 	 * @param end the upper bound of the range of data collections (not inclusive)
 	 * @return the range of matching data collections
 	 */
 	@Override
-	public List<DataCollection> findByName(
-		String dataCollectionName, int start, int end) {
+	public List<DataCollection> findByCode(
+		String dataCollectionCode, int start, int end) {
 
-		return findByName(dataCollectionName, start, end, null);
+		return findByCode(dataCollectionCode, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the data collections where dataCollectionName = &#63;.
+	 * Returns an ordered range of all the data collections where dataCollectionCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCollectionModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param start the lower bound of the range of data collections
 	 * @param end the upper bound of the range of data collections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data collections
 	 */
 	@Override
-	public List<DataCollection> findByName(
-		String dataCollectionName, int start, int end,
+	public List<DataCollection> findByCode(
+		String dataCollectionCode, int start, int end,
 		OrderByComparator<DataCollection> orderByComparator) {
 
-		return findByName(
-			dataCollectionName, start, end, orderByComparator, true);
+		return findByCode(
+			dataCollectionCode, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the data collections where dataCollectionName = &#63;.
+	 * Returns an ordered range of all the data collections where dataCollectionCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCollectionModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param start the lower bound of the range of data collections
 	 * @param end the upper bound of the range of data collections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -6863,12 +6863,12 @@ public class DataCollectionPersistenceImpl
 	 * @return the ordered range of matching data collections
 	 */
 	@Override
-	public List<DataCollection> findByName(
-		String dataCollectionName, int start, int end,
+	public List<DataCollection> findByCode(
+		String dataCollectionCode, int start, int end,
 		OrderByComparator<DataCollection> orderByComparator,
 		boolean useFinderCache) {
 
-		dataCollectionName = Objects.toString(dataCollectionName, "");
+		dataCollectionCode = Objects.toString(dataCollectionCode, "");
 
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -6877,14 +6877,14 @@ public class DataCollectionPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByName;
-				finderArgs = new Object[] {dataCollectionName};
+				finderPath = _finderPathWithoutPaginationFindByCode;
+				finderArgs = new Object[] {dataCollectionCode};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByName;
+			finderPath = _finderPathWithPaginationFindByCode;
 			finderArgs = new Object[] {
-				dataCollectionName, start, end, orderByComparator
+				dataCollectionCode, start, end, orderByComparator
 			};
 		}
 
@@ -6896,8 +6896,8 @@ public class DataCollectionPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (DataCollection dataCollection : list) {
-					if (!dataCollectionName.equals(
-							dataCollection.getDataCollectionName())) {
+					if (!dataCollectionCode.equals(
+							dataCollection.getDataCollectionCode())) {
 
 						list = null;
 
@@ -6920,15 +6920,15 @@ public class DataCollectionPersistenceImpl
 
 			sb.append(_SQL_SELECT_DATACOLLECTION_WHERE);
 
-			boolean bindDataCollectionName = false;
+			boolean bindDataCollectionCode = false;
 
-			if (dataCollectionName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_DATACOLLECTIONNAME_3);
+			if (dataCollectionCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODE_DATACOLLECTIONCODE_3);
 			}
 			else {
-				bindDataCollectionName = true;
+				bindDataCollectionCode = true;
 
-				sb.append(_FINDER_COLUMN_NAME_DATACOLLECTIONNAME_2);
+				sb.append(_FINDER_COLUMN_CODE_DATACOLLECTIONCODE_2);
 			}
 
 			if (orderByComparator != null) {
@@ -6950,8 +6950,8 @@ public class DataCollectionPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataCollectionName) {
-					queryPos.add(dataCollectionName);
+				if (bindDataCollectionCode) {
+					queryPos.add(dataCollectionCode);
 				}
 
 				list = (List<DataCollection>)QueryUtil.list(
@@ -6979,21 +6979,21 @@ public class DataCollectionPersistenceImpl
 	}
 
 	/**
-	 * Returns the first data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the first data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data collection
 	 * @throws NoSuchDataCollectionException if a matching data collection could not be found
 	 */
 	@Override
-	public DataCollection findByName_First(
-			String dataCollectionName,
+	public DataCollection findByCode_First(
+			String dataCollectionCode,
 			OrderByComparator<DataCollection> orderByComparator)
 		throws NoSuchDataCollectionException {
 
-		DataCollection dataCollection = fetchByName_First(
-			dataCollectionName, orderByComparator);
+		DataCollection dataCollection = fetchByCode_First(
+			dataCollectionCode, orderByComparator);
 
 		if (dataCollection != null) {
 			return dataCollection;
@@ -7003,8 +7003,8 @@ public class DataCollectionPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dataCollectionName=");
-		sb.append(dataCollectionName);
+		sb.append("dataCollectionCode=");
+		sb.append(dataCollectionCode);
 
 		sb.append("}");
 
@@ -7012,19 +7012,19 @@ public class DataCollectionPersistenceImpl
 	}
 
 	/**
-	 * Returns the first data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the first data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data collection, or <code>null</code> if a matching data collection could not be found
 	 */
 	@Override
-	public DataCollection fetchByName_First(
-		String dataCollectionName,
+	public DataCollection fetchByCode_First(
+		String dataCollectionCode,
 		OrderByComparator<DataCollection> orderByComparator) {
 
-		List<DataCollection> list = findByName(
-			dataCollectionName, 0, 1, orderByComparator);
+		List<DataCollection> list = findByCode(
+			dataCollectionCode, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -7034,21 +7034,21 @@ public class DataCollectionPersistenceImpl
 	}
 
 	/**
-	 * Returns the last data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the last data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data collection
 	 * @throws NoSuchDataCollectionException if a matching data collection could not be found
 	 */
 	@Override
-	public DataCollection findByName_Last(
-			String dataCollectionName,
+	public DataCollection findByCode_Last(
+			String dataCollectionCode,
 			OrderByComparator<DataCollection> orderByComparator)
 		throws NoSuchDataCollectionException {
 
-		DataCollection dataCollection = fetchByName_Last(
-			dataCollectionName, orderByComparator);
+		DataCollection dataCollection = fetchByCode_Last(
+			dataCollectionCode, orderByComparator);
 
 		if (dataCollection != null) {
 			return dataCollection;
@@ -7058,8 +7058,8 @@ public class DataCollectionPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dataCollectionName=");
-		sb.append(dataCollectionName);
+		sb.append("dataCollectionCode=");
+		sb.append(dataCollectionCode);
 
 		sb.append("}");
 
@@ -7067,25 +7067,25 @@ public class DataCollectionPersistenceImpl
 	}
 
 	/**
-	 * Returns the last data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the last data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data collection, or <code>null</code> if a matching data collection could not be found
 	 */
 	@Override
-	public DataCollection fetchByName_Last(
-		String dataCollectionName,
+	public DataCollection fetchByCode_Last(
+		String dataCollectionCode,
 		OrderByComparator<DataCollection> orderByComparator) {
 
-		int count = countByName(dataCollectionName);
+		int count = countByCode(dataCollectionCode);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<DataCollection> list = findByName(
-			dataCollectionName, count - 1, count, orderByComparator);
+		List<DataCollection> list = findByCode(
+			dataCollectionCode, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -7095,21 +7095,21 @@ public class DataCollectionPersistenceImpl
 	}
 
 	/**
-	 * Returns the data collections before and after the current data collection in the ordered set where dataCollectionName = &#63;.
+	 * Returns the data collections before and after the current data collection in the ordered set where dataCollectionCode = &#63;.
 	 *
 	 * @param dataCollectionId the primary key of the current data collection
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data collection
 	 * @throws NoSuchDataCollectionException if a data collection with the primary key could not be found
 	 */
 	@Override
-	public DataCollection[] findByName_PrevAndNext(
-			long dataCollectionId, String dataCollectionName,
+	public DataCollection[] findByCode_PrevAndNext(
+			long dataCollectionId, String dataCollectionCode,
 			OrderByComparator<DataCollection> orderByComparator)
 		throws NoSuchDataCollectionException {
 
-		dataCollectionName = Objects.toString(dataCollectionName, "");
+		dataCollectionCode = Objects.toString(dataCollectionCode, "");
 
 		DataCollection dataCollection = findByPrimaryKey(dataCollectionId);
 
@@ -7120,14 +7120,14 @@ public class DataCollectionPersistenceImpl
 
 			DataCollection[] array = new DataCollectionImpl[3];
 
-			array[0] = getByName_PrevAndNext(
-				session, dataCollection, dataCollectionName, orderByComparator,
+			array[0] = getByCode_PrevAndNext(
+				session, dataCollection, dataCollectionCode, orderByComparator,
 				true);
 
 			array[1] = dataCollection;
 
-			array[2] = getByName_PrevAndNext(
-				session, dataCollection, dataCollectionName, orderByComparator,
+			array[2] = getByCode_PrevAndNext(
+				session, dataCollection, dataCollectionCode, orderByComparator,
 				false);
 
 			return array;
@@ -7140,9 +7140,9 @@ public class DataCollectionPersistenceImpl
 		}
 	}
 
-	protected DataCollection getByName_PrevAndNext(
+	protected DataCollection getByCode_PrevAndNext(
 		Session session, DataCollection dataCollection,
-		String dataCollectionName,
+		String dataCollectionCode,
 		OrderByComparator<DataCollection> orderByComparator, boolean previous) {
 
 		StringBundler sb = null;
@@ -7158,15 +7158,15 @@ public class DataCollectionPersistenceImpl
 
 		sb.append(_SQL_SELECT_DATACOLLECTION_WHERE);
 
-		boolean bindDataCollectionName = false;
+		boolean bindDataCollectionCode = false;
 
-		if (dataCollectionName.isEmpty()) {
-			sb.append(_FINDER_COLUMN_NAME_DATACOLLECTIONNAME_3);
+		if (dataCollectionCode.isEmpty()) {
+			sb.append(_FINDER_COLUMN_CODE_DATACOLLECTIONCODE_3);
 		}
 		else {
-			bindDataCollectionName = true;
+			bindDataCollectionCode = true;
 
-			sb.append(_FINDER_COLUMN_NAME_DATACOLLECTIONNAME_2);
+			sb.append(_FINDER_COLUMN_CODE_DATACOLLECTIONCODE_2);
 		}
 
 		if (orderByComparator != null) {
@@ -7238,8 +7238,8 @@ public class DataCollectionPersistenceImpl
 
 		QueryPos queryPos = QueryPos.getInstance(query);
 
-		if (bindDataCollectionName) {
-			queryPos.add(dataCollectionName);
+		if (bindDataCollectionCode) {
+			queryPos.add(dataCollectionCode);
 		}
 
 		if (orderByComparator != null) {
@@ -7262,15 +7262,15 @@ public class DataCollectionPersistenceImpl
 	}
 
 	/**
-	 * Removes all the data collections where dataCollectionName = &#63; from the database.
+	 * Removes all the data collections where dataCollectionCode = &#63; from the database.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 */
 	@Override
-	public void removeByName(String dataCollectionName) {
+	public void removeByCode(String dataCollectionCode) {
 		for (DataCollection dataCollection :
-				findByName(
-					dataCollectionName, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				findByCode(
+					dataCollectionCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 					null)) {
 
 			remove(dataCollection);
@@ -7278,18 +7278,18 @@ public class DataCollectionPersistenceImpl
 	}
 
 	/**
-	 * Returns the number of data collections where dataCollectionName = &#63;.
+	 * Returns the number of data collections where dataCollectionCode = &#63;.
 	 *
-	 * @param dataCollectionName the data collection name
+	 * @param dataCollectionCode the data collection code
 	 * @return the number of matching data collections
 	 */
 	@Override
-	public int countByName(String dataCollectionName) {
-		dataCollectionName = Objects.toString(dataCollectionName, "");
+	public int countByCode(String dataCollectionCode) {
+		dataCollectionCode = Objects.toString(dataCollectionCode, "");
 
-		FinderPath finderPath = _finderPathCountByName;
+		FinderPath finderPath = _finderPathCountByCode;
 
-		Object[] finderArgs = new Object[] {dataCollectionName};
+		Object[] finderArgs = new Object[] {dataCollectionCode};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -7298,15 +7298,15 @@ public class DataCollectionPersistenceImpl
 
 			sb.append(_SQL_COUNT_DATACOLLECTION_WHERE);
 
-			boolean bindDataCollectionName = false;
+			boolean bindDataCollectionCode = false;
 
-			if (dataCollectionName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_DATACOLLECTIONNAME_3);
+			if (dataCollectionCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODE_DATACOLLECTIONCODE_3);
 			}
 			else {
-				bindDataCollectionName = true;
+				bindDataCollectionCode = true;
 
-				sb.append(_FINDER_COLUMN_NAME_DATACOLLECTIONNAME_2);
+				sb.append(_FINDER_COLUMN_CODE_DATACOLLECTIONCODE_2);
 			}
 
 			String sql = sb.toString();
@@ -7320,8 +7320,8 @@ public class DataCollectionPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataCollectionName) {
-					queryPos.add(dataCollectionName);
+				if (bindDataCollectionCode) {
+					queryPos.add(dataCollectionCode);
 				}
 
 				count = (Long)query.uniqueResult();
@@ -7341,11 +7341,11 @@ public class DataCollectionPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAME_DATACOLLECTIONNAME_2 =
-		"dataCollection.dataCollectionName = ?";
+	private static final String _FINDER_COLUMN_CODE_DATACOLLECTIONCODE_2 =
+		"dataCollection.dataCollectionCode = ?";
 
-	private static final String _FINDER_COLUMN_NAME_DATACOLLECTIONNAME_3 =
-		"(dataCollection.dataCollectionName IS NULL OR dataCollection.dataCollectionName = '')";
+	private static final String _FINDER_COLUMN_CODE_DATACOLLECTIONCODE_3 =
+		"(dataCollection.dataCollectionCode IS NULL OR dataCollection.dataCollectionCode = '')";
 
 	public DataCollectionPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -7772,12 +7772,12 @@ public class DataCollectionPersistenceImpl
 				_finderPathWithoutPaginationFindByG_U_S, args);
 
 			args = new Object[] {
-				dataCollectionModelImpl.getDataCollectionName()
+				dataCollectionModelImpl.getDataCollectionCode()
 			};
 
-			finderCache.removeResult(_finderPathCountByName, args);
+			finderCache.removeResult(_finderPathCountByCode, args);
 			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByName, args);
+				_finderPathWithoutPaginationFindByCode, args);
 
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(
@@ -7978,24 +7978,24 @@ public class DataCollectionPersistenceImpl
 			}
 
 			if ((dataCollectionModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByName.getColumnBitmask()) !=
+				 _finderPathWithoutPaginationFindByCode.getColumnBitmask()) !=
 					 0) {
 
 				Object[] args = new Object[] {
-					dataCollectionModelImpl.getOriginalDataCollectionName()
+					dataCollectionModelImpl.getOriginalDataCollectionCode()
 				};
 
-				finderCache.removeResult(_finderPathCountByName, args);
+				finderCache.removeResult(_finderPathCountByCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
+					_finderPathWithoutPaginationFindByCode, args);
 
 				args = new Object[] {
-					dataCollectionModelImpl.getDataCollectionName()
+					dataCollectionModelImpl.getDataCollectionCode()
 				};
 
-				finderCache.removeResult(_finderPathCountByName, args);
+				finderCache.removeResult(_finderPathCountByCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
+					_finderPathWithoutPaginationFindByCode, args);
 			}
 		}
 
@@ -8498,23 +8498,23 @@ public class DataCollectionPersistenceImpl
 				Integer.class.getName()
 			});
 
-		_finderPathWithPaginationFindByName = new FinderPath(
+		_finderPathWithPaginationFindByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataCollectionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByName",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCode",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByName = new FinderPath(
+		_finderPathWithoutPaginationFindByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataCollectionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByName",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCode",
 			new String[] {String.class.getName()},
-			DataCollectionModelImpl.DATACOLLECTIONNAME_COLUMN_BITMASK);
+			DataCollectionModelImpl.DATACOLLECTIONCODE_COLUMN_BITMASK);
 
-		_finderPathCountByName = new FinderPath(
+		_finderPathCountByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCode",
 			new String[] {String.class.getName()});
 
 		_setDataCollectionUtilPersistence(this);

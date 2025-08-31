@@ -62,7 +62,7 @@ public class DataTypeCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(41);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -90,8 +90,8 @@ public class DataTypeCacheModel
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
-		sb.append(", dataTypeName=");
-		sb.append(dataTypeName);
+		sb.append(", dataTypeCode=");
+		sb.append(dataTypeCode);
 		sb.append(", dataTypeVersion=");
 		sb.append(dataTypeVersion);
 		sb.append(", displayName=");
@@ -104,8 +104,6 @@ public class DataTypeCacheModel
 		sb.append(description);
 		sb.append(", tooltip=");
 		sb.append(tooltip);
-		sb.append(", dataStructureId=");
-		sb.append(dataStructureId);
 		sb.append("}");
 
 		return sb.toString();
@@ -172,11 +170,11 @@ public class DataTypeCacheModel
 			dataTypeImpl.setStatusDate(new Date(statusDate));
 		}
 
-		if (dataTypeName == null) {
-			dataTypeImpl.setDataTypeName("");
+		if (dataTypeCode == null) {
+			dataTypeImpl.setDataTypeCode("");
 		}
 		else {
-			dataTypeImpl.setDataTypeName(dataTypeName);
+			dataTypeImpl.setDataTypeCode(dataTypeCode);
 		}
 
 		if (dataTypeVersion == null) {
@@ -216,8 +214,6 @@ public class DataTypeCacheModel
 			dataTypeImpl.setTooltip(tooltip);
 		}
 
-		dataTypeImpl.setDataStructureId(dataStructureId);
-
 		dataTypeImpl.resetOriginalValues();
 
 		return dataTypeImpl;
@@ -244,7 +240,7 @@ public class DataTypeCacheModel
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
-		dataTypeName = objectInput.readUTF();
+		dataTypeCode = objectInput.readUTF();
 		dataTypeVersion = objectInput.readUTF();
 		displayName = objectInput.readUTF();
 		extension = objectInput.readUTF();
@@ -252,8 +248,6 @@ public class DataTypeCacheModel
 		sampleFileId = objectInput.readLong();
 		description = objectInput.readUTF();
 		tooltip = objectInput.readUTF();
-
-		dataStructureId = objectInput.readLong();
 	}
 
 	@Override
@@ -297,11 +291,11 @@ public class DataTypeCacheModel
 
 		objectOutput.writeLong(statusDate);
 
-		if (dataTypeName == null) {
+		if (dataTypeCode == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(dataTypeName);
+			objectOutput.writeUTF(dataTypeCode);
 		}
 
 		if (dataTypeVersion == null) {
@@ -340,8 +334,6 @@ public class DataTypeCacheModel
 		else {
 			objectOutput.writeUTF(tooltip);
 		}
-
-		objectOutput.writeLong(dataStructureId);
 	}
 
 	public String uuid;
@@ -357,13 +349,12 @@ public class DataTypeCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-	public String dataTypeName;
+	public String dataTypeCode;
 	public String dataTypeVersion;
 	public String displayName;
 	public String extension;
 	public long sampleFileId;
 	public String description;
 	public String tooltip;
-	public long dataStructureId;
 
 }

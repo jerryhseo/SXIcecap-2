@@ -1722,343 +1722,200 @@ public interface DataTypePersistence extends BasePersistence<DataType> {
 	public int filterCountByG_U_S(long groupId, long userId, int status);
 
 	/**
-	 * Returns all the data types where dataTypeName = &#63;.
+	 * Returns all the data types where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @return the matching data types
 	 */
-	public java.util.List<DataType> findByName(String dataTypeName);
+	public java.util.List<DataType> findByCode(String dataTypeCode);
 
 	/**
-	 * Returns a range of all the data types where dataTypeName = &#63;.
+	 * Returns a range of all the data types where dataTypeCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param start the lower bound of the range of data types
 	 * @param end the upper bound of the range of data types (not inclusive)
 	 * @return the range of matching data types
 	 */
-	public java.util.List<DataType> findByName(
-		String dataTypeName, int start, int end);
+	public java.util.List<DataType> findByCode(
+		String dataTypeCode, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the data types where dataTypeName = &#63;.
+	 * Returns an ordered range of all the data types where dataTypeCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param start the lower bound of the range of data types
 	 * @param end the upper bound of the range of data types (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data types
 	 */
-	public java.util.List<DataType> findByName(
-		String dataTypeName, int start, int end,
+	public java.util.List<DataType> findByCode(
+		String dataTypeCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DataType>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the data types where dataTypeName = &#63;.
+	 * Returns an ordered range of all the data types where dataTypeCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param start the lower bound of the range of data types
 	 * @param end the upper bound of the range of data types (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching data types
 	 */
-	public java.util.List<DataType> findByName(
-		String dataTypeName, int start, int end,
+	public java.util.List<DataType> findByCode(
+		String dataTypeCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DataType>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the first data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data type
 	 * @throws NoSuchDataTypeException if a matching data type could not be found
 	 */
-	public DataType findByName_First(
-			String dataTypeName,
+	public DataType findByCode_First(
+			String dataTypeCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataType>
 				orderByComparator)
 		throws NoSuchDataTypeException;
 
 	/**
-	 * Returns the first data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the first data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data type, or <code>null</code> if a matching data type could not be found
 	 */
-	public DataType fetchByName_First(
-		String dataTypeName,
+	public DataType fetchByCode_First(
+		String dataTypeCode,
 		com.liferay.portal.kernel.util.OrderByComparator<DataType>
 			orderByComparator);
 
 	/**
-	 * Returns the last data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the last data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data type
 	 * @throws NoSuchDataTypeException if a matching data type could not be found
 	 */
-	public DataType findByName_Last(
-			String dataTypeName,
+	public DataType findByCode_Last(
+			String dataTypeCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataType>
 				orderByComparator)
 		throws NoSuchDataTypeException;
 
 	/**
-	 * Returns the last data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the last data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data type, or <code>null</code> if a matching data type could not be found
 	 */
-	public DataType fetchByName_Last(
-		String dataTypeName,
+	public DataType fetchByCode_Last(
+		String dataTypeCode,
 		com.liferay.portal.kernel.util.OrderByComparator<DataType>
 			orderByComparator);
 
 	/**
-	 * Returns the data types before and after the current data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the data types before and after the current data type in the ordered set where dataTypeCode = &#63;.
 	 *
 	 * @param dataTypeId the primary key of the current data type
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data type
 	 * @throws NoSuchDataTypeException if a data type with the primary key could not be found
 	 */
-	public DataType[] findByName_PrevAndNext(
-			long dataTypeId, String dataTypeName,
+	public DataType[] findByCode_PrevAndNext(
+			long dataTypeId, String dataTypeCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataType>
 				orderByComparator)
 		throws NoSuchDataTypeException;
 
 	/**
-	 * Removes all the data types where dataTypeName = &#63; from the database.
+	 * Removes all the data types where dataTypeCode = &#63; from the database.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 */
-	public void removeByName(String dataTypeName);
+	public void removeByCode(String dataTypeCode);
 
 	/**
-	 * Returns the number of data types where dataTypeName = &#63;.
+	 * Returns the number of data types where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @return the number of matching data types
 	 */
-	public int countByName(String dataTypeName);
+	public int countByCode(String dataTypeCode);
 
 	/**
-	 * Returns the data type where dataTypeName = &#63; and dataTypeVersion = &#63; or throws a <code>NoSuchDataTypeException</code> if it could not be found.
+	 * Returns the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; or throws a <code>NoSuchDataTypeException</code> if it could not be found.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the matching data type
 	 * @throws NoSuchDataTypeException if a matching data type could not be found
 	 */
-	public DataType findByNameVersion(
-			String dataTypeName, String dataTypeVersion)
+	public DataType findByCodeVersion(
+			String dataTypeCode, String dataTypeVersion)
 		throws NoSuchDataTypeException;
 
 	/**
-	 * Returns the data type where dataTypeName = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the matching data type, or <code>null</code> if a matching data type could not be found
 	 */
-	public DataType fetchByNameVersion(
-		String dataTypeName, String dataTypeVersion);
+	public DataType fetchByCodeVersion(
+		String dataTypeCode, String dataTypeVersion);
 
 	/**
-	 * Returns the data type where dataTypeName = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching data type, or <code>null</code> if a matching data type could not be found
 	 */
-	public DataType fetchByNameVersion(
-		String dataTypeName, String dataTypeVersion, boolean useFinderCache);
+	public DataType fetchByCodeVersion(
+		String dataTypeCode, String dataTypeVersion, boolean useFinderCache);
 
 	/**
-	 * Removes the data type where dataTypeName = &#63; and dataTypeVersion = &#63; from the database.
+	 * Removes the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; from the database.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the data type that was removed
 	 */
-	public DataType removeByNameVersion(
-			String dataTypeName, String dataTypeVersion)
+	public DataType removeByCodeVersion(
+			String dataTypeCode, String dataTypeVersion)
 		throws NoSuchDataTypeException;
 
 	/**
-	 * Returns the number of data types where dataTypeName = &#63; and dataTypeVersion = &#63;.
+	 * Returns the number of data types where dataTypeCode = &#63; and dataTypeVersion = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the number of matching data types
 	 */
-	public int countByNameVersion(String dataTypeName, String dataTypeVersion);
-
-	/**
-	 * Returns all the data types where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @return the matching data types
-	 */
-	public java.util.List<DataType> findBystructureId(long dataStructureId);
-
-	/**
-	 * Returns a range of all the data types where dataStructureId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param start the lower bound of the range of data types
-	 * @param end the upper bound of the range of data types (not inclusive)
-	 * @return the range of matching data types
-	 */
-	public java.util.List<DataType> findBystructureId(
-		long dataStructureId, int start, int end);
-
-	/**
-	 * Returns an ordered range of all the data types where dataStructureId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param start the lower bound of the range of data types
-	 * @param end the upper bound of the range of data types (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching data types
-	 */
-	public java.util.List<DataType> findBystructureId(
-		long dataStructureId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<DataType>
-			orderByComparator);
-
-	/**
-	 * Returns an ordered range of all the data types where dataStructureId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param start the lower bound of the range of data types
-	 * @param end the upper bound of the range of data types (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching data types
-	 */
-	public java.util.List<DataType> findBystructureId(
-		long dataStructureId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<DataType>
-			orderByComparator,
-		boolean useFinderCache);
-
-	/**
-	 * Returns the first data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching data type
-	 * @throws NoSuchDataTypeException if a matching data type could not be found
-	 */
-	public DataType findBystructureId_First(
-			long dataStructureId,
-			com.liferay.portal.kernel.util.OrderByComparator<DataType>
-				orderByComparator)
-		throws NoSuchDataTypeException;
-
-	/**
-	 * Returns the first data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching data type, or <code>null</code> if a matching data type could not be found
-	 */
-	public DataType fetchBystructureId_First(
-		long dataStructureId,
-		com.liferay.portal.kernel.util.OrderByComparator<DataType>
-			orderByComparator);
-
-	/**
-	 * Returns the last data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching data type
-	 * @throws NoSuchDataTypeException if a matching data type could not be found
-	 */
-	public DataType findBystructureId_Last(
-			long dataStructureId,
-			com.liferay.portal.kernel.util.OrderByComparator<DataType>
-				orderByComparator)
-		throws NoSuchDataTypeException;
-
-	/**
-	 * Returns the last data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching data type, or <code>null</code> if a matching data type could not be found
-	 */
-	public DataType fetchBystructureId_Last(
-		long dataStructureId,
-		com.liferay.portal.kernel.util.OrderByComparator<DataType>
-			orderByComparator);
-
-	/**
-	 * Returns the data types before and after the current data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataTypeId the primary key of the current data type
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next data type
-	 * @throws NoSuchDataTypeException if a data type with the primary key could not be found
-	 */
-	public DataType[] findBystructureId_PrevAndNext(
-			long dataTypeId, long dataStructureId,
-			com.liferay.portal.kernel.util.OrderByComparator<DataType>
-				orderByComparator)
-		throws NoSuchDataTypeException;
-
-	/**
-	 * Removes all the data types where dataStructureId = &#63; from the database.
-	 *
-	 * @param dataStructureId the data structure ID
-	 */
-	public void removeBystructureId(long dataStructureId);
-
-	/**
-	 * Returns the number of data types where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @return the number of matching data types
-	 */
-	public int countBystructureId(long dataStructureId);
+	public int countByCodeVersion(String dataTypeCode, String dataTypeVersion);
 
 	/**
 	 * Caches the data type in the entity cache if it is enabled.

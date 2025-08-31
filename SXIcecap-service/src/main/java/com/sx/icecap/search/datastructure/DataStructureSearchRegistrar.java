@@ -32,7 +32,7 @@ public class DataStructureSearchRegistrar {
 										Field.ENTRY_CLASS_PK,
 										Field.UID,
 										Field.SCOPE_GROUP_ID,
-										DataStructureProperties.DATA_STRUCTURE_NAME); 
+										DataStructureProperties.DATA_STRUCTURE_CODE); 
 								modelSearchDefinition.setDefaultSelectedLocalizedFieldNames(
 										DataStructureProperties.DESCRIPTION,
 										DataStructureProperties.DISPLAY_NAME);

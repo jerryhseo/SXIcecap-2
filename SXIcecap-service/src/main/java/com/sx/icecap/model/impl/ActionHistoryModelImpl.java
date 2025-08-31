@@ -71,7 +71,7 @@ public class ActionHistoryModelImpl
 	public static final Object[][] TABLE_COLUMNS = {
 		{"actionHistoryId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"structuredDataId", Types.BIGINT}, {"paramName", Types.VARCHAR},
+		{"structuredDataId", Types.BIGINT}, {"paramCode", Types.VARCHAR},
 		{"prevValue", Types.VARCHAR}, {"changedValue", Types.VARCHAR},
 		{"action", Types.VARCHAR}, {"comment_", Types.VARCHAR}
 	};
@@ -85,7 +85,7 @@ public class ActionHistoryModelImpl
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("structuredDataId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("paramName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("paramCode", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("prevValue", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("changedValue", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("action", Types.VARCHAR);
@@ -93,7 +93,7 @@ public class ActionHistoryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_ActionHistory (actionHistoryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,structuredDataId LONG,paramName VARCHAR(75) null,prevValue VARCHAR(75) null,changedValue VARCHAR(75) null,action VARCHAR(75) null,comment_ VARCHAR(75) null)";
+		"create table SX_ICECAP_ActionHistory (actionHistoryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,structuredDataId LONG,paramCode VARCHAR(75) null,prevValue VARCHAR(75) null,changedValue VARCHAR(75) null,action VARCHAR(75) null,comment_ VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_ActionHistory";
@@ -110,7 +110,7 @@ public class ActionHistoryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long PARAMNAME_COLUMN_BITMASK = 1L;
+	public static final long PARAMCODE_COLUMN_BITMASK = 1L;
 
 	public static final long STRUCTUREDDATAID_COLUMN_BITMASK = 2L;
 
@@ -247,10 +247,10 @@ public class ActionHistoryModelImpl
 			"structuredDataId",
 			(BiConsumer<ActionHistory, Long>)
 				ActionHistory::setStructuredDataId);
-		attributeGetterFunctions.put("paramName", ActionHistory::getParamName);
+		attributeGetterFunctions.put("paramCode", ActionHistory::getParamCode);
 		attributeSetterBiConsumers.put(
-			"paramName",
-			(BiConsumer<ActionHistory, String>)ActionHistory::setParamName);
+			"paramCode",
+			(BiConsumer<ActionHistory, String>)ActionHistory::setParamCode);
 		attributeGetterFunctions.put("prevValue", ActionHistory::getPrevValue);
 		attributeSetterBiConsumers.put(
 			"prevValue",
@@ -359,28 +359,28 @@ public class ActionHistoryModelImpl
 	}
 
 	@Override
-	public String getParamName() {
-		if (_paramName == null) {
+	public String getParamCode() {
+		if (_paramCode == null) {
 			return "";
 		}
 		else {
-			return _paramName;
+			return _paramCode;
 		}
 	}
 
 	@Override
-	public void setParamName(String paramName) {
-		_columnBitmask |= PARAMNAME_COLUMN_BITMASK;
+	public void setParamCode(String paramCode) {
+		_columnBitmask |= PARAMCODE_COLUMN_BITMASK;
 
-		if (_originalParamName == null) {
-			_originalParamName = _paramName;
+		if (_originalParamCode == null) {
+			_originalParamCode = _paramCode;
 		}
 
-		_paramName = paramName;
+		_paramCode = paramCode;
 	}
 
-	public String getOriginalParamName() {
-		return GetterUtil.getString(_originalParamName);
+	public String getOriginalParamCode() {
+		return GetterUtil.getString(_originalParamCode);
 	}
 
 	@Override
@@ -484,7 +484,7 @@ public class ActionHistoryModelImpl
 		actionHistoryImpl.setUserName(getUserName());
 		actionHistoryImpl.setCreateDate(getCreateDate());
 		actionHistoryImpl.setStructuredDataId(getStructuredDataId());
-		actionHistoryImpl.setParamName(getParamName());
+		actionHistoryImpl.setParamCode(getParamCode());
 		actionHistoryImpl.setPrevValue(getPrevValue());
 		actionHistoryImpl.setChangedValue(getChangedValue());
 		actionHistoryImpl.setAction(getAction());
@@ -553,7 +553,7 @@ public class ActionHistoryModelImpl
 
 		_setOriginalStructuredDataId = false;
 
-		_originalParamName = _paramName;
+		_originalParamCode = _paramCode;
 
 		_columnBitmask = 0;
 	}
@@ -586,12 +586,12 @@ public class ActionHistoryModelImpl
 
 		actionHistoryCacheModel.structuredDataId = getStructuredDataId();
 
-		actionHistoryCacheModel.paramName = getParamName();
+		actionHistoryCacheModel.paramCode = getParamCode();
 
-		String paramName = actionHistoryCacheModel.paramName;
+		String paramCode = actionHistoryCacheModel.paramCode;
 
-		if ((paramName != null) && (paramName.length() == 0)) {
-			actionHistoryCacheModel.paramName = null;
+		if ((paramCode != null) && (paramCode.length() == 0)) {
+			actionHistoryCacheModel.paramCode = null;
 		}
 
 		actionHistoryCacheModel.prevValue = getPrevValue();
@@ -728,8 +728,8 @@ public class ActionHistoryModelImpl
 	private long _structuredDataId;
 	private long _originalStructuredDataId;
 	private boolean _setOriginalStructuredDataId;
-	private String _paramName;
-	private String _originalParamName;
+	private String _paramCode;
+	private String _originalParamCode;
 	private String _prevValue;
 	private String _changedValue;
 	private String _action;

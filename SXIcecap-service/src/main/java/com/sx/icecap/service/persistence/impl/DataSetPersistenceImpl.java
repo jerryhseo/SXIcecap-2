@@ -6700,68 +6700,68 @@ public class DataSetPersistenceImpl
 	private static final String _FINDER_COLUMN_G_U_S_STATUS_2 =
 		"dataSet.status = ?";
 
-	private FinderPath _finderPathWithPaginationFindByName;
-	private FinderPath _finderPathWithoutPaginationFindByName;
-	private FinderPath _finderPathCountByName;
+	private FinderPath _finderPathWithPaginationFindByCode;
+	private FinderPath _finderPathWithoutPaginationFindByCode;
+	private FinderPath _finderPathCountByCode;
 
 	/**
-	 * Returns all the data sets where dataSetName = &#63;.
+	 * Returns all the data sets where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @return the matching data sets
 	 */
 	@Override
-	public List<DataSet> findByName(String dataSetName) {
-		return findByName(
-			dataSetName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public List<DataSet> findByCode(String dataSetCode) {
+		return findByCode(
+			dataSetCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the data sets where dataSetName = &#63;.
+	 * Returns a range of all the data sets where dataSetCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param start the lower bound of the range of data sets
 	 * @param end the upper bound of the range of data sets (not inclusive)
 	 * @return the range of matching data sets
 	 */
 	@Override
-	public List<DataSet> findByName(String dataSetName, int start, int end) {
-		return findByName(dataSetName, start, end, null);
+	public List<DataSet> findByCode(String dataSetCode, int start, int end) {
+		return findByCode(dataSetCode, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the data sets where dataSetName = &#63;.
+	 * Returns an ordered range of all the data sets where dataSetCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param start the lower bound of the range of data sets
 	 * @param end the upper bound of the range of data sets (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data sets
 	 */
 	@Override
-	public List<DataSet> findByName(
-		String dataSetName, int start, int end,
+	public List<DataSet> findByCode(
+		String dataSetCode, int start, int end,
 		OrderByComparator<DataSet> orderByComparator) {
 
-		return findByName(dataSetName, start, end, orderByComparator, true);
+		return findByCode(dataSetCode, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the data sets where dataSetName = &#63;.
+	 * Returns an ordered range of all the data sets where dataSetCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param start the lower bound of the range of data sets
 	 * @param end the upper bound of the range of data sets (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -6769,11 +6769,11 @@ public class DataSetPersistenceImpl
 	 * @return the ordered range of matching data sets
 	 */
 	@Override
-	public List<DataSet> findByName(
-		String dataSetName, int start, int end,
+	public List<DataSet> findByCode(
+		String dataSetCode, int start, int end,
 		OrderByComparator<DataSet> orderByComparator, boolean useFinderCache) {
 
-		dataSetName = Objects.toString(dataSetName, "");
+		dataSetCode = Objects.toString(dataSetCode, "");
 
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -6782,14 +6782,14 @@ public class DataSetPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByName;
-				finderArgs = new Object[] {dataSetName};
+				finderPath = _finderPathWithoutPaginationFindByCode;
+				finderArgs = new Object[] {dataSetCode};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByName;
+			finderPath = _finderPathWithPaginationFindByCode;
 			finderArgs = new Object[] {
-				dataSetName, start, end, orderByComparator
+				dataSetCode, start, end, orderByComparator
 			};
 		}
 
@@ -6801,7 +6801,7 @@ public class DataSetPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (DataSet dataSet : list) {
-					if (!dataSetName.equals(dataSet.getDataSetName())) {
+					if (!dataSetCode.equals(dataSet.getDataSetCode())) {
 						list = null;
 
 						break;
@@ -6823,15 +6823,15 @@ public class DataSetPersistenceImpl
 
 			sb.append(_SQL_SELECT_DATASET_WHERE);
 
-			boolean bindDataSetName = false;
+			boolean bindDataSetCode = false;
 
-			if (dataSetName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_DATASETNAME_3);
+			if (dataSetCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODE_DATASETCODE_3);
 			}
 			else {
-				bindDataSetName = true;
+				bindDataSetCode = true;
 
-				sb.append(_FINDER_COLUMN_NAME_DATASETNAME_2);
+				sb.append(_FINDER_COLUMN_CODE_DATASETCODE_2);
 			}
 
 			if (orderByComparator != null) {
@@ -6853,8 +6853,8 @@ public class DataSetPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataSetName) {
-					queryPos.add(dataSetName);
+				if (bindDataSetCode) {
+					queryPos.add(dataSetCode);
 				}
 
 				list = (List<DataSet>)QueryUtil.list(
@@ -6882,19 +6882,19 @@ public class DataSetPersistenceImpl
 	}
 
 	/**
-	 * Returns the first data set in the ordered set where dataSetName = &#63;.
+	 * Returns the first data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data set
 	 * @throws NoSuchDataSetException if a matching data set could not be found
 	 */
 	@Override
-	public DataSet findByName_First(
-			String dataSetName, OrderByComparator<DataSet> orderByComparator)
+	public DataSet findByCode_First(
+			String dataSetCode, OrderByComparator<DataSet> orderByComparator)
 		throws NoSuchDataSetException {
 
-		DataSet dataSet = fetchByName_First(dataSetName, orderByComparator);
+		DataSet dataSet = fetchByCode_First(dataSetCode, orderByComparator);
 
 		if (dataSet != null) {
 			return dataSet;
@@ -6904,8 +6904,8 @@ public class DataSetPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dataSetName=");
-		sb.append(dataSetName);
+		sb.append("dataSetCode=");
+		sb.append(dataSetCode);
 
 		sb.append("}");
 
@@ -6913,17 +6913,17 @@ public class DataSetPersistenceImpl
 	}
 
 	/**
-	 * Returns the first data set in the ordered set where dataSetName = &#63;.
+	 * Returns the first data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data set, or <code>null</code> if a matching data set could not be found
 	 */
 	@Override
-	public DataSet fetchByName_First(
-		String dataSetName, OrderByComparator<DataSet> orderByComparator) {
+	public DataSet fetchByCode_First(
+		String dataSetCode, OrderByComparator<DataSet> orderByComparator) {
 
-		List<DataSet> list = findByName(dataSetName, 0, 1, orderByComparator);
+		List<DataSet> list = findByCode(dataSetCode, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -6933,19 +6933,19 @@ public class DataSetPersistenceImpl
 	}
 
 	/**
-	 * Returns the last data set in the ordered set where dataSetName = &#63;.
+	 * Returns the last data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data set
 	 * @throws NoSuchDataSetException if a matching data set could not be found
 	 */
 	@Override
-	public DataSet findByName_Last(
-			String dataSetName, OrderByComparator<DataSet> orderByComparator)
+	public DataSet findByCode_Last(
+			String dataSetCode, OrderByComparator<DataSet> orderByComparator)
 		throws NoSuchDataSetException {
 
-		DataSet dataSet = fetchByName_Last(dataSetName, orderByComparator);
+		DataSet dataSet = fetchByCode_Last(dataSetCode, orderByComparator);
 
 		if (dataSet != null) {
 			return dataSet;
@@ -6955,8 +6955,8 @@ public class DataSetPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dataSetName=");
-		sb.append(dataSetName);
+		sb.append("dataSetCode=");
+		sb.append(dataSetCode);
 
 		sb.append("}");
 
@@ -6964,24 +6964,24 @@ public class DataSetPersistenceImpl
 	}
 
 	/**
-	 * Returns the last data set in the ordered set where dataSetName = &#63;.
+	 * Returns the last data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data set, or <code>null</code> if a matching data set could not be found
 	 */
 	@Override
-	public DataSet fetchByName_Last(
-		String dataSetName, OrderByComparator<DataSet> orderByComparator) {
+	public DataSet fetchByCode_Last(
+		String dataSetCode, OrderByComparator<DataSet> orderByComparator) {
 
-		int count = countByName(dataSetName);
+		int count = countByCode(dataSetCode);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<DataSet> list = findByName(
-			dataSetName, count - 1, count, orderByComparator);
+		List<DataSet> list = findByCode(
+			dataSetCode, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -6991,21 +6991,21 @@ public class DataSetPersistenceImpl
 	}
 
 	/**
-	 * Returns the data sets before and after the current data set in the ordered set where dataSetName = &#63;.
+	 * Returns the data sets before and after the current data set in the ordered set where dataSetCode = &#63;.
 	 *
 	 * @param dataSetId the primary key of the current data set
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data set
 	 * @throws NoSuchDataSetException if a data set with the primary key could not be found
 	 */
 	@Override
-	public DataSet[] findByName_PrevAndNext(
-			long dataSetId, String dataSetName,
+	public DataSet[] findByCode_PrevAndNext(
+			long dataSetId, String dataSetCode,
 			OrderByComparator<DataSet> orderByComparator)
 		throws NoSuchDataSetException {
 
-		dataSetName = Objects.toString(dataSetName, "");
+		dataSetCode = Objects.toString(dataSetCode, "");
 
 		DataSet dataSet = findByPrimaryKey(dataSetId);
 
@@ -7016,13 +7016,13 @@ public class DataSetPersistenceImpl
 
 			DataSet[] array = new DataSetImpl[3];
 
-			array[0] = getByName_PrevAndNext(
-				session, dataSet, dataSetName, orderByComparator, true);
+			array[0] = getByCode_PrevAndNext(
+				session, dataSet, dataSetCode, orderByComparator, true);
 
 			array[1] = dataSet;
 
-			array[2] = getByName_PrevAndNext(
-				session, dataSet, dataSetName, orderByComparator, false);
+			array[2] = getByCode_PrevAndNext(
+				session, dataSet, dataSetCode, orderByComparator, false);
 
 			return array;
 		}
@@ -7034,8 +7034,8 @@ public class DataSetPersistenceImpl
 		}
 	}
 
-	protected DataSet getByName_PrevAndNext(
-		Session session, DataSet dataSet, String dataSetName,
+	protected DataSet getByCode_PrevAndNext(
+		Session session, DataSet dataSet, String dataSetCode,
 		OrderByComparator<DataSet> orderByComparator, boolean previous) {
 
 		StringBundler sb = null;
@@ -7051,15 +7051,15 @@ public class DataSetPersistenceImpl
 
 		sb.append(_SQL_SELECT_DATASET_WHERE);
 
-		boolean bindDataSetName = false;
+		boolean bindDataSetCode = false;
 
-		if (dataSetName.isEmpty()) {
-			sb.append(_FINDER_COLUMN_NAME_DATASETNAME_3);
+		if (dataSetCode.isEmpty()) {
+			sb.append(_FINDER_COLUMN_CODE_DATASETCODE_3);
 		}
 		else {
-			bindDataSetName = true;
+			bindDataSetCode = true;
 
-			sb.append(_FINDER_COLUMN_NAME_DATASETNAME_2);
+			sb.append(_FINDER_COLUMN_CODE_DATASETCODE_2);
 		}
 
 		if (orderByComparator != null) {
@@ -7131,8 +7131,8 @@ public class DataSetPersistenceImpl
 
 		QueryPos queryPos = QueryPos.getInstance(query);
 
-		if (bindDataSetName) {
-			queryPos.add(dataSetName);
+		if (bindDataSetCode) {
+			queryPos.add(dataSetCode);
 		}
 
 		if (orderByComparator != null) {
@@ -7154,33 +7154,33 @@ public class DataSetPersistenceImpl
 	}
 
 	/**
-	 * Removes all the data sets where dataSetName = &#63; from the database.
+	 * Removes all the data sets where dataSetCode = &#63; from the database.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 */
 	@Override
-	public void removeByName(String dataSetName) {
+	public void removeByCode(String dataSetCode) {
 		for (DataSet dataSet :
-				findByName(
-					dataSetName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				findByCode(
+					dataSetCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 
 			remove(dataSet);
 		}
 	}
 
 	/**
-	 * Returns the number of data sets where dataSetName = &#63;.
+	 * Returns the number of data sets where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @return the number of matching data sets
 	 */
 	@Override
-	public int countByName(String dataSetName) {
-		dataSetName = Objects.toString(dataSetName, "");
+	public int countByCode(String dataSetCode) {
+		dataSetCode = Objects.toString(dataSetCode, "");
 
-		FinderPath finderPath = _finderPathCountByName;
+		FinderPath finderPath = _finderPathCountByCode;
 
-		Object[] finderArgs = new Object[] {dataSetName};
+		Object[] finderArgs = new Object[] {dataSetCode};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -7189,15 +7189,15 @@ public class DataSetPersistenceImpl
 
 			sb.append(_SQL_COUNT_DATASET_WHERE);
 
-			boolean bindDataSetName = false;
+			boolean bindDataSetCode = false;
 
-			if (dataSetName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_DATASETNAME_3);
+			if (dataSetCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODE_DATASETCODE_3);
 			}
 			else {
-				bindDataSetName = true;
+				bindDataSetCode = true;
 
-				sb.append(_FINDER_COLUMN_NAME_DATASETNAME_2);
+				sb.append(_FINDER_COLUMN_CODE_DATASETCODE_2);
 			}
 
 			String sql = sb.toString();
@@ -7211,8 +7211,8 @@ public class DataSetPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataSetName) {
-					queryPos.add(dataSetName);
+				if (bindDataSetCode) {
+					queryPos.add(dataSetCode);
 				}
 
 				count = (Long)query.uniqueResult();
@@ -7232,36 +7232,36 @@ public class DataSetPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAME_DATASETNAME_2 =
-		"dataSet.dataSetName = ?";
+	private static final String _FINDER_COLUMN_CODE_DATASETCODE_2 =
+		"dataSet.dataSetCode = ?";
 
-	private static final String _FINDER_COLUMN_NAME_DATASETNAME_3 =
-		"(dataSet.dataSetName IS NULL OR dataSet.dataSetName = '')";
+	private static final String _FINDER_COLUMN_CODE_DATASETCODE_3 =
+		"(dataSet.dataSetCode IS NULL OR dataSet.dataSetCode = '')";
 
-	private FinderPath _finderPathFetchByNameVersion;
-	private FinderPath _finderPathCountByNameVersion;
+	private FinderPath _finderPathFetchByCodeVersion;
+	private FinderPath _finderPathCountByCodeVersion;
 
 	/**
-	 * Returns the data set where dataSetName = &#63; and dataSetVersion = &#63; or throws a <code>NoSuchDataSetException</code> if it could not be found.
+	 * Returns the data set where dataSetCode = &#63; and dataSetVersion = &#63; or throws a <code>NoSuchDataSetException</code> if it could not be found.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the matching data set
 	 * @throws NoSuchDataSetException if a matching data set could not be found
 	 */
 	@Override
-	public DataSet findByNameVersion(String dataSetName, String dataSetVersion)
+	public DataSet findByCodeVersion(String dataSetCode, String dataSetVersion)
 		throws NoSuchDataSetException {
 
-		DataSet dataSet = fetchByNameVersion(dataSetName, dataSetVersion);
+		DataSet dataSet = fetchByCodeVersion(dataSetCode, dataSetVersion);
 
 		if (dataSet == null) {
 			StringBundler sb = new StringBundler(6);
 
 			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("dataSetName=");
-			sb.append(dataSetName);
+			sb.append("dataSetCode=");
+			sb.append(dataSetCode);
 
 			sb.append(", dataSetVersion=");
 			sb.append(dataSetVersion);
@@ -7279,51 +7279,51 @@ public class DataSetPersistenceImpl
 	}
 
 	/**
-	 * Returns the data set where dataSetName = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the data set where dataSetCode = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the matching data set, or <code>null</code> if a matching data set could not be found
 	 */
 	@Override
-	public DataSet fetchByNameVersion(
-		String dataSetName, String dataSetVersion) {
+	public DataSet fetchByCodeVersion(
+		String dataSetCode, String dataSetVersion) {
 
-		return fetchByNameVersion(dataSetName, dataSetVersion, true);
+		return fetchByCodeVersion(dataSetCode, dataSetVersion, true);
 	}
 
 	/**
-	 * Returns the data set where dataSetName = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the data set where dataSetCode = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching data set, or <code>null</code> if a matching data set could not be found
 	 */
 	@Override
-	public DataSet fetchByNameVersion(
-		String dataSetName, String dataSetVersion, boolean useFinderCache) {
+	public DataSet fetchByCodeVersion(
+		String dataSetCode, String dataSetVersion, boolean useFinderCache) {
 
-		dataSetName = Objects.toString(dataSetName, "");
+		dataSetCode = Objects.toString(dataSetCode, "");
 		dataSetVersion = Objects.toString(dataSetVersion, "");
 
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
-			finderArgs = new Object[] {dataSetName, dataSetVersion};
+			finderArgs = new Object[] {dataSetCode, dataSetVersion};
 		}
 
 		Object result = null;
 
 		if (useFinderCache) {
 			result = finderCache.getResult(
-				_finderPathFetchByNameVersion, finderArgs, this);
+				_finderPathFetchByCodeVersion, finderArgs, this);
 		}
 
 		if (result instanceof DataSet) {
 			DataSet dataSet = (DataSet)result;
 
-			if (!Objects.equals(dataSetName, dataSet.getDataSetName()) ||
+			if (!Objects.equals(dataSetCode, dataSet.getDataSetCode()) ||
 				!Objects.equals(dataSetVersion, dataSet.getDataSetVersion())) {
 
 				result = null;
@@ -7335,26 +7335,26 @@ public class DataSetPersistenceImpl
 
 			sb.append(_SQL_SELECT_DATASET_WHERE);
 
-			boolean bindDataSetName = false;
+			boolean bindDataSetCode = false;
 
-			if (dataSetName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASETNAME_3);
+			if (dataSetCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASETCODE_3);
 			}
 			else {
-				bindDataSetName = true;
+				bindDataSetCode = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASETNAME_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASETCODE_2);
 			}
 
 			boolean bindDataSetVersion = false;
 
 			if (dataSetVersion.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASETVERSION_3);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASETVERSION_3);
 			}
 			else {
 				bindDataSetVersion = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASETVERSION_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASETVERSION_2);
 			}
 
 			String sql = sb.toString();
@@ -7368,8 +7368,8 @@ public class DataSetPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataSetName) {
-					queryPos.add(dataSetName);
+				if (bindDataSetCode) {
+					queryPos.add(dataSetCode);
 				}
 
 				if (bindDataSetVersion) {
@@ -7381,7 +7381,7 @@ public class DataSetPersistenceImpl
 				if (list.isEmpty()) {
 					if (useFinderCache) {
 						finderCache.putResult(
-							_finderPathFetchByNameVersion, finderArgs, list);
+							_finderPathFetchByCodeVersion, finderArgs, list);
 					}
 				}
 				else {
@@ -7391,12 +7391,12 @@ public class DataSetPersistenceImpl
 						if (_log.isWarnEnabled()) {
 							if (!useFinderCache) {
 								finderArgs = new Object[] {
-									dataSetName, dataSetVersion
+									dataSetCode, dataSetVersion
 								};
 							}
 
 							_log.warn(
-								"DataSetPersistenceImpl.fetchByNameVersion(String, String, boolean) with parameters (" +
+								"DataSetPersistenceImpl.fetchByCodeVersion(String, String, boolean) with parameters (" +
 									StringUtil.merge(finderArgs) +
 										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
@@ -7412,7 +7412,7 @@ public class DataSetPersistenceImpl
 			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(
-						_finderPathFetchByNameVersion, finderArgs);
+						_finderPathFetchByCodeVersion, finderArgs);
 				}
 
 				throw processException(exception);
@@ -7431,37 +7431,37 @@ public class DataSetPersistenceImpl
 	}
 
 	/**
-	 * Removes the data set where dataSetName = &#63; and dataSetVersion = &#63; from the database.
+	 * Removes the data set where dataSetCode = &#63; and dataSetVersion = &#63; from the database.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the data set that was removed
 	 */
 	@Override
-	public DataSet removeByNameVersion(
-			String dataSetName, String dataSetVersion)
+	public DataSet removeByCodeVersion(
+			String dataSetCode, String dataSetVersion)
 		throws NoSuchDataSetException {
 
-		DataSet dataSet = findByNameVersion(dataSetName, dataSetVersion);
+		DataSet dataSet = findByCodeVersion(dataSetCode, dataSetVersion);
 
 		return remove(dataSet);
 	}
 
 	/**
-	 * Returns the number of data sets where dataSetName = &#63; and dataSetVersion = &#63;.
+	 * Returns the number of data sets where dataSetCode = &#63; and dataSetVersion = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the number of matching data sets
 	 */
 	@Override
-	public int countByNameVersion(String dataSetName, String dataSetVersion) {
-		dataSetName = Objects.toString(dataSetName, "");
+	public int countByCodeVersion(String dataSetCode, String dataSetVersion) {
+		dataSetCode = Objects.toString(dataSetCode, "");
 		dataSetVersion = Objects.toString(dataSetVersion, "");
 
-		FinderPath finderPath = _finderPathCountByNameVersion;
+		FinderPath finderPath = _finderPathCountByCodeVersion;
 
-		Object[] finderArgs = new Object[] {dataSetName, dataSetVersion};
+		Object[] finderArgs = new Object[] {dataSetCode, dataSetVersion};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -7470,26 +7470,26 @@ public class DataSetPersistenceImpl
 
 			sb.append(_SQL_COUNT_DATASET_WHERE);
 
-			boolean bindDataSetName = false;
+			boolean bindDataSetCode = false;
 
-			if (dataSetName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASETNAME_3);
+			if (dataSetCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASETCODE_3);
 			}
 			else {
-				bindDataSetName = true;
+				bindDataSetCode = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASETNAME_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASETCODE_2);
 			}
 
 			boolean bindDataSetVersion = false;
 
 			if (dataSetVersion.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASETVERSION_3);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASETVERSION_3);
 			}
 			else {
 				bindDataSetVersion = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASETVERSION_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASETVERSION_2);
 			}
 
 			String sql = sb.toString();
@@ -7503,8 +7503,8 @@ public class DataSetPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataSetName) {
-					queryPos.add(dataSetName);
+				if (bindDataSetCode) {
+					queryPos.add(dataSetCode);
 				}
 
 				if (bindDataSetVersion) {
@@ -7528,16 +7528,16 @@ public class DataSetPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_DATASETNAME_2 =
-		"dataSet.dataSetName = ? AND ";
+	private static final String _FINDER_COLUMN_CODEVERSION_DATASETCODE_2 =
+		"dataSet.dataSetCode = ? AND ";
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_DATASETNAME_3 =
-		"(dataSet.dataSetName IS NULL OR dataSet.dataSetName = '') AND ";
+	private static final String _FINDER_COLUMN_CODEVERSION_DATASETCODE_3 =
+		"(dataSet.dataSetCode IS NULL OR dataSet.dataSetCode = '') AND ";
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_DATASETVERSION_2 =
+	private static final String _FINDER_COLUMN_CODEVERSION_DATASETVERSION_2 =
 		"dataSet.dataSetVersion = ?";
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_DATASETVERSION_3 =
+	private static final String _FINDER_COLUMN_CODEVERSION_DATASETVERSION_3 =
 		"(dataSet.dataSetVersion IS NULL OR dataSet.dataSetVersion = '')";
 
 	public DataSetPersistenceImpl() {
@@ -7569,9 +7569,9 @@ public class DataSetPersistenceImpl
 			new Object[] {dataSet.getUuid(), dataSet.getGroupId()}, dataSet);
 
 		finderCache.putResult(
-			_finderPathFetchByNameVersion,
+			_finderPathFetchByCodeVersion,
 			new Object[] {
-				dataSet.getDataSetName(), dataSet.getDataSetVersion()
+				dataSet.getDataSetCode(), dataSet.getDataSetVersion()
 			},
 			dataSet);
 
@@ -7676,14 +7676,14 @@ public class DataSetPersistenceImpl
 			_finderPathFetchByUUID_G, args, dataSetModelImpl, false);
 
 		args = new Object[] {
-			dataSetModelImpl.getDataSetName(),
+			dataSetModelImpl.getDataSetCode(),
 			dataSetModelImpl.getDataSetVersion()
 		};
 
 		finderCache.putResult(
-			_finderPathCountByNameVersion, args, Long.valueOf(1), false);
+			_finderPathCountByCodeVersion, args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByNameVersion, args, dataSetModelImpl, false);
+			_finderPathFetchByCodeVersion, args, dataSetModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
@@ -7712,24 +7712,24 @@ public class DataSetPersistenceImpl
 
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-				dataSetModelImpl.getDataSetName(),
+				dataSetModelImpl.getDataSetCode(),
 				dataSetModelImpl.getDataSetVersion()
 			};
 
-			finderCache.removeResult(_finderPathCountByNameVersion, args);
-			finderCache.removeResult(_finderPathFetchByNameVersion, args);
+			finderCache.removeResult(_finderPathCountByCodeVersion, args);
+			finderCache.removeResult(_finderPathFetchByCodeVersion, args);
 		}
 
 		if ((dataSetModelImpl.getColumnBitmask() &
-			 _finderPathFetchByNameVersion.getColumnBitmask()) != 0) {
+			 _finderPathFetchByCodeVersion.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				dataSetModelImpl.getOriginalDataSetName(),
+				dataSetModelImpl.getOriginalDataSetCode(),
 				dataSetModelImpl.getOriginalDataSetVersion()
 			};
 
-			finderCache.removeResult(_finderPathCountByNameVersion, args);
-			finderCache.removeResult(_finderPathFetchByNameVersion, args);
+			finderCache.removeResult(_finderPathCountByCodeVersion, args);
+			finderCache.removeResult(_finderPathFetchByCodeVersion, args);
 		}
 	}
 
@@ -7981,11 +7981,11 @@ public class DataSetPersistenceImpl
 			finderCache.removeResult(
 				_finderPathWithoutPaginationFindByG_U_S, args);
 
-			args = new Object[] {dataSetModelImpl.getDataSetName()};
+			args = new Object[] {dataSetModelImpl.getDataSetCode()};
 
-			finderCache.removeResult(_finderPathCountByName, args);
+			finderCache.removeResult(_finderPathCountByCode, args);
 			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByName, args);
+				_finderPathWithoutPaginationFindByCode, args);
 
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(
@@ -8181,22 +8181,22 @@ public class DataSetPersistenceImpl
 			}
 
 			if ((dataSetModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByName.getColumnBitmask()) !=
+				 _finderPathWithoutPaginationFindByCode.getColumnBitmask()) !=
 					 0) {
 
 				Object[] args = new Object[] {
-					dataSetModelImpl.getOriginalDataSetName()
+					dataSetModelImpl.getOriginalDataSetCode()
 				};
 
-				finderCache.removeResult(_finderPathCountByName, args);
+				finderCache.removeResult(_finderPathCountByCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
+					_finderPathWithoutPaginationFindByCode, args);
 
-				args = new Object[] {dataSetModelImpl.getDataSetName()};
+				args = new Object[] {dataSetModelImpl.getDataSetCode()};
 
-				finderCache.removeResult(_finderPathCountByName, args);
+				finderCache.removeResult(_finderPathCountByCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
+					_finderPathWithoutPaginationFindByCode, args);
 			}
 		}
 
@@ -8698,35 +8698,35 @@ public class DataSetPersistenceImpl
 				Integer.class.getName()
 			});
 
-		_finderPathWithPaginationFindByName = new FinderPath(
+		_finderPathWithPaginationFindByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataSetImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByName",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCode",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByName = new FinderPath(
+		_finderPathWithoutPaginationFindByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataSetImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByName",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCode",
 			new String[] {String.class.getName()},
-			DataSetModelImpl.DATASETNAME_COLUMN_BITMASK);
+			DataSetModelImpl.DATASETCODE_COLUMN_BITMASK);
 
-		_finderPathCountByName = new FinderPath(
+		_finderPathCountByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCode",
 			new String[] {String.class.getName()});
 
-		_finderPathFetchByNameVersion = new FinderPath(
+		_finderPathFetchByCodeVersion = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataSetImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByNameVersion",
+			FINDER_CLASS_NAME_ENTITY, "fetchByCodeVersion",
 			new String[] {String.class.getName(), String.class.getName()},
-			DataSetModelImpl.DATASETNAME_COLUMN_BITMASK |
+			DataSetModelImpl.DATASETCODE_COLUMN_BITMASK |
 			DataSetModelImpl.DATASETVERSION_COLUMN_BITMASK);
 
-		_finderPathCountByNameVersion = new FinderPath(
+		_finderPathCountByCodeVersion = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByNameVersion",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCodeVersion",
 			new String[] {String.class.getName(), String.class.getName()});
 
 		_setDataSetUtilPersistence(this);

@@ -28,7 +28,7 @@ public class DataStructureModelDocumentContributor implements ModelDocumentContr
 			
 			document.addKeyword(DataStructureProperties.DATA_STRUCTURE_ID, dataStructure.getPrimaryKey());
 			document.addDate(Field.MODIFIED_DATE, dataStructure.getModifiedDate());
-			document.addText(DataStructureProperties.DATA_STRUCTURE_NAME, dataStructure.getDataStructureName());
+			document.addText(DataStructureProperties.DATA_STRUCTURE_CODE, dataStructure.getDataStructureCode());
 			document.addLocalizedText(DataStructureProperties.DESCRIPTION, dataStructure.getDescriptionMap());
 			document.addLocalizedKeyword(DataStructureProperties.DISPLAY_NAME, dataStructure.getDisplayNameMap(), true);
 			

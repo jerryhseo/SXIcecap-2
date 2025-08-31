@@ -121,195 +121,195 @@ public class DataCommentUtil {
 	}
 
 	/**
-	 * Returns all the data comments where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns all the data comments where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the matching data comments
 	 */
-	public static List<DataComment> findByparamName(
-		long structuredDataId, String paramName) {
+	public static List<DataComment> findByparamCode(
+		long structuredDataId, String paramCode) {
 
-		return getPersistence().findByparamName(structuredDataId, paramName);
+		return getPersistence().findByparamCode(structuredDataId, paramCode);
 	}
 
 	/**
-	 * Returns a range of all the data comments where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns a range of all the data comments where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCommentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of data comments
 	 * @param end the upper bound of the range of data comments (not inclusive)
 	 * @return the range of matching data comments
 	 */
-	public static List<DataComment> findByparamName(
-		long structuredDataId, String paramName, int start, int end) {
+	public static List<DataComment> findByparamCode(
+		long structuredDataId, String paramCode, int start, int end) {
 
-		return getPersistence().findByparamName(
-			structuredDataId, paramName, start, end);
+		return getPersistence().findByparamCode(
+			structuredDataId, paramCode, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the data comments where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns an ordered range of all the data comments where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCommentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of data comments
 	 * @param end the upper bound of the range of data comments (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data comments
 	 */
-	public static List<DataComment> findByparamName(
-		long structuredDataId, String paramName, int start, int end,
+	public static List<DataComment> findByparamCode(
+		long structuredDataId, String paramCode, int start, int end,
 		OrderByComparator<DataComment> orderByComparator) {
 
-		return getPersistence().findByparamName(
-			structuredDataId, paramName, start, end, orderByComparator);
+		return getPersistence().findByparamCode(
+			structuredDataId, paramCode, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the data comments where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns an ordered range of all the data comments where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCommentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of data comments
 	 * @param end the upper bound of the range of data comments (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching data comments
 	 */
-	public static List<DataComment> findByparamName(
-		long structuredDataId, String paramName, int start, int end,
+	public static List<DataComment> findByparamCode(
+		long structuredDataId, String paramCode, int start, int end,
 		OrderByComparator<DataComment> orderByComparator,
 		boolean useFinderCache) {
 
-		return getPersistence().findByparamName(
-			structuredDataId, paramName, start, end, orderByComparator,
+		return getPersistence().findByparamCode(
+			structuredDataId, paramCode, start, end, orderByComparator,
 			useFinderCache);
 	}
 
 	/**
-	 * Returns the first data comment in the ordered set where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns the first data comment in the ordered set where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data comment
 	 * @throws NoSuchDataCommentException if a matching data comment could not be found
 	 */
-	public static DataComment findByparamName_First(
-			long structuredDataId, String paramName,
+	public static DataComment findByparamCode_First(
+			long structuredDataId, String paramCode,
 			OrderByComparator<DataComment> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataCommentException {
 
-		return getPersistence().findByparamName_First(
-			structuredDataId, paramName, orderByComparator);
+		return getPersistence().findByparamCode_First(
+			structuredDataId, paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the first data comment in the ordered set where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns the first data comment in the ordered set where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data comment, or <code>null</code> if a matching data comment could not be found
 	 */
-	public static DataComment fetchByparamName_First(
-		long structuredDataId, String paramName,
+	public static DataComment fetchByparamCode_First(
+		long structuredDataId, String paramCode,
 		OrderByComparator<DataComment> orderByComparator) {
 
-		return getPersistence().fetchByparamName_First(
-			structuredDataId, paramName, orderByComparator);
+		return getPersistence().fetchByparamCode_First(
+			structuredDataId, paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last data comment in the ordered set where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns the last data comment in the ordered set where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data comment
 	 * @throws NoSuchDataCommentException if a matching data comment could not be found
 	 */
-	public static DataComment findByparamName_Last(
-			long structuredDataId, String paramName,
+	public static DataComment findByparamCode_Last(
+			long structuredDataId, String paramCode,
 			OrderByComparator<DataComment> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataCommentException {
 
-		return getPersistence().findByparamName_Last(
-			structuredDataId, paramName, orderByComparator);
+		return getPersistence().findByparamCode_Last(
+			structuredDataId, paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last data comment in the ordered set where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns the last data comment in the ordered set where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data comment, or <code>null</code> if a matching data comment could not be found
 	 */
-	public static DataComment fetchByparamName_Last(
-		long structuredDataId, String paramName,
+	public static DataComment fetchByparamCode_Last(
+		long structuredDataId, String paramCode,
 		OrderByComparator<DataComment> orderByComparator) {
 
-		return getPersistence().fetchByparamName_Last(
-			structuredDataId, paramName, orderByComparator);
+		return getPersistence().fetchByparamCode_Last(
+			structuredDataId, paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the data comments before and after the current data comment in the ordered set where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns the data comments before and after the current data comment in the ordered set where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param dataCommentId the primary key of the current data comment
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data comment
 	 * @throws NoSuchDataCommentException if a data comment with the primary key could not be found
 	 */
-	public static DataComment[] findByparamName_PrevAndNext(
-			long dataCommentId, long structuredDataId, String paramName,
+	public static DataComment[] findByparamCode_PrevAndNext(
+			long dataCommentId, long structuredDataId, String paramCode,
 			OrderByComparator<DataComment> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataCommentException {
 
-		return getPersistence().findByparamName_PrevAndNext(
-			dataCommentId, structuredDataId, paramName, orderByComparator);
+		return getPersistence().findByparamCode_PrevAndNext(
+			dataCommentId, structuredDataId, paramCode, orderByComparator);
 	}
 
 	/**
-	 * Removes all the data comments where structuredDataId = &#63; and paramName = &#63; from the database.
+	 * Removes all the data comments where structuredDataId = &#63; and paramCode = &#63; from the database.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 */
-	public static void removeByparamName(
-		long structuredDataId, String paramName) {
+	public static void removeByparamCode(
+		long structuredDataId, String paramCode) {
 
-		getPersistence().removeByparamName(structuredDataId, paramName);
+		getPersistence().removeByparamCode(structuredDataId, paramCode);
 	}
 
 	/**
-	 * Returns the number of data comments where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns the number of data comments where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the number of matching data comments
 	 */
-	public static int countByparamName(
-		long structuredDataId, String paramName) {
+	public static int countByparamCode(
+		long structuredDataId, String paramCode) {
 
-		return getPersistence().countByparamName(structuredDataId, paramName);
+		return getPersistence().countByparamCode(structuredDataId, paramCode);
 	}
 
 	/**

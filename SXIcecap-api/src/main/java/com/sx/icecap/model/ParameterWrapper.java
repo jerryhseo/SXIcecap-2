@@ -56,7 +56,7 @@ public class ParameterWrapper
 		attributes.put("statusByUserName", getStatusByUserName());
 		attributes.put("statusDate", getStatusDate());
 		attributes.put("lastPublishDate", getLastPublishDate());
-		attributes.put("paramName", getParamName());
+		attributes.put("paramCode", getParamCode());
 		attributes.put("paramVersion", getParamVersion());
 		attributes.put("paramType", getParamType());
 		attributes.put("displayName", getDisplayName());
@@ -149,10 +149,10 @@ public class ParameterWrapper
 			setLastPublishDate(lastPublishDate);
 		}
 
-		String paramName = (String)attributes.get("paramName");
+		String paramCode = (String)attributes.get("paramCode");
 
-		if (paramName != null) {
-			setParamName(paramName);
+		if (paramCode != null) {
+			setParamCode(paramCode);
 		}
 
 		String paramVersion = (String)attributes.get("paramVersion");
@@ -417,6 +417,16 @@ public class ParameterWrapper
 	}
 
 	/**
+	 * Returns the param code of this parameter.
+	 *
+	 * @return the param code of this parameter
+	 */
+	@Override
+	public String getParamCode() {
+		return model.getParamCode();
+	}
+
+	/**
 	 * Returns the parameter ID of this parameter.
 	 *
 	 * @return the parameter ID of this parameter
@@ -424,16 +434,6 @@ public class ParameterWrapper
 	@Override
 	public long getParameterId() {
 		return model.getParameterId();
-	}
-
-	/**
-	 * Returns the param name of this parameter.
-	 *
-	 * @return the param name of this parameter
-	 */
-	@Override
-	public String getParamName() {
-		return model.getParamName();
 	}
 
 	/**
@@ -1019,6 +1019,16 @@ public class ParameterWrapper
 	}
 
 	/**
+	 * Sets the param code of this parameter.
+	 *
+	 * @param paramCode the param code of this parameter
+	 */
+	@Override
+	public void setParamCode(String paramCode) {
+		model.setParamCode(paramCode);
+	}
+
+	/**
 	 * Sets the parameter ID of this parameter.
 	 *
 	 * @param parameterId the parameter ID of this parameter
@@ -1026,16 +1036,6 @@ public class ParameterWrapper
 	@Override
 	public void setParameterId(long parameterId) {
 		model.setParameterId(parameterId);
-	}
-
-	/**
-	 * Sets the param name of this parameter.
-	 *
-	 * @param paramName the param name of this parameter
-	 */
-	@Override
-	public void setParamName(String paramName) {
-		model.setParamName(paramName);
 	}
 
 	/**

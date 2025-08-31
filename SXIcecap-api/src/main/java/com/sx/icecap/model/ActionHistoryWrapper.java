@@ -47,7 +47,7 @@ public class ActionHistoryWrapper
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("structuredDataId", getStructuredDataId());
-		attributes.put("paramName", getParamName());
+		attributes.put("paramCode", getParamCode());
 		attributes.put("prevValue", getPrevValue());
 		attributes.put("changedValue", getChangedValue());
 		attributes.put("action", getAction());
@@ -88,10 +88,10 @@ public class ActionHistoryWrapper
 			setStructuredDataId(structuredDataId);
 		}
 
-		String paramName = (String)attributes.get("paramName");
+		String paramCode = (String)attributes.get("paramCode");
 
-		if (paramName != null) {
-			setParamName(paramName);
+		if (paramCode != null) {
+			setParamCode(paramCode);
 		}
 
 		String prevValue = (String)attributes.get("prevValue");
@@ -170,13 +170,13 @@ public class ActionHistoryWrapper
 	}
 
 	/**
-	 * Returns the param name of this action history.
+	 * Returns the param code of this action history.
 	 *
-	 * @return the param name of this action history
+	 * @return the param code of this action history
 	 */
 	@Override
-	public String getParamName() {
-		return model.getParamName();
+	public String getParamCode() {
+		return model.getParamCode();
 	}
 
 	/**
@@ -295,13 +295,13 @@ public class ActionHistoryWrapper
 	}
 
 	/**
-	 * Sets the param name of this action history.
+	 * Sets the param code of this action history.
 	 *
-	 * @param paramName the param name of this action history
+	 * @param paramCode the param code of this action history
 	 */
 	@Override
-	public void setParamName(String paramName) {
-		model.setParamName(paramName);
+	public void setParamCode(String paramCode) {
+		model.setParamCode(paramCode);
 	}
 
 	/**

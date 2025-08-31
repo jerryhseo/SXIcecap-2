@@ -56,7 +56,7 @@ public class DataCollectionWrapper
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
 		attributes.put("statusDate", getStatusDate());
-		attributes.put("dataCollectionName", getDataCollectionName());
+		attributes.put("dataCollectionCode", getDataCollectionCode());
 		attributes.put("dataCollectionVersion", getDataCollectionVersion());
 		attributes.put("displayName", getDisplayName());
 		attributes.put("description", getDescription());
@@ -144,11 +144,11 @@ public class DataCollectionWrapper
 			setStatusDate(statusDate);
 		}
 
-		String dataCollectionName = (String)attributes.get(
-			"dataCollectionName");
+		String dataCollectionCode = (String)attributes.get(
+			"dataCollectionCode");
 
-		if (dataCollectionName != null) {
-			setDataCollectionName(dataCollectionName);
+		if (dataCollectionCode != null) {
+			setDataCollectionCode(dataCollectionCode);
 		}
 
 		String dataCollectionVersion = (String)attributes.get(
@@ -197,6 +197,16 @@ public class DataCollectionWrapper
 	}
 
 	/**
+	 * Returns the data collection code of this data collection.
+	 *
+	 * @return the data collection code of this data collection
+	 */
+	@Override
+	public String getDataCollectionCode() {
+		return model.getDataCollectionCode();
+	}
+
+	/**
 	 * Returns the data collection ID of this data collection.
 	 *
 	 * @return the data collection ID of this data collection
@@ -204,16 +214,6 @@ public class DataCollectionWrapper
 	@Override
 	public long getDataCollectionId() {
 		return model.getDataCollectionId();
-	}
-
-	/**
-	 * Returns the data collection name of this data collection.
-	 *
-	 * @return the data collection name of this data collection
-	 */
-	@Override
-	public String getDataCollectionName() {
-		return model.getDataCollectionName();
 	}
 
 	/**
@@ -698,6 +698,16 @@ public class DataCollectionWrapper
 	}
 
 	/**
+	 * Sets the data collection code of this data collection.
+	 *
+	 * @param dataCollectionCode the data collection code of this data collection
+	 */
+	@Override
+	public void setDataCollectionCode(String dataCollectionCode) {
+		model.setDataCollectionCode(dataCollectionCode);
+	}
+
+	/**
 	 * Sets the data collection ID of this data collection.
 	 *
 	 * @param dataCollectionId the data collection ID of this data collection
@@ -705,16 +715,6 @@ public class DataCollectionWrapper
 	@Override
 	public void setDataCollectionId(long dataCollectionId) {
 		model.setDataCollectionId(dataCollectionId);
-	}
-
-	/**
-	 * Sets the data collection name of this data collection.
-	 *
-	 * @param dataCollectionName the data collection name of this data collection
-	 */
-	@Override
-	public void setDataCollectionName(String dataCollectionName) {
-		model.setDataCollectionName(dataCollectionName);
 	}
 
 	/**

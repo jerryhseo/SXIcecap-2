@@ -32,15 +32,19 @@ public class TypeStructureLinkSoap implements Serializable {
 		TypeStructureLinkSoap soapModel = new TypeStructureLinkSoap();
 
 		soapModel.setDataTypeId(model.getDataTypeId());
+		soapModel.setUserId(model.getUserId());
+		soapModel.setGroupId(model.getGroupId());
 		soapModel.setDataStructureId(model.getDataStructureId());
 		soapModel.setCommentable(model.isCommentable());
 		soapModel.setVerifiable(model.isVerifiable());
 		soapModel.setFreezable(model.isFreezable());
 		soapModel.setFreezed(model.isFreezed());
 		soapModel.setFreezedUserId(model.getFreezedUserId());
+		soapModel.setFreezedUserName(model.getFreezedUserName());
 		soapModel.setFreezedDate(model.getFreezedDate());
 		soapModel.setVerified(model.isVerified());
 		soapModel.setVerifiedUserId(model.getVerifiedUserId());
+		soapModel.setVerifiedUserName(model.getVerifiedUserName());
 		soapModel.setVerifiedDate(model.getVerifiedDate());
 		soapModel.setInputStatus(model.isInputStatus());
 		soapModel.setJumpTo(model.isJumpTo());
@@ -113,6 +117,22 @@ public class TypeStructureLinkSoap implements Serializable {
 		_dataTypeId = dataTypeId;
 	}
 
+	public long getUserId() {
+		return _userId;
+	}
+
+	public void setUserId(long userId) {
+		_userId = userId;
+	}
+
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
+	}
+
 	public long getDataStructureId() {
 		return _dataStructureId;
 	}
@@ -177,6 +197,14 @@ public class TypeStructureLinkSoap implements Serializable {
 		_freezedUserId = freezedUserId;
 	}
 
+	public String getFreezedUserName() {
+		return _freezedUserName;
+	}
+
+	public void setFreezedUserName(String freezedUserName) {
+		_freezedUserName = freezedUserName;
+	}
+
 	public Date getFreezedDate() {
 		return _freezedDate;
 	}
@@ -203,6 +231,14 @@ public class TypeStructureLinkSoap implements Serializable {
 
 	public void setVerifiedUserId(long verifiedUserId) {
 		_verifiedUserId = verifiedUserId;
+	}
+
+	public String getVerifiedUserName() {
+		return _verifiedUserName;
+	}
+
+	public void setVerifiedUserName(String verifiedUserName) {
+		_verifiedUserName = verifiedUserName;
 	}
 
 	public Date getVerifiedDate() {
@@ -238,15 +274,19 @@ public class TypeStructureLinkSoap implements Serializable {
 	}
 
 	private long _dataTypeId;
+	private long _userId;
+	private long _groupId;
 	private long _dataStructureId;
 	private boolean _commentable;
 	private boolean _verifiable;
 	private boolean _freezable;
 	private boolean _freezed;
 	private long _freezedUserId;
+	private String _freezedUserName;
 	private Date _freezedDate;
 	private boolean _verified;
 	private long _verifiedUserId;
+	private String _verifiedUserName;
 	private Date _verifiedDate;
 	private boolean _inputStatus;
 	private boolean _jumpTo;

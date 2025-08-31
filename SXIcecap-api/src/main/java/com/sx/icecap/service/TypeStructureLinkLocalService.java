@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -63,9 +64,11 @@ public interface TypeStructureLinkLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public TypeStructureLink addTypeDataStructureLink(
-		long dataTypeId, long dataStructureId, boolean commentable,
-		boolean verifiable, boolean freezable, boolean verified,
-		long verifiedUserId, boolean freezed, long freezedUserId);
+			long dataTypeId, long dataStructureId, boolean commentable,
+			boolean verifiable, boolean freezable, boolean verified,
+			boolean freezed, boolean inputStatus, boolean jumpTo,
+			ServiceContext sc)
+		throws PortalException;
 
 	/**
 	 * Adds the type structure link to the database. Also notifies the appropriate model listeners.
@@ -80,6 +83,10 @@ public interface TypeStructureLinkLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public TypeStructureLink addTypeStructureLink(
 		TypeStructureLink typeStructureLink);
+
+	public int countTypeStructureLinkByGroup(long groupId);
+
+	public int countTypeStructureLinkByUser(long userId);
 
 	/**
 	 * Creates a new type structure link with the primary key. Does not add the type structure link to the database.
@@ -195,6 +202,11 @@ public interface TypeStructureLinkLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TypeStructureLink fetchTypeStructureLink(long dataTypeId);
 
+	@Indexable(type = IndexableType.REINDEX)
+	public TypeStructureLink freezeLink(
+			long dataTypeId, long userId, boolean freeze)
+		throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -227,6 +239,20 @@ public interface TypeStructureLinkLocalService
 	public TypeStructureLink getTypeStructureLink(long dataTypeId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TypeStructureLink> getTypeStructureLinkByGroup(long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TypeStructureLink> getTypeStructureLinkByGroup(
+		long groupId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TypeStructureLink> getTypeStructureLinkByUser(long userId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TypeStructureLink> getTypeStructureLinkByUser(
+		long userId, int start, int end);
+
 	/**
 	 * Returns a range of all the type structure links.
 	 *
@@ -257,7 +283,8 @@ public interface TypeStructureLinkLocalService
 	public TypeStructureLink updateTypeDataStructureLink(
 			long dataTypeId, long dataStructureId, boolean commentable,
 			boolean verifiable, boolean freezable, boolean verified,
-			long verifiedUserId, boolean freezed, long freezedUserId)
+			boolean freezed, boolean inputStatus, boolean jumpTo,
+			ServiceContext sc)
 		throws PortalException;
 
 	/**
@@ -273,5 +300,10 @@ public interface TypeStructureLinkLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public TypeStructureLink updateTypeStructureLink(
 		TypeStructureLink typeStructureLink);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public TypeStructureLink verifyLink(
+			long dataTypeId, long userId, boolean veryfication)
+		throws PortalException;
 
 }

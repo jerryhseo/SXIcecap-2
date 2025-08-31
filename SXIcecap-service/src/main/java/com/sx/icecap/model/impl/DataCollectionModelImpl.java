@@ -93,7 +93,7 @@ public class DataCollectionModelImpl
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"lastPublishDate", Types.TIMESTAMP}, {"status", Types.INTEGER},
 		{"statusByUserId", Types.BIGINT}, {"statusByUserName", Types.VARCHAR},
-		{"statusDate", Types.TIMESTAMP}, {"dataCollectionName", Types.VARCHAR},
+		{"statusDate", Types.TIMESTAMP}, {"dataCollectionCode", Types.VARCHAR},
 		{"dataCollectionVersion", Types.VARCHAR},
 		{"displayName", Types.VARCHAR}, {"description", Types.VARCHAR}
 	};
@@ -115,14 +115,14 @@ public class DataCollectionModelImpl
 		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("dataCollectionName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("dataCollectionCode", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("dataCollectionVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataCollection (uuid_ VARCHAR(75) null,dataCollectionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionName VARCHAR(75) null,dataCollectionVersion VARCHAR(75) null,displayName STRING null,description STRING null)";
+		"create table SX_ICECAP_DataCollection (uuid_ VARCHAR(75) null,dataCollectionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionCode VARCHAR(75) null,dataCollectionVersion VARCHAR(75) null,displayName STRING null,description STRING null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_DataCollection";
@@ -141,7 +141,7 @@ public class DataCollectionModelImpl
 
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
-	public static final long DATACOLLECTIONNAME_COLUMN_BITMASK = 2L;
+	public static final long DATACOLLECTIONCODE_COLUMN_BITMASK = 2L;
 
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
@@ -187,7 +187,7 @@ public class DataCollectionModelImpl
 		model.setStatusByUserId(soapModel.getStatusByUserId());
 		model.setStatusByUserName(soapModel.getStatusByUserName());
 		model.setStatusDate(soapModel.getStatusDate());
-		model.setDataCollectionName(soapModel.getDataCollectionName());
+		model.setDataCollectionCode(soapModel.getDataCollectionCode());
 		model.setDataCollectionVersion(soapModel.getDataCollectionVersion());
 		model.setDisplayName(soapModel.getDisplayName());
 		model.setDescription(soapModel.getDescription());
@@ -381,11 +381,11 @@ public class DataCollectionModelImpl
 			"statusDate",
 			(BiConsumer<DataCollection, Date>)DataCollection::setStatusDate);
 		attributeGetterFunctions.put(
-			"dataCollectionName", DataCollection::getDataCollectionName);
+			"dataCollectionCode", DataCollection::getDataCollectionCode);
 		attributeSetterBiConsumers.put(
-			"dataCollectionName",
+			"dataCollectionCode",
 			(BiConsumer<DataCollection, String>)
-				DataCollection::setDataCollectionName);
+				DataCollection::setDataCollectionCode);
 		attributeGetterFunctions.put(
 			"dataCollectionVersion", DataCollection::getDataCollectionVersion);
 		attributeSetterBiConsumers.put(
@@ -665,28 +665,28 @@ public class DataCollectionModelImpl
 
 	@JSON
 	@Override
-	public String getDataCollectionName() {
-		if (_dataCollectionName == null) {
+	public String getDataCollectionCode() {
+		if (_dataCollectionCode == null) {
 			return "";
 		}
 		else {
-			return _dataCollectionName;
+			return _dataCollectionCode;
 		}
 	}
 
 	@Override
-	public void setDataCollectionName(String dataCollectionName) {
-		_columnBitmask |= DATACOLLECTIONNAME_COLUMN_BITMASK;
+	public void setDataCollectionCode(String dataCollectionCode) {
+		_columnBitmask |= DATACOLLECTIONCODE_COLUMN_BITMASK;
 
-		if (_originalDataCollectionName == null) {
-			_originalDataCollectionName = _dataCollectionName;
+		if (_originalDataCollectionCode == null) {
+			_originalDataCollectionCode = _dataCollectionCode;
 		}
 
-		_dataCollectionName = dataCollectionName;
+		_dataCollectionCode = dataCollectionCode;
 	}
 
-	public String getOriginalDataCollectionName() {
-		return GetterUtil.getString(_originalDataCollectionName);
+	public String getOriginalDataCollectionCode() {
+		return GetterUtil.getString(_originalDataCollectionCode);
 	}
 
 	@JSON
@@ -1291,7 +1291,7 @@ public class DataCollectionModelImpl
 		dataCollectionImpl.setStatusByUserId(getStatusByUserId());
 		dataCollectionImpl.setStatusByUserName(getStatusByUserName());
 		dataCollectionImpl.setStatusDate(getStatusDate());
-		dataCollectionImpl.setDataCollectionName(getDataCollectionName());
+		dataCollectionImpl.setDataCollectionCode(getDataCollectionCode());
 		dataCollectionImpl.setDataCollectionVersion(getDataCollectionVersion());
 		dataCollectionImpl.setDisplayName(getDisplayName());
 		dataCollectionImpl.setDescription(getDescription());
@@ -1375,7 +1375,7 @@ public class DataCollectionModelImpl
 
 		_setOriginalStatus = false;
 
-		_originalDataCollectionName = _dataCollectionName;
+		_originalDataCollectionCode = _dataCollectionCode;
 
 		_columnBitmask = 0;
 	}
@@ -1458,14 +1458,14 @@ public class DataCollectionModelImpl
 			dataCollectionCacheModel.statusDate = Long.MIN_VALUE;
 		}
 
-		dataCollectionCacheModel.dataCollectionName = getDataCollectionName();
+		dataCollectionCacheModel.dataCollectionCode = getDataCollectionCode();
 
-		String dataCollectionName = dataCollectionCacheModel.dataCollectionName;
+		String dataCollectionCode = dataCollectionCacheModel.dataCollectionCode;
 
-		if ((dataCollectionName != null) &&
-			(dataCollectionName.length() == 0)) {
+		if ((dataCollectionCode != null) &&
+			(dataCollectionCode.length() == 0)) {
 
-			dataCollectionCacheModel.dataCollectionName = null;
+			dataCollectionCacheModel.dataCollectionCode = null;
 		}
 
 		dataCollectionCacheModel.dataCollectionVersion =
@@ -1614,8 +1614,8 @@ public class DataCollectionModelImpl
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private String _dataCollectionName;
-	private String _originalDataCollectionName;
+	private String _dataCollectionCode;
+	private String _originalDataCollectionCode;
 	private String _dataCollectionVersion;
 	private String _displayName;
 	private String _displayNameCurrentLanguageId;

@@ -1721,199 +1721,199 @@ public interface DataSetPersistence extends BasePersistence<DataSet> {
 	public int filterCountByG_U_S(long groupId, long userId, int status);
 
 	/**
-	 * Returns all the data sets where dataSetName = &#63;.
+	 * Returns all the data sets where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @return the matching data sets
 	 */
-	public java.util.List<DataSet> findByName(String dataSetName);
+	public java.util.List<DataSet> findByCode(String dataSetCode);
 
 	/**
-	 * Returns a range of all the data sets where dataSetName = &#63;.
+	 * Returns a range of all the data sets where dataSetCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param start the lower bound of the range of data sets
 	 * @param end the upper bound of the range of data sets (not inclusive)
 	 * @return the range of matching data sets
 	 */
-	public java.util.List<DataSet> findByName(
-		String dataSetName, int start, int end);
+	public java.util.List<DataSet> findByCode(
+		String dataSetCode, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the data sets where dataSetName = &#63;.
+	 * Returns an ordered range of all the data sets where dataSetCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param start the lower bound of the range of data sets
 	 * @param end the upper bound of the range of data sets (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data sets
 	 */
-	public java.util.List<DataSet> findByName(
-		String dataSetName, int start, int end,
+	public java.util.List<DataSet> findByCode(
+		String dataSetCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DataSet>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the data sets where dataSetName = &#63;.
+	 * Returns an ordered range of all the data sets where dataSetCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param start the lower bound of the range of data sets
 	 * @param end the upper bound of the range of data sets (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching data sets
 	 */
-	public java.util.List<DataSet> findByName(
-		String dataSetName, int start, int end,
+	public java.util.List<DataSet> findByCode(
+		String dataSetCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DataSet>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first data set in the ordered set where dataSetName = &#63;.
+	 * Returns the first data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data set
 	 * @throws NoSuchDataSetException if a matching data set could not be found
 	 */
-	public DataSet findByName_First(
-			String dataSetName,
+	public DataSet findByCode_First(
+			String dataSetCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataSet>
 				orderByComparator)
 		throws NoSuchDataSetException;
 
 	/**
-	 * Returns the first data set in the ordered set where dataSetName = &#63;.
+	 * Returns the first data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data set, or <code>null</code> if a matching data set could not be found
 	 */
-	public DataSet fetchByName_First(
-		String dataSetName,
+	public DataSet fetchByCode_First(
+		String dataSetCode,
 		com.liferay.portal.kernel.util.OrderByComparator<DataSet>
 			orderByComparator);
 
 	/**
-	 * Returns the last data set in the ordered set where dataSetName = &#63;.
+	 * Returns the last data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data set
 	 * @throws NoSuchDataSetException if a matching data set could not be found
 	 */
-	public DataSet findByName_Last(
-			String dataSetName,
+	public DataSet findByCode_Last(
+			String dataSetCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataSet>
 				orderByComparator)
 		throws NoSuchDataSetException;
 
 	/**
-	 * Returns the last data set in the ordered set where dataSetName = &#63;.
+	 * Returns the last data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data set, or <code>null</code> if a matching data set could not be found
 	 */
-	public DataSet fetchByName_Last(
-		String dataSetName,
+	public DataSet fetchByCode_Last(
+		String dataSetCode,
 		com.liferay.portal.kernel.util.OrderByComparator<DataSet>
 			orderByComparator);
 
 	/**
-	 * Returns the data sets before and after the current data set in the ordered set where dataSetName = &#63;.
+	 * Returns the data sets before and after the current data set in the ordered set where dataSetCode = &#63;.
 	 *
 	 * @param dataSetId the primary key of the current data set
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data set
 	 * @throws NoSuchDataSetException if a data set with the primary key could not be found
 	 */
-	public DataSet[] findByName_PrevAndNext(
-			long dataSetId, String dataSetName,
+	public DataSet[] findByCode_PrevAndNext(
+			long dataSetId, String dataSetCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataSet>
 				orderByComparator)
 		throws NoSuchDataSetException;
 
 	/**
-	 * Removes all the data sets where dataSetName = &#63; from the database.
+	 * Removes all the data sets where dataSetCode = &#63; from the database.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 */
-	public void removeByName(String dataSetName);
+	public void removeByCode(String dataSetCode);
 
 	/**
-	 * Returns the number of data sets where dataSetName = &#63;.
+	 * Returns the number of data sets where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @return the number of matching data sets
 	 */
-	public int countByName(String dataSetName);
+	public int countByCode(String dataSetCode);
 
 	/**
-	 * Returns the data set where dataSetName = &#63; and dataSetVersion = &#63; or throws a <code>NoSuchDataSetException</code> if it could not be found.
+	 * Returns the data set where dataSetCode = &#63; and dataSetVersion = &#63; or throws a <code>NoSuchDataSetException</code> if it could not be found.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the matching data set
 	 * @throws NoSuchDataSetException if a matching data set could not be found
 	 */
-	public DataSet findByNameVersion(String dataSetName, String dataSetVersion)
+	public DataSet findByCodeVersion(String dataSetCode, String dataSetVersion)
 		throws NoSuchDataSetException;
 
 	/**
-	 * Returns the data set where dataSetName = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the data set where dataSetCode = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the matching data set, or <code>null</code> if a matching data set could not be found
 	 */
-	public DataSet fetchByNameVersion(
-		String dataSetName, String dataSetVersion);
+	public DataSet fetchByCodeVersion(
+		String dataSetCode, String dataSetVersion);
 
 	/**
-	 * Returns the data set where dataSetName = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the data set where dataSetCode = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching data set, or <code>null</code> if a matching data set could not be found
 	 */
-	public DataSet fetchByNameVersion(
-		String dataSetName, String dataSetVersion, boolean useFinderCache);
+	public DataSet fetchByCodeVersion(
+		String dataSetCode, String dataSetVersion, boolean useFinderCache);
 
 	/**
-	 * Removes the data set where dataSetName = &#63; and dataSetVersion = &#63; from the database.
+	 * Removes the data set where dataSetCode = &#63; and dataSetVersion = &#63; from the database.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the data set that was removed
 	 */
-	public DataSet removeByNameVersion(
-			String dataSetName, String dataSetVersion)
+	public DataSet removeByCodeVersion(
+			String dataSetCode, String dataSetVersion)
 		throws NoSuchDataSetException;
 
 	/**
-	 * Returns the number of data sets where dataSetName = &#63; and dataSetVersion = &#63;.
+	 * Returns the number of data sets where dataSetCode = &#63; and dataSetVersion = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the number of matching data sets
 	 */
-	public int countByNameVersion(String dataSetName, String dataSetVersion);
+	public int countByCodeVersion(String dataSetCode, String dataSetVersion);
 
 	/**
 	 * Caches the data set in the entity cache if it is enabled.

@@ -35,13 +35,15 @@ public class TypeStructureLinkLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.TypeStructureLink addTypeDataStructureLink(
-		long dataTypeId, long dataStructureId, boolean commentable,
-		boolean verifiable, boolean freezable, boolean verified,
-		long verifiedUserId, boolean freezed, long freezedUserId) {
+			long dataTypeId, long dataStructureId, boolean commentable,
+			boolean verifiable, boolean freezable, boolean verified,
+			boolean freezed, boolean inputStatus, boolean jumpTo,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _typeStructureLinkLocalService.addTypeDataStructureLink(
 			dataTypeId, dataStructureId, commentable, verifiable, freezable,
-			verified, verifiedUserId, freezed, freezedUserId);
+			verified, freezed, inputStatus, jumpTo, sc);
 	}
 
 	/**
@@ -60,6 +62,18 @@ public class TypeStructureLinkLocalServiceWrapper
 
 		return _typeStructureLinkLocalService.addTypeStructureLink(
 			typeStructureLink);
+	}
+
+	@Override
+	public int countTypeStructureLinkByGroup(long groupId) {
+		return _typeStructureLinkLocalService.countTypeStructureLinkByGroup(
+			groupId);
+	}
+
+	@Override
+	public int countTypeStructureLinkByUser(long userId) {
+		return _typeStructureLinkLocalService.countTypeStructureLinkByUser(
+			userId);
 	}
 
 	/**
@@ -226,6 +240,15 @@ public class TypeStructureLinkLocalServiceWrapper
 	}
 
 	@Override
+	public com.sx.icecap.model.TypeStructureLink freezeLink(
+			long dataTypeId, long userId, boolean freeze)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _typeStructureLinkLocalService.freezeLink(
+			dataTypeId, userId, freeze);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -276,6 +299,38 @@ public class TypeStructureLinkLocalServiceWrapper
 		return _typeStructureLinkLocalService.getTypeStructureLink(dataTypeId);
 	}
 
+	@Override
+	public java.util.List<com.sx.icecap.model.TypeStructureLink>
+		getTypeStructureLinkByGroup(long groupId) {
+
+		return _typeStructureLinkLocalService.getTypeStructureLinkByGroup(
+			groupId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.TypeStructureLink>
+		getTypeStructureLinkByGroup(long groupId, int start, int end) {
+
+		return _typeStructureLinkLocalService.getTypeStructureLinkByGroup(
+			groupId, start, end);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.TypeStructureLink>
+		getTypeStructureLinkByUser(long userId) {
+
+		return _typeStructureLinkLocalService.getTypeStructureLinkByUser(
+			userId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.TypeStructureLink>
+		getTypeStructureLinkByUser(long userId, int start, int end) {
+
+		return _typeStructureLinkLocalService.getTypeStructureLinkByUser(
+			userId, start, end);
+	}
+
 	/**
 	 * Returns a range of all the type structure links.
 	 *
@@ -317,12 +372,13 @@ public class TypeStructureLinkLocalServiceWrapper
 	public com.sx.icecap.model.TypeStructureLink updateTypeDataStructureLink(
 			long dataTypeId, long dataStructureId, boolean commentable,
 			boolean verifiable, boolean freezable, boolean verified,
-			long verifiedUserId, boolean freezed, long freezedUserId)
+			boolean freezed, boolean inputStatus, boolean jumpTo,
+			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _typeStructureLinkLocalService.updateTypeDataStructureLink(
 			dataTypeId, dataStructureId, commentable, verifiable, freezable,
-			verified, verifiedUserId, freezed, freezedUserId);
+			verified, freezed, inputStatus, jumpTo, sc);
 	}
 
 	/**
@@ -341,6 +397,15 @@ public class TypeStructureLinkLocalServiceWrapper
 
 		return _typeStructureLinkLocalService.updateTypeStructureLink(
 			typeStructureLink);
+	}
+
+	@Override
+	public com.sx.icecap.model.TypeStructureLink verifyLink(
+			long dataTypeId, long userId, boolean veryfication)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _typeStructureLinkLocalService.verifyLink(
+			dataTypeId, userId, veryfication);
 	}
 
 	@Override

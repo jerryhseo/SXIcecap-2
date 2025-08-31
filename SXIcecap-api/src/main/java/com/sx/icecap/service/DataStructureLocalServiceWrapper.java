@@ -52,7 +52,7 @@ public class DataStructureLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataStructure addDataStructure(
-			String dataStructureName, String dataStructureVersion,
+			String dataStructureCode, String dataStructureVersion,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap,
 			String structure, int status,
@@ -60,24 +60,8 @@ public class DataStructureLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataStructureLocalService.addDataStructure(
-			dataStructureName, dataStructureVersion, displayNameMap,
+			dataStructureCode, dataStructureVersion, displayNameMap,
 			descriptionMap, structure, status, sc);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.json.JSONArray convertListToJSONArray(
-			java.util.List<com.sx.icecap.model.DataStructure> list)
-		throws com.liferay.portal.kernel.json.JSONException {
-
-		return _dataStructureLocalService.convertListToJSONArray(list);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.json.JSONObject convertModelToJSONObject(
-			com.sx.icecap.model.DataStructure structure)
-		throws com.liferay.portal.kernel.json.JSONException {
-
-		return _dataStructureLocalService.convertModelToJSONObject(structure);
 	}
 
 	/**
@@ -260,6 +244,13 @@ public class DataStructureLocalServiceWrapper
 		return _dataStructureLocalService.getActionableDynamicQuery();
 	}
 
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getAllDataStructures() {
+
+		return _dataStructureLocalService.getAllDataStructures();
+	}
+
 	/**
 	 * Returns the data structure with the primary key.
 	 *
@@ -428,7 +419,7 @@ public class DataStructureLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataStructure updateDataStructure(
-			long dataStructureId, String dataStructureName,
+			long dataStructureId, String dataStructureCode,
 			String dataStructureVersion,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap,
@@ -437,7 +428,7 @@ public class DataStructureLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataStructureLocalService.updateDataStructure(
-			dataStructureId, dataStructureName, dataStructureVersion,
+			dataStructureId, dataStructureCode, dataStructureVersion,
 			displayNameMap, descriptionMap, structure, status, sc);
 	}
 

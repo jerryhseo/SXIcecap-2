@@ -62,20 +62,20 @@ public class DataTypeLocalServiceUtil {
 	}
 
 	public static DataType addDataType(
-			String dataTypeName, String dataTypeVersion, String extension,
+			String dataTypeCode, String dataTypeVersion, String extension,
 			Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap,
-			Map<java.util.Locale, String> tooltipMap, long dataStructureId,
-			int status, com.liferay.portal.kernel.service.ServiceContext sc)
+			Map<java.util.Locale, String> tooltipMap, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().addDataType(
-			dataTypeName, dataTypeVersion, extension, displayNameMap,
-			descriptionMap, tooltipMap, dataStructureId, status, sc);
+			dataTypeCode, dataTypeVersion, extension, displayNameMap,
+			descriptionMap, tooltipMap, status, sc);
 	}
 
-	public static boolean checkDataTypeNameUnique(String paramName) {
-		return getService().checkDataTypeNameUnique(paramName);
+	public static boolean checkDataTypeCodeUnique(String paramCode) {
+		return getService().checkDataTypeCodeUnique(paramCode);
 	}
 
 	public static int countAllDataTypes() {
@@ -88,6 +88,10 @@ public class DataTypeLocalServiceUtil {
 
 	public static int countDataTypes(long groupId, long userId, int status) {
 		return getService().countDataTypes(groupId, userId, status);
+	}
+
+	public static int countDataTypesByCode(String dataTypeCode) {
+		return getService().countDataTypesByCode(dataTypeCode);
 	}
 
 	public static int countDataTypesByG_S(long groupId, int status) {
@@ -304,16 +308,16 @@ public class DataTypeLocalServiceUtil {
 	}
 
 	public static long getDataFileFolderId(
-			long repositoryId, long parentFoderId, String dataTypeName,
-			String dataTypeVersion, long dataId, String paramName,
+			long repositoryId, long parentFoderId, String dataTypeCode,
+			String dataTypeVersion, long dataId, String paramCode,
 			String paramVersion,
 			com.liferay.portal.kernel.service.ServiceContext sc,
 			boolean createWhenNoExist)
 		throws PortalException {
 
 		return getService().getDataFileFolderId(
-			repositoryId, parentFoderId, dataTypeName, dataTypeVersion, dataId,
-			paramName, paramVersion, sc, createWhenNoExist);
+			repositoryId, parentFoderId, dataTypeCode, dataTypeVersion, dataId,
+			paramCode, paramVersion, sc, createWhenNoExist);
 	}
 
 	/**
@@ -325,6 +329,13 @@ public class DataTypeLocalServiceUtil {
 	 */
 	public static DataType getDataType(long dataTypeId) throws PortalException {
 		return getService().getDataType(dataTypeId);
+	}
+
+	public static DataType getDataType(
+			String dataTypeCode, String dataTypeVersion)
+		throws com.sx.icecap.exception.NoSuchDataTypeException {
+
+		return getService().getDataType(dataTypeCode, dataTypeVersion);
 	}
 
 	/**
@@ -363,6 +374,10 @@ public class DataTypeLocalServiceUtil {
 
 		return getService().getDataTypes(
 			groupId, userId, status, start, end, orderCol, orderType);
+	}
+
+	public static List<DataType> getDataTypesByCode(String dataTypeCode) {
+		return getService().getDataTypesByCode(dataTypeCode);
 	}
 
 	public static List<DataType> getDataTypesByG_S(long groupId, int status) {
@@ -438,10 +453,6 @@ public class DataTypeLocalServiceUtil {
 
 		return getService().getDataTypesByGroupId(
 			groupId, start, end, comparator);
-	}
-
-	public static List<DataType> getDataTypesByName(String dataTypeName) {
-		return getService().getDataTypesByName(dataTypeName);
 	}
 
 	public static List<DataType> getDataTypesByStatus(int status) {
@@ -634,17 +645,16 @@ public class DataTypeLocalServiceUtil {
 	}
 
 	public static DataType updateDataType(
-			long dataTypeId, String dataTypeName, String dataTypeVersion,
+			long dataTypeId, String dataTypeCode, String dataTypeVersion,
 			String extension, Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap,
-			Map<java.util.Locale, String> tooltipMap, long dataStructureId,
-			int status, com.liferay.portal.kernel.service.ServiceContext sc)
+			Map<java.util.Locale, String> tooltipMap, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().updateDataType(
-			dataTypeId, dataTypeName, dataTypeVersion, extension,
-			displayNameMap, descriptionMap, tooltipMap, dataStructureId, status,
-			sc);
+			dataTypeId, dataTypeCode, dataTypeVersion, extension,
+			displayNameMap, descriptionMap, tooltipMap, status, sc);
 	}
 
 	public static DataType updateStatus(

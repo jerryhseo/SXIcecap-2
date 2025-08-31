@@ -48,7 +48,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 	
 	@Indexable(type = IndexableType.REINDEX)
 	public DataSet addDataSet(
-		String dataSetName,
+		String dataSetCode,
 		String dataSetVersion,
 		Map<Locale, String> displayNameMap,
 		Map<Locale, String> descriptionMap,
@@ -58,7 +58,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		long dataSetId = super.counterLocalService.increment();
 		DataSet dataSet = super.dataSetLocalService.createDataSet(dataSetId);
 		
-		dataSet.setDataSetName(dataSetName);
+		dataSet.setDataSetCode(dataSetCode);
 		dataSet.setDataSetVersion(dataSetVersion);
 		dataSet.setDisplayNameMap(displayNameMap, sc.getLocale());
 		dataSet.setDescriptionMap(descriptionMap, sc.getLocale());
@@ -116,7 +116,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 			dataSet.getCreateDate(),
 			null, 
 			ContentTypes.TEXT_HTML_UTF8, 
-			dataSet.getDataSetName(),
+			dataSet.getDataSetCode(),
 			null, 
 			null, 
 			null, 
@@ -138,7 +138,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 	@Indexable(type = IndexableType.REINDEX)
 	public DataSet updateDataSet(
 			long dataSetId, 
-			String dataSetName, 
+			String dataSetCode, 
 			String dataSetVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
@@ -146,7 +146,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 			ServiceContext sc) throws PortalException {
 		DataSet dataSet = super.dataSetPersistence.findByPrimaryKey(dataSetId);
 		
-		dataSet.setDataSetName(dataSetName);
+		dataSet.setDataSetCode(dataSetCode);
 		dataSet.setDataSetVersion(dataSetVersion);
 		dataSet.setDisplayNameMap(displayNameMap, sc.getLocale());
 		dataSet.setDescriptionMap(descriptionMap, sc.getLocale());
@@ -194,7 +194,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 				dataSet.getCreateDate(),
 				null, 
 				ContentTypes.TEXT_HTML_UTF8, 
-				dataSet.getDataSetName(),
+				dataSet.getDataSetCode(),
 				null, 
 				null,
 				null, 
@@ -421,20 +421,20 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		return super.dataSetPersistence.countByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
 	}
 	
-	public DataSet getDataSet( String dataSetName, String dataSetVersion ) throws NoSuchDataSetException {
-		return super.dataSetPersistence.findByNameVersion(dataSetName, dataSetVersion);
+	public DataSet getDataSet( String dataSetCode, String dataSetVersion ) throws NoSuchDataSetException {
+		return super.dataSetPersistence.findByCodeVersion(dataSetCode, dataSetVersion);
 	}
 	
-	public List<DataSet> getDataSetsByName( String dataSetName ){
-		return super.dataSetPersistence.findByName(dataSetName);
+	public List<DataSet> getDataSetsByCode( String dataSetCode ){
+		return super.dataSetPersistence.findByCode(dataSetCode);
 	}
-	public List<DataSet> getDataSetsByName( String dataSetName, int start, int end ){
-		return super.dataSetPersistence.findByName(dataSetName, start, end);
+	public List<DataSet> getDataSetsByCode( String dataSetCode, int start, int end ){
+		return super.dataSetPersistence.findByCode(dataSetCode, start, end);
 	}
-	public List<DataSet> getDataSetsByName( String dataSetName, int start, int end, OrderByComparator<DataSet> comparator ){
-		return super.dataSetPersistence.findByName(dataSetName, start, end, comparator);
+	public List<DataSet> getDataSetsByCode( String dataSetCode, int start, int end, OrderByComparator<DataSet> comparator ){
+		return super.dataSetPersistence.findByCode(dataSetCode, start, end, comparator);
 	}
-	public int countDataSetsByName( String dataSetName ){
-		return super.dataSetPersistence.countByName(dataSetName);
+	public int countDataSetsByCode( String dataSetCode ){
+		return super.dataSetPersistence.countByCode(dataSetCode);
 	}
 }

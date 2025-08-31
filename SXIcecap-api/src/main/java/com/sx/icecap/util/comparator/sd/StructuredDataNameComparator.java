@@ -21,8 +21,8 @@ public class StructuredDataNameComparator extends OrderByComparator<DataType> {
 
 	@Override
 	public int compare(DataType entry1, DataType entry2) {
-		String title1 = entry1.getDataTypeName();
-		String title2 = entry2.getDataTypeName();
+		String title1 = entry1.getDataTypeCode();
+		String title2 = entry2.getDataTypeCode();
 
 		int value = title1.compareTo(title2);
 

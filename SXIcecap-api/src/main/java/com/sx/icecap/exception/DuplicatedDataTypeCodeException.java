@@ -18,20 +18,20 @@ import com.liferay.portal.kernel.exception.PortalException;
 /**
  * @author Brian Wing Shun Chan
  */
-public class InvalidDataTypeNameException extends PortalException {
+public class DuplicatedDataTypeCodeException extends PortalException {
 
-	public InvalidDataTypeNameException() {
+	public DuplicatedDataTypeCodeException() {
 	}
 
-	public InvalidDataTypeNameException(String msg) {
+	public DuplicatedDataTypeCodeException(String msg) {
 		super(msg);
 	}
 
-	public InvalidDataTypeNameException(String msg, Throwable throwable) {
+	public DuplicatedDataTypeCodeException(String msg, Throwable throwable) {
 		super(msg, throwable);
 	}
 
-	public InvalidDataTypeNameException(Throwable throwable) {
+	public DuplicatedDataTypeCodeException(Throwable throwable) {
 		super(throwable);
 	}
 

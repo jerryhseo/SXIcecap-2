@@ -85,7 +85,7 @@ public interface ParameterLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public Parameter addParameter(
-			String paramType, String paramName, String paramVersion,
+			String paramType, String paramCode, String paramVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap, Map<Locale, String> tooltipMap,
 			String synonyms, String typeProperties, boolean standard,
@@ -322,7 +322,7 @@ public interface ParameterLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public Parameter updateParameter(
-			long parameterId, String paramType, String paramName,
+			long parameterId, String paramType, String paramCode,
 			String paramVersion, Map<Locale, String> displayNameMap,
 			Map<Locale, String> definitionMap, Map<Locale, String> tooltipMap,
 			String synonyms, String typeProperties, boolean standard,

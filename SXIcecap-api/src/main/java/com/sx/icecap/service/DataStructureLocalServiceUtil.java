@@ -62,29 +62,15 @@ public class DataStructureLocalServiceUtil {
 	}
 
 	public static DataStructure addDataStructure(
-			String dataStructureName, String dataStructureVersion,
+			String dataStructureCode, String dataStructureVersion,
 			Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap, String structure,
 			int status, com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().addDataStructure(
-			dataStructureName, dataStructureVersion, displayNameMap,
+			dataStructureCode, dataStructureVersion, displayNameMap,
 			descriptionMap, structure, status, sc);
-	}
-
-	public static com.liferay.portal.kernel.json.JSONArray
-			convertListToJSONArray(List<DataStructure> list)
-		throws com.liferay.portal.kernel.json.JSONException {
-
-		return getService().convertListToJSONArray(list);
-	}
-
-	public static com.liferay.portal.kernel.json.JSONObject
-			convertModelToJSONObject(DataStructure structure)
-		throws com.liferay.portal.kernel.json.JSONException {
-
-		return getService().convertModelToJSONObject(structure);
 	}
 
 	/**
@@ -240,6 +226,10 @@ public class DataStructureLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static List<DataStructure> getAllDataStructures() {
+		return getService().getAllDataStructures();
+	}
+
 	/**
 	 * Returns the data structure with the primary key.
 	 *
@@ -386,7 +376,7 @@ public class DataStructureLocalServiceUtil {
 	}
 
 	public static DataStructure updateDataStructure(
-			long dataStructureId, String dataStructureName,
+			long dataStructureId, String dataStructureCode,
 			String dataStructureVersion,
 			Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap, String structure,
@@ -394,7 +384,7 @@ public class DataStructureLocalServiceUtil {
 		throws PortalException {
 
 		return getService().updateDataStructure(
-			dataStructureId, dataStructureName, dataStructureVersion,
+			dataStructureId, dataStructureCode, dataStructureVersion,
 			displayNameMap, descriptionMap, structure, status, sc);
 	}
 

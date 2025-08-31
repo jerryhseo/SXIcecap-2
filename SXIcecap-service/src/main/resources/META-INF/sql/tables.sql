@@ -4,7 +4,7 @@ create table SX_ICECAP_ActionHistory (
 	userName VARCHAR(75) null,
 	createDate DATE null,
 	structuredDataId LONG,
-	paramName VARCHAR(75) null,
+	paramCode VARCHAR(75) null,
 	prevValue VARCHAR(75) null,
 	changedValue VARCHAR(75) null,
 	action VARCHAR(75) null,
@@ -33,7 +33,7 @@ create table SX_ICECAP_DataCollection (
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,
 	statusDate DATE null,
-	dataCollectionName VARCHAR(75) null,
+	dataCollectionCode VARCHAR(75) null,
 	dataCollectionVersion VARCHAR(75) null,
 	displayName STRING null,
 	description STRING null
@@ -48,7 +48,7 @@ create table SX_ICECAP_DataComment (
 	createDate DATE null,
 	modifiedDate DATE null,
 	structuredDataId LONG,
-	paramName VARCHAR(75) null,
+	paramCode VARCHAR(75) null,
 	parentCommentId LONG,
 	comment_ VARCHAR(75) null,
 	closed BOOLEAN
@@ -68,7 +68,7 @@ create table SX_ICECAP_DataSet (
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,
 	statusDate DATE null,
-	dataSetName VARCHAR(75) null,
+	dataSetCode VARCHAR(75) null,
 	dataSetVersion VARCHAR(75) null,
 	displayName STRING null,
 	description STRING null
@@ -88,7 +88,7 @@ create table SX_ICECAP_DataStructure (
 	statusByUserName VARCHAR(75) null,
 	statusDate DATE null,
 	dataStructureId LONG not null primary key,
-	dataStructureName VARCHAR(75) null,
+	dataStructureCode VARCHAR(75) null,
 	dataStructureVersion VARCHAR(75) null,
 	displayName STRING null,
 	description STRING null,
@@ -109,14 +109,13 @@ create table SX_ICECAP_DataType (
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,
 	statusDate DATE null,
-	dataTypeName VARCHAR(75) null,
+	dataTypeCode VARCHAR(75) null,
 	dataTypeVersion VARCHAR(75) null,
 	displayName STRING null,
 	extension VARCHAR(75) null,
 	sampleFileId LONG,
 	description STRING null,
-	tooltip STRING null,
-	dataStructureId LONG
+	tooltip STRING null
 );
 
 create table SX_ICECAP_Parameter (
@@ -133,7 +132,7 @@ create table SX_ICECAP_Parameter (
 	statusByUserName VARCHAR(75) null,
 	statusDate DATE null,
 	lastPublishDate DATE null,
-	paramName VARCHAR(75) null,
+	paramCode VARCHAR(75) null,
 	paramVersion VARCHAR(75) null,
 	paramType VARCHAR(75) null,
 	displayName STRING null,
@@ -184,15 +183,19 @@ create table SX_ICECAP_StructuredData (
 
 create table SX_ICECAP_TypeStructureLink (
 	dataTypeId LONG not null primary key,
+	userId LONG,
+	groupId LONG,
 	dataStructureId LONG,
 	commentable BOOLEAN,
 	verifiable BOOLEAN,
 	freezable BOOLEAN,
 	freezed BOOLEAN,
 	freezedUserId LONG,
+	freezedUserName VARCHAR(75) null,
 	freezedDate DATE null,
 	verified BOOLEAN,
 	verifiedUserId LONG,
+	verifiedUserName VARCHAR(75) null,
 	verifiedDate DATE null,
 	inputStatus BOOLEAN,
 	jumpTo BOOLEAN

@@ -64,7 +64,7 @@ public class ParameterImpl extends ParameterBaseImpl {
 		parameter.put("status", this.getStatus());
 		parameter.put("createDate", this.getCreateDate());
 		parameter.put("modifiedDate", this.getModifiedDate());
-		parameter.put(ParameterProperties.PARAM_NAME, this.getParamName());
+		parameter.put(ParameterProperties.PARAM_CODE, this.getParamCode());
 		parameter.put(ParameterProperties.PARAM_VERSION, this.getParamVersion());
 		parameter.put(ParameterProperties.PARAM_TYPE, this.getParamType());
 		parameter.put(ParameterProperties.SYNONYMS, this.getSynonyms());

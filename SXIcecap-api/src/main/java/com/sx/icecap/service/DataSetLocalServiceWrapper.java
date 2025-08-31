@@ -49,14 +49,14 @@ public class DataSetLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataSet addDataSet(
-			String dataSetName, String dataSetVersion,
+			String dataSetCode, String dataSetVersion,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataSetLocalService.addDataSet(
-			dataSetName, dataSetVersion, displayNameMap, descriptionMap, status,
+			dataSetCode, dataSetVersion, displayNameMap, descriptionMap, status,
 			sc);
 	}
 
@@ -68,6 +68,11 @@ public class DataSetLocalServiceWrapper
 	@Override
 	public int countApprovedDataSets(long groupId) {
 		return _dataSetLocalService.countApprovedDataSets(groupId);
+	}
+
+	@Override
+	public int countDataSetsByCode(String dataSetCode) {
+		return _dataSetLocalService.countDataSetsByCode(dataSetCode);
 	}
 
 	@Override
@@ -84,11 +89,6 @@ public class DataSetLocalServiceWrapper
 	@Override
 	public int countDataSetsByGroupId(long groupId) {
 		return _dataSetLocalService.countDataSetsByGroupId(groupId);
-	}
-
-	@Override
-	public int countDataSetsByName(String dataSetName) {
-		return _dataSetLocalService.countDataSetsByName(dataSetName);
 	}
 
 	@Override
@@ -339,10 +339,10 @@ public class DataSetLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataSet getDataSet(
-			String dataSetName, String dataSetVersion)
+			String dataSetCode, String dataSetVersion)
 		throws com.sx.icecap.exception.NoSuchDataSetException {
 
-		return _dataSetLocalService.getDataSet(dataSetName, dataSetVersion);
+		return _dataSetLocalService.getDataSet(dataSetCode, dataSetVersion);
 	}
 
 	/**
@@ -377,6 +377,30 @@ public class DataSetLocalServiceWrapper
 		int start, int end) {
 
 		return _dataSetLocalService.getDataSets(start, end);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataSet> getDataSetsByCode(
+		String dataSetCode) {
+
+		return _dataSetLocalService.getDataSetsByCode(dataSetCode);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataSet> getDataSetsByCode(
+		String dataSetCode, int start, int end) {
+
+		return _dataSetLocalService.getDataSetsByCode(dataSetCode, start, end);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataSet> getDataSetsByCode(
+		String dataSetCode, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator
+			<com.sx.icecap.model.DataSet> comparator) {
+
+		return _dataSetLocalService.getDataSetsByCode(
+			dataSetCode, start, end, comparator);
 	}
 
 	@Override
@@ -451,30 +475,6 @@ public class DataSetLocalServiceWrapper
 
 		return _dataSetLocalService.getDataSetsByGroupId(
 			groupId, start, end, comparator);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.DataSet> getDataSetsByName(
-		String dataSetName) {
-
-		return _dataSetLocalService.getDataSetsByName(dataSetName);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.DataSet> getDataSetsByName(
-		String dataSetName, int start, int end) {
-
-		return _dataSetLocalService.getDataSetsByName(dataSetName, start, end);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.DataSet> getDataSetsByName(
-		String dataSetName, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator
-			<com.sx.icecap.model.DataSet> comparator) {
-
-		return _dataSetLocalService.getDataSetsByName(
-			dataSetName, start, end, comparator);
 	}
 
 	@Override
@@ -667,14 +667,14 @@ public class DataSetLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataSet updateDataSet(
-			long dataSetId, String dataSetName, String dataSetVersion,
+			long dataSetId, String dataSetCode, String dataSetVersion,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataSetLocalService.updateDataSet(
-			dataSetId, dataSetName, dataSetVersion, displayNameMap,
+			dataSetId, dataSetCode, dataSetVersion, displayNameMap,
 			descriptionMap, status, sc);
 	}
 

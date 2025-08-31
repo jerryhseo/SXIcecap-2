@@ -44,7 +44,7 @@ public class DataStructureSoap implements Serializable {
 		soapModel.setStatusByUserName(model.getStatusByUserName());
 		soapModel.setStatusDate(model.getStatusDate());
 		soapModel.setDataStructureId(model.getDataStructureId());
-		soapModel.setDataStructureName(model.getDataStructureName());
+		soapModel.setDataStructureCode(model.getDataStructureCode());
 		soapModel.setDataStructureVersion(model.getDataStructureVersion());
 		soapModel.setDisplayName(model.getDisplayName());
 		soapModel.setDescription(model.getDescription());
@@ -206,12 +206,12 @@ public class DataStructureSoap implements Serializable {
 		_dataStructureId = dataStructureId;
 	}
 
-	public String getDataStructureName() {
-		return _dataStructureName;
+	public String getDataStructureCode() {
+		return _dataStructureCode;
 	}
 
-	public void setDataStructureName(String dataStructureName) {
-		_dataStructureName = dataStructureName;
+	public void setDataStructureCode(String dataStructureCode) {
+		_dataStructureCode = dataStructureCode;
 	}
 
 	public String getDataStructureVersion() {
@@ -259,7 +259,7 @@ public class DataStructureSoap implements Serializable {
 	private String _statusByUserName;
 	private Date _statusDate;
 	private long _dataStructureId;
-	private String _dataStructureName;
+	private String _dataStructureCode;
 	private String _dataStructureVersion;
 	private String _displayName;
 	private String _description;

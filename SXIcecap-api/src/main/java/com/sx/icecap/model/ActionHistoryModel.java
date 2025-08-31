@@ -141,19 +141,19 @@ public interface ActionHistoryModel extends BaseModel<ActionHistory> {
 	public void setStructuredDataId(long structuredDataId);
 
 	/**
-	 * Returns the param name of this action history.
+	 * Returns the param code of this action history.
 	 *
-	 * @return the param name of this action history
+	 * @return the param code of this action history
 	 */
 	@AutoEscape
-	public String getParamName();
+	public String getParamCode();
 
 	/**
-	 * Sets the param name of this action history.
+	 * Sets the param code of this action history.
 	 *
-	 * @param paramName the param name of this action history
+	 * @param paramCode the param code of this action history
 	 */
-	public void setParamName(String paramName);
+	public void setParamCode(String paramCode);
 
 	/**
 	 * Returns the prev value of this action history.

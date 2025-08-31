@@ -56,7 +56,7 @@ public class DataSetWrapper
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
 		attributes.put("statusDate", getStatusDate());
-		attributes.put("dataSetName", getDataSetName());
+		attributes.put("dataSetCode", getDataSetCode());
 		attributes.put("dataSetVersion", getDataSetVersion());
 		attributes.put("displayName", getDisplayName());
 		attributes.put("description", getDescription());
@@ -144,10 +144,10 @@ public class DataSetWrapper
 			setStatusDate(statusDate);
 		}
 
-		String dataSetName = (String)attributes.get("dataSetName");
+		String dataSetCode = (String)attributes.get("dataSetCode");
 
-		if (dataSetName != null) {
-			setDataSetName(dataSetName);
+		if (dataSetCode != null) {
+			setDataSetCode(dataSetCode);
 		}
 
 		String dataSetVersion = (String)attributes.get("dataSetVersion");
@@ -195,6 +195,16 @@ public class DataSetWrapper
 	}
 
 	/**
+	 * Returns the data set code of this data set.
+	 *
+	 * @return the data set code of this data set
+	 */
+	@Override
+	public String getDataSetCode() {
+		return model.getDataSetCode();
+	}
+
+	/**
 	 * Returns the data set ID of this data set.
 	 *
 	 * @return the data set ID of this data set
@@ -202,16 +212,6 @@ public class DataSetWrapper
 	@Override
 	public long getDataSetId() {
 		return model.getDataSetId();
-	}
-
-	/**
-	 * Returns the data set name of this data set.
-	 *
-	 * @return the data set name of this data set
-	 */
-	@Override
-	public String getDataSetName() {
-		return model.getDataSetName();
 	}
 
 	/**
@@ -696,6 +696,16 @@ public class DataSetWrapper
 	}
 
 	/**
+	 * Sets the data set code of this data set.
+	 *
+	 * @param dataSetCode the data set code of this data set
+	 */
+	@Override
+	public void setDataSetCode(String dataSetCode) {
+		model.setDataSetCode(dataSetCode);
+	}
+
+	/**
 	 * Sets the data set ID of this data set.
 	 *
 	 * @param dataSetId the data set ID of this data set
@@ -703,16 +713,6 @@ public class DataSetWrapper
 	@Override
 	public void setDataSetId(long dataSetId) {
 		model.setDataSetId(dataSetId);
-	}
-
-	/**
-	 * Sets the data set name of this data set.
-	 *
-	 * @param dataSetName the data set name of this data set
-	 */
-	@Override
-	public void setDataSetName(String dataSetName) {
-		model.setDataSetName(dataSetName);
 	}
 
 	/**

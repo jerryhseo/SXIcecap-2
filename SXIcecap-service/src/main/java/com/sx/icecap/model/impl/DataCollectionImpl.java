@@ -59,7 +59,7 @@ public class DataCollectionImpl extends DataCollectionBaseImpl {
 		dataCollection.put("status", this.getStatus());
 		dataCollection.put("createDate", this.getCreateDate());
 		dataCollection.put("modifiedDate", this.getModifiedDate());
-		dataCollection.put(DataCollectionProperties.DATA_COLLECTION_NAME, this.getDataCollectionName());
+		dataCollection.put(DataCollectionProperties.DATA_COLLECTION_CODE, this.getDataCollectionCode());
 		dataCollection.put(DataCollectionProperties.DATA_COLLECTION_VERSION, this.getDataCollectionVersion());
 		
 		return dataCollection;

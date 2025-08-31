@@ -17,18 +17,10 @@ package com.sx.icecap.service;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
-import com.liferay.portal.kernel.search.Indexable;
-import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
-
-import com.sx.icecap.model.DataCollection;
-
-import java.util.Locale;
-import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -55,12 +47,6 @@ public interface DataCollectionService extends BaseService {
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.sx.icecap.service.impl.DataCollectionServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the data collection remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link DataCollectionServiceUtil} if injection and service tracking are not available.
 	 */
-	@Indexable(type = IndexableType.REINDEX)
-	public DataCollection addDataCollection(
-			String dataCollectionName, String dataCollectionVersion,
-			Map<Locale, String> displayNameMap,
-			Map<Locale, String> descriptionMap, int status, ServiceContext sc)
-		throws PortalException;
 
 	/**
 	 * Returns the OSGi service identifier.
@@ -68,25 +54,5 @@ public interface DataCollectionService extends BaseService {
 	 * @return the OSGi service identifier
 	 */
 	public String getOSGiServiceIdentifier();
-
-	@Indexable(type = IndexableType.DELETE)
-	public DataCollection removeDataCollection(long dataCollectionId)
-		throws PortalException;
-
-	public void removeDataCollections(long[] dataCollectionIds)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public DataCollection updateDataCollection(
-			long dataCollectionId, String dataCollectionName,
-			String dataCollectionVersion, Map<Locale, String> displayNameMap,
-			Map<Locale, String> descriptionMap, int status, ServiceContext sc)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public DataCollection updateStatus(
-			long userId, long dataCollectionId, Integer status,
-			ServiceContext sc)
-		throws PortalException, SystemException;
 
 }

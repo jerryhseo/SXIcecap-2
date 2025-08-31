@@ -50,7 +50,7 @@ public class DataCommentWrapper
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("structuredDataId", getStructuredDataId());
-		attributes.put("paramName", getParamName());
+		attributes.put("paramCode", getParamCode());
 		attributes.put("parentCommentId", getParentCommentId());
 		attributes.put("comment", getComment());
 		attributes.put("closed", isClosed());
@@ -108,10 +108,10 @@ public class DataCommentWrapper
 			setStructuredDataId(structuredDataId);
 		}
 
-		String paramName = (String)attributes.get("paramName");
+		String paramCode = (String)attributes.get("paramCode");
 
-		if (paramName != null) {
-			setParamName(paramName);
+		if (paramCode != null) {
+			setParamCode(paramCode);
 		}
 
 		Long parentCommentId = (Long)attributes.get("parentCommentId");
@@ -204,13 +204,13 @@ public class DataCommentWrapper
 	}
 
 	/**
-	 * Returns the param name of this data comment.
+	 * Returns the param code of this data comment.
 	 *
-	 * @return the param name of this data comment
+	 * @return the param code of this data comment
 	 */
 	@Override
-	public String getParamName() {
-		return model.getParamName();
+	public String getParamCode() {
+		return model.getParamCode();
 	}
 
 	/**
@@ -359,13 +359,13 @@ public class DataCommentWrapper
 	}
 
 	/**
-	 * Sets the param name of this data comment.
+	 * Sets the param code of this data comment.
 	 *
-	 * @param paramName the param name of this data comment
+	 * @param paramCode the param code of this data comment
 	 */
 	@Override
-	public void setParamName(String paramName) {
-		model.setParamName(paramName);
+	public void setParamCode(String paramCode) {
+		model.setParamCode(paramCode);
 	}
 
 	/**

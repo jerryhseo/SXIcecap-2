@@ -610,24 +610,24 @@ public class ActionHistoryPersistenceImpl
 	private static final String _FINDER_COLUMN_DATAID_STRUCTUREDDATAID_2 =
 		"actionHistory.structuredDataId = ?";
 
-	private FinderPath _finderPathFetchByParamName;
-	private FinderPath _finderPathCountByParamName;
+	private FinderPath _finderPathFetchByParamCode;
+	private FinderPath _finderPathCountByParamCode;
 
 	/**
-	 * Returns the action history where structuredDataId = &#63; and paramName = &#63; or throws a <code>NoSuchActionHistoryException</code> if it could not be found.
+	 * Returns the action history where structuredDataId = &#63; and paramCode = &#63; or throws a <code>NoSuchActionHistoryException</code> if it could not be found.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
 	@Override
-	public ActionHistory findByParamName(
-			long structuredDataId, String paramName)
+	public ActionHistory findByParamCode(
+			long structuredDataId, String paramCode)
 		throws NoSuchActionHistoryException {
 
-		ActionHistory actionHistory = fetchByParamName(
-			structuredDataId, paramName);
+		ActionHistory actionHistory = fetchByParamCode(
+			structuredDataId, paramCode);
 
 		if (actionHistory == null) {
 			StringBundler sb = new StringBundler(6);
@@ -637,8 +637,8 @@ public class ActionHistoryPersistenceImpl
 			sb.append("structuredDataId=");
 			sb.append(structuredDataId);
 
-			sb.append(", paramName=");
-			sb.append(paramName);
+			sb.append(", paramCode=");
+			sb.append(paramCode);
 
 			sb.append("}");
 
@@ -653,51 +653,51 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Returns the action history where structuredDataId = &#63; and paramName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the action history where structuredDataId = &#63; and paramCode = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the matching action history, or <code>null</code> if a matching action history could not be found
 	 */
 	@Override
-	public ActionHistory fetchByParamName(
-		long structuredDataId, String paramName) {
+	public ActionHistory fetchByParamCode(
+		long structuredDataId, String paramCode) {
 
-		return fetchByParamName(structuredDataId, paramName, true);
+		return fetchByParamCode(structuredDataId, paramCode, true);
 	}
 
 	/**
-	 * Returns the action history where structuredDataId = &#63; and paramName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the action history where structuredDataId = &#63; and paramCode = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching action history, or <code>null</code> if a matching action history could not be found
 	 */
 	@Override
-	public ActionHistory fetchByParamName(
-		long structuredDataId, String paramName, boolean useFinderCache) {
+	public ActionHistory fetchByParamCode(
+		long structuredDataId, String paramCode, boolean useFinderCache) {
 
-		paramName = Objects.toString(paramName, "");
+		paramCode = Objects.toString(paramCode, "");
 
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
-			finderArgs = new Object[] {structuredDataId, paramName};
+			finderArgs = new Object[] {structuredDataId, paramCode};
 		}
 
 		Object result = null;
 
 		if (useFinderCache) {
 			result = finderCache.getResult(
-				_finderPathFetchByParamName, finderArgs, this);
+				_finderPathFetchByParamCode, finderArgs, this);
 		}
 
 		if (result instanceof ActionHistory) {
 			ActionHistory actionHistory = (ActionHistory)result;
 
 			if ((structuredDataId != actionHistory.getStructuredDataId()) ||
-				!Objects.equals(paramName, actionHistory.getParamName())) {
+				!Objects.equals(paramCode, actionHistory.getParamCode())) {
 
 				result = null;
 			}
@@ -708,17 +708,17 @@ public class ActionHistoryPersistenceImpl
 
 			sb.append(_SQL_SELECT_ACTIONHISTORY_WHERE);
 
-			sb.append(_FINDER_COLUMN_PARAMNAME_STRUCTUREDDATAID_2);
+			sb.append(_FINDER_COLUMN_PARAMCODE_STRUCTUREDDATAID_2);
 
-			boolean bindParamName = false;
+			boolean bindParamCode = false;
 
-			if (paramName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_PARAMNAME_PARAMNAME_3);
+			if (paramCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_PARAMCODE_PARAMCODE_3);
 			}
 			else {
-				bindParamName = true;
+				bindParamCode = true;
 
-				sb.append(_FINDER_COLUMN_PARAMNAME_PARAMNAME_2);
+				sb.append(_FINDER_COLUMN_PARAMCODE_PARAMCODE_2);
 			}
 
 			String sql = sb.toString();
@@ -734,8 +734,8 @@ public class ActionHistoryPersistenceImpl
 
 				queryPos.add(structuredDataId);
 
-				if (bindParamName) {
-					queryPos.add(paramName);
+				if (bindParamCode) {
+					queryPos.add(paramCode);
 				}
 
 				List<ActionHistory> list = query.list();
@@ -743,7 +743,7 @@ public class ActionHistoryPersistenceImpl
 				if (list.isEmpty()) {
 					if (useFinderCache) {
 						finderCache.putResult(
-							_finderPathFetchByParamName, finderArgs, list);
+							_finderPathFetchByParamCode, finderArgs, list);
 					}
 				}
 				else {
@@ -753,12 +753,12 @@ public class ActionHistoryPersistenceImpl
 						if (_log.isWarnEnabled()) {
 							if (!useFinderCache) {
 								finderArgs = new Object[] {
-									structuredDataId, paramName
+									structuredDataId, paramCode
 								};
 							}
 
 							_log.warn(
-								"ActionHistoryPersistenceImpl.fetchByParamName(long, String, boolean) with parameters (" +
+								"ActionHistoryPersistenceImpl.fetchByParamCode(long, String, boolean) with parameters (" +
 									StringUtil.merge(finderArgs) +
 										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
@@ -774,7 +774,7 @@ public class ActionHistoryPersistenceImpl
 			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(
-						_finderPathFetchByParamName, finderArgs);
+						_finderPathFetchByParamCode, finderArgs);
 				}
 
 				throw processException(exception);
@@ -793,37 +793,37 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Removes the action history where structuredDataId = &#63; and paramName = &#63; from the database.
+	 * Removes the action history where structuredDataId = &#63; and paramCode = &#63; from the database.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the action history that was removed
 	 */
 	@Override
-	public ActionHistory removeByParamName(
-			long structuredDataId, String paramName)
+	public ActionHistory removeByParamCode(
+			long structuredDataId, String paramCode)
 		throws NoSuchActionHistoryException {
 
-		ActionHistory actionHistory = findByParamName(
-			structuredDataId, paramName);
+		ActionHistory actionHistory = findByParamCode(
+			structuredDataId, paramCode);
 
 		return remove(actionHistory);
 	}
 
 	/**
-	 * Returns the number of action histories where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns the number of action histories where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the number of matching action histories
 	 */
 	@Override
-	public int countByParamName(long structuredDataId, String paramName) {
-		paramName = Objects.toString(paramName, "");
+	public int countByParamCode(long structuredDataId, String paramCode) {
+		paramCode = Objects.toString(paramCode, "");
 
-		FinderPath finderPath = _finderPathCountByParamName;
+		FinderPath finderPath = _finderPathCountByParamCode;
 
-		Object[] finderArgs = new Object[] {structuredDataId, paramName};
+		Object[] finderArgs = new Object[] {structuredDataId, paramCode};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -832,17 +832,17 @@ public class ActionHistoryPersistenceImpl
 
 			sb.append(_SQL_COUNT_ACTIONHISTORY_WHERE);
 
-			sb.append(_FINDER_COLUMN_PARAMNAME_STRUCTUREDDATAID_2);
+			sb.append(_FINDER_COLUMN_PARAMCODE_STRUCTUREDDATAID_2);
 
-			boolean bindParamName = false;
+			boolean bindParamCode = false;
 
-			if (paramName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_PARAMNAME_PARAMNAME_3);
+			if (paramCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_PARAMCODE_PARAMCODE_3);
 			}
 			else {
-				bindParamName = true;
+				bindParamCode = true;
 
-				sb.append(_FINDER_COLUMN_PARAMNAME_PARAMNAME_2);
+				sb.append(_FINDER_COLUMN_PARAMCODE_PARAMCODE_2);
 			}
 
 			String sql = sb.toString();
@@ -858,8 +858,8 @@ public class ActionHistoryPersistenceImpl
 
 				queryPos.add(structuredDataId);
 
-				if (bindParamName) {
-					queryPos.add(paramName);
+				if (bindParamCode) {
+					queryPos.add(paramCode);
 				}
 
 				count = (Long)query.uniqueResult();
@@ -879,14 +879,14 @@ public class ActionHistoryPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_PARAMNAME_STRUCTUREDDATAID_2 =
+	private static final String _FINDER_COLUMN_PARAMCODE_STRUCTUREDDATAID_2 =
 		"actionHistory.structuredDataId = ? AND ";
 
-	private static final String _FINDER_COLUMN_PARAMNAME_PARAMNAME_2 =
-		"actionHistory.paramName = ?";
+	private static final String _FINDER_COLUMN_PARAMCODE_PARAMCODE_2 =
+		"actionHistory.paramCode = ?";
 
-	private static final String _FINDER_COLUMN_PARAMNAME_PARAMNAME_3 =
-		"(actionHistory.paramName IS NULL OR actionHistory.paramName = '')";
+	private static final String _FINDER_COLUMN_PARAMCODE_PARAMCODE_3 =
+		"(actionHistory.paramCode IS NULL OR actionHistory.paramCode = '')";
 
 	public ActionHistoryPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -913,10 +913,10 @@ public class ActionHistoryPersistenceImpl
 			actionHistory.getPrimaryKey(), actionHistory);
 
 		finderCache.putResult(
-			_finderPathFetchByParamName,
+			_finderPathFetchByParamCode,
 			new Object[] {
 				actionHistory.getStructuredDataId(),
-				actionHistory.getParamName()
+				actionHistory.getParamCode()
 			},
 			actionHistory);
 
@@ -1018,13 +1018,13 @@ public class ActionHistoryPersistenceImpl
 
 		Object[] args = new Object[] {
 			actionHistoryModelImpl.getStructuredDataId(),
-			actionHistoryModelImpl.getParamName()
+			actionHistoryModelImpl.getParamCode()
 		};
 
 		finderCache.putResult(
-			_finderPathCountByParamName, args, Long.valueOf(1), false);
+			_finderPathCountByParamCode, args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByParamName, args, actionHistoryModelImpl, false);
+			_finderPathFetchByParamCode, args, actionHistoryModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
@@ -1033,23 +1033,23 @@ public class ActionHistoryPersistenceImpl
 		if (clearCurrent) {
 			Object[] args = new Object[] {
 				actionHistoryModelImpl.getStructuredDataId(),
-				actionHistoryModelImpl.getParamName()
+				actionHistoryModelImpl.getParamCode()
 			};
 
-			finderCache.removeResult(_finderPathCountByParamName, args);
-			finderCache.removeResult(_finderPathFetchByParamName, args);
+			finderCache.removeResult(_finderPathCountByParamCode, args);
+			finderCache.removeResult(_finderPathFetchByParamCode, args);
 		}
 
 		if ((actionHistoryModelImpl.getColumnBitmask() &
-			 _finderPathFetchByParamName.getColumnBitmask()) != 0) {
+			 _finderPathFetchByParamCode.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
 				actionHistoryModelImpl.getOriginalStructuredDataId(),
-				actionHistoryModelImpl.getOriginalParamName()
+				actionHistoryModelImpl.getOriginalParamCode()
 			};
 
-			finderCache.removeResult(_finderPathCountByParamName, args);
-			finderCache.removeResult(_finderPathFetchByParamName, args);
+			finderCache.removeResult(_finderPathCountByParamCode, args);
+			finderCache.removeResult(_finderPathFetchByParamCode, args);
 		}
 	}
 
@@ -1572,16 +1572,16 @@ public class ActionHistoryPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDataId",
 			new String[] {Long.class.getName()});
 
-		_finderPathFetchByParamName = new FinderPath(
+		_finderPathFetchByParamCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, ActionHistoryImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByParamName",
+			FINDER_CLASS_NAME_ENTITY, "fetchByParamCode",
 			new String[] {Long.class.getName(), String.class.getName()},
 			ActionHistoryModelImpl.STRUCTUREDDATAID_COLUMN_BITMASK |
-			ActionHistoryModelImpl.PARAMNAME_COLUMN_BITMASK);
+			ActionHistoryModelImpl.PARAMCODE_COLUMN_BITMASK);
 
-		_finderPathCountByParamName = new FinderPath(
+		_finderPathCountByParamCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByParamName",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByParamCode",
 			new String[] {Long.class.getName(), String.class.getName()});
 
 		_setActionHistoryUtilPersistence(this);

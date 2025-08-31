@@ -6710,68 +6710,68 @@ public class DataTypePersistenceImpl
 	private static final String _FINDER_COLUMN_G_U_S_STATUS_2 =
 		"dataType.status = ?";
 
-	private FinderPath _finderPathWithPaginationFindByName;
-	private FinderPath _finderPathWithoutPaginationFindByName;
-	private FinderPath _finderPathCountByName;
+	private FinderPath _finderPathWithPaginationFindByCode;
+	private FinderPath _finderPathWithoutPaginationFindByCode;
+	private FinderPath _finderPathCountByCode;
 
 	/**
-	 * Returns all the data types where dataTypeName = &#63;.
+	 * Returns all the data types where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @return the matching data types
 	 */
 	@Override
-	public List<DataType> findByName(String dataTypeName) {
-		return findByName(
-			dataTypeName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public List<DataType> findByCode(String dataTypeCode) {
+		return findByCode(
+			dataTypeCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the data types where dataTypeName = &#63;.
+	 * Returns a range of all the data types where dataTypeCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param start the lower bound of the range of data types
 	 * @param end the upper bound of the range of data types (not inclusive)
 	 * @return the range of matching data types
 	 */
 	@Override
-	public List<DataType> findByName(String dataTypeName, int start, int end) {
-		return findByName(dataTypeName, start, end, null);
+	public List<DataType> findByCode(String dataTypeCode, int start, int end) {
+		return findByCode(dataTypeCode, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the data types where dataTypeName = &#63;.
+	 * Returns an ordered range of all the data types where dataTypeCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param start the lower bound of the range of data types
 	 * @param end the upper bound of the range of data types (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data types
 	 */
 	@Override
-	public List<DataType> findByName(
-		String dataTypeName, int start, int end,
+	public List<DataType> findByCode(
+		String dataTypeCode, int start, int end,
 		OrderByComparator<DataType> orderByComparator) {
 
-		return findByName(dataTypeName, start, end, orderByComparator, true);
+		return findByCode(dataTypeCode, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the data types where dataTypeName = &#63;.
+	 * Returns an ordered range of all the data types where dataTypeCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param start the lower bound of the range of data types
 	 * @param end the upper bound of the range of data types (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -6779,11 +6779,11 @@ public class DataTypePersistenceImpl
 	 * @return the ordered range of matching data types
 	 */
 	@Override
-	public List<DataType> findByName(
-		String dataTypeName, int start, int end,
+	public List<DataType> findByCode(
+		String dataTypeCode, int start, int end,
 		OrderByComparator<DataType> orderByComparator, boolean useFinderCache) {
 
-		dataTypeName = Objects.toString(dataTypeName, "");
+		dataTypeCode = Objects.toString(dataTypeCode, "");
 
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -6792,14 +6792,14 @@ public class DataTypePersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByName;
-				finderArgs = new Object[] {dataTypeName};
+				finderPath = _finderPathWithoutPaginationFindByCode;
+				finderArgs = new Object[] {dataTypeCode};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByName;
+			finderPath = _finderPathWithPaginationFindByCode;
 			finderArgs = new Object[] {
-				dataTypeName, start, end, orderByComparator
+				dataTypeCode, start, end, orderByComparator
 			};
 		}
 
@@ -6811,7 +6811,7 @@ public class DataTypePersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (DataType dataType : list) {
-					if (!dataTypeName.equals(dataType.getDataTypeName())) {
+					if (!dataTypeCode.equals(dataType.getDataTypeCode())) {
 						list = null;
 
 						break;
@@ -6833,15 +6833,15 @@ public class DataTypePersistenceImpl
 
 			sb.append(_SQL_SELECT_DATATYPE_WHERE);
 
-			boolean bindDataTypeName = false;
+			boolean bindDataTypeCode = false;
 
-			if (dataTypeName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_DATATYPENAME_3);
+			if (dataTypeCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODE_DATATYPECODE_3);
 			}
 			else {
-				bindDataTypeName = true;
+				bindDataTypeCode = true;
 
-				sb.append(_FINDER_COLUMN_NAME_DATATYPENAME_2);
+				sb.append(_FINDER_COLUMN_CODE_DATATYPECODE_2);
 			}
 
 			if (orderByComparator != null) {
@@ -6863,8 +6863,8 @@ public class DataTypePersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataTypeName) {
-					queryPos.add(dataTypeName);
+				if (bindDataTypeCode) {
+					queryPos.add(dataTypeCode);
 				}
 
 				list = (List<DataType>)QueryUtil.list(
@@ -6892,19 +6892,19 @@ public class DataTypePersistenceImpl
 	}
 
 	/**
-	 * Returns the first data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the first data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data type
 	 * @throws NoSuchDataTypeException if a matching data type could not be found
 	 */
 	@Override
-	public DataType findByName_First(
-			String dataTypeName, OrderByComparator<DataType> orderByComparator)
+	public DataType findByCode_First(
+			String dataTypeCode, OrderByComparator<DataType> orderByComparator)
 		throws NoSuchDataTypeException {
 
-		DataType dataType = fetchByName_First(dataTypeName, orderByComparator);
+		DataType dataType = fetchByCode_First(dataTypeCode, orderByComparator);
 
 		if (dataType != null) {
 			return dataType;
@@ -6914,8 +6914,8 @@ public class DataTypePersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dataTypeName=");
-		sb.append(dataTypeName);
+		sb.append("dataTypeCode=");
+		sb.append(dataTypeCode);
 
 		sb.append("}");
 
@@ -6923,17 +6923,17 @@ public class DataTypePersistenceImpl
 	}
 
 	/**
-	 * Returns the first data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the first data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data type, or <code>null</code> if a matching data type could not be found
 	 */
 	@Override
-	public DataType fetchByName_First(
-		String dataTypeName, OrderByComparator<DataType> orderByComparator) {
+	public DataType fetchByCode_First(
+		String dataTypeCode, OrderByComparator<DataType> orderByComparator) {
 
-		List<DataType> list = findByName(dataTypeName, 0, 1, orderByComparator);
+		List<DataType> list = findByCode(dataTypeCode, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -6943,19 +6943,19 @@ public class DataTypePersistenceImpl
 	}
 
 	/**
-	 * Returns the last data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the last data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data type
 	 * @throws NoSuchDataTypeException if a matching data type could not be found
 	 */
 	@Override
-	public DataType findByName_Last(
-			String dataTypeName, OrderByComparator<DataType> orderByComparator)
+	public DataType findByCode_Last(
+			String dataTypeCode, OrderByComparator<DataType> orderByComparator)
 		throws NoSuchDataTypeException {
 
-		DataType dataType = fetchByName_Last(dataTypeName, orderByComparator);
+		DataType dataType = fetchByCode_Last(dataTypeCode, orderByComparator);
 
 		if (dataType != null) {
 			return dataType;
@@ -6965,8 +6965,8 @@ public class DataTypePersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dataTypeName=");
-		sb.append(dataTypeName);
+		sb.append("dataTypeCode=");
+		sb.append(dataTypeCode);
 
 		sb.append("}");
 
@@ -6974,24 +6974,24 @@ public class DataTypePersistenceImpl
 	}
 
 	/**
-	 * Returns the last data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the last data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data type, or <code>null</code> if a matching data type could not be found
 	 */
 	@Override
-	public DataType fetchByName_Last(
-		String dataTypeName, OrderByComparator<DataType> orderByComparator) {
+	public DataType fetchByCode_Last(
+		String dataTypeCode, OrderByComparator<DataType> orderByComparator) {
 
-		int count = countByName(dataTypeName);
+		int count = countByCode(dataTypeCode);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<DataType> list = findByName(
-			dataTypeName, count - 1, count, orderByComparator);
+		List<DataType> list = findByCode(
+			dataTypeCode, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -7001,21 +7001,21 @@ public class DataTypePersistenceImpl
 	}
 
 	/**
-	 * Returns the data types before and after the current data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the data types before and after the current data type in the ordered set where dataTypeCode = &#63;.
 	 *
 	 * @param dataTypeId the primary key of the current data type
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data type
 	 * @throws NoSuchDataTypeException if a data type with the primary key could not be found
 	 */
 	@Override
-	public DataType[] findByName_PrevAndNext(
-			long dataTypeId, String dataTypeName,
+	public DataType[] findByCode_PrevAndNext(
+			long dataTypeId, String dataTypeCode,
 			OrderByComparator<DataType> orderByComparator)
 		throws NoSuchDataTypeException {
 
-		dataTypeName = Objects.toString(dataTypeName, "");
+		dataTypeCode = Objects.toString(dataTypeCode, "");
 
 		DataType dataType = findByPrimaryKey(dataTypeId);
 
@@ -7026,13 +7026,13 @@ public class DataTypePersistenceImpl
 
 			DataType[] array = new DataTypeImpl[3];
 
-			array[0] = getByName_PrevAndNext(
-				session, dataType, dataTypeName, orderByComparator, true);
+			array[0] = getByCode_PrevAndNext(
+				session, dataType, dataTypeCode, orderByComparator, true);
 
 			array[1] = dataType;
 
-			array[2] = getByName_PrevAndNext(
-				session, dataType, dataTypeName, orderByComparator, false);
+			array[2] = getByCode_PrevAndNext(
+				session, dataType, dataTypeCode, orderByComparator, false);
 
 			return array;
 		}
@@ -7044,8 +7044,8 @@ public class DataTypePersistenceImpl
 		}
 	}
 
-	protected DataType getByName_PrevAndNext(
-		Session session, DataType dataType, String dataTypeName,
+	protected DataType getByCode_PrevAndNext(
+		Session session, DataType dataType, String dataTypeCode,
 		OrderByComparator<DataType> orderByComparator, boolean previous) {
 
 		StringBundler sb = null;
@@ -7061,15 +7061,15 @@ public class DataTypePersistenceImpl
 
 		sb.append(_SQL_SELECT_DATATYPE_WHERE);
 
-		boolean bindDataTypeName = false;
+		boolean bindDataTypeCode = false;
 
-		if (dataTypeName.isEmpty()) {
-			sb.append(_FINDER_COLUMN_NAME_DATATYPENAME_3);
+		if (dataTypeCode.isEmpty()) {
+			sb.append(_FINDER_COLUMN_CODE_DATATYPECODE_3);
 		}
 		else {
-			bindDataTypeName = true;
+			bindDataTypeCode = true;
 
-			sb.append(_FINDER_COLUMN_NAME_DATATYPENAME_2);
+			sb.append(_FINDER_COLUMN_CODE_DATATYPECODE_2);
 		}
 
 		if (orderByComparator != null) {
@@ -7141,8 +7141,8 @@ public class DataTypePersistenceImpl
 
 		QueryPos queryPos = QueryPos.getInstance(query);
 
-		if (bindDataTypeName) {
-			queryPos.add(dataTypeName);
+		if (bindDataTypeCode) {
+			queryPos.add(dataTypeCode);
 		}
 
 		if (orderByComparator != null) {
@@ -7164,33 +7164,33 @@ public class DataTypePersistenceImpl
 	}
 
 	/**
-	 * Removes all the data types where dataTypeName = &#63; from the database.
+	 * Removes all the data types where dataTypeCode = &#63; from the database.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 */
 	@Override
-	public void removeByName(String dataTypeName) {
+	public void removeByCode(String dataTypeCode) {
 		for (DataType dataType :
-				findByName(
-					dataTypeName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				findByCode(
+					dataTypeCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 
 			remove(dataType);
 		}
 	}
 
 	/**
-	 * Returns the number of data types where dataTypeName = &#63;.
+	 * Returns the number of data types where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @return the number of matching data types
 	 */
 	@Override
-	public int countByName(String dataTypeName) {
-		dataTypeName = Objects.toString(dataTypeName, "");
+	public int countByCode(String dataTypeCode) {
+		dataTypeCode = Objects.toString(dataTypeCode, "");
 
-		FinderPath finderPath = _finderPathCountByName;
+		FinderPath finderPath = _finderPathCountByCode;
 
-		Object[] finderArgs = new Object[] {dataTypeName};
+		Object[] finderArgs = new Object[] {dataTypeCode};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -7199,15 +7199,15 @@ public class DataTypePersistenceImpl
 
 			sb.append(_SQL_COUNT_DATATYPE_WHERE);
 
-			boolean bindDataTypeName = false;
+			boolean bindDataTypeCode = false;
 
-			if (dataTypeName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_DATATYPENAME_3);
+			if (dataTypeCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODE_DATATYPECODE_3);
 			}
 			else {
-				bindDataTypeName = true;
+				bindDataTypeCode = true;
 
-				sb.append(_FINDER_COLUMN_NAME_DATATYPENAME_2);
+				sb.append(_FINDER_COLUMN_CODE_DATATYPECODE_2);
 			}
 
 			String sql = sb.toString();
@@ -7221,8 +7221,8 @@ public class DataTypePersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataTypeName) {
-					queryPos.add(dataTypeName);
+				if (bindDataTypeCode) {
+					queryPos.add(dataTypeCode);
 				}
 
 				count = (Long)query.uniqueResult();
@@ -7242,37 +7242,37 @@ public class DataTypePersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAME_DATATYPENAME_2 =
-		"dataType.dataTypeName = ?";
+	private static final String _FINDER_COLUMN_CODE_DATATYPECODE_2 =
+		"dataType.dataTypeCode = ?";
 
-	private static final String _FINDER_COLUMN_NAME_DATATYPENAME_3 =
-		"(dataType.dataTypeName IS NULL OR dataType.dataTypeName = '')";
+	private static final String _FINDER_COLUMN_CODE_DATATYPECODE_3 =
+		"(dataType.dataTypeCode IS NULL OR dataType.dataTypeCode = '')";
 
-	private FinderPath _finderPathFetchByNameVersion;
-	private FinderPath _finderPathCountByNameVersion;
+	private FinderPath _finderPathFetchByCodeVersion;
+	private FinderPath _finderPathCountByCodeVersion;
 
 	/**
-	 * Returns the data type where dataTypeName = &#63; and dataTypeVersion = &#63; or throws a <code>NoSuchDataTypeException</code> if it could not be found.
+	 * Returns the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; or throws a <code>NoSuchDataTypeException</code> if it could not be found.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the matching data type
 	 * @throws NoSuchDataTypeException if a matching data type could not be found
 	 */
 	@Override
-	public DataType findByNameVersion(
-			String dataTypeName, String dataTypeVersion)
+	public DataType findByCodeVersion(
+			String dataTypeCode, String dataTypeVersion)
 		throws NoSuchDataTypeException {
 
-		DataType dataType = fetchByNameVersion(dataTypeName, dataTypeVersion);
+		DataType dataType = fetchByCodeVersion(dataTypeCode, dataTypeVersion);
 
 		if (dataType == null) {
 			StringBundler sb = new StringBundler(6);
 
 			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("dataTypeName=");
-			sb.append(dataTypeName);
+			sb.append("dataTypeCode=");
+			sb.append(dataTypeCode);
 
 			sb.append(", dataTypeVersion=");
 			sb.append(dataTypeVersion);
@@ -7290,51 +7290,51 @@ public class DataTypePersistenceImpl
 	}
 
 	/**
-	 * Returns the data type where dataTypeName = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the matching data type, or <code>null</code> if a matching data type could not be found
 	 */
 	@Override
-	public DataType fetchByNameVersion(
-		String dataTypeName, String dataTypeVersion) {
+	public DataType fetchByCodeVersion(
+		String dataTypeCode, String dataTypeVersion) {
 
-		return fetchByNameVersion(dataTypeName, dataTypeVersion, true);
+		return fetchByCodeVersion(dataTypeCode, dataTypeVersion, true);
 	}
 
 	/**
-	 * Returns the data type where dataTypeName = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching data type, or <code>null</code> if a matching data type could not be found
 	 */
 	@Override
-	public DataType fetchByNameVersion(
-		String dataTypeName, String dataTypeVersion, boolean useFinderCache) {
+	public DataType fetchByCodeVersion(
+		String dataTypeCode, String dataTypeVersion, boolean useFinderCache) {
 
-		dataTypeName = Objects.toString(dataTypeName, "");
+		dataTypeCode = Objects.toString(dataTypeCode, "");
 		dataTypeVersion = Objects.toString(dataTypeVersion, "");
 
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
-			finderArgs = new Object[] {dataTypeName, dataTypeVersion};
+			finderArgs = new Object[] {dataTypeCode, dataTypeVersion};
 		}
 
 		Object result = null;
 
 		if (useFinderCache) {
 			result = finderCache.getResult(
-				_finderPathFetchByNameVersion, finderArgs, this);
+				_finderPathFetchByCodeVersion, finderArgs, this);
 		}
 
 		if (result instanceof DataType) {
 			DataType dataType = (DataType)result;
 
-			if (!Objects.equals(dataTypeName, dataType.getDataTypeName()) ||
+			if (!Objects.equals(dataTypeCode, dataType.getDataTypeCode()) ||
 				!Objects.equals(
 					dataTypeVersion, dataType.getDataTypeVersion())) {
 
@@ -7347,26 +7347,26 @@ public class DataTypePersistenceImpl
 
 			sb.append(_SQL_SELECT_DATATYPE_WHERE);
 
-			boolean bindDataTypeName = false;
+			boolean bindDataTypeCode = false;
 
-			if (dataTypeName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATATYPENAME_3);
+			if (dataTypeCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATATYPECODE_3);
 			}
 			else {
-				bindDataTypeName = true;
+				bindDataTypeCode = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATATYPENAME_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATATYPECODE_2);
 			}
 
 			boolean bindDataTypeVersion = false;
 
 			if (dataTypeVersion.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATATYPEVERSION_3);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATATYPEVERSION_3);
 			}
 			else {
 				bindDataTypeVersion = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATATYPEVERSION_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATATYPEVERSION_2);
 			}
 
 			String sql = sb.toString();
@@ -7380,8 +7380,8 @@ public class DataTypePersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataTypeName) {
-					queryPos.add(dataTypeName);
+				if (bindDataTypeCode) {
+					queryPos.add(dataTypeCode);
 				}
 
 				if (bindDataTypeVersion) {
@@ -7393,7 +7393,7 @@ public class DataTypePersistenceImpl
 				if (list.isEmpty()) {
 					if (useFinderCache) {
 						finderCache.putResult(
-							_finderPathFetchByNameVersion, finderArgs, list);
+							_finderPathFetchByCodeVersion, finderArgs, list);
 					}
 				}
 				else {
@@ -7403,12 +7403,12 @@ public class DataTypePersistenceImpl
 						if (_log.isWarnEnabled()) {
 							if (!useFinderCache) {
 								finderArgs = new Object[] {
-									dataTypeName, dataTypeVersion
+									dataTypeCode, dataTypeVersion
 								};
 							}
 
 							_log.warn(
-								"DataTypePersistenceImpl.fetchByNameVersion(String, String, boolean) with parameters (" +
+								"DataTypePersistenceImpl.fetchByCodeVersion(String, String, boolean) with parameters (" +
 									StringUtil.merge(finderArgs) +
 										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
@@ -7424,7 +7424,7 @@ public class DataTypePersistenceImpl
 			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(
-						_finderPathFetchByNameVersion, finderArgs);
+						_finderPathFetchByCodeVersion, finderArgs);
 				}
 
 				throw processException(exception);
@@ -7443,37 +7443,37 @@ public class DataTypePersistenceImpl
 	}
 
 	/**
-	 * Removes the data type where dataTypeName = &#63; and dataTypeVersion = &#63; from the database.
+	 * Removes the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; from the database.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the data type that was removed
 	 */
 	@Override
-	public DataType removeByNameVersion(
-			String dataTypeName, String dataTypeVersion)
+	public DataType removeByCodeVersion(
+			String dataTypeCode, String dataTypeVersion)
 		throws NoSuchDataTypeException {
 
-		DataType dataType = findByNameVersion(dataTypeName, dataTypeVersion);
+		DataType dataType = findByCodeVersion(dataTypeCode, dataTypeVersion);
 
 		return remove(dataType);
 	}
 
 	/**
-	 * Returns the number of data types where dataTypeName = &#63; and dataTypeVersion = &#63;.
+	 * Returns the number of data types where dataTypeCode = &#63; and dataTypeVersion = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the number of matching data types
 	 */
 	@Override
-	public int countByNameVersion(String dataTypeName, String dataTypeVersion) {
-		dataTypeName = Objects.toString(dataTypeName, "");
+	public int countByCodeVersion(String dataTypeCode, String dataTypeVersion) {
+		dataTypeCode = Objects.toString(dataTypeCode, "");
 		dataTypeVersion = Objects.toString(dataTypeVersion, "");
 
-		FinderPath finderPath = _finderPathCountByNameVersion;
+		FinderPath finderPath = _finderPathCountByCodeVersion;
 
-		Object[] finderArgs = new Object[] {dataTypeName, dataTypeVersion};
+		Object[] finderArgs = new Object[] {dataTypeCode, dataTypeVersion};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -7482,26 +7482,26 @@ public class DataTypePersistenceImpl
 
 			sb.append(_SQL_COUNT_DATATYPE_WHERE);
 
-			boolean bindDataTypeName = false;
+			boolean bindDataTypeCode = false;
 
-			if (dataTypeName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATATYPENAME_3);
+			if (dataTypeCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATATYPECODE_3);
 			}
 			else {
-				bindDataTypeName = true;
+				bindDataTypeCode = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATATYPENAME_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATATYPECODE_2);
 			}
 
 			boolean bindDataTypeVersion = false;
 
 			if (dataTypeVersion.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATATYPEVERSION_3);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATATYPEVERSION_3);
 			}
 			else {
 				bindDataTypeVersion = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATATYPEVERSION_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATATYPEVERSION_2);
 			}
 
 			String sql = sb.toString();
@@ -7515,8 +7515,8 @@ public class DataTypePersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataTypeName) {
-					queryPos.add(dataTypeName);
+				if (bindDataTypeCode) {
+					queryPos.add(dataTypeCode);
 				}
 
 				if (bindDataTypeVersion) {
@@ -7540,520 +7540,17 @@ public class DataTypePersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_DATATYPENAME_2 =
-		"dataType.dataTypeName = ? AND ";
+	private static final String _FINDER_COLUMN_CODEVERSION_DATATYPECODE_2 =
+		"dataType.dataTypeCode = ? AND ";
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_DATATYPENAME_3 =
-		"(dataType.dataTypeName IS NULL OR dataType.dataTypeName = '') AND ";
+	private static final String _FINDER_COLUMN_CODEVERSION_DATATYPECODE_3 =
+		"(dataType.dataTypeCode IS NULL OR dataType.dataTypeCode = '') AND ";
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_DATATYPEVERSION_2 =
+	private static final String _FINDER_COLUMN_CODEVERSION_DATATYPEVERSION_2 =
 		"dataType.dataTypeVersion = ?";
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_DATATYPEVERSION_3 =
+	private static final String _FINDER_COLUMN_CODEVERSION_DATATYPEVERSION_3 =
 		"(dataType.dataTypeVersion IS NULL OR dataType.dataTypeVersion = '')";
-
-	private FinderPath _finderPathWithPaginationFindBystructureId;
-	private FinderPath _finderPathWithoutPaginationFindBystructureId;
-	private FinderPath _finderPathCountBystructureId;
-
-	/**
-	 * Returns all the data types where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @return the matching data types
-	 */
-	@Override
-	public List<DataType> findBystructureId(long dataStructureId) {
-		return findBystructureId(
-			dataStructureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-	}
-
-	/**
-	 * Returns a range of all the data types where dataStructureId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param start the lower bound of the range of data types
-	 * @param end the upper bound of the range of data types (not inclusive)
-	 * @return the range of matching data types
-	 */
-	@Override
-	public List<DataType> findBystructureId(
-		long dataStructureId, int start, int end) {
-
-		return findBystructureId(dataStructureId, start, end, null);
-	}
-
-	/**
-	 * Returns an ordered range of all the data types where dataStructureId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param start the lower bound of the range of data types
-	 * @param end the upper bound of the range of data types (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching data types
-	 */
-	@Override
-	public List<DataType> findBystructureId(
-		long dataStructureId, int start, int end,
-		OrderByComparator<DataType> orderByComparator) {
-
-		return findBystructureId(
-			dataStructureId, start, end, orderByComparator, true);
-	}
-
-	/**
-	 * Returns an ordered range of all the data types where dataStructureId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param start the lower bound of the range of data types
-	 * @param end the upper bound of the range of data types (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching data types
-	 */
-	@Override
-	public List<DataType> findBystructureId(
-		long dataStructureId, int start, int end,
-		OrderByComparator<DataType> orderByComparator, boolean useFinderCache) {
-
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindBystructureId;
-				finderArgs = new Object[] {dataStructureId};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindBystructureId;
-			finderArgs = new Object[] {
-				dataStructureId, start, end, orderByComparator
-			};
-		}
-
-		List<DataType> list = null;
-
-		if (useFinderCache) {
-			list = (List<DataType>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (DataType dataType : list) {
-					if (dataStructureId != dataType.getDataStructureId()) {
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(3);
-			}
-
-			sb.append(_SQL_SELECT_DATATYPE_WHERE);
-
-			sb.append(_FINDER_COLUMN_STRUCTUREID_DATASTRUCTUREID_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(DataTypeModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(dataStructureId);
-
-				list = (List<DataType>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
-
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
-	}
-
-	/**
-	 * Returns the first data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching data type
-	 * @throws NoSuchDataTypeException if a matching data type could not be found
-	 */
-	@Override
-	public DataType findBystructureId_First(
-			long dataStructureId, OrderByComparator<DataType> orderByComparator)
-		throws NoSuchDataTypeException {
-
-		DataType dataType = fetchBystructureId_First(
-			dataStructureId, orderByComparator);
-
-		if (dataType != null) {
-			return dataType;
-		}
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		sb.append("dataStructureId=");
-		sb.append(dataStructureId);
-
-		sb.append("}");
-
-		throw new NoSuchDataTypeException(sb.toString());
-	}
-
-	/**
-	 * Returns the first data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching data type, or <code>null</code> if a matching data type could not be found
-	 */
-	@Override
-	public DataType fetchBystructureId_First(
-		long dataStructureId, OrderByComparator<DataType> orderByComparator) {
-
-		List<DataType> list = findBystructureId(
-			dataStructureId, 0, 1, orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns the last data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching data type
-	 * @throws NoSuchDataTypeException if a matching data type could not be found
-	 */
-	@Override
-	public DataType findBystructureId_Last(
-			long dataStructureId, OrderByComparator<DataType> orderByComparator)
-		throws NoSuchDataTypeException {
-
-		DataType dataType = fetchBystructureId_Last(
-			dataStructureId, orderByComparator);
-
-		if (dataType != null) {
-			return dataType;
-		}
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		sb.append("dataStructureId=");
-		sb.append(dataStructureId);
-
-		sb.append("}");
-
-		throw new NoSuchDataTypeException(sb.toString());
-	}
-
-	/**
-	 * Returns the last data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching data type, or <code>null</code> if a matching data type could not be found
-	 */
-	@Override
-	public DataType fetchBystructureId_Last(
-		long dataStructureId, OrderByComparator<DataType> orderByComparator) {
-
-		int count = countBystructureId(dataStructureId);
-
-		if (count == 0) {
-			return null;
-		}
-
-		List<DataType> list = findBystructureId(
-			dataStructureId, count - 1, count, orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns the data types before and after the current data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataTypeId the primary key of the current data type
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next data type
-	 * @throws NoSuchDataTypeException if a data type with the primary key could not be found
-	 */
-	@Override
-	public DataType[] findBystructureId_PrevAndNext(
-			long dataTypeId, long dataStructureId,
-			OrderByComparator<DataType> orderByComparator)
-		throws NoSuchDataTypeException {
-
-		DataType dataType = findByPrimaryKey(dataTypeId);
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			DataType[] array = new DataTypeImpl[3];
-
-			array[0] = getBystructureId_PrevAndNext(
-				session, dataType, dataStructureId, orderByComparator, true);
-
-			array[1] = dataType;
-
-			array[2] = getBystructureId_PrevAndNext(
-				session, dataType, dataStructureId, orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected DataType getBystructureId_PrevAndNext(
-		Session session, DataType dataType, long dataStructureId,
-		OrderByComparator<DataType> orderByComparator, boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(3);
-		}
-
-		sb.append(_SQL_SELECT_DATATYPE_WHERE);
-
-		sb.append(_FINDER_COLUMN_STRUCTUREID_DATASTRUCTUREID_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(DataTypeModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(dataStructureId);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(dataType)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<DataType> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
-	}
-
-	/**
-	 * Removes all the data types where dataStructureId = &#63; from the database.
-	 *
-	 * @param dataStructureId the data structure ID
-	 */
-	@Override
-	public void removeBystructureId(long dataStructureId) {
-		for (DataType dataType :
-				findBystructureId(
-					dataStructureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
-
-			remove(dataType);
-		}
-	}
-
-	/**
-	 * Returns the number of data types where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @return the number of matching data types
-	 */
-	@Override
-	public int countBystructureId(long dataStructureId) {
-		FinderPath finderPath = _finderPathCountBystructureId;
-
-		Object[] finderArgs = new Object[] {dataStructureId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(2);
-
-			sb.append(_SQL_COUNT_DATATYPE_WHERE);
-
-			sb.append(_FINDER_COLUMN_STRUCTUREID_DATASTRUCTUREID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(dataStructureId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				finderCache.removeResult(finderPath, finderArgs);
-
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
-	}
-
-	private static final String _FINDER_COLUMN_STRUCTUREID_DATASTRUCTUREID_2 =
-		"dataType.dataStructureId = ?";
 
 	public DataTypePersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -8084,9 +7581,9 @@ public class DataTypePersistenceImpl
 			new Object[] {dataType.getUuid(), dataType.getGroupId()}, dataType);
 
 		finderCache.putResult(
-			_finderPathFetchByNameVersion,
+			_finderPathFetchByCodeVersion,
 			new Object[] {
-				dataType.getDataTypeName(), dataType.getDataTypeVersion()
+				dataType.getDataTypeCode(), dataType.getDataTypeVersion()
 			},
 			dataType);
 
@@ -8194,14 +7691,14 @@ public class DataTypePersistenceImpl
 			_finderPathFetchByUUID_G, args, dataTypeModelImpl, false);
 
 		args = new Object[] {
-			dataTypeModelImpl.getDataTypeName(),
+			dataTypeModelImpl.getDataTypeCode(),
 			dataTypeModelImpl.getDataTypeVersion()
 		};
 
 		finderCache.putResult(
-			_finderPathCountByNameVersion, args, Long.valueOf(1), false);
+			_finderPathCountByCodeVersion, args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByNameVersion, args, dataTypeModelImpl, false);
+			_finderPathFetchByCodeVersion, args, dataTypeModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
@@ -8230,24 +7727,24 @@ public class DataTypePersistenceImpl
 
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-				dataTypeModelImpl.getDataTypeName(),
+				dataTypeModelImpl.getDataTypeCode(),
 				dataTypeModelImpl.getDataTypeVersion()
 			};
 
-			finderCache.removeResult(_finderPathCountByNameVersion, args);
-			finderCache.removeResult(_finderPathFetchByNameVersion, args);
+			finderCache.removeResult(_finderPathCountByCodeVersion, args);
+			finderCache.removeResult(_finderPathFetchByCodeVersion, args);
 		}
 
 		if ((dataTypeModelImpl.getColumnBitmask() &
-			 _finderPathFetchByNameVersion.getColumnBitmask()) != 0) {
+			 _finderPathFetchByCodeVersion.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				dataTypeModelImpl.getOriginalDataTypeName(),
+				dataTypeModelImpl.getOriginalDataTypeCode(),
 				dataTypeModelImpl.getOriginalDataTypeVersion()
 			};
 
-			finderCache.removeResult(_finderPathCountByNameVersion, args);
-			finderCache.removeResult(_finderPathFetchByNameVersion, args);
+			finderCache.removeResult(_finderPathCountByCodeVersion, args);
+			finderCache.removeResult(_finderPathFetchByCodeVersion, args);
 		}
 	}
 
@@ -8499,17 +7996,11 @@ public class DataTypePersistenceImpl
 			finderCache.removeResult(
 				_finderPathWithoutPaginationFindByG_U_S, args);
 
-			args = new Object[] {dataTypeModelImpl.getDataTypeName()};
+			args = new Object[] {dataTypeModelImpl.getDataTypeCode()};
 
-			finderCache.removeResult(_finderPathCountByName, args);
+			finderCache.removeResult(_finderPathCountByCode, args);
 			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByName, args);
-
-			args = new Object[] {dataTypeModelImpl.getDataStructureId()};
-
-			finderCache.removeResult(_finderPathCountBystructureId, args);
-			finderCache.removeResult(
-				_finderPathWithoutPaginationFindBystructureId, args);
+				_finderPathWithoutPaginationFindByCode, args);
 
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(
@@ -8708,41 +8199,22 @@ public class DataTypePersistenceImpl
 			}
 
 			if ((dataTypeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByName.getColumnBitmask()) !=
+				 _finderPathWithoutPaginationFindByCode.getColumnBitmask()) !=
 					 0) {
 
 				Object[] args = new Object[] {
-					dataTypeModelImpl.getOriginalDataTypeName()
+					dataTypeModelImpl.getOriginalDataTypeCode()
 				};
 
-				finderCache.removeResult(_finderPathCountByName, args);
+				finderCache.removeResult(_finderPathCountByCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
+					_finderPathWithoutPaginationFindByCode, args);
 
-				args = new Object[] {dataTypeModelImpl.getDataTypeName()};
+				args = new Object[] {dataTypeModelImpl.getDataTypeCode()};
 
-				finderCache.removeResult(_finderPathCountByName, args);
+				finderCache.removeResult(_finderPathCountByCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
-			}
-
-			if ((dataTypeModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindBystructureId.
-					 getColumnBitmask()) != 0) {
-
-				Object[] args = new Object[] {
-					dataTypeModelImpl.getOriginalDataStructureId()
-				};
-
-				finderCache.removeResult(_finderPathCountBystructureId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindBystructureId, args);
-
-				args = new Object[] {dataTypeModelImpl.getDataStructureId()};
-
-				finderCache.removeResult(_finderPathCountBystructureId, args);
-				finderCache.removeResult(
-					_finderPathWithoutPaginationFindBystructureId, args);
+					_finderPathWithoutPaginationFindByCode, args);
 			}
 		}
 
@@ -9244,55 +8716,36 @@ public class DataTypePersistenceImpl
 				Integer.class.getName()
 			});
 
-		_finderPathWithPaginationFindByName = new FinderPath(
+		_finderPathWithPaginationFindByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataTypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByName",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCode",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByName = new FinderPath(
+		_finderPathWithoutPaginationFindByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataTypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByName",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCode",
 			new String[] {String.class.getName()},
-			DataTypeModelImpl.DATATYPENAME_COLUMN_BITMASK);
+			DataTypeModelImpl.DATATYPECODE_COLUMN_BITMASK);
 
-		_finderPathCountByName = new FinderPath(
+		_finderPathCountByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCode",
 			new String[] {String.class.getName()});
 
-		_finderPathFetchByNameVersion = new FinderPath(
+		_finderPathFetchByCodeVersion = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataTypeImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByNameVersion",
+			FINDER_CLASS_NAME_ENTITY, "fetchByCodeVersion",
 			new String[] {String.class.getName(), String.class.getName()},
-			DataTypeModelImpl.DATATYPENAME_COLUMN_BITMASK |
+			DataTypeModelImpl.DATATYPECODE_COLUMN_BITMASK |
 			DataTypeModelImpl.DATATYPEVERSION_COLUMN_BITMASK);
 
-		_finderPathCountByNameVersion = new FinderPath(
+		_finderPathCountByCodeVersion = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByNameVersion",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCodeVersion",
 			new String[] {String.class.getName(), String.class.getName()});
-
-		_finderPathWithPaginationFindBystructureId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DataTypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBystructureId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindBystructureId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, DataTypeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBystructureId",
-			new String[] {Long.class.getName()},
-			DataTypeModelImpl.DATASTRUCTUREID_COLUMN_BITMASK);
-
-		_finderPathCountBystructureId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBystructureId",
-			new String[] {Long.class.getName()});
 
 		_setDataTypeUtilPersistence(this);
 	}

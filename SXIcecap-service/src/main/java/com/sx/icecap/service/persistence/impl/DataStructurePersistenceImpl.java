@@ -6786,71 +6786,71 @@ public class DataStructurePersistenceImpl
 	private static final String _FINDER_COLUMN_G_U_S_STATUS_2 =
 		"dataStructure.status = ?";
 
-	private FinderPath _finderPathWithPaginationFindByName;
-	private FinderPath _finderPathWithoutPaginationFindByName;
-	private FinderPath _finderPathCountByName;
+	private FinderPath _finderPathWithPaginationFindByCode;
+	private FinderPath _finderPathWithoutPaginationFindByCode;
+	private FinderPath _finderPathCountByCode;
 
 	/**
-	 * Returns all the data structures where dataStructureName = &#63;.
+	 * Returns all the data structures where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @return the matching data structures
 	 */
 	@Override
-	public List<DataStructure> findByName(String dataStructureName) {
-		return findByName(
-			dataStructureName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public List<DataStructure> findByCode(String dataStructureCode) {
+		return findByCode(
+			dataStructureCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the data structures where dataStructureName = &#63;.
+	 * Returns a range of all the data structures where dataStructureCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataStructureModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param start the lower bound of the range of data structures
 	 * @param end the upper bound of the range of data structures (not inclusive)
 	 * @return the range of matching data structures
 	 */
 	@Override
-	public List<DataStructure> findByName(
-		String dataStructureName, int start, int end) {
+	public List<DataStructure> findByCode(
+		String dataStructureCode, int start, int end) {
 
-		return findByName(dataStructureName, start, end, null);
+		return findByCode(dataStructureCode, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the data structures where dataStructureName = &#63;.
+	 * Returns an ordered range of all the data structures where dataStructureCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataStructureModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param start the lower bound of the range of data structures
 	 * @param end the upper bound of the range of data structures (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data structures
 	 */
 	@Override
-	public List<DataStructure> findByName(
-		String dataStructureName, int start, int end,
+	public List<DataStructure> findByCode(
+		String dataStructureCode, int start, int end,
 		OrderByComparator<DataStructure> orderByComparator) {
 
-		return findByName(
-			dataStructureName, start, end, orderByComparator, true);
+		return findByCode(
+			dataStructureCode, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the data structures where dataStructureName = &#63;.
+	 * Returns an ordered range of all the data structures where dataStructureCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataStructureModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param start the lower bound of the range of data structures
 	 * @param end the upper bound of the range of data structures (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -6858,12 +6858,12 @@ public class DataStructurePersistenceImpl
 	 * @return the ordered range of matching data structures
 	 */
 	@Override
-	public List<DataStructure> findByName(
-		String dataStructureName, int start, int end,
+	public List<DataStructure> findByCode(
+		String dataStructureCode, int start, int end,
 		OrderByComparator<DataStructure> orderByComparator,
 		boolean useFinderCache) {
 
-		dataStructureName = Objects.toString(dataStructureName, "");
+		dataStructureCode = Objects.toString(dataStructureCode, "");
 
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -6872,14 +6872,14 @@ public class DataStructurePersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByName;
-				finderArgs = new Object[] {dataStructureName};
+				finderPath = _finderPathWithoutPaginationFindByCode;
+				finderArgs = new Object[] {dataStructureCode};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByName;
+			finderPath = _finderPathWithPaginationFindByCode;
 			finderArgs = new Object[] {
-				dataStructureName, start, end, orderByComparator
+				dataStructureCode, start, end, orderByComparator
 			};
 		}
 
@@ -6891,8 +6891,8 @@ public class DataStructurePersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (DataStructure dataStructure : list) {
-					if (!dataStructureName.equals(
-							dataStructure.getDataStructureName())) {
+					if (!dataStructureCode.equals(
+							dataStructure.getDataStructureCode())) {
 
 						list = null;
 
@@ -6915,15 +6915,15 @@ public class DataStructurePersistenceImpl
 
 			sb.append(_SQL_SELECT_DATASTRUCTURE_WHERE);
 
-			boolean bindDataStructureName = false;
+			boolean bindDataStructureCode = false;
 
-			if (dataStructureName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_DATASTRUCTURENAME_3);
+			if (dataStructureCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODE_DATASTRUCTURECODE_3);
 			}
 			else {
-				bindDataStructureName = true;
+				bindDataStructureCode = true;
 
-				sb.append(_FINDER_COLUMN_NAME_DATASTRUCTURENAME_2);
+				sb.append(_FINDER_COLUMN_CODE_DATASTRUCTURECODE_2);
 			}
 
 			if (orderByComparator != null) {
@@ -6945,8 +6945,8 @@ public class DataStructurePersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataStructureName) {
-					queryPos.add(dataStructureName);
+				if (bindDataStructureCode) {
+					queryPos.add(dataStructureCode);
 				}
 
 				list = (List<DataStructure>)QueryUtil.list(
@@ -6974,21 +6974,21 @@ public class DataStructurePersistenceImpl
 	}
 
 	/**
-	 * Returns the first data structure in the ordered set where dataStructureName = &#63;.
+	 * Returns the first data structure in the ordered set where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data structure
 	 * @throws NoSuchDataStructureException if a matching data structure could not be found
 	 */
 	@Override
-	public DataStructure findByName_First(
-			String dataStructureName,
+	public DataStructure findByCode_First(
+			String dataStructureCode,
 			OrderByComparator<DataStructure> orderByComparator)
 		throws NoSuchDataStructureException {
 
-		DataStructure dataStructure = fetchByName_First(
-			dataStructureName, orderByComparator);
+		DataStructure dataStructure = fetchByCode_First(
+			dataStructureCode, orderByComparator);
 
 		if (dataStructure != null) {
 			return dataStructure;
@@ -6998,8 +6998,8 @@ public class DataStructurePersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dataStructureName=");
-		sb.append(dataStructureName);
+		sb.append("dataStructureCode=");
+		sb.append(dataStructureCode);
 
 		sb.append("}");
 
@@ -7007,19 +7007,19 @@ public class DataStructurePersistenceImpl
 	}
 
 	/**
-	 * Returns the first data structure in the ordered set where dataStructureName = &#63;.
+	 * Returns the first data structure in the ordered set where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data structure, or <code>null</code> if a matching data structure could not be found
 	 */
 	@Override
-	public DataStructure fetchByName_First(
-		String dataStructureName,
+	public DataStructure fetchByCode_First(
+		String dataStructureCode,
 		OrderByComparator<DataStructure> orderByComparator) {
 
-		List<DataStructure> list = findByName(
-			dataStructureName, 0, 1, orderByComparator);
+		List<DataStructure> list = findByCode(
+			dataStructureCode, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -7029,21 +7029,21 @@ public class DataStructurePersistenceImpl
 	}
 
 	/**
-	 * Returns the last data structure in the ordered set where dataStructureName = &#63;.
+	 * Returns the last data structure in the ordered set where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data structure
 	 * @throws NoSuchDataStructureException if a matching data structure could not be found
 	 */
 	@Override
-	public DataStructure findByName_Last(
-			String dataStructureName,
+	public DataStructure findByCode_Last(
+			String dataStructureCode,
 			OrderByComparator<DataStructure> orderByComparator)
 		throws NoSuchDataStructureException {
 
-		DataStructure dataStructure = fetchByName_Last(
-			dataStructureName, orderByComparator);
+		DataStructure dataStructure = fetchByCode_Last(
+			dataStructureCode, orderByComparator);
 
 		if (dataStructure != null) {
 			return dataStructure;
@@ -7053,8 +7053,8 @@ public class DataStructurePersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("dataStructureName=");
-		sb.append(dataStructureName);
+		sb.append("dataStructureCode=");
+		sb.append(dataStructureCode);
 
 		sb.append("}");
 
@@ -7062,25 +7062,25 @@ public class DataStructurePersistenceImpl
 	}
 
 	/**
-	 * Returns the last data structure in the ordered set where dataStructureName = &#63;.
+	 * Returns the last data structure in the ordered set where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data structure, or <code>null</code> if a matching data structure could not be found
 	 */
 	@Override
-	public DataStructure fetchByName_Last(
-		String dataStructureName,
+	public DataStructure fetchByCode_Last(
+		String dataStructureCode,
 		OrderByComparator<DataStructure> orderByComparator) {
 
-		int count = countByName(dataStructureName);
+		int count = countByCode(dataStructureCode);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<DataStructure> list = findByName(
-			dataStructureName, count - 1, count, orderByComparator);
+		List<DataStructure> list = findByCode(
+			dataStructureCode, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -7090,21 +7090,21 @@ public class DataStructurePersistenceImpl
 	}
 
 	/**
-	 * Returns the data structures before and after the current data structure in the ordered set where dataStructureName = &#63;.
+	 * Returns the data structures before and after the current data structure in the ordered set where dataStructureCode = &#63;.
 	 *
 	 * @param dataStructureId the primary key of the current data structure
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data structure
 	 * @throws NoSuchDataStructureException if a data structure with the primary key could not be found
 	 */
 	@Override
-	public DataStructure[] findByName_PrevAndNext(
-			long dataStructureId, String dataStructureName,
+	public DataStructure[] findByCode_PrevAndNext(
+			long dataStructureId, String dataStructureCode,
 			OrderByComparator<DataStructure> orderByComparator)
 		throws NoSuchDataStructureException {
 
-		dataStructureName = Objects.toString(dataStructureName, "");
+		dataStructureCode = Objects.toString(dataStructureCode, "");
 
 		DataStructure dataStructure = findByPrimaryKey(dataStructureId);
 
@@ -7115,14 +7115,14 @@ public class DataStructurePersistenceImpl
 
 			DataStructure[] array = new DataStructureImpl[3];
 
-			array[0] = getByName_PrevAndNext(
-				session, dataStructure, dataStructureName, orderByComparator,
+			array[0] = getByCode_PrevAndNext(
+				session, dataStructure, dataStructureCode, orderByComparator,
 				true);
 
 			array[1] = dataStructure;
 
-			array[2] = getByName_PrevAndNext(
-				session, dataStructure, dataStructureName, orderByComparator,
+			array[2] = getByCode_PrevAndNext(
+				session, dataStructure, dataStructureCode, orderByComparator,
 				false);
 
 			return array;
@@ -7135,8 +7135,8 @@ public class DataStructurePersistenceImpl
 		}
 	}
 
-	protected DataStructure getByName_PrevAndNext(
-		Session session, DataStructure dataStructure, String dataStructureName,
+	protected DataStructure getByCode_PrevAndNext(
+		Session session, DataStructure dataStructure, String dataStructureCode,
 		OrderByComparator<DataStructure> orderByComparator, boolean previous) {
 
 		StringBundler sb = null;
@@ -7152,15 +7152,15 @@ public class DataStructurePersistenceImpl
 
 		sb.append(_SQL_SELECT_DATASTRUCTURE_WHERE);
 
-		boolean bindDataStructureName = false;
+		boolean bindDataStructureCode = false;
 
-		if (dataStructureName.isEmpty()) {
-			sb.append(_FINDER_COLUMN_NAME_DATASTRUCTURENAME_3);
+		if (dataStructureCode.isEmpty()) {
+			sb.append(_FINDER_COLUMN_CODE_DATASTRUCTURECODE_3);
 		}
 		else {
-			bindDataStructureName = true;
+			bindDataStructureCode = true;
 
-			sb.append(_FINDER_COLUMN_NAME_DATASTRUCTURENAME_2);
+			sb.append(_FINDER_COLUMN_CODE_DATASTRUCTURECODE_2);
 		}
 
 		if (orderByComparator != null) {
@@ -7232,8 +7232,8 @@ public class DataStructurePersistenceImpl
 
 		QueryPos queryPos = QueryPos.getInstance(query);
 
-		if (bindDataStructureName) {
-			queryPos.add(dataStructureName);
+		if (bindDataStructureCode) {
+			queryPos.add(dataStructureCode);
 		}
 
 		if (orderByComparator != null) {
@@ -7256,15 +7256,15 @@ public class DataStructurePersistenceImpl
 	}
 
 	/**
-	 * Removes all the data structures where dataStructureName = &#63; from the database.
+	 * Removes all the data structures where dataStructureCode = &#63; from the database.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 */
 	@Override
-	public void removeByName(String dataStructureName) {
+	public void removeByCode(String dataStructureCode) {
 		for (DataStructure dataStructure :
-				findByName(
-					dataStructureName, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				findByCode(
+					dataStructureCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 					null)) {
 
 			remove(dataStructure);
@@ -7272,18 +7272,18 @@ public class DataStructurePersistenceImpl
 	}
 
 	/**
-	 * Returns the number of data structures where dataStructureName = &#63;.
+	 * Returns the number of data structures where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @return the number of matching data structures
 	 */
 	@Override
-	public int countByName(String dataStructureName) {
-		dataStructureName = Objects.toString(dataStructureName, "");
+	public int countByCode(String dataStructureCode) {
+		dataStructureCode = Objects.toString(dataStructureCode, "");
 
-		FinderPath finderPath = _finderPathCountByName;
+		FinderPath finderPath = _finderPathCountByCode;
 
-		Object[] finderArgs = new Object[] {dataStructureName};
+		Object[] finderArgs = new Object[] {dataStructureCode};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -7292,15 +7292,15 @@ public class DataStructurePersistenceImpl
 
 			sb.append(_SQL_COUNT_DATASTRUCTURE_WHERE);
 
-			boolean bindDataStructureName = false;
+			boolean bindDataStructureCode = false;
 
-			if (dataStructureName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_DATASTRUCTURENAME_3);
+			if (dataStructureCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODE_DATASTRUCTURECODE_3);
 			}
 			else {
-				bindDataStructureName = true;
+				bindDataStructureCode = true;
 
-				sb.append(_FINDER_COLUMN_NAME_DATASTRUCTURENAME_2);
+				sb.append(_FINDER_COLUMN_CODE_DATASTRUCTURECODE_2);
 			}
 
 			String sql = sb.toString();
@@ -7314,8 +7314,8 @@ public class DataStructurePersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataStructureName) {
-					queryPos.add(dataStructureName);
+				if (bindDataStructureCode) {
+					queryPos.add(dataStructureCode);
 				}
 
 				count = (Long)query.uniqueResult();
@@ -7335,38 +7335,38 @@ public class DataStructurePersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAME_DATASTRUCTURENAME_2 =
-		"dataStructure.dataStructureName = ?";
+	private static final String _FINDER_COLUMN_CODE_DATASTRUCTURECODE_2 =
+		"dataStructure.dataStructureCode = ?";
 
-	private static final String _FINDER_COLUMN_NAME_DATASTRUCTURENAME_3 =
-		"(dataStructure.dataStructureName IS NULL OR dataStructure.dataStructureName = '')";
+	private static final String _FINDER_COLUMN_CODE_DATASTRUCTURECODE_3 =
+		"(dataStructure.dataStructureCode IS NULL OR dataStructure.dataStructureCode = '')";
 
-	private FinderPath _finderPathFetchByNameVersion;
-	private FinderPath _finderPathCountByNameVersion;
+	private FinderPath _finderPathFetchByCodeVersion;
+	private FinderPath _finderPathCountByCodeVersion;
 
 	/**
-	 * Returns the data structure where dataStructureName = &#63; and dataStructureVersion = &#63; or throws a <code>NoSuchDataStructureException</code> if it could not be found.
+	 * Returns the data structure where dataStructureCode = &#63; and dataStructureVersion = &#63; or throws a <code>NoSuchDataStructureException</code> if it could not be found.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param dataStructureVersion the data structure version
 	 * @return the matching data structure
 	 * @throws NoSuchDataStructureException if a matching data structure could not be found
 	 */
 	@Override
-	public DataStructure findByNameVersion(
-			String dataStructureName, String dataStructureVersion)
+	public DataStructure findByCodeVersion(
+			String dataStructureCode, String dataStructureVersion)
 		throws NoSuchDataStructureException {
 
-		DataStructure dataStructure = fetchByNameVersion(
-			dataStructureName, dataStructureVersion);
+		DataStructure dataStructure = fetchByCodeVersion(
+			dataStructureCode, dataStructureVersion);
 
 		if (dataStructure == null) {
 			StringBundler sb = new StringBundler(6);
 
 			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("dataStructureName=");
-			sb.append(dataStructureName);
+			sb.append("dataStructureCode=");
+			sb.append(dataStructureCode);
 
 			sb.append(", dataStructureVersion=");
 			sb.append(dataStructureVersion);
@@ -7384,54 +7384,54 @@ public class DataStructurePersistenceImpl
 	}
 
 	/**
-	 * Returns the data structure where dataStructureName = &#63; and dataStructureVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the data structure where dataStructureCode = &#63; and dataStructureVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param dataStructureVersion the data structure version
 	 * @return the matching data structure, or <code>null</code> if a matching data structure could not be found
 	 */
 	@Override
-	public DataStructure fetchByNameVersion(
-		String dataStructureName, String dataStructureVersion) {
+	public DataStructure fetchByCodeVersion(
+		String dataStructureCode, String dataStructureVersion) {
 
-		return fetchByNameVersion(
-			dataStructureName, dataStructureVersion, true);
+		return fetchByCodeVersion(
+			dataStructureCode, dataStructureVersion, true);
 	}
 
 	/**
-	 * Returns the data structure where dataStructureName = &#63; and dataStructureVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the data structure where dataStructureCode = &#63; and dataStructureVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param dataStructureVersion the data structure version
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching data structure, or <code>null</code> if a matching data structure could not be found
 	 */
 	@Override
-	public DataStructure fetchByNameVersion(
-		String dataStructureName, String dataStructureVersion,
+	public DataStructure fetchByCodeVersion(
+		String dataStructureCode, String dataStructureVersion,
 		boolean useFinderCache) {
 
-		dataStructureName = Objects.toString(dataStructureName, "");
+		dataStructureCode = Objects.toString(dataStructureCode, "");
 		dataStructureVersion = Objects.toString(dataStructureVersion, "");
 
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
-			finderArgs = new Object[] {dataStructureName, dataStructureVersion};
+			finderArgs = new Object[] {dataStructureCode, dataStructureVersion};
 		}
 
 		Object result = null;
 
 		if (useFinderCache) {
 			result = finderCache.getResult(
-				_finderPathFetchByNameVersion, finderArgs, this);
+				_finderPathFetchByCodeVersion, finderArgs, this);
 		}
 
 		if (result instanceof DataStructure) {
 			DataStructure dataStructure = (DataStructure)result;
 
 			if (!Objects.equals(
-					dataStructureName, dataStructure.getDataStructureName()) ||
+					dataStructureCode, dataStructure.getDataStructureCode()) ||
 				!Objects.equals(
 					dataStructureVersion,
 					dataStructure.getDataStructureVersion())) {
@@ -7445,26 +7445,26 @@ public class DataStructurePersistenceImpl
 
 			sb.append(_SQL_SELECT_DATASTRUCTURE_WHERE);
 
-			boolean bindDataStructureName = false;
+			boolean bindDataStructureCode = false;
 
-			if (dataStructureName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASTRUCTURENAME_3);
+			if (dataStructureCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASTRUCTURECODE_3);
 			}
 			else {
-				bindDataStructureName = true;
+				bindDataStructureCode = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASTRUCTURENAME_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASTRUCTURECODE_2);
 			}
 
 			boolean bindDataStructureVersion = false;
 
 			if (dataStructureVersion.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASTRUCTUREVERSION_3);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASTRUCTUREVERSION_3);
 			}
 			else {
 				bindDataStructureVersion = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASTRUCTUREVERSION_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASTRUCTUREVERSION_2);
 			}
 
 			String sql = sb.toString();
@@ -7478,8 +7478,8 @@ public class DataStructurePersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataStructureName) {
-					queryPos.add(dataStructureName);
+				if (bindDataStructureCode) {
+					queryPos.add(dataStructureCode);
 				}
 
 				if (bindDataStructureVersion) {
@@ -7491,7 +7491,7 @@ public class DataStructurePersistenceImpl
 				if (list.isEmpty()) {
 					if (useFinderCache) {
 						finderCache.putResult(
-							_finderPathFetchByNameVersion, finderArgs, list);
+							_finderPathFetchByCodeVersion, finderArgs, list);
 					}
 				}
 				else {
@@ -7501,12 +7501,12 @@ public class DataStructurePersistenceImpl
 						if (_log.isWarnEnabled()) {
 							if (!useFinderCache) {
 								finderArgs = new Object[] {
-									dataStructureName, dataStructureVersion
+									dataStructureCode, dataStructureVersion
 								};
 							}
 
 							_log.warn(
-								"DataStructurePersistenceImpl.fetchByNameVersion(String, String, boolean) with parameters (" +
+								"DataStructurePersistenceImpl.fetchByCodeVersion(String, String, boolean) with parameters (" +
 									StringUtil.merge(finderArgs) +
 										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
@@ -7522,7 +7522,7 @@ public class DataStructurePersistenceImpl
 			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(
-						_finderPathFetchByNameVersion, finderArgs);
+						_finderPathFetchByCodeVersion, finderArgs);
 				}
 
 				throw processException(exception);
@@ -7541,41 +7541,41 @@ public class DataStructurePersistenceImpl
 	}
 
 	/**
-	 * Removes the data structure where dataStructureName = &#63; and dataStructureVersion = &#63; from the database.
+	 * Removes the data structure where dataStructureCode = &#63; and dataStructureVersion = &#63; from the database.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param dataStructureVersion the data structure version
 	 * @return the data structure that was removed
 	 */
 	@Override
-	public DataStructure removeByNameVersion(
-			String dataStructureName, String dataStructureVersion)
+	public DataStructure removeByCodeVersion(
+			String dataStructureCode, String dataStructureVersion)
 		throws NoSuchDataStructureException {
 
-		DataStructure dataStructure = findByNameVersion(
-			dataStructureName, dataStructureVersion);
+		DataStructure dataStructure = findByCodeVersion(
+			dataStructureCode, dataStructureVersion);
 
 		return remove(dataStructure);
 	}
 
 	/**
-	 * Returns the number of data structures where dataStructureName = &#63; and dataStructureVersion = &#63;.
+	 * Returns the number of data structures where dataStructureCode = &#63; and dataStructureVersion = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param dataStructureVersion the data structure version
 	 * @return the number of matching data structures
 	 */
 	@Override
-	public int countByNameVersion(
-		String dataStructureName, String dataStructureVersion) {
+	public int countByCodeVersion(
+		String dataStructureCode, String dataStructureVersion) {
 
-		dataStructureName = Objects.toString(dataStructureName, "");
+		dataStructureCode = Objects.toString(dataStructureCode, "");
 		dataStructureVersion = Objects.toString(dataStructureVersion, "");
 
-		FinderPath finderPath = _finderPathCountByNameVersion;
+		FinderPath finderPath = _finderPathCountByCodeVersion;
 
 		Object[] finderArgs = new Object[] {
-			dataStructureName, dataStructureVersion
+			dataStructureCode, dataStructureVersion
 		};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
@@ -7585,26 +7585,26 @@ public class DataStructurePersistenceImpl
 
 			sb.append(_SQL_COUNT_DATASTRUCTURE_WHERE);
 
-			boolean bindDataStructureName = false;
+			boolean bindDataStructureCode = false;
 
-			if (dataStructureName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASTRUCTURENAME_3);
+			if (dataStructureCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASTRUCTURECODE_3);
 			}
 			else {
-				bindDataStructureName = true;
+				bindDataStructureCode = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASTRUCTURENAME_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASTRUCTURECODE_2);
 			}
 
 			boolean bindDataStructureVersion = false;
 
 			if (dataStructureVersion.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASTRUCTUREVERSION_3);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASTRUCTUREVERSION_3);
 			}
 			else {
 				bindDataStructureVersion = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_DATASTRUCTUREVERSION_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATASTRUCTUREVERSION_2);
 			}
 
 			String sql = sb.toString();
@@ -7618,8 +7618,8 @@ public class DataStructurePersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindDataStructureName) {
-					queryPos.add(dataStructureName);
+				if (bindDataStructureCode) {
+					queryPos.add(dataStructureCode);
 				}
 
 				if (bindDataStructureVersion) {
@@ -7643,18 +7643,18 @@ public class DataStructurePersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_DATASTRUCTURENAME_2 =
-		"dataStructure.dataStructureName = ? AND ";
+	private static final String _FINDER_COLUMN_CODEVERSION_DATASTRUCTURECODE_2 =
+		"dataStructure.dataStructureCode = ? AND ";
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_DATASTRUCTURENAME_3 =
-		"(dataStructure.dataStructureName IS NULL OR dataStructure.dataStructureName = '') AND ";
+	private static final String _FINDER_COLUMN_CODEVERSION_DATASTRUCTURECODE_3 =
+		"(dataStructure.dataStructureCode IS NULL OR dataStructure.dataStructureCode = '') AND ";
 
 	private static final String
-		_FINDER_COLUMN_NAMEVERSION_DATASTRUCTUREVERSION_2 =
+		_FINDER_COLUMN_CODEVERSION_DATASTRUCTUREVERSION_2 =
 			"dataStructure.dataStructureVersion = ?";
 
 	private static final String
-		_FINDER_COLUMN_NAMEVERSION_DATASTRUCTUREVERSION_3 =
+		_FINDER_COLUMN_CODEVERSION_DATASTRUCTUREVERSION_3 =
 			"(dataStructure.dataStructureVersion IS NULL OR dataStructure.dataStructureVersion = '')";
 
 	public DataStructurePersistenceImpl() {
@@ -7687,9 +7687,9 @@ public class DataStructurePersistenceImpl
 			dataStructure);
 
 		finderCache.putResult(
-			_finderPathFetchByNameVersion,
+			_finderPathFetchByCodeVersion,
 			new Object[] {
-				dataStructure.getDataStructureName(),
+				dataStructure.getDataStructureCode(),
 				dataStructure.getDataStructureVersion()
 			},
 			dataStructure);
@@ -7801,14 +7801,14 @@ public class DataStructurePersistenceImpl
 			_finderPathFetchByUUID_G, args, dataStructureModelImpl, false);
 
 		args = new Object[] {
-			dataStructureModelImpl.getDataStructureName(),
+			dataStructureModelImpl.getDataStructureCode(),
 			dataStructureModelImpl.getDataStructureVersion()
 		};
 
 		finderCache.putResult(
-			_finderPathCountByNameVersion, args, Long.valueOf(1), false);
+			_finderPathCountByCodeVersion, args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByNameVersion, args, dataStructureModelImpl, false);
+			_finderPathFetchByCodeVersion, args, dataStructureModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
@@ -7838,24 +7838,24 @@ public class DataStructurePersistenceImpl
 
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-				dataStructureModelImpl.getDataStructureName(),
+				dataStructureModelImpl.getDataStructureCode(),
 				dataStructureModelImpl.getDataStructureVersion()
 			};
 
-			finderCache.removeResult(_finderPathCountByNameVersion, args);
-			finderCache.removeResult(_finderPathFetchByNameVersion, args);
+			finderCache.removeResult(_finderPathCountByCodeVersion, args);
+			finderCache.removeResult(_finderPathFetchByCodeVersion, args);
 		}
 
 		if ((dataStructureModelImpl.getColumnBitmask() &
-			 _finderPathFetchByNameVersion.getColumnBitmask()) != 0) {
+			 _finderPathFetchByCodeVersion.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				dataStructureModelImpl.getOriginalDataStructureName(),
+				dataStructureModelImpl.getOriginalDataStructureCode(),
 				dataStructureModelImpl.getOriginalDataStructureVersion()
 			};
 
-			finderCache.removeResult(_finderPathCountByNameVersion, args);
-			finderCache.removeResult(_finderPathFetchByNameVersion, args);
+			finderCache.removeResult(_finderPathCountByCodeVersion, args);
+			finderCache.removeResult(_finderPathFetchByCodeVersion, args);
 		}
 	}
 
@@ -8117,11 +8117,11 @@ public class DataStructurePersistenceImpl
 			finderCache.removeResult(
 				_finderPathWithoutPaginationFindByG_U_S, args);
 
-			args = new Object[] {dataStructureModelImpl.getDataStructureName()};
+			args = new Object[] {dataStructureModelImpl.getDataStructureCode()};
 
-			finderCache.removeResult(_finderPathCountByName, args);
+			finderCache.removeResult(_finderPathCountByCode, args);
 			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByName, args);
+				_finderPathWithoutPaginationFindByCode, args);
 
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(
@@ -8322,24 +8322,24 @@ public class DataStructurePersistenceImpl
 			}
 
 			if ((dataStructureModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByName.getColumnBitmask()) !=
+				 _finderPathWithoutPaginationFindByCode.getColumnBitmask()) !=
 					 0) {
 
 				Object[] args = new Object[] {
-					dataStructureModelImpl.getOriginalDataStructureName()
+					dataStructureModelImpl.getOriginalDataStructureCode()
 				};
 
-				finderCache.removeResult(_finderPathCountByName, args);
+				finderCache.removeResult(_finderPathCountByCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
+					_finderPathWithoutPaginationFindByCode, args);
 
 				args = new Object[] {
-					dataStructureModelImpl.getDataStructureName()
+					dataStructureModelImpl.getDataStructureCode()
 				};
 
-				finderCache.removeResult(_finderPathCountByName, args);
+				finderCache.removeResult(_finderPathCountByCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
+					_finderPathWithoutPaginationFindByCode, args);
 			}
 		}
 
@@ -8842,35 +8842,35 @@ public class DataStructurePersistenceImpl
 				Integer.class.getName()
 			});
 
-		_finderPathWithPaginationFindByName = new FinderPath(
+		_finderPathWithPaginationFindByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataStructureImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByName",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCode",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByName = new FinderPath(
+		_finderPathWithoutPaginationFindByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataStructureImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByName",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCode",
 			new String[] {String.class.getName()},
-			DataStructureModelImpl.DATASTRUCTURENAME_COLUMN_BITMASK);
+			DataStructureModelImpl.DATASTRUCTURECODE_COLUMN_BITMASK);
 
-		_finderPathCountByName = new FinderPath(
+		_finderPathCountByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCode",
 			new String[] {String.class.getName()});
 
-		_finderPathFetchByNameVersion = new FinderPath(
+		_finderPathFetchByCodeVersion = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataStructureImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByNameVersion",
+			FINDER_CLASS_NAME_ENTITY, "fetchByCodeVersion",
 			new String[] {String.class.getName(), String.class.getName()},
-			DataStructureModelImpl.DATASTRUCTURENAME_COLUMN_BITMASK |
+			DataStructureModelImpl.DATASTRUCTURECODE_COLUMN_BITMASK |
 			DataStructureModelImpl.DATASTRUCTUREVERSION_COLUMN_BITMASK);
 
-		_finderPathCountByNameVersion = new FinderPath(
+		_finderPathCountByCodeVersion = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByNameVersion",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCodeVersion",
 			new String[] {String.class.getName(), String.class.getName()});
 
 		_setDataStructureUtilPersistence(this);

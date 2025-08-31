@@ -14,13 +14,6 @@
 
 package com.sx.icecap.service;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
-import com.sx.icecap.model.DataCollection;
-
-import java.util.Map;
-
 /**
  * Provides the remote service utility for DataCollection. This utility wraps
  * <code>com.sx.icecap.service.impl.DataCollectionServiceImpl</code> and is an
@@ -40,58 +33,14 @@ public class DataCollectionServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.sx.icecap.service.impl.DataCollectionServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static DataCollection addDataCollection(
-			String dataCollectionName, String dataCollectionVersion,
-			Map<java.util.Locale, String> displayNameMap,
-			Map<java.util.Locale, String> descriptionMap, int status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws PortalException {
-
-		return getService().addDataCollection(
-			dataCollectionName, dataCollectionVersion, displayNameMap,
-			descriptionMap, status, sc);
-	}
 
 	/**
 	 * Returns the OSGi service identifier.
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static DataCollection removeDataCollection(long dataCollectionId)
-		throws PortalException {
-
-		return getService().removeDataCollection(dataCollectionId);
-	}
-
-	public static void removeDataCollections(long[] dataCollectionIds)
-		throws PortalException {
-
-		getService().removeDataCollections(dataCollectionIds);
-	}
-
-	public static DataCollection updateDataCollection(
-			long dataCollectionId, String dataCollectionName,
-			String dataCollectionVersion,
-			Map<java.util.Locale, String> displayNameMap,
-			Map<java.util.Locale, String> descriptionMap, int status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws PortalException {
-
-		return getService().updateDataCollection(
-			dataCollectionId, dataCollectionName, dataCollectionVersion,
-			displayNameMap, descriptionMap, status, sc);
-	}
-
-	public static DataCollection updateStatus(
-			long userId, long dataCollectionId, Integer status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws PortalException, SystemException {
-
-		return getService().updateStatus(userId, dataCollectionId, status, sc);
 	}
 
 	public static DataCollectionService getService() {

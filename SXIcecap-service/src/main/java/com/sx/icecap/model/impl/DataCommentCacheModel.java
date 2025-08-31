@@ -81,8 +81,8 @@ public class DataCommentCacheModel
 		sb.append(modifiedDate);
 		sb.append(", structuredDataId=");
 		sb.append(structuredDataId);
-		sb.append(", paramName=");
-		sb.append(paramName);
+		sb.append(", paramCode=");
+		sb.append(paramCode);
 		sb.append(", parentCommentId=");
 		sb.append(parentCommentId);
 		sb.append(", comment=");
@@ -126,11 +126,11 @@ public class DataCommentCacheModel
 
 		dataCommentImpl.setStructuredDataId(structuredDataId);
 
-		if (paramName == null) {
-			dataCommentImpl.setParamName("");
+		if (paramCode == null) {
+			dataCommentImpl.setParamCode("");
 		}
 		else {
-			dataCommentImpl.setParamName(paramName);
+			dataCommentImpl.setParamCode(paramCode);
 		}
 
 		dataCommentImpl.setParentCommentId(parentCommentId);
@@ -163,7 +163,7 @@ public class DataCommentCacheModel
 		modifiedDate = objectInput.readLong();
 
 		structuredDataId = objectInput.readLong();
-		paramName = objectInput.readUTF();
+		paramCode = objectInput.readUTF();
 
 		parentCommentId = objectInput.readLong();
 		comment = objectInput.readUTF();
@@ -193,11 +193,11 @@ public class DataCommentCacheModel
 
 		objectOutput.writeLong(structuredDataId);
 
-		if (paramName == null) {
+		if (paramCode == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(paramName);
+			objectOutput.writeUTF(paramCode);
 		}
 
 		objectOutput.writeLong(parentCommentId);
@@ -220,7 +220,7 @@ public class DataCommentCacheModel
 	public long createDate;
 	public long modifiedDate;
 	public long structuredDataId;
-	public String paramName;
+	public String paramCode;
 	public long parentCommentId;
 	public String comment;
 	public boolean closed;

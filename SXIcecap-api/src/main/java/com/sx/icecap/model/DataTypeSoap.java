@@ -44,14 +44,13 @@ public class DataTypeSoap implements Serializable {
 		soapModel.setStatusByUserId(model.getStatusByUserId());
 		soapModel.setStatusByUserName(model.getStatusByUserName());
 		soapModel.setStatusDate(model.getStatusDate());
-		soapModel.setDataTypeName(model.getDataTypeName());
+		soapModel.setDataTypeCode(model.getDataTypeCode());
 		soapModel.setDataTypeVersion(model.getDataTypeVersion());
 		soapModel.setDisplayName(model.getDisplayName());
 		soapModel.setExtension(model.getExtension());
 		soapModel.setSampleFileId(model.getSampleFileId());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setTooltip(model.getTooltip());
-		soapModel.setDataStructureId(model.getDataStructureId());
 
 		return soapModel;
 	}
@@ -209,12 +208,12 @@ public class DataTypeSoap implements Serializable {
 		_statusDate = statusDate;
 	}
 
-	public String getDataTypeName() {
-		return _dataTypeName;
+	public String getDataTypeCode() {
+		return _dataTypeCode;
 	}
 
-	public void setDataTypeName(String dataTypeName) {
-		_dataTypeName = dataTypeName;
+	public void setDataTypeCode(String dataTypeCode) {
+		_dataTypeCode = dataTypeCode;
 	}
 
 	public String getDataTypeVersion() {
@@ -265,14 +264,6 @@ public class DataTypeSoap implements Serializable {
 		_tooltip = tooltip;
 	}
 
-	public long getDataStructureId() {
-		return _dataStructureId;
-	}
-
-	public void setDataStructureId(long dataStructureId) {
-		_dataStructureId = dataStructureId;
-	}
-
 	private String _uuid;
 	private long _dataTypeId;
 	private long _companyId;
@@ -286,13 +277,12 @@ public class DataTypeSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private String _dataTypeName;
+	private String _dataTypeCode;
 	private String _dataTypeVersion;
 	private String _displayName;
 	private String _extension;
 	private long _sampleFileId;
 	private String _description;
 	private String _tooltip;
-	private long _dataStructureId;
 
 }

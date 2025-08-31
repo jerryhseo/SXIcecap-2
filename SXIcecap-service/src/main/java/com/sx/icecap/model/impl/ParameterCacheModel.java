@@ -90,8 +90,8 @@ public class ParameterCacheModel
 		sb.append(statusDate);
 		sb.append(", lastPublishDate=");
 		sb.append(lastPublishDate);
-		sb.append(", paramName=");
-		sb.append(paramName);
+		sb.append(", paramCode=");
+		sb.append(paramCode);
 		sb.append(", paramVersion=");
 		sb.append(paramVersion);
 		sb.append(", paramType=");
@@ -174,11 +174,11 @@ public class ParameterCacheModel
 			parameterImpl.setLastPublishDate(new Date(lastPublishDate));
 		}
 
-		if (paramName == null) {
-			parameterImpl.setParamName("");
+		if (paramCode == null) {
+			parameterImpl.setParamCode("");
 		}
 		else {
-			parameterImpl.setParamName(paramName);
+			parameterImpl.setParamCode(paramCode);
 		}
 
 		if (paramVersion == null) {
@@ -258,7 +258,7 @@ public class ParameterCacheModel
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
 		lastPublishDate = objectInput.readLong();
-		paramName = objectInput.readUTF();
+		paramCode = objectInput.readUTF();
 		paramVersion = objectInput.readUTF();
 		paramType = objectInput.readUTF();
 		displayName = objectInput.readUTF();
@@ -311,11 +311,11 @@ public class ParameterCacheModel
 		objectOutput.writeLong(statusDate);
 		objectOutput.writeLong(lastPublishDate);
 
-		if (paramName == null) {
+		if (paramCode == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(paramName);
+			objectOutput.writeUTF(paramCode);
 		}
 
 		if (paramVersion == null) {
@@ -383,7 +383,7 @@ public class ParameterCacheModel
 	public String statusByUserName;
 	public long statusDate;
 	public long lastPublishDate;
-	public String paramName;
+	public String paramCode;
 	public String paramVersion;
 	public String paramType;
 	public String displayName;

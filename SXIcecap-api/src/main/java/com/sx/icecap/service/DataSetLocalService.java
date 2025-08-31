@@ -83,7 +83,7 @@ public interface DataSetLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DataSet addDataSet(
-			String dataSetName, String dataSetVersion,
+			String dataSetCode, String dataSetVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap, int status, ServiceContext sc)
 		throws PortalException;
@@ -92,13 +92,13 @@ public interface DataSetLocalService
 
 	public int countApprovedDataSets(long groupId);
 
+	public int countDataSetsByCode(String dataSetCode);
+
 	public int countDataSetsByG_S(long groupId, int status);
 
 	public int countDataSetsByG_U_S(long groupId, long userId, int status);
 
 	public int countDataSetsByGroupId(long groupId);
-
-	public int countDataSetsByName(String dataSetName);
 
 	public int countDataSetsByStatus(int status);
 
@@ -263,7 +263,7 @@ public interface DataSetLocalService
 	public DataSet getDataSet(long dataSetId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DataSet getDataSet(String dataSetName, String dataSetVersion)
+	public DataSet getDataSet(String dataSetCode, String dataSetVersion)
 		throws NoSuchDataSetException;
 
 	/**
@@ -291,6 +291,18 @@ public interface DataSetLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DataSet> getDataSets(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataSet> getDataSetsByCode(String dataSetCode);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataSet> getDataSetsByCode(
+		String dataSetCode, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataSet> getDataSetsByCode(
+		String dataSetCode, int start, int end,
+		OrderByComparator<DataSet> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DataSet> getDataSetsByG_S(long groupId, int status);
@@ -326,18 +338,6 @@ public interface DataSetLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DataSet> getDataSetsByGroupId(
 		long groupId, int start, int end,
-		OrderByComparator<DataSet> comparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DataSet> getDataSetsByName(String dataSetName);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DataSet> getDataSetsByName(
-		String dataSetName, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DataSet> getDataSetsByName(
-		String dataSetName, int start, int end,
 		OrderByComparator<DataSet> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -448,7 +448,7 @@ public interface DataSetLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DataSet updateDataSet(
-			long dataSetId, String dataSetName, String dataSetVersion,
+			long dataSetId, String dataSetCode, String dataSetVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap, int status, ServiceContext sc)
 		throws PortalException;

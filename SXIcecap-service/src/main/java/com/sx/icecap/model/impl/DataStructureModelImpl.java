@@ -89,7 +89,7 @@ public class DataStructureModelImpl
 		{"modifiedDate", Types.TIMESTAMP}, {"lastPublishDate", Types.TIMESTAMP},
 		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
 		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP},
-		{"dataStructureId", Types.BIGINT}, {"dataStructureName", Types.VARCHAR},
+		{"dataStructureId", Types.BIGINT}, {"dataStructureCode", Types.VARCHAR},
 		{"dataStructureVersion", Types.VARCHAR}, {"displayName", Types.VARCHAR},
 		{"description", Types.VARCHAR}, {"structure", Types.VARCHAR}
 	};
@@ -111,7 +111,7 @@ public class DataStructureModelImpl
 		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("dataStructureId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("dataStructureName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("dataStructureCode", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("dataStructureVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
@@ -119,7 +119,7 @@ public class DataStructureModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataStructure (uuid_ VARCHAR(75) null,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataStructureId LONG not null primary key,dataStructureName VARCHAR(75) null,dataStructureVersion VARCHAR(75) null,displayName STRING null,description STRING null,structure TEXT null)";
+		"create table SX_ICECAP_DataStructure (uuid_ VARCHAR(75) null,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataStructureId LONG not null primary key,dataStructureCode VARCHAR(75) null,dataStructureVersion VARCHAR(75) null,displayName STRING null,description STRING null,structure TEXT null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_DataStructure";
@@ -138,7 +138,7 @@ public class DataStructureModelImpl
 
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
-	public static final long DATASTRUCTURENAME_COLUMN_BITMASK = 2L;
+	public static final long DATASTRUCTURECODE_COLUMN_BITMASK = 2L;
 
 	public static final long DATASTRUCTUREVERSION_COLUMN_BITMASK = 4L;
 
@@ -319,11 +319,11 @@ public class DataStructureModelImpl
 			"dataStructureId",
 			(BiConsumer<DataStructure, Long>)DataStructure::setDataStructureId);
 		attributeGetterFunctions.put(
-			"dataStructureName", DataStructure::getDataStructureName);
+			"dataStructureCode", DataStructure::getDataStructureCode);
 		attributeSetterBiConsumers.put(
-			"dataStructureName",
+			"dataStructureCode",
 			(BiConsumer<DataStructure, String>)
-				DataStructure::setDataStructureName);
+				DataStructure::setDataStructureCode);
 		attributeGetterFunctions.put(
 			"dataStructureVersion", DataStructure::getDataStructureVersion);
 		attributeSetterBiConsumers.put(
@@ -593,28 +593,28 @@ public class DataStructureModelImpl
 	}
 
 	@Override
-	public String getDataStructureName() {
-		if (_dataStructureName == null) {
+	public String getDataStructureCode() {
+		if (_dataStructureCode == null) {
 			return "";
 		}
 		else {
-			return _dataStructureName;
+			return _dataStructureCode;
 		}
 	}
 
 	@Override
-	public void setDataStructureName(String dataStructureName) {
-		_columnBitmask |= DATASTRUCTURENAME_COLUMN_BITMASK;
+	public void setDataStructureCode(String dataStructureCode) {
+		_columnBitmask |= DATASTRUCTURECODE_COLUMN_BITMASK;
 
-		if (_originalDataStructureName == null) {
-			_originalDataStructureName = _dataStructureName;
+		if (_originalDataStructureCode == null) {
+			_originalDataStructureCode = _dataStructureCode;
 		}
 
-		_dataStructureName = dataStructureName;
+		_dataStructureCode = dataStructureCode;
 	}
 
-	public String getOriginalDataStructureName() {
-		return GetterUtil.getString(_originalDataStructureName);
+	public String getOriginalDataStructureCode() {
+		return GetterUtil.getString(_originalDataStructureCode);
 	}
 
 	@Override
@@ -1242,7 +1242,7 @@ public class DataStructureModelImpl
 		dataStructureImpl.setStatusByUserName(getStatusByUserName());
 		dataStructureImpl.setStatusDate(getStatusDate());
 		dataStructureImpl.setDataStructureId(getDataStructureId());
-		dataStructureImpl.setDataStructureName(getDataStructureName());
+		dataStructureImpl.setDataStructureCode(getDataStructureCode());
 		dataStructureImpl.setDataStructureVersion(getDataStructureVersion());
 		dataStructureImpl.setDisplayName(getDisplayName());
 		dataStructureImpl.setDescription(getDescription());
@@ -1327,7 +1327,7 @@ public class DataStructureModelImpl
 
 		_setOriginalStatus = false;
 
-		_originalDataStructureName = _dataStructureName;
+		_originalDataStructureCode = _dataStructureCode;
 
 		_originalDataStructureVersion = _dataStructureVersion;
 
@@ -1411,12 +1411,12 @@ public class DataStructureModelImpl
 
 		dataStructureCacheModel.dataStructureId = getDataStructureId();
 
-		dataStructureCacheModel.dataStructureName = getDataStructureName();
+		dataStructureCacheModel.dataStructureCode = getDataStructureCode();
 
-		String dataStructureName = dataStructureCacheModel.dataStructureName;
+		String dataStructureCode = dataStructureCacheModel.dataStructureCode;
 
-		if ((dataStructureName != null) && (dataStructureName.length() == 0)) {
-			dataStructureCacheModel.dataStructureName = null;
+		if ((dataStructureCode != null) && (dataStructureCode.length() == 0)) {
+			dataStructureCacheModel.dataStructureCode = null;
 		}
 
 		dataStructureCacheModel.dataStructureVersion =
@@ -1573,8 +1573,8 @@ public class DataStructureModelImpl
 	private String _statusByUserName;
 	private Date _statusDate;
 	private long _dataStructureId;
-	private String _dataStructureName;
-	private String _originalDataStructureName;
+	private String _dataStructureCode;
+	private String _originalDataStructureCode;
 	private String _dataStructureVersion;
 	private String _originalDataStructureVersion;
 	private String _displayName;

@@ -32,19 +32,6 @@ public class DataCollectionServiceWrapper
 		_dataCollectionService = dataCollectionService;
 	}
 
-	@Override
-	public com.sx.icecap.model.DataCollection addDataCollection(
-			String dataCollectionName, String dataCollectionVersion,
-			java.util.Map<java.util.Locale, String> displayNameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, int status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _dataCollectionService.addDataCollection(
-			dataCollectionName, dataCollectionVersion, displayNameMap,
-			descriptionMap, status, sc);
-	}
-
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -53,46 +40,6 @@ public class DataCollectionServiceWrapper
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _dataCollectionService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.sx.icecap.model.DataCollection removeDataCollection(
-			long dataCollectionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _dataCollectionService.removeDataCollection(dataCollectionId);
-	}
-
-	@Override
-	public void removeDataCollections(long[] dataCollectionIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_dataCollectionService.removeDataCollections(dataCollectionIds);
-	}
-
-	@Override
-	public com.sx.icecap.model.DataCollection updateDataCollection(
-			long dataCollectionId, String dataCollectionName,
-			String dataCollectionVersion,
-			java.util.Map<java.util.Locale, String> displayNameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, int status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _dataCollectionService.updateDataCollection(
-			dataCollectionId, dataCollectionName, dataCollectionVersion,
-			displayNameMap, descriptionMap, status, sc);
-	}
-
-	@Override
-	public com.sx.icecap.model.DataCollection updateStatus(
-			long userId, long dataCollectionId, Integer status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			   com.liferay.portal.kernel.exception.SystemException {
-
-		return _dataCollectionService.updateStatus(
-			userId, dataCollectionId, status, sc);
 	}
 
 	@Override

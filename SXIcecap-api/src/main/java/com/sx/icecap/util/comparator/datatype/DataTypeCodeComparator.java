@@ -3,7 +3,7 @@ package com.sx.icecap.util.comparator.datatype;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.sx.icecap.model.DataType;
 
-public class DataTypeNameComparator extends OrderByComparator<DataType> {
+public class DataTypeCodeComparator extends OrderByComparator<DataType> {
 
 	public static final String ORDER_BY_ASC = "DataType.dataTypeName ASC";
 
@@ -11,18 +11,18 @@ public class DataTypeNameComparator extends OrderByComparator<DataType> {
 
 	public static final String[] ORDER_BY_FIELDS = {"dataTypeName"};
 
-	public DataTypeNameComparator() {
+	public DataTypeCodeComparator() {
 		this(false);
 	}
 
-	public DataTypeNameComparator(boolean ascending) {
+	public DataTypeCodeComparator(boolean ascending) {
 		_ascending = ascending;
 	}
 
 	@Override
 	public int compare(DataType entry1, DataType entry2) {
-		String title1 = entry1.getDataTypeName();
-		String title2 = entry2.getDataTypeName();
+		String title1 = entry1.getDataTypeCode();
+		String title2 = entry2.getDataTypeCode();
 
 		int value = title1.compareTo(title2);
 

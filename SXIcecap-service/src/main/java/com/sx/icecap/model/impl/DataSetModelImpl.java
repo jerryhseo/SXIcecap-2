@@ -89,7 +89,7 @@ public class DataSetModelImpl
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"lastPublishDate", Types.TIMESTAMP}, {"status", Types.INTEGER},
 		{"statusByUserId", Types.BIGINT}, {"statusByUserName", Types.VARCHAR},
-		{"statusDate", Types.TIMESTAMP}, {"dataSetName", Types.VARCHAR},
+		{"statusDate", Types.TIMESTAMP}, {"dataSetCode", Types.VARCHAR},
 		{"dataSetVersion", Types.VARCHAR}, {"displayName", Types.VARCHAR},
 		{"description", Types.VARCHAR}
 	};
@@ -111,14 +111,14 @@ public class DataSetModelImpl
 		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("dataSetName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("dataSetCode", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("dataSetVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataSet (uuid_ VARCHAR(75) null,dataSetId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataSetName VARCHAR(75) null,dataSetVersion VARCHAR(75) null,displayName STRING null,description STRING null)";
+		"create table SX_ICECAP_DataSet (uuid_ VARCHAR(75) null,dataSetId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataSetCode VARCHAR(75) null,dataSetVersion VARCHAR(75) null,displayName STRING null,description STRING null)";
 
 	public static final String TABLE_SQL_DROP = "drop table SX_ICECAP_DataSet";
 
@@ -136,7 +136,7 @@ public class DataSetModelImpl
 
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 
-	public static final long DATASETNAME_COLUMN_BITMASK = 2L;
+	public static final long DATASETCODE_COLUMN_BITMASK = 2L;
 
 	public static final long DATASETVERSION_COLUMN_BITMASK = 4L;
 
@@ -302,10 +302,10 @@ public class DataSetModelImpl
 		attributeGetterFunctions.put("statusDate", DataSet::getStatusDate);
 		attributeSetterBiConsumers.put(
 			"statusDate", (BiConsumer<DataSet, Date>)DataSet::setStatusDate);
-		attributeGetterFunctions.put("dataSetName", DataSet::getDataSetName);
+		attributeGetterFunctions.put("dataSetCode", DataSet::getDataSetCode);
 		attributeSetterBiConsumers.put(
-			"dataSetName",
-			(BiConsumer<DataSet, String>)DataSet::setDataSetName);
+			"dataSetCode",
+			(BiConsumer<DataSet, String>)DataSet::setDataSetCode);
 		attributeGetterFunctions.put(
 			"dataSetVersion", DataSet::getDataSetVersion);
 		attributeSetterBiConsumers.put(
@@ -568,28 +568,28 @@ public class DataSetModelImpl
 	}
 
 	@Override
-	public String getDataSetName() {
-		if (_dataSetName == null) {
+	public String getDataSetCode() {
+		if (_dataSetCode == null) {
 			return "";
 		}
 		else {
-			return _dataSetName;
+			return _dataSetCode;
 		}
 	}
 
 	@Override
-	public void setDataSetName(String dataSetName) {
-		_columnBitmask |= DATASETNAME_COLUMN_BITMASK;
+	public void setDataSetCode(String dataSetCode) {
+		_columnBitmask |= DATASETCODE_COLUMN_BITMASK;
 
-		if (_originalDataSetName == null) {
-			_originalDataSetName = _dataSetName;
+		if (_originalDataSetCode == null) {
+			_originalDataSetCode = _dataSetCode;
 		}
 
-		_dataSetName = dataSetName;
+		_dataSetCode = dataSetCode;
 	}
 
-	public String getOriginalDataSetName() {
-		return GetterUtil.getString(_originalDataSetName);
+	public String getOriginalDataSetCode() {
+		return GetterUtil.getString(_originalDataSetCode);
 	}
 
 	@Override
@@ -1201,7 +1201,7 @@ public class DataSetModelImpl
 		dataSetImpl.setStatusByUserId(getStatusByUserId());
 		dataSetImpl.setStatusByUserName(getStatusByUserName());
 		dataSetImpl.setStatusDate(getStatusDate());
-		dataSetImpl.setDataSetName(getDataSetName());
+		dataSetImpl.setDataSetCode(getDataSetCode());
 		dataSetImpl.setDataSetVersion(getDataSetVersion());
 		dataSetImpl.setDisplayName(getDisplayName());
 		dataSetImpl.setDescription(getDescription());
@@ -1285,7 +1285,7 @@ public class DataSetModelImpl
 
 		_setOriginalStatus = false;
 
-		_originalDataSetName = _dataSetName;
+		_originalDataSetCode = _dataSetCode;
 
 		_originalDataSetVersion = _dataSetVersion;
 
@@ -1368,12 +1368,12 @@ public class DataSetModelImpl
 			dataSetCacheModel.statusDate = Long.MIN_VALUE;
 		}
 
-		dataSetCacheModel.dataSetName = getDataSetName();
+		dataSetCacheModel.dataSetCode = getDataSetCode();
 
-		String dataSetName = dataSetCacheModel.dataSetName;
+		String dataSetCode = dataSetCacheModel.dataSetCode;
 
-		if ((dataSetName != null) && (dataSetName.length() == 0)) {
-			dataSetCacheModel.dataSetName = null;
+		if ((dataSetCode != null) && (dataSetCode.length() == 0)) {
+			dataSetCacheModel.dataSetCode = null;
 		}
 
 		dataSetCacheModel.dataSetVersion = getDataSetVersion();
@@ -1518,8 +1518,8 @@ public class DataSetModelImpl
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private String _dataSetName;
-	private String _originalDataSetName;
+	private String _dataSetCode;
+	private String _originalDataSetCode;
 	private String _dataSetVersion;
 	private String _originalDataSetVersion;
 	private String _displayName;

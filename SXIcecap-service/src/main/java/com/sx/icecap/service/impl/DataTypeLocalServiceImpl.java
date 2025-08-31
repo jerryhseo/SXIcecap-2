@@ -40,8 +40,8 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.sx.constant.StationXConstants;
 import com.sx.icecap.constant.DataTypeProperties;
-import com.sx.icecap.exception.DuplicatedDataTypeNameException;
-import com.sx.icecap.exception.InvalidDataTypeNameException;
+import com.sx.icecap.exception.DuplicatedDataTypeCodeException;
+import com.sx.icecap.exception.InvalidDataTypeCodeException;
 import com.sx.icecap.exception.NoSuchDataTypeException;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.service.DataStructureLocalService;
@@ -49,7 +49,7 @@ import com.sx.icecap.service.base.DataTypeLocalServiceBaseImpl;
 import com.sx.icecap.util.comparator.GroupIdComparator;
 import com.sx.icecap.util.comparator.ModifiedDateComparator;
 import com.sx.icecap.util.comparator.UserIdComparator;
-import com.sx.icecap.util.comparator.datatype.DataTypeNameComparator;
+import com.sx.icecap.util.comparator.datatype.DataTypeCodeComparator;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 
@@ -75,21 +75,20 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	
 	@Indexable(type = IndexableType.REINDEX)
 	public DataType addDataType(
-			String dataTypeName,
+			String dataTypeCode,
 			String dataTypeVersion,
 			String extension,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
 			Map<Locale, String> tooltipMap,
-			long dataStructureId,
 			int status,
 			ServiceContext sc) throws PortalException {
 		
 		try {
-			if( !_verifyDataTypeName(dataTypeName) ) {
-				throw new InvalidDataTypeNameException(dataTypeName+" "+dataTypeVersion+" Invalid"); 
+			if( !_verifyDataTypeCode(dataTypeCode) ) {
+				throw new InvalidDataTypeCodeException(dataTypeCode+" "+dataTypeVersion+" Invalid"); 
 			}
-		} catch( DuplicatedDataTypeNameException e ) {
+		} catch( DuplicatedDataTypeCodeException e ) {
 			throw e;
 		}
 		
@@ -98,13 +97,12 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		long dataTypeId = super.counterLocalService.increment();
 		DataType dataType = super.dataTypeLocalService.createDataType(dataTypeId);
 		
-		dataType.setDataTypeName(dataTypeName);
+		dataType.setDataTypeCode(dataTypeCode);
 		dataType.setDataTypeVersion(dataTypeVersion);
 		dataType.setExtension(extension);
 		dataType.setDisplayNameMap(displayNameMap, defaultLocale);
 		dataType.setDescriptionMap(descriptionMap, defaultLocale);
 		dataType.setTooltipMap(tooltipMap, defaultLocale);
-		dataType.setDataStructureId(dataStructureId);
 		
 		Date now = new Date();
 		User user = super.userLocalService.getUser(sc.getUserId());
@@ -159,7 +157,7 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 			dataType.getCreateDate(),
 			null, 
 			ContentTypes.TEXT_HTML_UTF8, 
-			dataType.getDataTypeName(),
+			dataType.getDataTypeCode(),
 			null, 
 			null, 
 			null, 
@@ -181,24 +179,22 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	@Indexable(type = IndexableType.REINDEX)
 	public DataType updateDataType(
 			long dataTypeId, 
-			String dataTypeName, 
+			String dataTypeCode, 
 			String dataTypeVersion,
 			String extension,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
 			Map<Locale, String> tooltipMap,
-			long dataStructureId,
 			int status,
 			ServiceContext sc) throws PortalException {
 		DataType dataType = super.dataTypePersistence.findByPrimaryKey(dataTypeId);
 		
-		dataType.setDataTypeName(dataTypeName);
+		dataType.setDataTypeCode(dataTypeCode);
 		dataType.setDataTypeVersion(dataTypeVersion);
 		dataType.setExtension(extension);
 		dataType.setDisplayNameMap(displayNameMap, sc.getLocale());
 		dataType.setDescriptionMap(descriptionMap, sc.getLocale());
 		dataType.setTooltipMap(tooltipMap, sc.getLocale());
-		dataType.setDataStructureId(dataStructureId);
 		
 		dataType.setUserId(sc.getUserId());
 		dataType.setGroupId(sc.getScopeGroupId());
@@ -243,7 +239,7 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 				dataType.getCreateDate(),
 				null, 
 				ContentTypes.TEXT_HTML_UTF8, 
-				dataType.getDataTypeName(),
+				dataType.getDataTypeCode(),
 				null, 
 				null, 
 				null, 
@@ -314,10 +310,10 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		}
 	}
 	
-	public boolean checkDataTypeNameUnique(String paramName) {
-		int result = super.dataTypePersistence.countByName(paramName);
+	public boolean checkDataTypeCodeUnique(String paramCode) {
+		int result = super.dataTypePersistence.countByCode(paramCode);
 		
-		System.out.println("countByName: " + result);
+		System.out.println("countByCode: " + result);
 		
 		return result < 1;
 	}
@@ -428,8 +424,8 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 			return super.dataTypePersistence.countByStatus(status);
 	}
 
-	public List<DataType> getDataTypesByName( String dataTypeName ){
-		return super.dataTypePersistence.findByName(dataTypeName);
+	public List<DataType> getDataTypesByCode( String dataTypeCode ){
+		return super.dataTypePersistence.findByCode(dataTypeCode);
 	}
 	
 	public List<DataType> getDataTypesByG_U( long groupId, long userId ){
@@ -538,6 +534,16 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		
 		return dataType.getDisplayName(locale);
 	}
+
+	public DataType getDataType(String dataTypeCode, String dataTypeVersion ) throws NoSuchDataTypeException {
+		DataType dataType = super.dataTypePersistence.findByCodeVersion(dataTypeCode, dataTypeVersion);
+		
+		return dataType;
+	}
+	
+	public int countDataTypesByCode(String dataTypeCode) {
+		return dataTypePersistence.countByCode(dataTypeCode);
+	}
 	
 	public OrderByComparator<DataType> getSortOrderComparator(
 		String orderByCol, String orderByType) {
@@ -550,8 +556,8 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 
 		OrderByComparator<DataType> orderByComparator = null;
 
-		if (orderByCol.equals(DataTypeProperties.DATATYPE_NAME)) {
-			orderByComparator = new DataTypeNameComparator(orderByAsc);
+		if (orderByCol.equals(DataTypeProperties.DATATYPE_CODE)) {
+			orderByComparator = new DataTypeCodeComparator(orderByAsc);
 		}
 		else if( orderByCol.equalsIgnoreCase("modifiedDate")) {
 			orderByComparator = new ModifiedDateComparator(orderByAsc);
@@ -569,10 +575,10 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	public final long getDataFileFolderId(
 			long repositoryId,
 			long parentFoderId,
-			String dataTypeName,
+			String dataTypeCode,
 			String dataTypeVersion,
 			long dataId,
-			String paramName,
+			String paramCode,
 			String paramVersion,
 			ServiceContext sc,
 			boolean createWhenNoExist ) throws PortalException {
@@ -581,16 +587,16 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		String rootDataFolderName = "Data Files";
 		
 		long rootFolderId = _getFolderId( repositoryId, parentFolderId, rootDataFolderName, sc, createWhenNoExist);
-		long dataTypeFolderId = _getFolderId( repositoryId, rootFolderId, dataTypeName, sc, createWhenNoExist);
+		long dataTypeFolderId = _getFolderId( repositoryId, rootFolderId, dataTypeCode, sc, createWhenNoExist);
 		long dataTypeVersionFolderId = _getFolderId( repositoryId, dataTypeFolderId, dataTypeVersion, sc, createWhenNoExist);
 		long dataFolderId = _getFolderId( repositoryId, dataTypeVersionFolderId, String.valueOf(dataId), sc, createWhenNoExist );
 		
-		if( paramName.isEmpty() ) {
+		if( paramCode.isEmpty() ) {
 			return dataFolderId;
 		}
 		
-		long paramNameFolderId = _getFolderId( repositoryId, dataFolderId, paramName, sc, createWhenNoExist);
-		long paramVersionFolderId = _getFolderId( repositoryId, paramNameFolderId, paramVersion, sc, createWhenNoExist);
+		long paramCodeFolderId = _getFolderId( repositoryId, dataFolderId, paramCode, sc, createWhenNoExist);
+		long paramVersionFolderId = _getFolderId( repositoryId, paramCodeFolderId, paramVersion, sc, createWhenNoExist);
 		
 		return paramVersionFolderId;
 	}
@@ -661,10 +667,10 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 
 		return new SearchContainerResults<AssetEntry>(assetEntries, total);
 	}
-	private boolean _verifyDataTypeName( String dataTypeName ) throws DuplicatedDataTypeNameException {
-		// Check uniqueness of the dataTypeName
-		if( super.dataTypePersistence.countByName(dataTypeName) > 0 ) {
-			throw new DuplicatedDataTypeNameException( dataTypeName + " exists already." );
+	private boolean _verifyDataTypeCode( String dataTypeCode ) throws DuplicatedDataTypeCodeException {
+		// Check uniqueness of the dataTypeCode
+		if( super.dataTypePersistence.countByCode(dataTypeCode) > 0 ) {
+			throw new DuplicatedDataTypeCodeException( dataTypeCode + " exists already." );
 		}
 		
 		return true;

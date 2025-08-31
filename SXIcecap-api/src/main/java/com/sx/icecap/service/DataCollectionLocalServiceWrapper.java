@@ -52,14 +52,14 @@ public class DataCollectionLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataCollection addDataCollection(
-			String dataCollectionName, String dataCollectionVersion,
+			String dataCollectionCode, String dataCollectionVersion,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataCollectionLocalService.addDataCollection(
-			dataCollectionName, dataCollectionVersion, displayNameMap,
+			dataCollectionCode, dataCollectionVersion, displayNameMap,
 			descriptionMap, status, sc);
 	}
 
@@ -415,7 +415,7 @@ public class DataCollectionLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataCollection updateDataCollection(
-			long dataCollectionId, String dataCollectionName,
+			long dataCollectionId, String dataCollectionCode,
 			String dataCollectionVersion,
 			java.util.Map<java.util.Locale, String> displayNameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap, int status,
@@ -423,7 +423,7 @@ public class DataCollectionLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataCollectionLocalService.updateDataCollection(
-			dataCollectionId, dataCollectionName, dataCollectionVersion,
+			dataCollectionId, dataCollectionCode, dataCollectionVersion,
 			displayNameMap, descriptionMap, status, sc);
 	}
 

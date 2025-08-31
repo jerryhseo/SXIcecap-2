@@ -67,7 +67,7 @@ public class DataStructureStagedModelDataHandler extends BaseStagedModelDataHand
 				serviceContext.setUuid(dataStructure.getUuid());
 
 				importedDataStructure = _dataStructureLocalService.addDataStructure(
-						dataStructure.getDataStructureName(), 
+						dataStructure.getDataStructureCode(), 
 						dataStructure.getDataStructureVersion(),
 						dataStructure.getDisplayNameMap(),
 						dataStructure.getDescriptionMap(),
@@ -78,7 +78,7 @@ public class DataStructureStagedModelDataHandler extends BaseStagedModelDataHand
 			else {
 				importedDataStructure = _dataStructureLocalService.updateDataStructure(
 						existingDataStructure.getDataStructureId(), 
-						dataStructure.getDataStructureName(), 
+						dataStructure.getDataStructureCode(), 
 						dataStructure.getDataStructureVersion(),
 						dataStructure.getDisplayNameMap(),
 						dataStructure.getDescriptionMap(),
@@ -90,7 +90,7 @@ public class DataStructureStagedModelDataHandler extends BaseStagedModelDataHand
 		}
 		else {
 			importedDataStructure = _dataStructureLocalService.addDataStructure(
-					dataStructure.getDataStructureName(), 
+					dataStructure.getDataStructureCode(), 
 					dataStructure.getDataStructureVersion(),
 					dataStructure.getDisplayNameMap(),
 					dataStructure.getDescriptionMap(),

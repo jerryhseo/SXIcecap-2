@@ -28,7 +28,7 @@ public class DataTypeModelDocumentContributor implements ModelDocumentContributo
 			
 			document.addKeyword(DataTypeProperties.DATATYPE_ID, dataType.getPrimaryKey());
 			document.addDate(Field.MODIFIED_DATE, dataType.getModifiedDate());
-			document.addText(DataTypeProperties.DATATYPE_NAME, dataType.getDataTypeName());
+			document.addText(DataTypeProperties.DATATYPE_CODE, dataType.getDataTypeCode());
 			document.addLocalizedText(DataTypeProperties.DESCRIPTION, dataType.getDescriptionMap());
 			document.addLocalizedKeyword(DataTypeProperties.DISPLAY_NAME, dataType.getDisplayNameMap(), true);
 			

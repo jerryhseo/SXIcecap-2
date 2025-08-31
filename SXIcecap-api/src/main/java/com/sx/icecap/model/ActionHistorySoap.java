@@ -36,7 +36,7 @@ public class ActionHistorySoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setStructuredDataId(model.getStructuredDataId());
-		soapModel.setParamName(model.getParamName());
+		soapModel.setParamCode(model.getParamCode());
 		soapModel.setPrevValue(model.getPrevValue());
 		soapModel.setChangedValue(model.getChangedValue());
 		soapModel.setAction(model.getAction());
@@ -134,12 +134,12 @@ public class ActionHistorySoap implements Serializable {
 		_structuredDataId = structuredDataId;
 	}
 
-	public String getParamName() {
-		return _paramName;
+	public String getParamCode() {
+		return _paramCode;
 	}
 
-	public void setParamName(String paramName) {
-		_paramName = paramName;
+	public void setParamCode(String paramCode) {
+		_paramCode = paramCode;
 	}
 
 	public String getPrevValue() {
@@ -179,7 +179,7 @@ public class ActionHistorySoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private long _structuredDataId;
-	private String _paramName;
+	private String _paramCode;
 	private String _prevValue;
 	private String _changedValue;
 	private String _action;

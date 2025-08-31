@@ -93,7 +93,7 @@ public class ParameterModelImpl
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
 		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP},
-		{"lastPublishDate", Types.TIMESTAMP}, {"paramName", Types.VARCHAR},
+		{"lastPublishDate", Types.TIMESTAMP}, {"paramCode", Types.VARCHAR},
 		{"paramVersion", Types.VARCHAR}, {"paramType", Types.VARCHAR},
 		{"displayName", Types.VARCHAR}, {"definition", Types.VARCHAR},
 		{"tooltip", Types.VARCHAR}, {"synonyms", Types.VARCHAR},
@@ -117,7 +117,7 @@ public class ParameterModelImpl
 		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("paramName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("paramCode", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("paramVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("paramType", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
@@ -129,16 +129,16 @@ public class ParameterModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_Parameter (uuid_ VARCHAR(75) null,parameterId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,lastPublishDate DATE null,paramName VARCHAR(75) null,paramVersion VARCHAR(75) null,paramType VARCHAR(75) null,displayName STRING null,definition STRING null,tooltip STRING null,synonyms VARCHAR(75) null,typeProperties VARCHAR(75) null,standard BOOLEAN)";
+		"create table SX_ICECAP_Parameter (uuid_ VARCHAR(75) null,parameterId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,lastPublishDate DATE null,paramCode VARCHAR(75) null,paramVersion VARCHAR(75) null,paramType VARCHAR(75) null,displayName STRING null,definition STRING null,tooltip STRING null,synonyms VARCHAR(75) null,typeProperties VARCHAR(75) null,standard BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_Parameter";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY parameter.paramName ASC";
+		" ORDER BY parameter.paramCode ASC";
 
 	public static final String ORDER_BY_SQL =
-		" ORDER BY SX_ICECAP_Parameter.paramName ASC";
+		" ORDER BY SX_ICECAP_Parameter.paramCode ASC";
 
 	public static final String DATA_SOURCE = "liferayDataSource";
 
@@ -150,7 +150,7 @@ public class ParameterModelImpl
 
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
 
-	public static final long PARAMNAME_COLUMN_BITMASK = 4L;
+	public static final long PARAMCODE_COLUMN_BITMASK = 4L;
 
 	public static final long PARAMVERSION_COLUMN_BITMASK = 8L;
 
@@ -194,7 +194,7 @@ public class ParameterModelImpl
 		model.setStatusByUserName(soapModel.getStatusByUserName());
 		model.setStatusDate(soapModel.getStatusDate());
 		model.setLastPublishDate(soapModel.getLastPublishDate());
-		model.setParamName(soapModel.getParamName());
+		model.setParamCode(soapModel.getParamCode());
 		model.setParamVersion(soapModel.getParamVersion());
 		model.setParamType(soapModel.getParamType());
 		model.setDisplayName(soapModel.getDisplayName());
@@ -375,10 +375,10 @@ public class ParameterModelImpl
 		attributeSetterBiConsumers.put(
 			"lastPublishDate",
 			(BiConsumer<Parameter, Date>)Parameter::setLastPublishDate);
-		attributeGetterFunctions.put("paramName", Parameter::getParamName);
+		attributeGetterFunctions.put("paramCode", Parameter::getParamCode);
 		attributeSetterBiConsumers.put(
-			"paramName",
-			(BiConsumer<Parameter, String>)Parameter::setParamName);
+			"paramCode",
+			(BiConsumer<Parameter, String>)Parameter::setParamCode);
 		attributeGetterFunctions.put(
 			"paramVersion", Parameter::getParamVersion);
 		attributeSetterBiConsumers.put(
@@ -673,28 +673,28 @@ public class ParameterModelImpl
 
 	@JSON
 	@Override
-	public String getParamName() {
-		if (_paramName == null) {
+	public String getParamCode() {
+		if (_paramCode == null) {
 			return "";
 		}
 		else {
-			return _paramName;
+			return _paramCode;
 		}
 	}
 
 	@Override
-	public void setParamName(String paramName) {
+	public void setParamCode(String paramCode) {
 		_columnBitmask = -1L;
 
-		if (_originalParamName == null) {
-			_originalParamName = _paramName;
+		if (_originalParamCode == null) {
+			_originalParamCode = _paramCode;
 		}
 
-		_paramName = paramName;
+		_paramCode = paramCode;
 	}
 
-	public String getOriginalParamName() {
-		return GetterUtil.getString(_originalParamName);
+	public String getOriginalParamCode() {
+		return GetterUtil.getString(_originalParamCode);
 	}
 
 	@JSON
@@ -1501,7 +1501,7 @@ public class ParameterModelImpl
 		parameterImpl.setStatusByUserName(getStatusByUserName());
 		parameterImpl.setStatusDate(getStatusDate());
 		parameterImpl.setLastPublishDate(getLastPublishDate());
-		parameterImpl.setParamName(getParamName());
+		parameterImpl.setParamCode(getParamCode());
 		parameterImpl.setParamVersion(getParamVersion());
 		parameterImpl.setParamType(getParamType());
 		parameterImpl.setDisplayName(getDisplayName());
@@ -1520,7 +1520,7 @@ public class ParameterModelImpl
 	public int compareTo(Parameter parameter) {
 		int value = 0;
 
-		value = getParamName().compareTo(parameter.getParamName());
+		value = getParamCode().compareTo(parameter.getParamCode());
 
 		if (value != 0) {
 			return value;
@@ -1587,7 +1587,7 @@ public class ParameterModelImpl
 
 		_setOriginalStatus = false;
 
-		_originalParamName = _paramName;
+		_originalParamCode = _paramCode;
 
 		_originalParamVersion = _paramVersion;
 
@@ -1670,12 +1670,12 @@ public class ParameterModelImpl
 			parameterCacheModel.lastPublishDate = Long.MIN_VALUE;
 		}
 
-		parameterCacheModel.paramName = getParamName();
+		parameterCacheModel.paramCode = getParamCode();
 
-		String paramName = parameterCacheModel.paramName;
+		String paramCode = parameterCacheModel.paramCode;
 
-		if ((paramName != null) && (paramName.length() == 0)) {
-			parameterCacheModel.paramName = null;
+		if ((paramCode != null) && (paramCode.length() == 0)) {
+			parameterCacheModel.paramCode = null;
 		}
 
 		parameterCacheModel.paramVersion = getParamVersion();
@@ -1854,8 +1854,8 @@ public class ParameterModelImpl
 	private String _statusByUserName;
 	private Date _statusDate;
 	private Date _lastPublishDate;
-	private String _paramName;
-	private String _originalParamName;
+	private String _paramCode;
+	private String _originalParamCode;
 	private String _paramVersion;
 	private String _originalParamVersion;
 	private String _paramType;

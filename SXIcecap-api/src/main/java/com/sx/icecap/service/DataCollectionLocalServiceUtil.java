@@ -64,14 +64,14 @@ public class DataCollectionLocalServiceUtil {
 	}
 
 	public static DataCollection addDataCollection(
-			String dataCollectionName, String dataCollectionVersion,
+			String dataCollectionCode, String dataCollectionVersion,
 			Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().addDataCollection(
-			dataCollectionName, dataCollectionVersion, displayNameMap,
+			dataCollectionCode, dataCollectionVersion, displayNameMap,
 			descriptionMap, status, sc);
 	}
 
@@ -374,7 +374,7 @@ public class DataCollectionLocalServiceUtil {
 	}
 
 	public static DataCollection updateDataCollection(
-			long dataCollectionId, String dataCollectionName,
+			long dataCollectionId, String dataCollectionCode,
 			String dataCollectionVersion,
 			Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap, int status,
@@ -382,7 +382,7 @@ public class DataCollectionLocalServiceUtil {
 		throws PortalException {
 
 		return getService().updateDataCollection(
-			dataCollectionId, dataCollectionName, dataCollectionVersion,
+			dataCollectionId, dataCollectionCode, dataCollectionVersion,
 			displayNameMap, descriptionMap, status, sc);
 	}
 

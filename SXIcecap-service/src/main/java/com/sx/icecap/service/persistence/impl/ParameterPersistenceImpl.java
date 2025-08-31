@@ -6723,68 +6723,68 @@ public class ParameterPersistenceImpl
 	private static final String _FINDER_COLUMN_G_U_S_STATUS_2 =
 		"parameter.status = ?";
 
-	private FinderPath _finderPathWithPaginationFindByName;
-	private FinderPath _finderPathWithoutPaginationFindByName;
-	private FinderPath _finderPathCountByName;
+	private FinderPath _finderPathWithPaginationFindByCode;
+	private FinderPath _finderPathWithoutPaginationFindByCode;
+	private FinderPath _finderPathCountByCode;
 
 	/**
-	 * Returns all the parameters where paramName = &#63;.
+	 * Returns all the parameters where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the matching parameters
 	 */
 	@Override
-	public List<Parameter> findByName(String paramName) {
-		return findByName(
-			paramName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public List<Parameter> findByCode(String paramCode) {
+		return findByCode(
+			paramCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the parameters where paramName = &#63;.
+	 * Returns a range of all the parameters where paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ParameterModelImpl</code>.
 	 * </p>
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of parameters
 	 * @param end the upper bound of the range of parameters (not inclusive)
 	 * @return the range of matching parameters
 	 */
 	@Override
-	public List<Parameter> findByName(String paramName, int start, int end) {
-		return findByName(paramName, start, end, null);
+	public List<Parameter> findByCode(String paramCode, int start, int end) {
+		return findByCode(paramCode, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the parameters where paramName = &#63;.
+	 * Returns an ordered range of all the parameters where paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ParameterModelImpl</code>.
 	 * </p>
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of parameters
 	 * @param end the upper bound of the range of parameters (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching parameters
 	 */
 	@Override
-	public List<Parameter> findByName(
-		String paramName, int start, int end,
+	public List<Parameter> findByCode(
+		String paramCode, int start, int end,
 		OrderByComparator<Parameter> orderByComparator) {
 
-		return findByName(paramName, start, end, orderByComparator, true);
+		return findByCode(paramCode, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the parameters where paramName = &#63;.
+	 * Returns an ordered range of all the parameters where paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ParameterModelImpl</code>.
 	 * </p>
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of parameters
 	 * @param end the upper bound of the range of parameters (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -6792,12 +6792,12 @@ public class ParameterPersistenceImpl
 	 * @return the ordered range of matching parameters
 	 */
 	@Override
-	public List<Parameter> findByName(
-		String paramName, int start, int end,
+	public List<Parameter> findByCode(
+		String paramCode, int start, int end,
 		OrderByComparator<Parameter> orderByComparator,
 		boolean useFinderCache) {
 
-		paramName = Objects.toString(paramName, "");
+		paramCode = Objects.toString(paramCode, "");
 
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -6806,14 +6806,14 @@ public class ParameterPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByName;
-				finderArgs = new Object[] {paramName};
+				finderPath = _finderPathWithoutPaginationFindByCode;
+				finderArgs = new Object[] {paramCode};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByName;
+			finderPath = _finderPathWithPaginationFindByCode;
 			finderArgs = new Object[] {
-				paramName, start, end, orderByComparator
+				paramCode, start, end, orderByComparator
 			};
 		}
 
@@ -6825,7 +6825,7 @@ public class ParameterPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Parameter parameter : list) {
-					if (!paramName.equals(parameter.getParamName())) {
+					if (!paramCode.equals(parameter.getParamCode())) {
 						list = null;
 
 						break;
@@ -6847,15 +6847,15 @@ public class ParameterPersistenceImpl
 
 			sb.append(_SQL_SELECT_PARAMETER_WHERE);
 
-			boolean bindParamName = false;
+			boolean bindParamCode = false;
 
-			if (paramName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_PARAMNAME_3);
+			if (paramCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODE_PARAMCODE_3);
 			}
 			else {
-				bindParamName = true;
+				bindParamCode = true;
 
-				sb.append(_FINDER_COLUMN_NAME_PARAMNAME_2);
+				sb.append(_FINDER_COLUMN_CODE_PARAMCODE_2);
 			}
 
 			if (orderByComparator != null) {
@@ -6877,8 +6877,8 @@ public class ParameterPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindParamName) {
-					queryPos.add(paramName);
+				if (bindParamCode) {
+					queryPos.add(paramCode);
 				}
 
 				list = (List<Parameter>)QueryUtil.list(
@@ -6906,19 +6906,19 @@ public class ParameterPersistenceImpl
 	}
 
 	/**
-	 * Returns the first parameter in the ordered set where paramName = &#63;.
+	 * Returns the first parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching parameter
 	 * @throws NoSuchParameterException if a matching parameter could not be found
 	 */
 	@Override
-	public Parameter findByName_First(
-			String paramName, OrderByComparator<Parameter> orderByComparator)
+	public Parameter findByCode_First(
+			String paramCode, OrderByComparator<Parameter> orderByComparator)
 		throws NoSuchParameterException {
 
-		Parameter parameter = fetchByName_First(paramName, orderByComparator);
+		Parameter parameter = fetchByCode_First(paramCode, orderByComparator);
 
 		if (parameter != null) {
 			return parameter;
@@ -6928,8 +6928,8 @@ public class ParameterPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("paramName=");
-		sb.append(paramName);
+		sb.append("paramCode=");
+		sb.append(paramCode);
 
 		sb.append("}");
 
@@ -6937,17 +6937,17 @@ public class ParameterPersistenceImpl
 	}
 
 	/**
-	 * Returns the first parameter in the ordered set where paramName = &#63;.
+	 * Returns the first parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
 	@Override
-	public Parameter fetchByName_First(
-		String paramName, OrderByComparator<Parameter> orderByComparator) {
+	public Parameter fetchByCode_First(
+		String paramCode, OrderByComparator<Parameter> orderByComparator) {
 
-		List<Parameter> list = findByName(paramName, 0, 1, orderByComparator);
+		List<Parameter> list = findByCode(paramCode, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -6957,19 +6957,19 @@ public class ParameterPersistenceImpl
 	}
 
 	/**
-	 * Returns the last parameter in the ordered set where paramName = &#63;.
+	 * Returns the last parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching parameter
 	 * @throws NoSuchParameterException if a matching parameter could not be found
 	 */
 	@Override
-	public Parameter findByName_Last(
-			String paramName, OrderByComparator<Parameter> orderByComparator)
+	public Parameter findByCode_Last(
+			String paramCode, OrderByComparator<Parameter> orderByComparator)
 		throws NoSuchParameterException {
 
-		Parameter parameter = fetchByName_Last(paramName, orderByComparator);
+		Parameter parameter = fetchByCode_Last(paramCode, orderByComparator);
 
 		if (parameter != null) {
 			return parameter;
@@ -6979,8 +6979,8 @@ public class ParameterPersistenceImpl
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("paramName=");
-		sb.append(paramName);
+		sb.append("paramCode=");
+		sb.append(paramCode);
 
 		sb.append("}");
 
@@ -6988,24 +6988,24 @@ public class ParameterPersistenceImpl
 	}
 
 	/**
-	 * Returns the last parameter in the ordered set where paramName = &#63;.
+	 * Returns the last parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
 	@Override
-	public Parameter fetchByName_Last(
-		String paramName, OrderByComparator<Parameter> orderByComparator) {
+	public Parameter fetchByCode_Last(
+		String paramCode, OrderByComparator<Parameter> orderByComparator) {
 
-		int count = countByName(paramName);
+		int count = countByCode(paramCode);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<Parameter> list = findByName(
-			paramName, count - 1, count, orderByComparator);
+		List<Parameter> list = findByCode(
+			paramCode, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -7015,21 +7015,21 @@ public class ParameterPersistenceImpl
 	}
 
 	/**
-	 * Returns the parameters before and after the current parameter in the ordered set where paramName = &#63;.
+	 * Returns the parameters before and after the current parameter in the ordered set where paramCode = &#63;.
 	 *
 	 * @param parameterId the primary key of the current parameter
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next parameter
 	 * @throws NoSuchParameterException if a parameter with the primary key could not be found
 	 */
 	@Override
-	public Parameter[] findByName_PrevAndNext(
-			long parameterId, String paramName,
+	public Parameter[] findByCode_PrevAndNext(
+			long parameterId, String paramCode,
 			OrderByComparator<Parameter> orderByComparator)
 		throws NoSuchParameterException {
 
-		paramName = Objects.toString(paramName, "");
+		paramCode = Objects.toString(paramCode, "");
 
 		Parameter parameter = findByPrimaryKey(parameterId);
 
@@ -7040,13 +7040,13 @@ public class ParameterPersistenceImpl
 
 			Parameter[] array = new ParameterImpl[3];
 
-			array[0] = getByName_PrevAndNext(
-				session, parameter, paramName, orderByComparator, true);
+			array[0] = getByCode_PrevAndNext(
+				session, parameter, paramCode, orderByComparator, true);
 
 			array[1] = parameter;
 
-			array[2] = getByName_PrevAndNext(
-				session, parameter, paramName, orderByComparator, false);
+			array[2] = getByCode_PrevAndNext(
+				session, parameter, paramCode, orderByComparator, false);
 
 			return array;
 		}
@@ -7058,8 +7058,8 @@ public class ParameterPersistenceImpl
 		}
 	}
 
-	protected Parameter getByName_PrevAndNext(
-		Session session, Parameter parameter, String paramName,
+	protected Parameter getByCode_PrevAndNext(
+		Session session, Parameter parameter, String paramCode,
 		OrderByComparator<Parameter> orderByComparator, boolean previous) {
 
 		StringBundler sb = null;
@@ -7075,15 +7075,15 @@ public class ParameterPersistenceImpl
 
 		sb.append(_SQL_SELECT_PARAMETER_WHERE);
 
-		boolean bindParamName = false;
+		boolean bindParamCode = false;
 
-		if (paramName.isEmpty()) {
-			sb.append(_FINDER_COLUMN_NAME_PARAMNAME_3);
+		if (paramCode.isEmpty()) {
+			sb.append(_FINDER_COLUMN_CODE_PARAMCODE_3);
 		}
 		else {
-			bindParamName = true;
+			bindParamCode = true;
 
-			sb.append(_FINDER_COLUMN_NAME_PARAMNAME_2);
+			sb.append(_FINDER_COLUMN_CODE_PARAMCODE_2);
 		}
 
 		if (orderByComparator != null) {
@@ -7155,8 +7155,8 @@ public class ParameterPersistenceImpl
 
 		QueryPos queryPos = QueryPos.getInstance(query);
 
-		if (bindParamName) {
-			queryPos.add(paramName);
+		if (bindParamCode) {
+			queryPos.add(paramCode);
 		}
 
 		if (orderByComparator != null) {
@@ -7178,33 +7178,33 @@ public class ParameterPersistenceImpl
 	}
 
 	/**
-	 * Removes all the parameters where paramName = &#63; from the database.
+	 * Removes all the parameters where paramCode = &#63; from the database.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 */
 	@Override
-	public void removeByName(String paramName) {
+	public void removeByCode(String paramCode) {
 		for (Parameter parameter :
-				findByName(
-					paramName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				findByCode(
+					paramCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 
 			remove(parameter);
 		}
 	}
 
 	/**
-	 * Returns the number of parameters where paramName = &#63;.
+	 * Returns the number of parameters where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the number of matching parameters
 	 */
 	@Override
-	public int countByName(String paramName) {
-		paramName = Objects.toString(paramName, "");
+	public int countByCode(String paramCode) {
+		paramCode = Objects.toString(paramCode, "");
 
-		FinderPath finderPath = _finderPathCountByName;
+		FinderPath finderPath = _finderPathCountByCode;
 
-		Object[] finderArgs = new Object[] {paramName};
+		Object[] finderArgs = new Object[] {paramCode};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -7213,15 +7213,15 @@ public class ParameterPersistenceImpl
 
 			sb.append(_SQL_COUNT_PARAMETER_WHERE);
 
-			boolean bindParamName = false;
+			boolean bindParamCode = false;
 
-			if (paramName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAME_PARAMNAME_3);
+			if (paramCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODE_PARAMCODE_3);
 			}
 			else {
-				bindParamName = true;
+				bindParamCode = true;
 
-				sb.append(_FINDER_COLUMN_NAME_PARAMNAME_2);
+				sb.append(_FINDER_COLUMN_CODE_PARAMCODE_2);
 			}
 
 			String sql = sb.toString();
@@ -7235,8 +7235,8 @@ public class ParameterPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindParamName) {
-					queryPos.add(paramName);
+				if (bindParamCode) {
+					queryPos.add(paramCode);
 				}
 
 				count = (Long)query.uniqueResult();
@@ -7256,36 +7256,36 @@ public class ParameterPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAME_PARAMNAME_2 =
-		"parameter.paramName = ?";
+	private static final String _FINDER_COLUMN_CODE_PARAMCODE_2 =
+		"parameter.paramCode = ?";
 
-	private static final String _FINDER_COLUMN_NAME_PARAMNAME_3 =
-		"(parameter.paramName IS NULL OR parameter.paramName = '')";
+	private static final String _FINDER_COLUMN_CODE_PARAMCODE_3 =
+		"(parameter.paramCode IS NULL OR parameter.paramCode = '')";
 
-	private FinderPath _finderPathFetchByNameVersion;
-	private FinderPath _finderPathCountByNameVersion;
+	private FinderPath _finderPathFetchByCodeVersion;
+	private FinderPath _finderPathCountByCodeVersion;
 
 	/**
-	 * Returns the parameter where paramName = &#63; and paramVersion = &#63; or throws a <code>NoSuchParameterException</code> if it could not be found.
+	 * Returns the parameter where paramCode = &#63; and paramVersion = &#63; or throws a <code>NoSuchParameterException</code> if it could not be found.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the matching parameter
 	 * @throws NoSuchParameterException if a matching parameter could not be found
 	 */
 	@Override
-	public Parameter findByNameVersion(String paramName, String paramVersion)
+	public Parameter findByCodeVersion(String paramCode, String paramVersion)
 		throws NoSuchParameterException {
 
-		Parameter parameter = fetchByNameVersion(paramName, paramVersion);
+		Parameter parameter = fetchByCodeVersion(paramCode, paramVersion);
 
 		if (parameter == null) {
 			StringBundler sb = new StringBundler(6);
 
 			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			sb.append("paramName=");
-			sb.append(paramName);
+			sb.append("paramCode=");
+			sb.append(paramCode);
 
 			sb.append(", paramVersion=");
 			sb.append(paramVersion);
@@ -7303,49 +7303,49 @@ public class ParameterPersistenceImpl
 	}
 
 	/**
-	 * Returns the parameter where paramName = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the parameter where paramCode = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
 	@Override
-	public Parameter fetchByNameVersion(String paramName, String paramVersion) {
-		return fetchByNameVersion(paramName, paramVersion, true);
+	public Parameter fetchByCodeVersion(String paramCode, String paramVersion) {
+		return fetchByCodeVersion(paramCode, paramVersion, true);
 	}
 
 	/**
-	 * Returns the parameter where paramName = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the parameter where paramCode = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
 	@Override
-	public Parameter fetchByNameVersion(
-		String paramName, String paramVersion, boolean useFinderCache) {
+	public Parameter fetchByCodeVersion(
+		String paramCode, String paramVersion, boolean useFinderCache) {
 
-		paramName = Objects.toString(paramName, "");
+		paramCode = Objects.toString(paramCode, "");
 		paramVersion = Objects.toString(paramVersion, "");
 
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
-			finderArgs = new Object[] {paramName, paramVersion};
+			finderArgs = new Object[] {paramCode, paramVersion};
 		}
 
 		Object result = null;
 
 		if (useFinderCache) {
 			result = finderCache.getResult(
-				_finderPathFetchByNameVersion, finderArgs, this);
+				_finderPathFetchByCodeVersion, finderArgs, this);
 		}
 
 		if (result instanceof Parameter) {
 			Parameter parameter = (Parameter)result;
 
-			if (!Objects.equals(paramName, parameter.getParamName()) ||
+			if (!Objects.equals(paramCode, parameter.getParamCode()) ||
 				!Objects.equals(paramVersion, parameter.getParamVersion())) {
 
 				result = null;
@@ -7357,26 +7357,26 @@ public class ParameterPersistenceImpl
 
 			sb.append(_SQL_SELECT_PARAMETER_WHERE);
 
-			boolean bindParamName = false;
+			boolean bindParamCode = false;
 
-			if (paramName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_PARAMNAME_3);
+			if (paramCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_PARAMCODE_3);
 			}
 			else {
-				bindParamName = true;
+				bindParamCode = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_PARAMNAME_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_PARAMCODE_2);
 			}
 
 			boolean bindParamVersion = false;
 
 			if (paramVersion.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_PARAMVERSION_3);
+				sb.append(_FINDER_COLUMN_CODEVERSION_PARAMVERSION_3);
 			}
 			else {
 				bindParamVersion = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_PARAMVERSION_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_PARAMVERSION_2);
 			}
 
 			String sql = sb.toString();
@@ -7390,8 +7390,8 @@ public class ParameterPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindParamName) {
-					queryPos.add(paramName);
+				if (bindParamCode) {
+					queryPos.add(paramCode);
 				}
 
 				if (bindParamVersion) {
@@ -7403,7 +7403,7 @@ public class ParameterPersistenceImpl
 				if (list.isEmpty()) {
 					if (useFinderCache) {
 						finderCache.putResult(
-							_finderPathFetchByNameVersion, finderArgs, list);
+							_finderPathFetchByCodeVersion, finderArgs, list);
 					}
 				}
 				else {
@@ -7413,12 +7413,12 @@ public class ParameterPersistenceImpl
 						if (_log.isWarnEnabled()) {
 							if (!useFinderCache) {
 								finderArgs = new Object[] {
-									paramName, paramVersion
+									paramCode, paramVersion
 								};
 							}
 
 							_log.warn(
-								"ParameterPersistenceImpl.fetchByNameVersion(String, String, boolean) with parameters (" +
+								"ParameterPersistenceImpl.fetchByCodeVersion(String, String, boolean) with parameters (" +
 									StringUtil.merge(finderArgs) +
 										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
@@ -7434,7 +7434,7 @@ public class ParameterPersistenceImpl
 			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(
-						_finderPathFetchByNameVersion, finderArgs);
+						_finderPathFetchByCodeVersion, finderArgs);
 				}
 
 				throw processException(exception);
@@ -7453,36 +7453,36 @@ public class ParameterPersistenceImpl
 	}
 
 	/**
-	 * Removes the parameter where paramName = &#63; and paramVersion = &#63; from the database.
+	 * Removes the parameter where paramCode = &#63; and paramVersion = &#63; from the database.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the parameter that was removed
 	 */
 	@Override
-	public Parameter removeByNameVersion(String paramName, String paramVersion)
+	public Parameter removeByCodeVersion(String paramCode, String paramVersion)
 		throws NoSuchParameterException {
 
-		Parameter parameter = findByNameVersion(paramName, paramVersion);
+		Parameter parameter = findByCodeVersion(paramCode, paramVersion);
 
 		return remove(parameter);
 	}
 
 	/**
-	 * Returns the number of parameters where paramName = &#63; and paramVersion = &#63;.
+	 * Returns the number of parameters where paramCode = &#63; and paramVersion = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the number of matching parameters
 	 */
 	@Override
-	public int countByNameVersion(String paramName, String paramVersion) {
-		paramName = Objects.toString(paramName, "");
+	public int countByCodeVersion(String paramCode, String paramVersion) {
+		paramCode = Objects.toString(paramCode, "");
 		paramVersion = Objects.toString(paramVersion, "");
 
-		FinderPath finderPath = _finderPathCountByNameVersion;
+		FinderPath finderPath = _finderPathCountByCodeVersion;
 
-		Object[] finderArgs = new Object[] {paramName, paramVersion};
+		Object[] finderArgs = new Object[] {paramCode, paramVersion};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -7491,26 +7491,26 @@ public class ParameterPersistenceImpl
 
 			sb.append(_SQL_COUNT_PARAMETER_WHERE);
 
-			boolean bindParamName = false;
+			boolean bindParamCode = false;
 
-			if (paramName.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_PARAMNAME_3);
+			if (paramCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_PARAMCODE_3);
 			}
 			else {
-				bindParamName = true;
+				bindParamCode = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_PARAMNAME_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_PARAMCODE_2);
 			}
 
 			boolean bindParamVersion = false;
 
 			if (paramVersion.isEmpty()) {
-				sb.append(_FINDER_COLUMN_NAMEVERSION_PARAMVERSION_3);
+				sb.append(_FINDER_COLUMN_CODEVERSION_PARAMVERSION_3);
 			}
 			else {
 				bindParamVersion = true;
 
-				sb.append(_FINDER_COLUMN_NAMEVERSION_PARAMVERSION_2);
+				sb.append(_FINDER_COLUMN_CODEVERSION_PARAMVERSION_2);
 			}
 
 			String sql = sb.toString();
@@ -7524,8 +7524,8 @@ public class ParameterPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindParamName) {
-					queryPos.add(paramName);
+				if (bindParamCode) {
+					queryPos.add(paramCode);
 				}
 
 				if (bindParamVersion) {
@@ -7549,16 +7549,16 @@ public class ParameterPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_PARAMNAME_2 =
-		"parameter.paramName = ? AND ";
+	private static final String _FINDER_COLUMN_CODEVERSION_PARAMCODE_2 =
+		"parameter.paramCode = ? AND ";
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_PARAMNAME_3 =
-		"(parameter.paramName IS NULL OR parameter.paramName = '') AND ";
+	private static final String _FINDER_COLUMN_CODEVERSION_PARAMCODE_3 =
+		"(parameter.paramCode IS NULL OR parameter.paramCode = '') AND ";
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_PARAMVERSION_2 =
+	private static final String _FINDER_COLUMN_CODEVERSION_PARAMVERSION_2 =
 		"parameter.paramVersion = ?";
 
-	private static final String _FINDER_COLUMN_NAMEVERSION_PARAMVERSION_3 =
+	private static final String _FINDER_COLUMN_CODEVERSION_PARAMVERSION_3 =
 		"(parameter.paramVersion IS NULL OR parameter.paramVersion = '')";
 
 	public ParameterPersistenceImpl() {
@@ -7591,9 +7591,9 @@ public class ParameterPersistenceImpl
 			parameter);
 
 		finderCache.putResult(
-			_finderPathFetchByNameVersion,
+			_finderPathFetchByCodeVersion,
 			new Object[] {
-				parameter.getParamName(), parameter.getParamVersion()
+				parameter.getParamCode(), parameter.getParamVersion()
 			},
 			parameter);
 
@@ -7701,14 +7701,14 @@ public class ParameterPersistenceImpl
 			_finderPathFetchByUUID_G, args, parameterModelImpl, false);
 
 		args = new Object[] {
-			parameterModelImpl.getParamName(),
+			parameterModelImpl.getParamCode(),
 			parameterModelImpl.getParamVersion()
 		};
 
 		finderCache.putResult(
-			_finderPathCountByNameVersion, args, Long.valueOf(1), false);
+			_finderPathCountByCodeVersion, args, Long.valueOf(1), false);
 		finderCache.putResult(
-			_finderPathFetchByNameVersion, args, parameterModelImpl, false);
+			_finderPathFetchByCodeVersion, args, parameterModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
@@ -7737,24 +7737,24 @@ public class ParameterPersistenceImpl
 
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-				parameterModelImpl.getParamName(),
+				parameterModelImpl.getParamCode(),
 				parameterModelImpl.getParamVersion()
 			};
 
-			finderCache.removeResult(_finderPathCountByNameVersion, args);
-			finderCache.removeResult(_finderPathFetchByNameVersion, args);
+			finderCache.removeResult(_finderPathCountByCodeVersion, args);
+			finderCache.removeResult(_finderPathFetchByCodeVersion, args);
 		}
 
 		if ((parameterModelImpl.getColumnBitmask() &
-			 _finderPathFetchByNameVersion.getColumnBitmask()) != 0) {
+			 _finderPathFetchByCodeVersion.getColumnBitmask()) != 0) {
 
 			Object[] args = new Object[] {
-				parameterModelImpl.getOriginalParamName(),
+				parameterModelImpl.getOriginalParamCode(),
 				parameterModelImpl.getOriginalParamVersion()
 			};
 
-			finderCache.removeResult(_finderPathCountByNameVersion, args);
-			finderCache.removeResult(_finderPathFetchByNameVersion, args);
+			finderCache.removeResult(_finderPathCountByCodeVersion, args);
+			finderCache.removeResult(_finderPathFetchByCodeVersion, args);
 		}
 	}
 
@@ -8006,11 +8006,11 @@ public class ParameterPersistenceImpl
 			finderCache.removeResult(
 				_finderPathWithoutPaginationFindByG_U_S, args);
 
-			args = new Object[] {parameterModelImpl.getParamName()};
+			args = new Object[] {parameterModelImpl.getParamCode()};
 
-			finderCache.removeResult(_finderPathCountByName, args);
+			finderCache.removeResult(_finderPathCountByCode, args);
 			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByName, args);
+				_finderPathWithoutPaginationFindByCode, args);
 
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(
@@ -8211,22 +8211,22 @@ public class ParameterPersistenceImpl
 			}
 
 			if ((parameterModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByName.getColumnBitmask()) !=
+				 _finderPathWithoutPaginationFindByCode.getColumnBitmask()) !=
 					 0) {
 
 				Object[] args = new Object[] {
-					parameterModelImpl.getOriginalParamName()
+					parameterModelImpl.getOriginalParamCode()
 				};
 
-				finderCache.removeResult(_finderPathCountByName, args);
+				finderCache.removeResult(_finderPathCountByCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
+					_finderPathWithoutPaginationFindByCode, args);
 
-				args = new Object[] {parameterModelImpl.getParamName()};
+				args = new Object[] {parameterModelImpl.getParamCode()};
 
-				finderCache.removeResult(_finderPathCountByName, args);
+				finderCache.removeResult(_finderPathCountByCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByName, args);
+					_finderPathWithoutPaginationFindByCode, args);
 			}
 		}
 
@@ -8541,7 +8541,7 @@ public class ParameterPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
 			ParameterModelImpl.UUID_COLUMN_BITMASK |
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMCODE_COLUMN_BITMASK);
 
 		_finderPathCountByUuid = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8575,7 +8575,7 @@ public class ParameterPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			ParameterModelImpl.UUID_COLUMN_BITMASK |
 			ParameterModelImpl.COMPANYID_COLUMN_BITMASK |
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMCODE_COLUMN_BITMASK);
 
 		_finderPathCountByUuid_C = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8595,7 +8595,7 @@ public class ParameterPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
 			ParameterModelImpl.GROUPID_COLUMN_BITMASK |
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMCODE_COLUMN_BITMASK);
 
 		_finderPathCountByGroupId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8615,7 +8615,7 @@ public class ParameterPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
 			new String[] {Long.class.getName()},
 			ParameterModelImpl.USERID_COLUMN_BITMASK |
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMCODE_COLUMN_BITMASK);
 
 		_finderPathCountByUserId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8635,7 +8635,7 @@ public class ParameterPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByStatus",
 			new String[] {Integer.class.getName()},
 			ParameterModelImpl.STATUS_COLUMN_BITMASK |
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMCODE_COLUMN_BITMASK);
 
 		_finderPathCountByStatus = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8657,7 +8657,7 @@ public class ParameterPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			ParameterModelImpl.GROUPID_COLUMN_BITMASK |
 			ParameterModelImpl.USERID_COLUMN_BITMASK |
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMCODE_COLUMN_BITMASK);
 
 		_finderPathCountByG_U = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8679,7 +8679,7 @@ public class ParameterPersistenceImpl
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			ParameterModelImpl.GROUPID_COLUMN_BITMASK |
 			ParameterModelImpl.STATUS_COLUMN_BITMASK |
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMCODE_COLUMN_BITMASK);
 
 		_finderPathCountByG_S = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8701,7 +8701,7 @@ public class ParameterPersistenceImpl
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			ParameterModelImpl.USERID_COLUMN_BITMASK |
 			ParameterModelImpl.STATUS_COLUMN_BITMASK |
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMCODE_COLUMN_BITMASK);
 
 		_finderPathCountByU_S = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8727,7 +8727,7 @@ public class ParameterPersistenceImpl
 			ParameterModelImpl.GROUPID_COLUMN_BITMASK |
 			ParameterModelImpl.USERID_COLUMN_BITMASK |
 			ParameterModelImpl.STATUS_COLUMN_BITMASK |
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMCODE_COLUMN_BITMASK);
 
 		_finderPathCountByG_U_S = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8737,35 +8737,35 @@ public class ParameterPersistenceImpl
 				Integer.class.getName()
 			});
 
-		_finderPathWithPaginationFindByName = new FinderPath(
+		_finderPathWithPaginationFindByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, ParameterImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByName",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCode",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByName = new FinderPath(
+		_finderPathWithoutPaginationFindByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, ParameterImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByName",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCode",
 			new String[] {String.class.getName()},
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK);
+			ParameterModelImpl.PARAMCODE_COLUMN_BITMASK);
 
-		_finderPathCountByName = new FinderPath(
+		_finderPathCountByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCode",
 			new String[] {String.class.getName()});
 
-		_finderPathFetchByNameVersion = new FinderPath(
+		_finderPathFetchByCodeVersion = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, ParameterImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByNameVersion",
+			FINDER_CLASS_NAME_ENTITY, "fetchByCodeVersion",
 			new String[] {String.class.getName(), String.class.getName()},
-			ParameterModelImpl.PARAMNAME_COLUMN_BITMASK |
+			ParameterModelImpl.PARAMCODE_COLUMN_BITMASK |
 			ParameterModelImpl.PARAMVERSION_COLUMN_BITMASK);
 
-		_finderPathCountByNameVersion = new FinderPath(
+		_finderPathCountByCodeVersion = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByNameVersion",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCodeVersion",
 			new String[] {String.class.getName(), String.class.getName()});
 
 		_setParameterUtilPersistence(this);

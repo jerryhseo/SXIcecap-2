@@ -308,19 +308,19 @@ public interface ParameterModel
 	public void setLastPublishDate(Date lastPublishDate);
 
 	/**
-	 * Returns the param name of this parameter.
+	 * Returns the param code of this parameter.
 	 *
-	 * @return the param name of this parameter
+	 * @return the param code of this parameter
 	 */
 	@AutoEscape
-	public String getParamName();
+	public String getParamCode();
 
 	/**
-	 * Sets the param name of this parameter.
+	 * Sets the param code of this parameter.
 	 *
-	 * @param paramName the param name of this parameter
+	 * @param paramCode the param code of this parameter
 	 */
-	public void setParamName(String paramName);
+	public void setParamCode(String paramCode);
 
 	/**
 	 * Returns the param version of this parameter.

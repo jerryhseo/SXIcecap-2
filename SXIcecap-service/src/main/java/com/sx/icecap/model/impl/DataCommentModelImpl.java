@@ -73,7 +73,7 @@ public class DataCommentModelImpl
 		{"groupId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"modifiedDate", Types.TIMESTAMP}, {"structuredDataId", Types.BIGINT},
-		{"paramName", Types.VARCHAR}, {"parentCommentId", Types.BIGINT},
+		{"paramCode", Types.VARCHAR}, {"parentCommentId", Types.BIGINT},
 		{"comment_", Types.VARCHAR}, {"closed", Types.BOOLEAN}
 	};
 
@@ -89,14 +89,14 @@ public class DataCommentModelImpl
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("structuredDataId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("paramName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("paramCode", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("parentCommentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("comment_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("closed", Types.BOOLEAN);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataComment (dataCommentId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,structuredDataId LONG,paramName VARCHAR(75) null,parentCommentId LONG,comment_ VARCHAR(75) null,closed BOOLEAN)";
+		"create table SX_ICECAP_DataComment (dataCommentId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,structuredDataId LONG,paramCode VARCHAR(75) null,parentCommentId LONG,comment_ VARCHAR(75) null,closed BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_DataComment";
@@ -113,7 +113,7 @@ public class DataCommentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long PARAMNAME_COLUMN_BITMASK = 1L;
+	public static final long PARAMCODE_COLUMN_BITMASK = 1L;
 
 	public static final long STRUCTUREDDATAID_COLUMN_BITMASK = 2L;
 
@@ -259,10 +259,10 @@ public class DataCommentModelImpl
 		attributeSetterBiConsumers.put(
 			"structuredDataId",
 			(BiConsumer<DataComment, Long>)DataComment::setStructuredDataId);
-		attributeGetterFunctions.put("paramName", DataComment::getParamName);
+		attributeGetterFunctions.put("paramCode", DataComment::getParamCode);
 		attributeSetterBiConsumers.put(
-			"paramName",
-			(BiConsumer<DataComment, String>)DataComment::setParamName);
+			"paramCode",
+			(BiConsumer<DataComment, String>)DataComment::setParamCode);
 		attributeGetterFunctions.put(
 			"parentCommentId", DataComment::getParentCommentId);
 		attributeSetterBiConsumers.put(
@@ -402,28 +402,28 @@ public class DataCommentModelImpl
 	}
 
 	@Override
-	public String getParamName() {
-		if (_paramName == null) {
+	public String getParamCode() {
+		if (_paramCode == null) {
 			return "";
 		}
 		else {
-			return _paramName;
+			return _paramCode;
 		}
 	}
 
 	@Override
-	public void setParamName(String paramName) {
-		_columnBitmask |= PARAMNAME_COLUMN_BITMASK;
+	public void setParamCode(String paramCode) {
+		_columnBitmask |= PARAMCODE_COLUMN_BITMASK;
 
-		if (_originalParamName == null) {
-			_originalParamName = _paramName;
+		if (_originalParamCode == null) {
+			_originalParamCode = _paramCode;
 		}
 
-		_paramName = paramName;
+		_paramCode = paramCode;
 	}
 
-	public String getOriginalParamName() {
-		return GetterUtil.getString(_originalParamName);
+	public String getOriginalParamCode() {
+		return GetterUtil.getString(_originalParamCode);
 	}
 
 	@Override
@@ -510,7 +510,7 @@ public class DataCommentModelImpl
 		dataCommentImpl.setCreateDate(getCreateDate());
 		dataCommentImpl.setModifiedDate(getModifiedDate());
 		dataCommentImpl.setStructuredDataId(getStructuredDataId());
-		dataCommentImpl.setParamName(getParamName());
+		dataCommentImpl.setParamCode(getParamCode());
 		dataCommentImpl.setParentCommentId(getParentCommentId());
 		dataCommentImpl.setComment(getComment());
 		dataCommentImpl.setClosed(isClosed());
@@ -579,7 +579,7 @@ public class DataCommentModelImpl
 
 		_setOriginalStructuredDataId = false;
 
-		_originalParamName = _paramName;
+		_originalParamCode = _paramCode;
 
 		_columnBitmask = 0;
 	}
@@ -625,12 +625,12 @@ public class DataCommentModelImpl
 
 		dataCommentCacheModel.structuredDataId = getStructuredDataId();
 
-		dataCommentCacheModel.paramName = getParamName();
+		dataCommentCacheModel.paramCode = getParamCode();
 
-		String paramName = dataCommentCacheModel.paramName;
+		String paramCode = dataCommentCacheModel.paramCode;
 
-		if ((paramName != null) && (paramName.length() == 0)) {
-			dataCommentCacheModel.paramName = null;
+		if ((paramCode != null) && (paramCode.length() == 0)) {
+			dataCommentCacheModel.paramCode = null;
 		}
 
 		dataCommentCacheModel.parentCommentId = getParentCommentId();
@@ -751,8 +751,8 @@ public class DataCommentModelImpl
 	private long _structuredDataId;
 	private long _originalStructuredDataId;
 	private boolean _setOriginalStructuredDataId;
-	private String _paramName;
-	private String _originalParamName;
+	private String _paramCode;
+	private String _originalParamCode;
 	private long _parentCommentId;
 	private String _comment;
 	private boolean _closed;

@@ -2095,241 +2095,241 @@ public class DataSetUtil {
 	}
 
 	/**
-	 * Returns all the data sets where dataSetName = &#63;.
+	 * Returns all the data sets where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @return the matching data sets
 	 */
-	public static List<DataSet> findByName(String dataSetName) {
-		return getPersistence().findByName(dataSetName);
+	public static List<DataSet> findByCode(String dataSetCode) {
+		return getPersistence().findByCode(dataSetCode);
 	}
 
 	/**
-	 * Returns a range of all the data sets where dataSetName = &#63;.
+	 * Returns a range of all the data sets where dataSetCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param start the lower bound of the range of data sets
 	 * @param end the upper bound of the range of data sets (not inclusive)
 	 * @return the range of matching data sets
 	 */
-	public static List<DataSet> findByName(
-		String dataSetName, int start, int end) {
+	public static List<DataSet> findByCode(
+		String dataSetCode, int start, int end) {
 
-		return getPersistence().findByName(dataSetName, start, end);
+		return getPersistence().findByCode(dataSetCode, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the data sets where dataSetName = &#63;.
+	 * Returns an ordered range of all the data sets where dataSetCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param start the lower bound of the range of data sets
 	 * @param end the upper bound of the range of data sets (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data sets
 	 */
-	public static List<DataSet> findByName(
-		String dataSetName, int start, int end,
+	public static List<DataSet> findByCode(
+		String dataSetCode, int start, int end,
 		OrderByComparator<DataSet> orderByComparator) {
 
-		return getPersistence().findByName(
-			dataSetName, start, end, orderByComparator);
+		return getPersistence().findByCode(
+			dataSetCode, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the data sets where dataSetName = &#63;.
+	 * Returns an ordered range of all the data sets where dataSetCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataSetModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param start the lower bound of the range of data sets
 	 * @param end the upper bound of the range of data sets (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching data sets
 	 */
-	public static List<DataSet> findByName(
-		String dataSetName, int start, int end,
+	public static List<DataSet> findByCode(
+		String dataSetCode, int start, int end,
 		OrderByComparator<DataSet> orderByComparator, boolean useFinderCache) {
 
-		return getPersistence().findByName(
-			dataSetName, start, end, orderByComparator, useFinderCache);
+		return getPersistence().findByCode(
+			dataSetCode, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	 * Returns the first data set in the ordered set where dataSetName = &#63;.
+	 * Returns the first data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data set
 	 * @throws NoSuchDataSetException if a matching data set could not be found
 	 */
-	public static DataSet findByName_First(
-			String dataSetName, OrderByComparator<DataSet> orderByComparator)
+	public static DataSet findByCode_First(
+			String dataSetCode, OrderByComparator<DataSet> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataSetException {
 
-		return getPersistence().findByName_First(
-			dataSetName, orderByComparator);
+		return getPersistence().findByCode_First(
+			dataSetCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the first data set in the ordered set where dataSetName = &#63;.
+	 * Returns the first data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data set, or <code>null</code> if a matching data set could not be found
 	 */
-	public static DataSet fetchByName_First(
-		String dataSetName, OrderByComparator<DataSet> orderByComparator) {
+	public static DataSet fetchByCode_First(
+		String dataSetCode, OrderByComparator<DataSet> orderByComparator) {
 
-		return getPersistence().fetchByName_First(
-			dataSetName, orderByComparator);
+		return getPersistence().fetchByCode_First(
+			dataSetCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last data set in the ordered set where dataSetName = &#63;.
+	 * Returns the last data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data set
 	 * @throws NoSuchDataSetException if a matching data set could not be found
 	 */
-	public static DataSet findByName_Last(
-			String dataSetName, OrderByComparator<DataSet> orderByComparator)
+	public static DataSet findByCode_Last(
+			String dataSetCode, OrderByComparator<DataSet> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataSetException {
 
-		return getPersistence().findByName_Last(dataSetName, orderByComparator);
+		return getPersistence().findByCode_Last(dataSetCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last data set in the ordered set where dataSetName = &#63;.
+	 * Returns the last data set in the ordered set where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data set, or <code>null</code> if a matching data set could not be found
 	 */
-	public static DataSet fetchByName_Last(
-		String dataSetName, OrderByComparator<DataSet> orderByComparator) {
+	public static DataSet fetchByCode_Last(
+		String dataSetCode, OrderByComparator<DataSet> orderByComparator) {
 
-		return getPersistence().fetchByName_Last(
-			dataSetName, orderByComparator);
+		return getPersistence().fetchByCode_Last(
+			dataSetCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the data sets before and after the current data set in the ordered set where dataSetName = &#63;.
+	 * Returns the data sets before and after the current data set in the ordered set where dataSetCode = &#63;.
 	 *
 	 * @param dataSetId the primary key of the current data set
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data set
 	 * @throws NoSuchDataSetException if a data set with the primary key could not be found
 	 */
-	public static DataSet[] findByName_PrevAndNext(
-			long dataSetId, String dataSetName,
+	public static DataSet[] findByCode_PrevAndNext(
+			long dataSetId, String dataSetCode,
 			OrderByComparator<DataSet> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataSetException {
 
-		return getPersistence().findByName_PrevAndNext(
-			dataSetId, dataSetName, orderByComparator);
+		return getPersistence().findByCode_PrevAndNext(
+			dataSetId, dataSetCode, orderByComparator);
 	}
 
 	/**
-	 * Removes all the data sets where dataSetName = &#63; from the database.
+	 * Removes all the data sets where dataSetCode = &#63; from the database.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 */
-	public static void removeByName(String dataSetName) {
-		getPersistence().removeByName(dataSetName);
+	public static void removeByCode(String dataSetCode) {
+		getPersistence().removeByCode(dataSetCode);
 	}
 
 	/**
-	 * Returns the number of data sets where dataSetName = &#63;.
+	 * Returns the number of data sets where dataSetCode = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @return the number of matching data sets
 	 */
-	public static int countByName(String dataSetName) {
-		return getPersistence().countByName(dataSetName);
+	public static int countByCode(String dataSetCode) {
+		return getPersistence().countByCode(dataSetCode);
 	}
 
 	/**
-	 * Returns the data set where dataSetName = &#63; and dataSetVersion = &#63; or throws a <code>NoSuchDataSetException</code> if it could not be found.
+	 * Returns the data set where dataSetCode = &#63; and dataSetVersion = &#63; or throws a <code>NoSuchDataSetException</code> if it could not be found.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the matching data set
 	 * @throws NoSuchDataSetException if a matching data set could not be found
 	 */
-	public static DataSet findByNameVersion(
-			String dataSetName, String dataSetVersion)
+	public static DataSet findByCodeVersion(
+			String dataSetCode, String dataSetVersion)
 		throws com.sx.icecap.exception.NoSuchDataSetException {
 
-		return getPersistence().findByNameVersion(dataSetName, dataSetVersion);
+		return getPersistence().findByCodeVersion(dataSetCode, dataSetVersion);
 	}
 
 	/**
-	 * Returns the data set where dataSetName = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the data set where dataSetCode = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the matching data set, or <code>null</code> if a matching data set could not be found
 	 */
-	public static DataSet fetchByNameVersion(
-		String dataSetName, String dataSetVersion) {
+	public static DataSet fetchByCodeVersion(
+		String dataSetCode, String dataSetVersion) {
 
-		return getPersistence().fetchByNameVersion(dataSetName, dataSetVersion);
+		return getPersistence().fetchByCodeVersion(dataSetCode, dataSetVersion);
 	}
 
 	/**
-	 * Returns the data set where dataSetName = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the data set where dataSetCode = &#63; and dataSetVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching data set, or <code>null</code> if a matching data set could not be found
 	 */
-	public static DataSet fetchByNameVersion(
-		String dataSetName, String dataSetVersion, boolean useFinderCache) {
+	public static DataSet fetchByCodeVersion(
+		String dataSetCode, String dataSetVersion, boolean useFinderCache) {
 
-		return getPersistence().fetchByNameVersion(
-			dataSetName, dataSetVersion, useFinderCache);
+		return getPersistence().fetchByCodeVersion(
+			dataSetCode, dataSetVersion, useFinderCache);
 	}
 
 	/**
-	 * Removes the data set where dataSetName = &#63; and dataSetVersion = &#63; from the database.
+	 * Removes the data set where dataSetCode = &#63; and dataSetVersion = &#63; from the database.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the data set that was removed
 	 */
-	public static DataSet removeByNameVersion(
-			String dataSetName, String dataSetVersion)
+	public static DataSet removeByCodeVersion(
+			String dataSetCode, String dataSetVersion)
 		throws com.sx.icecap.exception.NoSuchDataSetException {
 
-		return getPersistence().removeByNameVersion(
-			dataSetName, dataSetVersion);
+		return getPersistence().removeByCodeVersion(
+			dataSetCode, dataSetVersion);
 	}
 
 	/**
-	 * Returns the number of data sets where dataSetName = &#63; and dataSetVersion = &#63;.
+	 * Returns the number of data sets where dataSetCode = &#63; and dataSetVersion = &#63;.
 	 *
-	 * @param dataSetName the data set name
+	 * @param dataSetCode the data set code
 	 * @param dataSetVersion the data set version
 	 * @return the number of matching data sets
 	 */
-	public static int countByNameVersion(
-		String dataSetName, String dataSetVersion) {
+	public static int countByCodeVersion(
+		String dataSetCode, String dataSetVersion) {
 
-		return getPersistence().countByNameVersion(dataSetName, dataSetVersion);
+		return getPersistence().countByCodeVersion(dataSetCode, dataSetVersion);
 	}
 
 	/**

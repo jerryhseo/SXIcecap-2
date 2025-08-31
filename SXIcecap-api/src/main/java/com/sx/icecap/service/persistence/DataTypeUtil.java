@@ -2097,413 +2097,245 @@ public class DataTypeUtil {
 	}
 
 	/**
-	 * Returns all the data types where dataTypeName = &#63;.
+	 * Returns all the data types where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @return the matching data types
 	 */
-	public static List<DataType> findByName(String dataTypeName) {
-		return getPersistence().findByName(dataTypeName);
+	public static List<DataType> findByCode(String dataTypeCode) {
+		return getPersistence().findByCode(dataTypeCode);
 	}
 
 	/**
-	 * Returns a range of all the data types where dataTypeName = &#63;.
+	 * Returns a range of all the data types where dataTypeCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param start the lower bound of the range of data types
 	 * @param end the upper bound of the range of data types (not inclusive)
 	 * @return the range of matching data types
 	 */
-	public static List<DataType> findByName(
-		String dataTypeName, int start, int end) {
+	public static List<DataType> findByCode(
+		String dataTypeCode, int start, int end) {
 
-		return getPersistence().findByName(dataTypeName, start, end);
+		return getPersistence().findByCode(dataTypeCode, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the data types where dataTypeName = &#63;.
+	 * Returns an ordered range of all the data types where dataTypeCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param start the lower bound of the range of data types
 	 * @param end the upper bound of the range of data types (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data types
 	 */
-	public static List<DataType> findByName(
-		String dataTypeName, int start, int end,
+	public static List<DataType> findByCode(
+		String dataTypeCode, int start, int end,
 		OrderByComparator<DataType> orderByComparator) {
 
-		return getPersistence().findByName(
-			dataTypeName, start, end, orderByComparator);
+		return getPersistence().findByCode(
+			dataTypeCode, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the data types where dataTypeName = &#63;.
+	 * Returns an ordered range of all the data types where dataTypeCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param start the lower bound of the range of data types
 	 * @param end the upper bound of the range of data types (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching data types
 	 */
-	public static List<DataType> findByName(
-		String dataTypeName, int start, int end,
+	public static List<DataType> findByCode(
+		String dataTypeCode, int start, int end,
 		OrderByComparator<DataType> orderByComparator, boolean useFinderCache) {
 
-		return getPersistence().findByName(
-			dataTypeName, start, end, orderByComparator, useFinderCache);
+		return getPersistence().findByCode(
+			dataTypeCode, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	 * Returns the first data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the first data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data type
 	 * @throws NoSuchDataTypeException if a matching data type could not be found
 	 */
-	public static DataType findByName_First(
-			String dataTypeName, OrderByComparator<DataType> orderByComparator)
+	public static DataType findByCode_First(
+			String dataTypeCode, OrderByComparator<DataType> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataTypeException {
 
-		return getPersistence().findByName_First(
-			dataTypeName, orderByComparator);
+		return getPersistence().findByCode_First(
+			dataTypeCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the first data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the first data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data type, or <code>null</code> if a matching data type could not be found
 	 */
-	public static DataType fetchByName_First(
-		String dataTypeName, OrderByComparator<DataType> orderByComparator) {
+	public static DataType fetchByCode_First(
+		String dataTypeCode, OrderByComparator<DataType> orderByComparator) {
 
-		return getPersistence().fetchByName_First(
-			dataTypeName, orderByComparator);
+		return getPersistence().fetchByCode_First(
+			dataTypeCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the last data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data type
 	 * @throws NoSuchDataTypeException if a matching data type could not be found
 	 */
-	public static DataType findByName_Last(
-			String dataTypeName, OrderByComparator<DataType> orderByComparator)
+	public static DataType findByCode_Last(
+			String dataTypeCode, OrderByComparator<DataType> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataTypeException {
 
-		return getPersistence().findByName_Last(
-			dataTypeName, orderByComparator);
+		return getPersistence().findByCode_Last(
+			dataTypeCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the last data type in the ordered set where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data type, or <code>null</code> if a matching data type could not be found
 	 */
-	public static DataType fetchByName_Last(
-		String dataTypeName, OrderByComparator<DataType> orderByComparator) {
+	public static DataType fetchByCode_Last(
+		String dataTypeCode, OrderByComparator<DataType> orderByComparator) {
 
-		return getPersistence().fetchByName_Last(
-			dataTypeName, orderByComparator);
+		return getPersistence().fetchByCode_Last(
+			dataTypeCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the data types before and after the current data type in the ordered set where dataTypeName = &#63;.
+	 * Returns the data types before and after the current data type in the ordered set where dataTypeCode = &#63;.
 	 *
 	 * @param dataTypeId the primary key of the current data type
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data type
 	 * @throws NoSuchDataTypeException if a data type with the primary key could not be found
 	 */
-	public static DataType[] findByName_PrevAndNext(
-			long dataTypeId, String dataTypeName,
+	public static DataType[] findByCode_PrevAndNext(
+			long dataTypeId, String dataTypeCode,
 			OrderByComparator<DataType> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchDataTypeException {
 
-		return getPersistence().findByName_PrevAndNext(
-			dataTypeId, dataTypeName, orderByComparator);
+		return getPersistence().findByCode_PrevAndNext(
+			dataTypeId, dataTypeCode, orderByComparator);
 	}
 
 	/**
-	 * Removes all the data types where dataTypeName = &#63; from the database.
+	 * Removes all the data types where dataTypeCode = &#63; from the database.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 */
-	public static void removeByName(String dataTypeName) {
-		getPersistence().removeByName(dataTypeName);
+	public static void removeByCode(String dataTypeCode) {
+		getPersistence().removeByCode(dataTypeCode);
 	}
 
 	/**
-	 * Returns the number of data types where dataTypeName = &#63;.
+	 * Returns the number of data types where dataTypeCode = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @return the number of matching data types
 	 */
-	public static int countByName(String dataTypeName) {
-		return getPersistence().countByName(dataTypeName);
+	public static int countByCode(String dataTypeCode) {
+		return getPersistence().countByCode(dataTypeCode);
 	}
 
 	/**
-	 * Returns the data type where dataTypeName = &#63; and dataTypeVersion = &#63; or throws a <code>NoSuchDataTypeException</code> if it could not be found.
+	 * Returns the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; or throws a <code>NoSuchDataTypeException</code> if it could not be found.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the matching data type
 	 * @throws NoSuchDataTypeException if a matching data type could not be found
 	 */
-	public static DataType findByNameVersion(
-			String dataTypeName, String dataTypeVersion)
+	public static DataType findByCodeVersion(
+			String dataTypeCode, String dataTypeVersion)
 		throws com.sx.icecap.exception.NoSuchDataTypeException {
 
-		return getPersistence().findByNameVersion(
-			dataTypeName, dataTypeVersion);
+		return getPersistence().findByCodeVersion(
+			dataTypeCode, dataTypeVersion);
 	}
 
 	/**
-	 * Returns the data type where dataTypeName = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the matching data type, or <code>null</code> if a matching data type could not be found
 	 */
-	public static DataType fetchByNameVersion(
-		String dataTypeName, String dataTypeVersion) {
+	public static DataType fetchByCodeVersion(
+		String dataTypeCode, String dataTypeVersion) {
 
-		return getPersistence().fetchByNameVersion(
-			dataTypeName, dataTypeVersion);
+		return getPersistence().fetchByCodeVersion(
+			dataTypeCode, dataTypeVersion);
 	}
 
 	/**
-	 * Returns the data type where dataTypeName = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching data type, or <code>null</code> if a matching data type could not be found
 	 */
-	public static DataType fetchByNameVersion(
-		String dataTypeName, String dataTypeVersion, boolean useFinderCache) {
+	public static DataType fetchByCodeVersion(
+		String dataTypeCode, String dataTypeVersion, boolean useFinderCache) {
 
-		return getPersistence().fetchByNameVersion(
-			dataTypeName, dataTypeVersion, useFinderCache);
+		return getPersistence().fetchByCodeVersion(
+			dataTypeCode, dataTypeVersion, useFinderCache);
 	}
 
 	/**
-	 * Removes the data type where dataTypeName = &#63; and dataTypeVersion = &#63; from the database.
+	 * Removes the data type where dataTypeCode = &#63; and dataTypeVersion = &#63; from the database.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the data type that was removed
 	 */
-	public static DataType removeByNameVersion(
-			String dataTypeName, String dataTypeVersion)
+	public static DataType removeByCodeVersion(
+			String dataTypeCode, String dataTypeVersion)
 		throws com.sx.icecap.exception.NoSuchDataTypeException {
 
-		return getPersistence().removeByNameVersion(
-			dataTypeName, dataTypeVersion);
+		return getPersistence().removeByCodeVersion(
+			dataTypeCode, dataTypeVersion);
 	}
 
 	/**
-	 * Returns the number of data types where dataTypeName = &#63; and dataTypeVersion = &#63;.
+	 * Returns the number of data types where dataTypeCode = &#63; and dataTypeVersion = &#63;.
 	 *
-	 * @param dataTypeName the data type name
+	 * @param dataTypeCode the data type code
 	 * @param dataTypeVersion the data type version
 	 * @return the number of matching data types
 	 */
-	public static int countByNameVersion(
-		String dataTypeName, String dataTypeVersion) {
+	public static int countByCodeVersion(
+		String dataTypeCode, String dataTypeVersion) {
 
-		return getPersistence().countByNameVersion(
-			dataTypeName, dataTypeVersion);
-	}
-
-	/**
-	 * Returns all the data types where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @return the matching data types
-	 */
-	public static List<DataType> findBystructureId(long dataStructureId) {
-		return getPersistence().findBystructureId(dataStructureId);
-	}
-
-	/**
-	 * Returns a range of all the data types where dataStructureId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param start the lower bound of the range of data types
-	 * @param end the upper bound of the range of data types (not inclusive)
-	 * @return the range of matching data types
-	 */
-	public static List<DataType> findBystructureId(
-		long dataStructureId, int start, int end) {
-
-		return getPersistence().findBystructureId(dataStructureId, start, end);
-	}
-
-	/**
-	 * Returns an ordered range of all the data types where dataStructureId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param start the lower bound of the range of data types
-	 * @param end the upper bound of the range of data types (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching data types
-	 */
-	public static List<DataType> findBystructureId(
-		long dataStructureId, int start, int end,
-		OrderByComparator<DataType> orderByComparator) {
-
-		return getPersistence().findBystructureId(
-			dataStructureId, start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns an ordered range of all the data types where dataStructureId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataTypeModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param start the lower bound of the range of data types
-	 * @param end the upper bound of the range of data types (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching data types
-	 */
-	public static List<DataType> findBystructureId(
-		long dataStructureId, int start, int end,
-		OrderByComparator<DataType> orderByComparator, boolean useFinderCache) {
-
-		return getPersistence().findBystructureId(
-			dataStructureId, start, end, orderByComparator, useFinderCache);
-	}
-
-	/**
-	 * Returns the first data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching data type
-	 * @throws NoSuchDataTypeException if a matching data type could not be found
-	 */
-	public static DataType findBystructureId_First(
-			long dataStructureId, OrderByComparator<DataType> orderByComparator)
-		throws com.sx.icecap.exception.NoSuchDataTypeException {
-
-		return getPersistence().findBystructureId_First(
-			dataStructureId, orderByComparator);
-	}
-
-	/**
-	 * Returns the first data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching data type, or <code>null</code> if a matching data type could not be found
-	 */
-	public static DataType fetchBystructureId_First(
-		long dataStructureId, OrderByComparator<DataType> orderByComparator) {
-
-		return getPersistence().fetchBystructureId_First(
-			dataStructureId, orderByComparator);
-	}
-
-	/**
-	 * Returns the last data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching data type
-	 * @throws NoSuchDataTypeException if a matching data type could not be found
-	 */
-	public static DataType findBystructureId_Last(
-			long dataStructureId, OrderByComparator<DataType> orderByComparator)
-		throws com.sx.icecap.exception.NoSuchDataTypeException {
-
-		return getPersistence().findBystructureId_Last(
-			dataStructureId, orderByComparator);
-	}
-
-	/**
-	 * Returns the last data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching data type, or <code>null</code> if a matching data type could not be found
-	 */
-	public static DataType fetchBystructureId_Last(
-		long dataStructureId, OrderByComparator<DataType> orderByComparator) {
-
-		return getPersistence().fetchBystructureId_Last(
-			dataStructureId, orderByComparator);
-	}
-
-	/**
-	 * Returns the data types before and after the current data type in the ordered set where dataStructureId = &#63;.
-	 *
-	 * @param dataTypeId the primary key of the current data type
-	 * @param dataStructureId the data structure ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next data type
-	 * @throws NoSuchDataTypeException if a data type with the primary key could not be found
-	 */
-	public static DataType[] findBystructureId_PrevAndNext(
-			long dataTypeId, long dataStructureId,
-			OrderByComparator<DataType> orderByComparator)
-		throws com.sx.icecap.exception.NoSuchDataTypeException {
-
-		return getPersistence().findBystructureId_PrevAndNext(
-			dataTypeId, dataStructureId, orderByComparator);
-	}
-
-	/**
-	 * Removes all the data types where dataStructureId = &#63; from the database.
-	 *
-	 * @param dataStructureId the data structure ID
-	 */
-	public static void removeBystructureId(long dataStructureId) {
-		getPersistence().removeBystructureId(dataStructureId);
-	}
-
-	/**
-	 * Returns the number of data types where dataStructureId = &#63;.
-	 *
-	 * @param dataStructureId the data structure ID
-	 * @return the number of matching data types
-	 */
-	public static int countBystructureId(long dataStructureId) {
-		return getPersistence().countBystructureId(dataStructureId);
+		return getPersistence().countByCodeVersion(
+			dataTypeCode, dataTypeVersion);
 	}
 
 	/**

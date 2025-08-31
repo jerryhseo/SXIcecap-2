@@ -22,9 +22,6 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -86,17 +83,11 @@ public interface DataStructureLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DataStructure addDataStructure(
-			String dataStructureName, String dataStructureVersion,
+			String dataStructureCode, String dataStructureVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap, String structure, int status,
 			ServiceContext sc)
 		throws PortalException;
-
-	public JSONArray convertListToJSONArray(List<DataStructure> list)
-		throws JSONException;
-
-	public JSONObject convertModelToJSONObject(DataStructure structure)
-		throws JSONException;
 
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
@@ -225,6 +216,9 @@ public interface DataStructureLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataStructure> getAllDataStructures();
+
 	/**
 	 * Returns the data structure with the primary key.
 	 *
@@ -341,7 +335,7 @@ public interface DataStructureLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DataStructure updateDataStructure(
-			long dataStructureId, String dataStructureName,
+			long dataStructureId, String dataStructureCode,
 			String dataStructureVersion, Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap, String structure, int status,
 			ServiceContext sc)

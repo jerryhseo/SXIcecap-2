@@ -91,8 +91,8 @@ public class DataStructureCacheModel
 		sb.append(statusDate);
 		sb.append(", dataStructureId=");
 		sb.append(dataStructureId);
-		sb.append(", dataStructureName=");
-		sb.append(dataStructureName);
+		sb.append(", dataStructureCode=");
+		sb.append(dataStructureCode);
 		sb.append(", dataStructureVersion=");
 		sb.append(dataStructureVersion);
 		sb.append(", displayName=");
@@ -168,11 +168,11 @@ public class DataStructureCacheModel
 
 		dataStructureImpl.setDataStructureId(dataStructureId);
 
-		if (dataStructureName == null) {
-			dataStructureImpl.setDataStructureName("");
+		if (dataStructureCode == null) {
+			dataStructureImpl.setDataStructureCode("");
 		}
 		else {
-			dataStructureImpl.setDataStructureName(dataStructureName);
+			dataStructureImpl.setDataStructureCode(dataStructureCode);
 		}
 
 		if (dataStructureVersion == null) {
@@ -229,7 +229,7 @@ public class DataStructureCacheModel
 		statusDate = objectInput.readLong();
 
 		dataStructureId = objectInput.readLong();
-		dataStructureName = objectInput.readUTF();
+		dataStructureCode = objectInput.readUTF();
 		dataStructureVersion = objectInput.readUTF();
 		displayName = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -277,11 +277,11 @@ public class DataStructureCacheModel
 
 		objectOutput.writeLong(dataStructureId);
 
-		if (dataStructureName == null) {
+		if (dataStructureCode == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(dataStructureName);
+			objectOutput.writeUTF(dataStructureCode);
 		}
 
 		if (dataStructureVersion == null) {
@@ -326,7 +326,7 @@ public class DataStructureCacheModel
 	public String statusByUserName;
 	public long statusDate;
 	public long dataStructureId;
-	public String dataStructureName;
+	public String dataStructureCode;
 	public String dataStructureVersion;
 	public String displayName;
 	public String description;

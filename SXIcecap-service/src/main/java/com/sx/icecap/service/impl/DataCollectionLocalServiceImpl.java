@@ -25,8 +25,8 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
-import com.sx.icecap.exception.DuplicatedDataCollectionNameException;
-import com.sx.icecap.exception.DuplicatedDataTypeNameException;
+import com.sx.icecap.exception.DuplicatedDataCollectionCodeException;
+import com.sx.icecap.exception.DuplicatedDataTypeCodeException;
 import com.sx.icecap.model.DataCollection;
 import com.sx.icecap.service.base.DataCollectionLocalServiceBaseImpl;
 
@@ -48,7 +48,7 @@ public class DataCollectionLocalServiceImpl
 	
 	@Indexable(type = IndexableType.REINDEX)
 	public DataCollection addDataCollection(
-			String dataCollectionName,
+			String dataCollectionCode,
 			String dataCollectionVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
@@ -56,10 +56,10 @@ public class DataCollectionLocalServiceImpl
 			ServiceContext sc) throws PortalException {
 		
 		try {
-			if( !_verifyDataCollectionName(dataCollectionName) ) {
-				throw new PortalException(dataCollectionName+" "+dataCollectionVersion+" Invalid"); 
+			if( !_verifyDataCollectionCode(dataCollectionCode) ) {
+				throw new PortalException(dataCollectionCode+" "+dataCollectionVersion+" Invalid"); 
 			}
-		} catch( DuplicatedDataCollectionNameException e ) {
+		} catch( DuplicatedDataCollectionCodeException e ) {
 			throw e;
 		}
 		
@@ -68,7 +68,7 @@ public class DataCollectionLocalServiceImpl
 		long dataCollectionId = super.counterLocalService.increment();
 		DataCollection dataCollection = super.dataCollectionLocalService.createDataCollection(dataCollectionId);
 		
-		dataCollection.setDataCollectionName(dataCollectionName);
+		dataCollection.setDataCollectionCode(dataCollectionCode);
 		dataCollection.setDataCollectionVersion(dataCollectionVersion);
 		dataCollection.setDisplayNameMap(displayNameMap, defaultLocale);
 		dataCollection.setDescriptionMap(descriptionMap, defaultLocale);
@@ -126,7 +126,7 @@ public class DataCollectionLocalServiceImpl
 			dataCollection.getCreateDate(),
 			null, 
 			ContentTypes.TEXT_HTML_UTF8, 
-			dataCollection.getDataCollectionName(),
+			dataCollection.getDataCollectionCode(),
 			null, 
 			null, 
 			null, 
@@ -148,7 +148,7 @@ public class DataCollectionLocalServiceImpl
 	@Indexable(type = IndexableType.REINDEX)
 	public DataCollection updateDataCollection(
 			long dataCollectionId, 
-			String dataCollectionName, 
+			String dataCollectionCode, 
 			String dataCollectionVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
@@ -156,7 +156,7 @@ public class DataCollectionLocalServiceImpl
 			ServiceContext sc) throws PortalException {
 		DataCollection dataCollection = super.dataCollectionPersistence.findByPrimaryKey(dataCollectionId);
 		
-		dataCollection.setDataCollectionName(dataCollectionName);
+		dataCollection.setDataCollectionCode(dataCollectionCode);
 		dataCollection.setDataCollectionVersion(dataCollectionVersion);
 		dataCollection.setDisplayNameMap(displayNameMap, sc.getLocale());
 		dataCollection.setDescriptionMap(descriptionMap, sc.getLocale());
@@ -204,7 +204,7 @@ public class DataCollectionLocalServiceImpl
 				dataCollection.getCreateDate(),
 				null, 
 				ContentTypes.TEXT_HTML_UTF8, 
-				dataCollection.getDataCollectionName(),
+				dataCollection.getDataCollectionCode(),
 				null, 
 				null, 
 				null, 
@@ -275,10 +275,10 @@ public class DataCollectionLocalServiceImpl
 		}
 	}
 	
-	private boolean _verifyDataCollectionName( String dataCollectionName ) throws DuplicatedDataCollectionNameException {
-		// Check uniqueness of the dataCollectionName
-		if( super.dataTypePersistence.countByName(dataCollectionName) > 0 ) {
-			throw new DuplicatedDataCollectionNameException( dataCollectionName + " exists already." );
+	private boolean _verifyDataCollectionCode( String dataCollectionCode ) throws DuplicatedDataCollectionCodeException {
+		// Check uniqueness of the dataCollectionCode
+		if( super.dataTypePersistence.countByCode(dataCollectionCode) > 0 ) {
+			throw new DuplicatedDataCollectionCodeException( dataCollectionCode + " exists already." );
 		}
 		
 		return true;

@@ -75,8 +75,8 @@ public class ActionHistoryCacheModel
 		sb.append(createDate);
 		sb.append(", structuredDataId=");
 		sb.append(structuredDataId);
-		sb.append(", paramName=");
-		sb.append(paramName);
+		sb.append(", paramCode=");
+		sb.append(paramCode);
 		sb.append(", prevValue=");
 		sb.append(prevValue);
 		sb.append(", changedValue=");
@@ -113,11 +113,11 @@ public class ActionHistoryCacheModel
 
 		actionHistoryImpl.setStructuredDataId(structuredDataId);
 
-		if (paramName == null) {
-			actionHistoryImpl.setParamName("");
+		if (paramCode == null) {
+			actionHistoryImpl.setParamCode("");
 		}
 		else {
-			actionHistoryImpl.setParamName(paramName);
+			actionHistoryImpl.setParamCode(paramCode);
 		}
 
 		if (prevValue == null) {
@@ -162,7 +162,7 @@ public class ActionHistoryCacheModel
 		createDate = objectInput.readLong();
 
 		structuredDataId = objectInput.readLong();
-		paramName = objectInput.readUTF();
+		paramCode = objectInput.readUTF();
 		prevValue = objectInput.readUTF();
 		changedValue = objectInput.readUTF();
 		action = objectInput.readUTF();
@@ -186,11 +186,11 @@ public class ActionHistoryCacheModel
 
 		objectOutput.writeLong(structuredDataId);
 
-		if (paramName == null) {
+		if (paramCode == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(paramName);
+			objectOutput.writeUTF(paramCode);
 		}
 
 		if (prevValue == null) {
@@ -227,7 +227,7 @@ public class ActionHistoryCacheModel
 	public String userName;
 	public long createDate;
 	public long structuredDataId;
-	public String paramName;
+	public String paramCode;
 	public String prevValue;
 	public String changedValue;
 	public String action;

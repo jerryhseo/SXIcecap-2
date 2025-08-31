@@ -44,7 +44,7 @@ public class ParameterSoap implements Serializable {
 		soapModel.setStatusByUserName(model.getStatusByUserName());
 		soapModel.setStatusDate(model.getStatusDate());
 		soapModel.setLastPublishDate(model.getLastPublishDate());
-		soapModel.setParamName(model.getParamName());
+		soapModel.setParamCode(model.getParamCode());
 		soapModel.setParamVersion(model.getParamVersion());
 		soapModel.setParamType(model.getParamType());
 		soapModel.setDisplayName(model.getDisplayName());
@@ -210,12 +210,12 @@ public class ParameterSoap implements Serializable {
 		_lastPublishDate = lastPublishDate;
 	}
 
-	public String getParamName() {
-		return _paramName;
+	public String getParamCode() {
+		return _paramCode;
 	}
 
-	public void setParamName(String paramName) {
-		_paramName = paramName;
+	public void setParamCode(String paramCode) {
+		_paramCode = paramCode;
 	}
 
 	public String getParamVersion() {
@@ -299,7 +299,7 @@ public class ParameterSoap implements Serializable {
 	private String _statusByUserName;
 	private Date _statusDate;
 	private Date _lastPublishDate;
-	private String _paramName;
+	private String _paramCode;
 	private String _paramVersion;
 	private String _paramType;
 	private String _displayName;

@@ -59,7 +59,7 @@ public class DataSetImpl extends DataSetBaseImpl {
 		dataSet.put("status", this.getStatus());
 		dataSet.put("createDate", this.getCreateDate());
 		dataSet.put("modifiedDate", this.getModifiedDate());
-		dataSet.put(DataSetProperties.DATASET_NAME, this.getDataSetName());
+		dataSet.put(DataSetProperties.DATASET_CODE, this.getDataSetCode());
 		dataSet.put(DataSetProperties.DATASET_VERSION, this.getDataSetVersion());
 		
 		return dataSet;

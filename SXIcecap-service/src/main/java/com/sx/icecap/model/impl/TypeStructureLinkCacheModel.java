@@ -63,10 +63,14 @@ public class TypeStructureLinkCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{dataTypeId=");
 		sb.append(dataTypeId);
+		sb.append(", userId=");
+		sb.append(userId);
+		sb.append(", groupId=");
+		sb.append(groupId);
 		sb.append(", dataStructureId=");
 		sb.append(dataStructureId);
 		sb.append(", commentable=");
@@ -79,12 +83,16 @@ public class TypeStructureLinkCacheModel
 		sb.append(freezed);
 		sb.append(", freezedUserId=");
 		sb.append(freezedUserId);
+		sb.append(", freezedUserName=");
+		sb.append(freezedUserName);
 		sb.append(", freezedDate=");
 		sb.append(freezedDate);
 		sb.append(", verified=");
 		sb.append(verified);
 		sb.append(", verifiedUserId=");
 		sb.append(verifiedUserId);
+		sb.append(", verifiedUserName=");
+		sb.append(verifiedUserName);
 		sb.append(", verifiedDate=");
 		sb.append(verifiedDate);
 		sb.append(", inputStatus=");
@@ -102,12 +110,21 @@ public class TypeStructureLinkCacheModel
 			new TypeStructureLinkImpl();
 
 		typeStructureLinkImpl.setDataTypeId(dataTypeId);
+		typeStructureLinkImpl.setUserId(userId);
+		typeStructureLinkImpl.setGroupId(groupId);
 		typeStructureLinkImpl.setDataStructureId(dataStructureId);
 		typeStructureLinkImpl.setCommentable(commentable);
 		typeStructureLinkImpl.setVerifiable(verifiable);
 		typeStructureLinkImpl.setFreezable(freezable);
 		typeStructureLinkImpl.setFreezed(freezed);
 		typeStructureLinkImpl.setFreezedUserId(freezedUserId);
+
+		if (freezedUserName == null) {
+			typeStructureLinkImpl.setFreezedUserName("");
+		}
+		else {
+			typeStructureLinkImpl.setFreezedUserName(freezedUserName);
+		}
 
 		if (freezedDate == Long.MIN_VALUE) {
 			typeStructureLinkImpl.setFreezedDate(null);
@@ -118,6 +135,13 @@ public class TypeStructureLinkCacheModel
 
 		typeStructureLinkImpl.setVerified(verified);
 		typeStructureLinkImpl.setVerifiedUserId(verifiedUserId);
+
+		if (verifiedUserName == null) {
+			typeStructureLinkImpl.setVerifiedUserName("");
+		}
+		else {
+			typeStructureLinkImpl.setVerifiedUserName(verifiedUserName);
+		}
 
 		if (verifiedDate == Long.MIN_VALUE) {
 			typeStructureLinkImpl.setVerifiedDate(null);
@@ -138,6 +162,10 @@ public class TypeStructureLinkCacheModel
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		dataTypeId = objectInput.readLong();
 
+		userId = objectInput.readLong();
+
+		groupId = objectInput.readLong();
+
 		dataStructureId = objectInput.readLong();
 
 		commentable = objectInput.readBoolean();
@@ -149,11 +177,13 @@ public class TypeStructureLinkCacheModel
 		freezed = objectInput.readBoolean();
 
 		freezedUserId = objectInput.readLong();
+		freezedUserName = objectInput.readUTF();
 		freezedDate = objectInput.readLong();
 
 		verified = objectInput.readBoolean();
 
 		verifiedUserId = objectInput.readLong();
+		verifiedUserName = objectInput.readUTF();
 		verifiedDate = objectInput.readLong();
 
 		inputStatus = objectInput.readBoolean();
@@ -164,6 +194,10 @@ public class TypeStructureLinkCacheModel
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(dataTypeId);
+
+		objectOutput.writeLong(userId);
+
+		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(dataStructureId);
 
@@ -176,11 +210,27 @@ public class TypeStructureLinkCacheModel
 		objectOutput.writeBoolean(freezed);
 
 		objectOutput.writeLong(freezedUserId);
+
+		if (freezedUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(freezedUserName);
+		}
+
 		objectOutput.writeLong(freezedDate);
 
 		objectOutput.writeBoolean(verified);
 
 		objectOutput.writeLong(verifiedUserId);
+
+		if (verifiedUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(verifiedUserName);
+		}
+
 		objectOutput.writeLong(verifiedDate);
 
 		objectOutput.writeBoolean(inputStatus);
@@ -189,15 +239,19 @@ public class TypeStructureLinkCacheModel
 	}
 
 	public long dataTypeId;
+	public long userId;
+	public long groupId;
 	public long dataStructureId;
 	public boolean commentable;
 	public boolean verifiable;
 	public boolean freezable;
 	public boolean freezed;
 	public long freezedUserId;
+	public String freezedUserName;
 	public long freezedDate;
 	public boolean verified;
 	public long verifiedUserId;
+	public String verifiedUserName;
 	public long verifiedDate;
 	public boolean inputStatus;
 	public boolean jumpTo;

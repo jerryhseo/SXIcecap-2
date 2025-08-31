@@ -27,7 +27,7 @@
 		<column name="lastPublishDate" type="Date" />
 
 		<!-- Descriptive  fields -->
-		<column name="paramName" type="String"></column>
+		<column name="paramCode" type="String"></column>
 		<column name="paramVersion" type="String"></column>
 		<column name="paramType" type="String"></column>
 		<column name="displayName" localized="true" type="String"></column>
@@ -42,7 +42,7 @@
 		<column name="standard" type="boolean"></column>
 		
 		<order>
-			<order-column name="paramName" order-by="asc" />
+			<order-column name="paramCode" order-by="asc" />
 		</order>
 		
 		<finder name="GroupId" return-type="Collection">
@@ -72,11 +72,11 @@
 			<finder-column name="status" />
 		</finder>
 		
-		<finder name="Name" return-type="Collection">
-			<finder-column name="paramName" />
+		<finder name="Code" return-type="Collection">
+			<finder-column name="paramCode" />
 		</finder>
-		<finder name="NameVersion" return-type="Parameter">
-			<finder-column name="paramName" />
+		<finder name="CodeVersion" return-type="Parameter">
+			<finder-column name="paramCode" />
 			<finder-column name="paramVersion" />
 		</finder>
 		
@@ -115,7 +115,7 @@
 		<column name="statusByUserName" type="String" />
 		<column name="statusDate" type="Date" />
 		
-		<column name="dataCollectionName" type="String" ></column>
+		<column name="dataCollectionCode" type="String" ></column>
 		<column name="dataCollectionVersion" type="String" ></column>
 		<column name="displayName" type="String" localized="true"></column>
 		<column name="description" type="String" localized="true"></column>
@@ -150,8 +150,8 @@
 			<finder-column name="status"></finder-column>
 		</finder>
 		
-		<finder name="Name" return-type="Collection">
-			<finder-column name="dataCollectionName"></finder-column>
+		<finder name="Code" return-type="Collection">
+			<finder-column name="dataCollectionCode"></finder-column>
 		</finder>
 		
     	<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
@@ -188,7 +188,7 @@
 		<column name="statusDate" type="Date" />
 		
 		<!--  Descriptive -->
-		<column name="dataSetName" type="String" ></column>
+		<column name="dataSetCode" type="String" ></column>
 		<column name="dataSetVersion" type="String"></column>
 		<column name="displayName" type="String" localized="true"></column>
 		<column name="description" type="String" localized="true"></column>
@@ -223,12 +223,12 @@
 			<finder-column name="status"></finder-column>
 		</finder>
 		
-		<finder name="Name" return-type="Collection">
-			<finder-column name="dataSetName" ></finder-column>
+		<finder name="Code" return-type="Collection">
+			<finder-column name="dataSetCode" ></finder-column>
 		</finder>
 
-		<finder name="NameVersion" return-type="DataSet">
-			<finder-column name="dataSetName" ></finder-column>
+		<finder name="CodeVersion" return-type="DataSet">
+			<finder-column name="dataSetCode" ></finder-column>
 			<finder-column name="dataSetVersion" ></finder-column>
 		</finder>
 		
@@ -266,15 +266,13 @@
 		
 		<!--  Descriptive -->
 		
-		<column name="dataTypeName" type="String"></column>
+		<column name="dataTypeCode" type="String"></column>
 		<column name="dataTypeVersion" type="String"></column>
 		<column name="displayName" type="String" localized="true"></column>
 		<column name="extension" type="String"></column>
 		<column name="sampleFileId" type="long"></column>
 		<column name="description" type="String" localized="true"></column>
 		<column name="tooltip" type="String" localized="true"></column>
-		
-		<column name="dataStructureId" type="long" ></column>
 		
 		<!-- Finders -->
 		
@@ -306,16 +304,13 @@
 			<finder-column name="status"></finder-column>
 		</finder>
 		
-		<finder name="Name" return-type="Collection">
-			<finder-column name="dataTypeName" ></finder-column>
+		<finder name="Code" return-type="Collection">
+			<finder-column name="dataTypeCode" ></finder-column>
 		</finder>
 
-		<finder name="NameVersion" return-type="DataType">
-			<finder-column name="dataTypeName" ></finder-column>
+		<finder name="CodeVersion" return-type="DataType">
+			<finder-column name="dataTypeCode" ></finder-column>
 			<finder-column name="dataTypeVersion" ></finder-column>
-		</finder>
-		<finder name="structureId" return-type="Collection">
-			<finder-column name="dataStructureId" ></finder-column>
 		</finder>
 		
 		<!-- finder with groupId -->
@@ -349,7 +344,7 @@
 		<column name="statusDate" type="Date" />
 		
 		<column name="dataStructureId" primary="true" type="long"></column>
-		<column name="dataStructureName" type="String"></column>
+		<column name="dataStructureCode" type="String"></column>
 		<column name="dataStructureVersion" type="String"></column>
 		<column name="displayName" type="String" localized="true"></column>
 		<column name="description" type="String" localized="true"></column>
@@ -386,12 +381,12 @@
 			<finder-column name="status"></finder-column>
 		</finder>
 		
-		<finder name="Name" return-type="Collection">
-			<finder-column name="dataStructureName" ></finder-column>
+		<finder name="Code" return-type="Collection">
+			<finder-column name="dataStructureCode" ></finder-column>
 		</finder>
 
-		<finder name="NameVersion" return-type="DataStructure">
-			<finder-column name="dataStructureName" ></finder-column>
+		<finder name="CodeVersion" return-type="DataStructure">
+			<finder-column name="dataStructureCode" ></finder-column>
 			<finder-column name="dataStructureVersion" ></finder-column>
 		</finder>
 		
@@ -760,14 +755,14 @@
 		<column name="modifiedDate" type="Date"></column>
 		
 		<column name="structuredDataId" type="long"></column>
-		<column name="paramName" type="String"></column>
+		<column name="paramCode" type="String"></column>
 		<column name="parentCommentId" type="long"></column>
 		<column name="comment" type="String"></column>
 		<column name="closed" type="boolean"></column>
 		
-		<finder name="paramName" return-type="Collection">
+		<finder name="paramCode" return-type="Collection">
 			<finder-column name="structuredDataId" ></finder-column>
-			<finder-column name="paramName" ></finder-column>
+			<finder-column name="paramCode" ></finder-column>
 		</finder>
 	</entity>
 	
@@ -784,7 +779,7 @@
 		<column name="createDate" type="Date"></column>
 		
 		<column name="structuredDataId" type="long"></column>
-		<column name="paramName" type="String"></column>
+		<column name="paramCode" type="String"></column>
 		<column name="prevValue" type="String"></column>
 		<column name="changedValue" type="String"></column>
 		<column name="action" type="String"></column>
@@ -793,9 +788,9 @@
 		<finder name="DataId" return-type="Collection">
 			<finder-column name="structuredDataId" ></finder-column>
 		</finder>
-		<finder name="ParamName" return-type="ActionHistory">
+		<finder name="ParamCode" return-type="ActionHistory">
 			<finder-column name="structuredDataId" ></finder-column>
-			<finder-column name="paramName" ></finder-column>
+			<finder-column name="paramCode" ></finder-column>
 		</finder>
 	</entity>
 
@@ -834,22 +829,86 @@
 	<entity name="TypeStructureLink" local-service="true" uuid="false"
 		remote-service="false">
 		<column name="dataTypeId" primary="true" type="long"></column>
+		
+		<column name="userId"  type="long"></column>
+		<column name="groupId"  type="long"></column>
+		
 		<column name="dataStructureId" type="long"></column>
 		<column name="commentable" type="boolean"></column>
 		<column name="verifiable" type="boolean"></column>
 		<column name="freezable" type="boolean"></column>
 		<column name="freezed" type="boolean"></column>
 		<column name="freezedUserId" type="long"></column>
+        <column name="freezedUserName" type="String"></column>
 		<column name="freezedDate" type="Date"></column>
 		<column name="verified" type="boolean"></column>
 		<column name="verifiedUserId" type="long"></column>
+        <column name="verifiedUserName" type="String"></column>
 		<column name="verifiedDate" type="Date"></column>
         <column name="inputStatus" type="boolean"></column>
         <column name="jumpTo" type="boolean"></column>
 		
-		<finder name="DataStructureId" return-type="TypeStructureLink">
+        <finder name="UserId" return-type="Collection">
+            <finder-column name="userId"></finder-column>
+        </finder>
+        <finder name="GroupId" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+        </finder>
+        <finder name="G_U" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="userId"></finder-column>
+        </finder>
+        
+        <finder name="DataStructureId" return-type="TypeStructureLink">
 			<finder-column name="dataStructureId" ></finder-column>
 		</finder>
+        <finder name="DataStructureId_G" return-type="TypeStructureLink">
+            <finder-column name="groupId"></finder-column>
+			<finder-column name="dataStructureId" ></finder-column>
+		</finder>
+        <finder name="DataStructureId_U" return-type="TypeStructureLink">
+            <finder-column name="userId"></finder-column>
+			<finder-column name="dataStructureId" ></finder-column>
+		</finder>
+        <finder name="DataStructureId_G_U" return-type="TypeStructureLink">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="userId"></finder-column>
+			<finder-column name="dataStructureId" ></finder-column>
+		</finder>
+		
+        <finder name="Verified" return-type="Collection">
+            <finder-column name="verified"></finder-column>
+        </finder>
+        <finder name="Verified_G" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="verified"></finder-column>
+        </finder>
+        <finder name="Verified_U" return-type="Collection">
+            <finder-column name="userId"></finder-column>
+            <finder-column name="verified"></finder-column>
+        </finder>
+        <finder name="Verified_G_U" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="userId"></finder-column>
+            <finder-column name="verified"></finder-column>
+        </finder>
+		
+        <finder name="Freezed" return-type="Collection">
+            <finder-column name="freezed"></finder-column>
+        </finder>
+         <finder name="Freezed_G" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+        </finder>
+        <finder name="Freezed_U" return-type="Collection">
+            <finder-column name="userId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+        </finder>
+        <finder name="Freezed_G_U" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="userId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+        </finder>
 	</entity>
 	
 	<entity name="StructureParamLink" local-service="true" uuid="false"
@@ -878,11 +937,12 @@
 			<finder-column name="visualizerId" ></finder-column>
 		</finder>
     </entity>
+    <entity></entity>
 
     <exceptions>
-        <exception>DuplicatedDataCollectionName</exception>
-        <exception>DuplicatedDataSetName</exception>
-        <exception>DuplicatedDataTypeName</exception>
-        <exception>DuplicatedParameterName</exception>
+        <exception>DuplicatedDataCollectionCode</exception>
+        <exception>DuplicatedDataSetCode</exception>
+        <exception>DuplicatedDataTypeCode</exception>
+        <exception>DuplicatedParameterCode</exception>
 	</exceptions>
 </service-builder>

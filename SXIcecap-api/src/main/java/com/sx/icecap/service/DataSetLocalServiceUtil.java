@@ -62,14 +62,14 @@ public class DataSetLocalServiceUtil {
 	}
 
 	public static DataSet addDataSet(
-			String dataSetName, String dataSetVersion,
+			String dataSetCode, String dataSetVersion,
 			Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().addDataSet(
-			dataSetName, dataSetVersion, displayNameMap, descriptionMap, status,
+			dataSetCode, dataSetVersion, displayNameMap, descriptionMap, status,
 			sc);
 	}
 
@@ -79,6 +79,10 @@ public class DataSetLocalServiceUtil {
 
 	public static int countApprovedDataSets(long groupId) {
 		return getService().countApprovedDataSets(groupId);
+	}
+
+	public static int countDataSetsByCode(String dataSetCode) {
+		return getService().countDataSetsByCode(dataSetCode);
 	}
 
 	public static int countDataSetsByG_S(long groupId, int status) {
@@ -93,10 +97,6 @@ public class DataSetLocalServiceUtil {
 
 	public static int countDataSetsByGroupId(long groupId) {
 		return getService().countDataSetsByGroupId(groupId);
-	}
-
-	public static int countDataSetsByName(String dataSetName) {
-		return getService().countDataSetsByName(dataSetName);
 	}
 
 	public static int countDataSetsByStatus(int status) {
@@ -303,10 +303,10 @@ public class DataSetLocalServiceUtil {
 		return getService().getDataSet(dataSetId);
 	}
 
-	public static DataSet getDataSet(String dataSetName, String dataSetVersion)
+	public static DataSet getDataSet(String dataSetCode, String dataSetVersion)
 		throws com.sx.icecap.exception.NoSuchDataSetException {
 
-		return getService().getDataSet(dataSetName, dataSetVersion);
+		return getService().getDataSet(dataSetCode, dataSetVersion);
 	}
 
 	/**
@@ -336,6 +336,24 @@ public class DataSetLocalServiceUtil {
 	 */
 	public static List<DataSet> getDataSets(int start, int end) {
 		return getService().getDataSets(start, end);
+	}
+
+	public static List<DataSet> getDataSetsByCode(String dataSetCode) {
+		return getService().getDataSetsByCode(dataSetCode);
+	}
+
+	public static List<DataSet> getDataSetsByCode(
+		String dataSetCode, int start, int end) {
+
+		return getService().getDataSetsByCode(dataSetCode, start, end);
+	}
+
+	public static List<DataSet> getDataSetsByCode(
+		String dataSetCode, int start, int end,
+		OrderByComparator<DataSet> comparator) {
+
+		return getService().getDataSetsByCode(
+			dataSetCode, start, end, comparator);
 	}
 
 	public static List<DataSet> getDataSetsByG_S(long groupId, int status) {
@@ -393,24 +411,6 @@ public class DataSetLocalServiceUtil {
 
 		return getService().getDataSetsByGroupId(
 			groupId, start, end, comparator);
-	}
-
-	public static List<DataSet> getDataSetsByName(String dataSetName) {
-		return getService().getDataSetsByName(dataSetName);
-	}
-
-	public static List<DataSet> getDataSetsByName(
-		String dataSetName, int start, int end) {
-
-		return getService().getDataSetsByName(dataSetName, start, end);
-	}
-
-	public static List<DataSet> getDataSetsByName(
-		String dataSetName, int start, int end,
-		OrderByComparator<DataSet> comparator) {
-
-		return getService().getDataSetsByName(
-			dataSetName, start, end, comparator);
 	}
 
 	public static List<DataSet> getDataSetsByStatus(int status) {
@@ -562,14 +562,14 @@ public class DataSetLocalServiceUtil {
 	}
 
 	public static DataSet updateDataSet(
-			long dataSetId, String dataSetName, String dataSetVersion,
+			long dataSetId, String dataSetCode, String dataSetVersion,
 			Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> descriptionMap, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().updateDataSet(
-			dataSetId, dataSetName, dataSetVersion, displayNameMap,
+			dataSetId, dataSetCode, dataSetVersion, displayNameMap,
 			descriptionMap, status, sc);
 	}
 

@@ -294,73 +294,73 @@ public class ActionHistoryUtil {
 	}
 
 	/**
-	 * Returns the action history where structuredDataId = &#63; and paramName = &#63; or throws a <code>NoSuchActionHistoryException</code> if it could not be found.
+	 * Returns the action history where structuredDataId = &#63; and paramCode = &#63; or throws a <code>NoSuchActionHistoryException</code> if it could not be found.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
-	public static ActionHistory findByParamName(
-			long structuredDataId, String paramName)
+	public static ActionHistory findByParamCode(
+			long structuredDataId, String paramCode)
 		throws com.sx.icecap.exception.NoSuchActionHistoryException {
 
-		return getPersistence().findByParamName(structuredDataId, paramName);
+		return getPersistence().findByParamCode(structuredDataId, paramCode);
 	}
 
 	/**
-	 * Returns the action history where structuredDataId = &#63; and paramName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the action history where structuredDataId = &#63; and paramCode = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the matching action history, or <code>null</code> if a matching action history could not be found
 	 */
-	public static ActionHistory fetchByParamName(
-		long structuredDataId, String paramName) {
+	public static ActionHistory fetchByParamCode(
+		long structuredDataId, String paramCode) {
 
-		return getPersistence().fetchByParamName(structuredDataId, paramName);
+		return getPersistence().fetchByParamCode(structuredDataId, paramCode);
 	}
 
 	/**
-	 * Returns the action history where structuredDataId = &#63; and paramName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the action history where structuredDataId = &#63; and paramCode = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching action history, or <code>null</code> if a matching action history could not be found
 	 */
-	public static ActionHistory fetchByParamName(
-		long structuredDataId, String paramName, boolean useFinderCache) {
+	public static ActionHistory fetchByParamCode(
+		long structuredDataId, String paramCode, boolean useFinderCache) {
 
-		return getPersistence().fetchByParamName(
-			structuredDataId, paramName, useFinderCache);
+		return getPersistence().fetchByParamCode(
+			structuredDataId, paramCode, useFinderCache);
 	}
 
 	/**
-	 * Removes the action history where structuredDataId = &#63; and paramName = &#63; from the database.
+	 * Removes the action history where structuredDataId = &#63; and paramCode = &#63; from the database.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the action history that was removed
 	 */
-	public static ActionHistory removeByParamName(
-			long structuredDataId, String paramName)
+	public static ActionHistory removeByParamCode(
+			long structuredDataId, String paramCode)
 		throws com.sx.icecap.exception.NoSuchActionHistoryException {
 
-		return getPersistence().removeByParamName(structuredDataId, paramName);
+		return getPersistence().removeByParamCode(structuredDataId, paramCode);
 	}
 
 	/**
-	 * Returns the number of action histories where structuredDataId = &#63; and paramName = &#63;.
+	 * Returns the number of action histories where structuredDataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param structuredDataId the structured data ID
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the number of matching action histories
 	 */
-	public static int countByParamName(
-		long structuredDataId, String paramName) {
+	public static int countByParamCode(
+		long structuredDataId, String paramCode) {
 
-		return getPersistence().countByParamName(structuredDataId, paramName);
+		return getPersistence().countByParamCode(structuredDataId, paramCode);
 	}
 
 	/**

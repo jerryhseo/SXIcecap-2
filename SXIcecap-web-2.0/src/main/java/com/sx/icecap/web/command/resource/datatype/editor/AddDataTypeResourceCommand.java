@@ -20,7 +20,7 @@ import com.sx.constant.StationXConstants;
 import com.sx.constant.StationXWebKeys;
 import com.sx.icecap.constant.WebPortletKey;
 import com.sx.icecap.exception.DuplicatedDataTypeNameException;
-import com.sx.icecap.exception.InvalidDataTypeNameException;
+import com.sx.icecap.exception.InvalidDataTypeCodeException;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.model.TypeStructureLink;
 import com.sx.icecap.service.DataTypeLocalService;

@@ -1727,202 +1727,202 @@ public interface DataStructurePersistence
 	public int filterCountByG_U_S(long groupId, long userId, int status);
 
 	/**
-	 * Returns all the data structures where dataStructureName = &#63;.
+	 * Returns all the data structures where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @return the matching data structures
 	 */
-	public java.util.List<DataStructure> findByName(String dataStructureName);
+	public java.util.List<DataStructure> findByCode(String dataStructureCode);
 
 	/**
-	 * Returns a range of all the data structures where dataStructureName = &#63;.
+	 * Returns a range of all the data structures where dataStructureCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataStructureModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param start the lower bound of the range of data structures
 	 * @param end the upper bound of the range of data structures (not inclusive)
 	 * @return the range of matching data structures
 	 */
-	public java.util.List<DataStructure> findByName(
-		String dataStructureName, int start, int end);
+	public java.util.List<DataStructure> findByCode(
+		String dataStructureCode, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the data structures where dataStructureName = &#63;.
+	 * Returns an ordered range of all the data structures where dataStructureCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataStructureModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param start the lower bound of the range of data structures
 	 * @param end the upper bound of the range of data structures (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching data structures
 	 */
-	public java.util.List<DataStructure> findByName(
-		String dataStructureName, int start, int end,
+	public java.util.List<DataStructure> findByCode(
+		String dataStructureCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DataStructure>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the data structures where dataStructureName = &#63;.
+	 * Returns an ordered range of all the data structures where dataStructureCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataStructureModelImpl</code>.
 	 * </p>
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param start the lower bound of the range of data structures
 	 * @param end the upper bound of the range of data structures (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching data structures
 	 */
-	public java.util.List<DataStructure> findByName(
-		String dataStructureName, int start, int end,
+	public java.util.List<DataStructure> findByCode(
+		String dataStructureCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<DataStructure>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first data structure in the ordered set where dataStructureName = &#63;.
+	 * Returns the first data structure in the ordered set where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data structure
 	 * @throws NoSuchDataStructureException if a matching data structure could not be found
 	 */
-	public DataStructure findByName_First(
-			String dataStructureName,
+	public DataStructure findByCode_First(
+			String dataStructureCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataStructure>
 				orderByComparator)
 		throws NoSuchDataStructureException;
 
 	/**
-	 * Returns the first data structure in the ordered set where dataStructureName = &#63;.
+	 * Returns the first data structure in the ordered set where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data structure, or <code>null</code> if a matching data structure could not be found
 	 */
-	public DataStructure fetchByName_First(
-		String dataStructureName,
+	public DataStructure fetchByCode_First(
+		String dataStructureCode,
 		com.liferay.portal.kernel.util.OrderByComparator<DataStructure>
 			orderByComparator);
 
 	/**
-	 * Returns the last data structure in the ordered set where dataStructureName = &#63;.
+	 * Returns the last data structure in the ordered set where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data structure
 	 * @throws NoSuchDataStructureException if a matching data structure could not be found
 	 */
-	public DataStructure findByName_Last(
-			String dataStructureName,
+	public DataStructure findByCode_Last(
+			String dataStructureCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataStructure>
 				orderByComparator)
 		throws NoSuchDataStructureException;
 
 	/**
-	 * Returns the last data structure in the ordered set where dataStructureName = &#63;.
+	 * Returns the last data structure in the ordered set where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data structure, or <code>null</code> if a matching data structure could not be found
 	 */
-	public DataStructure fetchByName_Last(
-		String dataStructureName,
+	public DataStructure fetchByCode_Last(
+		String dataStructureCode,
 		com.liferay.portal.kernel.util.OrderByComparator<DataStructure>
 			orderByComparator);
 
 	/**
-	 * Returns the data structures before and after the current data structure in the ordered set where dataStructureName = &#63;.
+	 * Returns the data structures before and after the current data structure in the ordered set where dataStructureCode = &#63;.
 	 *
 	 * @param dataStructureId the primary key of the current data structure
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data structure
 	 * @throws NoSuchDataStructureException if a data structure with the primary key could not be found
 	 */
-	public DataStructure[] findByName_PrevAndNext(
-			long dataStructureId, String dataStructureName,
+	public DataStructure[] findByCode_PrevAndNext(
+			long dataStructureId, String dataStructureCode,
 			com.liferay.portal.kernel.util.OrderByComparator<DataStructure>
 				orderByComparator)
 		throws NoSuchDataStructureException;
 
 	/**
-	 * Removes all the data structures where dataStructureName = &#63; from the database.
+	 * Removes all the data structures where dataStructureCode = &#63; from the database.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 */
-	public void removeByName(String dataStructureName);
+	public void removeByCode(String dataStructureCode);
 
 	/**
-	 * Returns the number of data structures where dataStructureName = &#63;.
+	 * Returns the number of data structures where dataStructureCode = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @return the number of matching data structures
 	 */
-	public int countByName(String dataStructureName);
+	public int countByCode(String dataStructureCode);
 
 	/**
-	 * Returns the data structure where dataStructureName = &#63; and dataStructureVersion = &#63; or throws a <code>NoSuchDataStructureException</code> if it could not be found.
+	 * Returns the data structure where dataStructureCode = &#63; and dataStructureVersion = &#63; or throws a <code>NoSuchDataStructureException</code> if it could not be found.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param dataStructureVersion the data structure version
 	 * @return the matching data structure
 	 * @throws NoSuchDataStructureException if a matching data structure could not be found
 	 */
-	public DataStructure findByNameVersion(
-			String dataStructureName, String dataStructureVersion)
+	public DataStructure findByCodeVersion(
+			String dataStructureCode, String dataStructureVersion)
 		throws NoSuchDataStructureException;
 
 	/**
-	 * Returns the data structure where dataStructureName = &#63; and dataStructureVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the data structure where dataStructureCode = &#63; and dataStructureVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param dataStructureVersion the data structure version
 	 * @return the matching data structure, or <code>null</code> if a matching data structure could not be found
 	 */
-	public DataStructure fetchByNameVersion(
-		String dataStructureName, String dataStructureVersion);
+	public DataStructure fetchByCodeVersion(
+		String dataStructureCode, String dataStructureVersion);
 
 	/**
-	 * Returns the data structure where dataStructureName = &#63; and dataStructureVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the data structure where dataStructureCode = &#63; and dataStructureVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param dataStructureVersion the data structure version
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching data structure, or <code>null</code> if a matching data structure could not be found
 	 */
-	public DataStructure fetchByNameVersion(
-		String dataStructureName, String dataStructureVersion,
+	public DataStructure fetchByCodeVersion(
+		String dataStructureCode, String dataStructureVersion,
 		boolean useFinderCache);
 
 	/**
-	 * Removes the data structure where dataStructureName = &#63; and dataStructureVersion = &#63; from the database.
+	 * Removes the data structure where dataStructureCode = &#63; and dataStructureVersion = &#63; from the database.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param dataStructureVersion the data structure version
 	 * @return the data structure that was removed
 	 */
-	public DataStructure removeByNameVersion(
-			String dataStructureName, String dataStructureVersion)
+	public DataStructure removeByCodeVersion(
+			String dataStructureCode, String dataStructureVersion)
 		throws NoSuchDataStructureException;
 
 	/**
-	 * Returns the number of data structures where dataStructureName = &#63; and dataStructureVersion = &#63;.
+	 * Returns the number of data structures where dataStructureCode = &#63; and dataStructureVersion = &#63;.
 	 *
-	 * @param dataStructureName the data structure name
+	 * @param dataStructureCode the data structure code
 	 * @param dataStructureVersion the data structure version
 	 * @return the number of matching data structures
 	 */
-	public int countByNameVersion(
-		String dataStructureName, String dataStructureVersion);
+	public int countByCodeVersion(
+		String dataStructureCode, String dataStructureVersion);
 
 	/**
 	 * Caches the data structure in the entity cache if it is enabled.

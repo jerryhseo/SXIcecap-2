@@ -54,7 +54,7 @@ public class DataStructureLocalServiceImpl
 	
 	@Indexable(type = IndexableType.REINDEX)
 	public DataStructure addDataStructure(
-			String dataStructureName,
+			String dataStructureCode,
 			String dataStructureVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
@@ -67,7 +67,7 @@ public class DataStructureLocalServiceImpl
 		long dataStructureId = super.counterLocalService.increment();
 		DataStructure dataStructure = super.dataStructureLocalService.createDataStructure(dataStructureId);
 		
-		dataStructure.setDataStructureName(dataStructureName);
+		dataStructure.setDataStructureCode(dataStructureCode);
 		dataStructure.setDataStructureVersion(dataStructureVersion);
 		dataStructure.setDisplayNameMap(displayNameMap, defaultLocale);
 		dataStructure.setDescriptionMap(descriptionMap, defaultLocale);
@@ -126,7 +126,7 @@ public class DataStructureLocalServiceImpl
 			dataStructure.getCreateDate(),
 			null, 
 			ContentTypes.TEXT_HTML_UTF8, 
-			dataStructure.getDataStructureName(),
+			dataStructure.getDataStructureCode(),
 			null, 
 			null, 
 			null, 
@@ -148,7 +148,7 @@ public class DataStructureLocalServiceImpl
 	@Indexable(type = IndexableType.REINDEX)
 	public DataStructure updateDataStructure(
 			long dataStructureId, 
-			String dataStructureName, 
+			String dataStructureCode, 
 			String dataStructureVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
@@ -157,7 +157,7 @@ public class DataStructureLocalServiceImpl
 			ServiceContext sc) throws PortalException {
 		DataStructure dataStructure = super.dataStructurePersistence.findByPrimaryKey(dataStructureId);
 		
-		dataStructure.setDataStructureName(dataStructureName);
+		dataStructure.setDataStructureCode(dataStructureCode);
 		dataStructure.setDataStructureVersion(dataStructureVersion);
 		dataStructure.setDisplayNameMap(displayNameMap, sc.getLocale());
 		dataStructure.setDescriptionMap(descriptionMap, sc.getLocale());
@@ -206,7 +206,7 @@ public class DataStructureLocalServiceImpl
 				dataStructure.getCreateDate(),
 				null, 
 				ContentTypes.TEXT_HTML_UTF8, 
-				dataStructure.getDataStructureName(),
+				dataStructure.getDataStructureCode(),
 				null, 
 				null, 
 				null, 
@@ -286,27 +286,8 @@ public class DataStructureLocalServiceImpl
 		
 		return dataStructure;
 	}
-	
 
-	public JSONObject convertModelToJSONObject(DataStructure structure) throws JSONException {
-		JSONObject jsonStructure = JSONFactoryUtil.createJSONObject(structure.getStructure()); 
-		String serializedData = JSONFactoryUtil.looseSerialize(structure);
-		
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject( serializedData);
-
-		jsonObject.put("structure", jsonStructure);
-		
-		return jsonObject;
-	}
-	
-	public JSONArray convertListToJSONArray(List<DataStructure> list) throws JSONException {
-		JSONArray array = JSONFactoryUtil.createJSONArray();
-		
-		Iterator<DataStructure> iter = list.iterator();
-		while( iter.hasNext()) {
-			array.put(convertModelToJSONObject(iter.next()));
-		}
-		
-		return array;
+	public List<DataStructure> getAllDataStructures(){
+		return super.dataStructurePersistence.findAll();
 	}
 }

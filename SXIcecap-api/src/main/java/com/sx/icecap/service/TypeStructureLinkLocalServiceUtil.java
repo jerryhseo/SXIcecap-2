@@ -45,13 +45,15 @@ public class TypeStructureLinkLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.sx.icecap.service.impl.TypeStructureLinkLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static TypeStructureLink addTypeDataStructureLink(
-		long dataTypeId, long dataStructureId, boolean commentable,
-		boolean verifiable, boolean freezable, boolean verified,
-		long verifiedUserId, boolean freezed, long freezedUserId) {
+			long dataTypeId, long dataStructureId, boolean commentable,
+			boolean verifiable, boolean freezable, boolean verified,
+			boolean freezed, boolean inputStatus, boolean jumpTo,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
 
 		return getService().addTypeDataStructureLink(
 			dataTypeId, dataStructureId, commentable, verifiable, freezable,
-			verified, verifiedUserId, freezed, freezedUserId);
+			verified, freezed, inputStatus, jumpTo, sc);
 	}
 
 	/**
@@ -68,6 +70,14 @@ public class TypeStructureLinkLocalServiceUtil {
 		TypeStructureLink typeStructureLink) {
 
 		return getService().addTypeStructureLink(typeStructureLink);
+	}
+
+	public static int countTypeStructureLinkByGroup(long groupId) {
+		return getService().countTypeStructureLinkByGroup(groupId);
+	}
+
+	public static int countTypeStructureLinkByUser(long userId) {
+		return getService().countTypeStructureLinkByUser(userId);
 	}
 
 	/**
@@ -204,6 +214,13 @@ public class TypeStructureLinkLocalServiceUtil {
 		return getService().fetchTypeStructureLink(dataTypeId);
 	}
 
+	public static TypeStructureLink freezeLink(
+			long dataTypeId, long userId, boolean freeze)
+		throws PortalException {
+
+		return getService().freezeLink(dataTypeId, userId, freeze);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -248,6 +265,30 @@ public class TypeStructureLinkLocalServiceUtil {
 		return getService().getTypeStructureLink(dataTypeId);
 	}
 
+	public static List<TypeStructureLink> getTypeStructureLinkByGroup(
+		long groupId) {
+
+		return getService().getTypeStructureLinkByGroup(groupId);
+	}
+
+	public static List<TypeStructureLink> getTypeStructureLinkByGroup(
+		long groupId, int start, int end) {
+
+		return getService().getTypeStructureLinkByGroup(groupId, start, end);
+	}
+
+	public static List<TypeStructureLink> getTypeStructureLinkByUser(
+		long userId) {
+
+		return getService().getTypeStructureLinkByUser(userId);
+	}
+
+	public static List<TypeStructureLink> getTypeStructureLinkByUser(
+		long userId, int start, int end) {
+
+		return getService().getTypeStructureLinkByUser(userId, start, end);
+	}
+
 	/**
 	 * Returns a range of all the type structure links.
 	 *
@@ -283,12 +324,13 @@ public class TypeStructureLinkLocalServiceUtil {
 	public static TypeStructureLink updateTypeDataStructureLink(
 			long dataTypeId, long dataStructureId, boolean commentable,
 			boolean verifiable, boolean freezable, boolean verified,
-			long verifiedUserId, boolean freezed, long freezedUserId)
+			boolean freezed, boolean inputStatus, boolean jumpTo,
+			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().updateTypeDataStructureLink(
 			dataTypeId, dataStructureId, commentable, verifiable, freezable,
-			verified, verifiedUserId, freezed, freezedUserId);
+			verified, freezed, inputStatus, jumpTo, sc);
 	}
 
 	/**
@@ -305,6 +347,13 @@ public class TypeStructureLinkLocalServiceUtil {
 		TypeStructureLink typeStructureLink) {
 
 		return getService().updateTypeStructureLink(typeStructureLink);
+	}
+
+	public static TypeStructureLink verifyLink(
+			long dataTypeId, long userId, boolean veryfication)
+		throws PortalException {
+
+		return getService().verifyLink(dataTypeId, userId, veryfication);
 	}
 
 	public static TypeStructureLinkLocalService getService() {

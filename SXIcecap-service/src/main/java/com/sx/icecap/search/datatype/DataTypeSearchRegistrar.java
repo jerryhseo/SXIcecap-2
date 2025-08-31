@@ -32,7 +32,7 @@ public class DataTypeSearchRegistrar {
 										Field.ENTRY_CLASS_PK,
 										Field.UID,
 										Field.SCOPE_GROUP_ID,
-										DataTypeProperties.DATATYPE_NAME); 
+										DataTypeProperties.DATATYPE_CODE); 
 								modelSearchDefinition.setDefaultSelectedLocalizedFieldNames(
 										DataTypeProperties.DESCRIPTION,
 										DataTypeProperties.DISPLAY_NAME);

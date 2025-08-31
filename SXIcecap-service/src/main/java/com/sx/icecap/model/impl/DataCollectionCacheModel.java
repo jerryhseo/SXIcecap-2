@@ -91,8 +91,8 @@ public class DataCollectionCacheModel
 		sb.append(statusByUserName);
 		sb.append(", statusDate=");
 		sb.append(statusDate);
-		sb.append(", dataCollectionName=");
-		sb.append(dataCollectionName);
+		sb.append(", dataCollectionCode=");
+		sb.append(dataCollectionCode);
 		sb.append(", dataCollectionVersion=");
 		sb.append(dataCollectionVersion);
 		sb.append(", displayName=");
@@ -165,11 +165,11 @@ public class DataCollectionCacheModel
 			dataCollectionImpl.setStatusDate(new Date(statusDate));
 		}
 
-		if (dataCollectionName == null) {
-			dataCollectionImpl.setDataCollectionName("");
+		if (dataCollectionCode == null) {
+			dataCollectionImpl.setDataCollectionCode("");
 		}
 		else {
-			dataCollectionImpl.setDataCollectionName(dataCollectionName);
+			dataCollectionImpl.setDataCollectionCode(dataCollectionCode);
 		}
 
 		if (dataCollectionVersion == null) {
@@ -219,7 +219,7 @@ public class DataCollectionCacheModel
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
-		dataCollectionName = objectInput.readUTF();
+		dataCollectionCode = objectInput.readUTF();
 		dataCollectionVersion = objectInput.readUTF();
 		displayName = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -266,11 +266,11 @@ public class DataCollectionCacheModel
 
 		objectOutput.writeLong(statusDate);
 
-		if (dataCollectionName == null) {
+		if (dataCollectionCode == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(dataCollectionName);
+			objectOutput.writeUTF(dataCollectionCode);
 		}
 
 		if (dataCollectionVersion == null) {
@@ -308,7 +308,7 @@ public class DataCollectionCacheModel
 	public long statusByUserId;
 	public String statusByUserName;
 	public long statusDate;
-	public String dataCollectionName;
+	public String dataCollectionCode;
 	public String dataCollectionVersion;
 	public String displayName;
 	public String description;

@@ -308,19 +308,19 @@ public interface DataCollectionModel
 	public void setStatusDate(Date statusDate);
 
 	/**
-	 * Returns the data collection name of this data collection.
+	 * Returns the data collection code of this data collection.
 	 *
-	 * @return the data collection name of this data collection
+	 * @return the data collection code of this data collection
 	 */
 	@AutoEscape
-	public String getDataCollectionName();
+	public String getDataCollectionCode();
 
 	/**
-	 * Sets the data collection name of this data collection.
+	 * Sets the data collection code of this data collection.
 	 *
-	 * @param dataCollectionName the data collection name of this data collection
+	 * @param dataCollectionCode the data collection code of this data collection
 	 */
-	public void setDataCollectionName(String dataCollectionName);
+	public void setDataCollectionCode(String dataCollectionCode);
 
 	/**
 	 * Returns the data collection version of this data collection.

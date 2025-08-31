@@ -2108,238 +2108,238 @@ public class ParameterUtil {
 	}
 
 	/**
-	 * Returns all the parameters where paramName = &#63;.
+	 * Returns all the parameters where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the matching parameters
 	 */
-	public static List<Parameter> findByName(String paramName) {
-		return getPersistence().findByName(paramName);
+	public static List<Parameter> findByCode(String paramCode) {
+		return getPersistence().findByCode(paramCode);
 	}
 
 	/**
-	 * Returns a range of all the parameters where paramName = &#63;.
+	 * Returns a range of all the parameters where paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ParameterModelImpl</code>.
 	 * </p>
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of parameters
 	 * @param end the upper bound of the range of parameters (not inclusive)
 	 * @return the range of matching parameters
 	 */
-	public static List<Parameter> findByName(
-		String paramName, int start, int end) {
+	public static List<Parameter> findByCode(
+		String paramCode, int start, int end) {
 
-		return getPersistence().findByName(paramName, start, end);
+		return getPersistence().findByCode(paramCode, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the parameters where paramName = &#63;.
+	 * Returns an ordered range of all the parameters where paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ParameterModelImpl</code>.
 	 * </p>
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of parameters
 	 * @param end the upper bound of the range of parameters (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching parameters
 	 */
-	public static List<Parameter> findByName(
-		String paramName, int start, int end,
+	public static List<Parameter> findByCode(
+		String paramCode, int start, int end,
 		OrderByComparator<Parameter> orderByComparator) {
 
-		return getPersistence().findByName(
-			paramName, start, end, orderByComparator);
+		return getPersistence().findByCode(
+			paramCode, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the parameters where paramName = &#63;.
+	 * Returns an ordered range of all the parameters where paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ParameterModelImpl</code>.
 	 * </p>
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of parameters
 	 * @param end the upper bound of the range of parameters (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching parameters
 	 */
-	public static List<Parameter> findByName(
-		String paramName, int start, int end,
+	public static List<Parameter> findByCode(
+		String paramCode, int start, int end,
 		OrderByComparator<Parameter> orderByComparator,
 		boolean useFinderCache) {
 
-		return getPersistence().findByName(
-			paramName, start, end, orderByComparator, useFinderCache);
+		return getPersistence().findByCode(
+			paramCode, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	 * Returns the first parameter in the ordered set where paramName = &#63;.
+	 * Returns the first parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching parameter
 	 * @throws NoSuchParameterException if a matching parameter could not be found
 	 */
-	public static Parameter findByName_First(
-			String paramName, OrderByComparator<Parameter> orderByComparator)
+	public static Parameter findByCode_First(
+			String paramCode, OrderByComparator<Parameter> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchParameterException {
 
-		return getPersistence().findByName_First(paramName, orderByComparator);
+		return getPersistence().findByCode_First(paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the first parameter in the ordered set where paramName = &#63;.
+	 * Returns the first parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
-	public static Parameter fetchByName_First(
-		String paramName, OrderByComparator<Parameter> orderByComparator) {
+	public static Parameter fetchByCode_First(
+		String paramCode, OrderByComparator<Parameter> orderByComparator) {
 
-		return getPersistence().fetchByName_First(paramName, orderByComparator);
+		return getPersistence().fetchByCode_First(paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last parameter in the ordered set where paramName = &#63;.
+	 * Returns the last parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching parameter
 	 * @throws NoSuchParameterException if a matching parameter could not be found
 	 */
-	public static Parameter findByName_Last(
-			String paramName, OrderByComparator<Parameter> orderByComparator)
+	public static Parameter findByCode_Last(
+			String paramCode, OrderByComparator<Parameter> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchParameterException {
 
-		return getPersistence().findByName_Last(paramName, orderByComparator);
+		return getPersistence().findByCode_Last(paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last parameter in the ordered set where paramName = &#63;.
+	 * Returns the last parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
-	public static Parameter fetchByName_Last(
-		String paramName, OrderByComparator<Parameter> orderByComparator) {
+	public static Parameter fetchByCode_Last(
+		String paramCode, OrderByComparator<Parameter> orderByComparator) {
 
-		return getPersistence().fetchByName_Last(paramName, orderByComparator);
+		return getPersistence().fetchByCode_Last(paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the parameters before and after the current parameter in the ordered set where paramName = &#63;.
+	 * Returns the parameters before and after the current parameter in the ordered set where paramCode = &#63;.
 	 *
 	 * @param parameterId the primary key of the current parameter
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next parameter
 	 * @throws NoSuchParameterException if a parameter with the primary key could not be found
 	 */
-	public static Parameter[] findByName_PrevAndNext(
-			long parameterId, String paramName,
+	public static Parameter[] findByCode_PrevAndNext(
+			long parameterId, String paramCode,
 			OrderByComparator<Parameter> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchParameterException {
 
-		return getPersistence().findByName_PrevAndNext(
-			parameterId, paramName, orderByComparator);
+		return getPersistence().findByCode_PrevAndNext(
+			parameterId, paramCode, orderByComparator);
 	}
 
 	/**
-	 * Removes all the parameters where paramName = &#63; from the database.
+	 * Removes all the parameters where paramCode = &#63; from the database.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 */
-	public static void removeByName(String paramName) {
-		getPersistence().removeByName(paramName);
+	public static void removeByCode(String paramCode) {
+		getPersistence().removeByCode(paramCode);
 	}
 
 	/**
-	 * Returns the number of parameters where paramName = &#63;.
+	 * Returns the number of parameters where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the number of matching parameters
 	 */
-	public static int countByName(String paramName) {
-		return getPersistence().countByName(paramName);
+	public static int countByCode(String paramCode) {
+		return getPersistence().countByCode(paramCode);
 	}
 
 	/**
-	 * Returns the parameter where paramName = &#63; and paramVersion = &#63; or throws a <code>NoSuchParameterException</code> if it could not be found.
+	 * Returns the parameter where paramCode = &#63; and paramVersion = &#63; or throws a <code>NoSuchParameterException</code> if it could not be found.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the matching parameter
 	 * @throws NoSuchParameterException if a matching parameter could not be found
 	 */
-	public static Parameter findByNameVersion(
-			String paramName, String paramVersion)
+	public static Parameter findByCodeVersion(
+			String paramCode, String paramVersion)
 		throws com.sx.icecap.exception.NoSuchParameterException {
 
-		return getPersistence().findByNameVersion(paramName, paramVersion);
+		return getPersistence().findByCodeVersion(paramCode, paramVersion);
 	}
 
 	/**
-	 * Returns the parameter where paramName = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the parameter where paramCode = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
-	public static Parameter fetchByNameVersion(
-		String paramName, String paramVersion) {
+	public static Parameter fetchByCodeVersion(
+		String paramCode, String paramVersion) {
 
-		return getPersistence().fetchByNameVersion(paramName, paramVersion);
+		return getPersistence().fetchByCodeVersion(paramCode, paramVersion);
 	}
 
 	/**
-	 * Returns the parameter where paramName = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the parameter where paramCode = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
-	public static Parameter fetchByNameVersion(
-		String paramName, String paramVersion, boolean useFinderCache) {
+	public static Parameter fetchByCodeVersion(
+		String paramCode, String paramVersion, boolean useFinderCache) {
 
-		return getPersistence().fetchByNameVersion(
-			paramName, paramVersion, useFinderCache);
+		return getPersistence().fetchByCodeVersion(
+			paramCode, paramVersion, useFinderCache);
 	}
 
 	/**
-	 * Removes the parameter where paramName = &#63; and paramVersion = &#63; from the database.
+	 * Removes the parameter where paramCode = &#63; and paramVersion = &#63; from the database.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the parameter that was removed
 	 */
-	public static Parameter removeByNameVersion(
-			String paramName, String paramVersion)
+	public static Parameter removeByCodeVersion(
+			String paramCode, String paramVersion)
 		throws com.sx.icecap.exception.NoSuchParameterException {
 
-		return getPersistence().removeByNameVersion(paramName, paramVersion);
+		return getPersistence().removeByCodeVersion(paramCode, paramVersion);
 	}
 
 	/**
-	 * Returns the number of parameters where paramName = &#63; and paramVersion = &#63;.
+	 * Returns the number of parameters where paramCode = &#63; and paramVersion = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the number of matching parameters
 	 */
-	public static int countByNameVersion(
-		String paramName, String paramVersion) {
+	public static int countByCodeVersion(
+		String paramCode, String paramVersion) {
 
-		return getPersistence().countByNameVersion(paramName, paramVersion);
+		return getPersistence().countByCodeVersion(paramCode, paramVersion);
 	}
 
 	/**

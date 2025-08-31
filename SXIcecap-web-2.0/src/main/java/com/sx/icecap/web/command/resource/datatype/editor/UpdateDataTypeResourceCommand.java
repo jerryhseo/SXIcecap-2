@@ -15,7 +15,7 @@ import com.sx.icecap.constant.DataTypeProperties;
 import com.sx.icecap.constant.MVCCommand;
 import com.sx.icecap.constant.WebPortletKey;
 import com.sx.icecap.exception.DuplicatedDataTypeNameException;
-import com.sx.icecap.exception.InvalidDataTypeNameException;
+import com.sx.icecap.exception.InvalidDataTypeCodeException;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.service.DataTypeLocalService;
 import com.sx.util.SXLocalizationUtil;
@@ -84,7 +84,7 @@ public class UpdateDataTypeResourceCommand extends BaseMVCResourceCommand{
 		} catch( DuplicatedDataTypeNameException e ) {
 			result.put("error", 1);
 			result.put("message", "Duplicated data type name: " + name);
-		} catch( InvalidDataTypeNameException e ) {
+		} catch( InvalidDataTypeCodeException e ) {
 			result.put("error", 1);
 			result.put("message", "Invalid data type name: " + name);
 		} catch( PortalException e) {

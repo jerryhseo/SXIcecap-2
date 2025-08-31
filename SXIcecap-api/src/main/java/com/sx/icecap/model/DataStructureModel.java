@@ -308,19 +308,19 @@ public interface DataStructureModel
 	public void setDataStructureId(long dataStructureId);
 
 	/**
-	 * Returns the data structure name of this data structure.
+	 * Returns the data structure code of this data structure.
 	 *
-	 * @return the data structure name of this data structure
+	 * @return the data structure code of this data structure
 	 */
 	@AutoEscape
-	public String getDataStructureName();
+	public String getDataStructureCode();
 
 	/**
-	 * Sets the data structure name of this data structure.
+	 * Sets the data structure code of this data structure.
 	 *
-	 * @param dataStructureName the data structure name of this data structure
+	 * @param dataStructureCode the data structure code of this data structure
 	 */
-	public void setDataStructureName(String dataStructureName);
+	public void setDataStructureCode(String dataStructureCode);
 
 	/**
 	 * Returns the data structure version of this data structure.

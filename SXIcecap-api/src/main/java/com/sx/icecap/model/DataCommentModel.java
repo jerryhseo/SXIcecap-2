@@ -200,19 +200,19 @@ public interface DataCommentModel
 	public void setStructuredDataId(long structuredDataId);
 
 	/**
-	 * Returns the param name of this data comment.
+	 * Returns the param code of this data comment.
 	 *
-	 * @return the param name of this data comment
+	 * @return the param code of this data comment
 	 */
 	@AutoEscape
-	public String getParamName();
+	public String getParamCode();
 
 	/**
-	 * Sets the param name of this data comment.
+	 * Sets the param code of this data comment.
 	 *
-	 * @param paramName the param name of this data comment
+	 * @param paramCode the param code of this data comment
 	 */
-	public void setParamName(String paramName);
+	public void setParamCode(String paramCode);
 
 	/**
 	 * Returns the parent comment ID of this data comment.

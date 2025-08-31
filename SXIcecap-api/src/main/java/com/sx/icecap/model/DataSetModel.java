@@ -308,19 +308,19 @@ public interface DataSetModel
 	public void setStatusDate(Date statusDate);
 
 	/**
-	 * Returns the data set name of this data set.
+	 * Returns the data set code of this data set.
 	 *
-	 * @return the data set name of this data set
+	 * @return the data set code of this data set
 	 */
 	@AutoEscape
-	public String getDataSetName();
+	public String getDataSetCode();
 
 	/**
-	 * Sets the data set name of this data set.
+	 * Sets the data set code of this data set.
 	 *
-	 * @param dataSetName the data set name of this data set
+	 * @param dataSetCode the data set code of this data set
 	 */
-	public void setDataSetName(String dataSetName);
+	public void setDataSetCode(String dataSetCode);
 
 	/**
 	 * Returns the data set version of this data set.

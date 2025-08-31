@@ -14,20 +14,9 @@
 
 package com.sx.icecap.service.http;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
-
-import com.sx.icecap.service.DataCollectionServiceUtil;
-
-import java.rmi.RemoteException;
-
-import java.util.Locale;
-import java.util.Map;
-
 /**
  * Provides the SOAP utility for the
- * <code>DataCollectionServiceUtil</code> service
+ * <code>com.sx.icecap.service.DataCollectionServiceUtil</code> service
  * utility. The static methods of this class call the same methods of the
  * service utility. However, the signatures are different because it is
  * difficult for SOAP to support certain types.
@@ -65,121 +54,4 @@ import java.util.Map;
  * @generated
  */
 public class DataCollectionServiceSoap {
-
-	public static com.sx.icecap.model.DataCollectionSoap addDataCollection(
-			String dataCollectionName, String dataCollectionVersion,
-			String[] displayNameMapLanguageIds, String[] displayNameMapValues,
-			String[] descriptionMapLanguageIds, String[] descriptionMapValues,
-			int status, com.liferay.portal.kernel.service.ServiceContext sc)
-		throws RemoteException {
-
-		try {
-			Map<Locale, String> displayNameMap =
-				LocalizationUtil.getLocalizationMap(
-					displayNameMapLanguageIds, displayNameMapValues);
-			Map<Locale, String> descriptionMap =
-				LocalizationUtil.getLocalizationMap(
-					descriptionMapLanguageIds, descriptionMapValues);
-
-			com.sx.icecap.model.DataCollection returnValue =
-				DataCollectionServiceUtil.addDataCollection(
-					dataCollectionName, dataCollectionVersion, displayNameMap,
-					descriptionMap, status, sc);
-
-			return com.sx.icecap.model.DataCollectionSoap.toSoapModel(
-				returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static com.sx.icecap.model.DataCollectionSoap updateDataCollection(
-			long dataCollectionId, String dataCollectionName,
-			String dataCollectionVersion, String[] displayNameMapLanguageIds,
-			String[] displayNameMapValues, String[] descriptionMapLanguageIds,
-			String[] descriptionMapValues, int status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws RemoteException {
-
-		try {
-			Map<Locale, String> displayNameMap =
-				LocalizationUtil.getLocalizationMap(
-					displayNameMapLanguageIds, displayNameMapValues);
-			Map<Locale, String> descriptionMap =
-				LocalizationUtil.getLocalizationMap(
-					descriptionMapLanguageIds, descriptionMapValues);
-
-			com.sx.icecap.model.DataCollection returnValue =
-				DataCollectionServiceUtil.updateDataCollection(
-					dataCollectionId, dataCollectionName, dataCollectionVersion,
-					displayNameMap, descriptionMap, status, sc);
-
-			return com.sx.icecap.model.DataCollectionSoap.toSoapModel(
-				returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static com.sx.icecap.model.DataCollectionSoap updateStatus(
-			long userId, long dataCollectionId, Integer status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
-		throws RemoteException {
-
-		try {
-			com.sx.icecap.model.DataCollection returnValue =
-				DataCollectionServiceUtil.updateStatus(
-					userId, dataCollectionId, status, sc);
-
-			return com.sx.icecap.model.DataCollectionSoap.toSoapModel(
-				returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static com.sx.icecap.model.DataCollectionSoap removeDataCollection(
-			long dataCollectionId)
-		throws RemoteException {
-
-		try {
-			com.sx.icecap.model.DataCollection returnValue =
-				DataCollectionServiceUtil.removeDataCollection(
-					dataCollectionId);
-
-			return com.sx.icecap.model.DataCollectionSoap.toSoapModel(
-				returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static void removeDataCollections(long[] dataCollectionIds)
-		throws RemoteException {
-
-		try {
-			DataCollectionServiceUtil.removeDataCollections(dataCollectionIds);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(
-		DataCollectionServiceSoap.class);
-
 }

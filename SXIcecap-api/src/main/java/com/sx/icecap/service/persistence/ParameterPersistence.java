@@ -1723,197 +1723,197 @@ public interface ParameterPersistence extends BasePersistence<Parameter> {
 	public int filterCountByG_U_S(long groupId, long userId, int status);
 
 	/**
-	 * Returns all the parameters where paramName = &#63;.
+	 * Returns all the parameters where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the matching parameters
 	 */
-	public java.util.List<Parameter> findByName(String paramName);
+	public java.util.List<Parameter> findByCode(String paramCode);
 
 	/**
-	 * Returns a range of all the parameters where paramName = &#63;.
+	 * Returns a range of all the parameters where paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ParameterModelImpl</code>.
 	 * </p>
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of parameters
 	 * @param end the upper bound of the range of parameters (not inclusive)
 	 * @return the range of matching parameters
 	 */
-	public java.util.List<Parameter> findByName(
-		String paramName, int start, int end);
+	public java.util.List<Parameter> findByCode(
+		String paramCode, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the parameters where paramName = &#63;.
+	 * Returns an ordered range of all the parameters where paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ParameterModelImpl</code>.
 	 * </p>
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of parameters
 	 * @param end the upper bound of the range of parameters (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching parameters
 	 */
-	public java.util.List<Parameter> findByName(
-		String paramName, int start, int end,
+	public java.util.List<Parameter> findByCode(
+		String paramCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Parameter>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the parameters where paramName = &#63;.
+	 * Returns an ordered range of all the parameters where paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ParameterModelImpl</code>.
 	 * </p>
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param start the lower bound of the range of parameters
 	 * @param end the upper bound of the range of parameters (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching parameters
 	 */
-	public java.util.List<Parameter> findByName(
-		String paramName, int start, int end,
+	public java.util.List<Parameter> findByCode(
+		String paramCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<Parameter>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first parameter in the ordered set where paramName = &#63;.
+	 * Returns the first parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching parameter
 	 * @throws NoSuchParameterException if a matching parameter could not be found
 	 */
-	public Parameter findByName_First(
-			String paramName,
+	public Parameter findByCode_First(
+			String paramCode,
 			com.liferay.portal.kernel.util.OrderByComparator<Parameter>
 				orderByComparator)
 		throws NoSuchParameterException;
 
 	/**
-	 * Returns the first parameter in the ordered set where paramName = &#63;.
+	 * Returns the first parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
-	public Parameter fetchByName_First(
-		String paramName,
+	public Parameter fetchByCode_First(
+		String paramCode,
 		com.liferay.portal.kernel.util.OrderByComparator<Parameter>
 			orderByComparator);
 
 	/**
-	 * Returns the last parameter in the ordered set where paramName = &#63;.
+	 * Returns the last parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching parameter
 	 * @throws NoSuchParameterException if a matching parameter could not be found
 	 */
-	public Parameter findByName_Last(
-			String paramName,
+	public Parameter findByCode_Last(
+			String paramCode,
 			com.liferay.portal.kernel.util.OrderByComparator<Parameter>
 				orderByComparator)
 		throws NoSuchParameterException;
 
 	/**
-	 * Returns the last parameter in the ordered set where paramName = &#63;.
+	 * Returns the last parameter in the ordered set where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
-	public Parameter fetchByName_Last(
-		String paramName,
+	public Parameter fetchByCode_Last(
+		String paramCode,
 		com.liferay.portal.kernel.util.OrderByComparator<Parameter>
 			orderByComparator);
 
 	/**
-	 * Returns the parameters before and after the current parameter in the ordered set where paramName = &#63;.
+	 * Returns the parameters before and after the current parameter in the ordered set where paramCode = &#63;.
 	 *
 	 * @param parameterId the primary key of the current parameter
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next parameter
 	 * @throws NoSuchParameterException if a parameter with the primary key could not be found
 	 */
-	public Parameter[] findByName_PrevAndNext(
-			long parameterId, String paramName,
+	public Parameter[] findByCode_PrevAndNext(
+			long parameterId, String paramCode,
 			com.liferay.portal.kernel.util.OrderByComparator<Parameter>
 				orderByComparator)
 		throws NoSuchParameterException;
 
 	/**
-	 * Removes all the parameters where paramName = &#63; from the database.
+	 * Removes all the parameters where paramCode = &#63; from the database.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 */
-	public void removeByName(String paramName);
+	public void removeByCode(String paramCode);
 
 	/**
-	 * Returns the number of parameters where paramName = &#63;.
+	 * Returns the number of parameters where paramCode = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @return the number of matching parameters
 	 */
-	public int countByName(String paramName);
+	public int countByCode(String paramCode);
 
 	/**
-	 * Returns the parameter where paramName = &#63; and paramVersion = &#63; or throws a <code>NoSuchParameterException</code> if it could not be found.
+	 * Returns the parameter where paramCode = &#63; and paramVersion = &#63; or throws a <code>NoSuchParameterException</code> if it could not be found.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the matching parameter
 	 * @throws NoSuchParameterException if a matching parameter could not be found
 	 */
-	public Parameter findByNameVersion(String paramName, String paramVersion)
+	public Parameter findByCodeVersion(String paramCode, String paramVersion)
 		throws NoSuchParameterException;
 
 	/**
-	 * Returns the parameter where paramName = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the parameter where paramCode = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
-	public Parameter fetchByNameVersion(String paramName, String paramVersion);
+	public Parameter fetchByCodeVersion(String paramCode, String paramVersion);
 
 	/**
-	 * Returns the parameter where paramName = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the parameter where paramCode = &#63; and paramVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching parameter, or <code>null</code> if a matching parameter could not be found
 	 */
-	public Parameter fetchByNameVersion(
-		String paramName, String paramVersion, boolean useFinderCache);
+	public Parameter fetchByCodeVersion(
+		String paramCode, String paramVersion, boolean useFinderCache);
 
 	/**
-	 * Removes the parameter where paramName = &#63; and paramVersion = &#63; from the database.
+	 * Removes the parameter where paramCode = &#63; and paramVersion = &#63; from the database.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the parameter that was removed
 	 */
-	public Parameter removeByNameVersion(String paramName, String paramVersion)
+	public Parameter removeByCodeVersion(String paramCode, String paramVersion)
 		throws NoSuchParameterException;
 
 	/**
-	 * Returns the number of parameters where paramName = &#63; and paramVersion = &#63;.
+	 * Returns the number of parameters where paramCode = &#63; and paramVersion = &#63;.
 	 *
-	 * @param paramName the param name
+	 * @param paramCode the param code
 	 * @param paramVersion the param version
 	 * @return the number of matching parameters
 	 */
-	public int countByNameVersion(String paramName, String paramVersion);
+	public int countByCodeVersion(String paramCode, String paramVersion);
 
 	/**
 	 * Caches the parameter in the entity cache if it is enabled.

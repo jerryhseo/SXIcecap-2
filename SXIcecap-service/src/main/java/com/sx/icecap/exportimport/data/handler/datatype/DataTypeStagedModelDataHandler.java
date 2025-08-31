@@ -67,26 +67,24 @@ public class DataTypeStagedModelDataHandler extends BaseStagedModelDataHandler<D
 				serviceContext.setUuid(dataType.getUuid());
 
 				importedDataType = _dataTypeLocalService.addDataType(
-						dataType.getDataTypeName(), 
+						dataType.getDataTypeCode(), 
 						dataType.getDataTypeVersion(),
 						dataType.getExtension(),
 						dataType.getDisplayNameMap(),
 						dataType.getDescriptionMap(),
 						dataType.getTooltipMap(),
-						dataType.getDataStructureId(),
 						dataType.getStatus(),
 						serviceContext);
 			}
 			else {
 				importedDataType = _dataTypeLocalService.updateDataType(
 						existingDataType.getDataTypeId(), 
-						dataType.getDataTypeName(), 
+						dataType.getDataTypeCode(), 
 						dataType.getDataTypeVersion(),
 						dataType.getExtension(),
 						dataType.getDisplayNameMap(),
 						dataType.getDescriptionMap(),
 						dataType.getTooltipMap(),
-						dataType.getDataStructureId(),
 						dataType.getStatus(),
 						serviceContext);
 
@@ -94,13 +92,12 @@ public class DataTypeStagedModelDataHandler extends BaseStagedModelDataHandler<D
 		}
 		else {
 			importedDataType = _dataTypeLocalService.addDataType(
-					dataType.getDataTypeName(), 
+					dataType.getDataTypeCode(), 
 					dataType.getDataTypeVersion(),
 					dataType.getExtension(),
 					dataType.getDisplayNameMap(),
 					dataType.getDescriptionMap(),
 					dataType.getTooltipMap(),
-					dataType.getDataStructureId(),
 					dataType.getStatus(),
 					serviceContext);
 		}

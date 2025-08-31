@@ -68,11 +68,13 @@ public class TypeStructureLinkModelImpl
 	public static final String TABLE_NAME = "SX_ICECAP_TypeStructureLink";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"dataTypeId", Types.BIGINT}, {"dataStructureId", Types.BIGINT},
+		{"dataTypeId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"groupId", Types.BIGINT}, {"dataStructureId", Types.BIGINT},
 		{"commentable", Types.BOOLEAN}, {"verifiable", Types.BOOLEAN},
 		{"freezable", Types.BOOLEAN}, {"freezed", Types.BOOLEAN},
-		{"freezedUserId", Types.BIGINT}, {"freezedDate", Types.TIMESTAMP},
-		{"verified", Types.BOOLEAN}, {"verifiedUserId", Types.BIGINT},
+		{"freezedUserId", Types.BIGINT}, {"freezedUserName", Types.VARCHAR},
+		{"freezedDate", Types.TIMESTAMP}, {"verified", Types.BOOLEAN},
+		{"verifiedUserId", Types.BIGINT}, {"verifiedUserName", Types.VARCHAR},
 		{"verifiedDate", Types.TIMESTAMP}, {"inputStatus", Types.BOOLEAN},
 		{"jumpTo", Types.BOOLEAN}
 	};
@@ -82,22 +84,26 @@ public class TypeStructureLinkModelImpl
 
 	static {
 		TABLE_COLUMNS_MAP.put("dataTypeId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataStructureId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("commentable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("verifiable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("freezable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("freezed", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("freezedUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("freezedUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("freezedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("verified", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("verifiedUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("verifiedUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("verifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("inputStatus", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("jumpTo", Types.BOOLEAN);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_TypeStructureLink (dataTypeId LONG not null primary key,dataStructureId LONG,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedDate DATE null,inputStatus BOOLEAN,jumpTo BOOLEAN)";
+		"create table SX_ICECAP_TypeStructureLink (dataTypeId LONG not null primary key,userId LONG,groupId LONG,dataStructureId LONG,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null,inputStatus BOOLEAN,jumpTo BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_TypeStructureLink";
@@ -116,7 +122,15 @@ public class TypeStructureLinkModelImpl
 
 	public static final long DATASTRUCTUREID_COLUMN_BITMASK = 1L;
 
-	public static final long DATATYPEID_COLUMN_BITMASK = 2L;
+	public static final long FREEZED_COLUMN_BITMASK = 2L;
+
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
+
+	public static final long USERID_COLUMN_BITMASK = 8L;
+
+	public static final long VERIFIED_COLUMN_BITMASK = 16L;
+
+	public static final long DATATYPEID_COLUMN_BITMASK = 32L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -234,6 +248,14 @@ public class TypeStructureLinkModelImpl
 			"dataTypeId",
 			(BiConsumer<TypeStructureLink, Long>)
 				TypeStructureLink::setDataTypeId);
+		attributeGetterFunctions.put("userId", TypeStructureLink::getUserId);
+		attributeSetterBiConsumers.put(
+			"userId",
+			(BiConsumer<TypeStructureLink, Long>)TypeStructureLink::setUserId);
+		attributeGetterFunctions.put("groupId", TypeStructureLink::getGroupId);
+		attributeSetterBiConsumers.put(
+			"groupId",
+			(BiConsumer<TypeStructureLink, Long>)TypeStructureLink::setGroupId);
 		attributeGetterFunctions.put(
 			"dataStructureId", TypeStructureLink::getDataStructureId);
 		attributeSetterBiConsumers.put(
@@ -270,6 +292,12 @@ public class TypeStructureLinkModelImpl
 			(BiConsumer<TypeStructureLink, Long>)
 				TypeStructureLink::setFreezedUserId);
 		attributeGetterFunctions.put(
+			"freezedUserName", TypeStructureLink::getFreezedUserName);
+		attributeSetterBiConsumers.put(
+			"freezedUserName",
+			(BiConsumer<TypeStructureLink, String>)
+				TypeStructureLink::setFreezedUserName);
+		attributeGetterFunctions.put(
 			"freezedDate", TypeStructureLink::getFreezedDate);
 		attributeSetterBiConsumers.put(
 			"freezedDate",
@@ -287,6 +315,12 @@ public class TypeStructureLinkModelImpl
 			"verifiedUserId",
 			(BiConsumer<TypeStructureLink, Long>)
 				TypeStructureLink::setVerifiedUserId);
+		attributeGetterFunctions.put(
+			"verifiedUserName", TypeStructureLink::getVerifiedUserName);
+		attributeSetterBiConsumers.put(
+			"verifiedUserName",
+			(BiConsumer<TypeStructureLink, String>)
+				TypeStructureLink::setVerifiedUserName);
 		attributeGetterFunctions.put(
 			"verifiedDate", TypeStructureLink::getVerifiedDate);
 		attributeSetterBiConsumers.put(
@@ -319,6 +353,66 @@ public class TypeStructureLinkModelImpl
 	@Override
 	public void setDataTypeId(long dataTypeId) {
 		_dataTypeId = dataTypeId;
+	}
+
+	@Override
+	public long getUserId() {
+		return _userId;
+	}
+
+	@Override
+	public void setUserId(long userId) {
+		_columnBitmask |= USERID_COLUMN_BITMASK;
+
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
+		_userId = userId;
+	}
+
+	@Override
+	public String getUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setUserUuid(String userUuid) {
+	}
+
+	public long getOriginalUserId() {
+		return _originalUserId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+		if (!_setOriginalGroupId) {
+			_setOriginalGroupId = true;
+
+			_originalGroupId = _groupId;
+		}
+
+		_groupId = groupId;
+	}
+
+	public long getOriginalGroupId() {
+		return _originalGroupId;
 	}
 
 	@Override
@@ -400,7 +494,19 @@ public class TypeStructureLinkModelImpl
 
 	@Override
 	public void setFreezed(boolean freezed) {
+		_columnBitmask |= FREEZED_COLUMN_BITMASK;
+
+		if (!_setOriginalFreezed) {
+			_setOriginalFreezed = true;
+
+			_originalFreezed = _freezed;
+		}
+
 		_freezed = freezed;
+	}
+
+	public boolean getOriginalFreezed() {
+		return _originalFreezed;
 	}
 
 	@Override
@@ -430,6 +536,21 @@ public class TypeStructureLinkModelImpl
 	}
 
 	@Override
+	public String getFreezedUserName() {
+		if (_freezedUserName == null) {
+			return "";
+		}
+		else {
+			return _freezedUserName;
+		}
+	}
+
+	@Override
+	public void setFreezedUserName(String freezedUserName) {
+		_freezedUserName = freezedUserName;
+	}
+
+	@Override
 	public Date getFreezedDate() {
 		return _freezedDate;
 	}
@@ -451,7 +572,19 @@ public class TypeStructureLinkModelImpl
 
 	@Override
 	public void setVerified(boolean verified) {
+		_columnBitmask |= VERIFIED_COLUMN_BITMASK;
+
+		if (!_setOriginalVerified) {
+			_setOriginalVerified = true;
+
+			_originalVerified = _verified;
+		}
+
 		_verified = verified;
+	}
+
+	public boolean getOriginalVerified() {
+		return _originalVerified;
 	}
 
 	@Override
@@ -478,6 +611,21 @@ public class TypeStructureLinkModelImpl
 
 	@Override
 	public void setVerifiedUserUuid(String verifiedUserUuid) {
+	}
+
+	@Override
+	public String getVerifiedUserName() {
+		if (_verifiedUserName == null) {
+			return "";
+		}
+		else {
+			return _verifiedUserName;
+		}
+	}
+
+	@Override
+	public void setVerifiedUserName(String verifiedUserName) {
+		_verifiedUserName = verifiedUserName;
 	}
 
 	@Override
@@ -558,15 +706,19 @@ public class TypeStructureLinkModelImpl
 			new TypeStructureLinkImpl();
 
 		typeStructureLinkImpl.setDataTypeId(getDataTypeId());
+		typeStructureLinkImpl.setUserId(getUserId());
+		typeStructureLinkImpl.setGroupId(getGroupId());
 		typeStructureLinkImpl.setDataStructureId(getDataStructureId());
 		typeStructureLinkImpl.setCommentable(isCommentable());
 		typeStructureLinkImpl.setVerifiable(isVerifiable());
 		typeStructureLinkImpl.setFreezable(isFreezable());
 		typeStructureLinkImpl.setFreezed(isFreezed());
 		typeStructureLinkImpl.setFreezedUserId(getFreezedUserId());
+		typeStructureLinkImpl.setFreezedUserName(getFreezedUserName());
 		typeStructureLinkImpl.setFreezedDate(getFreezedDate());
 		typeStructureLinkImpl.setVerified(isVerified());
 		typeStructureLinkImpl.setVerifiedUserId(getVerifiedUserId());
+		typeStructureLinkImpl.setVerifiedUserName(getVerifiedUserName());
 		typeStructureLinkImpl.setVerifiedDate(getVerifiedDate());
 		typeStructureLinkImpl.setInputStatus(isInputStatus());
 		typeStructureLinkImpl.setJumpTo(isJumpTo());
@@ -630,9 +782,25 @@ public class TypeStructureLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_originalUserId = _userId;
+
+		_setOriginalUserId = false;
+
+		_originalGroupId = _groupId;
+
+		_setOriginalGroupId = false;
+
 		_originalDataStructureId = _dataStructureId;
 
 		_setOriginalDataStructureId = false;
+
+		_originalFreezed = _freezed;
+
+		_setOriginalFreezed = false;
+
+		_originalVerified = _verified;
+
+		_setOriginalVerified = false;
 
 		_columnBitmask = 0;
 	}
@@ -643,6 +811,10 @@ public class TypeStructureLinkModelImpl
 			new TypeStructureLinkCacheModel();
 
 		typeStructureLinkCacheModel.dataTypeId = getDataTypeId();
+
+		typeStructureLinkCacheModel.userId = getUserId();
+
+		typeStructureLinkCacheModel.groupId = getGroupId();
 
 		typeStructureLinkCacheModel.dataStructureId = getDataStructureId();
 
@@ -656,6 +828,14 @@ public class TypeStructureLinkModelImpl
 
 		typeStructureLinkCacheModel.freezedUserId = getFreezedUserId();
 
+		typeStructureLinkCacheModel.freezedUserName = getFreezedUserName();
+
+		String freezedUserName = typeStructureLinkCacheModel.freezedUserName;
+
+		if ((freezedUserName != null) && (freezedUserName.length() == 0)) {
+			typeStructureLinkCacheModel.freezedUserName = null;
+		}
+
 		Date freezedDate = getFreezedDate();
 
 		if (freezedDate != null) {
@@ -668,6 +848,14 @@ public class TypeStructureLinkModelImpl
 		typeStructureLinkCacheModel.verified = isVerified();
 
 		typeStructureLinkCacheModel.verifiedUserId = getVerifiedUserId();
+
+		typeStructureLinkCacheModel.verifiedUserName = getVerifiedUserName();
+
+		String verifiedUserName = typeStructureLinkCacheModel.verifiedUserName;
+
+		if ((verifiedUserName != null) && (verifiedUserName.length() == 0)) {
+			typeStructureLinkCacheModel.verifiedUserName = null;
+		}
 
 		Date verifiedDate = getVerifiedDate();
 
@@ -779,6 +967,12 @@ public class TypeStructureLinkModelImpl
 	private static boolean _finderCacheEnabled;
 
 	private long _dataTypeId;
+	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
+	private long _groupId;
+	private long _originalGroupId;
+	private boolean _setOriginalGroupId;
 	private long _dataStructureId;
 	private long _originalDataStructureId;
 	private boolean _setOriginalDataStructureId;
@@ -786,10 +980,16 @@ public class TypeStructureLinkModelImpl
 	private boolean _verifiable;
 	private boolean _freezable;
 	private boolean _freezed;
+	private boolean _originalFreezed;
+	private boolean _setOriginalFreezed;
 	private long _freezedUserId;
+	private String _freezedUserName;
 	private Date _freezedDate;
 	private boolean _verified;
+	private boolean _originalVerified;
+	private boolean _setOriginalVerified;
 	private long _verifiedUserId;
+	private String _verifiedUserName;
 	private Date _verifiedDate;
 	private boolean _inputStatus;
 	private boolean _jumpTo;

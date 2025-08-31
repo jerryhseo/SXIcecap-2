@@ -82,7 +82,7 @@ public interface DataCollectionLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DataCollection addDataCollection(
-			String dataCollectionName, String dataCollectionVersion,
+			String dataCollectionCode, String dataCollectionVersion,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap, int status, ServiceContext sc)
 		throws PortalException;
@@ -330,7 +330,7 @@ public interface DataCollectionLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DataCollection updateDataCollection(
-			long dataCollectionId, String dataCollectionName,
+			long dataCollectionId, String dataCollectionCode,
 			String dataCollectionVersion, Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap, int status, ServiceContext sc)
 		throws PortalException;

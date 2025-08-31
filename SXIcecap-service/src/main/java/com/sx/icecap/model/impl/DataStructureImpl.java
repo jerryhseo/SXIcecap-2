@@ -27,8 +27,15 @@ import java.util.Map;
  */
 public class DataStructureImpl extends DataStructureBaseImpl {
 	public JSONObject toJSON() {
-		JSONObject dataStructure = _unlocalizedJSON();
+		JSONObject dataStructure;
+		try {
+			dataStructure = JSONFactoryUtil.createJSONObject(this.getStructure());
+		} catch (JSONException e) {
+			dataStructure = JSONFactoryUtil.createJSONObject();
+		}
 		
+		_setUnlocalizedJSON( dataStructure );
+
 		JSONObject localizedObj = null;
 		
 		localizedObj = _mapToJSON(  this.getDisplayNameMap() );
@@ -41,7 +48,12 @@ public class DataStructureImpl extends DataStructureBaseImpl {
 	}
 	
 	public JSONObject toJSON( Locale locale ) {
-		JSONObject dataStructure = _unlocalizedJSON();
+		JSONObject dataStructure;
+		try {
+			dataStructure = JSONFactoryUtil.createJSONObject(this.getStructure());
+		} catch (JSONException e) {
+			dataStructure = JSONFactoryUtil.createJSONObject();
+		}
 		
 		dataStructure.put(DataStructureProperties.DISPLAY_NAME, this.getDisplayName(locale));
 		dataStructure.put(DataStructureProperties.DESCRIPTION, this.getDescription(locale));
@@ -49,9 +61,7 @@ public class DataStructureImpl extends DataStructureBaseImpl {
 		return dataStructure;
 	}
 	
-	private JSONObject _unlocalizedJSON() {
-		JSONObject dataStructure = JSONFactoryUtil.createJSONObject();
-		
+	private JSONObject _setUnlocalizedJSON( JSONObject dataStructure ) {
 		dataStructure.put("dataStructureId", this.getPrimaryKey());
 		
 		dataStructure.put("companyId", this.getCompanyId());
@@ -61,17 +71,8 @@ public class DataStructureImpl extends DataStructureBaseImpl {
 		dataStructure.put("createDate", this.getCreateDate());
 		dataStructure.put("modifiedDate", this.getModifiedDate());
 		
-		dataStructure.put(DataStructureProperties.DATA_STRUCTURE_NAME, this.getDataStructureName());
+		dataStructure.put(DataStructureProperties.DATA_STRUCTURE_CODE, this.getDataStructureCode());
 		dataStructure.put(DataStructureProperties.DATA_STRUCTURE_VERSION, this.getDataStructureVersion());
-		
-		JSONObject structure;
-		try {
-			structure = JSONFactoryUtil.createJSONObject(this.getStructure());
-		} catch (JSONException e) {
-			structure = JSONFactoryUtil.createJSONObject();
-		}
-		
-		dataStructure.put(DataStructureProperties.STRUCTURE, structure);
 		
 		return dataStructure;
 	}

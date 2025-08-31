@@ -29,7 +29,7 @@ public class DataTypeKeywordQueryContributor implements KeywordQueryContributor 
 		
 		SearchContext searchContext = keywordQueryContributorHelper.getSearchContext();
 
-		queryHelper.addSearchTerm(booleanQuery, searchContext, DataTypeProperties.DATATYPE_NAME, true);
+		queryHelper.addSearchTerm(booleanQuery, searchContext, DataTypeProperties.DATATYPE_CODE, true);
 		queryHelper.addSearchLocalizedTerm(
 				booleanQuery, searchContext, DataTypeProperties.DISPLAY_NAME, false);
 		queryHelper.addSearchLocalizedTerm(

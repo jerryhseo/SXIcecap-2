@@ -7,7 +7,7 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="structuredDataId" type="long" />
-		<field name="paramName" type="String" />
+		<field name="paramCode" type="String" />
 		<field name="prevValue" type="String" />
 		<field name="changedValue" type="String" />
 		<field name="action" type="String" />
@@ -34,7 +34,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
-		<field name="dataCollectionName" type="String" />
+		<field name="dataCollectionCode" type="String" />
 		<field name="dataCollectionVersion" type="String" />
 		<field localized="true" name="displayName" type="String" />
 		<field localized="true" name="description" type="String" />
@@ -48,7 +48,7 @@
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
 		<field name="structuredDataId" type="long" />
-		<field name="paramName" type="String" />
+		<field name="paramCode" type="String" />
 		<field name="parentCommentId" type="long" />
 		<field name="comment" type="String" />
 		<field name="closed" type="boolean" />
@@ -67,7 +67,7 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
-		<field name="dataSetName" type="String" />
+		<field name="dataSetCode" type="String" />
 		<field name="dataSetVersion" type="String" />
 		<field localized="true" name="displayName" type="String" />
 		<field localized="true" name="description" type="String" />
@@ -86,7 +86,7 @@
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
 		<field name="dataStructureId" type="long" />
-		<field name="dataStructureName" type="String" />
+		<field name="dataStructureCode" type="String" />
 		<field name="dataStructureVersion" type="String" />
 		<field localized="true" name="displayName" type="String" />
 		<field localized="true" name="description" type="String" />
@@ -108,14 +108,13 @@
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
-		<field name="dataTypeName" type="String" />
+		<field name="dataTypeCode" type="String" />
 		<field name="dataTypeVersion" type="String" />
 		<field localized="true" name="displayName" type="String" />
 		<field name="extension" type="String" />
 		<field name="sampleFileId" type="long" />
 		<field localized="true" name="description" type="String" />
 		<field localized="true" name="tooltip" type="String" />
-		<field name="dataStructureId" type="long" />
 	</model>
 	<model name="com.sx.icecap.model.Parameter">
 		<field name="uuid" type="String" />
@@ -131,7 +130,7 @@
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
 		<field name="lastPublishDate" type="Date" />
-		<field name="paramName" type="String" />
+		<field name="paramCode" type="String" />
 		<field name="paramVersion" type="String" />
 		<field name="paramType" type="String" />
 		<field localized="true" name="displayName" type="String" />
@@ -178,15 +177,19 @@
 	</model>
 	<model name="com.sx.icecap.model.TypeStructureLink">
 		<field name="dataTypeId" type="long" />
+		<field name="userId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="dataStructureId" type="long" />
 		<field name="commentable" type="boolean" />
 		<field name="verifiable" type="boolean" />
 		<field name="freezable" type="boolean" />
 		<field name="freezed" type="boolean" />
 		<field name="freezedUserId" type="long" />
+		<field name="freezedUserName" type="String" />
 		<field name="freezedDate" type="Date" />
 		<field name="verified" type="boolean" />
 		<field name="verifiedUserId" type="long" />
+		<field name="verifiedUserName" type="String" />
 		<field name="verifiedDate" type="Date" />
 		<field name="inputStatus" type="boolean" />
 		<field name="jumpTo" type="boolean" />

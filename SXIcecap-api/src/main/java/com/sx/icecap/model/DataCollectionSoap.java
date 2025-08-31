@@ -44,7 +44,7 @@ public class DataCollectionSoap implements Serializable {
 		soapModel.setStatusByUserId(model.getStatusByUserId());
 		soapModel.setStatusByUserName(model.getStatusByUserName());
 		soapModel.setStatusDate(model.getStatusDate());
-		soapModel.setDataCollectionName(model.getDataCollectionName());
+		soapModel.setDataCollectionCode(model.getDataCollectionCode());
 		soapModel.setDataCollectionVersion(model.getDataCollectionVersion());
 		soapModel.setDisplayName(model.getDisplayName());
 		soapModel.setDescription(model.getDescription());
@@ -210,12 +210,12 @@ public class DataCollectionSoap implements Serializable {
 		_statusDate = statusDate;
 	}
 
-	public String getDataCollectionName() {
-		return _dataCollectionName;
+	public String getDataCollectionCode() {
+		return _dataCollectionCode;
 	}
 
-	public void setDataCollectionName(String dataCollectionName) {
-		_dataCollectionName = dataCollectionName;
+	public void setDataCollectionCode(String dataCollectionCode) {
+		_dataCollectionCode = dataCollectionCode;
 	}
 
 	public String getDataCollectionVersion() {
@@ -255,7 +255,7 @@ public class DataCollectionSoap implements Serializable {
 	private long _statusByUserId;
 	private String _statusByUserName;
 	private Date _statusDate;
-	private String _dataCollectionName;
+	private String _dataCollectionCode;
 	private String _dataCollectionVersion;
 	private String _displayName;
 	private String _description;

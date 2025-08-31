@@ -62,7 +62,7 @@ public class ParameterLocalServiceUtil {
 	}
 
 	public static Parameter addParameter(
-			String paramType, String paramName, String paramVersion,
+			String paramType, String paramCode, String paramVersion,
 			Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> definitionMap,
 			Map<java.util.Locale, String> tooltipMap, String synonyms,
@@ -71,7 +71,7 @@ public class ParameterLocalServiceUtil {
 		throws PortalException {
 
 		return getService().addParameter(
-			paramType, paramName, paramVersion, displayNameMap, definitionMap,
+			paramType, paramCode, paramVersion, displayNameMap, definitionMap,
 			tooltipMap, synonyms, typeProperties, standard, status, sc);
 	}
 
@@ -369,7 +369,7 @@ public class ParameterLocalServiceUtil {
 	}
 
 	public static Parameter updateParameter(
-			long parameterId, String paramType, String paramName,
+			long parameterId, String paramType, String paramCode,
 			String paramVersion, Map<java.util.Locale, String> displayNameMap,
 			Map<java.util.Locale, String> definitionMap,
 			Map<java.util.Locale, String> tooltipMap, String synonyms,
@@ -378,7 +378,7 @@ public class ParameterLocalServiceUtil {
 		throws PortalException {
 
 		return getService().updateParameter(
-			parameterId, paramType, paramName, paramVersion, displayNameMap,
+			parameterId, paramType, paramCode, paramVersion, displayNameMap,
 			definitionMap, tooltipMap, synonyms, typeProperties, standard,
 			status, sc);
 	}
