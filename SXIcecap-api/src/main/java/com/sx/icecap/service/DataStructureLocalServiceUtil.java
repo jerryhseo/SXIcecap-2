@@ -243,6 +243,14 @@ public class DataStructureLocalServiceUtil {
 		return getService().getDataStructure(dataStructureId);
 	}
 
+	public static DataStructure getDataStructure(
+			String dataStructureCode, String dataStructureVersion)
+		throws com.sx.icecap.exception.NoSuchDataStructureException {
+
+		return getService().getDataStructure(
+			dataStructureCode, dataStructureVersion);
+	}
+
 	/**
 	 * Returns the data structure matching the UUID and group.
 	 *

@@ -937,7 +937,6 @@
 			<finder-column name="visualizerId" ></finder-column>
 		</finder>
     </entity>
-    <entity></entity>
 
     <exceptions>
         <exception>DuplicatedDataCollectionCode</exception>

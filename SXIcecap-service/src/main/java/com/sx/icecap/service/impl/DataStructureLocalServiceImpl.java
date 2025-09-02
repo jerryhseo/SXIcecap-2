@@ -290,4 +290,19 @@ public class DataStructureLocalServiceImpl
 	public List<DataStructure> getAllDataStructures(){
 		return super.dataStructurePersistence.findAll();
 	}
+	
+	public DataStructure getDataStructure(String dataStructureCode, String dataStructureVersion) throws NoSuchDataStructureException {
+		if(dataStructureVersion.isEmpty()) {
+			List<DataStructure> dataStructureList = super.dataStructurePersistence.findByCode(dataStructureCode);
+			
+			if(dataStructureList.size() > 0) {
+				return dataStructureList.get(0);
+			}
+			else {
+				throw new NoSuchDataStructureException();
+			}
+		}
+		
+		return super.dataStructurePersistence.findByCodeVersion(dataStructureCode, dataStructureVersion);
+	}
 }

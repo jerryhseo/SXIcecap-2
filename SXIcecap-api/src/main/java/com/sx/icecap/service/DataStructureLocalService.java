@@ -230,6 +230,11 @@ public interface DataStructureLocalService
 	public DataStructure getDataStructure(long dataStructureId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DataStructure getDataStructure(
+			String dataStructureCode, String dataStructureVersion)
+		throws NoSuchDataStructureException;
+
 	/**
 	 * Returns the data structure matching the UUID and group.
 	 *

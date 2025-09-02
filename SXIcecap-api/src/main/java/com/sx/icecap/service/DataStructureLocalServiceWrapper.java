@@ -266,6 +266,15 @@ public class DataStructureLocalServiceWrapper
 		return _dataStructureLocalService.getDataStructure(dataStructureId);
 	}
 
+	@Override
+	public com.sx.icecap.model.DataStructure getDataStructure(
+			String dataStructureCode, String dataStructureVersion)
+		throws com.sx.icecap.exception.NoSuchDataStructureException {
+
+		return _dataStructureLocalService.getDataStructure(
+			dataStructureCode, dataStructureVersion);
+	}
+
 	/**
 	 * Returns the data structure matching the UUID and group.
 	 *
