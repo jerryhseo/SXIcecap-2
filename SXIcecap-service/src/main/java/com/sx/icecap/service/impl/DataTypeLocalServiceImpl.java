@@ -43,6 +43,7 @@ import com.sx.icecap.constant.DataTypeProperties;
 import com.sx.icecap.exception.DuplicatedDataTypeCodeException;
 import com.sx.icecap.exception.InvalidDataTypeCodeException;
 import com.sx.icecap.exception.NoSuchDataTypeException;
+import com.sx.icecap.exception.NoSuchTypeStructureLinkException;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.service.DataStructureLocalService;
 import com.sx.icecap.service.base.DataTypeLocalServiceBaseImpl;
@@ -287,7 +288,11 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	public DataType removeDataType( long dataTypeId ) throws PortalException {
 		DataType dataType = super.dataTypePersistence.remove(dataTypeId);
 		
-		dataStructurePersistence.remove(dataTypeId);
+		try {
+			typeStructureLinkPersistence.remove(dataTypeId);
+		} catch( NoSuchTypeStructureLinkException e) {
+			System.out.println("No link info to delete for " + dataTypeId);
+		}
 		
 		super.assetEntryLocalService.deleteEntry(DataType.class.getName(), dataType.getPrimaryKey());
 

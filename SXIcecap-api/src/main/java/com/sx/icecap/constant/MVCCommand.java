@@ -16,6 +16,8 @@ public class MVCCommand {
 	public static final String RESOURCE_SEARCH_DATATYPES = "/ajax/DataType/search-datatypes";
 	public static final String RESOURCE_UPDATE_DATATYPE = "/ajax/DataType/update-datatype";
 	public static final String RESOURCE_DELETE_DATATYPE = "/ajax/DataType/delete-datatype";
+	public static final String RESOURCE_DELETE_DATATYPES = "/ajax/DataType/delete-datatypes";
+	public static final String RESOURCE_DELETE_TYPE_STRUCTURE_LINK = "/ajax/DataType/delete-type-structure-link";
 	public static final String RESOURCE_ADD_DATATYPE = "/ajax/DataType/add-datatype";
 	public static final String RESOURCE_LOAD_DATATYPE = "/ajax/DataType/load-datatype";
 	public static final String RESOURCE_CHECK_DATATYPE_UNIQUE = "/ajax/DataType/check-datatype-unique";
