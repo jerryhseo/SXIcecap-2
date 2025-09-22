@@ -49,6 +49,7 @@ public class MVCCommand {
 	public static final String RESOURCE_DELETE_STRUCTURED_DATA_FILE = "/ajax/StructuredData/delete-file";
 	public static final String RESOURCE_SAVE_STRUCTURED_DATA = "/ajax/StructuredData/save";
 	public static final String RESOURCE_UPLOAD_STRUCTURED_DATA_FILE = "/ajax/StructuredData/upload-file";
+	public static final String RESOURCE_LOAD_STRUCTURED_DATA_EDITING= "/ajax/StructuredData/load-editing-data";
 	
 	
 	public static final String RESOURCE_CREATE_PORTLET_INSTANCE = "/ajax/workbench/create-portlet-instance";

@@ -399,7 +399,7 @@
 	</entity>
 	
 	<entity name="StructuredData" local-service="true" 
-		remote-service="false" uuid="true" uuid-accessor="true" trash-enabled="true">
+		remote-service="true" uuid="true" uuid-accessor="true" trash-enabled="true">
 
 		<!-- PK fields -->
 
