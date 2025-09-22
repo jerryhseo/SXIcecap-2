@@ -755,6 +755,16 @@ public class StructuredDataLocalServiceUtil {
 		return getService().getStructuredDatasCount();
 	}
 
+	public static com.liferay.portal.kernel.json.JSONObject
+		getStructuredDataWithInfo(
+			String cmd, long structuredDataId, long dataCollectionId,
+			long dataSetId, long dataTypeId, long dataStructureId) {
+
+		return getService().getStructuredDataWithInfo(
+			cmd, structuredDataId, dataCollectionId, dataSetId, dataTypeId,
+			dataStructureId);
+	}
+
 	public static StructuredData removeStructuredData(
 			long structuredDataId, long dataFileFolderId)
 		throws PortalException {

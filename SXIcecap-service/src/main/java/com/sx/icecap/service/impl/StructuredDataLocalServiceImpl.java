@@ -594,6 +594,29 @@ public class StructuredDataLocalServiceImpl
 		return super.structuredDataPersistence.countByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
 	}
 	
+	public JSONObject getStructuredDataWithInfo(
+			String cmd,
+			long structuredDataId,
+			long dataCollectionId,
+			long dataSetId,
+			long dataTypeId,
+			long dataStructureId) {
+		
+		JSONObject dataInfo = JSONFactoryUtil.createJSONObject();
+		
+		if ( cmd.equalsIgnoreCase("preview") ) {
+			try {
+				dataTypePersistence.findByPrimaryKey(dataTypeId);
+				StructuredData structuredData = structuredDataLocalService.getStructuredData(structuredDataId);
+			} catch (PortalException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return dataInfo;
+	}
+	
 	public SearchContainerResults<AssetEntry> getSearchContainerResults(
 			SearchContainer<StructuredData> searchContainer)
 		throws PortalException {

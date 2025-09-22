@@ -545,6 +545,11 @@ public interface StructuredDataLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getStructuredDatasCount();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONObject getStructuredDataWithInfo(
+		String cmd, long structuredDataId, long dataCollectionId,
+		long dataSetId, long dataTypeId, long dataStructureId);
+
 	@Indexable(type = IndexableType.DELETE)
 	public StructuredData removeStructuredData(
 			long structuredDataId, long dataFileFolderId)

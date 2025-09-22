@@ -920,6 +920,16 @@ public class StructuredDataLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.portal.kernel.json.JSONObject getStructuredDataWithInfo(
+		String cmd, long structuredDataId, long dataCollectionId,
+		long dataSetId, long dataTypeId, long dataStructureId) {
+
+		return _structuredDataLocalService.getStructuredDataWithInfo(
+			cmd, structuredDataId, dataCollectionId, dataSetId, dataTypeId,
+			dataStructureId);
+	}
+
+	@Override
 	public com.sx.icecap.model.StructuredData removeStructuredData(
 			long structuredDataId, long dataFileFolderId)
 		throws com.liferay.portal.kernel.exception.PortalException {

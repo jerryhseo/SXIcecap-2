@@ -21,6 +21,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import com.sx.icecap.model.StructuredData;
 import com.sx.icecap.model.StructuredDataModel;
+import com.sx.icecap.model.StructuredDataSoap;
 
 import java.io.Serializable;
 
@@ -46,10 +48,12 @@ import java.lang.reflect.InvocationHandler;
 import java.sql.Blob;
 import java.sql.Types;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -65,6 +69,7 @@ import java.util.function.Function;
  * @see StructuredDataImpl
  * @generated
  */
+@JSON(strict = true)
 public class StructuredDataModelImpl
 	extends BaseModelImpl<StructuredData> implements StructuredDataModel {
 
@@ -158,6 +163,67 @@ public class StructuredDataModelImpl
 
 	public static void setFinderCacheEnabled(boolean finderCacheEnabled) {
 		_finderCacheEnabled = finderCacheEnabled;
+	}
+
+	/**
+	 * Converts the soap model instance into a normal model instance.
+	 *
+	 * @param soapModel the soap model instance to convert
+	 * @return the normal model instance
+	 */
+	public static StructuredData toModel(StructuredDataSoap soapModel) {
+		if (soapModel == null) {
+			return null;
+		}
+
+		StructuredData model = new StructuredDataImpl();
+
+		model.setUuid(soapModel.getUuid());
+		model.setStructuredDataId(soapModel.getStructuredDataId());
+		model.setGroupId(soapModel.getGroupId());
+		model.setCompanyId(soapModel.getCompanyId());
+		model.setUserId(soapModel.getUserId());
+		model.setUserName(soapModel.getUserName());
+		model.setCreateDate(soapModel.getCreateDate());
+		model.setModifiedDate(soapModel.getModifiedDate());
+		model.setStatus(soapModel.getStatus());
+		model.setStatusByUserId(soapModel.getStatusByUserId());
+		model.setStatusByUserName(soapModel.getStatusByUserName());
+		model.setStatusDate(soapModel.getStatusDate());
+		model.setDataCollectionId(soapModel.getDataCollectionId());
+		model.setDataSetId(soapModel.getDataSetId());
+		model.setDataTypeId(soapModel.getDataTypeId());
+		model.setMultiple(soapModel.isMultiple());
+		model.setStartIndex(soapModel.getStartIndex());
+		model.setCount(soapModel.getCount());
+		model.setFreezed(soapModel.isFreezed());
+		model.setVerified(soapModel.isVerified());
+		model.setData(soapModel.getData());
+
+		return model;
+	}
+
+	/**
+	 * Converts the soap model instances into normal model instances.
+	 *
+	 * @param soapModels the soap model instances to convert
+	 * @return the normal model instances
+	 */
+	public static List<StructuredData> toModels(
+		StructuredDataSoap[] soapModels) {
+
+		if (soapModels == null) {
+			return null;
+		}
+
+		List<StructuredData> models = new ArrayList<StructuredData>(
+			soapModels.length);
+
+		for (StructuredDataSoap soapModel : soapModels) {
+			models.add(toModel(soapModel));
+		}
+
+		return models;
 	}
 
 	public StructuredDataModelImpl() {
@@ -363,6 +429,7 @@ public class StructuredDataModelImpl
 			(Map)attributeSetterBiConsumers);
 	}
 
+	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -388,6 +455,7 @@ public class StructuredDataModelImpl
 		return GetterUtil.getString(_originalUuid);
 	}
 
+	@JSON
 	@Override
 	public long getStructuredDataId() {
 		return _structuredDataId;
@@ -398,6 +466,7 @@ public class StructuredDataModelImpl
 		_structuredDataId = structuredDataId;
 	}
 
+	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -420,6 +489,7 @@ public class StructuredDataModelImpl
 		return _originalGroupId;
 	}
 
+	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -442,6 +512,7 @@ public class StructuredDataModelImpl
 		return _originalCompanyId;
 	}
 
+	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -480,6 +551,7 @@ public class StructuredDataModelImpl
 		return _originalUserId;
 	}
 
+	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -495,6 +567,7 @@ public class StructuredDataModelImpl
 		_userName = userName;
 	}
 
+	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -505,6 +578,7 @@ public class StructuredDataModelImpl
 		_createDate = createDate;
 	}
 
+	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -521,6 +595,7 @@ public class StructuredDataModelImpl
 		_modifiedDate = modifiedDate;
 	}
 
+	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -543,6 +618,7 @@ public class StructuredDataModelImpl
 		return _originalStatus;
 	}
 
+	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -569,6 +645,7 @@ public class StructuredDataModelImpl
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
+	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -584,6 +661,7 @@ public class StructuredDataModelImpl
 		_statusByUserName = statusByUserName;
 	}
 
+	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;
@@ -594,6 +672,7 @@ public class StructuredDataModelImpl
 		_statusDate = statusDate;
 	}
 
+	@JSON
 	@Override
 	public long getDataCollectionId() {
 		return _dataCollectionId;
@@ -616,6 +695,7 @@ public class StructuredDataModelImpl
 		return _originalDataCollectionId;
 	}
 
+	@JSON
 	@Override
 	public long getDataSetId() {
 		return _dataSetId;
@@ -638,6 +718,7 @@ public class StructuredDataModelImpl
 		return _originalDataSetId;
 	}
 
+	@JSON
 	@Override
 	public long getDataTypeId() {
 		return _dataTypeId;
@@ -660,11 +741,13 @@ public class StructuredDataModelImpl
 		return _originalDataTypeId;
 	}
 
+	@JSON
 	@Override
 	public boolean getMultiple() {
 		return _multiple;
 	}
 
+	@JSON
 	@Override
 	public boolean isMultiple() {
 		return _multiple;
@@ -675,6 +758,7 @@ public class StructuredDataModelImpl
 		_multiple = multiple;
 	}
 
+	@JSON
 	@Override
 	public long getStartIndex() {
 		return _startIndex;
@@ -685,6 +769,7 @@ public class StructuredDataModelImpl
 		_startIndex = startIndex;
 	}
 
+	@JSON
 	@Override
 	public int getCount() {
 		return _count;
@@ -695,11 +780,13 @@ public class StructuredDataModelImpl
 		_count = count;
 	}
 
+	@JSON
 	@Override
 	public boolean getFreezed() {
 		return _freezed;
 	}
 
+	@JSON
 	@Override
 	public boolean isFreezed() {
 		return _freezed;
@@ -710,11 +797,13 @@ public class StructuredDataModelImpl
 		_freezed = freezed;
 	}
 
+	@JSON
 	@Override
 	public boolean getVerified() {
 		return _verified;
 	}
 
+	@JSON
 	@Override
 	public boolean isVerified() {
 		return _verified;
@@ -725,6 +814,7 @@ public class StructuredDataModelImpl
 		_verified = verified;
 	}
 
+	@JSON
 	@Override
 	public String getData() {
 		if (_data == null) {
