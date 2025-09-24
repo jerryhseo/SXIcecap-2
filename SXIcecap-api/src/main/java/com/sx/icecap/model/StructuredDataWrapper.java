@@ -62,7 +62,13 @@ public class StructuredDataWrapper
 		attributes.put("startIndex", getStartIndex());
 		attributes.put("count", getCount());
 		attributes.put("freezed", isFreezed());
+		attributes.put("freezedUserId", getFreezedUserId());
+		attributes.put("freezedUserName", getFreezedUserName());
+		attributes.put("freezedDate", getFreezedDate());
 		attributes.put("verified", isVerified());
+		attributes.put("verifiedUserId", getVerifiedUserId());
+		attributes.put("verifiedUserName", getVerifiedUserName());
+		attributes.put("verifiedDate", getVerifiedDate());
 		attributes.put("data", getData());
 
 		return attributes;
@@ -184,10 +190,46 @@ public class StructuredDataWrapper
 			setFreezed(freezed);
 		}
 
+		Long freezedUserId = (Long)attributes.get("freezedUserId");
+
+		if (freezedUserId != null) {
+			setFreezedUserId(freezedUserId);
+		}
+
+		String freezedUserName = (String)attributes.get("freezedUserName");
+
+		if (freezedUserName != null) {
+			setFreezedUserName(freezedUserName);
+		}
+
+		Date freezedDate = (Date)attributes.get("freezedDate");
+
+		if (freezedDate != null) {
+			setFreezedDate(freezedDate);
+		}
+
 		Boolean verified = (Boolean)attributes.get("verified");
 
 		if (verified != null) {
 			setVerified(verified);
+		}
+
+		Long verifiedUserId = (Long)attributes.get("verifiedUserId");
+
+		if (verifiedUserId != null) {
+			setVerifiedUserId(verifiedUserId);
+		}
+
+		String verifiedUserName = (String)attributes.get("verifiedUserName");
+
+		if (verifiedUserName != null) {
+			setVerifiedUserName(verifiedUserName);
+		}
+
+		Date verifiedDate = (Date)attributes.get("verifiedDate");
+
+		if (verifiedDate != null) {
+			setVerifiedDate(verifiedDate);
 		}
 
 		String data = (String)attributes.get("data");
@@ -275,6 +317,46 @@ public class StructuredDataWrapper
 	@Override
 	public boolean getFreezed() {
 		return model.getFreezed();
+	}
+
+	/**
+	 * Returns the freezed date of this structured data.
+	 *
+	 * @return the freezed date of this structured data
+	 */
+	@Override
+	public Date getFreezedDate() {
+		return model.getFreezedDate();
+	}
+
+	/**
+	 * Returns the freezed user ID of this structured data.
+	 *
+	 * @return the freezed user ID of this structured data
+	 */
+	@Override
+	public long getFreezedUserId() {
+		return model.getFreezedUserId();
+	}
+
+	/**
+	 * Returns the freezed user name of this structured data.
+	 *
+	 * @return the freezed user name of this structured data
+	 */
+	@Override
+	public String getFreezedUserName() {
+		return model.getFreezedUserName();
+	}
+
+	/**
+	 * Returns the freezed user uuid of this structured data.
+	 *
+	 * @return the freezed user uuid of this structured data
+	 */
+	@Override
+	public String getFreezedUserUuid() {
+		return model.getFreezedUserUuid();
 	}
 
 	/**
@@ -469,6 +551,46 @@ public class StructuredDataWrapper
 	@Override
 	public boolean getVerified() {
 		return model.getVerified();
+	}
+
+	/**
+	 * Returns the verified date of this structured data.
+	 *
+	 * @return the verified date of this structured data
+	 */
+	@Override
+	public Date getVerifiedDate() {
+		return model.getVerifiedDate();
+	}
+
+	/**
+	 * Returns the verified user ID of this structured data.
+	 *
+	 * @return the verified user ID of this structured data
+	 */
+	@Override
+	public long getVerifiedUserId() {
+		return model.getVerifiedUserId();
+	}
+
+	/**
+	 * Returns the verified user name of this structured data.
+	 *
+	 * @return the verified user name of this structured data
+	 */
+	@Override
+	public String getVerifiedUserName() {
+		return model.getVerifiedUserName();
+	}
+
+	/**
+	 * Returns the verified user uuid of this structured data.
+	 *
+	 * @return the verified user uuid of this structured data
+	 */
+	@Override
+	public String getVerifiedUserUuid() {
+		return model.getVerifiedUserUuid();
 	}
 
 	/**
@@ -697,6 +819,46 @@ public class StructuredDataWrapper
 	}
 
 	/**
+	 * Sets the freezed date of this structured data.
+	 *
+	 * @param freezedDate the freezed date of this structured data
+	 */
+	@Override
+	public void setFreezedDate(Date freezedDate) {
+		model.setFreezedDate(freezedDate);
+	}
+
+	/**
+	 * Sets the freezed user ID of this structured data.
+	 *
+	 * @param freezedUserId the freezed user ID of this structured data
+	 */
+	@Override
+	public void setFreezedUserId(long freezedUserId) {
+		model.setFreezedUserId(freezedUserId);
+	}
+
+	/**
+	 * Sets the freezed user name of this structured data.
+	 *
+	 * @param freezedUserName the freezed user name of this structured data
+	 */
+	@Override
+	public void setFreezedUserName(String freezedUserName) {
+		model.setFreezedUserName(freezedUserName);
+	}
+
+	/**
+	 * Sets the freezed user uuid of this structured data.
+	 *
+	 * @param freezedUserUuid the freezed user uuid of this structured data
+	 */
+	@Override
+	public void setFreezedUserUuid(String freezedUserUuid) {
+		model.setFreezedUserUuid(freezedUserUuid);
+	}
+
+	/**
 	 * Sets the group ID of this structured data.
 	 *
 	 * @param groupId the group ID of this structured data
@@ -854,6 +1016,51 @@ public class StructuredDataWrapper
 	@Override
 	public void setVerified(boolean verified) {
 		model.setVerified(verified);
+	}
+
+	/**
+	 * Sets the verified date of this structured data.
+	 *
+	 * @param verifiedDate the verified date of this structured data
+	 */
+	@Override
+	public void setVerifiedDate(Date verifiedDate) {
+		model.setVerifiedDate(verifiedDate);
+	}
+
+	/**
+	 * Sets the verified user ID of this structured data.
+	 *
+	 * @param verifiedUserId the verified user ID of this structured data
+	 */
+	@Override
+	public void setVerifiedUserId(long verifiedUserId) {
+		model.setVerifiedUserId(verifiedUserId);
+	}
+
+	/**
+	 * Sets the verified user name of this structured data.
+	 *
+	 * @param verifiedUserName the verified user name of this structured data
+	 */
+	@Override
+	public void setVerifiedUserName(String verifiedUserName) {
+		model.setVerifiedUserName(verifiedUserName);
+	}
+
+	/**
+	 * Sets the verified user uuid of this structured data.
+	 *
+	 * @param verifiedUserUuid the verified user uuid of this structured data
+	 */
+	@Override
+	public void setVerifiedUserUuid(String verifiedUserUuid) {
+		model.setVerifiedUserUuid(verifiedUserUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject toJSON() {
+		return model.toJSON();
 	}
 
 	@Override

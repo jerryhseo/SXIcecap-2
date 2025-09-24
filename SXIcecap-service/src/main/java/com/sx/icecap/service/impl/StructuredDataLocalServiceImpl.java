@@ -34,16 +34,24 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
+import com.sx.icecap.constant.DataStructureProperties;
+import com.sx.icecap.model.DataCollection;
+import com.sx.icecap.model.DataSet;
+import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.model.StructuredData;
+import com.sx.icecap.model.TypeStructureLink;
 import com.sx.icecap.service.base.StructuredDataLocalServiceBaseImpl;
 import com.sx.util.SXPortalUtil;
 
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -595,23 +603,72 @@ public class StructuredDataLocalServiceImpl
 	}
 	
 	public JSONObject getStructuredDataWithInfo(
-			String cmd,
 			long structuredDataId,
 			long dataCollectionId,
 			long dataSetId,
 			long dataTypeId,
-			long dataStructureId) {
+			long dataStructureId,
+			Locale locale) {
 		
 		JSONObject dataInfo = JSONFactoryUtil.createJSONObject();
 		
-		if ( cmd.equalsIgnoreCase("preview") ) {
-			try {
-				dataTypePersistence.findByPrimaryKey(dataTypeId);
-				StructuredData structuredData = structuredDataLocalService.getStructuredData(structuredDataId);
-			} catch (PortalException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey(dataCollectionId);
+		DataSet dataSet = dataSetPersistence.fetchByPrimaryKey(dataSetId);
+		DataType dataType = dataTypePersistence.fetchByPrimaryKey(dataTypeId);
+		DataStructure dataStructure = dataStructurePersistence.fetchByPrimaryKey(dataStructureId);
+		StructuredData structuredData = structuredDataPersistence.fetchByPrimaryKey(structuredDataId);
+		
+		if(Validator.isNotNull(dataCollection)) {
+			JSONObject jsonCollectionInfo = JSONFactoryUtil.createJSONObject();
+			jsonCollectionInfo.put("dataCollectionId", dataCollection.getDataCollectionId());
+			jsonCollectionInfo.put("dataCollectionCode", dataCollection.getDataCollectionCode());
+			jsonCollectionInfo.put("dataCollectionVersion", dataCollection.getDataCollectionVersion());
+			jsonCollectionInfo.put("displayName", dataCollection.getDisplayName(locale));
+			
+			dataInfo.put("dataCollection", jsonCollectionInfo);
+		}
+		
+		if(Validator.isNotNull(dataSet)) {
+			JSONObject jsonSetInfo = JSONFactoryUtil.createJSONObject();
+			jsonSetInfo.put("dataSetId", dataSet.getDataSetId());
+			jsonSetInfo.put("dataSetCode", dataSet.getDataSetCode());
+			jsonSetInfo.put("dataSetVersion", dataSet.getDataSetVersion());
+			jsonSetInfo.put("displayName", dataSet.getDisplayName(locale));
+			
+			dataInfo.put("dataSet", jsonSetInfo);
+		}
+		
+		if(Validator.isNotNull(dataType)) {
+			JSONObject jsonDataTypeInfo = JSONFactoryUtil.createJSONObject();
+			jsonDataTypeInfo.put("dataDataTypeId", dataType.getDataTypeId());
+			jsonDataTypeInfo.put("dataTypeCode", dataType.getDataTypeCode());
+			jsonDataTypeInfo.put("dataTypeVersion", dataType.getDataTypeVersion());
+			jsonDataTypeInfo.put("displayName", dataType.getDisplayName(locale));
+			
+			dataInfo.put("dataType", jsonDataTypeInfo);
+			
+			TypeStructureLink typeStructureLink = typeStructureLinkPersistence.fetchByPrimaryKey(dataTypeId);
+			if( Validator.isNotNull(typeStructureLink)) {
+				dataInfo.put("typeStructureLonk", typeStructureLink.toJSON());
+				if( Validator.isNull(dataStructure)) {
+					dataStructure = dataStructurePersistence.fetchByPrimaryKey(typeStructureLink.getDataStructureId());
+				}
 			}
+		}
+		
+		JSONObject jsonDataStructure = null;
+		
+		JSONObject jsonStructure = null;
+		if( Validator.isNotNull(structuredData)) {
+			if(Validator.isNotNull(dataStructure)) {
+				jsonDataStructure = dataStructure.toJSON();
+				jsonStructure = jsonDataStructure.getJSONObject(DataStructureProperties.STRUCTURE);
+				jsonStructure.put("data", structuredData.toJSON());
+			}
+		}
+		
+		if(Validator.isNotNull(jsonDataStructure)) {
+			dataInfo.put("dataStructure", jsonDataStructure);
 		}
 		
 		return dataInfo;

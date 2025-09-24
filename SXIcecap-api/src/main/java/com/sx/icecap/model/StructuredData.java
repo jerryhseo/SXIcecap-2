@@ -76,4 +76,6 @@ public interface StructuredData extends PersistedModel, StructuredDataModel {
 
 		};
 
+	public com.liferay.portal.kernel.json.JSONObject toJSON();
+
 }

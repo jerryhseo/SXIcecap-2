@@ -50,7 +50,13 @@ public class StructuredDataSoap implements Serializable {
 		soapModel.setStartIndex(model.getStartIndex());
 		soapModel.setCount(model.getCount());
 		soapModel.setFreezed(model.isFreezed());
+		soapModel.setFreezedUserId(model.getFreezedUserId());
+		soapModel.setFreezedUserName(model.getFreezedUserName());
+		soapModel.setFreezedDate(model.getFreezedDate());
 		soapModel.setVerified(model.isVerified());
+		soapModel.setVerifiedUserId(model.getVerifiedUserId());
+		soapModel.setVerifiedUserName(model.getVerifiedUserName());
+		soapModel.setVerifiedDate(model.getVerifiedDate());
 		soapModel.setData(model.getData());
 
 		return soapModel;
@@ -270,6 +276,30 @@ public class StructuredDataSoap implements Serializable {
 		_freezed = freezed;
 	}
 
+	public long getFreezedUserId() {
+		return _freezedUserId;
+	}
+
+	public void setFreezedUserId(long freezedUserId) {
+		_freezedUserId = freezedUserId;
+	}
+
+	public String getFreezedUserName() {
+		return _freezedUserName;
+	}
+
+	public void setFreezedUserName(String freezedUserName) {
+		_freezedUserName = freezedUserName;
+	}
+
+	public Date getFreezedDate() {
+		return _freezedDate;
+	}
+
+	public void setFreezedDate(Date freezedDate) {
+		_freezedDate = freezedDate;
+	}
+
 	public boolean getVerified() {
 		return _verified;
 	}
@@ -280,6 +310,30 @@ public class StructuredDataSoap implements Serializable {
 
 	public void setVerified(boolean verified) {
 		_verified = verified;
+	}
+
+	public long getVerifiedUserId() {
+		return _verifiedUserId;
+	}
+
+	public void setVerifiedUserId(long verifiedUserId) {
+		_verifiedUserId = verifiedUserId;
+	}
+
+	public String getVerifiedUserName() {
+		return _verifiedUserName;
+	}
+
+	public void setVerifiedUserName(String verifiedUserName) {
+		_verifiedUserName = verifiedUserName;
+	}
+
+	public Date getVerifiedDate() {
+		return _verifiedDate;
+	}
+
+	public void setVerifiedDate(Date verifiedDate) {
+		_verifiedDate = verifiedDate;
 	}
 
 	public String getData() {
@@ -309,7 +363,13 @@ public class StructuredDataSoap implements Serializable {
 	private long _startIndex;
 	private int _count;
 	private boolean _freezed;
+	private long _freezedUserId;
+	private String _freezedUserName;
+	private Date _freezedDate;
 	private boolean _verified;
+	private long _verifiedUserId;
+	private String _verifiedUserName;
+	private Date _verifiedDate;
 	private String _data;
 
 }

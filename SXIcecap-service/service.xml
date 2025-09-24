@@ -434,7 +434,13 @@
         <column name="startIndex" type="long"></column>
         <column name="count" type="int"></column>
         <column name="freezed" type="boolean"></column>
+        <column name="freezedUserId" type="long"></column>
+        <column name="freezedUserName" type="String"></column>
+        <column name="freezedDate" type="Date"></column>
         <column name="verified" type="boolean"></column>
+        <column name="verifiedUserId" type="long"></column>
+        <column name="verifiedUserName" type="String"></column>
+        <column name="verifiedDate" type="Date"></column>
         <column name="data" type="String"></column>
  
  		<!-- Finders -->

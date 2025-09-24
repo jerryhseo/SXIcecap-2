@@ -177,7 +177,13 @@ create table SX_ICECAP_StructuredData (
 	startIndex LONG,
 	count INTEGER,
 	freezed BOOLEAN,
+	freezedUserId LONG,
+	freezedUserName VARCHAR(75) null,
+	freezedDate DATE null,
 	verified BOOLEAN,
+	verifiedUserId LONG,
+	verifiedUserName VARCHAR(75) null,
+	verifiedDate DATE null,
 	data_ VARCHAR(75) null
 );
 

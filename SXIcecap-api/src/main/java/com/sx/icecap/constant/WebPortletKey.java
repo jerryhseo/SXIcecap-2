@@ -26,12 +26,12 @@ public class WebPortletKey {
 	*/
 	public static final String SXDataStructureBuilderPortlet = "SXDataStructureBuilderPortlet";
 	public static final String SXStructuredDataEditorPortlet = "SXStructuredDataEditorPortlet";
+	public static final String SXStructuredDataExplorerPortlet = "SXStructuredDataExplorerPortlet";
 	/*
 	public static final String DATA_STRUCTURE_EXPLORER = "SXDataStructureExplorerPortlet";
 	public static final String DATA_STRUCTURE_VIEWER = "SXDataStructureViewerPortlet";
-	public static final String STRUCTURED_DATA_EXPLORER = "SXStructuredDataExplorerPortlet";
 	public static final String STRUCTURED_DATA_VIEWER = "SXStructuredDataViewerPortlet";
-	*/
+	 */
 	
 	public static final String getNamespace( String portletKey, String instanceId ) {
 		if( Validator.isNotNull(instanceId) && !instanceId.isEmpty() ) {

@@ -74,6 +74,16 @@ public class DataStructureImpl extends DataStructureBaseImpl {
 		dataStructure.put(DataStructureProperties.DATA_STRUCTURE_CODE, this.getDataStructureCode());
 		dataStructure.put(DataStructureProperties.DATA_STRUCTURE_VERSION, this.getDataStructureVersion());
 		
+		try {
+			dataStructure.put(
+					DataStructureProperties.STRUCTURE, 
+					JSONFactoryUtil.createJSONObject(this.getStructure())
+			);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return dataStructure;
 	}
 	

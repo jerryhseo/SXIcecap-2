@@ -63,7 +63,7 @@ public class StructuredDataCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -103,8 +103,20 @@ public class StructuredDataCacheModel
 		sb.append(count);
 		sb.append(", freezed=");
 		sb.append(freezed);
+		sb.append(", freezedUserId=");
+		sb.append(freezedUserId);
+		sb.append(", freezedUserName=");
+		sb.append(freezedUserName);
+		sb.append(", freezedDate=");
+		sb.append(freezedDate);
 		sb.append(", verified=");
 		sb.append(verified);
+		sb.append(", verifiedUserId=");
+		sb.append(verifiedUserId);
+		sb.append(", verifiedUserName=");
+		sb.append(verifiedUserName);
+		sb.append(", verifiedDate=");
+		sb.append(verifiedDate);
 		sb.append(", data=");
 		sb.append(data);
 		sb.append("}");
@@ -173,7 +185,38 @@ public class StructuredDataCacheModel
 		structuredDataImpl.setStartIndex(startIndex);
 		structuredDataImpl.setCount(count);
 		structuredDataImpl.setFreezed(freezed);
+		structuredDataImpl.setFreezedUserId(freezedUserId);
+
+		if (freezedUserName == null) {
+			structuredDataImpl.setFreezedUserName("");
+		}
+		else {
+			structuredDataImpl.setFreezedUserName(freezedUserName);
+		}
+
+		if (freezedDate == Long.MIN_VALUE) {
+			structuredDataImpl.setFreezedDate(null);
+		}
+		else {
+			structuredDataImpl.setFreezedDate(new Date(freezedDate));
+		}
+
 		structuredDataImpl.setVerified(verified);
+		structuredDataImpl.setVerifiedUserId(verifiedUserId);
+
+		if (verifiedUserName == null) {
+			structuredDataImpl.setVerifiedUserName("");
+		}
+		else {
+			structuredDataImpl.setVerifiedUserName(verifiedUserName);
+		}
+
+		if (verifiedDate == Long.MIN_VALUE) {
+			structuredDataImpl.setVerifiedDate(null);
+		}
+		else {
+			structuredDataImpl.setVerifiedDate(new Date(verifiedDate));
+		}
 
 		if (data == null) {
 			structuredDataImpl.setData("");
@@ -222,7 +265,15 @@ public class StructuredDataCacheModel
 
 		freezed = objectInput.readBoolean();
 
+		freezedUserId = objectInput.readLong();
+		freezedUserName = objectInput.readUTF();
+		freezedDate = objectInput.readLong();
+
 		verified = objectInput.readBoolean();
+
+		verifiedUserId = objectInput.readLong();
+		verifiedUserName = objectInput.readUTF();
+		verifiedDate = objectInput.readLong();
 		data = objectInput.readUTF();
 	}
 
@@ -280,7 +331,29 @@ public class StructuredDataCacheModel
 
 		objectOutput.writeBoolean(freezed);
 
+		objectOutput.writeLong(freezedUserId);
+
+		if (freezedUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(freezedUserName);
+		}
+
+		objectOutput.writeLong(freezedDate);
+
 		objectOutput.writeBoolean(verified);
+
+		objectOutput.writeLong(verifiedUserId);
+
+		if (verifiedUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(verifiedUserName);
+		}
+
+		objectOutput.writeLong(verifiedDate);
 
 		if (data == null) {
 			objectOutput.writeUTF("");
@@ -309,7 +382,13 @@ public class StructuredDataCacheModel
 	public long startIndex;
 	public int count;
 	public boolean freezed;
+	public long freezedUserId;
+	public String freezedUserName;
+	public long freezedDate;
 	public boolean verified;
+	public long verifiedUserId;
+	public String verifiedUserName;
+	public long verifiedDate;
 	public String data;
 
 }

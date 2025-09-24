@@ -44,6 +44,7 @@ import com.sx.icecap.model.StructuredData;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -547,8 +548,8 @@ public interface StructuredDataLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONObject getStructuredDataWithInfo(
-		String cmd, long structuredDataId, long dataCollectionId,
-		long dataSetId, long dataTypeId, long dataStructureId);
+		long structuredDataId, long dataCollectionId, long dataSetId,
+		long dataTypeId, long dataStructureId, Locale locale);
 
 	@Indexable(type = IndexableType.DELETE)
 	public StructuredData removeStructuredData(

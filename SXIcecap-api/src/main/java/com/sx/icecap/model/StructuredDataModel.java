@@ -401,6 +401,63 @@ public interface StructuredDataModel
 	public void setFreezed(boolean freezed);
 
 	/**
+	 * Returns the freezed user ID of this structured data.
+	 *
+	 * @return the freezed user ID of this structured data
+	 */
+	public long getFreezedUserId();
+
+	/**
+	 * Sets the freezed user ID of this structured data.
+	 *
+	 * @param freezedUserId the freezed user ID of this structured data
+	 */
+	public void setFreezedUserId(long freezedUserId);
+
+	/**
+	 * Returns the freezed user uuid of this structured data.
+	 *
+	 * @return the freezed user uuid of this structured data
+	 */
+	public String getFreezedUserUuid();
+
+	/**
+	 * Sets the freezed user uuid of this structured data.
+	 *
+	 * @param freezedUserUuid the freezed user uuid of this structured data
+	 */
+	public void setFreezedUserUuid(String freezedUserUuid);
+
+	/**
+	 * Returns the freezed user name of this structured data.
+	 *
+	 * @return the freezed user name of this structured data
+	 */
+	@AutoEscape
+	public String getFreezedUserName();
+
+	/**
+	 * Sets the freezed user name of this structured data.
+	 *
+	 * @param freezedUserName the freezed user name of this structured data
+	 */
+	public void setFreezedUserName(String freezedUserName);
+
+	/**
+	 * Returns the freezed date of this structured data.
+	 *
+	 * @return the freezed date of this structured data
+	 */
+	public Date getFreezedDate();
+
+	/**
+	 * Sets the freezed date of this structured data.
+	 *
+	 * @param freezedDate the freezed date of this structured data
+	 */
+	public void setFreezedDate(Date freezedDate);
+
+	/**
 	 * Returns the verified of this structured data.
 	 *
 	 * @return the verified of this structured data
@@ -420,6 +477,63 @@ public interface StructuredDataModel
 	 * @param verified the verified of this structured data
 	 */
 	public void setVerified(boolean verified);
+
+	/**
+	 * Returns the verified user ID of this structured data.
+	 *
+	 * @return the verified user ID of this structured data
+	 */
+	public long getVerifiedUserId();
+
+	/**
+	 * Sets the verified user ID of this structured data.
+	 *
+	 * @param verifiedUserId the verified user ID of this structured data
+	 */
+	public void setVerifiedUserId(long verifiedUserId);
+
+	/**
+	 * Returns the verified user uuid of this structured data.
+	 *
+	 * @return the verified user uuid of this structured data
+	 */
+	public String getVerifiedUserUuid();
+
+	/**
+	 * Sets the verified user uuid of this structured data.
+	 *
+	 * @param verifiedUserUuid the verified user uuid of this structured data
+	 */
+	public void setVerifiedUserUuid(String verifiedUserUuid);
+
+	/**
+	 * Returns the verified user name of this structured data.
+	 *
+	 * @return the verified user name of this structured data
+	 */
+	@AutoEscape
+	public String getVerifiedUserName();
+
+	/**
+	 * Sets the verified user name of this structured data.
+	 *
+	 * @param verifiedUserName the verified user name of this structured data
+	 */
+	public void setVerifiedUserName(String verifiedUserName);
+
+	/**
+	 * Returns the verified date of this structured data.
+	 *
+	 * @return the verified date of this structured data
+	 */
+	public Date getVerifiedDate();
+
+	/**
+	 * Sets the verified date of this structured data.
+	 *
+	 * @param verifiedDate the verified date of this structured data
+	 */
+	public void setVerifiedDate(Date verifiedDate);
 
 	/**
 	 * Returns the data of this structured data.

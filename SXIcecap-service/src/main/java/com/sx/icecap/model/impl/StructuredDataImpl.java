@@ -14,8 +14,43 @@
 
 package com.sx.icecap.model.impl;
 
+import com.liferay.portal.kernel.json.JSONException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+
 /**
  * @author Brian Wing Shun Chan
  */
 public class StructuredDataImpl extends StructuredDataBaseImpl {
+	
+	public JSONObject toJSON() {
+		JSONObject json = JSONFactoryUtil.createJSONObject();
+		
+		json.put("userId", getUserId());
+		json.put("createDate", getCreateDate());
+		json.put("modifiedDate", getModifiedDate());
+		json.put("status", getStatus());
+
+		json.put("dataCollectionId", getDataCollectionId());
+		json.put("dataSetId", getDataSetId());
+		json.put("dataTypeId", getDataTypeId());
+
+		json.put("freezed", getFreezed());
+		json.put("freezedUserId", getFreezedUserId());
+		json.put("freezedUserName", getFreezedUserName());
+		json.put("freezedDate", getFreezedDate());
+		json.put("verified", getVerified());
+		json.put("verifiedUserId", getFreezedUserId());
+		json.put("verifiedUserName", getFreezedUserName());
+		json.put("verifiedDate", getFreezedDate());
+		
+		try {
+			json.put("data", JSONFactoryUtil.createJSONObject(getData()));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return json;
+	}
 }

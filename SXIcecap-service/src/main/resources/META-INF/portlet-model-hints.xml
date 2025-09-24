@@ -167,7 +167,13 @@
 		<field name="startIndex" type="long" />
 		<field name="count" type="int" />
 		<field name="freezed" type="boolean" />
+		<field name="freezedUserId" type="long" />
+		<field name="freezedUserName" type="String" />
+		<field name="freezedDate" type="Date" />
 		<field name="verified" type="boolean" />
+		<field name="verifiedUserId" type="long" />
+		<field name="verifiedUserName" type="String" />
+		<field name="verifiedDate" type="Date" />
 		<field name="data" type="String" />
 	</model>
 	<model name="com.sx.icecap.model.StructureParamLink">
