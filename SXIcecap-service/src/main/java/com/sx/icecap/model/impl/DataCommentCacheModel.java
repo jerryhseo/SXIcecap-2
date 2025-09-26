@@ -63,7 +63,7 @@ public class DataCommentCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{dataCommentId=");
 		sb.append(dataCommentId);
@@ -79,8 +79,12 @@ public class DataCommentCacheModel
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", structuredDataId=");
-		sb.append(structuredDataId);
+		sb.append(", commentType=");
+		sb.append(commentType);
+		sb.append(", commentBase=");
+		sb.append(commentBase);
+		sb.append(", commentDataId=");
+		sb.append(commentDataId);
 		sb.append(", paramCode=");
 		sb.append(paramCode);
 		sb.append(", parentCommentId=");
@@ -89,6 +93,12 @@ public class DataCommentCacheModel
 		sb.append(comment);
 		sb.append(", closed=");
 		sb.append(closed);
+		sb.append(", closedUserId=");
+		sb.append(closedUserId);
+		sb.append(", closedUserName=");
+		sb.append(closedUserName);
+		sb.append(", closedDate=");
+		sb.append(closedDate);
 		sb.append("}");
 
 		return sb.toString();
@@ -124,7 +134,21 @@ public class DataCommentCacheModel
 			dataCommentImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		dataCommentImpl.setStructuredDataId(structuredDataId);
+		if (commentType == null) {
+			dataCommentImpl.setCommentType("");
+		}
+		else {
+			dataCommentImpl.setCommentType(commentType);
+		}
+
+		if (commentBase == null) {
+			dataCommentImpl.setCommentBase("");
+		}
+		else {
+			dataCommentImpl.setCommentBase(commentBase);
+		}
+
+		dataCommentImpl.setCommentDataId(commentDataId);
 
 		if (paramCode == null) {
 			dataCommentImpl.setParamCode("");
@@ -143,6 +167,21 @@ public class DataCommentCacheModel
 		}
 
 		dataCommentImpl.setClosed(closed);
+		dataCommentImpl.setClosedUserId(closedUserId);
+
+		if (closedUserName == null) {
+			dataCommentImpl.setClosedUserName("");
+		}
+		else {
+			dataCommentImpl.setClosedUserName(closedUserName);
+		}
+
+		if (closedDate == Long.MIN_VALUE) {
+			dataCommentImpl.setClosedDate(null);
+		}
+		else {
+			dataCommentImpl.setClosedDate(new Date(closedDate));
+		}
 
 		dataCommentImpl.resetOriginalValues();
 
@@ -161,14 +200,20 @@ public class DataCommentCacheModel
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+		commentType = objectInput.readUTF();
+		commentBase = objectInput.readUTF();
 
-		structuredDataId = objectInput.readLong();
+		commentDataId = objectInput.readLong();
 		paramCode = objectInput.readUTF();
 
 		parentCommentId = objectInput.readLong();
 		comment = objectInput.readUTF();
 
 		closed = objectInput.readBoolean();
+
+		closedUserId = objectInput.readLong();
+		closedUserName = objectInput.readUTF();
+		closedDate = objectInput.readLong();
 	}
 
 	@Override
@@ -191,7 +236,21 @@ public class DataCommentCacheModel
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
-		objectOutput.writeLong(structuredDataId);
+		if (commentType == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(commentType);
+		}
+
+		if (commentBase == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(commentBase);
+		}
+
+		objectOutput.writeLong(commentDataId);
 
 		if (paramCode == null) {
 			objectOutput.writeUTF("");
@@ -210,6 +269,17 @@ public class DataCommentCacheModel
 		}
 
 		objectOutput.writeBoolean(closed);
+
+		objectOutput.writeLong(closedUserId);
+
+		if (closedUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(closedUserName);
+		}
+
+		objectOutput.writeLong(closedDate);
 	}
 
 	public long dataCommentId;
@@ -219,10 +289,15 @@ public class DataCommentCacheModel
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
-	public long structuredDataId;
+	public String commentType;
+	public String commentBase;
+	public long commentDataId;
 	public String paramCode;
 	public long parentCommentId;
 	public String comment;
 	public boolean closed;
+	public long closedUserId;
+	public String closedUserName;
+	public long closedDate;
 
 }

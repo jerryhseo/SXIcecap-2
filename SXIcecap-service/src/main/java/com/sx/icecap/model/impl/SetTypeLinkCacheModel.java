@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import java.util.Date;
+
 /**
  * The cache model class for representing SetTypeLink in entity cache.
  *
@@ -61,7 +63,7 @@ public class SetTypeLinkCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{setTypeLinkId=");
 		sb.append(setTypeLinkId);
@@ -69,10 +71,28 @@ public class SetTypeLinkCacheModel
 		sb.append(dataSetId);
 		sb.append(", dataTypeId=");
 		sb.append(dataTypeId);
+		sb.append(", commentable=");
+		sb.append(commentable);
+		sb.append(", verifiable=");
+		sb.append(verifiable);
+		sb.append(", freezable=");
+		sb.append(freezable);
 		sb.append(", freezed=");
 		sb.append(freezed);
+		sb.append(", freezedUserId=");
+		sb.append(freezedUserId);
+		sb.append(", freezedUserName=");
+		sb.append(freezedUserName);
+		sb.append(", freezedDate=");
+		sb.append(freezedDate);
 		sb.append(", verified=");
 		sb.append(verified);
+		sb.append(", verifiedUserId=");
+		sb.append(verifiedUserId);
+		sb.append(", verifiedUserName=");
+		sb.append(verifiedUserName);
+		sb.append(", verifiedDate=");
+		sb.append(verifiedDate);
 		sb.append("}");
 
 		return sb.toString();
@@ -85,8 +105,42 @@ public class SetTypeLinkCacheModel
 		setTypeLinkImpl.setSetTypeLinkId(setTypeLinkId);
 		setTypeLinkImpl.setDataSetId(dataSetId);
 		setTypeLinkImpl.setDataTypeId(dataTypeId);
+		setTypeLinkImpl.setCommentable(commentable);
+		setTypeLinkImpl.setVerifiable(verifiable);
+		setTypeLinkImpl.setFreezable(freezable);
 		setTypeLinkImpl.setFreezed(freezed);
+		setTypeLinkImpl.setFreezedUserId(freezedUserId);
+
+		if (freezedUserName == null) {
+			setTypeLinkImpl.setFreezedUserName("");
+		}
+		else {
+			setTypeLinkImpl.setFreezedUserName(freezedUserName);
+		}
+
+		if (freezedDate == Long.MIN_VALUE) {
+			setTypeLinkImpl.setFreezedDate(null);
+		}
+		else {
+			setTypeLinkImpl.setFreezedDate(new Date(freezedDate));
+		}
+
 		setTypeLinkImpl.setVerified(verified);
+		setTypeLinkImpl.setVerifiedUserId(verifiedUserId);
+
+		if (verifiedUserName == null) {
+			setTypeLinkImpl.setVerifiedUserName("");
+		}
+		else {
+			setTypeLinkImpl.setVerifiedUserName(verifiedUserName);
+		}
+
+		if (verifiedDate == Long.MIN_VALUE) {
+			setTypeLinkImpl.setVerifiedDate(null);
+		}
+		else {
+			setTypeLinkImpl.setVerifiedDate(new Date(verifiedDate));
+		}
 
 		setTypeLinkImpl.resetOriginalValues();
 
@@ -101,9 +155,23 @@ public class SetTypeLinkCacheModel
 
 		dataTypeId = objectInput.readLong();
 
+		commentable = objectInput.readBoolean();
+
+		verifiable = objectInput.readBoolean();
+
+		freezable = objectInput.readBoolean();
+
 		freezed = objectInput.readBoolean();
 
+		freezedUserId = objectInput.readLong();
+		freezedUserName = objectInput.readUTF();
+		freezedDate = objectInput.readLong();
+
 		verified = objectInput.readBoolean();
+
+		verifiedUserId = objectInput.readLong();
+		verifiedUserName = objectInput.readUTF();
+		verifiedDate = objectInput.readLong();
 	}
 
 	@Override
@@ -114,15 +182,52 @@ public class SetTypeLinkCacheModel
 
 		objectOutput.writeLong(dataTypeId);
 
+		objectOutput.writeBoolean(commentable);
+
+		objectOutput.writeBoolean(verifiable);
+
+		objectOutput.writeBoolean(freezable);
+
 		objectOutput.writeBoolean(freezed);
 
+		objectOutput.writeLong(freezedUserId);
+
+		if (freezedUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(freezedUserName);
+		}
+
+		objectOutput.writeLong(freezedDate);
+
 		objectOutput.writeBoolean(verified);
+
+		objectOutput.writeLong(verifiedUserId);
+
+		if (verifiedUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(verifiedUserName);
+		}
+
+		objectOutput.writeLong(verifiedDate);
 	}
 
 	public long setTypeLinkId;
 	public long dataSetId;
 	public long dataTypeId;
+	public boolean commentable;
+	public boolean verifiable;
+	public boolean freezable;
 	public boolean freezed;
+	public long freezedUserId;
+	public String freezedUserName;
+	public long freezedDate;
 	public boolean verified;
+	public long verifiedUserId;
+	public String verifiedUserName;
+	public long verifiedDate;
 
 }

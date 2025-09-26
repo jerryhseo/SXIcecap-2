@@ -95,6 +95,13 @@ public class StructuredDataLocalServiceUtil {
 		return getService().countApprovedStructuredDatas(groupId);
 	}
 
+	public static int countStructuredData(
+		long dataCollectionId, long dataSetId, long dataTypeId) {
+
+		return getService().countStructuredData(
+			dataCollectionId, dataSetId, dataTypeId);
+	}
+
 	public static int countStructuredDatasByDataTypeId(long groupId) {
 		return getService().countStructuredDatasByDataTypeId(groupId);
 	}
@@ -176,6 +183,15 @@ public class StructuredDataLocalServiceUtil {
 	 */
 	public static StructuredData createStructuredData(long structuredDataId) {
 		return getService().createStructuredData(structuredDataId);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject
+		createStructuredDataInfo(
+			List<StructuredData> dataList, long dataCollectionId,
+			long dataSetId, long dataTypeId, java.util.Locale locale) {
+
+		return getService().createStructuredDataInfo(
+			dataList, dataCollectionId, dataSetId, dataTypeId, locale);
 	}
 
 	/**
@@ -425,6 +441,24 @@ public class StructuredDataLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getStructuredDataByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject
+		getStructuredDataList(
+			long dataCollectionId, long dataSetId, long dataTypeId, int start,
+			int end, java.util.Locale locale) {
+
+		return getService().getStructuredDataList(
+			dataCollectionId, dataSetId, dataTypeId, start, end, locale);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject
+		getStructuredDataListWithInfo(
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			java.util.Locale locale) {
+
+		return getService().getStructuredDataListWithInfo(
+			dataCollectionId, dataSetId, dataTypeId, locale);
 	}
 
 	/**

@@ -38,11 +38,16 @@ public class DataCommentSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setStructuredDataId(model.getStructuredDataId());
+		soapModel.setCommentType(model.getCommentType());
+		soapModel.setCommentBase(model.getCommentBase());
+		soapModel.setCommentDataId(model.getCommentDataId());
 		soapModel.setParamCode(model.getParamCode());
 		soapModel.setParentCommentId(model.getParentCommentId());
 		soapModel.setComment(model.getComment());
 		soapModel.setClosed(model.isClosed());
+		soapModel.setClosedUserId(model.getClosedUserId());
+		soapModel.setClosedUserName(model.getClosedUserName());
+		soapModel.setClosedDate(model.getClosedDate());
 
 		return soapModel;
 	}
@@ -152,12 +157,28 @@ public class DataCommentSoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
-	public long getStructuredDataId() {
-		return _structuredDataId;
+	public String getCommentType() {
+		return _commentType;
 	}
 
-	public void setStructuredDataId(long structuredDataId) {
-		_structuredDataId = structuredDataId;
+	public void setCommentType(String commentType) {
+		_commentType = commentType;
+	}
+
+	public String getCommentBase() {
+		return _commentBase;
+	}
+
+	public void setCommentBase(String commentBase) {
+		_commentBase = commentBase;
+	}
+
+	public long getCommentDataId() {
+		return _commentDataId;
+	}
+
+	public void setCommentDataId(long commentDataId) {
+		_commentDataId = commentDataId;
 	}
 
 	public String getParamCode() {
@@ -196,6 +217,30 @@ public class DataCommentSoap implements Serializable {
 		_closed = closed;
 	}
 
+	public long getClosedUserId() {
+		return _closedUserId;
+	}
+
+	public void setClosedUserId(long closedUserId) {
+		_closedUserId = closedUserId;
+	}
+
+	public String getClosedUserName() {
+		return _closedUserName;
+	}
+
+	public void setClosedUserName(String closedUserName) {
+		_closedUserName = closedUserName;
+	}
+
+	public Date getClosedDate() {
+		return _closedDate;
+	}
+
+	public void setClosedDate(Date closedDate) {
+		_closedDate = closedDate;
+	}
+
 	private long _dataCommentId;
 	private long _companyId;
 	private long _groupId;
@@ -203,10 +248,15 @@ public class DataCommentSoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private long _structuredDataId;
+	private String _commentType;
+	private String _commentBase;
+	private long _commentDataId;
 	private String _paramCode;
 	private long _parentCommentId;
 	private String _comment;
 	private boolean _closed;
+	private long _closedUserId;
+	private String _closedUserName;
+	private Date _closedDate;
 
 }

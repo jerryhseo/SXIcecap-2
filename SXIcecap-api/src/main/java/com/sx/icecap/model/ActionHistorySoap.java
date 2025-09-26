@@ -35,11 +35,13 @@ public class ActionHistorySoap implements Serializable {
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
-		soapModel.setStructuredDataId(model.getStructuredDataId());
+		soapModel.setActionType(model.getActionType());
+		soapModel.setActionBase(model.getActionBase());
+		soapModel.setActionDataId(model.getActionDataId());
 		soapModel.setParamCode(model.getParamCode());
+		soapModel.setActionCommand(model.getActionCommand());
 		soapModel.setPrevValue(model.getPrevValue());
-		soapModel.setChangedValue(model.getChangedValue());
-		soapModel.setAction(model.getAction());
+		soapModel.setModifiedValue(model.getModifiedValue());
 		soapModel.setComment(model.getComment());
 
 		return soapModel;
@@ -126,12 +128,28 @@ public class ActionHistorySoap implements Serializable {
 		_createDate = createDate;
 	}
 
-	public long getStructuredDataId() {
-		return _structuredDataId;
+	public String getActionType() {
+		return _actionType;
 	}
 
-	public void setStructuredDataId(long structuredDataId) {
-		_structuredDataId = structuredDataId;
+	public void setActionType(String actionType) {
+		_actionType = actionType;
+	}
+
+	public String getActionBase() {
+		return _actionBase;
+	}
+
+	public void setActionBase(String actionBase) {
+		_actionBase = actionBase;
+	}
+
+	public long getActionDataId() {
+		return _actionDataId;
+	}
+
+	public void setActionDataId(long actionDataId) {
+		_actionDataId = actionDataId;
 	}
 
 	public String getParamCode() {
@@ -142,6 +160,14 @@ public class ActionHistorySoap implements Serializable {
 		_paramCode = paramCode;
 	}
 
+	public String getActionCommand() {
+		return _actionCommand;
+	}
+
+	public void setActionCommand(String actionCommand) {
+		_actionCommand = actionCommand;
+	}
+
 	public String getPrevValue() {
 		return _prevValue;
 	}
@@ -150,20 +176,12 @@ public class ActionHistorySoap implements Serializable {
 		_prevValue = prevValue;
 	}
 
-	public String getChangedValue() {
-		return _changedValue;
+	public String getModifiedValue() {
+		return _modifiedValue;
 	}
 
-	public void setChangedValue(String changedValue) {
-		_changedValue = changedValue;
-	}
-
-	public String getAction() {
-		return _action;
-	}
-
-	public void setAction(String action) {
-		_action = action;
+	public void setModifiedValue(String modifiedValue) {
+		_modifiedValue = modifiedValue;
 	}
 
 	public String getComment() {
@@ -178,11 +196,13 @@ public class ActionHistorySoap implements Serializable {
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
-	private long _structuredDataId;
+	private String _actionType;
+	private String _actionBase;
+	private long _actionDataId;
 	private String _paramCode;
+	private String _actionCommand;
 	private String _prevValue;
-	private String _changedValue;
-	private String _action;
+	private String _modifiedValue;
 	private String _comment;
 
 }

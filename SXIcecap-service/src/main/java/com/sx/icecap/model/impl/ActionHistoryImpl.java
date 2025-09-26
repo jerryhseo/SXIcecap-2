@@ -14,8 +14,26 @@
 
 package com.sx.icecap.model.impl;
 
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+
 /**
  * @author Brian Wing Shun Chan
  */
 public class ActionHistoryImpl extends ActionHistoryBaseImpl {
+	public JSONObject toJSON() {
+		JSONObject json = JSONFactoryUtil.createJSONObject();
+		
+		json.put("actionHistoryId", getPrimaryKey());
+		json.put("userId", getUserId());
+		json.put("userName", getUserName());
+		json.put("createDate", getCreateDate());
+		json.put("actionDataId", getActionDataId());
+		json.put("paramCode", getParamCode());
+		json.put("prevValue", getPrevValue());
+		json.put("modifiedValue", getModifiedValue());
+		json.put("comment", getComment());
+		
+		return json;
+	}
 }

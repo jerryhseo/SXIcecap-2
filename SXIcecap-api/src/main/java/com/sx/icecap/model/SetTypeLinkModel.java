@@ -14,7 +14,10 @@
 
 package com.sx.icecap.model;
 
+import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
+
+import java.util.Date;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -95,6 +98,69 @@ public interface SetTypeLinkModel extends BaseModel<SetTypeLink> {
 	public void setDataTypeId(long dataTypeId);
 
 	/**
+	 * Returns the commentable of this set type link.
+	 *
+	 * @return the commentable of this set type link
+	 */
+	public boolean getCommentable();
+
+	/**
+	 * Returns <code>true</code> if this set type link is commentable.
+	 *
+	 * @return <code>true</code> if this set type link is commentable; <code>false</code> otherwise
+	 */
+	public boolean isCommentable();
+
+	/**
+	 * Sets whether this set type link is commentable.
+	 *
+	 * @param commentable the commentable of this set type link
+	 */
+	public void setCommentable(boolean commentable);
+
+	/**
+	 * Returns the verifiable of this set type link.
+	 *
+	 * @return the verifiable of this set type link
+	 */
+	public boolean getVerifiable();
+
+	/**
+	 * Returns <code>true</code> if this set type link is verifiable.
+	 *
+	 * @return <code>true</code> if this set type link is verifiable; <code>false</code> otherwise
+	 */
+	public boolean isVerifiable();
+
+	/**
+	 * Sets whether this set type link is verifiable.
+	 *
+	 * @param verifiable the verifiable of this set type link
+	 */
+	public void setVerifiable(boolean verifiable);
+
+	/**
+	 * Returns the freezable of this set type link.
+	 *
+	 * @return the freezable of this set type link
+	 */
+	public boolean getFreezable();
+
+	/**
+	 * Returns <code>true</code> if this set type link is freezable.
+	 *
+	 * @return <code>true</code> if this set type link is freezable; <code>false</code> otherwise
+	 */
+	public boolean isFreezable();
+
+	/**
+	 * Sets whether this set type link is freezable.
+	 *
+	 * @param freezable the freezable of this set type link
+	 */
+	public void setFreezable(boolean freezable);
+
+	/**
 	 * Returns the freezed of this set type link.
 	 *
 	 * @return the freezed of this set type link
@@ -116,6 +182,63 @@ public interface SetTypeLinkModel extends BaseModel<SetTypeLink> {
 	public void setFreezed(boolean freezed);
 
 	/**
+	 * Returns the freezed user ID of this set type link.
+	 *
+	 * @return the freezed user ID of this set type link
+	 */
+	public long getFreezedUserId();
+
+	/**
+	 * Sets the freezed user ID of this set type link.
+	 *
+	 * @param freezedUserId the freezed user ID of this set type link
+	 */
+	public void setFreezedUserId(long freezedUserId);
+
+	/**
+	 * Returns the freezed user uuid of this set type link.
+	 *
+	 * @return the freezed user uuid of this set type link
+	 */
+	public String getFreezedUserUuid();
+
+	/**
+	 * Sets the freezed user uuid of this set type link.
+	 *
+	 * @param freezedUserUuid the freezed user uuid of this set type link
+	 */
+	public void setFreezedUserUuid(String freezedUserUuid);
+
+	/**
+	 * Returns the freezed user name of this set type link.
+	 *
+	 * @return the freezed user name of this set type link
+	 */
+	@AutoEscape
+	public String getFreezedUserName();
+
+	/**
+	 * Sets the freezed user name of this set type link.
+	 *
+	 * @param freezedUserName the freezed user name of this set type link
+	 */
+	public void setFreezedUserName(String freezedUserName);
+
+	/**
+	 * Returns the freezed date of this set type link.
+	 *
+	 * @return the freezed date of this set type link
+	 */
+	public Date getFreezedDate();
+
+	/**
+	 * Sets the freezed date of this set type link.
+	 *
+	 * @param freezedDate the freezed date of this set type link
+	 */
+	public void setFreezedDate(Date freezedDate);
+
+	/**
 	 * Returns the verified of this set type link.
 	 *
 	 * @return the verified of this set type link
@@ -135,5 +258,62 @@ public interface SetTypeLinkModel extends BaseModel<SetTypeLink> {
 	 * @param verified the verified of this set type link
 	 */
 	public void setVerified(boolean verified);
+
+	/**
+	 * Returns the verified user ID of this set type link.
+	 *
+	 * @return the verified user ID of this set type link
+	 */
+	public long getVerifiedUserId();
+
+	/**
+	 * Sets the verified user ID of this set type link.
+	 *
+	 * @param verifiedUserId the verified user ID of this set type link
+	 */
+	public void setVerifiedUserId(long verifiedUserId);
+
+	/**
+	 * Returns the verified user uuid of this set type link.
+	 *
+	 * @return the verified user uuid of this set type link
+	 */
+	public String getVerifiedUserUuid();
+
+	/**
+	 * Sets the verified user uuid of this set type link.
+	 *
+	 * @param verifiedUserUuid the verified user uuid of this set type link
+	 */
+	public void setVerifiedUserUuid(String verifiedUserUuid);
+
+	/**
+	 * Returns the verified user name of this set type link.
+	 *
+	 * @return the verified user name of this set type link
+	 */
+	@AutoEscape
+	public String getVerifiedUserName();
+
+	/**
+	 * Sets the verified user name of this set type link.
+	 *
+	 * @param verifiedUserName the verified user name of this set type link
+	 */
+	public void setVerifiedUserName(String verifiedUserName);
+
+	/**
+	 * Returns the verified date of this set type link.
+	 *
+	 * @return the verified date of this set type link
+	 */
+	public Date getVerifiedDate();
+
+	/**
+	 * Sets the verified date of this set type link.
+	 *
+	 * @param verifiedDate the verified date of this set type link
+	 */
+	public void setVerifiedDate(Date verifiedDate);
 
 }

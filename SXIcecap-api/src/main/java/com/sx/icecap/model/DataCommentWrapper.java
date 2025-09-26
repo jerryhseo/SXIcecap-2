@@ -49,11 +49,16 @@ public class DataCommentWrapper
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("structuredDataId", getStructuredDataId());
+		attributes.put("commentType", getCommentType());
+		attributes.put("commentBase", getCommentBase());
+		attributes.put("commentDataId", getCommentDataId());
 		attributes.put("paramCode", getParamCode());
 		attributes.put("parentCommentId", getParentCommentId());
 		attributes.put("comment", getComment());
 		attributes.put("closed", isClosed());
+		attributes.put("closedUserId", getClosedUserId());
+		attributes.put("closedUserName", getClosedUserName());
+		attributes.put("closedDate", getClosedDate());
 
 		return attributes;
 	}
@@ -102,10 +107,22 @@ public class DataCommentWrapper
 			setModifiedDate(modifiedDate);
 		}
 
-		Long structuredDataId = (Long)attributes.get("structuredDataId");
+		String commentType = (String)attributes.get("commentType");
 
-		if (structuredDataId != null) {
-			setStructuredDataId(structuredDataId);
+		if (commentType != null) {
+			setCommentType(commentType);
+		}
+
+		String commentBase = (String)attributes.get("commentBase");
+
+		if (commentBase != null) {
+			setCommentBase(commentBase);
+		}
+
+		Long commentDataId = (Long)attributes.get("commentDataId");
+
+		if (commentDataId != null) {
+			setCommentDataId(commentDataId);
 		}
 
 		String paramCode = (String)attributes.get("paramCode");
@@ -131,6 +148,24 @@ public class DataCommentWrapper
 		if (closed != null) {
 			setClosed(closed);
 		}
+
+		Long closedUserId = (Long)attributes.get("closedUserId");
+
+		if (closedUserId != null) {
+			setClosedUserId(closedUserId);
+		}
+
+		String closedUserName = (String)attributes.get("closedUserName");
+
+		if (closedUserName != null) {
+			setClosedUserName(closedUserName);
+		}
+
+		Date closedDate = (Date)attributes.get("closedDate");
+
+		if (closedDate != null) {
+			setClosedDate(closedDate);
+		}
 	}
 
 	/**
@@ -144,6 +179,46 @@ public class DataCommentWrapper
 	}
 
 	/**
+	 * Returns the closed date of this data comment.
+	 *
+	 * @return the closed date of this data comment
+	 */
+	@Override
+	public Date getClosedDate() {
+		return model.getClosedDate();
+	}
+
+	/**
+	 * Returns the closed user ID of this data comment.
+	 *
+	 * @return the closed user ID of this data comment
+	 */
+	@Override
+	public long getClosedUserId() {
+		return model.getClosedUserId();
+	}
+
+	/**
+	 * Returns the closed user name of this data comment.
+	 *
+	 * @return the closed user name of this data comment
+	 */
+	@Override
+	public String getClosedUserName() {
+		return model.getClosedUserName();
+	}
+
+	/**
+	 * Returns the closed user uuid of this data comment.
+	 *
+	 * @return the closed user uuid of this data comment
+	 */
+	@Override
+	public String getClosedUserUuid() {
+		return model.getClosedUserUuid();
+	}
+
+	/**
 	 * Returns the comment of this data comment.
 	 *
 	 * @return the comment of this data comment
@@ -151,6 +226,36 @@ public class DataCommentWrapper
 	@Override
 	public String getComment() {
 		return model.getComment();
+	}
+
+	/**
+	 * Returns the comment base of this data comment.
+	 *
+	 * @return the comment base of this data comment
+	 */
+	@Override
+	public String getCommentBase() {
+		return model.getCommentBase();
+	}
+
+	/**
+	 * Returns the comment data ID of this data comment.
+	 *
+	 * @return the comment data ID of this data comment
+	 */
+	@Override
+	public long getCommentDataId() {
+		return model.getCommentDataId();
+	}
+
+	/**
+	 * Returns the comment type of this data comment.
+	 *
+	 * @return the comment type of this data comment
+	 */
+	@Override
+	public String getCommentType() {
+		return model.getCommentType();
 	}
 
 	/**
@@ -234,16 +339,6 @@ public class DataCommentWrapper
 	}
 
 	/**
-	 * Returns the structured data ID of this data comment.
-	 *
-	 * @return the structured data ID of this data comment
-	 */
-	@Override
-	public long getStructuredDataId() {
-		return model.getStructuredDataId();
-	}
-
-	/**
 	 * Returns the user ID of this data comment.
 	 *
 	 * @return the user ID of this data comment
@@ -299,6 +394,46 @@ public class DataCommentWrapper
 	}
 
 	/**
+	 * Sets the closed date of this data comment.
+	 *
+	 * @param closedDate the closed date of this data comment
+	 */
+	@Override
+	public void setClosedDate(Date closedDate) {
+		model.setClosedDate(closedDate);
+	}
+
+	/**
+	 * Sets the closed user ID of this data comment.
+	 *
+	 * @param closedUserId the closed user ID of this data comment
+	 */
+	@Override
+	public void setClosedUserId(long closedUserId) {
+		model.setClosedUserId(closedUserId);
+	}
+
+	/**
+	 * Sets the closed user name of this data comment.
+	 *
+	 * @param closedUserName the closed user name of this data comment
+	 */
+	@Override
+	public void setClosedUserName(String closedUserName) {
+		model.setClosedUserName(closedUserName);
+	}
+
+	/**
+	 * Sets the closed user uuid of this data comment.
+	 *
+	 * @param closedUserUuid the closed user uuid of this data comment
+	 */
+	@Override
+	public void setClosedUserUuid(String closedUserUuid) {
+		model.setClosedUserUuid(closedUserUuid);
+	}
+
+	/**
 	 * Sets the comment of this data comment.
 	 *
 	 * @param comment the comment of this data comment
@@ -306,6 +441,36 @@ public class DataCommentWrapper
 	@Override
 	public void setComment(String comment) {
 		model.setComment(comment);
+	}
+
+	/**
+	 * Sets the comment base of this data comment.
+	 *
+	 * @param commentBase the comment base of this data comment
+	 */
+	@Override
+	public void setCommentBase(String commentBase) {
+		model.setCommentBase(commentBase);
+	}
+
+	/**
+	 * Sets the comment data ID of this data comment.
+	 *
+	 * @param commentDataId the comment data ID of this data comment
+	 */
+	@Override
+	public void setCommentDataId(long commentDataId) {
+		model.setCommentDataId(commentDataId);
+	}
+
+	/**
+	 * Sets the comment type of this data comment.
+	 *
+	 * @param commentType the comment type of this data comment
+	 */
+	@Override
+	public void setCommentType(String commentType) {
+		model.setCommentType(commentType);
 	}
 
 	/**
@@ -389,16 +554,6 @@ public class DataCommentWrapper
 	}
 
 	/**
-	 * Sets the structured data ID of this data comment.
-	 *
-	 * @param structuredDataId the structured data ID of this data comment
-	 */
-	@Override
-	public void setStructuredDataId(long structuredDataId) {
-		model.setStructuredDataId(structuredDataId);
-	}
-
-	/**
 	 * Sets the user ID of this data comment.
 	 *
 	 * @param userId the user ID of this data comment
@@ -426,6 +581,11 @@ public class DataCommentWrapper
 	@Override
 	public void setUserUuid(String userUuid) {
 		model.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject toJSON() {
+		return model.toJSON();
 	}
 
 	@Override

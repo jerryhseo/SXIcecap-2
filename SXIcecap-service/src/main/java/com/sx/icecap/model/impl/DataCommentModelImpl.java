@@ -72,9 +72,12 @@ public class DataCommentModelImpl
 		{"dataCommentId", Types.BIGINT}, {"companyId", Types.BIGINT},
 		{"groupId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"modifiedDate", Types.TIMESTAMP}, {"structuredDataId", Types.BIGINT},
+		{"modifiedDate", Types.TIMESTAMP}, {"commentType", Types.VARCHAR},
+		{"commentBase", Types.VARCHAR}, {"commentDataId", Types.BIGINT},
 		{"paramCode", Types.VARCHAR}, {"parentCommentId", Types.BIGINT},
-		{"comment_", Types.VARCHAR}, {"closed", Types.BOOLEAN}
+		{"comment_", Types.VARCHAR}, {"closed", Types.BOOLEAN},
+		{"closedUserId", Types.BIGINT}, {"closedUserName", Types.VARCHAR},
+		{"closedDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -88,15 +91,20 @@ public class DataCommentModelImpl
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("structuredDataId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("commentType", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("commentBase", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("commentDataId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("paramCode", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("parentCommentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("comment_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("closed", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("closedUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("closedUserName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("closedDate", Types.TIMESTAMP);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataComment (dataCommentId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,structuredDataId LONG,paramCode VARCHAR(75) null,parentCommentId LONG,comment_ VARCHAR(75) null,closed BOOLEAN)";
+		"create table SX_ICECAP_DataComment (dataCommentId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,commentType VARCHAR(75) null,commentBase VARCHAR(75) null,commentDataId LONG,paramCode VARCHAR(75) null,parentCommentId LONG,comment_ VARCHAR(75) null,closed BOOLEAN,closedUserId LONG,closedUserName VARCHAR(75) null,closedDate DATE null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_DataComment";
@@ -113,11 +121,15 @@ public class DataCommentModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long PARAMCODE_COLUMN_BITMASK = 1L;
+	public static final long COMMENTBASE_COLUMN_BITMASK = 1L;
 
-	public static final long STRUCTUREDDATAID_COLUMN_BITMASK = 2L;
+	public static final long COMMENTDATAID_COLUMN_BITMASK = 2L;
 
-	public static final long DATACOMMENTID_COLUMN_BITMASK = 4L;
+	public static final long COMMENTTYPE_COLUMN_BITMASK = 4L;
+
+	public static final long PARAMCODE_COLUMN_BITMASK = 8L;
+
+	public static final long DATACOMMENTID_COLUMN_BITMASK = 16L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -255,10 +267,20 @@ public class DataCommentModelImpl
 			"modifiedDate",
 			(BiConsumer<DataComment, Date>)DataComment::setModifiedDate);
 		attributeGetterFunctions.put(
-			"structuredDataId", DataComment::getStructuredDataId);
+			"commentType", DataComment::getCommentType);
 		attributeSetterBiConsumers.put(
-			"structuredDataId",
-			(BiConsumer<DataComment, Long>)DataComment::setStructuredDataId);
+			"commentType",
+			(BiConsumer<DataComment, String>)DataComment::setCommentType);
+		attributeGetterFunctions.put(
+			"commentBase", DataComment::getCommentBase);
+		attributeSetterBiConsumers.put(
+			"commentBase",
+			(BiConsumer<DataComment, String>)DataComment::setCommentBase);
+		attributeGetterFunctions.put(
+			"commentDataId", DataComment::getCommentDataId);
+		attributeSetterBiConsumers.put(
+			"commentDataId",
+			(BiConsumer<DataComment, Long>)DataComment::setCommentDataId);
 		attributeGetterFunctions.put("paramCode", DataComment::getParamCode);
 		attributeSetterBiConsumers.put(
 			"paramCode",
@@ -275,6 +297,20 @@ public class DataCommentModelImpl
 		attributeGetterFunctions.put("closed", DataComment::getClosed);
 		attributeSetterBiConsumers.put(
 			"closed", (BiConsumer<DataComment, Boolean>)DataComment::setClosed);
+		attributeGetterFunctions.put(
+			"closedUserId", DataComment::getClosedUserId);
+		attributeSetterBiConsumers.put(
+			"closedUserId",
+			(BiConsumer<DataComment, Long>)DataComment::setClosedUserId);
+		attributeGetterFunctions.put(
+			"closedUserName", DataComment::getClosedUserName);
+		attributeSetterBiConsumers.put(
+			"closedUserName",
+			(BiConsumer<DataComment, String>)DataComment::setClosedUserName);
+		attributeGetterFunctions.put("closedDate", DataComment::getClosedDate);
+		attributeSetterBiConsumers.put(
+			"closedDate",
+			(BiConsumer<DataComment, Date>)DataComment::setClosedDate);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -380,25 +416,75 @@ public class DataCommentModelImpl
 	}
 
 	@Override
-	public long getStructuredDataId() {
-		return _structuredDataId;
+	public String getCommentType() {
+		if (_commentType == null) {
+			return "";
+		}
+		else {
+			return _commentType;
+		}
 	}
 
 	@Override
-	public void setStructuredDataId(long structuredDataId) {
-		_columnBitmask |= STRUCTUREDDATAID_COLUMN_BITMASK;
+	public void setCommentType(String commentType) {
+		_columnBitmask |= COMMENTTYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalStructuredDataId) {
-			_setOriginalStructuredDataId = true;
-
-			_originalStructuredDataId = _structuredDataId;
+		if (_originalCommentType == null) {
+			_originalCommentType = _commentType;
 		}
 
-		_structuredDataId = structuredDataId;
+		_commentType = commentType;
 	}
 
-	public long getOriginalStructuredDataId() {
-		return _originalStructuredDataId;
+	public String getOriginalCommentType() {
+		return GetterUtil.getString(_originalCommentType);
+	}
+
+	@Override
+	public String getCommentBase() {
+		if (_commentBase == null) {
+			return "";
+		}
+		else {
+			return _commentBase;
+		}
+	}
+
+	@Override
+	public void setCommentBase(String commentBase) {
+		_columnBitmask |= COMMENTBASE_COLUMN_BITMASK;
+
+		if (_originalCommentBase == null) {
+			_originalCommentBase = _commentBase;
+		}
+
+		_commentBase = commentBase;
+	}
+
+	public String getOriginalCommentBase() {
+		return GetterUtil.getString(_originalCommentBase);
+	}
+
+	@Override
+	public long getCommentDataId() {
+		return _commentDataId;
+	}
+
+	@Override
+	public void setCommentDataId(long commentDataId) {
+		_columnBitmask |= COMMENTDATAID_COLUMN_BITMASK;
+
+		if (!_setOriginalCommentDataId) {
+			_setOriginalCommentDataId = true;
+
+			_originalCommentDataId = _commentDataId;
+		}
+
+		_commentDataId = commentDataId;
+	}
+
+	public long getOriginalCommentDataId() {
+		return _originalCommentDataId;
 	}
 
 	@Override
@@ -466,6 +552,57 @@ public class DataCommentModelImpl
 		_closed = closed;
 	}
 
+	@Override
+	public long getClosedUserId() {
+		return _closedUserId;
+	}
+
+	@Override
+	public void setClosedUserId(long closedUserId) {
+		_closedUserId = closedUserId;
+	}
+
+	@Override
+	public String getClosedUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getClosedUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setClosedUserUuid(String closedUserUuid) {
+	}
+
+	@Override
+	public String getClosedUserName() {
+		if (_closedUserName == null) {
+			return "";
+		}
+		else {
+			return _closedUserName;
+		}
+	}
+
+	@Override
+	public void setClosedUserName(String closedUserName) {
+		_closedUserName = closedUserName;
+	}
+
+	@Override
+	public Date getClosedDate() {
+		return _closedDate;
+	}
+
+	@Override
+	public void setClosedDate(Date closedDate) {
+		_closedDate = closedDate;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -509,11 +646,16 @@ public class DataCommentModelImpl
 		dataCommentImpl.setUserName(getUserName());
 		dataCommentImpl.setCreateDate(getCreateDate());
 		dataCommentImpl.setModifiedDate(getModifiedDate());
-		dataCommentImpl.setStructuredDataId(getStructuredDataId());
+		dataCommentImpl.setCommentType(getCommentType());
+		dataCommentImpl.setCommentBase(getCommentBase());
+		dataCommentImpl.setCommentDataId(getCommentDataId());
 		dataCommentImpl.setParamCode(getParamCode());
 		dataCommentImpl.setParentCommentId(getParentCommentId());
 		dataCommentImpl.setComment(getComment());
 		dataCommentImpl.setClosed(isClosed());
+		dataCommentImpl.setClosedUserId(getClosedUserId());
+		dataCommentImpl.setClosedUserName(getClosedUserName());
+		dataCommentImpl.setClosedDate(getClosedDate());
 
 		dataCommentImpl.resetOriginalValues();
 
@@ -575,9 +717,13 @@ public class DataCommentModelImpl
 	@Override
 	public void resetOriginalValues() {
 		_setModifiedDate = false;
-		_originalStructuredDataId = _structuredDataId;
+		_originalCommentType = _commentType;
 
-		_setOriginalStructuredDataId = false;
+		_originalCommentBase = _commentBase;
+
+		_originalCommentDataId = _commentDataId;
+
+		_setOriginalCommentDataId = false;
 
 		_originalParamCode = _paramCode;
 
@@ -623,7 +769,23 @@ public class DataCommentModelImpl
 			dataCommentCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		dataCommentCacheModel.structuredDataId = getStructuredDataId();
+		dataCommentCacheModel.commentType = getCommentType();
+
+		String commentType = dataCommentCacheModel.commentType;
+
+		if ((commentType != null) && (commentType.length() == 0)) {
+			dataCommentCacheModel.commentType = null;
+		}
+
+		dataCommentCacheModel.commentBase = getCommentBase();
+
+		String commentBase = dataCommentCacheModel.commentBase;
+
+		if ((commentBase != null) && (commentBase.length() == 0)) {
+			dataCommentCacheModel.commentBase = null;
+		}
+
+		dataCommentCacheModel.commentDataId = getCommentDataId();
 
 		dataCommentCacheModel.paramCode = getParamCode();
 
@@ -644,6 +806,25 @@ public class DataCommentModelImpl
 		}
 
 		dataCommentCacheModel.closed = isClosed();
+
+		dataCommentCacheModel.closedUserId = getClosedUserId();
+
+		dataCommentCacheModel.closedUserName = getClosedUserName();
+
+		String closedUserName = dataCommentCacheModel.closedUserName;
+
+		if ((closedUserName != null) && (closedUserName.length() == 0)) {
+			dataCommentCacheModel.closedUserName = null;
+		}
+
+		Date closedDate = getClosedDate();
+
+		if (closedDate != null) {
+			dataCommentCacheModel.closedDate = closedDate.getTime();
+		}
+		else {
+			dataCommentCacheModel.closedDate = Long.MIN_VALUE;
+		}
 
 		return dataCommentCacheModel;
 	}
@@ -748,14 +929,21 @@ public class DataCommentModelImpl
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
-	private long _structuredDataId;
-	private long _originalStructuredDataId;
-	private boolean _setOriginalStructuredDataId;
+	private String _commentType;
+	private String _originalCommentType;
+	private String _commentBase;
+	private String _originalCommentBase;
+	private long _commentDataId;
+	private long _originalCommentDataId;
+	private boolean _setOriginalCommentDataId;
 	private String _paramCode;
 	private String _originalParamCode;
 	private long _parentCommentId;
 	private String _comment;
 	private boolean _closed;
+	private long _closedUserId;
+	private String _closedUserName;
+	private Date _closedDate;
 	private long _columnBitmask;
 	private DataComment _escapedModel;
 

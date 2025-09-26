@@ -186,18 +186,48 @@ public interface DataCommentModel
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
-	 * Returns the structured data ID of this data comment.
+	 * Returns the comment type of this data comment.
 	 *
-	 * @return the structured data ID of this data comment
+	 * @return the comment type of this data comment
 	 */
-	public long getStructuredDataId();
+	@AutoEscape
+	public String getCommentType();
 
 	/**
-	 * Sets the structured data ID of this data comment.
+	 * Sets the comment type of this data comment.
 	 *
-	 * @param structuredDataId the structured data ID of this data comment
+	 * @param commentType the comment type of this data comment
 	 */
-	public void setStructuredDataId(long structuredDataId);
+	public void setCommentType(String commentType);
+
+	/**
+	 * Returns the comment base of this data comment.
+	 *
+	 * @return the comment base of this data comment
+	 */
+	@AutoEscape
+	public String getCommentBase();
+
+	/**
+	 * Sets the comment base of this data comment.
+	 *
+	 * @param commentBase the comment base of this data comment
+	 */
+	public void setCommentBase(String commentBase);
+
+	/**
+	 * Returns the comment data ID of this data comment.
+	 *
+	 * @return the comment data ID of this data comment
+	 */
+	public long getCommentDataId();
+
+	/**
+	 * Sets the comment data ID of this data comment.
+	 *
+	 * @param commentDataId the comment data ID of this data comment
+	 */
+	public void setCommentDataId(long commentDataId);
 
 	/**
 	 * Returns the param code of this data comment.
@@ -263,5 +293,62 @@ public interface DataCommentModel
 	 * @param closed the closed of this data comment
 	 */
 	public void setClosed(boolean closed);
+
+	/**
+	 * Returns the closed user ID of this data comment.
+	 *
+	 * @return the closed user ID of this data comment
+	 */
+	public long getClosedUserId();
+
+	/**
+	 * Sets the closed user ID of this data comment.
+	 *
+	 * @param closedUserId the closed user ID of this data comment
+	 */
+	public void setClosedUserId(long closedUserId);
+
+	/**
+	 * Returns the closed user uuid of this data comment.
+	 *
+	 * @return the closed user uuid of this data comment
+	 */
+	public String getClosedUserUuid();
+
+	/**
+	 * Sets the closed user uuid of this data comment.
+	 *
+	 * @param closedUserUuid the closed user uuid of this data comment
+	 */
+	public void setClosedUserUuid(String closedUserUuid);
+
+	/**
+	 * Returns the closed user name of this data comment.
+	 *
+	 * @return the closed user name of this data comment
+	 */
+	@AutoEscape
+	public String getClosedUserName();
+
+	/**
+	 * Sets the closed user name of this data comment.
+	 *
+	 * @param closedUserName the closed user name of this data comment
+	 */
+	public void setClosedUserName(String closedUserName);
+
+	/**
+	 * Returns the closed date of this data comment.
+	 *
+	 * @return the closed date of this data comment
+	 */
+	public Date getClosedDate();
+
+	/**
+	 * Sets the closed date of this data comment.
+	 *
+	 * @param closedDate the closed date of this data comment
+	 */
+	public void setClosedDate(Date closedDate);
 
 }

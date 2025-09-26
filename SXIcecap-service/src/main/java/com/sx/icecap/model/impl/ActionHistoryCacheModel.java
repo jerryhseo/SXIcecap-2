@@ -63,7 +63,7 @@ public class ActionHistoryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{actionHistoryId=");
 		sb.append(actionHistoryId);
@@ -73,16 +73,20 @@ public class ActionHistoryCacheModel
 		sb.append(userName);
 		sb.append(", createDate=");
 		sb.append(createDate);
-		sb.append(", structuredDataId=");
-		sb.append(structuredDataId);
+		sb.append(", actionType=");
+		sb.append(actionType);
+		sb.append(", actionBase=");
+		sb.append(actionBase);
+		sb.append(", actionDataId=");
+		sb.append(actionDataId);
 		sb.append(", paramCode=");
 		sb.append(paramCode);
+		sb.append(", actionCommand=");
+		sb.append(actionCommand);
 		sb.append(", prevValue=");
 		sb.append(prevValue);
-		sb.append(", changedValue=");
-		sb.append(changedValue);
-		sb.append(", action=");
-		sb.append(action);
+		sb.append(", modifiedValue=");
+		sb.append(modifiedValue);
 		sb.append(", comment=");
 		sb.append(comment);
 		sb.append("}");
@@ -111,13 +115,34 @@ public class ActionHistoryCacheModel
 			actionHistoryImpl.setCreateDate(new Date(createDate));
 		}
 
-		actionHistoryImpl.setStructuredDataId(structuredDataId);
+		if (actionType == null) {
+			actionHistoryImpl.setActionType("");
+		}
+		else {
+			actionHistoryImpl.setActionType(actionType);
+		}
+
+		if (actionBase == null) {
+			actionHistoryImpl.setActionBase("");
+		}
+		else {
+			actionHistoryImpl.setActionBase(actionBase);
+		}
+
+		actionHistoryImpl.setActionDataId(actionDataId);
 
 		if (paramCode == null) {
 			actionHistoryImpl.setParamCode("");
 		}
 		else {
 			actionHistoryImpl.setParamCode(paramCode);
+		}
+
+		if (actionCommand == null) {
+			actionHistoryImpl.setActionCommand("");
+		}
+		else {
+			actionHistoryImpl.setActionCommand(actionCommand);
 		}
 
 		if (prevValue == null) {
@@ -127,18 +152,11 @@ public class ActionHistoryCacheModel
 			actionHistoryImpl.setPrevValue(prevValue);
 		}
 
-		if (changedValue == null) {
-			actionHistoryImpl.setChangedValue("");
+		if (modifiedValue == null) {
+			actionHistoryImpl.setModifiedValue("");
 		}
 		else {
-			actionHistoryImpl.setChangedValue(changedValue);
-		}
-
-		if (action == null) {
-			actionHistoryImpl.setAction("");
-		}
-		else {
-			actionHistoryImpl.setAction(action);
+			actionHistoryImpl.setModifiedValue(modifiedValue);
 		}
 
 		if (comment == null) {
@@ -160,12 +178,14 @@ public class ActionHistoryCacheModel
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
+		actionType = objectInput.readUTF();
+		actionBase = objectInput.readUTF();
 
-		structuredDataId = objectInput.readLong();
+		actionDataId = objectInput.readLong();
 		paramCode = objectInput.readUTF();
+		actionCommand = objectInput.readUTF();
 		prevValue = objectInput.readUTF();
-		changedValue = objectInput.readUTF();
-		action = objectInput.readUTF();
+		modifiedValue = objectInput.readUTF();
 		comment = objectInput.readUTF();
 	}
 
@@ -184,13 +204,34 @@ public class ActionHistoryCacheModel
 
 		objectOutput.writeLong(createDate);
 
-		objectOutput.writeLong(structuredDataId);
+		if (actionType == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(actionType);
+		}
+
+		if (actionBase == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(actionBase);
+		}
+
+		objectOutput.writeLong(actionDataId);
 
 		if (paramCode == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(paramCode);
+		}
+
+		if (actionCommand == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(actionCommand);
 		}
 
 		if (prevValue == null) {
@@ -200,18 +241,11 @@ public class ActionHistoryCacheModel
 			objectOutput.writeUTF(prevValue);
 		}
 
-		if (changedValue == null) {
+		if (modifiedValue == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(changedValue);
-		}
-
-		if (action == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(action);
+			objectOutput.writeUTF(modifiedValue);
 		}
 
 		if (comment == null) {
@@ -226,11 +260,13 @@ public class ActionHistoryCacheModel
 	public long userId;
 	public String userName;
 	public long createDate;
-	public long structuredDataId;
+	public String actionType;
+	public String actionBase;
+	public long actionDataId;
 	public String paramCode;
+	public String actionCommand;
 	public String prevValue;
-	public String changedValue;
-	public String action;
+	public String modifiedValue;
 	public String comment;
 
 }

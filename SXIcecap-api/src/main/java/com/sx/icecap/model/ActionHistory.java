@@ -56,4 +56,6 @@ public interface ActionHistory extends ActionHistoryModel, PersistedModel {
 
 		};
 
+	public com.liferay.portal.kernel.json.JSONObject toJSON();
+
 }

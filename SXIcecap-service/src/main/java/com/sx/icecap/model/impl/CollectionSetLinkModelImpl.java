@@ -18,10 +18,13 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -67,7 +70,12 @@ public class CollectionSetLinkModelImpl
 	public static final Object[][] TABLE_COLUMNS = {
 		{"collectionSetLinkId", Types.BIGINT},
 		{"dataCollectionId", Types.BIGINT}, {"dataSetId", Types.BIGINT},
-		{"freezed", Types.BOOLEAN}, {"verified", Types.BOOLEAN}
+		{"commentable", Types.BOOLEAN}, {"verifiable", Types.BOOLEAN},
+		{"freezable", Types.BOOLEAN}, {"freezed", Types.BOOLEAN},
+		{"freezedUserId", Types.BIGINT}, {"freezedUserName", Types.VARCHAR},
+		{"freezedDate", Types.TIMESTAMP}, {"verified", Types.BOOLEAN},
+		{"verifiedUserId", Types.BIGINT}, {"verifiedUserName", Types.VARCHAR},
+		{"verifiedDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -77,12 +85,21 @@ public class CollectionSetLinkModelImpl
 		TABLE_COLUMNS_MAP.put("collectionSetLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataCollectionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataSetId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("commentable", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("verifiable", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("freezable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("freezed", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("freezedUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("freezedUserName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("freezedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("verified", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("verifiedUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("verifiedUserName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("verifiedDate", Types.TIMESTAMP);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_CollectionSetLink (collectionSetLinkId LONG not null primary key,dataCollectionId LONG,dataSetId LONG,freezed BOOLEAN,verified BOOLEAN)";
+		"create table SX_ICECAP_CollectionSetLink (collectionSetLinkId LONG not null primary key,dataCollectionId LONG,dataSetId LONG,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_CollectionSetLink";
@@ -233,17 +250,71 @@ public class CollectionSetLinkModelImpl
 			"dataSetId",
 			(BiConsumer<CollectionSetLink, Long>)
 				CollectionSetLink::setDataSetId);
+		attributeGetterFunctions.put(
+			"commentable", CollectionSetLink::getCommentable);
+		attributeSetterBiConsumers.put(
+			"commentable",
+			(BiConsumer<CollectionSetLink, Boolean>)
+				CollectionSetLink::setCommentable);
+		attributeGetterFunctions.put(
+			"verifiable", CollectionSetLink::getVerifiable);
+		attributeSetterBiConsumers.put(
+			"verifiable",
+			(BiConsumer<CollectionSetLink, Boolean>)
+				CollectionSetLink::setVerifiable);
+		attributeGetterFunctions.put(
+			"freezable", CollectionSetLink::getFreezable);
+		attributeSetterBiConsumers.put(
+			"freezable",
+			(BiConsumer<CollectionSetLink, Boolean>)
+				CollectionSetLink::setFreezable);
 		attributeGetterFunctions.put("freezed", CollectionSetLink::getFreezed);
 		attributeSetterBiConsumers.put(
 			"freezed",
 			(BiConsumer<CollectionSetLink, Boolean>)
 				CollectionSetLink::setFreezed);
 		attributeGetterFunctions.put(
+			"freezedUserId", CollectionSetLink::getFreezedUserId);
+		attributeSetterBiConsumers.put(
+			"freezedUserId",
+			(BiConsumer<CollectionSetLink, Long>)
+				CollectionSetLink::setFreezedUserId);
+		attributeGetterFunctions.put(
+			"freezedUserName", CollectionSetLink::getFreezedUserName);
+		attributeSetterBiConsumers.put(
+			"freezedUserName",
+			(BiConsumer<CollectionSetLink, String>)
+				CollectionSetLink::setFreezedUserName);
+		attributeGetterFunctions.put(
+			"freezedDate", CollectionSetLink::getFreezedDate);
+		attributeSetterBiConsumers.put(
+			"freezedDate",
+			(BiConsumer<CollectionSetLink, Date>)
+				CollectionSetLink::setFreezedDate);
+		attributeGetterFunctions.put(
 			"verified", CollectionSetLink::getVerified);
 		attributeSetterBiConsumers.put(
 			"verified",
 			(BiConsumer<CollectionSetLink, Boolean>)
 				CollectionSetLink::setVerified);
+		attributeGetterFunctions.put(
+			"verifiedUserId", CollectionSetLink::getVerifiedUserId);
+		attributeSetterBiConsumers.put(
+			"verifiedUserId",
+			(BiConsumer<CollectionSetLink, Long>)
+				CollectionSetLink::setVerifiedUserId);
+		attributeGetterFunctions.put(
+			"verifiedUserName", CollectionSetLink::getVerifiedUserName);
+		attributeSetterBiConsumers.put(
+			"verifiedUserName",
+			(BiConsumer<CollectionSetLink, String>)
+				CollectionSetLink::setVerifiedUserName);
+		attributeGetterFunctions.put(
+			"verifiedDate", CollectionSetLink::getVerifiedDate);
+		attributeSetterBiConsumers.put(
+			"verifiedDate",
+			(BiConsumer<CollectionSetLink, Date>)
+				CollectionSetLink::setVerifiedDate);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -306,6 +377,51 @@ public class CollectionSetLinkModelImpl
 	}
 
 	@Override
+	public boolean getCommentable() {
+		return _commentable;
+	}
+
+	@Override
+	public boolean isCommentable() {
+		return _commentable;
+	}
+
+	@Override
+	public void setCommentable(boolean commentable) {
+		_commentable = commentable;
+	}
+
+	@Override
+	public boolean getVerifiable() {
+		return _verifiable;
+	}
+
+	@Override
+	public boolean isVerifiable() {
+		return _verifiable;
+	}
+
+	@Override
+	public void setVerifiable(boolean verifiable) {
+		_verifiable = verifiable;
+	}
+
+	@Override
+	public boolean getFreezable() {
+		return _freezable;
+	}
+
+	@Override
+	public boolean isFreezable() {
+		return _freezable;
+	}
+
+	@Override
+	public void setFreezable(boolean freezable) {
+		_freezable = freezable;
+	}
+
+	@Override
 	public boolean getFreezed() {
 		return _freezed;
 	}
@@ -321,6 +437,57 @@ public class CollectionSetLinkModelImpl
 	}
 
 	@Override
+	public long getFreezedUserId() {
+		return _freezedUserId;
+	}
+
+	@Override
+	public void setFreezedUserId(long freezedUserId) {
+		_freezedUserId = freezedUserId;
+	}
+
+	@Override
+	public String getFreezedUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getFreezedUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setFreezedUserUuid(String freezedUserUuid) {
+	}
+
+	@Override
+	public String getFreezedUserName() {
+		if (_freezedUserName == null) {
+			return "";
+		}
+		else {
+			return _freezedUserName;
+		}
+	}
+
+	@Override
+	public void setFreezedUserName(String freezedUserName) {
+		_freezedUserName = freezedUserName;
+	}
+
+	@Override
+	public Date getFreezedDate() {
+		return _freezedDate;
+	}
+
+	@Override
+	public void setFreezedDate(Date freezedDate) {
+		_freezedDate = freezedDate;
+	}
+
+	@Override
 	public boolean getVerified() {
 		return _verified;
 	}
@@ -333,6 +500,57 @@ public class CollectionSetLinkModelImpl
 	@Override
 	public void setVerified(boolean verified) {
 		_verified = verified;
+	}
+
+	@Override
+	public long getVerifiedUserId() {
+		return _verifiedUserId;
+	}
+
+	@Override
+	public void setVerifiedUserId(long verifiedUserId) {
+		_verifiedUserId = verifiedUserId;
+	}
+
+	@Override
+	public String getVerifiedUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getVerifiedUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setVerifiedUserUuid(String verifiedUserUuid) {
+	}
+
+	@Override
+	public String getVerifiedUserName() {
+		if (_verifiedUserName == null) {
+			return "";
+		}
+		else {
+			return _verifiedUserName;
+		}
+	}
+
+	@Override
+	public void setVerifiedUserName(String verifiedUserName) {
+		_verifiedUserName = verifiedUserName;
+	}
+
+	@Override
+	public Date getVerifiedDate() {
+		return _verifiedDate;
+	}
+
+	@Override
+	public void setVerifiedDate(Date verifiedDate) {
+		_verifiedDate = verifiedDate;
 	}
 
 	public long getColumnBitmask() {
@@ -375,8 +593,17 @@ public class CollectionSetLinkModelImpl
 		collectionSetLinkImpl.setCollectionSetLinkId(getCollectionSetLinkId());
 		collectionSetLinkImpl.setDataCollectionId(getDataCollectionId());
 		collectionSetLinkImpl.setDataSetId(getDataSetId());
+		collectionSetLinkImpl.setCommentable(isCommentable());
+		collectionSetLinkImpl.setVerifiable(isVerifiable());
+		collectionSetLinkImpl.setFreezable(isFreezable());
 		collectionSetLinkImpl.setFreezed(isFreezed());
+		collectionSetLinkImpl.setFreezedUserId(getFreezedUserId());
+		collectionSetLinkImpl.setFreezedUserName(getFreezedUserName());
+		collectionSetLinkImpl.setFreezedDate(getFreezedDate());
 		collectionSetLinkImpl.setVerified(isVerified());
+		collectionSetLinkImpl.setVerifiedUserId(getVerifiedUserId());
+		collectionSetLinkImpl.setVerifiedUserName(getVerifiedUserName());
+		collectionSetLinkImpl.setVerifiedDate(getVerifiedDate());
 
 		collectionSetLinkImpl.resetOriginalValues();
 
@@ -460,9 +687,53 @@ public class CollectionSetLinkModelImpl
 
 		collectionSetLinkCacheModel.dataSetId = getDataSetId();
 
+		collectionSetLinkCacheModel.commentable = isCommentable();
+
+		collectionSetLinkCacheModel.verifiable = isVerifiable();
+
+		collectionSetLinkCacheModel.freezable = isFreezable();
+
 		collectionSetLinkCacheModel.freezed = isFreezed();
 
+		collectionSetLinkCacheModel.freezedUserId = getFreezedUserId();
+
+		collectionSetLinkCacheModel.freezedUserName = getFreezedUserName();
+
+		String freezedUserName = collectionSetLinkCacheModel.freezedUserName;
+
+		if ((freezedUserName != null) && (freezedUserName.length() == 0)) {
+			collectionSetLinkCacheModel.freezedUserName = null;
+		}
+
+		Date freezedDate = getFreezedDate();
+
+		if (freezedDate != null) {
+			collectionSetLinkCacheModel.freezedDate = freezedDate.getTime();
+		}
+		else {
+			collectionSetLinkCacheModel.freezedDate = Long.MIN_VALUE;
+		}
+
 		collectionSetLinkCacheModel.verified = isVerified();
+
+		collectionSetLinkCacheModel.verifiedUserId = getVerifiedUserId();
+
+		collectionSetLinkCacheModel.verifiedUserName = getVerifiedUserName();
+
+		String verifiedUserName = collectionSetLinkCacheModel.verifiedUserName;
+
+		if ((verifiedUserName != null) && (verifiedUserName.length() == 0)) {
+			collectionSetLinkCacheModel.verifiedUserName = null;
+		}
+
+		Date verifiedDate = getVerifiedDate();
+
+		if (verifiedDate != null) {
+			collectionSetLinkCacheModel.verifiedDate = verifiedDate.getTime();
+		}
+		else {
+			collectionSetLinkCacheModel.verifiedDate = Long.MIN_VALUE;
+		}
 
 		return collectionSetLinkCacheModel;
 	}
@@ -567,8 +838,17 @@ public class CollectionSetLinkModelImpl
 	private long _dataSetId;
 	private long _originalDataSetId;
 	private boolean _setOriginalDataSetId;
+	private boolean _commentable;
+	private boolean _verifiable;
+	private boolean _freezable;
 	private boolean _freezed;
+	private long _freezedUserId;
+	private String _freezedUserName;
+	private Date _freezedDate;
 	private boolean _verified;
+	private long _verifiedUserId;
+	private String _verifiedUserName;
+	private Date _verifiedDate;
 	private long _columnBitmask;
 	private CollectionSetLink _escapedModel;
 

@@ -127,18 +127,48 @@ public interface ActionHistoryModel extends BaseModel<ActionHistory> {
 	public void setCreateDate(Date createDate);
 
 	/**
-	 * Returns the structured data ID of this action history.
+	 * Returns the action type of this action history.
 	 *
-	 * @return the structured data ID of this action history
+	 * @return the action type of this action history
 	 */
-	public long getStructuredDataId();
+	@AutoEscape
+	public String getActionType();
 
 	/**
-	 * Sets the structured data ID of this action history.
+	 * Sets the action type of this action history.
 	 *
-	 * @param structuredDataId the structured data ID of this action history
+	 * @param actionType the action type of this action history
 	 */
-	public void setStructuredDataId(long structuredDataId);
+	public void setActionType(String actionType);
+
+	/**
+	 * Returns the action base of this action history.
+	 *
+	 * @return the action base of this action history
+	 */
+	@AutoEscape
+	public String getActionBase();
+
+	/**
+	 * Sets the action base of this action history.
+	 *
+	 * @param actionBase the action base of this action history
+	 */
+	public void setActionBase(String actionBase);
+
+	/**
+	 * Returns the action data ID of this action history.
+	 *
+	 * @return the action data ID of this action history
+	 */
+	public long getActionDataId();
+
+	/**
+	 * Sets the action data ID of this action history.
+	 *
+	 * @param actionDataId the action data ID of this action history
+	 */
+	public void setActionDataId(long actionDataId);
 
 	/**
 	 * Returns the param code of this action history.
@@ -156,6 +186,21 @@ public interface ActionHistoryModel extends BaseModel<ActionHistory> {
 	public void setParamCode(String paramCode);
 
 	/**
+	 * Returns the action command of this action history.
+	 *
+	 * @return the action command of this action history
+	 */
+	@AutoEscape
+	public String getActionCommand();
+
+	/**
+	 * Sets the action command of this action history.
+	 *
+	 * @param actionCommand the action command of this action history
+	 */
+	public void setActionCommand(String actionCommand);
+
+	/**
 	 * Returns the prev value of this action history.
 	 *
 	 * @return the prev value of this action history
@@ -171,34 +216,19 @@ public interface ActionHistoryModel extends BaseModel<ActionHistory> {
 	public void setPrevValue(String prevValue);
 
 	/**
-	 * Returns the changed value of this action history.
+	 * Returns the modified value of this action history.
 	 *
-	 * @return the changed value of this action history
+	 * @return the modified value of this action history
 	 */
 	@AutoEscape
-	public String getChangedValue();
+	public String getModifiedValue();
 
 	/**
-	 * Sets the changed value of this action history.
+	 * Sets the modified value of this action history.
 	 *
-	 * @param changedValue the changed value of this action history
+	 * @param modifiedValue the modified value of this action history
 	 */
-	public void setChangedValue(String changedValue);
-
-	/**
-	 * Returns the action of this action history.
-	 *
-	 * @return the action of this action history
-	 */
-	@AutoEscape
-	public String getAction();
-
-	/**
-	 * Sets the action of this action history.
-	 *
-	 * @param action the action of this action history
-	 */
-	public void setAction(String action);
+	public void setModifiedValue(String modifiedValue);
 
 	/**
 	 * Returns the comment of this action history.

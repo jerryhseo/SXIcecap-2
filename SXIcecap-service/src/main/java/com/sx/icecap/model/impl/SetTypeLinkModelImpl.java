@@ -18,10 +18,13 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -66,8 +69,12 @@ public class SetTypeLinkModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"setTypeLinkId", Types.BIGINT}, {"dataSetId", Types.BIGINT},
-		{"dataTypeId", Types.BIGINT}, {"freezed", Types.BOOLEAN},
-		{"verified", Types.BOOLEAN}
+		{"dataTypeId", Types.BIGINT}, {"commentable", Types.BOOLEAN},
+		{"verifiable", Types.BOOLEAN}, {"freezable", Types.BOOLEAN},
+		{"freezed", Types.BOOLEAN}, {"freezedUserId", Types.BIGINT},
+		{"freezedUserName", Types.VARCHAR}, {"freezedDate", Types.TIMESTAMP},
+		{"verified", Types.BOOLEAN}, {"verifiedUserId", Types.BIGINT},
+		{"verifiedUserName", Types.VARCHAR}, {"verifiedDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -77,12 +84,21 @@ public class SetTypeLinkModelImpl
 		TABLE_COLUMNS_MAP.put("setTypeLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataSetId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataTypeId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("commentable", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("verifiable", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("freezable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("freezed", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("freezedUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("freezedUserName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("freezedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("verified", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("verifiedUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("verifiedUserName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("verifiedDate", Types.TIMESTAMP);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_SetTypeLink (setTypeLinkId LONG not null primary key,dataSetId LONG,dataTypeId LONG,freezed BOOLEAN,verified BOOLEAN)";
+		"create table SX_ICECAP_SetTypeLink (setTypeLinkId LONG not null primary key,dataSetId LONG,dataTypeId LONG,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_SetTypeLink";
@@ -225,14 +241,57 @@ public class SetTypeLinkModelImpl
 		attributeSetterBiConsumers.put(
 			"dataTypeId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setDataTypeId);
+		attributeGetterFunctions.put(
+			"commentable", SetTypeLink::getCommentable);
+		attributeSetterBiConsumers.put(
+			"commentable",
+			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setCommentable);
+		attributeGetterFunctions.put("verifiable", SetTypeLink::getVerifiable);
+		attributeSetterBiConsumers.put(
+			"verifiable",
+			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setVerifiable);
+		attributeGetterFunctions.put("freezable", SetTypeLink::getFreezable);
+		attributeSetterBiConsumers.put(
+			"freezable",
+			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setFreezable);
 		attributeGetterFunctions.put("freezed", SetTypeLink::getFreezed);
 		attributeSetterBiConsumers.put(
 			"freezed",
 			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setFreezed);
+		attributeGetterFunctions.put(
+			"freezedUserId", SetTypeLink::getFreezedUserId);
+		attributeSetterBiConsumers.put(
+			"freezedUserId",
+			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setFreezedUserId);
+		attributeGetterFunctions.put(
+			"freezedUserName", SetTypeLink::getFreezedUserName);
+		attributeSetterBiConsumers.put(
+			"freezedUserName",
+			(BiConsumer<SetTypeLink, String>)SetTypeLink::setFreezedUserName);
+		attributeGetterFunctions.put(
+			"freezedDate", SetTypeLink::getFreezedDate);
+		attributeSetterBiConsumers.put(
+			"freezedDate",
+			(BiConsumer<SetTypeLink, Date>)SetTypeLink::setFreezedDate);
 		attributeGetterFunctions.put("verified", SetTypeLink::getVerified);
 		attributeSetterBiConsumers.put(
 			"verified",
 			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setVerified);
+		attributeGetterFunctions.put(
+			"verifiedUserId", SetTypeLink::getVerifiedUserId);
+		attributeSetterBiConsumers.put(
+			"verifiedUserId",
+			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setVerifiedUserId);
+		attributeGetterFunctions.put(
+			"verifiedUserName", SetTypeLink::getVerifiedUserName);
+		attributeSetterBiConsumers.put(
+			"verifiedUserName",
+			(BiConsumer<SetTypeLink, String>)SetTypeLink::setVerifiedUserName);
+		attributeGetterFunctions.put(
+			"verifiedDate", SetTypeLink::getVerifiedDate);
+		attributeSetterBiConsumers.put(
+			"verifiedDate",
+			(BiConsumer<SetTypeLink, Date>)SetTypeLink::setVerifiedDate);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -295,6 +354,51 @@ public class SetTypeLinkModelImpl
 	}
 
 	@Override
+	public boolean getCommentable() {
+		return _commentable;
+	}
+
+	@Override
+	public boolean isCommentable() {
+		return _commentable;
+	}
+
+	@Override
+	public void setCommentable(boolean commentable) {
+		_commentable = commentable;
+	}
+
+	@Override
+	public boolean getVerifiable() {
+		return _verifiable;
+	}
+
+	@Override
+	public boolean isVerifiable() {
+		return _verifiable;
+	}
+
+	@Override
+	public void setVerifiable(boolean verifiable) {
+		_verifiable = verifiable;
+	}
+
+	@Override
+	public boolean getFreezable() {
+		return _freezable;
+	}
+
+	@Override
+	public boolean isFreezable() {
+		return _freezable;
+	}
+
+	@Override
+	public void setFreezable(boolean freezable) {
+		_freezable = freezable;
+	}
+
+	@Override
 	public boolean getFreezed() {
 		return _freezed;
 	}
@@ -310,6 +414,57 @@ public class SetTypeLinkModelImpl
 	}
 
 	@Override
+	public long getFreezedUserId() {
+		return _freezedUserId;
+	}
+
+	@Override
+	public void setFreezedUserId(long freezedUserId) {
+		_freezedUserId = freezedUserId;
+	}
+
+	@Override
+	public String getFreezedUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getFreezedUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setFreezedUserUuid(String freezedUserUuid) {
+	}
+
+	@Override
+	public String getFreezedUserName() {
+		if (_freezedUserName == null) {
+			return "";
+		}
+		else {
+			return _freezedUserName;
+		}
+	}
+
+	@Override
+	public void setFreezedUserName(String freezedUserName) {
+		_freezedUserName = freezedUserName;
+	}
+
+	@Override
+	public Date getFreezedDate() {
+		return _freezedDate;
+	}
+
+	@Override
+	public void setFreezedDate(Date freezedDate) {
+		_freezedDate = freezedDate;
+	}
+
+	@Override
 	public boolean getVerified() {
 		return _verified;
 	}
@@ -322,6 +477,57 @@ public class SetTypeLinkModelImpl
 	@Override
 	public void setVerified(boolean verified) {
 		_verified = verified;
+	}
+
+	@Override
+	public long getVerifiedUserId() {
+		return _verifiedUserId;
+	}
+
+	@Override
+	public void setVerifiedUserId(long verifiedUserId) {
+		_verifiedUserId = verifiedUserId;
+	}
+
+	@Override
+	public String getVerifiedUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getVerifiedUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setVerifiedUserUuid(String verifiedUserUuid) {
+	}
+
+	@Override
+	public String getVerifiedUserName() {
+		if (_verifiedUserName == null) {
+			return "";
+		}
+		else {
+			return _verifiedUserName;
+		}
+	}
+
+	@Override
+	public void setVerifiedUserName(String verifiedUserName) {
+		_verifiedUserName = verifiedUserName;
+	}
+
+	@Override
+	public Date getVerifiedDate() {
+		return _verifiedDate;
+	}
+
+	@Override
+	public void setVerifiedDate(Date verifiedDate) {
+		_verifiedDate = verifiedDate;
 	}
 
 	public long getColumnBitmask() {
@@ -363,8 +569,17 @@ public class SetTypeLinkModelImpl
 		setTypeLinkImpl.setSetTypeLinkId(getSetTypeLinkId());
 		setTypeLinkImpl.setDataSetId(getDataSetId());
 		setTypeLinkImpl.setDataTypeId(getDataTypeId());
+		setTypeLinkImpl.setCommentable(isCommentable());
+		setTypeLinkImpl.setVerifiable(isVerifiable());
+		setTypeLinkImpl.setFreezable(isFreezable());
 		setTypeLinkImpl.setFreezed(isFreezed());
+		setTypeLinkImpl.setFreezedUserId(getFreezedUserId());
+		setTypeLinkImpl.setFreezedUserName(getFreezedUserName());
+		setTypeLinkImpl.setFreezedDate(getFreezedDate());
 		setTypeLinkImpl.setVerified(isVerified());
+		setTypeLinkImpl.setVerifiedUserId(getVerifiedUserId());
+		setTypeLinkImpl.setVerifiedUserName(getVerifiedUserName());
+		setTypeLinkImpl.setVerifiedDate(getVerifiedDate());
 
 		setTypeLinkImpl.resetOriginalValues();
 
@@ -447,9 +662,53 @@ public class SetTypeLinkModelImpl
 
 		setTypeLinkCacheModel.dataTypeId = getDataTypeId();
 
+		setTypeLinkCacheModel.commentable = isCommentable();
+
+		setTypeLinkCacheModel.verifiable = isVerifiable();
+
+		setTypeLinkCacheModel.freezable = isFreezable();
+
 		setTypeLinkCacheModel.freezed = isFreezed();
 
+		setTypeLinkCacheModel.freezedUserId = getFreezedUserId();
+
+		setTypeLinkCacheModel.freezedUserName = getFreezedUserName();
+
+		String freezedUserName = setTypeLinkCacheModel.freezedUserName;
+
+		if ((freezedUserName != null) && (freezedUserName.length() == 0)) {
+			setTypeLinkCacheModel.freezedUserName = null;
+		}
+
+		Date freezedDate = getFreezedDate();
+
+		if (freezedDate != null) {
+			setTypeLinkCacheModel.freezedDate = freezedDate.getTime();
+		}
+		else {
+			setTypeLinkCacheModel.freezedDate = Long.MIN_VALUE;
+		}
+
 		setTypeLinkCacheModel.verified = isVerified();
+
+		setTypeLinkCacheModel.verifiedUserId = getVerifiedUserId();
+
+		setTypeLinkCacheModel.verifiedUserName = getVerifiedUserName();
+
+		String verifiedUserName = setTypeLinkCacheModel.verifiedUserName;
+
+		if ((verifiedUserName != null) && (verifiedUserName.length() == 0)) {
+			setTypeLinkCacheModel.verifiedUserName = null;
+		}
+
+		Date verifiedDate = getVerifiedDate();
+
+		if (verifiedDate != null) {
+			setTypeLinkCacheModel.verifiedDate = verifiedDate.getTime();
+		}
+		else {
+			setTypeLinkCacheModel.verifiedDate = Long.MIN_VALUE;
+		}
 
 		return setTypeLinkCacheModel;
 	}
@@ -553,8 +812,17 @@ public class SetTypeLinkModelImpl
 	private long _dataTypeId;
 	private long _originalDataTypeId;
 	private boolean _setOriginalDataTypeId;
+	private boolean _commentable;
+	private boolean _verifiable;
+	private boolean _freezable;
 	private boolean _freezed;
+	private long _freezedUserId;
+	private String _freezedUserName;
+	private Date _freezedDate;
 	private boolean _verified;
+	private long _verifiedUserId;
+	private String _verifiedUserName;
+	private Date _verifiedDate;
 	private long _columnBitmask;
 	private SetTypeLink _escapedModel;
 

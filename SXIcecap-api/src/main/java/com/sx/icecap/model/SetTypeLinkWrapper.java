@@ -17,6 +17,7 @@ package com.sx.icecap.model;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,8 +45,17 @@ public class SetTypeLinkWrapper
 		attributes.put("setTypeLinkId", getSetTypeLinkId());
 		attributes.put("dataSetId", getDataSetId());
 		attributes.put("dataTypeId", getDataTypeId());
+		attributes.put("commentable", isCommentable());
+		attributes.put("verifiable", isVerifiable());
+		attributes.put("freezable", isFreezable());
 		attributes.put("freezed", isFreezed());
+		attributes.put("freezedUserId", getFreezedUserId());
+		attributes.put("freezedUserName", getFreezedUserName());
+		attributes.put("freezedDate", getFreezedDate());
 		attributes.put("verified", isVerified());
+		attributes.put("verifiedUserId", getVerifiedUserId());
+		attributes.put("verifiedUserName", getVerifiedUserName());
+		attributes.put("verifiedDate", getVerifiedDate());
 
 		return attributes;
 	}
@@ -70,10 +80,46 @@ public class SetTypeLinkWrapper
 			setDataTypeId(dataTypeId);
 		}
 
+		Boolean commentable = (Boolean)attributes.get("commentable");
+
+		if (commentable != null) {
+			setCommentable(commentable);
+		}
+
+		Boolean verifiable = (Boolean)attributes.get("verifiable");
+
+		if (verifiable != null) {
+			setVerifiable(verifiable);
+		}
+
+		Boolean freezable = (Boolean)attributes.get("freezable");
+
+		if (freezable != null) {
+			setFreezable(freezable);
+		}
+
 		Boolean freezed = (Boolean)attributes.get("freezed");
 
 		if (freezed != null) {
 			setFreezed(freezed);
+		}
+
+		Long freezedUserId = (Long)attributes.get("freezedUserId");
+
+		if (freezedUserId != null) {
+			setFreezedUserId(freezedUserId);
+		}
+
+		String freezedUserName = (String)attributes.get("freezedUserName");
+
+		if (freezedUserName != null) {
+			setFreezedUserName(freezedUserName);
+		}
+
+		Date freezedDate = (Date)attributes.get("freezedDate");
+
+		if (freezedDate != null) {
+			setFreezedDate(freezedDate);
 		}
 
 		Boolean verified = (Boolean)attributes.get("verified");
@@ -81,6 +127,34 @@ public class SetTypeLinkWrapper
 		if (verified != null) {
 			setVerified(verified);
 		}
+
+		Long verifiedUserId = (Long)attributes.get("verifiedUserId");
+
+		if (verifiedUserId != null) {
+			setVerifiedUserId(verifiedUserId);
+		}
+
+		String verifiedUserName = (String)attributes.get("verifiedUserName");
+
+		if (verifiedUserName != null) {
+			setVerifiedUserName(verifiedUserName);
+		}
+
+		Date verifiedDate = (Date)attributes.get("verifiedDate");
+
+		if (verifiedDate != null) {
+			setVerifiedDate(verifiedDate);
+		}
+	}
+
+	/**
+	 * Returns the commentable of this set type link.
+	 *
+	 * @return the commentable of this set type link
+	 */
+	@Override
+	public boolean getCommentable() {
+		return model.getCommentable();
 	}
 
 	/**
@@ -104,6 +178,16 @@ public class SetTypeLinkWrapper
 	}
 
 	/**
+	 * Returns the freezable of this set type link.
+	 *
+	 * @return the freezable of this set type link
+	 */
+	@Override
+	public boolean getFreezable() {
+		return model.getFreezable();
+	}
+
+	/**
 	 * Returns the freezed of this set type link.
 	 *
 	 * @return the freezed of this set type link
@@ -111,6 +195,46 @@ public class SetTypeLinkWrapper
 	@Override
 	public boolean getFreezed() {
 		return model.getFreezed();
+	}
+
+	/**
+	 * Returns the freezed date of this set type link.
+	 *
+	 * @return the freezed date of this set type link
+	 */
+	@Override
+	public Date getFreezedDate() {
+		return model.getFreezedDate();
+	}
+
+	/**
+	 * Returns the freezed user ID of this set type link.
+	 *
+	 * @return the freezed user ID of this set type link
+	 */
+	@Override
+	public long getFreezedUserId() {
+		return model.getFreezedUserId();
+	}
+
+	/**
+	 * Returns the freezed user name of this set type link.
+	 *
+	 * @return the freezed user name of this set type link
+	 */
+	@Override
+	public String getFreezedUserName() {
+		return model.getFreezedUserName();
+	}
+
+	/**
+	 * Returns the freezed user uuid of this set type link.
+	 *
+	 * @return the freezed user uuid of this set type link
+	 */
+	@Override
+	public String getFreezedUserUuid() {
+		return model.getFreezedUserUuid();
 	}
 
 	/**
@@ -134,6 +258,16 @@ public class SetTypeLinkWrapper
 	}
 
 	/**
+	 * Returns the verifiable of this set type link.
+	 *
+	 * @return the verifiable of this set type link
+	 */
+	@Override
+	public boolean getVerifiable() {
+		return model.getVerifiable();
+	}
+
+	/**
 	 * Returns the verified of this set type link.
 	 *
 	 * @return the verified of this set type link
@@ -144,6 +278,66 @@ public class SetTypeLinkWrapper
 	}
 
 	/**
+	 * Returns the verified date of this set type link.
+	 *
+	 * @return the verified date of this set type link
+	 */
+	@Override
+	public Date getVerifiedDate() {
+		return model.getVerifiedDate();
+	}
+
+	/**
+	 * Returns the verified user ID of this set type link.
+	 *
+	 * @return the verified user ID of this set type link
+	 */
+	@Override
+	public long getVerifiedUserId() {
+		return model.getVerifiedUserId();
+	}
+
+	/**
+	 * Returns the verified user name of this set type link.
+	 *
+	 * @return the verified user name of this set type link
+	 */
+	@Override
+	public String getVerifiedUserName() {
+		return model.getVerifiedUserName();
+	}
+
+	/**
+	 * Returns the verified user uuid of this set type link.
+	 *
+	 * @return the verified user uuid of this set type link
+	 */
+	@Override
+	public String getVerifiedUserUuid() {
+		return model.getVerifiedUserUuid();
+	}
+
+	/**
+	 * Returns <code>true</code> if this set type link is commentable.
+	 *
+	 * @return <code>true</code> if this set type link is commentable; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isCommentable() {
+		return model.isCommentable();
+	}
+
+	/**
+	 * Returns <code>true</code> if this set type link is freezable.
+	 *
+	 * @return <code>true</code> if this set type link is freezable; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isFreezable() {
+		return model.isFreezable();
+	}
+
+	/**
 	 * Returns <code>true</code> if this set type link is freezed.
 	 *
 	 * @return <code>true</code> if this set type link is freezed; <code>false</code> otherwise
@@ -151,6 +345,16 @@ public class SetTypeLinkWrapper
 	@Override
 	public boolean isFreezed() {
 		return model.isFreezed();
+	}
+
+	/**
+	 * Returns <code>true</code> if this set type link is verifiable.
+	 *
+	 * @return <code>true</code> if this set type link is verifiable; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isVerifiable() {
+		return model.isVerifiable();
 	}
 
 	/**
@@ -166,6 +370,16 @@ public class SetTypeLinkWrapper
 	@Override
 	public void persist() {
 		model.persist();
+	}
+
+	/**
+	 * Sets whether this set type link is commentable.
+	 *
+	 * @param commentable the commentable of this set type link
+	 */
+	@Override
+	public void setCommentable(boolean commentable) {
+		model.setCommentable(commentable);
 	}
 
 	/**
@@ -189,6 +403,16 @@ public class SetTypeLinkWrapper
 	}
 
 	/**
+	 * Sets whether this set type link is freezable.
+	 *
+	 * @param freezable the freezable of this set type link
+	 */
+	@Override
+	public void setFreezable(boolean freezable) {
+		model.setFreezable(freezable);
+	}
+
+	/**
 	 * Sets whether this set type link is freezed.
 	 *
 	 * @param freezed the freezed of this set type link
@@ -196,6 +420,46 @@ public class SetTypeLinkWrapper
 	@Override
 	public void setFreezed(boolean freezed) {
 		model.setFreezed(freezed);
+	}
+
+	/**
+	 * Sets the freezed date of this set type link.
+	 *
+	 * @param freezedDate the freezed date of this set type link
+	 */
+	@Override
+	public void setFreezedDate(Date freezedDate) {
+		model.setFreezedDate(freezedDate);
+	}
+
+	/**
+	 * Sets the freezed user ID of this set type link.
+	 *
+	 * @param freezedUserId the freezed user ID of this set type link
+	 */
+	@Override
+	public void setFreezedUserId(long freezedUserId) {
+		model.setFreezedUserId(freezedUserId);
+	}
+
+	/**
+	 * Sets the freezed user name of this set type link.
+	 *
+	 * @param freezedUserName the freezed user name of this set type link
+	 */
+	@Override
+	public void setFreezedUserName(String freezedUserName) {
+		model.setFreezedUserName(freezedUserName);
+	}
+
+	/**
+	 * Sets the freezed user uuid of this set type link.
+	 *
+	 * @param freezedUserUuid the freezed user uuid of this set type link
+	 */
+	@Override
+	public void setFreezedUserUuid(String freezedUserUuid) {
+		model.setFreezedUserUuid(freezedUserUuid);
 	}
 
 	/**
@@ -219,6 +483,16 @@ public class SetTypeLinkWrapper
 	}
 
 	/**
+	 * Sets whether this set type link is verifiable.
+	 *
+	 * @param verifiable the verifiable of this set type link
+	 */
+	@Override
+	public void setVerifiable(boolean verifiable) {
+		model.setVerifiable(verifiable);
+	}
+
+	/**
 	 * Sets whether this set type link is verified.
 	 *
 	 * @param verified the verified of this set type link
@@ -226,6 +500,46 @@ public class SetTypeLinkWrapper
 	@Override
 	public void setVerified(boolean verified) {
 		model.setVerified(verified);
+	}
+
+	/**
+	 * Sets the verified date of this set type link.
+	 *
+	 * @param verifiedDate the verified date of this set type link
+	 */
+	@Override
+	public void setVerifiedDate(Date verifiedDate) {
+		model.setVerifiedDate(verifiedDate);
+	}
+
+	/**
+	 * Sets the verified user ID of this set type link.
+	 *
+	 * @param verifiedUserId the verified user ID of this set type link
+	 */
+	@Override
+	public void setVerifiedUserId(long verifiedUserId) {
+		model.setVerifiedUserId(verifiedUserId);
+	}
+
+	/**
+	 * Sets the verified user name of this set type link.
+	 *
+	 * @param verifiedUserName the verified user name of this set type link
+	 */
+	@Override
+	public void setVerifiedUserName(String verifiedUserName) {
+		model.setVerifiedUserName(verifiedUserName);
+	}
+
+	/**
+	 * Sets the verified user uuid of this set type link.
+	 *
+	 * @param verifiedUserUuid the verified user uuid of this set type link
+	 */
+	@Override
+	public void setVerifiedUserUuid(String verifiedUserUuid) {
+		model.setVerifiedUserUuid(verifiedUserUuid);
 	}
 
 	@Override

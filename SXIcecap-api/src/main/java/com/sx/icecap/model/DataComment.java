@@ -56,4 +56,6 @@ public interface DataComment extends DataCommentModel, PersistedModel {
 
 		};
 
+	public com.liferay.portal.kernel.json.JSONObject toJSON();
+
 }

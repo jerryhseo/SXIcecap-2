@@ -101,6 +101,9 @@ public interface StructuredDataLocalService
 
 	public int countApprovedStructuredDatas(long groupId);
 
+	public int countStructuredData(
+		long dataCollectionId, long dataSetId, long dataTypeId);
+
 	public int countStructuredDatasByDataTypeId(long groupId);
 
 	public int countStructuredDatasByDataTypeId_G(
@@ -140,6 +143,10 @@ public interface StructuredDataLocalService
 	 */
 	@Transactional(enabled = false)
 	public StructuredData createStructuredData(long structuredDataId);
+
+	public JSONObject createStructuredDataInfo(
+		List<StructuredData> dataList, long dataCollectionId, long dataSetId,
+		long dataTypeId, Locale locale);
 
 	/**
 	 * @throws PortalException
@@ -331,6 +338,15 @@ public interface StructuredDataLocalService
 	public StructuredData getStructuredDataByUuidAndGroupId(
 			String uuid, long groupId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONObject getStructuredDataList(
+		long dataCollectionId, long dataSetId, long dataTypeId, int start,
+		int end, Locale locale);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONObject getStructuredDataListWithInfo(
+		long dataCollectionId, long dataSetId, long dataTypeId, Locale locale);
 
 	/**
 	 * Returns a range of all the structured datas.

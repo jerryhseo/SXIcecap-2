@@ -95,54 +95,64 @@ public class DataCommentPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByparamCode;
-	private FinderPath _finderPathWithoutPaginationFindByparamCode;
-	private FinderPath _finderPathCountByparamCode;
+	private FinderPath _finderPathWithPaginationFindByParamCode;
+	private FinderPath _finderPathWithoutPaginationFindByParamCode;
+	private FinderPath _finderPathCountByParamCode;
 
 	/**
-	 * Returns all the data comments where structuredDataId = &#63; and paramCode = &#63;.
+	 * Returns all the data comments where commentType = &#63; and commentBase = &#63; and commentDataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param structuredDataId the structured data ID
+	 * @param commentType the comment type
+	 * @param commentBase the comment base
+	 * @param commentDataId the comment data ID
 	 * @param paramCode the param code
 	 * @return the matching data comments
 	 */
 	@Override
-	public List<DataComment> findByparamCode(
-		long structuredDataId, String paramCode) {
+	public List<DataComment> findByParamCode(
+		String commentType, String commentBase, long commentDataId,
+		String paramCode) {
 
-		return findByparamCode(
-			structuredDataId, paramCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
+		return findByParamCode(
+			commentType, commentBase, commentDataId, paramCode,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the data comments where structuredDataId = &#63; and paramCode = &#63;.
+	 * Returns a range of all the data comments where commentType = &#63; and commentBase = &#63; and commentDataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCommentModelImpl</code>.
 	 * </p>
 	 *
-	 * @param structuredDataId the structured data ID
+	 * @param commentType the comment type
+	 * @param commentBase the comment base
+	 * @param commentDataId the comment data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of data comments
 	 * @param end the upper bound of the range of data comments (not inclusive)
 	 * @return the range of matching data comments
 	 */
 	@Override
-	public List<DataComment> findByparamCode(
-		long structuredDataId, String paramCode, int start, int end) {
+	public List<DataComment> findByParamCode(
+		String commentType, String commentBase, long commentDataId,
+		String paramCode, int start, int end) {
 
-		return findByparamCode(structuredDataId, paramCode, start, end, null);
+		return findByParamCode(
+			commentType, commentBase, commentDataId, paramCode, start, end,
+			null);
 	}
 
 	/**
-	 * Returns an ordered range of all the data comments where structuredDataId = &#63; and paramCode = &#63;.
+	 * Returns an ordered range of all the data comments where commentType = &#63; and commentBase = &#63; and commentDataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCommentModelImpl</code>.
 	 * </p>
 	 *
-	 * @param structuredDataId the structured data ID
+	 * @param commentType the comment type
+	 * @param commentBase the comment base
+	 * @param commentDataId the comment data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of data comments
 	 * @param end the upper bound of the range of data comments (not inclusive)
@@ -150,22 +160,26 @@ public class DataCommentPersistenceImpl
 	 * @return the ordered range of matching data comments
 	 */
 	@Override
-	public List<DataComment> findByparamCode(
-		long structuredDataId, String paramCode, int start, int end,
+	public List<DataComment> findByParamCode(
+		String commentType, String commentBase, long commentDataId,
+		String paramCode, int start, int end,
 		OrderByComparator<DataComment> orderByComparator) {
 
-		return findByparamCode(
-			structuredDataId, paramCode, start, end, orderByComparator, true);
+		return findByParamCode(
+			commentType, commentBase, commentDataId, paramCode, start, end,
+			orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the data comments where structuredDataId = &#63; and paramCode = &#63;.
+	 * Returns an ordered range of all the data comments where commentType = &#63; and commentBase = &#63; and commentDataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DataCommentModelImpl</code>.
 	 * </p>
 	 *
-	 * @param structuredDataId the structured data ID
+	 * @param commentType the comment type
+	 * @param commentBase the comment base
+	 * @param commentDataId the comment data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of data comments
 	 * @param end the upper bound of the range of data comments (not inclusive)
@@ -174,11 +188,14 @@ public class DataCommentPersistenceImpl
 	 * @return the ordered range of matching data comments
 	 */
 	@Override
-	public List<DataComment> findByparamCode(
-		long structuredDataId, String paramCode, int start, int end,
+	public List<DataComment> findByParamCode(
+		String commentType, String commentBase, long commentDataId,
+		String paramCode, int start, int end,
 		OrderByComparator<DataComment> orderByComparator,
 		boolean useFinderCache) {
 
+		commentType = Objects.toString(commentType, "");
+		commentBase = Objects.toString(commentBase, "");
 		paramCode = Objects.toString(paramCode, "");
 
 		FinderPath finderPath = null;
@@ -188,14 +205,17 @@ public class DataCommentPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByparamCode;
-				finderArgs = new Object[] {structuredDataId, paramCode};
+				finderPath = _finderPathWithoutPaginationFindByParamCode;
+				finderArgs = new Object[] {
+					commentType, commentBase, commentDataId, paramCode
+				};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByparamCode;
+			finderPath = _finderPathWithPaginationFindByParamCode;
 			finderArgs = new Object[] {
-				structuredDataId, paramCode, start, end, orderByComparator
+				commentType, commentBase, commentDataId, paramCode, start, end,
+				orderByComparator
 			};
 		}
 
@@ -207,8 +227,9 @@ public class DataCommentPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (DataComment dataComment : list) {
-					if ((structuredDataId !=
-							dataComment.getStructuredDataId()) ||
+					if (!commentType.equals(dataComment.getCommentType()) ||
+						!commentBase.equals(dataComment.getCommentBase()) ||
+						(commentDataId != dataComment.getCommentDataId()) ||
 						!paramCode.equals(dataComment.getParamCode())) {
 
 						list = null;
@@ -224,15 +245,37 @@ public class DataCommentPersistenceImpl
 
 			if (orderByComparator != null) {
 				sb = new StringBundler(
-					4 + (orderByComparator.getOrderByFields().length * 2));
+					6 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(4);
+				sb = new StringBundler(6);
 			}
 
 			sb.append(_SQL_SELECT_DATACOMMENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_PARAMCODE_STRUCTUREDDATAID_2);
+			boolean bindCommentType = false;
+
+			if (commentType.isEmpty()) {
+				sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTTYPE_3);
+			}
+			else {
+				bindCommentType = true;
+
+				sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTTYPE_2);
+			}
+
+			boolean bindCommentBase = false;
+
+			if (commentBase.isEmpty()) {
+				sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTBASE_3);
+			}
+			else {
+				bindCommentBase = true;
+
+				sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTBASE_2);
+			}
+
+			sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTDATAID_2);
 
 			boolean bindParamCode = false;
 
@@ -264,7 +307,15 @@ public class DataCommentPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				queryPos.add(structuredDataId);
+				if (bindCommentType) {
+					queryPos.add(commentType);
+				}
+
+				if (bindCommentBase) {
+					queryPos.add(commentBase);
+				}
+
+				queryPos.add(commentDataId);
 
 				if (bindParamCode) {
 					queryPos.add(paramCode);
@@ -295,33 +346,42 @@ public class DataCommentPersistenceImpl
 	}
 
 	/**
-	 * Returns the first data comment in the ordered set where structuredDataId = &#63; and paramCode = &#63;.
+	 * Returns the first data comment in the ordered set where commentType = &#63; and commentBase = &#63; and commentDataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param structuredDataId the structured data ID
+	 * @param commentType the comment type
+	 * @param commentBase the comment base
+	 * @param commentDataId the comment data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data comment
 	 * @throws NoSuchDataCommentException if a matching data comment could not be found
 	 */
 	@Override
-	public DataComment findByparamCode_First(
-			long structuredDataId, String paramCode,
-			OrderByComparator<DataComment> orderByComparator)
+	public DataComment findByParamCode_First(
+			String commentType, String commentBase, long commentDataId,
+			String paramCode, OrderByComparator<DataComment> orderByComparator)
 		throws NoSuchDataCommentException {
 
-		DataComment dataComment = fetchByparamCode_First(
-			structuredDataId, paramCode, orderByComparator);
+		DataComment dataComment = fetchByParamCode_First(
+			commentType, commentBase, commentDataId, paramCode,
+			orderByComparator);
 
 		if (dataComment != null) {
 			return dataComment;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler sb = new StringBundler(10);
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("structuredDataId=");
-		sb.append(structuredDataId);
+		sb.append("commentType=");
+		sb.append(commentType);
+
+		sb.append(", commentBase=");
+		sb.append(commentBase);
+
+		sb.append(", commentDataId=");
+		sb.append(commentDataId);
 
 		sb.append(", paramCode=");
 		sb.append(paramCode);
@@ -332,20 +392,23 @@ public class DataCommentPersistenceImpl
 	}
 
 	/**
-	 * Returns the first data comment in the ordered set where structuredDataId = &#63; and paramCode = &#63;.
+	 * Returns the first data comment in the ordered set where commentType = &#63; and commentBase = &#63; and commentDataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param structuredDataId the structured data ID
+	 * @param commentType the comment type
+	 * @param commentBase the comment base
+	 * @param commentDataId the comment data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching data comment, or <code>null</code> if a matching data comment could not be found
 	 */
 	@Override
-	public DataComment fetchByparamCode_First(
-		long structuredDataId, String paramCode,
-		OrderByComparator<DataComment> orderByComparator) {
+	public DataComment fetchByParamCode_First(
+		String commentType, String commentBase, long commentDataId,
+		String paramCode, OrderByComparator<DataComment> orderByComparator) {
 
-		List<DataComment> list = findByparamCode(
-			structuredDataId, paramCode, 0, 1, orderByComparator);
+		List<DataComment> list = findByParamCode(
+			commentType, commentBase, commentDataId, paramCode, 0, 1,
+			orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -355,33 +418,42 @@ public class DataCommentPersistenceImpl
 	}
 
 	/**
-	 * Returns the last data comment in the ordered set where structuredDataId = &#63; and paramCode = &#63;.
+	 * Returns the last data comment in the ordered set where commentType = &#63; and commentBase = &#63; and commentDataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param structuredDataId the structured data ID
+	 * @param commentType the comment type
+	 * @param commentBase the comment base
+	 * @param commentDataId the comment data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data comment
 	 * @throws NoSuchDataCommentException if a matching data comment could not be found
 	 */
 	@Override
-	public DataComment findByparamCode_Last(
-			long structuredDataId, String paramCode,
-			OrderByComparator<DataComment> orderByComparator)
+	public DataComment findByParamCode_Last(
+			String commentType, String commentBase, long commentDataId,
+			String paramCode, OrderByComparator<DataComment> orderByComparator)
 		throws NoSuchDataCommentException {
 
-		DataComment dataComment = fetchByparamCode_Last(
-			structuredDataId, paramCode, orderByComparator);
+		DataComment dataComment = fetchByParamCode_Last(
+			commentType, commentBase, commentDataId, paramCode,
+			orderByComparator);
 
 		if (dataComment != null) {
 			return dataComment;
 		}
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler sb = new StringBundler(10);
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("structuredDataId=");
-		sb.append(structuredDataId);
+		sb.append("commentType=");
+		sb.append(commentType);
+
+		sb.append(", commentBase=");
+		sb.append(commentBase);
+
+		sb.append(", commentDataId=");
+		sb.append(commentDataId);
 
 		sb.append(", paramCode=");
 		sb.append(paramCode);
@@ -392,26 +464,30 @@ public class DataCommentPersistenceImpl
 	}
 
 	/**
-	 * Returns the last data comment in the ordered set where structuredDataId = &#63; and paramCode = &#63;.
+	 * Returns the last data comment in the ordered set where commentType = &#63; and commentBase = &#63; and commentDataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param structuredDataId the structured data ID
+	 * @param commentType the comment type
+	 * @param commentBase the comment base
+	 * @param commentDataId the comment data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching data comment, or <code>null</code> if a matching data comment could not be found
 	 */
 	@Override
-	public DataComment fetchByparamCode_Last(
-		long structuredDataId, String paramCode,
-		OrderByComparator<DataComment> orderByComparator) {
+	public DataComment fetchByParamCode_Last(
+		String commentType, String commentBase, long commentDataId,
+		String paramCode, OrderByComparator<DataComment> orderByComparator) {
 
-		int count = countByparamCode(structuredDataId, paramCode);
+		int count = countByParamCode(
+			commentType, commentBase, commentDataId, paramCode);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<DataComment> list = findByparamCode(
-			structuredDataId, paramCode, count - 1, count, orderByComparator);
+		List<DataComment> list = findByParamCode(
+			commentType, commentBase, commentDataId, paramCode, count - 1,
+			count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -421,21 +497,26 @@ public class DataCommentPersistenceImpl
 	}
 
 	/**
-	 * Returns the data comments before and after the current data comment in the ordered set where structuredDataId = &#63; and paramCode = &#63;.
+	 * Returns the data comments before and after the current data comment in the ordered set where commentType = &#63; and commentBase = &#63; and commentDataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param dataCommentId the primary key of the current data comment
-	 * @param structuredDataId the structured data ID
+	 * @param commentType the comment type
+	 * @param commentBase the comment base
+	 * @param commentDataId the comment data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next data comment
 	 * @throws NoSuchDataCommentException if a data comment with the primary key could not be found
 	 */
 	@Override
-	public DataComment[] findByparamCode_PrevAndNext(
-			long dataCommentId, long structuredDataId, String paramCode,
+	public DataComment[] findByParamCode_PrevAndNext(
+			long dataCommentId, String commentType, String commentBase,
+			long commentDataId, String paramCode,
 			OrderByComparator<DataComment> orderByComparator)
 		throws NoSuchDataCommentException {
 
+		commentType = Objects.toString(commentType, "");
+		commentBase = Objects.toString(commentBase, "");
 		paramCode = Objects.toString(paramCode, "");
 
 		DataComment dataComment = findByPrimaryKey(dataCommentId);
@@ -447,15 +528,15 @@ public class DataCommentPersistenceImpl
 
 			DataComment[] array = new DataCommentImpl[3];
 
-			array[0] = getByparamCode_PrevAndNext(
-				session, dataComment, structuredDataId, paramCode,
-				orderByComparator, true);
+			array[0] = getByParamCode_PrevAndNext(
+				session, dataComment, commentType, commentBase, commentDataId,
+				paramCode, orderByComparator, true);
 
 			array[1] = dataComment;
 
-			array[2] = getByparamCode_PrevAndNext(
-				session, dataComment, structuredDataId, paramCode,
-				orderByComparator, false);
+			array[2] = getByParamCode_PrevAndNext(
+				session, dataComment, commentType, commentBase, commentDataId,
+				paramCode, orderByComparator, false);
 
 			return array;
 		}
@@ -467,25 +548,47 @@ public class DataCommentPersistenceImpl
 		}
 	}
 
-	protected DataComment getByparamCode_PrevAndNext(
-		Session session, DataComment dataComment, long structuredDataId,
-		String paramCode, OrderByComparator<DataComment> orderByComparator,
-		boolean previous) {
+	protected DataComment getByParamCode_PrevAndNext(
+		Session session, DataComment dataComment, String commentType,
+		String commentBase, long commentDataId, String paramCode,
+		OrderByComparator<DataComment> orderByComparator, boolean previous) {
 
 		StringBundler sb = null;
 
 		if (orderByComparator != null) {
 			sb = new StringBundler(
-				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+				7 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(4);
+			sb = new StringBundler(6);
 		}
 
 		sb.append(_SQL_SELECT_DATACOMMENT_WHERE);
 
-		sb.append(_FINDER_COLUMN_PARAMCODE_STRUCTUREDDATAID_2);
+		boolean bindCommentType = false;
+
+		if (commentType.isEmpty()) {
+			sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTTYPE_3);
+		}
+		else {
+			bindCommentType = true;
+
+			sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTTYPE_2);
+		}
+
+		boolean bindCommentBase = false;
+
+		if (commentBase.isEmpty()) {
+			sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTBASE_3);
+		}
+		else {
+			bindCommentBase = true;
+
+			sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTBASE_2);
+		}
+
+		sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTDATAID_2);
 
 		boolean bindParamCode = false;
 
@@ -567,7 +670,15 @@ public class DataCommentPersistenceImpl
 
 		QueryPos queryPos = QueryPos.getInstance(query);
 
-		queryPos.add(structuredDataId);
+		if (bindCommentType) {
+			queryPos.add(commentType);
+		}
+
+		if (bindCommentBase) {
+			queryPos.add(commentBase);
+		}
+
+		queryPos.add(commentDataId);
 
 		if (bindParamCode) {
 			queryPos.add(paramCode);
@@ -592,45 +703,81 @@ public class DataCommentPersistenceImpl
 	}
 
 	/**
-	 * Removes all the data comments where structuredDataId = &#63; and paramCode = &#63; from the database.
+	 * Removes all the data comments where commentType = &#63; and commentBase = &#63; and commentDataId = &#63; and paramCode = &#63; from the database.
 	 *
-	 * @param structuredDataId the structured data ID
+	 * @param commentType the comment type
+	 * @param commentBase the comment base
+	 * @param commentDataId the comment data ID
 	 * @param paramCode the param code
 	 */
 	@Override
-	public void removeByparamCode(long structuredDataId, String paramCode) {
+	public void removeByParamCode(
+		String commentType, String commentBase, long commentDataId,
+		String paramCode) {
+
 		for (DataComment dataComment :
-				findByparamCode(
-					structuredDataId, paramCode, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+				findByParamCode(
+					commentType, commentBase, commentDataId, paramCode,
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 
 			remove(dataComment);
 		}
 	}
 
 	/**
-	 * Returns the number of data comments where structuredDataId = &#63; and paramCode = &#63;.
+	 * Returns the number of data comments where commentType = &#63; and commentBase = &#63; and commentDataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param structuredDataId the structured data ID
+	 * @param commentType the comment type
+	 * @param commentBase the comment base
+	 * @param commentDataId the comment data ID
 	 * @param paramCode the param code
 	 * @return the number of matching data comments
 	 */
 	@Override
-	public int countByparamCode(long structuredDataId, String paramCode) {
+	public int countByParamCode(
+		String commentType, String commentBase, long commentDataId,
+		String paramCode) {
+
+		commentType = Objects.toString(commentType, "");
+		commentBase = Objects.toString(commentBase, "");
 		paramCode = Objects.toString(paramCode, "");
 
-		FinderPath finderPath = _finderPathCountByparamCode;
+		FinderPath finderPath = _finderPathCountByParamCode;
 
-		Object[] finderArgs = new Object[] {structuredDataId, paramCode};
+		Object[] finderArgs = new Object[] {
+			commentType, commentBase, commentDataId, paramCode
+		};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler sb = new StringBundler(5);
 
 			sb.append(_SQL_COUNT_DATACOMMENT_WHERE);
 
-			sb.append(_FINDER_COLUMN_PARAMCODE_STRUCTUREDDATAID_2);
+			boolean bindCommentType = false;
+
+			if (commentType.isEmpty()) {
+				sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTTYPE_3);
+			}
+			else {
+				bindCommentType = true;
+
+				sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTTYPE_2);
+			}
+
+			boolean bindCommentBase = false;
+
+			if (commentBase.isEmpty()) {
+				sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTBASE_3);
+			}
+			else {
+				bindCommentBase = true;
+
+				sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTBASE_2);
+			}
+
+			sb.append(_FINDER_COLUMN_PARAMCODE_COMMENTDATAID_2);
 
 			boolean bindParamCode = false;
 
@@ -654,7 +801,15 @@ public class DataCommentPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				queryPos.add(structuredDataId);
+				if (bindCommentType) {
+					queryPos.add(commentType);
+				}
+
+				if (bindCommentBase) {
+					queryPos.add(commentBase);
+				}
+
+				queryPos.add(commentDataId);
 
 				if (bindParamCode) {
 					queryPos.add(paramCode);
@@ -677,8 +832,20 @@ public class DataCommentPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_PARAMCODE_STRUCTUREDDATAID_2 =
-		"dataComment.structuredDataId = ? AND ";
+	private static final String _FINDER_COLUMN_PARAMCODE_COMMENTTYPE_2 =
+		"dataComment.commentType = ? AND ";
+
+	private static final String _FINDER_COLUMN_PARAMCODE_COMMENTTYPE_3 =
+		"(dataComment.commentType IS NULL OR dataComment.commentType = '') AND ";
+
+	private static final String _FINDER_COLUMN_PARAMCODE_COMMENTBASE_2 =
+		"dataComment.commentBase = ? AND ";
+
+	private static final String _FINDER_COLUMN_PARAMCODE_COMMENTBASE_3 =
+		"(dataComment.commentBase IS NULL OR dataComment.commentBase = '') AND ";
+
+	private static final String _FINDER_COLUMN_PARAMCODE_COMMENTDATAID_2 =
+		"dataComment.commentDataId = ? AND ";
 
 	private static final String _FINDER_COLUMN_PARAMCODE_PARAMCODE_2 =
 		"dataComment.paramCode = ?";
@@ -976,13 +1143,15 @@ public class DataCommentPersistenceImpl
 		}
 		else if (isNew) {
 			Object[] args = new Object[] {
-				dataCommentModelImpl.getStructuredDataId(),
+				dataCommentModelImpl.getCommentType(),
+				dataCommentModelImpl.getCommentBase(),
+				dataCommentModelImpl.getCommentDataId(),
 				dataCommentModelImpl.getParamCode()
 			};
 
-			finderCache.removeResult(_finderPathCountByparamCode, args);
+			finderCache.removeResult(_finderPathCountByParamCode, args);
 			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByparamCode, args);
+				_finderPathWithoutPaginationFindByParamCode, args);
 
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(
@@ -990,26 +1159,30 @@ public class DataCommentPersistenceImpl
 		}
 		else {
 			if ((dataCommentModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByparamCode.
+				 _finderPathWithoutPaginationFindByParamCode.
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					dataCommentModelImpl.getOriginalStructuredDataId(),
+					dataCommentModelImpl.getOriginalCommentType(),
+					dataCommentModelImpl.getOriginalCommentBase(),
+					dataCommentModelImpl.getOriginalCommentDataId(),
 					dataCommentModelImpl.getOriginalParamCode()
 				};
 
-				finderCache.removeResult(_finderPathCountByparamCode, args);
+				finderCache.removeResult(_finderPathCountByParamCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByparamCode, args);
+					_finderPathWithoutPaginationFindByParamCode, args);
 
 				args = new Object[] {
-					dataCommentModelImpl.getStructuredDataId(),
+					dataCommentModelImpl.getCommentType(),
+					dataCommentModelImpl.getCommentBase(),
+					dataCommentModelImpl.getCommentDataId(),
 					dataCommentModelImpl.getParamCode()
 				};
 
-				finderCache.removeResult(_finderPathCountByparamCode, args);
+				finderCache.removeResult(_finderPathCountByParamCode, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByparamCode, args);
+					_finderPathWithoutPaginationFindByParamCode, args);
 			}
 		}
 
@@ -1308,26 +1481,35 @@ public class DataCommentPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByparamCode = new FinderPath(
+		_finderPathWithPaginationFindByParamCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataCommentImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByparamCode",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByParamCode",
 			new String[] {
+				String.class.getName(), String.class.getName(),
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByparamCode = new FinderPath(
+		_finderPathWithoutPaginationFindByParamCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DataCommentImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByparamCode",
-			new String[] {Long.class.getName(), String.class.getName()},
-			DataCommentModelImpl.STRUCTUREDDATAID_COLUMN_BITMASK |
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByParamCode",
+			new String[] {
+				String.class.getName(), String.class.getName(),
+				Long.class.getName(), String.class.getName()
+			},
+			DataCommentModelImpl.COMMENTTYPE_COLUMN_BITMASK |
+			DataCommentModelImpl.COMMENTBASE_COLUMN_BITMASK |
+			DataCommentModelImpl.COMMENTDATAID_COLUMN_BITMASK |
 			DataCommentModelImpl.PARAMCODE_COLUMN_BITMASK);
 
-		_finderPathCountByparamCode = new FinderPath(
+		_finderPathCountByParamCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByparamCode",
-			new String[] {Long.class.getName(), String.class.getName()});
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByParamCode",
+			new String[] {
+				String.class.getName(), String.class.getName(),
+				Long.class.getName(), String.class.getName()
+			});
 
 		_setDataCommentUtilPersistence(this);
 	}

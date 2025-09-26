@@ -46,11 +46,13 @@ public class ActionHistoryWrapper
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
-		attributes.put("structuredDataId", getStructuredDataId());
+		attributes.put("actionType", getActionType());
+		attributes.put("actionBase", getActionBase());
+		attributes.put("actionDataId", getActionDataId());
 		attributes.put("paramCode", getParamCode());
+		attributes.put("actionCommand", getActionCommand());
 		attributes.put("prevValue", getPrevValue());
-		attributes.put("changedValue", getChangedValue());
-		attributes.put("action", getAction());
+		attributes.put("modifiedValue", getModifiedValue());
 		attributes.put("comment", getComment());
 
 		return attributes;
@@ -82,10 +84,22 @@ public class ActionHistoryWrapper
 			setCreateDate(createDate);
 		}
 
-		Long structuredDataId = (Long)attributes.get("structuredDataId");
+		String actionType = (String)attributes.get("actionType");
 
-		if (structuredDataId != null) {
-			setStructuredDataId(structuredDataId);
+		if (actionType != null) {
+			setActionType(actionType);
+		}
+
+		String actionBase = (String)attributes.get("actionBase");
+
+		if (actionBase != null) {
+			setActionBase(actionBase);
+		}
+
+		Long actionDataId = (Long)attributes.get("actionDataId");
+
+		if (actionDataId != null) {
+			setActionDataId(actionDataId);
 		}
 
 		String paramCode = (String)attributes.get("paramCode");
@@ -94,22 +108,22 @@ public class ActionHistoryWrapper
 			setParamCode(paramCode);
 		}
 
+		String actionCommand = (String)attributes.get("actionCommand");
+
+		if (actionCommand != null) {
+			setActionCommand(actionCommand);
+		}
+
 		String prevValue = (String)attributes.get("prevValue");
 
 		if (prevValue != null) {
 			setPrevValue(prevValue);
 		}
 
-		String changedValue = (String)attributes.get("changedValue");
+		String modifiedValue = (String)attributes.get("modifiedValue");
 
-		if (changedValue != null) {
-			setChangedValue(changedValue);
-		}
-
-		String action = (String)attributes.get("action");
-
-		if (action != null) {
-			setAction(action);
+		if (modifiedValue != null) {
+			setModifiedValue(modifiedValue);
 		}
 
 		String comment = (String)attributes.get("comment");
@@ -120,13 +134,33 @@ public class ActionHistoryWrapper
 	}
 
 	/**
-	 * Returns the action of this action history.
+	 * Returns the action base of this action history.
 	 *
-	 * @return the action of this action history
+	 * @return the action base of this action history
 	 */
 	@Override
-	public String getAction() {
-		return model.getAction();
+	public String getActionBase() {
+		return model.getActionBase();
+	}
+
+	/**
+	 * Returns the action command of this action history.
+	 *
+	 * @return the action command of this action history
+	 */
+	@Override
+	public String getActionCommand() {
+		return model.getActionCommand();
+	}
+
+	/**
+	 * Returns the action data ID of this action history.
+	 *
+	 * @return the action data ID of this action history
+	 */
+	@Override
+	public long getActionDataId() {
+		return model.getActionDataId();
 	}
 
 	/**
@@ -140,13 +174,13 @@ public class ActionHistoryWrapper
 	}
 
 	/**
-	 * Returns the changed value of this action history.
+	 * Returns the action type of this action history.
 	 *
-	 * @return the changed value of this action history
+	 * @return the action type of this action history
 	 */
 	@Override
-	public String getChangedValue() {
-		return model.getChangedValue();
+	public String getActionType() {
+		return model.getActionType();
 	}
 
 	/**
@@ -167,6 +201,16 @@ public class ActionHistoryWrapper
 	@Override
 	public Date getCreateDate() {
 		return model.getCreateDate();
+	}
+
+	/**
+	 * Returns the modified value of this action history.
+	 *
+	 * @return the modified value of this action history
+	 */
+	@Override
+	public String getModifiedValue() {
+		return model.getModifiedValue();
 	}
 
 	/**
@@ -197,16 +241,6 @@ public class ActionHistoryWrapper
 	@Override
 	public long getPrimaryKey() {
 		return model.getPrimaryKey();
-	}
-
-	/**
-	 * Returns the structured data ID of this action history.
-	 *
-	 * @return the structured data ID of this action history
-	 */
-	@Override
-	public long getStructuredDataId() {
-		return model.getStructuredDataId();
 	}
 
 	/**
@@ -245,13 +279,33 @@ public class ActionHistoryWrapper
 	}
 
 	/**
-	 * Sets the action of this action history.
+	 * Sets the action base of this action history.
 	 *
-	 * @param action the action of this action history
+	 * @param actionBase the action base of this action history
 	 */
 	@Override
-	public void setAction(String action) {
-		model.setAction(action);
+	public void setActionBase(String actionBase) {
+		model.setActionBase(actionBase);
+	}
+
+	/**
+	 * Sets the action command of this action history.
+	 *
+	 * @param actionCommand the action command of this action history
+	 */
+	@Override
+	public void setActionCommand(String actionCommand) {
+		model.setActionCommand(actionCommand);
+	}
+
+	/**
+	 * Sets the action data ID of this action history.
+	 *
+	 * @param actionDataId the action data ID of this action history
+	 */
+	@Override
+	public void setActionDataId(long actionDataId) {
+		model.setActionDataId(actionDataId);
 	}
 
 	/**
@@ -265,13 +319,13 @@ public class ActionHistoryWrapper
 	}
 
 	/**
-	 * Sets the changed value of this action history.
+	 * Sets the action type of this action history.
 	 *
-	 * @param changedValue the changed value of this action history
+	 * @param actionType the action type of this action history
 	 */
 	@Override
-	public void setChangedValue(String changedValue) {
-		model.setChangedValue(changedValue);
+	public void setActionType(String actionType) {
+		model.setActionType(actionType);
 	}
 
 	/**
@@ -292,6 +346,16 @@ public class ActionHistoryWrapper
 	@Override
 	public void setCreateDate(Date createDate) {
 		model.setCreateDate(createDate);
+	}
+
+	/**
+	 * Sets the modified value of this action history.
+	 *
+	 * @param modifiedValue the modified value of this action history
+	 */
+	@Override
+	public void setModifiedValue(String modifiedValue) {
+		model.setModifiedValue(modifiedValue);
 	}
 
 	/**
@@ -325,16 +389,6 @@ public class ActionHistoryWrapper
 	}
 
 	/**
-	 * Sets the structured data ID of this action history.
-	 *
-	 * @param structuredDataId the structured data ID of this action history
-	 */
-	@Override
-	public void setStructuredDataId(long structuredDataId) {
-		model.setStructuredDataId(structuredDataId);
-	}
-
-	/**
 	 * Sets the user ID of this action history.
 	 *
 	 * @param userId the user ID of this action history
@@ -362,6 +416,11 @@ public class ActionHistoryWrapper
 	@Override
 	public void setUserUuid(String userUuid) {
 		model.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject toJSON() {
+		return model.toJSON();
 	}
 
 	@Override

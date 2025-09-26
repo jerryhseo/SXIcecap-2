@@ -6,19 +6,30 @@
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
-		<field name="structuredDataId" type="long" />
+		<field name="actionType" type="String" />
+		<field name="actionBase" type="String" />
+		<field name="actionDataId" type="long" />
 		<field name="paramCode" type="String" />
+		<field name="actionCommand" type="String" />
 		<field name="prevValue" type="String" />
-		<field name="changedValue" type="String" />
-		<field name="action" type="String" />
+		<field name="modifiedValue" type="String" />
 		<field name="comment" type="String" />
 	</model>
 	<model name="com.sx.icecap.model.CollectionSetLink">
 		<field name="collectionSetLinkId" type="long" />
 		<field name="dataCollectionId" type="long" />
 		<field name="dataSetId" type="long" />
+		<field name="commentable" type="boolean" />
+		<field name="verifiable" type="boolean" />
+		<field name="freezable" type="boolean" />
 		<field name="freezed" type="boolean" />
+		<field name="freezedUserId" type="long" />
+		<field name="freezedUserName" type="String" />
+		<field name="freezedDate" type="Date" />
 		<field name="verified" type="boolean" />
+		<field name="verifiedUserId" type="long" />
+		<field name="verifiedUserName" type="String" />
+		<field name="verifiedDate" type="Date" />
 	</model>
 	<model name="com.sx.icecap.model.DataCollection">
 		<field name="uuid" type="String" />
@@ -47,11 +58,16 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="structuredDataId" type="long" />
+		<field name="commentType" type="String" />
+		<field name="commentBase" type="String" />
+		<field name="commentDataId" type="long" />
 		<field name="paramCode" type="String" />
 		<field name="parentCommentId" type="long" />
 		<field name="comment" type="String" />
 		<field name="closed" type="boolean" />
+		<field name="closedUserId" type="long" />
+		<field name="closedUserName" type="String" />
+		<field name="closedDate" type="Date" />
 	</model>
 	<model name="com.sx.icecap.model.DataSet">
 		<field name="uuid" type="String" />
@@ -144,8 +160,17 @@
 		<field name="setTypeLinkId" type="long" />
 		<field name="dataSetId" type="long" />
 		<field name="dataTypeId" type="long" />
+		<field name="commentable" type="boolean" />
+		<field name="verifiable" type="boolean" />
+		<field name="freezable" type="boolean" />
 		<field name="freezed" type="boolean" />
+		<field name="freezedUserId" type="long" />
+		<field name="freezedUserName" type="String" />
+		<field name="freezedDate" type="Date" />
 		<field name="verified" type="boolean" />
+		<field name="verifiedUserId" type="long" />
+		<field name="verifiedUserName" type="String" />
+		<field name="verifiedDate" type="Date" />
 	</model>
 	<model name="com.sx.icecap.model.StructuredData">
 		<field name="uuid" type="String" />

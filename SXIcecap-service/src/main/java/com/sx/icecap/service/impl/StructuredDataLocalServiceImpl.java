@@ -37,8 +37,11 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
+import com.sx.icecap.constant.ActionHistoryTypes;
+import com.sx.icecap.constant.DataCommentTypes;
 import com.sx.icecap.constant.DataStructureProperties;
 import com.sx.icecap.model.DataCollection;
+import com.sx.icecap.model.DataComment;
 import com.sx.icecap.model.DataSet;
 import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.model.DataType;
@@ -600,6 +603,114 @@ public class StructuredDataLocalServiceImpl
 	}
 	public int countApprovedStructuredDatas( long groupId ) {
 		return super.structuredDataPersistence.countByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
+	}
+	
+	public JSONObject getStructuredDataListWithInfo(long dataCollectionId, long dataSetId, long dataTypeId, Locale locale){
+		List<StructuredData> dataList = null;
+		
+		if( dataCollectionId > 0 && dataSetId > 0 && dataTypeId > 0) {
+			dataList = structuredDataPersistence.findByCollectionSetType(dataCollectionId, dataSetId, dataTypeId);
+		} else if( dataCollectionId > 0 && dataSetId > 0) {
+			dataList = structuredDataPersistence.findByCollectionSet(dataCollectionId, dataSetId);
+		} else if( dataCollectionId > 0 ) {
+			dataList = structuredDataPersistence.findByDataCollectionId(dataCollectionId);
+		} else if( dataSetId > 0 && dataTypeId > 0 ) {
+			dataList = structuredDataPersistence.findBySetType(dataSetId, dataTypeId);
+		} else if( dataSetId > 0  ) {
+			dataList = structuredDataPersistence.findByDataSetId(dataSetId);
+		}  else if( dataTypeId > 0  ) {
+			dataList = structuredDataPersistence.findByDataTypeId(dataTypeId);
+		} else {
+			dataList = structuredDataPersistence.findAll();
+		}
+		
+		
+		return createStructuredDataInfo(dataList, dataCollectionId, dataSetId, dataTypeId, locale);
+	}
+	public int countStructuredData(long dataCollectionId, long dataSetId, long dataTypeId){
+		int count = 0;;
+		
+		if( dataCollectionId > 0 && dataSetId > 0 && dataTypeId > 0) {
+			count = structuredDataPersistence.countByCollectionSetType(dataCollectionId, dataSetId, dataTypeId);
+		} else if( dataCollectionId > 0 && dataSetId > 0) {
+			count = structuredDataPersistence.countByCollectionSet(dataCollectionId, dataSetId);
+		} else if( dataCollectionId > 0 ) {
+			count = structuredDataPersistence.countByDataCollectionId(dataCollectionId);
+		} else if( dataSetId > 0 && dataTypeId > 0 ) {
+			count = structuredDataPersistence.countBySetType(dataSetId, dataTypeId);
+		} else if( dataSetId > 0  ) {
+			count = structuredDataPersistence.countByDataSetId(dataSetId);
+		}  else if( dataTypeId > 0  ) {
+			count = structuredDataPersistence.countByDataTypeId(dataTypeId);
+		}   else {
+			count = structuredDataPersistence.countAll();
+		}
+		
+		return count;
+	}
+	public JSONObject getStructuredDataList(long dataCollectionId, long dataSetId, long dataTypeId, int start, int end, Locale locale){
+		List<StructuredData> dataList = null;
+		
+		if( dataCollectionId > 0 && dataSetId > 0 && dataTypeId > 0) {
+			dataList = structuredDataPersistence.findByCollectionSetType(dataCollectionId, dataSetId, dataTypeId, start, end);
+		} else if( dataCollectionId > 0 && dataSetId > 0) {
+			dataList = structuredDataPersistence.findByCollectionSet(dataCollectionId, dataSetId, start, end);
+		} else if( dataCollectionId > 0 ) {
+			dataList = structuredDataPersistence.findByDataCollectionId(dataCollectionId, start, end);
+		} else if( dataSetId > 0 && dataTypeId > 0 ) {
+			dataList = structuredDataPersistence.findBySetType(dataSetId, dataTypeId, start, end);
+		} else if( dataSetId > 0  ) {
+			dataList = structuredDataPersistence.findByDataSetId(dataSetId, start, end);
+		}  else if( dataTypeId > 0  ) {
+			dataList = structuredDataPersistence.findByDataTypeId(dataTypeId, start, end);
+		}  else {
+			dataList = structuredDataPersistence.findAll(start, end);
+		}
+		
+		return createStructuredDataInfo(dataList, dataCollectionId, dataSetId, dataTypeId, locale);
+	}
+	
+	public JSONObject createStructuredDataInfo( List<StructuredData> dataList, long dataCollectionId, long dataSetId, long dataTypeId, Locale locale) {
+		JSONObject jsonList = JSONFactoryUtil.createJSONObject();
+		
+		if( Validator.isNotNull(dataList)) {
+			JSONArray dataArray = JSONFactoryUtil.createJSONArray();
+			
+			Iterator<StructuredData> iter = dataList.iterator();
+			while(iter.hasNext()) {
+				StructuredData structuredData = iter.next();
+				
+				dataArray.put(structuredData.toJSON());
+			}
+			
+			jsonList.put("structuredDataList", dataArray);
+		}
+		
+		DataCollection dataCollection = null;
+		if( dataCollectionId > 0 ) {
+			dataCollection = dataCollectionPersistence.fetchByPrimaryKey(dataCollectionId);
+		}
+		if(Validator.isNotNull(dataCollection)) {
+			jsonList.put("dataCollection", dataCollection.toJSON(locale));
+		}
+		
+		DataSet dataSet = null;
+		if( dataSetId > 0 ) {
+			dataSet = dataSetPersistence.fetchByPrimaryKey(dataSetId);
+		}
+		if(Validator.isNotNull(dataSet)) {
+			jsonList.put("dataSet", dataSet.toJSON(locale));
+		}
+		
+		DataType dataType = null;
+		if( dataTypeId > 0 ) {
+			dataType = dataTypePersistence.fetchByPrimaryKey(dataTypeId);
+		}
+		if(Validator.isNotNull(dataType)) {
+			jsonList.put("dataType", dataType.toJSON(locale));
+		}
+		
+		return jsonList;
 	}
 	
 	public JSONObject getStructuredDataWithInfo(

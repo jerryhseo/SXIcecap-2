@@ -71,9 +71,10 @@ public class ActionHistoryModelImpl
 	public static final Object[][] TABLE_COLUMNS = {
 		{"actionHistoryId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"structuredDataId", Types.BIGINT}, {"paramCode", Types.VARCHAR},
-		{"prevValue", Types.VARCHAR}, {"changedValue", Types.VARCHAR},
-		{"action", Types.VARCHAR}, {"comment_", Types.VARCHAR}
+		{"actionType", Types.VARCHAR}, {"actionBase", Types.VARCHAR},
+		{"actionDataId", Types.BIGINT}, {"paramCode", Types.VARCHAR},
+		{"actionCommand", Types.VARCHAR}, {"prevValue", Types.VARCHAR},
+		{"modifiedValue", Types.VARCHAR}, {"comment_", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -84,16 +85,18 @@ public class ActionHistoryModelImpl
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("structuredDataId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("actionType", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("actionBase", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("actionDataId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("paramCode", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("actionCommand", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("prevValue", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("changedValue", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("action", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("modifiedValue", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("comment_", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_ActionHistory (actionHistoryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,structuredDataId LONG,paramCode VARCHAR(75) null,prevValue VARCHAR(75) null,changedValue VARCHAR(75) null,action VARCHAR(75) null,comment_ VARCHAR(75) null)";
+		"create table SX_ICECAP_ActionHistory (actionHistoryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,actionType VARCHAR(75) null,actionBase VARCHAR(75) null,actionDataId LONG,paramCode VARCHAR(75) null,actionCommand VARCHAR(75) null,prevValue VARCHAR(75) null,modifiedValue VARCHAR(75) null,comment_ VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_ActionHistory";
@@ -110,11 +113,15 @@ public class ActionHistoryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long PARAMCODE_COLUMN_BITMASK = 1L;
+	public static final long ACTIONBASE_COLUMN_BITMASK = 1L;
 
-	public static final long STRUCTUREDDATAID_COLUMN_BITMASK = 2L;
+	public static final long ACTIONDATAID_COLUMN_BITMASK = 2L;
 
-	public static final long ACTIONHISTORYID_COLUMN_BITMASK = 4L;
+	public static final long ACTIONTYPE_COLUMN_BITMASK = 4L;
+
+	public static final long PARAMCODE_COLUMN_BITMASK = 8L;
+
+	public static final long ACTIONHISTORYID_COLUMN_BITMASK = 16L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -242,28 +249,38 @@ public class ActionHistoryModelImpl
 			"createDate",
 			(BiConsumer<ActionHistory, Date>)ActionHistory::setCreateDate);
 		attributeGetterFunctions.put(
-			"structuredDataId", ActionHistory::getStructuredDataId);
+			"actionType", ActionHistory::getActionType);
 		attributeSetterBiConsumers.put(
-			"structuredDataId",
-			(BiConsumer<ActionHistory, Long>)
-				ActionHistory::setStructuredDataId);
+			"actionType",
+			(BiConsumer<ActionHistory, String>)ActionHistory::setActionType);
+		attributeGetterFunctions.put(
+			"actionBase", ActionHistory::getActionBase);
+		attributeSetterBiConsumers.put(
+			"actionBase",
+			(BiConsumer<ActionHistory, String>)ActionHistory::setActionBase);
+		attributeGetterFunctions.put(
+			"actionDataId", ActionHistory::getActionDataId);
+		attributeSetterBiConsumers.put(
+			"actionDataId",
+			(BiConsumer<ActionHistory, Long>)ActionHistory::setActionDataId);
 		attributeGetterFunctions.put("paramCode", ActionHistory::getParamCode);
 		attributeSetterBiConsumers.put(
 			"paramCode",
 			(BiConsumer<ActionHistory, String>)ActionHistory::setParamCode);
+		attributeGetterFunctions.put(
+			"actionCommand", ActionHistory::getActionCommand);
+		attributeSetterBiConsumers.put(
+			"actionCommand",
+			(BiConsumer<ActionHistory, String>)ActionHistory::setActionCommand);
 		attributeGetterFunctions.put("prevValue", ActionHistory::getPrevValue);
 		attributeSetterBiConsumers.put(
 			"prevValue",
 			(BiConsumer<ActionHistory, String>)ActionHistory::setPrevValue);
 		attributeGetterFunctions.put(
-			"changedValue", ActionHistory::getChangedValue);
+			"modifiedValue", ActionHistory::getModifiedValue);
 		attributeSetterBiConsumers.put(
-			"changedValue",
-			(BiConsumer<ActionHistory, String>)ActionHistory::setChangedValue);
-		attributeGetterFunctions.put("action", ActionHistory::getAction);
-		attributeSetterBiConsumers.put(
-			"action",
-			(BiConsumer<ActionHistory, String>)ActionHistory::setAction);
+			"modifiedValue",
+			(BiConsumer<ActionHistory, String>)ActionHistory::setModifiedValue);
 		attributeGetterFunctions.put("comment", ActionHistory::getComment);
 		attributeSetterBiConsumers.put(
 			"comment",
@@ -337,25 +354,75 @@ public class ActionHistoryModelImpl
 	}
 
 	@Override
-	public long getStructuredDataId() {
-		return _structuredDataId;
+	public String getActionType() {
+		if (_actionType == null) {
+			return "";
+		}
+		else {
+			return _actionType;
+		}
 	}
 
 	@Override
-	public void setStructuredDataId(long structuredDataId) {
-		_columnBitmask |= STRUCTUREDDATAID_COLUMN_BITMASK;
+	public void setActionType(String actionType) {
+		_columnBitmask |= ACTIONTYPE_COLUMN_BITMASK;
 
-		if (!_setOriginalStructuredDataId) {
-			_setOriginalStructuredDataId = true;
-
-			_originalStructuredDataId = _structuredDataId;
+		if (_originalActionType == null) {
+			_originalActionType = _actionType;
 		}
 
-		_structuredDataId = structuredDataId;
+		_actionType = actionType;
 	}
 
-	public long getOriginalStructuredDataId() {
-		return _originalStructuredDataId;
+	public String getOriginalActionType() {
+		return GetterUtil.getString(_originalActionType);
+	}
+
+	@Override
+	public String getActionBase() {
+		if (_actionBase == null) {
+			return "";
+		}
+		else {
+			return _actionBase;
+		}
+	}
+
+	@Override
+	public void setActionBase(String actionBase) {
+		_columnBitmask |= ACTIONBASE_COLUMN_BITMASK;
+
+		if (_originalActionBase == null) {
+			_originalActionBase = _actionBase;
+		}
+
+		_actionBase = actionBase;
+	}
+
+	public String getOriginalActionBase() {
+		return GetterUtil.getString(_originalActionBase);
+	}
+
+	@Override
+	public long getActionDataId() {
+		return _actionDataId;
+	}
+
+	@Override
+	public void setActionDataId(long actionDataId) {
+		_columnBitmask |= ACTIONDATAID_COLUMN_BITMASK;
+
+		if (!_setOriginalActionDataId) {
+			_setOriginalActionDataId = true;
+
+			_originalActionDataId = _actionDataId;
+		}
+
+		_actionDataId = actionDataId;
+	}
+
+	public long getOriginalActionDataId() {
+		return _originalActionDataId;
 	}
 
 	@Override
@@ -384,6 +451,21 @@ public class ActionHistoryModelImpl
 	}
 
 	@Override
+	public String getActionCommand() {
+		if (_actionCommand == null) {
+			return "";
+		}
+		else {
+			return _actionCommand;
+		}
+	}
+
+	@Override
+	public void setActionCommand(String actionCommand) {
+		_actionCommand = actionCommand;
+	}
+
+	@Override
 	public String getPrevValue() {
 		if (_prevValue == null) {
 			return "";
@@ -399,33 +481,18 @@ public class ActionHistoryModelImpl
 	}
 
 	@Override
-	public String getChangedValue() {
-		if (_changedValue == null) {
+	public String getModifiedValue() {
+		if (_modifiedValue == null) {
 			return "";
 		}
 		else {
-			return _changedValue;
+			return _modifiedValue;
 		}
 	}
 
 	@Override
-	public void setChangedValue(String changedValue) {
-		_changedValue = changedValue;
-	}
-
-	@Override
-	public String getAction() {
-		if (_action == null) {
-			return "";
-		}
-		else {
-			return _action;
-		}
-	}
-
-	@Override
-	public void setAction(String action) {
-		_action = action;
+	public void setModifiedValue(String modifiedValue) {
+		_modifiedValue = modifiedValue;
 	}
 
 	@Override
@@ -483,11 +550,13 @@ public class ActionHistoryModelImpl
 		actionHistoryImpl.setUserId(getUserId());
 		actionHistoryImpl.setUserName(getUserName());
 		actionHistoryImpl.setCreateDate(getCreateDate());
-		actionHistoryImpl.setStructuredDataId(getStructuredDataId());
+		actionHistoryImpl.setActionType(getActionType());
+		actionHistoryImpl.setActionBase(getActionBase());
+		actionHistoryImpl.setActionDataId(getActionDataId());
 		actionHistoryImpl.setParamCode(getParamCode());
+		actionHistoryImpl.setActionCommand(getActionCommand());
 		actionHistoryImpl.setPrevValue(getPrevValue());
-		actionHistoryImpl.setChangedValue(getChangedValue());
-		actionHistoryImpl.setAction(getAction());
+		actionHistoryImpl.setModifiedValue(getModifiedValue());
 		actionHistoryImpl.setComment(getComment());
 
 		actionHistoryImpl.resetOriginalValues();
@@ -549,9 +618,13 @@ public class ActionHistoryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		_originalStructuredDataId = _structuredDataId;
+		_originalActionType = _actionType;
 
-		_setOriginalStructuredDataId = false;
+		_originalActionBase = _actionBase;
+
+		_originalActionDataId = _actionDataId;
+
+		_setOriginalActionDataId = false;
 
 		_originalParamCode = _paramCode;
 
@@ -584,7 +657,23 @@ public class ActionHistoryModelImpl
 			actionHistoryCacheModel.createDate = Long.MIN_VALUE;
 		}
 
-		actionHistoryCacheModel.structuredDataId = getStructuredDataId();
+		actionHistoryCacheModel.actionType = getActionType();
+
+		String actionType = actionHistoryCacheModel.actionType;
+
+		if ((actionType != null) && (actionType.length() == 0)) {
+			actionHistoryCacheModel.actionType = null;
+		}
+
+		actionHistoryCacheModel.actionBase = getActionBase();
+
+		String actionBase = actionHistoryCacheModel.actionBase;
+
+		if ((actionBase != null) && (actionBase.length() == 0)) {
+			actionHistoryCacheModel.actionBase = null;
+		}
+
+		actionHistoryCacheModel.actionDataId = getActionDataId();
 
 		actionHistoryCacheModel.paramCode = getParamCode();
 
@@ -592,6 +681,14 @@ public class ActionHistoryModelImpl
 
 		if ((paramCode != null) && (paramCode.length() == 0)) {
 			actionHistoryCacheModel.paramCode = null;
+		}
+
+		actionHistoryCacheModel.actionCommand = getActionCommand();
+
+		String actionCommand = actionHistoryCacheModel.actionCommand;
+
+		if ((actionCommand != null) && (actionCommand.length() == 0)) {
+			actionHistoryCacheModel.actionCommand = null;
 		}
 
 		actionHistoryCacheModel.prevValue = getPrevValue();
@@ -602,20 +699,12 @@ public class ActionHistoryModelImpl
 			actionHistoryCacheModel.prevValue = null;
 		}
 
-		actionHistoryCacheModel.changedValue = getChangedValue();
+		actionHistoryCacheModel.modifiedValue = getModifiedValue();
 
-		String changedValue = actionHistoryCacheModel.changedValue;
+		String modifiedValue = actionHistoryCacheModel.modifiedValue;
 
-		if ((changedValue != null) && (changedValue.length() == 0)) {
-			actionHistoryCacheModel.changedValue = null;
-		}
-
-		actionHistoryCacheModel.action = getAction();
-
-		String action = actionHistoryCacheModel.action;
-
-		if ((action != null) && (action.length() == 0)) {
-			actionHistoryCacheModel.action = null;
+		if ((modifiedValue != null) && (modifiedValue.length() == 0)) {
+			actionHistoryCacheModel.modifiedValue = null;
 		}
 
 		actionHistoryCacheModel.comment = getComment();
@@ -725,14 +814,18 @@ public class ActionHistoryModelImpl
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
-	private long _structuredDataId;
-	private long _originalStructuredDataId;
-	private boolean _setOriginalStructuredDataId;
+	private String _actionType;
+	private String _originalActionType;
+	private String _actionBase;
+	private String _originalActionBase;
+	private long _actionDataId;
+	private long _originalActionDataId;
+	private boolean _setOriginalActionDataId;
 	private String _paramCode;
 	private String _originalParamCode;
+	private String _actionCommand;
 	private String _prevValue;
-	private String _changedValue;
-	private String _action;
+	private String _modifiedValue;
 	private String _comment;
 	private long _columnBitmask;
 	private ActionHistory _escapedModel;

@@ -760,16 +760,24 @@
 		<column name="createDate" type="Date"></column>
 		<column name="modifiedDate" type="Date"></column>
 		
-		<column name="structuredDataId" type="long"></column>
-		<column name="paramCode" type="String"></column>
+		<column name="commentType" type="String"></column>
+		<column name="commentBase" type="String"></column>
+		<column name="commentDataId" type="long"></column>
+        <column name="paramCode" type="String"></column>
+		
 		<column name="parentCommentId" type="long"></column>
 		<column name="comment" type="String"></column>
-		<column name="closed" type="boolean"></column>
 		
-		<finder name="paramCode" return-type="Collection">
-			<finder-column name="structuredDataId" ></finder-column>
-			<finder-column name="paramCode" ></finder-column>
-		</finder>
+		<column name="closed" type="boolean"></column>
+		<column name="closedUserId" type="long"></column>
+        <column name="closedUserName" type="String"></column>
+		<column name="closedDate" type="Date"></column>
+        <finder name="ParamCode" return-type="Collection">
+            <finder-column name="commentType"></finder-column>
+            <finder-column name="commentBase"></finder-column>
+            <finder-column name="commentDataId"></finder-column>
+            <finder-column name="paramCode"></finder-column>
+        </finder>
 	</entity>
 	
 	<entity name="ActionHistory" local-service="true" uuid="false"
@@ -784,20 +792,26 @@
 		<column name="userName" type="String"></column>
 		<column name="createDate" type="Date"></column>
 		
-		<column name="structuredDataId" type="long"></column>
-		<column name="paramCode" type="String"></column>
+		<column name="actionType" type="String"></column>
+		<column name="actionBase" type="String"></column>
+		<column name="actionDataId" type="long"></column>
+        <column name="paramCode" type="String"></column>
+		<column name="actionCommand" type="String"></column>
 		<column name="prevValue" type="String"></column>
-		<column name="changedValue" type="String"></column>
-		<column name="action" type="String"></column>
+		<column name="modifiedValue" type="String"></column>
 		<column name="comment" type="String"></column>
 		
-		<finder name="DataId" return-type="Collection">
-			<finder-column name="structuredDataId" ></finder-column>
+		<finder name="Action" return-type="Collection">
+			<finder-column name="actionType" ></finder-column>
+			<finder-column name="actionBase" ></finder-column>
+			<finder-column name="actionDataId" ></finder-column>
 		</finder>
-		<finder name="ParamCode" return-type="ActionHistory">
-			<finder-column name="structuredDataId" ></finder-column>
-			<finder-column name="paramCode" ></finder-column>
-		</finder>
+        <finder name="ParamCode" return-type="Collection">
+            <finder-column name="actionType"></finder-column>
+            <finder-column name="actionBase"></finder-column>
+            <finder-column name="actionDataId"></finder-column>
+            <finder-column name="paramCode"></finder-column>
+        </finder>
 	</entity>
 
 	<entity name="CollectionSetLink" local-service="true" uuid="false"
@@ -805,8 +819,17 @@
 		<column name="collectionSetLinkId" primary="true" type="long"></column>
 		<column name="dataCollectionId" type="long"></column>
 		<column name="dataSetId" type="long"></column>
+		<column name="commentable" type="boolean"></column>
+		<column name="verifiable" type="boolean"></column>
+		<column name="freezable" type="boolean"></column>
 		<column name="freezed" type="boolean"></column>
+		<column name="freezedUserId" type="long"></column>
+        <column name="freezedUserName" type="String"></column>
+		<column name="freezedDate" type="Date"></column>
 		<column name="verified" type="boolean"></column>
+		<column name="verifiedUserId" type="long"></column>
+        <column name="verifiedUserName" type="String"></column>
+		<column name="verifiedDate" type="Date"></column>
 		
 		<finder name="CollectionId" return-type="Collection">
 			<finder-column name="dataCollectionId" ></finder-column>
@@ -821,8 +844,17 @@
 		<column name="setTypeLinkId" primary="true" type="long"></column>
 		<column name="dataSetId" type="long"></column>
 		<column name="dataTypeId" type="long"></column>
+		<column name="commentable" type="boolean"></column>
+		<column name="verifiable" type="boolean"></column>
+		<column name="freezable" type="boolean"></column>
 		<column name="freezed" type="boolean"></column>
+		<column name="freezedUserId" type="long"></column>
+        <column name="freezedUserName" type="String"></column>
+		<column name="freezedDate" type="Date"></column>
 		<column name="verified" type="boolean"></column>
+		<column name="verifiedUserId" type="long"></column>
+        <column name="verifiedUserName" type="String"></column>
+		<column name="verifiedDate" type="Date"></column>
 		
 		<finder name="DataSetId" return-type="Collection">
 			<finder-column name="dataSetId" ></finder-column>

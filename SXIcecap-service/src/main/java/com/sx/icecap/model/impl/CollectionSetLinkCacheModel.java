@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import java.util.Date;
+
 /**
  * The cache model class for representing CollectionSetLink in entity cache.
  *
@@ -63,7 +65,7 @@ public class CollectionSetLinkCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{collectionSetLinkId=");
 		sb.append(collectionSetLinkId);
@@ -71,10 +73,28 @@ public class CollectionSetLinkCacheModel
 		sb.append(dataCollectionId);
 		sb.append(", dataSetId=");
 		sb.append(dataSetId);
+		sb.append(", commentable=");
+		sb.append(commentable);
+		sb.append(", verifiable=");
+		sb.append(verifiable);
+		sb.append(", freezable=");
+		sb.append(freezable);
 		sb.append(", freezed=");
 		sb.append(freezed);
+		sb.append(", freezedUserId=");
+		sb.append(freezedUserId);
+		sb.append(", freezedUserName=");
+		sb.append(freezedUserName);
+		sb.append(", freezedDate=");
+		sb.append(freezedDate);
 		sb.append(", verified=");
 		sb.append(verified);
+		sb.append(", verifiedUserId=");
+		sb.append(verifiedUserId);
+		sb.append(", verifiedUserName=");
+		sb.append(verifiedUserName);
+		sb.append(", verifiedDate=");
+		sb.append(verifiedDate);
 		sb.append("}");
 
 		return sb.toString();
@@ -88,8 +108,42 @@ public class CollectionSetLinkCacheModel
 		collectionSetLinkImpl.setCollectionSetLinkId(collectionSetLinkId);
 		collectionSetLinkImpl.setDataCollectionId(dataCollectionId);
 		collectionSetLinkImpl.setDataSetId(dataSetId);
+		collectionSetLinkImpl.setCommentable(commentable);
+		collectionSetLinkImpl.setVerifiable(verifiable);
+		collectionSetLinkImpl.setFreezable(freezable);
 		collectionSetLinkImpl.setFreezed(freezed);
+		collectionSetLinkImpl.setFreezedUserId(freezedUserId);
+
+		if (freezedUserName == null) {
+			collectionSetLinkImpl.setFreezedUserName("");
+		}
+		else {
+			collectionSetLinkImpl.setFreezedUserName(freezedUserName);
+		}
+
+		if (freezedDate == Long.MIN_VALUE) {
+			collectionSetLinkImpl.setFreezedDate(null);
+		}
+		else {
+			collectionSetLinkImpl.setFreezedDate(new Date(freezedDate));
+		}
+
 		collectionSetLinkImpl.setVerified(verified);
+		collectionSetLinkImpl.setVerifiedUserId(verifiedUserId);
+
+		if (verifiedUserName == null) {
+			collectionSetLinkImpl.setVerifiedUserName("");
+		}
+		else {
+			collectionSetLinkImpl.setVerifiedUserName(verifiedUserName);
+		}
+
+		if (verifiedDate == Long.MIN_VALUE) {
+			collectionSetLinkImpl.setVerifiedDate(null);
+		}
+		else {
+			collectionSetLinkImpl.setVerifiedDate(new Date(verifiedDate));
+		}
 
 		collectionSetLinkImpl.resetOriginalValues();
 
@@ -104,9 +158,23 @@ public class CollectionSetLinkCacheModel
 
 		dataSetId = objectInput.readLong();
 
+		commentable = objectInput.readBoolean();
+
+		verifiable = objectInput.readBoolean();
+
+		freezable = objectInput.readBoolean();
+
 		freezed = objectInput.readBoolean();
 
+		freezedUserId = objectInput.readLong();
+		freezedUserName = objectInput.readUTF();
+		freezedDate = objectInput.readLong();
+
 		verified = objectInput.readBoolean();
+
+		verifiedUserId = objectInput.readLong();
+		verifiedUserName = objectInput.readUTF();
+		verifiedDate = objectInput.readLong();
 	}
 
 	@Override
@@ -117,15 +185,52 @@ public class CollectionSetLinkCacheModel
 
 		objectOutput.writeLong(dataSetId);
 
+		objectOutput.writeBoolean(commentable);
+
+		objectOutput.writeBoolean(verifiable);
+
+		objectOutput.writeBoolean(freezable);
+
 		objectOutput.writeBoolean(freezed);
 
+		objectOutput.writeLong(freezedUserId);
+
+		if (freezedUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(freezedUserName);
+		}
+
+		objectOutput.writeLong(freezedDate);
+
 		objectOutput.writeBoolean(verified);
+
+		objectOutput.writeLong(verifiedUserId);
+
+		if (verifiedUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(verifiedUserName);
+		}
+
+		objectOutput.writeLong(verifiedDate);
 	}
 
 	public long collectionSetLinkId;
 	public long dataCollectionId;
 	public long dataSetId;
+	public boolean commentable;
+	public boolean verifiable;
+	public boolean freezable;
 	public boolean freezed;
+	public long freezedUserId;
+	public String freezedUserName;
+	public long freezedDate;
 	public boolean verified;
+	public long verifiedUserId;
+	public String verifiedUserName;
+	public long verifiedDate;
 
 }

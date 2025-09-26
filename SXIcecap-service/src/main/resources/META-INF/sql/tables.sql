@@ -3,11 +3,13 @@ create table SX_ICECAP_ActionHistory (
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
-	structuredDataId LONG,
+	actionType VARCHAR(75) null,
+	actionBase VARCHAR(75) null,
+	actionDataId LONG,
 	paramCode VARCHAR(75) null,
+	actionCommand VARCHAR(75) null,
 	prevValue VARCHAR(75) null,
-	changedValue VARCHAR(75) null,
-	action VARCHAR(75) null,
+	modifiedValue VARCHAR(75) null,
 	comment_ VARCHAR(75) null
 );
 
@@ -15,8 +17,17 @@ create table SX_ICECAP_CollectionSetLink (
 	collectionSetLinkId LONG not null primary key,
 	dataCollectionId LONG,
 	dataSetId LONG,
+	commentable BOOLEAN,
+	verifiable BOOLEAN,
+	freezable BOOLEAN,
 	freezed BOOLEAN,
-	verified BOOLEAN
+	freezedUserId LONG,
+	freezedUserName VARCHAR(75) null,
+	freezedDate DATE null,
+	verified BOOLEAN,
+	verifiedUserId LONG,
+	verifiedUserName VARCHAR(75) null,
+	verifiedDate DATE null
 );
 
 create table SX_ICECAP_DataCollection (
@@ -47,11 +58,16 @@ create table SX_ICECAP_DataComment (
 	userName VARCHAR(75) null,
 	createDate DATE null,
 	modifiedDate DATE null,
-	structuredDataId LONG,
+	commentType VARCHAR(75) null,
+	commentBase VARCHAR(75) null,
+	commentDataId LONG,
 	paramCode VARCHAR(75) null,
 	parentCommentId LONG,
 	comment_ VARCHAR(75) null,
-	closed BOOLEAN
+	closed BOOLEAN,
+	closedUserId LONG,
+	closedUserName VARCHAR(75) null,
+	closedDate DATE null
 );
 
 create table SX_ICECAP_DataSet (
@@ -147,8 +163,17 @@ create table SX_ICECAP_SetTypeLink (
 	setTypeLinkId LONG not null primary key,
 	dataSetId LONG,
 	dataTypeId LONG,
+	commentable BOOLEAN,
+	verifiable BOOLEAN,
+	freezable BOOLEAN,
 	freezed BOOLEAN,
-	verified BOOLEAN
+	freezedUserId LONG,
+	freezedUserName VARCHAR(75) null,
+	freezedDate DATE null,
+	verified BOOLEAN,
+	verifiedUserId LONG,
+	verifiedUserName VARCHAR(75) null,
+	verifiedDate DATE null
 );
 
 create table SX_ICECAP_StructureParamLink (
