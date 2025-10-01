@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import com.sx.icecap.exception.NoSuchSetTypeLinkException;
 import com.sx.icecap.model.SetTypeLink;
@@ -46,6 +47,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1093,6 +1095,249 @@ public class SetTypeLinkPersistenceImpl
 	private static final String _FINDER_COLUMN_DATATYPEID_DATATYPEID_2 =
 		"setTypeLink.dataTypeId = ?";
 
+	private FinderPath _finderPathFetchBySetType;
+	private FinderPath _finderPathCountBySetType;
+
+	/**
+	 * Returns the set type link where dataSetId = &#63; and dataTypeId = &#63; or throws a <code>NoSuchSetTypeLinkException</code> if it could not be found.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the matching set type link
+	 * @throws NoSuchSetTypeLinkException if a matching set type link could not be found
+	 */
+	@Override
+	public SetTypeLink findBySetType(long dataSetId, long dataTypeId)
+		throws NoSuchSetTypeLinkException {
+
+		SetTypeLink setTypeLink = fetchBySetType(dataSetId, dataTypeId);
+
+		if (setTypeLink == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("dataSetId=");
+			sb.append(dataSetId);
+
+			sb.append(", dataTypeId=");
+			sb.append(dataTypeId);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchSetTypeLinkException(sb.toString());
+		}
+
+		return setTypeLink;
+	}
+
+	/**
+	 * Returns the set type link where dataSetId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the matching set type link, or <code>null</code> if a matching set type link could not be found
+	 */
+	@Override
+	public SetTypeLink fetchBySetType(long dataSetId, long dataTypeId) {
+		return fetchBySetType(dataSetId, dataTypeId, true);
+	}
+
+	/**
+	 * Returns the set type link where dataSetId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching set type link, or <code>null</code> if a matching set type link could not be found
+	 */
+	@Override
+	public SetTypeLink fetchBySetType(
+		long dataSetId, long dataTypeId, boolean useFinderCache) {
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {dataSetId, dataTypeId};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchBySetType, finderArgs, this);
+		}
+
+		if (result instanceof SetTypeLink) {
+			SetTypeLink setTypeLink = (SetTypeLink)result;
+
+			if ((dataSetId != setTypeLink.getDataSetId()) ||
+				(dataTypeId != setTypeLink.getDataTypeId())) {
+
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_SQL_SELECT_SETTYPELINK_WHERE);
+
+			sb.append(_FINDER_COLUMN_SETTYPE_DATASETID_2);
+
+			sb.append(_FINDER_COLUMN_SETTYPE_DATATYPEID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(dataSetId);
+
+				queryPos.add(dataTypeId);
+
+				List<SetTypeLink> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchBySetType, finderArgs, list);
+					}
+				}
+				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {
+									dataSetId, dataTypeId
+								};
+							}
+
+							_log.warn(
+								"SetTypeLinkPersistenceImpl.fetchBySetType(long, long, boolean) with parameters (" +
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
+					SetTypeLink setTypeLink = list.get(0);
+
+					result = setTypeLink;
+
+					cacheResult(setTypeLink);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchBySetType, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (SetTypeLink)result;
+		}
+	}
+
+	/**
+	 * Removes the set type link where dataSetId = &#63; and dataTypeId = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the set type link that was removed
+	 */
+	@Override
+	public SetTypeLink removeBySetType(long dataSetId, long dataTypeId)
+		throws NoSuchSetTypeLinkException {
+
+		SetTypeLink setTypeLink = findBySetType(dataSetId, dataTypeId);
+
+		return remove(setTypeLink);
+	}
+
+	/**
+	 * Returns the number of set type links where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the number of matching set type links
+	 */
+	@Override
+	public int countBySetType(long dataSetId, long dataTypeId) {
+		FinderPath finderPath = _finderPathCountBySetType;
+
+		Object[] finderArgs = new Object[] {dataSetId, dataTypeId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_SETTYPELINK_WHERE);
+
+			sb.append(_FINDER_COLUMN_SETTYPE_DATASETID_2);
+
+			sb.append(_FINDER_COLUMN_SETTYPE_DATATYPEID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(dataSetId);
+
+				queryPos.add(dataTypeId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_SETTYPE_DATASETID_2 =
+		"setTypeLink.dataSetId = ? AND ";
+
+	private static final String _FINDER_COLUMN_SETTYPE_DATATYPEID_2 =
+		"setTypeLink.dataTypeId = ?";
+
 	public SetTypeLinkPersistenceImpl() {
 		setModelClass(SetTypeLink.class);
 
@@ -1110,6 +1355,13 @@ public class SetTypeLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, SetTypeLinkImpl.class,
 			setTypeLink.getPrimaryKey(), setTypeLink);
+
+		finderCache.putResult(
+			_finderPathFetchBySetType,
+			new Object[] {
+				setTypeLink.getDataSetId(), setTypeLink.getDataTypeId()
+			},
+			setTypeLink);
 
 		setTypeLink.resetOriginalValues();
 	}
@@ -1174,6 +1426,8 @@ public class SetTypeLinkPersistenceImpl
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		clearUniqueFindersCache((SetTypeLinkModelImpl)setTypeLink, true);
 	}
 
 	@Override
@@ -1185,6 +1439,8 @@ public class SetTypeLinkPersistenceImpl
 			entityCache.removeResult(
 				entityCacheEnabled, SetTypeLinkImpl.class,
 				setTypeLink.getPrimaryKey());
+
+			clearUniqueFindersCache((SetTypeLinkModelImpl)setTypeLink, true);
 		}
 	}
 
@@ -1196,6 +1452,46 @@ public class SetTypeLinkPersistenceImpl
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, SetTypeLinkImpl.class, primaryKey);
+		}
+	}
+
+	protected void cacheUniqueFindersCache(
+		SetTypeLinkModelImpl setTypeLinkModelImpl) {
+
+		Object[] args = new Object[] {
+			setTypeLinkModelImpl.getDataSetId(),
+			setTypeLinkModelImpl.getDataTypeId()
+		};
+
+		finderCache.putResult(
+			_finderPathCountBySetType, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchBySetType, args, setTypeLinkModelImpl, false);
+	}
+
+	protected void clearUniqueFindersCache(
+		SetTypeLinkModelImpl setTypeLinkModelImpl, boolean clearCurrent) {
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+				setTypeLinkModelImpl.getDataSetId(),
+				setTypeLinkModelImpl.getDataTypeId()
+			};
+
+			finderCache.removeResult(_finderPathCountBySetType, args);
+			finderCache.removeResult(_finderPathFetchBySetType, args);
+		}
+
+		if ((setTypeLinkModelImpl.getColumnBitmask() &
+			 _finderPathFetchBySetType.getColumnBitmask()) != 0) {
+
+			Object[] args = new Object[] {
+				setTypeLinkModelImpl.getOriginalDataSetId(),
+				setTypeLinkModelImpl.getOriginalDataTypeId()
+			};
+
+			finderCache.removeResult(_finderPathCountBySetType, args);
+			finderCache.removeResult(_finderPathFetchBySetType, args);
 		}
 	}
 
@@ -1409,6 +1705,9 @@ public class SetTypeLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, SetTypeLinkImpl.class,
 			setTypeLink.getPrimaryKey(), setTypeLink, false);
+
+		clearUniqueFindersCache(setTypeLinkModelImpl, false);
+		cacheUniqueFindersCache(setTypeLinkModelImpl);
 
 		setTypeLink.resetOriginalValues();
 
@@ -1733,6 +2032,18 @@ public class SetTypeLinkPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDataTypeId",
 			new String[] {Long.class.getName()});
+
+		_finderPathFetchBySetType = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, SetTypeLinkImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchBySetType",
+			new String[] {Long.class.getName(), Long.class.getName()},
+			SetTypeLinkModelImpl.DATASETID_COLUMN_BITMASK |
+			SetTypeLinkModelImpl.DATATYPEID_COLUMN_BITMASK);
+
+		_finderPathCountBySetType = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySetType",
+			new String[] {Long.class.getName(), Long.class.getName()});
 
 		_setSetTypeLinkUtilPersistence(this);
 	}

@@ -330,6 +330,59 @@ public interface CollectionSetLinkPersistence
 	public int countByDataSetId(long dataSetId);
 
 	/**
+	 * Returns the collection set link where dataCollectionId = &#63; and dataSetId = &#63; or throws a <code>NoSuchCollectionSetLinkException</code> if it could not be found.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	public CollectionSetLink findByCollectionSet(
+			long dataCollectionId, long dataSetId)
+		throws NoSuchCollectionSetLinkException;
+
+	/**
+	 * Returns the collection set link where dataCollectionId = &#63; and dataSetId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public CollectionSetLink fetchByCollectionSet(
+		long dataCollectionId, long dataSetId);
+
+	/**
+	 * Returns the collection set link where dataCollectionId = &#63; and dataSetId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public CollectionSetLink fetchByCollectionSet(
+		long dataCollectionId, long dataSetId, boolean useFinderCache);
+
+	/**
+	 * Removes the collection set link where dataCollectionId = &#63; and dataSetId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the collection set link that was removed
+	 */
+	public CollectionSetLink removeByCollectionSet(
+			long dataCollectionId, long dataSetId)
+		throws NoSuchCollectionSetLinkException;
+
+	/**
+	 * Returns the number of collection set links where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the number of matching collection set links
+	 */
+	public int countByCollectionSet(long dataCollectionId, long dataSetId);
+
+	/**
 	 * Caches the collection set link in the entity cache if it is enabled.
 	 *
 	 * @param collectionSetLink the collection set link

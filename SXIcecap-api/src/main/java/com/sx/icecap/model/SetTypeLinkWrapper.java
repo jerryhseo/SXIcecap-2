@@ -543,6 +543,11 @@ public class SetTypeLinkWrapper
 	}
 
 	@Override
+	public com.liferay.portal.kernel.json.JSONObject toJSON() {
+		return model.toJSON();
+	}
+
+	@Override
 	protected SetTypeLinkWrapper wrap(SetTypeLink setTypeLink) {
 		return new SetTypeLinkWrapper(setTypeLink);
 	}

@@ -56,4 +56,6 @@ public interface SetTypeLink extends PersistedModel, SetTypeLinkModel {
 
 		};
 
+	public com.liferay.portal.kernel.json.JSONObject toJSON();
+
 }

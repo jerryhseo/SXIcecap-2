@@ -8,10 +8,10 @@ import com.liferay.portal.kernel.util.Validator;
 public class WebPortletKey {
 
 	public static final String SXDataWorkbenchPortlet = "SXDataWorkbenchPortlet";
+	public static final String SXDataCollectionExplorerPortlet = "SXDataCollectionExplorerPortlet";
+	public static final String SXDataCollectionEditorPortlet = "SXDataCollectionEditorPortlet";
 	/*
-	public static final String DATA_COLLECTION_EXPLORER = "SXDataCollectionExplorerPortlet";
-	public static final String DATA_COLLECTION_EDITOR = "SXDataCollectionEditorPortlet";
-	public static final String DATA_COLLECTION_VIEWER = "SXDataCollectionViewerPortlet";
+	public static final String DATACOLLECTION_VIEWER = "SXDataCollectionViewerPortlet";
 	public static final String DATASET_EXPLORER = "SXDataSetExplorerPortlet";
 	public static final String DATASET_EDITOR = "SXDataSetEditorPortlet";
 	public static final String DATASET_VIEWER = "SXDataSetViewerPortlet";
@@ -28,8 +28,8 @@ public class WebPortletKey {
 	public static final String SXStructuredDataEditorPortlet = "SXStructuredDataEditorPortlet";
 	public static final String SXStructuredDataExplorerPortlet = "SXStructuredDataExplorerPortlet";
 	/*
-	public static final String DATA_STRUCTURE_EXPLORER = "SXDataStructureExplorerPortlet";
-	public static final String DATA_STRUCTURE_VIEWER = "SXDataStructureViewerPortlet";
+	public static final String DATASTRUCTURE_EXPLORER = "SXDataStructureExplorerPortlet";
+	public static final String DATASTRUCTURE_VIEWER = "SXDataStructureViewerPortlet";
 	public static final String STRUCTURED_DATA_VIEWER = "SXStructuredDataViewerPortlet";
 	 */
 	

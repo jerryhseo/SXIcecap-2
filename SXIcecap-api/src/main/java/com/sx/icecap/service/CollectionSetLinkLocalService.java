@@ -25,11 +25,13 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import com.sx.icecap.exception.NoSuchCollectionSetLinkException;
 import com.sx.icecap.model.CollectionSetLink;
 
 import java.io.Serializable;
@@ -75,6 +77,16 @@ public interface CollectionSetLinkLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public CollectionSetLink addCollectionSetLink(
 		CollectionSetLink collectionSetLink);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public CollectionSetLink addCollectionSetLink(
+		long dataCollectionId, long dataSetId);
+
+	public int countAllCollectionSetLinkList();
+
+	public int countCollectionSetLinkListByCollection(long dataCollectionId);
+
+	public int countCollectionSetLinkListByType(long dataSetId);
 
 	/**
 	 * Creates a new collection set link with the primary key. Does not add the collection set link to the database.
@@ -193,6 +205,13 @@ public interface CollectionSetLinkLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CollectionSetLink> getAllCollectionSetLinkList();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CollectionSetLink> getAllCollectionSetLinkList(
+		int start, int end);
+
 	/**
 	 * Returns the collection set link with the primary key.
 	 *
@@ -203,6 +222,27 @@ public interface CollectionSetLinkLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public CollectionSetLink getCollectionSetLink(long collectionSetLinkId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CollectionSetLink getCollectionSetLink(
+			long dataCollectionId, long dataSetId)
+		throws NoSuchCollectionSetLinkException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CollectionSetLink> getCollectionSetLinkListByCollection(
+		long dataCollectionId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CollectionSetLink> getCollectionSetLinkListByCollection(
+		long dataCollectionId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CollectionSetLink> getCollectionSetLinkListByType(
+		long dataSetId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CollectionSetLink> getCollectionSetLinkListByType(
+		long dataSetId, int start, int end);
 
 	/**
 	 * Returns a range of all the collection set links.
@@ -244,6 +284,25 @@ public interface CollectionSetLinkLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	@Indexable(type = IndexableType.REINDEX)
+	public CollectionSetLink removeCollectionSetLink(long collectionSetLinkId);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public void removeCollectionSetLinkByCollection(long dataCollectionId);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public void removeCollectionSetLinkBySet(long dataSetId);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public CollectionSetLink setFreezed(
+			long collectionSetLinkId, boolean freezed, ServiceContext sc)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.REINDEX)
+	public CollectionSetLink setVerified(
+			long collectionSetLinkId, boolean verified, ServiceContext sc)
+		throws PortalException;
+
 	/**
 	 * Updates the collection set link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -257,5 +316,9 @@ public interface CollectionSetLinkLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public CollectionSetLink updateCollectionSetLink(
 		CollectionSetLink collectionSetLink);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public CollectionSetLink updateCollectionSetLink(
+		long collectionSetLinkId, long dataCollectionId, long dataSetId);
 
 }

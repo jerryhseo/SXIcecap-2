@@ -8,7 +8,7 @@ public class JSPPath {
 	public static final String DATATYPE_VIEWER_TEMPLATE_PATH = "/jsp/";
 	public static final String DATA_WORKBENCH = "/jsp/data-workbench.jsp";
 	public static final String DATA_COLLECTION_EXPLORER = "/jsp/data-collection-explorer.jsp";
-	public static final String DATA_COLLECTION_EDITOR= "/jsp/data-collection-editor.jsp";
+	public static final String DATA_COLLECTION_EDITOR= "/jsp/datacollection-editor.jsp";
 	public static final String DATA_COLLECTION_VIEWER = "/jsp/data-collection-viewer.jsp";
 	public static final String DATASET_EXPLORER = "/jsp/dataset-explorer.jsp";
 	public static final String DATASET_EDITOR= "/jsp/dataset-editor.jsp";

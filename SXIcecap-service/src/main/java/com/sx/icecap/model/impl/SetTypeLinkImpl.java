@@ -14,8 +14,32 @@
 
 package com.sx.icecap.model.impl;
 
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+
 /**
  * @author Brian Wing Shun Chan
  */
 public class SetTypeLinkImpl extends SetTypeLinkBaseImpl {
+
+	public JSONObject toJSON() {
+		JSONObject json = JSONFactoryUtil.createJSONObject();
+		
+		json.put("dataSetId", getDataSetId());
+		json.put("dataTypeId", getDataTypeId());
+		
+		json.put("commentable", this.getCommentable());
+		json.put("verifiable", this.getVerifiable());
+		json.put("verified", this.getVerified());
+		json.put("verifiedUserId", this.getVerifiedUserId());
+		json.put("verifiedUserName", this.getVerifiedUserName());
+		json.put("verifiedDate", this.getVerifiedDate());
+		json.put("freezable", this.getFreezable());
+		json.put("freezed", this.getFreezed());
+		json.put("freezedUserId", this.getFreezedUserId());
+		json.put("freezedUserName", this.getFreezedUserName());
+		json.put("freezedDate", this.getFreezedDate());
+		
+		return json;
+	}
 }

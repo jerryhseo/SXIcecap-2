@@ -58,4 +58,6 @@ public interface CollectionSetLink
 
 			};
 
+	public com.liferay.portal.kernel.json.JSONObject toJSON();
+
 }

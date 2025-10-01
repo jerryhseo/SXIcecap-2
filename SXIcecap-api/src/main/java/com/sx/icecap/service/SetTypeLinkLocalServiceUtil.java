@@ -44,6 +44,9 @@ public class SetTypeLinkLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.sx.icecap.service.impl.SetTypeLinkLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static SetTypeLink addSetTypeLink(long dataSetId, long dataTypeId) {
+		return getService().addSetTypeLink(dataSetId, dataTypeId);
+	}
 
 	/**
 	 * Adds the set type link to the database. Also notifies the appropriate model listeners.
@@ -57,6 +60,18 @@ public class SetTypeLinkLocalServiceUtil {
 	 */
 	public static SetTypeLink addSetTypeLink(SetTypeLink setTypeLink) {
 		return getService().addSetTypeLink(setTypeLink);
+	}
+
+	public static int countAllSetTypeLinkList() {
+		return getService().countAllSetTypeLinkList();
+	}
+
+	public static int countSetTypeLinkListBySet(long dataSetId) {
+		return getService().countSetTypeLinkListBySet(dataSetId);
+	}
+
+	public static int countSetTypeLinkListByType(long dataTypeId) {
+		return getService().countSetTypeLinkListByType(dataTypeId);
 	}
 
 	/**
@@ -197,6 +212,14 @@ public class SetTypeLinkLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static List<SetTypeLink> getAllSetTypeLinkList() {
+		return getService().getAllSetTypeLinkList();
+	}
+
+	public static List<SetTypeLink> getAllSetTypeLinkList(int start, int end) {
+		return getService().getAllSetTypeLinkList(start, end);
+	}
+
 	public static
 		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 			getIndexableActionableDynamicQuery() {
@@ -235,6 +258,32 @@ public class SetTypeLinkLocalServiceUtil {
 		return getService().getSetTypeLink(setTypeLinkId);
 	}
 
+	public static SetTypeLink getSetTypeLink(long dataSetId, long dataTypeId)
+		throws com.sx.icecap.exception.NoSuchSetTypeLinkException {
+
+		return getService().getSetTypeLink(dataSetId, dataTypeId);
+	}
+
+	public static List<SetTypeLink> getSetTypeLinkListBySet(long dataSetId) {
+		return getService().getSetTypeLinkListBySet(dataSetId);
+	}
+
+	public static List<SetTypeLink> getSetTypeLinkListBySet(
+		long dataSetId, int start, int end) {
+
+		return getService().getSetTypeLinkListBySet(dataSetId, start, end);
+	}
+
+	public static List<SetTypeLink> getSetTypeLinkListByType(long dataTypeId) {
+		return getService().getSetTypeLinkListByType(dataTypeId);
+	}
+
+	public static List<SetTypeLink> getSetTypeLinkListByType(
+		long dataTypeId, int start, int end) {
+
+		return getService().getSetTypeLinkListByType(dataTypeId, start, end);
+	}
+
 	/**
 	 * Returns a range of all the set type links.
 	 *
@@ -257,6 +306,41 @@ public class SetTypeLinkLocalServiceUtil {
 	 */
 	public static int getSetTypeLinksCount() {
 		return getService().getSetTypeLinksCount();
+	}
+
+	public static SetTypeLink removeSetTypeLink(long setTypeLinkId) {
+		return getService().removeSetTypeLink(setTypeLinkId);
+	}
+
+	public static void removeSetTypeLinkBySet(long dataSetId) {
+		getService().removeSetTypeLinkBySet(dataSetId);
+	}
+
+	public static void removeSetTypeLinkByType(long dataTypeId) {
+		getService().removeSetTypeLinkByType(dataTypeId);
+	}
+
+	public static SetTypeLink setFreezed(
+			long setTypeLinkId, boolean freezed,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
+
+		return getService().setFreezed(setTypeLinkId, freezed, sc);
+	}
+
+	public static SetTypeLink setVerified(
+			long setTypeLinkId, boolean verified,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
+
+		return getService().setVerified(setTypeLinkId, verified, sc);
+	}
+
+	public static SetTypeLink updateSetTypeLink(
+		long setTypeLinkId, long dataSetId, long dataTypeId) {
+
+		return getService().updateSetTypeLink(
+			setTypeLinkId, dataSetId, dataTypeId);
 	}
 
 	/**

@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import com.sx.icecap.exception.NoSuchCollectionSetLinkException;
 import com.sx.icecap.model.CollectionSetLink;
@@ -46,6 +47,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1115,6 +1117,256 @@ public class CollectionSetLinkPersistenceImpl
 	private static final String _FINDER_COLUMN_DATASETID_DATASETID_2 =
 		"collectionSetLink.dataSetId = ?";
 
+	private FinderPath _finderPathFetchByCollectionSet;
+	private FinderPath _finderPathCountByCollectionSet;
+
+	/**
+	 * Returns the collection set link where dataCollectionId = &#63; and dataSetId = &#63; or throws a <code>NoSuchCollectionSetLinkException</code> if it could not be found.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	@Override
+	public CollectionSetLink findByCollectionSet(
+			long dataCollectionId, long dataSetId)
+		throws NoSuchCollectionSetLinkException {
+
+		CollectionSetLink collectionSetLink = fetchByCollectionSet(
+			dataCollectionId, dataSetId);
+
+		if (collectionSetLink == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("dataCollectionId=");
+			sb.append(dataCollectionId);
+
+			sb.append(", dataSetId=");
+			sb.append(dataSetId);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchCollectionSetLinkException(sb.toString());
+		}
+
+		return collectionSetLink;
+	}
+
+	/**
+	 * Returns the collection set link where dataCollectionId = &#63; and dataSetId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	@Override
+	public CollectionSetLink fetchByCollectionSet(
+		long dataCollectionId, long dataSetId) {
+
+		return fetchByCollectionSet(dataCollectionId, dataSetId, true);
+	}
+
+	/**
+	 * Returns the collection set link where dataCollectionId = &#63; and dataSetId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	@Override
+	public CollectionSetLink fetchByCollectionSet(
+		long dataCollectionId, long dataSetId, boolean useFinderCache) {
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {dataCollectionId, dataSetId};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByCollectionSet, finderArgs, this);
+		}
+
+		if (result instanceof CollectionSetLink) {
+			CollectionSetLink collectionSetLink = (CollectionSetLink)result;
+
+			if ((dataCollectionId != collectionSetLink.getDataCollectionId()) ||
+				(dataSetId != collectionSetLink.getDataSetId())) {
+
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_SQL_SELECT_COLLECTIONSETLINK_WHERE);
+
+			sb.append(_FINDER_COLUMN_COLLECTIONSET_DATACOLLECTIONID_2);
+
+			sb.append(_FINDER_COLUMN_COLLECTIONSET_DATASETID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(dataCollectionId);
+
+				queryPos.add(dataSetId);
+
+				List<CollectionSetLink> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByCollectionSet, finderArgs, list);
+					}
+				}
+				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {
+									dataCollectionId, dataSetId
+								};
+							}
+
+							_log.warn(
+								"CollectionSetLinkPersistenceImpl.fetchByCollectionSet(long, long, boolean) with parameters (" +
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
+					CollectionSetLink collectionSetLink = list.get(0);
+
+					result = collectionSetLink;
+
+					cacheResult(collectionSetLink);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByCollectionSet, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (CollectionSetLink)result;
+		}
+	}
+
+	/**
+	 * Removes the collection set link where dataCollectionId = &#63; and dataSetId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the collection set link that was removed
+	 */
+	@Override
+	public CollectionSetLink removeByCollectionSet(
+			long dataCollectionId, long dataSetId)
+		throws NoSuchCollectionSetLinkException {
+
+		CollectionSetLink collectionSetLink = findByCollectionSet(
+			dataCollectionId, dataSetId);
+
+		return remove(collectionSetLink);
+	}
+
+	/**
+	 * Returns the number of collection set links where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the number of matching collection set links
+	 */
+	@Override
+	public int countByCollectionSet(long dataCollectionId, long dataSetId) {
+		FinderPath finderPath = _finderPathCountByCollectionSet;
+
+		Object[] finderArgs = new Object[] {dataCollectionId, dataSetId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_COLLECTIONSETLINK_WHERE);
+
+			sb.append(_FINDER_COLUMN_COLLECTIONSET_DATACOLLECTIONID_2);
+
+			sb.append(_FINDER_COLUMN_COLLECTIONSET_DATASETID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(dataCollectionId);
+
+				queryPos.add(dataSetId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String
+		_FINDER_COLUMN_COLLECTIONSET_DATACOLLECTIONID_2 =
+			"collectionSetLink.dataCollectionId = ? AND ";
+
+	private static final String _FINDER_COLUMN_COLLECTIONSET_DATASETID_2 =
+		"collectionSetLink.dataSetId = ?";
+
 	public CollectionSetLinkPersistenceImpl() {
 		setModelClass(CollectionSetLink.class);
 
@@ -1132,6 +1384,14 @@ public class CollectionSetLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, CollectionSetLinkImpl.class,
 			collectionSetLink.getPrimaryKey(), collectionSetLink);
+
+		finderCache.putResult(
+			_finderPathFetchByCollectionSet,
+			new Object[] {
+				collectionSetLink.getDataCollectionId(),
+				collectionSetLink.getDataSetId()
+			},
+			collectionSetLink);
 
 		collectionSetLink.resetOriginalValues();
 	}
@@ -1197,6 +1457,9 @@ public class CollectionSetLinkPersistenceImpl
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		clearUniqueFindersCache(
+			(CollectionSetLinkModelImpl)collectionSetLink, true);
 	}
 
 	@Override
@@ -1208,6 +1471,9 @@ public class CollectionSetLinkPersistenceImpl
 			entityCache.removeResult(
 				entityCacheEnabled, CollectionSetLinkImpl.class,
 				collectionSetLink.getPrimaryKey());
+
+			clearUniqueFindersCache(
+				(CollectionSetLinkModelImpl)collectionSetLink, true);
 		}
 	}
 
@@ -1219,6 +1485,48 @@ public class CollectionSetLinkPersistenceImpl
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, CollectionSetLinkImpl.class, primaryKey);
+		}
+	}
+
+	protected void cacheUniqueFindersCache(
+		CollectionSetLinkModelImpl collectionSetLinkModelImpl) {
+
+		Object[] args = new Object[] {
+			collectionSetLinkModelImpl.getDataCollectionId(),
+			collectionSetLinkModelImpl.getDataSetId()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByCollectionSet, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByCollectionSet, args, collectionSetLinkModelImpl,
+			false);
+	}
+
+	protected void clearUniqueFindersCache(
+		CollectionSetLinkModelImpl collectionSetLinkModelImpl,
+		boolean clearCurrent) {
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+				collectionSetLinkModelImpl.getDataCollectionId(),
+				collectionSetLinkModelImpl.getDataSetId()
+			};
+
+			finderCache.removeResult(_finderPathCountByCollectionSet, args);
+			finderCache.removeResult(_finderPathFetchByCollectionSet, args);
+		}
+
+		if ((collectionSetLinkModelImpl.getColumnBitmask() &
+			 _finderPathFetchByCollectionSet.getColumnBitmask()) != 0) {
+
+			Object[] args = new Object[] {
+				collectionSetLinkModelImpl.getOriginalDataCollectionId(),
+				collectionSetLinkModelImpl.getOriginalDataSetId()
+			};
+
+			finderCache.removeResult(_finderPathCountByCollectionSet, args);
+			finderCache.removeResult(_finderPathFetchByCollectionSet, args);
 		}
 	}
 
@@ -1442,6 +1750,9 @@ public class CollectionSetLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, CollectionSetLinkImpl.class,
 			collectionSetLink.getPrimaryKey(), collectionSetLink, false);
+
+		clearUniqueFindersCache(collectionSetLinkModelImpl, false);
+		cacheUniqueFindersCache(collectionSetLinkModelImpl);
 
 		collectionSetLink.resetOriginalValues();
 
@@ -1768,6 +2079,18 @@ public class CollectionSetLinkPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDataSetId",
 			new String[] {Long.class.getName()});
+
+		_finderPathFetchByCollectionSet = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, CollectionSetLinkImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByCollectionSet",
+			new String[] {Long.class.getName(), Long.class.getName()},
+			CollectionSetLinkModelImpl.DATACOLLECTIONID_COLUMN_BITMASK |
+			CollectionSetLinkModelImpl.DATASETID_COLUMN_BITMASK);
+
+		_finderPathCountByCollectionSet = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCollectionSet",
+			new String[] {Long.class.getName(), Long.class.getName()});
 
 		_setCollectionSetLinkUtilPersistence(this);
 	}

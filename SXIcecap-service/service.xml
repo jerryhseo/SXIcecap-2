@@ -837,6 +837,10 @@
         <finder name="DataSetId" return-type="Collection">
 			<finder-column name="dataSetId" ></finder-column>
 		</finder>
+        <finder name="CollectionSet" return-type="CollectionSetLink">
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+        </finder>
 	</entity>
 
 	<entity name="SetTypeLink" local-service="true" uuid="false"
@@ -862,6 +866,10 @@
         <finder name="DataTypeId" return-type="Collection">
 			<finder-column name="dataTypeId" ></finder-column>
 		</finder>
+        <finder name="SetType" return-type="SetTypeLink">
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+        </finder>
 	</entity>
 
 	<entity name="TypeStructureLink" local-service="true" uuid="false"

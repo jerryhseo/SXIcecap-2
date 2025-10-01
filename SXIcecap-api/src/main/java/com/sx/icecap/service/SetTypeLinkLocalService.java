@@ -25,11 +25,13 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import com.sx.icecap.exception.NoSuchSetTypeLinkException;
 import com.sx.icecap.model.SetTypeLink;
 
 import java.io.Serializable;
@@ -61,6 +63,8 @@ public interface SetTypeLinkLocalService
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.sx.icecap.service.impl.SetTypeLinkLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the set type link local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link SetTypeLinkLocalServiceUtil} if injection and service tracking are not available.
 	 */
+	@Indexable(type = IndexableType.REINDEX)
+	public SetTypeLink addSetTypeLink(long dataSetId, long dataTypeId);
 
 	/**
 	 * Adds the set type link to the database. Also notifies the appropriate model listeners.
@@ -74,6 +78,12 @@ public interface SetTypeLinkLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public SetTypeLink addSetTypeLink(SetTypeLink setTypeLink);
+
+	public int countAllSetTypeLinkList();
+
+	public int countSetTypeLinkListBySet(long dataSetId);
+
+	public int countSetTypeLinkListByType(long dataTypeId);
 
 	/**
 	 * Creates a new set type link with the primary key. Does not add the set type link to the database.
@@ -192,6 +202,12 @@ public interface SetTypeLinkLocalService
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SetTypeLink> getAllSetTypeLinkList();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SetTypeLink> getAllSetTypeLinkList(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
@@ -220,6 +236,24 @@ public interface SetTypeLinkLocalService
 	public SetTypeLink getSetTypeLink(long setTypeLinkId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SetTypeLink getSetTypeLink(long dataSetId, long dataTypeId)
+		throws NoSuchSetTypeLinkException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SetTypeLink> getSetTypeLinkListBySet(long dataSetId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SetTypeLink> getSetTypeLinkListBySet(
+		long dataSetId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SetTypeLink> getSetTypeLinkListByType(long dataTypeId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SetTypeLink> getSetTypeLinkListByType(
+		long dataTypeId, int start, int end);
+
 	/**
 	 * Returns a range of all the set type links.
 	 *
@@ -241,6 +275,29 @@ public interface SetTypeLinkLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getSetTypeLinksCount();
+
+	@Indexable(type = IndexableType.REINDEX)
+	public SetTypeLink removeSetTypeLink(long setTypeLinkId);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public void removeSetTypeLinkBySet(long dataSetId);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public void removeSetTypeLinkByType(long dataTypeId);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public SetTypeLink setFreezed(
+			long setTypeLinkId, boolean freezed, ServiceContext sc)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.REINDEX)
+	public SetTypeLink setVerified(
+			long setTypeLinkId, boolean verified, ServiceContext sc)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.REINDEX)
+	public SetTypeLink updateSetTypeLink(
+		long setTypeLinkId, long dataSetId, long dataTypeId);
 
 	/**
 	 * Updates the set type link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

@@ -459,6 +459,70 @@ public class SetTypeLinkUtil {
 	}
 
 	/**
+	 * Returns the set type link where dataSetId = &#63; and dataTypeId = &#63; or throws a <code>NoSuchSetTypeLinkException</code> if it could not be found.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the matching set type link
+	 * @throws NoSuchSetTypeLinkException if a matching set type link could not be found
+	 */
+	public static SetTypeLink findBySetType(long dataSetId, long dataTypeId)
+		throws com.sx.icecap.exception.NoSuchSetTypeLinkException {
+
+		return getPersistence().findBySetType(dataSetId, dataTypeId);
+	}
+
+	/**
+	 * Returns the set type link where dataSetId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the matching set type link, or <code>null</code> if a matching set type link could not be found
+	 */
+	public static SetTypeLink fetchBySetType(long dataSetId, long dataTypeId) {
+		return getPersistence().fetchBySetType(dataSetId, dataTypeId);
+	}
+
+	/**
+	 * Returns the set type link where dataSetId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching set type link, or <code>null</code> if a matching set type link could not be found
+	 */
+	public static SetTypeLink fetchBySetType(
+		long dataSetId, long dataTypeId, boolean useFinderCache) {
+
+		return getPersistence().fetchBySetType(
+			dataSetId, dataTypeId, useFinderCache);
+	}
+
+	/**
+	 * Removes the set type link where dataSetId = &#63; and dataTypeId = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the set type link that was removed
+	 */
+	public static SetTypeLink removeBySetType(long dataSetId, long dataTypeId)
+		throws com.sx.icecap.exception.NoSuchSetTypeLinkException {
+
+		return getPersistence().removeBySetType(dataSetId, dataTypeId);
+	}
+
+	/**
+	 * Returns the number of set type links where dataSetId = &#63; and dataTypeId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @return the number of matching set type links
+	 */
+	public static int countBySetType(long dataSetId, long dataTypeId) {
+		return getPersistence().countBySetType(dataSetId, dataTypeId);
+	}
+
+	/**
 	 * Caches the set type link in the entity cache if it is enabled.
 	 *
 	 * @param setTypeLink the set type link

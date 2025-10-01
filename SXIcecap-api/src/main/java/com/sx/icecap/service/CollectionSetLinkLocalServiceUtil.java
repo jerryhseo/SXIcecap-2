@@ -61,6 +61,27 @@ public class CollectionSetLinkLocalServiceUtil {
 		return getService().addCollectionSetLink(collectionSetLink);
 	}
 
+	public static CollectionSetLink addCollectionSetLink(
+		long dataCollectionId, long dataSetId) {
+
+		return getService().addCollectionSetLink(dataCollectionId, dataSetId);
+	}
+
+	public static int countAllCollectionSetLinkList() {
+		return getService().countAllCollectionSetLinkList();
+	}
+
+	public static int countCollectionSetLinkListByCollection(
+		long dataCollectionId) {
+
+		return getService().countCollectionSetLinkListByCollection(
+			dataCollectionId);
+	}
+
+	public static int countCollectionSetLinkListByType(long dataSetId) {
+		return getService().countCollectionSetLinkListByType(dataSetId);
+	}
+
 	/**
 	 * Creates a new collection set link with the primary key. Does not add the collection set link to the database.
 	 *
@@ -206,6 +227,16 @@ public class CollectionSetLinkLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static List<CollectionSetLink> getAllCollectionSetLinkList() {
+		return getService().getAllCollectionSetLinkList();
+	}
+
+	public static List<CollectionSetLink> getAllCollectionSetLinkList(
+		int start, int end) {
+
+		return getService().getAllCollectionSetLinkList(start, end);
+	}
+
 	/**
 	 * Returns the collection set link with the primary key.
 	 *
@@ -218,6 +249,40 @@ public class CollectionSetLinkLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getCollectionSetLink(collectionSetLinkId);
+	}
+
+	public static CollectionSetLink getCollectionSetLink(
+			long dataCollectionId, long dataSetId)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return getService().getCollectionSetLink(dataCollectionId, dataSetId);
+	}
+
+	public static List<CollectionSetLink> getCollectionSetLinkListByCollection(
+		long dataCollectionId) {
+
+		return getService().getCollectionSetLinkListByCollection(
+			dataCollectionId);
+	}
+
+	public static List<CollectionSetLink> getCollectionSetLinkListByCollection(
+		long dataCollectionId, int start, int end) {
+
+		return getService().getCollectionSetLinkListByCollection(
+			dataCollectionId, start, end);
+	}
+
+	public static List<CollectionSetLink> getCollectionSetLinkListByType(
+		long dataSetId) {
+
+		return getService().getCollectionSetLinkListByType(dataSetId);
+	}
+
+	public static List<CollectionSetLink> getCollectionSetLinkListByType(
+		long dataSetId, int start, int end) {
+
+		return getService().getCollectionSetLinkListByType(
+			dataSetId, start, end);
 	}
 
 	/**
@@ -271,6 +336,38 @@ public class CollectionSetLinkLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static CollectionSetLink removeCollectionSetLink(
+		long collectionSetLinkId) {
+
+		return getService().removeCollectionSetLink(collectionSetLinkId);
+	}
+
+	public static void removeCollectionSetLinkByCollection(
+		long dataCollectionId) {
+
+		getService().removeCollectionSetLinkByCollection(dataCollectionId);
+	}
+
+	public static void removeCollectionSetLinkBySet(long dataSetId) {
+		getService().removeCollectionSetLinkBySet(dataSetId);
+	}
+
+	public static CollectionSetLink setFreezed(
+			long collectionSetLinkId, boolean freezed,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
+
+		return getService().setFreezed(collectionSetLinkId, freezed, sc);
+	}
+
+	public static CollectionSetLink setVerified(
+			long collectionSetLinkId, boolean verified,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
+
+		return getService().setVerified(collectionSetLinkId, verified, sc);
+	}
+
 	/**
 	 * Updates the collection set link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -285,6 +382,13 @@ public class CollectionSetLinkLocalServiceUtil {
 		CollectionSetLink collectionSetLink) {
 
 		return getService().updateCollectionSetLink(collectionSetLink);
+	}
+
+	public static CollectionSetLink updateCollectionSetLink(
+		long collectionSetLinkId, long dataCollectionId, long dataSetId) {
+
+		return getService().updateCollectionSetLink(
+			collectionSetLinkId, dataCollectionId, dataSetId);
 	}
 
 	public static CollectionSetLinkLocalService getService() {

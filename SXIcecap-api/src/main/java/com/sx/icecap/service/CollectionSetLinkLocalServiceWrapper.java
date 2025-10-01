@@ -51,6 +51,31 @@ public class CollectionSetLinkLocalServiceWrapper
 			collectionSetLink);
 	}
 
+	@Override
+	public com.sx.icecap.model.CollectionSetLink addCollectionSetLink(
+		long dataCollectionId, long dataSetId) {
+
+		return _collectionSetLinkLocalService.addCollectionSetLink(
+			dataCollectionId, dataSetId);
+	}
+
+	@Override
+	public int countAllCollectionSetLinkList() {
+		return _collectionSetLinkLocalService.countAllCollectionSetLinkList();
+	}
+
+	@Override
+	public int countCollectionSetLinkListByCollection(long dataCollectionId) {
+		return _collectionSetLinkLocalService.
+			countCollectionSetLinkListByCollection(dataCollectionId);
+	}
+
+	@Override
+	public int countCollectionSetLinkListByType(long dataSetId) {
+		return _collectionSetLinkLocalService.countCollectionSetLinkListByType(
+			dataSetId);
+	}
+
 	/**
 	 * Creates a new collection set link with the primary key. Does not add the collection set link to the database.
 	 *
@@ -221,6 +246,21 @@ public class CollectionSetLinkLocalServiceWrapper
 		return _collectionSetLinkLocalService.getActionableDynamicQuery();
 	}
 
+	@Override
+	public java.util.List<com.sx.icecap.model.CollectionSetLink>
+		getAllCollectionSetLinkList() {
+
+		return _collectionSetLinkLocalService.getAllCollectionSetLinkList();
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.CollectionSetLink>
+		getAllCollectionSetLinkList(int start, int end) {
+
+		return _collectionSetLinkLocalService.getAllCollectionSetLinkList(
+			start, end);
+	}
+
 	/**
 	 * Returns the collection set link with the primary key.
 	 *
@@ -235,6 +275,48 @@ public class CollectionSetLinkLocalServiceWrapper
 
 		return _collectionSetLinkLocalService.getCollectionSetLink(
 			collectionSetLinkId);
+	}
+
+	@Override
+	public com.sx.icecap.model.CollectionSetLink getCollectionSetLink(
+			long dataCollectionId, long dataSetId)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return _collectionSetLinkLocalService.getCollectionSetLink(
+			dataCollectionId, dataSetId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.CollectionSetLink>
+		getCollectionSetLinkListByCollection(long dataCollectionId) {
+
+		return _collectionSetLinkLocalService.
+			getCollectionSetLinkListByCollection(dataCollectionId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.CollectionSetLink>
+		getCollectionSetLinkListByCollection(
+			long dataCollectionId, int start, int end) {
+
+		return _collectionSetLinkLocalService.
+			getCollectionSetLinkListByCollection(dataCollectionId, start, end);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.CollectionSetLink>
+		getCollectionSetLinkListByType(long dataSetId) {
+
+		return _collectionSetLinkLocalService.getCollectionSetLinkListByType(
+			dataSetId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.CollectionSetLink>
+		getCollectionSetLinkListByType(long dataSetId, int start, int end) {
+
+		return _collectionSetLinkLocalService.getCollectionSetLinkListByType(
+			dataSetId, start, end);
 	}
 
 	/**
@@ -294,6 +376,45 @@ public class CollectionSetLinkLocalServiceWrapper
 		return _collectionSetLinkLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public com.sx.icecap.model.CollectionSetLink removeCollectionSetLink(
+		long collectionSetLinkId) {
+
+		return _collectionSetLinkLocalService.removeCollectionSetLink(
+			collectionSetLinkId);
+	}
+
+	@Override
+	public void removeCollectionSetLinkByCollection(long dataCollectionId) {
+		_collectionSetLinkLocalService.removeCollectionSetLinkByCollection(
+			dataCollectionId);
+	}
+
+	@Override
+	public void removeCollectionSetLinkBySet(long dataSetId) {
+		_collectionSetLinkLocalService.removeCollectionSetLinkBySet(dataSetId);
+	}
+
+	@Override
+	public com.sx.icecap.model.CollectionSetLink setFreezed(
+			long collectionSetLinkId, boolean freezed,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _collectionSetLinkLocalService.setFreezed(
+			collectionSetLinkId, freezed, sc);
+	}
+
+	@Override
+	public com.sx.icecap.model.CollectionSetLink setVerified(
+			long collectionSetLinkId, boolean verified,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _collectionSetLinkLocalService.setVerified(
+			collectionSetLinkId, verified, sc);
+	}
+
 	/**
 	 * Updates the collection set link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -310,6 +431,14 @@ public class CollectionSetLinkLocalServiceWrapper
 
 		return _collectionSetLinkLocalService.updateCollectionSetLink(
 			collectionSetLink);
+	}
+
+	@Override
+	public com.sx.icecap.model.CollectionSetLink updateCollectionSetLink(
+		long collectionSetLinkId, long dataCollectionId, long dataSetId) {
+
+		return _collectionSetLinkLocalService.updateCollectionSetLink(
+			collectionSetLinkId, dataCollectionId, dataSetId);
 	}
 
 	@Override

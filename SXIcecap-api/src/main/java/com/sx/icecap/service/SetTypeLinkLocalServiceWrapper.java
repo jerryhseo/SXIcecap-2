@@ -33,6 +33,13 @@ public class SetTypeLinkLocalServiceWrapper
 		_setTypeLinkLocalService = setTypeLinkLocalService;
 	}
 
+	@Override
+	public com.sx.icecap.model.SetTypeLink addSetTypeLink(
+		long dataSetId, long dataTypeId) {
+
+		return _setTypeLinkLocalService.addSetTypeLink(dataSetId, dataTypeId);
+	}
+
 	/**
 	 * Adds the set type link to the database. Also notifies the appropriate model listeners.
 	 *
@@ -48,6 +55,21 @@ public class SetTypeLinkLocalServiceWrapper
 		com.sx.icecap.model.SetTypeLink setTypeLink) {
 
 		return _setTypeLinkLocalService.addSetTypeLink(setTypeLink);
+	}
+
+	@Override
+	public int countAllSetTypeLinkList() {
+		return _setTypeLinkLocalService.countAllSetTypeLinkList();
+	}
+
+	@Override
+	public int countSetTypeLinkListBySet(long dataSetId) {
+		return _setTypeLinkLocalService.countSetTypeLinkListBySet(dataSetId);
+	}
+
+	@Override
+	public int countSetTypeLinkListByType(long dataTypeId) {
+		return _setTypeLinkLocalService.countSetTypeLinkListByType(dataTypeId);
 	}
 
 	/**
@@ -214,6 +236,20 @@ public class SetTypeLinkLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.sx.icecap.model.SetTypeLink>
+		getAllSetTypeLinkList() {
+
+		return _setTypeLinkLocalService.getAllSetTypeLinkList();
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.SetTypeLink>
+		getAllSetTypeLinkList(int start, int end) {
+
+		return _setTypeLinkLocalService.getAllSetTypeLinkList(start, end);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 		getIndexableActionableDynamicQuery() {
 
@@ -255,6 +291,44 @@ public class SetTypeLinkLocalServiceWrapper
 		return _setTypeLinkLocalService.getSetTypeLink(setTypeLinkId);
 	}
 
+	@Override
+	public com.sx.icecap.model.SetTypeLink getSetTypeLink(
+			long dataSetId, long dataTypeId)
+		throws com.sx.icecap.exception.NoSuchSetTypeLinkException {
+
+		return _setTypeLinkLocalService.getSetTypeLink(dataSetId, dataTypeId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.SetTypeLink>
+		getSetTypeLinkListBySet(long dataSetId) {
+
+		return _setTypeLinkLocalService.getSetTypeLinkListBySet(dataSetId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.SetTypeLink>
+		getSetTypeLinkListBySet(long dataSetId, int start, int end) {
+
+		return _setTypeLinkLocalService.getSetTypeLinkListBySet(
+			dataSetId, start, end);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.SetTypeLink>
+		getSetTypeLinkListByType(long dataTypeId) {
+
+		return _setTypeLinkLocalService.getSetTypeLinkListByType(dataTypeId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.SetTypeLink>
+		getSetTypeLinkListByType(long dataTypeId, int start, int end) {
+
+		return _setTypeLinkLocalService.getSetTypeLinkListByType(
+			dataTypeId, start, end);
+	}
+
 	/**
 	 * Returns a range of all the set type links.
 	 *
@@ -281,6 +355,50 @@ public class SetTypeLinkLocalServiceWrapper
 	@Override
 	public int getSetTypeLinksCount() {
 		return _setTypeLinkLocalService.getSetTypeLinksCount();
+	}
+
+	@Override
+	public com.sx.icecap.model.SetTypeLink removeSetTypeLink(
+		long setTypeLinkId) {
+
+		return _setTypeLinkLocalService.removeSetTypeLink(setTypeLinkId);
+	}
+
+	@Override
+	public void removeSetTypeLinkBySet(long dataSetId) {
+		_setTypeLinkLocalService.removeSetTypeLinkBySet(dataSetId);
+	}
+
+	@Override
+	public void removeSetTypeLinkByType(long dataTypeId) {
+		_setTypeLinkLocalService.removeSetTypeLinkByType(dataTypeId);
+	}
+
+	@Override
+	public com.sx.icecap.model.SetTypeLink setFreezed(
+			long setTypeLinkId, boolean freezed,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _setTypeLinkLocalService.setFreezed(setTypeLinkId, freezed, sc);
+	}
+
+	@Override
+	public com.sx.icecap.model.SetTypeLink setVerified(
+			long setTypeLinkId, boolean verified,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _setTypeLinkLocalService.setVerified(
+			setTypeLinkId, verified, sc);
+	}
+
+	@Override
+	public com.sx.icecap.model.SetTypeLink updateSetTypeLink(
+		long setTypeLinkId, long dataSetId, long dataTypeId) {
+
+		return _setTypeLinkLocalService.updateSetTypeLink(
+			setTypeLinkId, dataSetId, dataTypeId);
 	}
 
 	/**

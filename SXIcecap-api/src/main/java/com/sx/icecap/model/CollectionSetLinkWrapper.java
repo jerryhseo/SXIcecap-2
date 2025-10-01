@@ -543,6 +543,11 @@ public class CollectionSetLinkWrapper
 	}
 
 	@Override
+	public com.liferay.portal.kernel.json.JSONObject toJSON() {
+		return model.toJSON();
+	}
+
+	@Override
 	protected CollectionSetLinkWrapper wrap(
 		CollectionSetLink collectionSetLink) {
 
