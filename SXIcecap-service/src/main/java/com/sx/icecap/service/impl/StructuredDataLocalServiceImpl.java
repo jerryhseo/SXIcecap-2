@@ -715,71 +715,68 @@ public class StructuredDataLocalServiceImpl
 	
 	public JSONObject getStructuredDataWithInfo(
 			long structuredDataId,
-			long dataCollectionId,
-			long dataSetId,
-			long dataTypeId,
-			long dataStructureId,
-			Locale locale) {
+			Locale locale) throws JSONException {
 		
 		JSONObject dataInfo = JSONFactoryUtil.createJSONObject();
-		
-		DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey(dataCollectionId);
-		DataSet dataSet = dataSetPersistence.fetchByPrimaryKey(dataSetId);
-		DataType dataType = dataTypePersistence.fetchByPrimaryKey(dataTypeId);
-		DataStructure dataStructure = dataStructurePersistence.fetchByPrimaryKey(dataStructureId);
-		StructuredData structuredData = structuredDataPersistence.fetchByPrimaryKey(structuredDataId);
-		
-		if(Validator.isNotNull(dataCollection)) {
-			JSONObject jsonCollectionInfo = JSONFactoryUtil.createJSONObject();
-			jsonCollectionInfo.put("dataCollectionId", dataCollection.getDataCollectionId());
-			jsonCollectionInfo.put("dataCollectionCode", dataCollection.getDataCollectionCode());
-			jsonCollectionInfo.put("dataCollectionVersion", dataCollection.getDataCollectionVersion());
-			jsonCollectionInfo.put("displayName", dataCollection.getDisplayName(locale));
+		DataStructure dataStructure = null;
+
+		if( structuredDataId > 0 ) {
+			StructuredData structuredData = structuredDataPersistence.fetchByPrimaryKey(structuredDataId);
 			
-			dataInfo.put("dataCollection", jsonCollectionInfo);
-		}
-		
-		if(Validator.isNotNull(dataSet)) {
-			JSONObject jsonSetInfo = JSONFactoryUtil.createJSONObject();
-			jsonSetInfo.put("dataSetId", dataSet.getDataSetId());
-			jsonSetInfo.put("dataSetCode", dataSet.getDataSetCode());
-			jsonSetInfo.put("dataSetVersion", dataSet.getDataSetVersion());
-			jsonSetInfo.put("displayName", dataSet.getDisplayName(locale));
-			
-			dataInfo.put("dataSet", jsonSetInfo);
-		}
-		
-		if(Validator.isNotNull(dataType)) {
-			JSONObject jsonDataTypeInfo = JSONFactoryUtil.createJSONObject();
-			jsonDataTypeInfo.put("dataDataTypeId", dataType.getDataTypeId());
-			jsonDataTypeInfo.put("dataTypeCode", dataType.getDataTypeCode());
-			jsonDataTypeInfo.put("dataTypeVersion", dataType.getDataTypeVersion());
-			jsonDataTypeInfo.put("displayName", dataType.getDisplayName(locale));
-			
-			dataInfo.put("dataType", jsonDataTypeInfo);
-			
-			TypeStructureLink typeStructureLink = typeStructureLinkPersistence.fetchByPrimaryKey(dataTypeId);
-			if( Validator.isNotNull(typeStructureLink)) {
-				dataInfo.put("typeStructureLonk", typeStructureLink.toJSON());
-				if( Validator.isNull(dataStructure)) {
-					dataStructure = dataStructurePersistence.fetchByPrimaryKey(typeStructureLink.getDataStructureId());
+			if( Validator.isNotNull(structuredData)) {
+				dataInfo.put("data", JSONFactoryUtil.createJSONObject(structuredData.getData()));
+
+				DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey(structuredData.getDataCollectionId());
+				DataSet dataSet = dataSetPersistence.fetchByPrimaryKey(structuredData.getDataSetId());
+				DataType dataType = dataTypePersistence.fetchByPrimaryKey(structuredData.getDataTypeId());
+				
+				if(Validator.isNotNull(dataCollection)) {
+					JSONObject jsonCollectionInfo = JSONFactoryUtil.createJSONObject();
+					jsonCollectionInfo.put("dataCollectionId", dataCollection.getDataCollectionId());
+					jsonCollectionInfo.put("dataCollectionCode", dataCollection.getDataCollectionCode());
+					jsonCollectionInfo.put("dataCollectionVersion", dataCollection.getDataCollectionVersion());
+					jsonCollectionInfo.put("displayName", dataCollection.getDisplayName(locale));
+					
+					dataInfo.put("dataCollection", jsonCollectionInfo);
+				}
+				
+				if(Validator.isNotNull(dataSet)) {
+					JSONObject jsonSetInfo = JSONFactoryUtil.createJSONObject();
+					jsonSetInfo.put("dataSetId", dataSet.getDataSetId());
+					jsonSetInfo.put("dataSetCode", dataSet.getDataSetCode());
+					jsonSetInfo.put("dataSetVersion", dataSet.getDataSetVersion());
+					jsonSetInfo.put("displayName", dataSet.getDisplayName(locale));
+					
+					dataInfo.put("dataSet", jsonSetInfo);
+				}
+				
+				if(Validator.isNotNull(dataType)) {
+					JSONObject jsonDataTypeInfo = JSONFactoryUtil.createJSONObject();
+					jsonDataTypeInfo.put("dataDataTypeId", dataType.getDataTypeId());
+					jsonDataTypeInfo.put("dataTypeCode", dataType.getDataTypeCode());
+					jsonDataTypeInfo.put("dataTypeVersion", dataType.getDataTypeVersion());
+					jsonDataTypeInfo.put("displayName", dataType.getDisplayName(locale));
+					
+					dataInfo.put("dataType", jsonDataTypeInfo);
+					
+					TypeStructureLink typeStructureLink = typeStructureLinkPersistence.fetchByPrimaryKey(dataType.getPrimaryKey());
+					if( Validator.isNotNull(typeStructureLink)) {
+						dataInfo.put("typeStructureLink", typeStructureLink.toJSON());
+
+						dataStructure = dataStructurePersistence.fetchByPrimaryKey(typeStructureLink.getDataStructureId());
+						
+						if( Validator.isNull(dataStructure)) {
+							dataStructure = dataStructurePersistence.fetchByPrimaryKey(typeStructureLink.getDataStructureId());
+							
+							if(Validator.isNotNull(dataStructure)) {
+								JSONObject jsonStructure =  JSONFactoryUtil.createJSONObject(dataStructure.getStructure());
+								
+								dataInfo.put("dataStructure", jsonStructure);
+							}
+						}
+					}
 				}
 			}
-		}
-		
-		JSONObject jsonDataStructure = null;
-		
-		JSONObject jsonStructure = null;
-		if( Validator.isNotNull(structuredData)) {
-			if(Validator.isNotNull(dataStructure)) {
-				jsonDataStructure = dataStructure.toJSON();
-				jsonStructure = jsonDataStructure.getJSONObject(DataStructureProperties.STRUCTURE);
-				jsonStructure.put("data", structuredData.toJSON());
-			}
-		}
-		
-		if(Validator.isNotNull(jsonDataStructure)) {
-			dataInfo.put("dataStructure", jsonDataStructure);
 		}
 		
 		return dataInfo;

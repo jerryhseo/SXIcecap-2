@@ -958,12 +958,11 @@ public class StructuredDataLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.json.JSONObject getStructuredDataWithInfo(
-		long structuredDataId, long dataCollectionId, long dataSetId,
-		long dataTypeId, long dataStructureId, java.util.Locale locale) {
+			long structuredDataId, java.util.Locale locale)
+		throws com.liferay.portal.kernel.json.JSONException {
 
 		return _structuredDataLocalService.getStructuredDataWithInfo(
-			structuredDataId, dataCollectionId, dataSetId, dataTypeId,
-			dataStructureId, locale);
+			structuredDataId, locale);
 	}
 
 	@Override

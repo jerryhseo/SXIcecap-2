@@ -564,8 +564,8 @@ public interface StructuredDataLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONObject getStructuredDataWithInfo(
-		long structuredDataId, long dataCollectionId, long dataSetId,
-		long dataTypeId, long dataStructureId, Locale locale);
+			long structuredDataId, Locale locale)
+		throws JSONException;
 
 	@Indexable(type = IndexableType.DELETE)
 	public StructuredData removeStructuredData(

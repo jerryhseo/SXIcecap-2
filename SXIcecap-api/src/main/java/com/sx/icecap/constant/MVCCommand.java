@@ -23,6 +23,7 @@ public class MVCCommand {
 	public static final String RESOURCE_CHECK_DATATYPE_UNIQUE = "/ajax/DataType/check-datatype-unique";
 	public static final String RESOURCE_CHECK_DATASTRUCTURE_UNIQUE = "/ajax/DataStructure/check-datastructure-unique";
 	public static final String RESOURCE_SAVE_TYPE_STRUCTURE_LINK = "/ajax/DataType/save-type-structure-link";
+	public static final String RESOURCE_SAVE_DATACOLLECTION = "/ajax/DataCollection/save-datacollection";
 
 	public static final String ACTION_DELETE_DATASTRUCTURE = "/action/DataType/delete-datastructure";
 	public static final String RESOURCE_LOAD_AVAILABLE_VISUALIZERS = "/ajax/DataType/load-available-visualizers";

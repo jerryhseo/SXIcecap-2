@@ -790,13 +790,11 @@ public class StructuredDataLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject
-		getStructuredDataWithInfo(
-			long structuredDataId, long dataCollectionId, long dataSetId,
-			long dataTypeId, long dataStructureId, java.util.Locale locale) {
+			getStructuredDataWithInfo(
+				long structuredDataId, java.util.Locale locale)
+		throws com.liferay.portal.kernel.json.JSONException {
 
-		return getService().getStructuredDataWithInfo(
-			structuredDataId, dataCollectionId, dataSetId, dataTypeId,
-			dataStructureId, locale);
+		return getService().getStructuredDataWithInfo(structuredDataId, locale);
 	}
 
 	public static StructuredData removeStructuredData(
