@@ -10,10 +10,11 @@ public class WebPortletKey {
 	public static final String SXDataWorkbenchPortlet = "SXDataWorkbenchPortlet";
 	public static final String SXDataCollectionExplorerPortlet = "SXDataCollectionExplorerPortlet";
 	public static final String SXDataCollectionEditorPortlet = "SXDataCollectionEditorPortlet";
+	public static final String SXDataSetExplorerPortlet = "SXDataSetExplorerPortlet";
+	public static final String SXDataSetEditorPortlet = "SXDataSetEditorPortlet";
+	
 	/*
 	public static final String DATACOLLECTION_VIEWER = "SXDataCollectionViewerPortlet";
-	public static final String DATASET_EXPLORER = "SXDataSetExplorerPortlet";
-	public static final String DATASET_EDITOR = "SXDataSetEditorPortlet";
 	public static final String DATASET_VIEWER = "SXDataSetViewerPortlet";
 	*/
 	public static final String SXDataTypeExplorerPortlet = "SXDataTypeExplorerPortlet";
