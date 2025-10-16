@@ -25,11 +25,13 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import com.sx.icecap.exception.NoSuchDataCommentException;
 import com.sx.icecap.model.DataComment;
 
 import java.io.Serializable;
@@ -74,6 +76,14 @@ public interface DataCommentLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public DataComment addDataComment(DataComment dataComment);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public DataComment addDataComment(
+			String commentModel, long commentModelId, long parentCommentId,
+			String comment, ServiceContext sc)
+		throws PortalException;
+
+	public int countDataComments(String commentModel, long commentModelId);
 
 	/**
 	 * Creates a new data comment with the primary key. Does not add the data comment to the database.
@@ -202,6 +212,10 @@ public interface DataCommentLocalService
 	public DataComment getDataComment(long dataCommentId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataComment> getDataCommentList(
+		String commentModel, long commentModelId);
+
 	/**
 	 * Returns a range of all the data comments.
 	 *
@@ -242,6 +256,20 @@ public interface DataCommentLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasComments(String commentModel, long commentModelId);
+
+	@Indexable(type = IndexableType.DELETE)
+	public DataComment removeDataComment(long dataCommentId)
+		throws NoSuchDataCommentException;
+
+	@Indexable(type = IndexableType.DELETE)
+	public void removeDataComment(String commentModel);
+
+	@Indexable(type = IndexableType.DELETE)
+	public void removeDataCommentByModelId(
+		String commentModel, long commentModelId);
+
 	/**
 	 * Updates the data comment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -254,5 +282,11 @@ public interface DataCommentLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public DataComment updateDataComment(DataComment dataComment);
+
+	@Indexable(type = IndexableType.REINDEX)
+	public DataComment updateDataComment(
+			long dataCommentId, String commentModel, long commentModelId,
+			long parentCommentId, String comment, ServiceContext sc)
+		throws PortalException;
 
 }

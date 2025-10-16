@@ -59,6 +59,21 @@ public class DataCommentLocalServiceUtil {
 		return getService().addDataComment(dataComment);
 	}
 
+	public static DataComment addDataComment(
+			String commentModel, long commentModelId, long parentCommentId,
+			String comment, com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
+
+		return getService().addDataComment(
+			commentModel, commentModelId, parentCommentId, comment, sc);
+	}
+
+	public static int countDataComments(
+		String commentModel, long commentModelId) {
+
+		return getService().countDataComments(commentModel, commentModelId);
+	}
+
 	/**
 	 * Creates a new data comment with the primary key. Does not add the data comment to the database.
 	 *
@@ -210,6 +225,12 @@ public class DataCommentLocalServiceUtil {
 		return getService().getDataComment(dataCommentId);
 	}
 
+	public static List<DataComment> getDataCommentList(
+		String commentModel, long commentModelId) {
+
+		return getService().getDataCommentList(commentModel, commentModelId);
+	}
+
 	/**
 	 * Returns a range of all the data comments.
 	 *
@@ -259,6 +280,28 @@ public class DataCommentLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static boolean hasComments(
+		String commentModel, long commentModelId) {
+
+		return getService().hasComments(commentModel, commentModelId);
+	}
+
+	public static DataComment removeDataComment(long dataCommentId)
+		throws com.sx.icecap.exception.NoSuchDataCommentException {
+
+		return getService().removeDataComment(dataCommentId);
+	}
+
+	public static void removeDataComment(String commentModel) {
+		getService().removeDataComment(commentModel);
+	}
+
+	public static void removeDataCommentByModelId(
+		String commentModel, long commentModelId) {
+
+		getService().removeDataCommentByModelId(commentModel, commentModelId);
+	}
+
 	/**
 	 * Updates the data comment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -271,6 +314,17 @@ public class DataCommentLocalServiceUtil {
 	 */
 	public static DataComment updateDataComment(DataComment dataComment) {
 		return getService().updateDataComment(dataComment);
+	}
+
+	public static DataComment updateDataComment(
+			long dataCommentId, String commentModel, long commentModelId,
+			long parentCommentId, String comment,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
+
+		return getService().updateDataComment(
+			dataCommentId, commentModel, commentModelId, parentCommentId,
+			comment, sc);
 	}
 
 	public static DataCommentLocalService getService() {

@@ -42,9 +42,12 @@ public class CollectionSetLinkWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("companyId", getCompanyId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("collectionSetLinkId", getCollectionSetLinkId());
 		attributes.put("dataCollectionId", getDataCollectionId());
 		attributes.put("dataSetId", getDataSetId());
+		attributes.put("order", getOrder());
 		attributes.put("commentable", isCommentable());
 		attributes.put("verifiable", isVerifiable());
 		attributes.put("freezable", isFreezable());
@@ -62,6 +65,18 @@ public class CollectionSetLinkWrapper
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
+		}
+
 		Long collectionSetLinkId = (Long)attributes.get("collectionSetLinkId");
 
 		if (collectionSetLinkId != null) {
@@ -78,6 +93,12 @@ public class CollectionSetLinkWrapper
 
 		if (dataSetId != null) {
 			setDataSetId(dataSetId);
+		}
+
+		Integer order = (Integer)attributes.get("order");
+
+		if (order != null) {
+			setOrder(order);
 		}
 
 		Boolean commentable = (Boolean)attributes.get("commentable");
@@ -168,6 +189,16 @@ public class CollectionSetLinkWrapper
 	}
 
 	/**
+	 * Returns the company ID of this collection set link.
+	 *
+	 * @return the company ID of this collection set link
+	 */
+	@Override
+	public long getCompanyId() {
+		return model.getCompanyId();
+	}
+
+	/**
 	 * Returns the data collection ID of this collection set link.
 	 *
 	 * @return the data collection ID of this collection set link
@@ -245,6 +276,26 @@ public class CollectionSetLinkWrapper
 	@Override
 	public String getFreezedUserUuid() {
 		return model.getFreezedUserUuid();
+	}
+
+	/**
+	 * Returns the group ID of this collection set link.
+	 *
+	 * @return the group ID of this collection set link
+	 */
+	@Override
+	public long getGroupId() {
+		return model.getGroupId();
+	}
+
+	/**
+	 * Returns the order of this collection set link.
+	 *
+	 * @return the order of this collection set link
+	 */
+	@Override
+	public int getOrder() {
+		return model.getOrder();
 	}
 
 	/**
@@ -393,6 +444,16 @@ public class CollectionSetLinkWrapper
 	}
 
 	/**
+	 * Sets the company ID of this collection set link.
+	 *
+	 * @param companyId the company ID of this collection set link
+	 */
+	@Override
+	public void setCompanyId(long companyId) {
+		model.setCompanyId(companyId);
+	}
+
+	/**
 	 * Sets the data collection ID of this collection set link.
 	 *
 	 * @param dataCollectionId the data collection ID of this collection set link
@@ -470,6 +531,26 @@ public class CollectionSetLinkWrapper
 	@Override
 	public void setFreezedUserUuid(String freezedUserUuid) {
 		model.setFreezedUserUuid(freezedUserUuid);
+	}
+
+	/**
+	 * Sets the group ID of this collection set link.
+	 *
+	 * @param groupId the group ID of this collection set link
+	 */
+	@Override
+	public void setGroupId(long groupId) {
+		model.setGroupId(groupId);
+	}
+
+	/**
+	 * Sets the order of this collection set link.
+	 *
+	 * @param order the order of this collection set link
+	 */
+	@Override
+	public void setOrder(int order) {
+		model.setOrder(order);
 	}
 
 	/**

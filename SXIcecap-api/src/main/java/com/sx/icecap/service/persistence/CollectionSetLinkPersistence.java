@@ -187,149 +187,6 @@ public interface CollectionSetLinkPersistence
 	public int countByCollectionId(long dataCollectionId);
 
 	/**
-	 * Returns all the collection set links where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @return the matching collection set links
-	 */
-	public java.util.List<CollectionSetLink> findByDataSetId(long dataSetId);
-
-	/**
-	 * Returns a range of all the collection set links where dataSetId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataSetId the data set ID
-	 * @param start the lower bound of the range of collection set links
-	 * @param end the upper bound of the range of collection set links (not inclusive)
-	 * @return the range of matching collection set links
-	 */
-	public java.util.List<CollectionSetLink> findByDataSetId(
-		long dataSetId, int start, int end);
-
-	/**
-	 * Returns an ordered range of all the collection set links where dataSetId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataSetId the data set ID
-	 * @param start the lower bound of the range of collection set links
-	 * @param end the upper bound of the range of collection set links (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching collection set links
-	 */
-	public java.util.List<CollectionSetLink> findByDataSetId(
-		long dataSetId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
-			orderByComparator);
-
-	/**
-	 * Returns an ordered range of all the collection set links where dataSetId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataSetId the data set ID
-	 * @param start the lower bound of the range of collection set links
-	 * @param end the upper bound of the range of collection set links (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching collection set links
-	 */
-	public java.util.List<CollectionSetLink> findByDataSetId(
-		long dataSetId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
-			orderByComparator,
-		boolean useFinderCache);
-
-	/**
-	 * Returns the first collection set link in the ordered set where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching collection set link
-	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
-	 */
-	public CollectionSetLink findByDataSetId_First(
-			long dataSetId,
-			com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
-				orderByComparator)
-		throws NoSuchCollectionSetLinkException;
-
-	/**
-	 * Returns the first collection set link in the ordered set where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching collection set link, or <code>null</code> if a matching collection set link could not be found
-	 */
-	public CollectionSetLink fetchByDataSetId_First(
-		long dataSetId,
-		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
-			orderByComparator);
-
-	/**
-	 * Returns the last collection set link in the ordered set where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching collection set link
-	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
-	 */
-	public CollectionSetLink findByDataSetId_Last(
-			long dataSetId,
-			com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
-				orderByComparator)
-		throws NoSuchCollectionSetLinkException;
-
-	/**
-	 * Returns the last collection set link in the ordered set where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching collection set link, or <code>null</code> if a matching collection set link could not be found
-	 */
-	public CollectionSetLink fetchByDataSetId_Last(
-		long dataSetId,
-		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
-			orderByComparator);
-
-	/**
-	 * Returns the collection set links before and after the current collection set link in the ordered set where dataSetId = &#63;.
-	 *
-	 * @param collectionSetLinkId the primary key of the current collection set link
-	 * @param dataSetId the data set ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next collection set link
-	 * @throws NoSuchCollectionSetLinkException if a collection set link with the primary key could not be found
-	 */
-	public CollectionSetLink[] findByDataSetId_PrevAndNext(
-			long collectionSetLinkId, long dataSetId,
-			com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
-				orderByComparator)
-		throws NoSuchCollectionSetLinkException;
-
-	/**
-	 * Removes all the collection set links where dataSetId = &#63; from the database.
-	 *
-	 * @param dataSetId the data set ID
-	 */
-	public void removeByDataSetId(long dataSetId);
-
-	/**
-	 * Returns the number of collection set links where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @return the number of matching collection set links
-	 */
-	public int countByDataSetId(long dataSetId);
-
-	/**
 	 * Returns the collection set link where dataCollectionId = &#63; and dataSetId = &#63; or throws a <code>NoSuchCollectionSetLinkException</code> if it could not be found.
 	 *
 	 * @param dataCollectionId the data collection ID
@@ -381,6 +238,292 @@ public interface CollectionSetLinkPersistence
 	 * @return the number of matching collection set links
 	 */
 	public int countByCollectionSet(long dataCollectionId, long dataSetId);
+
+	/**
+	 * Returns all the collection set links where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @return the matching collection set links
+	 */
+	public java.util.List<CollectionSetLink> findBySetId(long dataSetId);
+
+	/**
+	 * Returns a range of all the collection set links where dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @return the range of matching collection set links
+	 */
+	public java.util.List<CollectionSetLink> findBySetId(
+		long dataSetId, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the collection set links where dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching collection set links
+	 */
+	public java.util.List<CollectionSetLink> findBySetId(
+		long dataSetId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the collection set links where dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching collection set links
+	 */
+	public java.util.List<CollectionSetLink> findBySetId(
+		long dataSetId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first collection set link in the ordered set where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	public CollectionSetLink findBySetId_First(
+			long dataSetId,
+			com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+				orderByComparator)
+		throws NoSuchCollectionSetLinkException;
+
+	/**
+	 * Returns the first collection set link in the ordered set where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public CollectionSetLink fetchBySetId_First(
+		long dataSetId,
+		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+			orderByComparator);
+
+	/**
+	 * Returns the last collection set link in the ordered set where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	public CollectionSetLink findBySetId_Last(
+			long dataSetId,
+			com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+				orderByComparator)
+		throws NoSuchCollectionSetLinkException;
+
+	/**
+	 * Returns the last collection set link in the ordered set where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public CollectionSetLink fetchBySetId_Last(
+		long dataSetId,
+		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+			orderByComparator);
+
+	/**
+	 * Returns the collection set links before and after the current collection set link in the ordered set where dataSetId = &#63;.
+	 *
+	 * @param collectionSetLinkId the primary key of the current collection set link
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next collection set link
+	 * @throws NoSuchCollectionSetLinkException if a collection set link with the primary key could not be found
+	 */
+	public CollectionSetLink[] findBySetId_PrevAndNext(
+			long collectionSetLinkId, long dataSetId,
+			com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+				orderByComparator)
+		throws NoSuchCollectionSetLinkException;
+
+	/**
+	 * Removes all the collection set links where dataSetId = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 */
+	public void removeBySetId(long dataSetId);
+
+	/**
+	 * Returns the number of collection set links where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @return the number of matching collection set links
+	 */
+	public int countBySetId(long dataSetId);
+
+	/**
+	 * Returns all the collection set links where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the matching collection set links
+	 */
+	public java.util.List<CollectionSetLink> findByGroupId(long groupId);
+
+	/**
+	 * Returns a range of all the collection set links where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @return the range of matching collection set links
+	 */
+	public java.util.List<CollectionSetLink> findByGroupId(
+		long groupId, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the collection set links where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching collection set links
+	 */
+	public java.util.List<CollectionSetLink> findByGroupId(
+		long groupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the collection set links where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching collection set links
+	 */
+	public java.util.List<CollectionSetLink> findByGroupId(
+		long groupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	public CollectionSetLink findByGroupId_First(
+			long groupId,
+			com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+				orderByComparator)
+		throws NoSuchCollectionSetLinkException;
+
+	/**
+	 * Returns the first collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public CollectionSetLink fetchByGroupId_First(
+		long groupId,
+		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+			orderByComparator);
+
+	/**
+	 * Returns the last collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	public CollectionSetLink findByGroupId_Last(
+			long groupId,
+			com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+				orderByComparator)
+		throws NoSuchCollectionSetLinkException;
+
+	/**
+	 * Returns the last collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public CollectionSetLink fetchByGroupId_Last(
+		long groupId,
+		com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+			orderByComparator);
+
+	/**
+	 * Returns the collection set links before and after the current collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param collectionSetLinkId the primary key of the current collection set link
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next collection set link
+	 * @throws NoSuchCollectionSetLinkException if a collection set link with the primary key could not be found
+	 */
+	public CollectionSetLink[] findByGroupId_PrevAndNext(
+			long collectionSetLinkId, long groupId,
+			com.liferay.portal.kernel.util.OrderByComparator<CollectionSetLink>
+				orderByComparator)
+		throws NoSuchCollectionSetLinkException;
+
+	/**
+	 * Removes all the collection set links where groupId = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 */
+	public void removeByGroupId(long groupId);
+
+	/**
+	 * Returns the number of collection set links where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the number of matching collection set links
+	 */
+	public int countByGroupId(long groupId);
 
 	/**
 	 * Caches the collection set link in the entity cache if it is enabled.

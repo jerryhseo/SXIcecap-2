@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -86,6 +87,15 @@ public interface DataCollectionLocalService
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap, int status, ServiceContext sc)
 		throws PortalException;
+
+	public boolean checkDataCollectionCodeUnique(String dataCollectionCode);
+
+	public boolean checkDataCollectionDuplicated(
+		String dataCollectionCode, String dataCollectionVersion);
+
+	public int countAllDataCollection();
+
+	public int countDataCollectionByGroupId(long groupId);
 
 	/**
 	 * Creates a new data collection with the primary key. Does not add the data collection to the database.
@@ -214,6 +224,12 @@ public interface DataCollectionLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataCollection> getAllDataCollection();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataCollection> getAllDataCollection(int start, int end);
+
 	/**
 	 * Returns the data collection with the primary key.
 	 *
@@ -237,6 +253,17 @@ public interface DataCollectionLocalService
 	public DataCollection getDataCollectionByUuidAndGroupId(
 			String uuid, long groupId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONObject getDataCollectionInfo(
+		long dataCollectionId, Locale locale);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataCollection> getDataCollectionListByGroupId(long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataCollection> getDataCollectionListByGroupId(
+		long groupId, int start, int end);
 
 	/**
 	 * Returns a range of all the data collections.

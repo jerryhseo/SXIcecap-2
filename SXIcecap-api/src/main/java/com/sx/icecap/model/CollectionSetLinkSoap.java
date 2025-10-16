@@ -31,9 +31,12 @@ public class CollectionSetLinkSoap implements Serializable {
 	public static CollectionSetLinkSoap toSoapModel(CollectionSetLink model) {
 		CollectionSetLinkSoap soapModel = new CollectionSetLinkSoap();
 
+		soapModel.setCompanyId(model.getCompanyId());
+		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCollectionSetLinkId(model.getCollectionSetLinkId());
 		soapModel.setDataCollectionId(model.getDataCollectionId());
 		soapModel.setDataSetId(model.getDataSetId());
+		soapModel.setOrder(model.getOrder());
 		soapModel.setCommentable(model.isCommentable());
 		soapModel.setVerifiable(model.isVerifiable());
 		soapModel.setFreezable(model.isFreezable());
@@ -106,6 +109,22 @@ public class CollectionSetLinkSoap implements Serializable {
 		setCollectionSetLinkId(pk);
 	}
 
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
+	}
+
 	public long getCollectionSetLinkId() {
 		return _collectionSetLinkId;
 	}
@@ -128,6 +147,14 @@ public class CollectionSetLinkSoap implements Serializable {
 
 	public void setDataSetId(long dataSetId) {
 		_dataSetId = dataSetId;
+	}
+
+	public int getOrder() {
+		return _order;
+	}
+
+	public void setOrder(int order) {
+		_order = order;
 	}
 
 	public boolean getCommentable() {
@@ -238,9 +265,12 @@ public class CollectionSetLinkSoap implements Serializable {
 		_verifiedDate = verifiedDate;
 	}
 
+	private long _companyId;
+	private long _groupId;
 	private long _collectionSetLinkId;
 	private long _dataCollectionId;
 	private long _dataSetId;
+	private int _order;
 	private boolean _commentable;
 	private boolean _verifiable;
 	private boolean _freezable;

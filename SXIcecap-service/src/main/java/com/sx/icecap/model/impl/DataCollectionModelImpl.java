@@ -143,15 +143,17 @@ public class DataCollectionModelImpl
 
 	public static final long DATACOLLECTIONCODE_COLUMN_BITMASK = 2L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 4L;
+	public static final long DATACOLLECTIONVERSION_COLUMN_BITMASK = 4L;
 
-	public static final long STATUS_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long USERID_COLUMN_BITMASK = 16L;
+	public static final long STATUS_COLUMN_BITMASK = 16L;
 
-	public static final long UUID_COLUMN_BITMASK = 32L;
+	public static final long USERID_COLUMN_BITMASK = 32L;
 
-	public static final long DATACOLLECTIONID_COLUMN_BITMASK = 64L;
+	public static final long UUID_COLUMN_BITMASK = 64L;
+
+	public static final long DATACOLLECTIONID_COLUMN_BITMASK = 128L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -702,7 +704,17 @@ public class DataCollectionModelImpl
 
 	@Override
 	public void setDataCollectionVersion(String dataCollectionVersion) {
+		_columnBitmask |= DATACOLLECTIONVERSION_COLUMN_BITMASK;
+
+		if (_originalDataCollectionVersion == null) {
+			_originalDataCollectionVersion = _dataCollectionVersion;
+		}
+
 		_dataCollectionVersion = dataCollectionVersion;
+	}
+
+	public String getOriginalDataCollectionVersion() {
+		return GetterUtil.getString(_originalDataCollectionVersion);
 	}
 
 	@JSON
@@ -1377,6 +1389,8 @@ public class DataCollectionModelImpl
 
 		_originalDataCollectionCode = _dataCollectionCode;
 
+		_originalDataCollectionVersion = _dataCollectionVersion;
+
 		_columnBitmask = 0;
 	}
 
@@ -1617,6 +1631,7 @@ public class DataCollectionModelImpl
 	private String _dataCollectionCode;
 	private String _originalDataCollectionCode;
 	private String _dataCollectionVersion;
+	private String _originalDataCollectionVersion;
 	private String _displayName;
 	private String _displayNameCurrentLanguageId;
 	private String _description;

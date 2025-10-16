@@ -361,6 +361,22 @@ public class DataSetLocalServiceWrapper
 		return _dataSetLocalService.getDataSetByUuidAndGroupId(uuid, groupId);
 	}
 
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject getDataSetInfo(
+		long dataCollectionId, long dataSetId, java.util.Locale locale) {
+
+		return _dataSetLocalService.getDataSetInfo(
+			dataCollectionId, dataSetId, locale);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONArray getDataSetListInfo(
+		long groupId, long dataCollectionId, java.util.Locale locale) {
+
+		return _dataSetLocalService.getDataSetListInfo(
+			groupId, dataCollectionId, locale);
+	}
+
 	/**
 	 * Returns a range of all the data sets.
 	 *

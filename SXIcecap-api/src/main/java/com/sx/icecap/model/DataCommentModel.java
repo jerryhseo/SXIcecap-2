@@ -186,63 +186,33 @@ public interface DataCommentModel
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
-	 * Returns the comment type of this data comment.
+	 * Returns the comment model of this data comment.
 	 *
-	 * @return the comment type of this data comment
+	 * @return the comment model of this data comment
 	 */
 	@AutoEscape
-	public String getCommentType();
+	public String getCommentModel();
 
 	/**
-	 * Sets the comment type of this data comment.
+	 * Sets the comment model of this data comment.
 	 *
-	 * @param commentType the comment type of this data comment
+	 * @param commentModel the comment model of this data comment
 	 */
-	public void setCommentType(String commentType);
+	public void setCommentModel(String commentModel);
 
 	/**
-	 * Returns the comment base of this data comment.
+	 * Returns the comment model ID of this data comment.
 	 *
-	 * @return the comment base of this data comment
+	 * @return the comment model ID of this data comment
 	 */
-	@AutoEscape
-	public String getCommentBase();
+	public long getCommentModelId();
 
 	/**
-	 * Sets the comment base of this data comment.
+	 * Sets the comment model ID of this data comment.
 	 *
-	 * @param commentBase the comment base of this data comment
+	 * @param commentModelId the comment model ID of this data comment
 	 */
-	public void setCommentBase(String commentBase);
-
-	/**
-	 * Returns the comment data ID of this data comment.
-	 *
-	 * @return the comment data ID of this data comment
-	 */
-	public long getCommentDataId();
-
-	/**
-	 * Sets the comment data ID of this data comment.
-	 *
-	 * @param commentDataId the comment data ID of this data comment
-	 */
-	public void setCommentDataId(long commentDataId);
-
-	/**
-	 * Returns the param code of this data comment.
-	 *
-	 * @return the param code of this data comment
-	 */
-	@AutoEscape
-	public String getParamCode();
-
-	/**
-	 * Sets the param code of this data comment.
-	 *
-	 * @param paramCode the param code of this data comment
-	 */
-	public void setParamCode(String paramCode);
+	public void setCommentModelId(long commentModelId);
 
 	/**
 	 * Returns the parent comment ID of this data comment.
@@ -272,83 +242,5 @@ public interface DataCommentModel
 	 * @param comment the comment of this data comment
 	 */
 	public void setComment(String comment);
-
-	/**
-	 * Returns the closed of this data comment.
-	 *
-	 * @return the closed of this data comment
-	 */
-	public boolean getClosed();
-
-	/**
-	 * Returns <code>true</code> if this data comment is closed.
-	 *
-	 * @return <code>true</code> if this data comment is closed; <code>false</code> otherwise
-	 */
-	public boolean isClosed();
-
-	/**
-	 * Sets whether this data comment is closed.
-	 *
-	 * @param closed the closed of this data comment
-	 */
-	public void setClosed(boolean closed);
-
-	/**
-	 * Returns the closed user ID of this data comment.
-	 *
-	 * @return the closed user ID of this data comment
-	 */
-	public long getClosedUserId();
-
-	/**
-	 * Sets the closed user ID of this data comment.
-	 *
-	 * @param closedUserId the closed user ID of this data comment
-	 */
-	public void setClosedUserId(long closedUserId);
-
-	/**
-	 * Returns the closed user uuid of this data comment.
-	 *
-	 * @return the closed user uuid of this data comment
-	 */
-	public String getClosedUserUuid();
-
-	/**
-	 * Sets the closed user uuid of this data comment.
-	 *
-	 * @param closedUserUuid the closed user uuid of this data comment
-	 */
-	public void setClosedUserUuid(String closedUserUuid);
-
-	/**
-	 * Returns the closed user name of this data comment.
-	 *
-	 * @return the closed user name of this data comment
-	 */
-	@AutoEscape
-	public String getClosedUserName();
-
-	/**
-	 * Sets the closed user name of this data comment.
-	 *
-	 * @param closedUserName the closed user name of this data comment
-	 */
-	public void setClosedUserName(String closedUserName);
-
-	/**
-	 * Returns the closed date of this data comment.
-	 *
-	 * @return the closed date of this data comment
-	 */
-	public Date getClosedDate();
-
-	/**
-	 * Sets the closed date of this data comment.
-	 *
-	 * @param closedDate the closed date of this data comment
-	 */
-	public void setClosedDate(Date closedDate);
 
 }

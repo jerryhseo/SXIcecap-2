@@ -44,6 +44,7 @@ public class StructureParamLinkWrapper
 		attributes.put("structureParamLinkId", getStructureParamLinkId());
 		attributes.put("dataStructureId", getDataStructureId());
 		attributes.put("parameterId", getParameterId());
+		attributes.put("order", getOrder());
 
 		return attributes;
 	}
@@ -68,6 +69,12 @@ public class StructureParamLinkWrapper
 		if (parameterId != null) {
 			setParameterId(parameterId);
 		}
+
+		Integer order = (Integer)attributes.get("order");
+
+		if (order != null) {
+			setOrder(order);
+		}
 	}
 
 	/**
@@ -78,6 +85,16 @@ public class StructureParamLinkWrapper
 	@Override
 	public long getDataStructureId() {
 		return model.getDataStructureId();
+	}
+
+	/**
+	 * Returns the order of this structure param link.
+	 *
+	 * @return the order of this structure param link
+	 */
+	@Override
+	public int getOrder() {
+		return model.getOrder();
 	}
 
 	/**
@@ -123,6 +140,16 @@ public class StructureParamLinkWrapper
 	@Override
 	public void setDataStructureId(long dataStructureId) {
 		model.setDataStructureId(dataStructureId);
+	}
+
+	/**
+	 * Sets the order of this structure param link.
+	 *
+	 * @param order the order of this structure param link
+	 */
+	@Override
+	public void setOrder(int order) {
+		model.setOrder(order);
 	}
 
 	/**

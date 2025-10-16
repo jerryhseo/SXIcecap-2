@@ -29,14 +29,10 @@ public class DataCommentImpl extends DataCommentBaseImpl {
 		json.put("userName", getUserName());
 		json.put("createDate", getCreateDate());
 		json.put("modifiedDate", getModifiedDate());
-		json.put("commentDataId", getCommentDataId());
-		json.put("paramCode", getParamCode());
+		json.put("commentModel", getCommentModel());
+		json.put("commentModelId", getCommentModelId());
 		json.put("parentCommentId", getParentCommentId());
 		json.put("comment", getComment());
-		json.put("closed", getClosed());
-		json.put("closedUserId", getClosedUserId());
-		json.put("closedUserName", getClosedUserName());
-		json.put("closedDate", getClosedDate());
 		
 		return json;
 	}

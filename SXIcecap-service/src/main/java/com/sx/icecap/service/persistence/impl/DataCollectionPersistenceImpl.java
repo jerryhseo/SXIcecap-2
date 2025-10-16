@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
@@ -54,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7347,6 +7349,327 @@ public class DataCollectionPersistenceImpl
 	private static final String _FINDER_COLUMN_CODE_DATACOLLECTIONCODE_3 =
 		"(dataCollection.dataCollectionCode IS NULL OR dataCollection.dataCollectionCode = '')";
 
+	private FinderPath _finderPathFetchByCodeVersion;
+	private FinderPath _finderPathCountByCodeVersion;
+
+	/**
+	 * Returns the data collection where dataCollectionCode = &#63; and dataCollectionVersion = &#63; or throws a <code>NoSuchDataCollectionException</code> if it could not be found.
+	 *
+	 * @param dataCollectionCode the data collection code
+	 * @param dataCollectionVersion the data collection version
+	 * @return the matching data collection
+	 * @throws NoSuchDataCollectionException if a matching data collection could not be found
+	 */
+	@Override
+	public DataCollection findByCodeVersion(
+			String dataCollectionCode, String dataCollectionVersion)
+		throws NoSuchDataCollectionException {
+
+		DataCollection dataCollection = fetchByCodeVersion(
+			dataCollectionCode, dataCollectionVersion);
+
+		if (dataCollection == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("dataCollectionCode=");
+			sb.append(dataCollectionCode);
+
+			sb.append(", dataCollectionVersion=");
+			sb.append(dataCollectionVersion);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchDataCollectionException(sb.toString());
+		}
+
+		return dataCollection;
+	}
+
+	/**
+	 * Returns the data collection where dataCollectionCode = &#63; and dataCollectionVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param dataCollectionCode the data collection code
+	 * @param dataCollectionVersion the data collection version
+	 * @return the matching data collection, or <code>null</code> if a matching data collection could not be found
+	 */
+	@Override
+	public DataCollection fetchByCodeVersion(
+		String dataCollectionCode, String dataCollectionVersion) {
+
+		return fetchByCodeVersion(
+			dataCollectionCode, dataCollectionVersion, true);
+	}
+
+	/**
+	 * Returns the data collection where dataCollectionCode = &#63; and dataCollectionVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param dataCollectionCode the data collection code
+	 * @param dataCollectionVersion the data collection version
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching data collection, or <code>null</code> if a matching data collection could not be found
+	 */
+	@Override
+	public DataCollection fetchByCodeVersion(
+		String dataCollectionCode, String dataCollectionVersion,
+		boolean useFinderCache) {
+
+		dataCollectionCode = Objects.toString(dataCollectionCode, "");
+		dataCollectionVersion = Objects.toString(dataCollectionVersion, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {
+				dataCollectionCode, dataCollectionVersion
+			};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByCodeVersion, finderArgs, this);
+		}
+
+		if (result instanceof DataCollection) {
+			DataCollection dataCollection = (DataCollection)result;
+
+			if (!Objects.equals(
+					dataCollectionCode,
+					dataCollection.getDataCollectionCode()) ||
+				!Objects.equals(
+					dataCollectionVersion,
+					dataCollection.getDataCollectionVersion())) {
+
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_SQL_SELECT_DATACOLLECTION_WHERE);
+
+			boolean bindDataCollectionCode = false;
+
+			if (dataCollectionCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONCODE_3);
+			}
+			else {
+				bindDataCollectionCode = true;
+
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONCODE_2);
+			}
+
+			boolean bindDataCollectionVersion = false;
+
+			if (dataCollectionVersion.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONVERSION_3);
+			}
+			else {
+				bindDataCollectionVersion = true;
+
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONVERSION_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindDataCollectionCode) {
+					queryPos.add(dataCollectionCode);
+				}
+
+				if (bindDataCollectionVersion) {
+					queryPos.add(dataCollectionVersion);
+				}
+
+				List<DataCollection> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByCodeVersion, finderArgs, list);
+					}
+				}
+				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {
+									dataCollectionCode, dataCollectionVersion
+								};
+							}
+
+							_log.warn(
+								"DataCollectionPersistenceImpl.fetchByCodeVersion(String, String, boolean) with parameters (" +
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
+					DataCollection dataCollection = list.get(0);
+
+					result = dataCollection;
+
+					cacheResult(dataCollection);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByCodeVersion, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (DataCollection)result;
+		}
+	}
+
+	/**
+	 * Removes the data collection where dataCollectionCode = &#63; and dataCollectionVersion = &#63; from the database.
+	 *
+	 * @param dataCollectionCode the data collection code
+	 * @param dataCollectionVersion the data collection version
+	 * @return the data collection that was removed
+	 */
+	@Override
+	public DataCollection removeByCodeVersion(
+			String dataCollectionCode, String dataCollectionVersion)
+		throws NoSuchDataCollectionException {
+
+		DataCollection dataCollection = findByCodeVersion(
+			dataCollectionCode, dataCollectionVersion);
+
+		return remove(dataCollection);
+	}
+
+	/**
+	 * Returns the number of data collections where dataCollectionCode = &#63; and dataCollectionVersion = &#63;.
+	 *
+	 * @param dataCollectionCode the data collection code
+	 * @param dataCollectionVersion the data collection version
+	 * @return the number of matching data collections
+	 */
+	@Override
+	public int countByCodeVersion(
+		String dataCollectionCode, String dataCollectionVersion) {
+
+		dataCollectionCode = Objects.toString(dataCollectionCode, "");
+		dataCollectionVersion = Objects.toString(dataCollectionVersion, "");
+
+		FinderPath finderPath = _finderPathCountByCodeVersion;
+
+		Object[] finderArgs = new Object[] {
+			dataCollectionCode, dataCollectionVersion
+		};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_DATACOLLECTION_WHERE);
+
+			boolean bindDataCollectionCode = false;
+
+			if (dataCollectionCode.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONCODE_3);
+			}
+			else {
+				bindDataCollectionCode = true;
+
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONCODE_2);
+			}
+
+			boolean bindDataCollectionVersion = false;
+
+			if (dataCollectionVersion.isEmpty()) {
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONVERSION_3);
+			}
+			else {
+				bindDataCollectionVersion = true;
+
+				sb.append(_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONVERSION_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindDataCollectionCode) {
+					queryPos.add(dataCollectionCode);
+				}
+
+				if (bindDataCollectionVersion) {
+					queryPos.add(dataCollectionVersion);
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String
+		_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONCODE_2 =
+			"dataCollection.dataCollectionCode = ? AND ";
+
+	private static final String
+		_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONCODE_3 =
+			"(dataCollection.dataCollectionCode IS NULL OR dataCollection.dataCollectionCode = '') AND ";
+
+	private static final String
+		_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONVERSION_2 =
+			"dataCollection.dataCollectionVersion = ?";
+
+	private static final String
+		_FINDER_COLUMN_CODEVERSION_DATACOLLECTIONVERSION_3 =
+			"(dataCollection.dataCollectionVersion IS NULL OR dataCollection.dataCollectionVersion = '')";
+
 	public DataCollectionPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -7375,6 +7698,14 @@ public class DataCollectionPersistenceImpl
 			_finderPathFetchByUUID_G,
 			new Object[] {
 				dataCollection.getUuid(), dataCollection.getGroupId()
+			},
+			dataCollection);
+
+		finderCache.putResult(
+			_finderPathFetchByCodeVersion,
+			new Object[] {
+				dataCollection.getDataCollectionCode(),
+				dataCollection.getDataCollectionVersion()
 			},
 			dataCollection);
 
@@ -7483,6 +7814,17 @@ public class DataCollectionPersistenceImpl
 			_finderPathCountByUUID_G, args, Long.valueOf(1), false);
 		finderCache.putResult(
 			_finderPathFetchByUUID_G, args, dataCollectionModelImpl, false);
+
+		args = new Object[] {
+			dataCollectionModelImpl.getDataCollectionCode(),
+			dataCollectionModelImpl.getDataCollectionVersion()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByCodeVersion, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByCodeVersion, args, dataCollectionModelImpl,
+			false);
 	}
 
 	protected void clearUniqueFindersCache(
@@ -7508,6 +7850,28 @@ public class DataCollectionPersistenceImpl
 
 			finderCache.removeResult(_finderPathCountByUUID_G, args);
 			finderCache.removeResult(_finderPathFetchByUUID_G, args);
+		}
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+				dataCollectionModelImpl.getDataCollectionCode(),
+				dataCollectionModelImpl.getDataCollectionVersion()
+			};
+
+			finderCache.removeResult(_finderPathCountByCodeVersion, args);
+			finderCache.removeResult(_finderPathFetchByCodeVersion, args);
+		}
+
+		if ((dataCollectionModelImpl.getColumnBitmask() &
+			 _finderPathFetchByCodeVersion.getColumnBitmask()) != 0) {
+
+			Object[] args = new Object[] {
+				dataCollectionModelImpl.getOriginalDataCollectionCode(),
+				dataCollectionModelImpl.getOriginalDataCollectionVersion()
+			};
+
+			finderCache.removeResult(_finderPathCountByCodeVersion, args);
+			finderCache.removeResult(_finderPathFetchByCodeVersion, args);
 		}
 	}
 
@@ -8516,6 +8880,18 @@ public class DataCollectionPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCode",
 			new String[] {String.class.getName()});
+
+		_finderPathFetchByCodeVersion = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, DataCollectionImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByCodeVersion",
+			new String[] {String.class.getName(), String.class.getName()},
+			DataCollectionModelImpl.DATACOLLECTIONCODE_COLUMN_BITMASK |
+			DataCollectionModelImpl.DATACOLLECTIONVERSION_COLUMN_BITMASK);
+
+		_finderPathCountByCodeVersion = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCodeVersion",
+			new String[] {String.class.getName(), String.class.getName()});
 
 		_setDataCollectionUtilPersistence(this);
 	}

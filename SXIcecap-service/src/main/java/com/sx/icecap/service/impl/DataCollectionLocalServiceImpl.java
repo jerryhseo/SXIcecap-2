@@ -17,20 +17,29 @@ package com.sx.icecap.service.impl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.sx.icecap.exception.DuplicatedDataCollectionCodeException;
 import com.sx.icecap.exception.DuplicatedDataTypeCodeException;
+import com.sx.icecap.model.CollectionSetLink;
 import com.sx.icecap.model.DataCollection;
+import com.sx.icecap.model.DataSet;
 import com.sx.icecap.service.base.DataCollectionLocalServiceBaseImpl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -54,14 +63,6 @@ public class DataCollectionLocalServiceImpl
 			Map<Locale, String> descriptionMap,
 			int status,
 			ServiceContext sc) throws PortalException {
-		
-		try {
-			if( !_verifyDataCollectionCode(dataCollectionCode) ) {
-				throw new PortalException(dataCollectionCode+" "+dataCollectionVersion+" Invalid"); 
-			}
-		} catch( DuplicatedDataCollectionCodeException e ) {
-			throw e;
-		}
 		
 		Locale defaultLocale = sc.getThemeDisplay().getLocale();
 		
@@ -275,12 +276,92 @@ public class DataCollectionLocalServiceImpl
 		}
 	}
 	
-	private boolean _verifyDataCollectionCode( String dataCollectionCode ) throws DuplicatedDataCollectionCodeException {
+	public List<DataCollection> getAllDataCollection(){
+		return dataCollectionPersistence.findAll();
+	}
+	public List<DataCollection> getAllDataCollection(int start, int end){
+		return dataCollectionPersistence.findAll(start, end);
+	}
+	public int countAllDataCollection(){
+		return dataCollectionPersistence.countAll();
+	}
+	
+	public List<DataCollection> getDataCollectionListByGroupId(long groupId){
+		return dataCollectionPersistence.findByGroupId(groupId);
+	}
+	public List<DataCollection> getDataCollectionListByGroupId(long groupId, int start, int end){
+		return dataCollectionPersistence.findByGroupId(groupId, start, end);
+	}
+	public int countDataCollectionByGroupId(long groupId){
+		return dataCollectionPersistence.countByGroupId(groupId);
+	}
+	
+	public JSONObject getDataCollectionInfo( long dataCollectionId, Locale locale ) {
+		JSONObject collectionInfo = JSONFactoryUtil.createJSONObject();
+		
+		DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey(dataCollectionId);
+		if( Validator.isNotNull(dataCollection)) {
+			collectionInfo =  dataCollection.toJSON();
+		}
+		
+		List<CollectionSetLink> collectionSetLinkList = 
+				collectionSetLinkPersistence.findByCollectionId(dataCollectionId);
+		
+		if( Validator.isNotNull(collectionSetLinkList)) {
+			JSONArray jsonDataSetList = JSONFactoryUtil.createJSONArray();
+			
+			Iterator<CollectionSetLink> iter = collectionSetLinkList.iterator();
+			while(iter.hasNext()) {
+				CollectionSetLink link = iter.next();
+				
+				DataSet dataSet = dataSetPersistence.fetchByPrimaryKey(link.getDataSetId());
+				
+				JSONObject jsonDataSet = JSONFactoryUtil.createJSONObject();
+				
+				jsonDataSet.put("collectionSeLinktId", link.getCollectionSetLinkId());
+				jsonDataSet.put("dataSetId", dataSet.getDataSetId());
+				jsonDataSet.put("dataSetCode", dataSet.getDataSetCode());
+				jsonDataSet.put("dataSetVersion", dataSet.getDataSetVersion());
+				jsonDataSet.put("displayName", dataSet.getDisplayName());
+				
+				jsonDataSet.put("verified", link.getVerified());
+				jsonDataSet.put("verifiedUserId", link.getVerifiedUserId());
+				jsonDataSet.put("verifiedUserName", link.getVerifiedUserName());
+				jsonDataSet.put("verifiedDate", link.getVerifiedDate());
+				jsonDataSet.put("freezed", link.getVerified());
+				jsonDataSet.put("freezedUserId", link.getVerifiedUserId());
+				jsonDataSet.put("freezedUserName", link.getVerifiedUserName());
+				jsonDataSet.put("freezedDate", link.getVerifiedDate());
+				
+				int commentCount = 
+						dataCommentPersistence.countByModelId(DataSet.class.getName(), dataSet.getDataSetId());
+				jsonDataSet.put("commentCount", commentCount);
+				
+				jsonDataSetList.put(jsonDataSet);
+			}
+			
+			collectionInfo.put("associatedDataSetList", jsonDataSetList);
+		}
+		
+		return collectionInfo;
+	}
+	
+	public boolean checkDataCollectionCodeUnique( String dataCollectionCode ) {
 		// Check uniqueness of the dataCollectionCode
 		if( super.dataTypePersistence.countByCode(dataCollectionCode) > 0 ) {
-			throw new DuplicatedDataCollectionCodeException( dataCollectionCode + " exists already." );
+			return false;
 		}
 		
 		return true;
+	}
+	
+	public boolean checkDataCollectionDuplicated( String dataCollectionCode, String dataCollectionVersion) {
+		DataCollection dataCollection = dataCollectionPersistence.fetchByCodeVersion(dataCollectionCode, dataCollectionVersion);
+		
+		if( Validator.isNotNull(dataCollection)) {
+			return true;
+		}
+		
+		return false;
 	}
 }

@@ -26,12 +26,14 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import com.sx.icecap.exception.NoSuchCollectionSetLinkException;
@@ -48,6 +50,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -607,516 +610,6 @@ public class CollectionSetLinkPersistenceImpl
 	private static final String _FINDER_COLUMN_COLLECTIONID_DATACOLLECTIONID_2 =
 		"collectionSetLink.dataCollectionId = ?";
 
-	private FinderPath _finderPathWithPaginationFindByDataSetId;
-	private FinderPath _finderPathWithoutPaginationFindByDataSetId;
-	private FinderPath _finderPathCountByDataSetId;
-
-	/**
-	 * Returns all the collection set links where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @return the matching collection set links
-	 */
-	@Override
-	public List<CollectionSetLink> findByDataSetId(long dataSetId) {
-		return findByDataSetId(
-			dataSetId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-	}
-
-	/**
-	 * Returns a range of all the collection set links where dataSetId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataSetId the data set ID
-	 * @param start the lower bound of the range of collection set links
-	 * @param end the upper bound of the range of collection set links (not inclusive)
-	 * @return the range of matching collection set links
-	 */
-	@Override
-	public List<CollectionSetLink> findByDataSetId(
-		long dataSetId, int start, int end) {
-
-		return findByDataSetId(dataSetId, start, end, null);
-	}
-
-	/**
-	 * Returns an ordered range of all the collection set links where dataSetId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataSetId the data set ID
-	 * @param start the lower bound of the range of collection set links
-	 * @param end the upper bound of the range of collection set links (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching collection set links
-	 */
-	@Override
-	public List<CollectionSetLink> findByDataSetId(
-		long dataSetId, int start, int end,
-		OrderByComparator<CollectionSetLink> orderByComparator) {
-
-		return findByDataSetId(dataSetId, start, end, orderByComparator, true);
-	}
-
-	/**
-	 * Returns an ordered range of all the collection set links where dataSetId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
-	 * </p>
-	 *
-	 * @param dataSetId the data set ID
-	 * @param start the lower bound of the range of collection set links
-	 * @param end the upper bound of the range of collection set links (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching collection set links
-	 */
-	@Override
-	public List<CollectionSetLink> findByDataSetId(
-		long dataSetId, int start, int end,
-		OrderByComparator<CollectionSetLink> orderByComparator,
-		boolean useFinderCache) {
-
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-			(orderByComparator == null)) {
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByDataSetId;
-				finderArgs = new Object[] {dataSetId};
-			}
-		}
-		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByDataSetId;
-			finderArgs = new Object[] {
-				dataSetId, start, end, orderByComparator
-			};
-		}
-
-		List<CollectionSetLink> list = null;
-
-		if (useFinderCache) {
-			list = (List<CollectionSetLink>)finderCache.getResult(
-				finderPath, finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (CollectionSetLink collectionSetLink : list) {
-					if (dataSetId != collectionSetLink.getDataSetId()) {
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler sb = null;
-
-			if (orderByComparator != null) {
-				sb = new StringBundler(
-					3 + (orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				sb = new StringBundler(3);
-			}
-
-			sb.append(_SQL_SELECT_COLLECTIONSETLINK_WHERE);
-
-			sb.append(_FINDER_COLUMN_DATASETID_DATASETID_2);
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
-			}
-			else {
-				sb.append(CollectionSetLinkModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(dataSetId);
-
-				list = (List<CollectionSetLink>)QueryUtil.list(
-					query, getDialect(), start, end);
-
-				cacheResult(list);
-
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
-			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
-
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
-	}
-
-	/**
-	 * Returns the first collection set link in the ordered set where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching collection set link
-	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
-	 */
-	@Override
-	public CollectionSetLink findByDataSetId_First(
-			long dataSetId,
-			OrderByComparator<CollectionSetLink> orderByComparator)
-		throws NoSuchCollectionSetLinkException {
-
-		CollectionSetLink collectionSetLink = fetchByDataSetId_First(
-			dataSetId, orderByComparator);
-
-		if (collectionSetLink != null) {
-			return collectionSetLink;
-		}
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		sb.append("dataSetId=");
-		sb.append(dataSetId);
-
-		sb.append("}");
-
-		throw new NoSuchCollectionSetLinkException(sb.toString());
-	}
-
-	/**
-	 * Returns the first collection set link in the ordered set where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching collection set link, or <code>null</code> if a matching collection set link could not be found
-	 */
-	@Override
-	public CollectionSetLink fetchByDataSetId_First(
-		long dataSetId,
-		OrderByComparator<CollectionSetLink> orderByComparator) {
-
-		List<CollectionSetLink> list = findByDataSetId(
-			dataSetId, 0, 1, orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns the last collection set link in the ordered set where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching collection set link
-	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
-	 */
-	@Override
-	public CollectionSetLink findByDataSetId_Last(
-			long dataSetId,
-			OrderByComparator<CollectionSetLink> orderByComparator)
-		throws NoSuchCollectionSetLinkException {
-
-		CollectionSetLink collectionSetLink = fetchByDataSetId_Last(
-			dataSetId, orderByComparator);
-
-		if (collectionSetLink != null) {
-			return collectionSetLink;
-		}
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		sb.append("dataSetId=");
-		sb.append(dataSetId);
-
-		sb.append("}");
-
-		throw new NoSuchCollectionSetLinkException(sb.toString());
-	}
-
-	/**
-	 * Returns the last collection set link in the ordered set where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching collection set link, or <code>null</code> if a matching collection set link could not be found
-	 */
-	@Override
-	public CollectionSetLink fetchByDataSetId_Last(
-		long dataSetId,
-		OrderByComparator<CollectionSetLink> orderByComparator) {
-
-		int count = countByDataSetId(dataSetId);
-
-		if (count == 0) {
-			return null;
-		}
-
-		List<CollectionSetLink> list = findByDataSetId(
-			dataSetId, count - 1, count, orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns the collection set links before and after the current collection set link in the ordered set where dataSetId = &#63;.
-	 *
-	 * @param collectionSetLinkId the primary key of the current collection set link
-	 * @param dataSetId the data set ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next collection set link
-	 * @throws NoSuchCollectionSetLinkException if a collection set link with the primary key could not be found
-	 */
-	@Override
-	public CollectionSetLink[] findByDataSetId_PrevAndNext(
-			long collectionSetLinkId, long dataSetId,
-			OrderByComparator<CollectionSetLink> orderByComparator)
-		throws NoSuchCollectionSetLinkException {
-
-		CollectionSetLink collectionSetLink = findByPrimaryKey(
-			collectionSetLinkId);
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			CollectionSetLink[] array = new CollectionSetLinkImpl[3];
-
-			array[0] = getByDataSetId_PrevAndNext(
-				session, collectionSetLink, dataSetId, orderByComparator, true);
-
-			array[1] = collectionSetLink;
-
-			array[2] = getByDataSetId_PrevAndNext(
-				session, collectionSetLink, dataSetId, orderByComparator,
-				false);
-
-			return array;
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected CollectionSetLink getByDataSetId_PrevAndNext(
-		Session session, CollectionSetLink collectionSetLink, long dataSetId,
-		OrderByComparator<CollectionSetLink> orderByComparator,
-		boolean previous) {
-
-		StringBundler sb = null;
-
-		if (orderByComparator != null) {
-			sb = new StringBundler(
-				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			sb = new StringBundler(3);
-		}
-
-		sb.append(_SQL_SELECT_COLLECTIONSETLINK_WHERE);
-
-		sb.append(_FINDER_COLUMN_DATASETID_DATASETID_2);
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields =
-				orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				sb.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(WHERE_GREATER_THAN);
-					}
-					else {
-						sb.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			sb.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				sb.append(_ORDER_BY_ENTITY_ALIAS);
-				sb.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						sb.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						sb.append(ORDER_BY_ASC);
-					}
-					else {
-						sb.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			sb.append(CollectionSetLinkModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = sb.toString();
-
-		Query query = session.createQuery(sql);
-
-		query.setFirstResult(0);
-		query.setMaxResults(2);
-
-		QueryPos queryPos = QueryPos.getInstance(query);
-
-		queryPos.add(dataSetId);
-
-		if (orderByComparator != null) {
-			for (Object orderByConditionValue :
-					orderByComparator.getOrderByConditionValues(
-						collectionSetLink)) {
-
-				queryPos.add(orderByConditionValue);
-			}
-		}
-
-		List<CollectionSetLink> list = query.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
-	}
-
-	/**
-	 * Removes all the collection set links where dataSetId = &#63; from the database.
-	 *
-	 * @param dataSetId the data set ID
-	 */
-	@Override
-	public void removeByDataSetId(long dataSetId) {
-		for (CollectionSetLink collectionSetLink :
-				findByDataSetId(
-					dataSetId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
-
-			remove(collectionSetLink);
-		}
-	}
-
-	/**
-	 * Returns the number of collection set links where dataSetId = &#63;.
-	 *
-	 * @param dataSetId the data set ID
-	 * @return the number of matching collection set links
-	 */
-	@Override
-	public int countByDataSetId(long dataSetId) {
-		FinderPath finderPath = _finderPathCountByDataSetId;
-
-		Object[] finderArgs = new Object[] {dataSetId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(2);
-
-			sb.append(_SQL_COUNT_COLLECTIONSETLINK_WHERE);
-
-			sb.append(_FINDER_COLUMN_DATASETID_DATASETID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(dataSetId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				finderCache.removeResult(finderPath, finderArgs);
-
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
-	}
-
-	private static final String _FINDER_COLUMN_DATASETID_DATASETID_2 =
-		"collectionSetLink.dataSetId = ?";
-
 	private FinderPath _finderPathFetchByCollectionSet;
 	private FinderPath _finderPathCountByCollectionSet;
 
@@ -1367,7 +860,1028 @@ public class CollectionSetLinkPersistenceImpl
 	private static final String _FINDER_COLUMN_COLLECTIONSET_DATASETID_2 =
 		"collectionSetLink.dataSetId = ?";
 
+	private FinderPath _finderPathWithPaginationFindBySetId;
+	private FinderPath _finderPathWithoutPaginationFindBySetId;
+	private FinderPath _finderPathCountBySetId;
+
+	/**
+	 * Returns all the collection set links where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @return the matching collection set links
+	 */
+	@Override
+	public List<CollectionSetLink> findBySetId(long dataSetId) {
+		return findBySetId(
+			dataSetId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the collection set links where dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @return the range of matching collection set links
+	 */
+	@Override
+	public List<CollectionSetLink> findBySetId(
+		long dataSetId, int start, int end) {
+
+		return findBySetId(dataSetId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the collection set links where dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching collection set links
+	 */
+	@Override
+	public List<CollectionSetLink> findBySetId(
+		long dataSetId, int start, int end,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		return findBySetId(dataSetId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the collection set links where dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataSetId the data set ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching collection set links
+	 */
+	@Override
+	public List<CollectionSetLink> findBySetId(
+		long dataSetId, int start, int end,
+		OrderByComparator<CollectionSetLink> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindBySetId;
+				finderArgs = new Object[] {dataSetId};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindBySetId;
+			finderArgs = new Object[] {
+				dataSetId, start, end, orderByComparator
+			};
+		}
+
+		List<CollectionSetLink> list = null;
+
+		if (useFinderCache) {
+			list = (List<CollectionSetLink>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (CollectionSetLink collectionSetLink : list) {
+					if (dataSetId != collectionSetLink.getDataSetId()) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_COLLECTIONSETLINK_WHERE);
+
+			sb.append(_FINDER_COLUMN_SETID_DATASETID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(CollectionSetLinkModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(dataSetId);
+
+				list = (List<CollectionSetLink>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first collection set link in the ordered set where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	@Override
+	public CollectionSetLink findBySetId_First(
+			long dataSetId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws NoSuchCollectionSetLinkException {
+
+		CollectionSetLink collectionSetLink = fetchBySetId_First(
+			dataSetId, orderByComparator);
+
+		if (collectionSetLink != null) {
+			return collectionSetLink;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("dataSetId=");
+		sb.append(dataSetId);
+
+		sb.append("}");
+
+		throw new NoSuchCollectionSetLinkException(sb.toString());
+	}
+
+	/**
+	 * Returns the first collection set link in the ordered set where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	@Override
+	public CollectionSetLink fetchBySetId_First(
+		long dataSetId,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		List<CollectionSetLink> list = findBySetId(
+			dataSetId, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last collection set link in the ordered set where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	@Override
+	public CollectionSetLink findBySetId_Last(
+			long dataSetId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws NoSuchCollectionSetLinkException {
+
+		CollectionSetLink collectionSetLink = fetchBySetId_Last(
+			dataSetId, orderByComparator);
+
+		if (collectionSetLink != null) {
+			return collectionSetLink;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("dataSetId=");
+		sb.append(dataSetId);
+
+		sb.append("}");
+
+		throw new NoSuchCollectionSetLinkException(sb.toString());
+	}
+
+	/**
+	 * Returns the last collection set link in the ordered set where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	@Override
+	public CollectionSetLink fetchBySetId_Last(
+		long dataSetId,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		int count = countBySetId(dataSetId);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<CollectionSetLink> list = findBySetId(
+			dataSetId, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the collection set links before and after the current collection set link in the ordered set where dataSetId = &#63;.
+	 *
+	 * @param collectionSetLinkId the primary key of the current collection set link
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next collection set link
+	 * @throws NoSuchCollectionSetLinkException if a collection set link with the primary key could not be found
+	 */
+	@Override
+	public CollectionSetLink[] findBySetId_PrevAndNext(
+			long collectionSetLinkId, long dataSetId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws NoSuchCollectionSetLinkException {
+
+		CollectionSetLink collectionSetLink = findByPrimaryKey(
+			collectionSetLinkId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			CollectionSetLink[] array = new CollectionSetLinkImpl[3];
+
+			array[0] = getBySetId_PrevAndNext(
+				session, collectionSetLink, dataSetId, orderByComparator, true);
+
+			array[1] = collectionSetLink;
+
+			array[2] = getBySetId_PrevAndNext(
+				session, collectionSetLink, dataSetId, orderByComparator,
+				false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected CollectionSetLink getBySetId_PrevAndNext(
+		Session session, CollectionSetLink collectionSetLink, long dataSetId,
+		OrderByComparator<CollectionSetLink> orderByComparator,
+		boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_COLLECTIONSETLINK_WHERE);
+
+		sb.append(_FINDER_COLUMN_SETID_DATASETID_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(CollectionSetLinkModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(dataSetId);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						collectionSetLink)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<CollectionSetLink> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the collection set links where dataSetId = &#63; from the database.
+	 *
+	 * @param dataSetId the data set ID
+	 */
+	@Override
+	public void removeBySetId(long dataSetId) {
+		for (CollectionSetLink collectionSetLink :
+				findBySetId(
+					dataSetId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(collectionSetLink);
+		}
+	}
+
+	/**
+	 * Returns the number of collection set links where dataSetId = &#63;.
+	 *
+	 * @param dataSetId the data set ID
+	 * @return the number of matching collection set links
+	 */
+	@Override
+	public int countBySetId(long dataSetId) {
+		FinderPath finderPath = _finderPathCountBySetId;
+
+		Object[] finderArgs = new Object[] {dataSetId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_COLLECTIONSETLINK_WHERE);
+
+			sb.append(_FINDER_COLUMN_SETID_DATASETID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(dataSetId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_SETID_DATASETID_2 =
+		"collectionSetLink.dataSetId = ?";
+
+	private FinderPath _finderPathWithPaginationFindByGroupId;
+	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+	private FinderPath _finderPathCountByGroupId;
+
+	/**
+	 * Returns all the collection set links where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the matching collection set links
+	 */
+	@Override
+	public List<CollectionSetLink> findByGroupId(long groupId) {
+		return findByGroupId(
+			groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the collection set links where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @return the range of matching collection set links
+	 */
+	@Override
+	public List<CollectionSetLink> findByGroupId(
+		long groupId, int start, int end) {
+
+		return findByGroupId(groupId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the collection set links where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching collection set links
+	 */
+	@Override
+	public List<CollectionSetLink> findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		return findByGroupId(groupId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the collection set links where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching collection set links
+	 */
+	@Override
+	public List<CollectionSetLink> findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CollectionSetLink> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByGroupId;
+				finderArgs = new Object[] {groupId};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByGroupId;
+			finderArgs = new Object[] {groupId, start, end, orderByComparator};
+		}
+
+		List<CollectionSetLink> list = null;
+
+		if (useFinderCache) {
+			list = (List<CollectionSetLink>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (CollectionSetLink collectionSetLink : list) {
+					if (groupId != collectionSetLink.getGroupId()) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_COLLECTIONSETLINK_WHERE);
+
+			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(CollectionSetLinkModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(groupId);
+
+				list = (List<CollectionSetLink>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	@Override
+	public CollectionSetLink findByGroupId_First(
+			long groupId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws NoSuchCollectionSetLinkException {
+
+		CollectionSetLink collectionSetLink = fetchByGroupId_First(
+			groupId, orderByComparator);
+
+		if (collectionSetLink != null) {
+			return collectionSetLink;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("groupId=");
+		sb.append(groupId);
+
+		sb.append("}");
+
+		throw new NoSuchCollectionSetLinkException(sb.toString());
+	}
+
+	/**
+	 * Returns the first collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	@Override
+	public CollectionSetLink fetchByGroupId_First(
+		long groupId, OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		List<CollectionSetLink> list = findByGroupId(
+			groupId, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	@Override
+	public CollectionSetLink findByGroupId_Last(
+			long groupId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws NoSuchCollectionSetLinkException {
+
+		CollectionSetLink collectionSetLink = fetchByGroupId_Last(
+			groupId, orderByComparator);
+
+		if (collectionSetLink != null) {
+			return collectionSetLink;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("groupId=");
+		sb.append(groupId);
+
+		sb.append("}");
+
+		throw new NoSuchCollectionSetLinkException(sb.toString());
+	}
+
+	/**
+	 * Returns the last collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	@Override
+	public CollectionSetLink fetchByGroupId_Last(
+		long groupId, OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		int count = countByGroupId(groupId);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<CollectionSetLink> list = findByGroupId(
+			groupId, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the collection set links before and after the current collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param collectionSetLinkId the primary key of the current collection set link
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next collection set link
+	 * @throws NoSuchCollectionSetLinkException if a collection set link with the primary key could not be found
+	 */
+	@Override
+	public CollectionSetLink[] findByGroupId_PrevAndNext(
+			long collectionSetLinkId, long groupId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws NoSuchCollectionSetLinkException {
+
+		CollectionSetLink collectionSetLink = findByPrimaryKey(
+			collectionSetLinkId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			CollectionSetLink[] array = new CollectionSetLinkImpl[3];
+
+			array[0] = getByGroupId_PrevAndNext(
+				session, collectionSetLink, groupId, orderByComparator, true);
+
+			array[1] = collectionSetLink;
+
+			array[2] = getByGroupId_PrevAndNext(
+				session, collectionSetLink, groupId, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected CollectionSetLink getByGroupId_PrevAndNext(
+		Session session, CollectionSetLink collectionSetLink, long groupId,
+		OrderByComparator<CollectionSetLink> orderByComparator,
+		boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_COLLECTIONSETLINK_WHERE);
+
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(CollectionSetLinkModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(groupId);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						collectionSetLink)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<CollectionSetLink> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the collection set links where groupId = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 */
+	@Override
+	public void removeByGroupId(long groupId) {
+		for (CollectionSetLink collectionSetLink :
+				findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(collectionSetLink);
+		}
+	}
+
+	/**
+	 * Returns the number of collection set links where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the number of matching collection set links
+	 */
+	@Override
+	public int countByGroupId(long groupId) {
+		FinderPath finderPath = _finderPathCountByGroupId;
+
+		Object[] finderArgs = new Object[] {groupId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_COLLECTIONSETLINK_WHERE);
+
+			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(groupId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
+		"collectionSetLink.groupId = ?";
+
 	public CollectionSetLinkPersistenceImpl() {
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("order", "order_");
+
+		setDBColumnNames(dbColumnNames);
+
 		setModelClass(CollectionSetLink.class);
 
 		setModelImplClass(CollectionSetLinkImpl.class);
@@ -1543,6 +2057,8 @@ public class CollectionSetLinkPersistenceImpl
 		collectionSetLink.setNew(true);
 		collectionSetLink.setPrimaryKey(collectionSetLinkId);
 
+		collectionSetLink.setCompanyId(CompanyThreadLocal.getCompanyId());
+
 		return collectionSetLink;
 	}
 
@@ -1697,9 +2213,15 @@ public class CollectionSetLinkPersistenceImpl
 
 			args = new Object[] {collectionSetLinkModelImpl.getDataSetId()};
 
-			finderCache.removeResult(_finderPathCountByDataSetId, args);
+			finderCache.removeResult(_finderPathCountBySetId, args);
 			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByDataSetId, args);
+				_finderPathWithoutPaginationFindBySetId, args);
+
+			args = new Object[] {collectionSetLinkModelImpl.getGroupId()};
+
+			finderCache.removeResult(_finderPathCountByGroupId, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByGroupId, args);
 
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(
@@ -1728,22 +2250,41 @@ public class CollectionSetLinkPersistenceImpl
 			}
 
 			if ((collectionSetLinkModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByDataSetId.
-					 getColumnBitmask()) != 0) {
+				 _finderPathWithoutPaginationFindBySetId.getColumnBitmask()) !=
+					 0) {
 
 				Object[] args = new Object[] {
 					collectionSetLinkModelImpl.getOriginalDataSetId()
 				};
 
-				finderCache.removeResult(_finderPathCountByDataSetId, args);
+				finderCache.removeResult(_finderPathCountBySetId, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByDataSetId, args);
+					_finderPathWithoutPaginationFindBySetId, args);
 
 				args = new Object[] {collectionSetLinkModelImpl.getDataSetId()};
 
-				finderCache.removeResult(_finderPathCountByDataSetId, args);
+				finderCache.removeResult(_finderPathCountBySetId, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByDataSetId, args);
+					_finderPathWithoutPaginationFindBySetId, args);
+			}
+
+			if ((collectionSetLinkModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByGroupId.
+					 getColumnBitmask()) != 0) {
+
+				Object[] args = new Object[] {
+					collectionSetLinkModelImpl.getOriginalGroupId()
+				};
+
+				finderCache.removeResult(_finderPathCountByGroupId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByGroupId, args);
+
+				args = new Object[] {collectionSetLinkModelImpl.getGroupId()};
+
+				finderCache.removeResult(_finderPathCountByGroupId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByGroupId, args);
 			}
 		}
 
@@ -1998,6 +2539,11 @@ public class CollectionSetLinkPersistenceImpl
 	}
 
 	@Override
+	public Set<String> getBadColumnNames() {
+		return _badColumnNames;
+	}
+
+	@Override
 	protected EntityCache getEntityCache() {
 		return entityCache;
 	}
@@ -2061,25 +2607,6 @@ public class CollectionSetLinkPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCollectionId",
 			new String[] {Long.class.getName()});
 
-		_finderPathWithPaginationFindByDataSetId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CollectionSetLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDataSetId",
-			new String[] {
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
-			});
-
-		_finderPathWithoutPaginationFindByDataSetId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, CollectionSetLinkImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDataSetId",
-			new String[] {Long.class.getName()},
-			CollectionSetLinkModelImpl.DATASETID_COLUMN_BITMASK);
-
-		_finderPathCountByDataSetId = new FinderPath(
-			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDataSetId",
-			new String[] {Long.class.getName()});
-
 		_finderPathFetchByCollectionSet = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, CollectionSetLinkImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByCollectionSet",
@@ -2091,6 +2618,44 @@ public class CollectionSetLinkPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCollectionSet",
 			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindBySetId = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, CollectionSetLinkImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBySetId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindBySetId = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, CollectionSetLinkImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySetId",
+			new String[] {Long.class.getName()},
+			CollectionSetLinkModelImpl.DATASETID_COLUMN_BITMASK);
+
+		_finderPathCountBySetId = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySetId",
+			new String[] {Long.class.getName()});
+
+		_finderPathWithPaginationFindByGroupId = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, CollectionSetLinkImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, CollectionSetLinkImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
+			new String[] {Long.class.getName()},
+			CollectionSetLinkModelImpl.GROUPID_COLUMN_BITMASK);
+
+		_finderPathCountByGroupId = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
+			new String[] {Long.class.getName()});
 
 		_setCollectionSetLinkUtilPersistence(this);
 	}
@@ -2184,5 +2749,8 @@ public class CollectionSetLinkPersistenceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CollectionSetLinkPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"order"});
 
 }

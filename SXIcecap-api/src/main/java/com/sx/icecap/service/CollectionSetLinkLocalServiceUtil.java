@@ -78,8 +78,8 @@ public class CollectionSetLinkLocalServiceUtil {
 			dataCollectionId);
 	}
 
-	public static int countCollectionSetLinkListByType(long dataSetId) {
-		return getService().countCollectionSetLinkListByType(dataSetId);
+	public static int countCollectionSetLinkListBySet(long dataSetId) {
+		return getService().countCollectionSetLinkListBySet(dataSetId);
 	}
 
 	/**
@@ -252,8 +252,7 @@ public class CollectionSetLinkLocalServiceUtil {
 	}
 
 	public static CollectionSetLink getCollectionSetLink(
-			long dataCollectionId, long dataSetId)
-		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+		long dataCollectionId, long dataSetId) {
 
 		return getService().getCollectionSetLink(dataCollectionId, dataSetId);
 	}
@@ -272,16 +271,16 @@ public class CollectionSetLinkLocalServiceUtil {
 			dataCollectionId, start, end);
 	}
 
-	public static List<CollectionSetLink> getCollectionSetLinkListByType(
+	public static List<CollectionSetLink> getCollectionSetLinkListBySet(
 		long dataSetId) {
 
-		return getService().getCollectionSetLinkListByType(dataSetId);
+		return getService().getCollectionSetLinkListBySet(dataSetId);
 	}
 
-	public static List<CollectionSetLink> getCollectionSetLinkListByType(
+	public static List<CollectionSetLink> getCollectionSetLinkListBySet(
 		long dataSetId, int start, int end) {
 
-		return getService().getCollectionSetLinkListByType(
+		return getService().getCollectionSetLinkListBySet(
 			dataSetId, start, end);
 	}
 

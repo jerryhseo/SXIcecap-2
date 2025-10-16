@@ -45,6 +45,7 @@ public class SetTypeLinkWrapper
 		attributes.put("setTypeLinkId", getSetTypeLinkId());
 		attributes.put("dataSetId", getDataSetId());
 		attributes.put("dataTypeId", getDataTypeId());
+		attributes.put("order", getOrder());
 		attributes.put("commentable", isCommentable());
 		attributes.put("verifiable", isVerifiable());
 		attributes.put("freezable", isFreezable());
@@ -78,6 +79,12 @@ public class SetTypeLinkWrapper
 
 		if (dataTypeId != null) {
 			setDataTypeId(dataTypeId);
+		}
+
+		Integer order = (Integer)attributes.get("order");
+
+		if (order != null) {
+			setOrder(order);
 		}
 
 		Boolean commentable = (Boolean)attributes.get("commentable");
@@ -235,6 +242,16 @@ public class SetTypeLinkWrapper
 	@Override
 	public String getFreezedUserUuid() {
 		return model.getFreezedUserUuid();
+	}
+
+	/**
+	 * Returns the order of this set type link.
+	 *
+	 * @return the order of this set type link
+	 */
+	@Override
+	public int getOrder() {
+		return model.getOrder();
 	}
 
 	/**
@@ -460,6 +477,16 @@ public class SetTypeLinkWrapper
 	@Override
 	public void setFreezedUserUuid(String freezedUserUuid) {
 		model.setFreezedUserUuid(freezedUserUuid);
+	}
+
+	/**
+	 * Sets the order of this set type link.
+	 *
+	 * @param order the order of this set type link
+	 */
+	@Override
+	public void setOrder(int order) {
+		model.setOrder(order);
 	}
 
 	/**

@@ -17,6 +17,9 @@ package com.sx.icecap.service.impl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
@@ -24,13 +27,20 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.sx.icecap.exception.NoSuchDataSetException;
+import com.sx.icecap.model.CollectionSetLink;
+import com.sx.icecap.model.DataCollection;
 import com.sx.icecap.model.DataSet;
+import com.sx.icecap.model.DataType;
+import com.sx.icecap.model.SetTypeLink;
 import com.sx.icecap.service.base.DataSetLocalServiceBaseImpl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -242,11 +252,10 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 	public DataSet removeDataSet( long dataSetId ) throws PortalException {
 		DataSet dataSet = super.dataSetPersistence.remove(dataSetId);
 		
-		try {
-			super.dataSetPersistence.remove(dataSetId);
-		}
-		catch( NoSuchDataSetException e) {
-		}
+		super.dataSetPersistence.remove(dataSetId);
+		
+		collectionSetLinkPersistence.removeBySetId(dataSetId);
+		setTypeLinkPersistence.removeByDataSetId(dataSetId);
 		
 		super.assetEntryLocalService.deleteEntry(DataSet.class.getName(), dataSet.getPrimaryKey());
 	
@@ -262,6 +271,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		
 		return dataSet;
 	}
+	
 	
 	public void removeDataSets( long[] dataSetIds ) throws PortalException {
 		for( long dataSetId : dataSetIds ) {
@@ -436,5 +446,129 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 	}
 	public int countDataSetsByCode( String dataSetCode ){
 		return super.dataSetPersistence.countByCode(dataSetCode);
+	}
+	
+	public JSONObject getDataSetInfo( long dataCollectionId,  long dataSetId, Locale locale) {
+		JSONObject dataSetInfo = JSONFactoryUtil.createJSONObject();
+		
+		if( dataCollectionId > 0 ) {
+			DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey(dataCollectionId);
+			if( Validator.isNotNull(dataCollection) ){
+				dataSetInfo.put("dataCollectionId", dataCollectionId);
+				dataSetInfo.put("dataCollectionCode", dataCollection.getDataCollectionCode());
+				dataSetInfo.put("dataCollectionVersion", dataCollection.getDataCollectionVersion());
+				dataSetInfo.put("dataCollectionLabel", dataCollection.getDisplayName(locale));
+				
+				CollectionSetLink link = collectionSetLinkPersistence.fetchByCollectionSet(dataCollectionId, dataSetId);
+				if( Validator.isNotNull(link)) {
+					dataSetInfo.put("freezed", link.getFreezed());
+					dataSetInfo.put("freezedUserId", link.getFreezedUserId());
+					dataSetInfo.put("freezedUserName", link.getFreezedUserName());
+					dataSetInfo.put("freezedDate", link.getFreezedDate());
+					dataSetInfo.put("verified", link.getVerified());
+					dataSetInfo.put("verifiedUserId", link.getVerifiedUserId());
+					dataSetInfo.put("verifiedUserName", link.getVerifiedUserName());
+					dataSetInfo.put("verifiedDate", link.getVerifiedDate());
+					
+					int commentCount = 
+							dataCommentPersistence.countByModelId(DataSet.class.getName(), dataSetId);
+					dataSetInfo.put("commentCount", commentCount);
+				}
+			}
+		}
+		
+		DataSet dataSet = dataSetPersistence.fetchByPrimaryKey(dataSetId);
+		
+		dataSetInfo.put("dataSet", dataSet.toJSON());
+		
+		List<SetTypeLink> setTypeLinkList = setTypeLinkPersistence.findByDataSetId(dataSetId);
+		Iterator<SetTypeLink> iter = setTypeLinkList.iterator();
+		
+		JSONArray jsonDataTypeList = JSONFactoryUtil.createJSONArray();
+		while(iter.hasNext()) {
+			SetTypeLink link = iter.next();
+			
+			DataType dataType = dataTypePersistence.fetchByPrimaryKey(link.getDataTypeId());
+			JSONObject jsonDataType = dataType.toJSON();
+			
+			jsonDataType.put("setTypeLinkId", link.getPrimaryKey());
+			jsonDataType.put("freezed", link.getFreezed());
+			jsonDataType.put("freezedUserId", link.getFreezedUserId());
+			jsonDataType.put("freezedUserName", link.getFreezedUserName());
+			jsonDataType.put("freezedDate", link.getFreezedDate());
+			jsonDataType.put("verified", link.getVerified());
+			jsonDataType.put("verifiedUserId", link.getVerifiedUserId());
+			jsonDataType.put("verifiedUserName", link.getVerifiedUserName());
+			jsonDataType.put("verifiedDate", link.getVerifiedDate());
+			
+			int commentCount = 
+					dataCommentPersistence.countByModelId(DataType.class.getName(), dataType.getDataTypeId());
+			jsonDataType.put("commentCount", commentCount);
+			
+			jsonDataTypeList.put(jsonDataType);
+		}
+		
+		dataSetInfo.put("dataTypeList", jsonDataTypeList);
+		
+		return dataSetInfo;
+	}
+	
+	public JSONArray  getDataSetListInfo( long groupId, long dataCollectionId, Locale locale) {
+		JSONArray jsonDataSetListInfo = JSONFactoryUtil.createJSONArray();
+		
+		List<CollectionSetLink> collectionSetLinks = null;
+		List<DataSet> dataSetList = null;
+		
+		if( dataCollectionId > 0 ) {
+			collectionSetLinks = collectionSetLinkPersistence.findByCollectionId(dataCollectionId);
+		}
+		else {
+			dataSetList = dataSetPersistence.findByGroupId(groupId);
+		}
+			
+		if( Validator.isNotNull(collectionSetLinks) ) {
+			Iterator<CollectionSetLink> iter = collectionSetLinks.iterator();
+			while( iter.hasNext() ) {
+				CollectionSetLink link = iter.next();
+				
+				DataSet dataSet = dataSetPersistence.fetchByPrimaryKey(link.getDataSetId());
+				if( Validator.isNotNull(dataSet) ) {
+					JSONObject jsonDataSet = dataSet.toJSON();
+					
+					jsonDataSet.put("freezed", link.getFreezed());
+					jsonDataSet.put("freezedUserId", link.getFreezedUserId());
+					jsonDataSet.put("freezedUserName", link.getFreezedUserName());
+					jsonDataSet.put("freezedDate", link.getFreezedDate());
+					jsonDataSet.put("verified", link.getVerified());
+					jsonDataSet.put("verifiedUserId", link.getVerifiedUserId());
+					jsonDataSet.put("verifiedUserName", link.getVerifiedUserName());
+					jsonDataSet.put("verifiedDate", link.getVerifiedDate());
+					
+					int commentCount = 
+							dataCommentPersistence.countByModelId(DataSet.class.getName(), dataSet.getDataSetId());
+					jsonDataSet.put("commentCount", commentCount);
+					
+					jsonDataSetListInfo.put(jsonDataSet);
+				}
+			}
+		}
+		else if( Validator.isNotNull(dataSetList)) {
+			Iterator<DataSet> iter = dataSetList.iterator();
+			while( iter.hasNext() ) {
+				DataSet dataSet = iter.next();
+				
+				JSONObject jsonDataSet = dataSet.toJSON();
+				jsonDataSet.put("freezed", false);
+				jsonDataSet.put("verified", false);
+				
+				int commentCount = 
+						dataCommentPersistence.countByModelId(DataSet.class.getName(), dataSet.getDataSetId());
+				jsonDataSet.put("commentCount", commentCount);
+				
+				jsonDataSetListInfo.put(jsonDataSet);
+			}
+		}
+		
+		return jsonDataSetListInfo;
 	}
 }

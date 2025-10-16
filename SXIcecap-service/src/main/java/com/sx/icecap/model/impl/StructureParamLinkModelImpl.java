@@ -67,7 +67,8 @@ public class StructureParamLinkModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"structureParamLinkId", Types.BIGINT},
-		{"dataStructureId", Types.BIGINT}, {"parameterId", Types.BIGINT}
+		{"dataStructureId", Types.BIGINT}, {"parameterId", Types.BIGINT},
+		{"order_", Types.INTEGER}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -77,10 +78,11 @@ public class StructureParamLinkModelImpl
 		TABLE_COLUMNS_MAP.put("structureParamLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataStructureId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("parameterId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("order_", Types.INTEGER);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_StructureParamLink (structureParamLinkId LONG not null primary key,dataStructureId LONG,parameterId LONG)";
+		"create table SX_ICECAP_StructureParamLink (structureParamLinkId LONG not null primary key,dataStructureId LONG,parameterId LONG,order_ INTEGER)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_StructureParamLink";
@@ -232,6 +234,11 @@ public class StructureParamLinkModelImpl
 			"parameterId",
 			(BiConsumer<StructureParamLink, Long>)
 				StructureParamLink::setParameterId);
+		attributeGetterFunctions.put("order", StructureParamLink::getOrder);
+		attributeSetterBiConsumers.put(
+			"order",
+			(BiConsumer<StructureParamLink, Integer>)
+				StructureParamLink::setOrder);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -293,6 +300,16 @@ public class StructureParamLinkModelImpl
 		return _originalParameterId;
 	}
 
+	@Override
+	public int getOrder() {
+		return _order;
+	}
+
+	@Override
+	public void setOrder(int order) {
+		_order = order;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -334,6 +351,7 @@ public class StructureParamLinkModelImpl
 			getStructureParamLinkId());
 		structureParamLinkImpl.setDataStructureId(getDataStructureId());
 		structureParamLinkImpl.setParameterId(getParameterId());
+		structureParamLinkImpl.setOrder(getOrder());
 
 		structureParamLinkImpl.resetOriginalValues();
 
@@ -416,6 +434,8 @@ public class StructureParamLinkModelImpl
 		structureParamLinkCacheModel.dataStructureId = getDataStructureId();
 
 		structureParamLinkCacheModel.parameterId = getParameterId();
+
+		structureParamLinkCacheModel.order = getOrder();
 
 		return structureParamLinkCacheModel;
 	}
@@ -520,6 +540,7 @@ public class StructureParamLinkModelImpl
 	private long _parameterId;
 	private long _originalParameterId;
 	private boolean _setOriginalParameterId;
+	private int _order;
 	private long _columnBitmask;
 	private StructureParamLink _escapedModel;
 

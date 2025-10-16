@@ -98,6 +98,20 @@ public interface SetTypeLinkModel extends BaseModel<SetTypeLink> {
 	public void setDataTypeId(long dataTypeId);
 
 	/**
+	 * Returns the order of this set type link.
+	 *
+	 * @return the order of this set type link
+	 */
+	public int getOrder();
+
+	/**
+	 * Sets the order of this set type link.
+	 *
+	 * @param order the order of this set type link
+	 */
+	public void setOrder(int order);
+
+	/**
 	 * Returns the commentable of this set type link.
 	 *
 	 * @return the commentable of this set type link

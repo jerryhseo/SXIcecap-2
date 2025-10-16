@@ -1870,6 +1870,61 @@ public interface DataCollectionPersistence
 	public int countByCode(String dataCollectionCode);
 
 	/**
+	 * Returns the data collection where dataCollectionCode = &#63; and dataCollectionVersion = &#63; or throws a <code>NoSuchDataCollectionException</code> if it could not be found.
+	 *
+	 * @param dataCollectionCode the data collection code
+	 * @param dataCollectionVersion the data collection version
+	 * @return the matching data collection
+	 * @throws NoSuchDataCollectionException if a matching data collection could not be found
+	 */
+	public DataCollection findByCodeVersion(
+			String dataCollectionCode, String dataCollectionVersion)
+		throws NoSuchDataCollectionException;
+
+	/**
+	 * Returns the data collection where dataCollectionCode = &#63; and dataCollectionVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param dataCollectionCode the data collection code
+	 * @param dataCollectionVersion the data collection version
+	 * @return the matching data collection, or <code>null</code> if a matching data collection could not be found
+	 */
+	public DataCollection fetchByCodeVersion(
+		String dataCollectionCode, String dataCollectionVersion);
+
+	/**
+	 * Returns the data collection where dataCollectionCode = &#63; and dataCollectionVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param dataCollectionCode the data collection code
+	 * @param dataCollectionVersion the data collection version
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching data collection, or <code>null</code> if a matching data collection could not be found
+	 */
+	public DataCollection fetchByCodeVersion(
+		String dataCollectionCode, String dataCollectionVersion,
+		boolean useFinderCache);
+
+	/**
+	 * Removes the data collection where dataCollectionCode = &#63; and dataCollectionVersion = &#63; from the database.
+	 *
+	 * @param dataCollectionCode the data collection code
+	 * @param dataCollectionVersion the data collection version
+	 * @return the data collection that was removed
+	 */
+	public DataCollection removeByCodeVersion(
+			String dataCollectionCode, String dataCollectionVersion)
+		throws NoSuchDataCollectionException;
+
+	/**
+	 * Returns the number of data collections where dataCollectionCode = &#63; and dataCollectionVersion = &#63;.
+	 *
+	 * @param dataCollectionCode the data collection code
+	 * @param dataCollectionVersion the data collection version
+	 * @return the number of matching data collections
+	 */
+	public int countByCodeVersion(
+		String dataCollectionCode, String dataCollectionVersion);
+
+	/**
 	 * Caches the data collection in the entity cache if it is enabled.
 	 *
 	 * @param dataCollection the data collection

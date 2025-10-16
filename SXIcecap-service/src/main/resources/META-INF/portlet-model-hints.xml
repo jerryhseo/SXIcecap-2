@@ -16,9 +16,12 @@
 		<field name="comment" type="String" />
 	</model>
 	<model name="com.sx.icecap.model.CollectionSetLink">
+		<field name="companyId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="collectionSetLinkId" type="long" />
 		<field name="dataCollectionId" type="long" />
 		<field name="dataSetId" type="long" />
+		<field name="order" type="int" />
 		<field name="commentable" type="boolean" />
 		<field name="verifiable" type="boolean" />
 		<field name="freezable" type="boolean" />
@@ -58,16 +61,10 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="commentType" type="String" />
-		<field name="commentBase" type="String" />
-		<field name="commentDataId" type="long" />
-		<field name="paramCode" type="String" />
+		<field name="commentModel" type="String" />
+		<field name="commentModelId" type="long" />
 		<field name="parentCommentId" type="long" />
 		<field name="comment" type="String" />
-		<field name="closed" type="boolean" />
-		<field name="closedUserId" type="long" />
-		<field name="closedUserName" type="String" />
-		<field name="closedDate" type="Date" />
 	</model>
 	<model name="com.sx.icecap.model.DataSet">
 		<field name="uuid" type="String" />
@@ -160,6 +157,7 @@
 		<field name="setTypeLinkId" type="long" />
 		<field name="dataSetId" type="long" />
 		<field name="dataTypeId" type="long" />
+		<field name="order" type="int" />
 		<field name="commentable" type="boolean" />
 		<field name="verifiable" type="boolean" />
 		<field name="freezable" type="boolean" />
@@ -205,6 +203,7 @@
 		<field name="structureParamLinkId" type="long" />
 		<field name="dataStructureId" type="long" />
 		<field name="parameterId" type="long" />
+		<field name="order" type="int" />
 	</model>
 	<model name="com.sx.icecap.model.TypeStructureLink">
 		<field name="dataTypeId" type="long" />

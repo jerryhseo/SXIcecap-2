@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import com.sx.icecap.exception.NoSuchCollectionSetLinkException;
 import com.sx.icecap.model.CollectionSetLink;
 
 import java.io.Serializable;
@@ -86,7 +85,7 @@ public interface CollectionSetLinkLocalService
 
 	public int countCollectionSetLinkListByCollection(long dataCollectionId);
 
-	public int countCollectionSetLinkListByType(long dataSetId);
+	public int countCollectionSetLinkListBySet(long dataSetId);
 
 	/**
 	 * Creates a new collection set link with the primary key. Does not add the collection set link to the database.
@@ -225,8 +224,7 @@ public interface CollectionSetLinkLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public CollectionSetLink getCollectionSetLink(
-			long dataCollectionId, long dataSetId)
-		throws NoSuchCollectionSetLinkException;
+		long dataCollectionId, long dataSetId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<CollectionSetLink> getCollectionSetLinkListByCollection(
@@ -237,11 +235,11 @@ public interface CollectionSetLinkLocalService
 		long dataCollectionId, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<CollectionSetLink> getCollectionSetLinkListByType(
+	public List<CollectionSetLink> getCollectionSetLinkListBySet(
 		long dataSetId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<CollectionSetLink> getCollectionSetLinkListByType(
+	public List<CollectionSetLink> getCollectionSetLinkListBySet(
 		long dataSetId, int start, int end);
 
 	/**

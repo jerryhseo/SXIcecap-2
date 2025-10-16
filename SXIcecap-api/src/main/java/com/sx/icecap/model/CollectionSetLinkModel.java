@@ -16,6 +16,7 @@ package com.sx.icecap.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ShardedModel;
 
 import java.util.Date;
 
@@ -33,7 +34,8 @@ import org.osgi.annotation.versioning.ProviderType;
  * @generated
  */
 @ProviderType
-public interface CollectionSetLinkModel extends BaseModel<CollectionSetLink> {
+public interface CollectionSetLinkModel
+	extends BaseModel<CollectionSetLink>, ShardedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -54,6 +56,36 @@ public interface CollectionSetLinkModel extends BaseModel<CollectionSetLink> {
 	 * @param primaryKey the primary key of this collection set link
 	 */
 	public void setPrimaryKey(long primaryKey);
+
+	/**
+	 * Returns the company ID of this collection set link.
+	 *
+	 * @return the company ID of this collection set link
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this collection set link.
+	 *
+	 * @param companyId the company ID of this collection set link
+	 */
+	@Override
+	public void setCompanyId(long companyId);
+
+	/**
+	 * Returns the group ID of this collection set link.
+	 *
+	 * @return the group ID of this collection set link
+	 */
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this collection set link.
+	 *
+	 * @param groupId the group ID of this collection set link
+	 */
+	public void setGroupId(long groupId);
 
 	/**
 	 * Returns the collection set link ID of this collection set link.
@@ -96,6 +128,20 @@ public interface CollectionSetLinkModel extends BaseModel<CollectionSetLink> {
 	 * @param dataSetId the data set ID of this collection set link
 	 */
 	public void setDataSetId(long dataSetId);
+
+	/**
+	 * Returns the order of this collection set link.
+	 *
+	 * @return the order of this collection set link
+	 */
+	public int getOrder();
+
+	/**
+	 * Sets the order of this collection set link.
+	 *
+	 * @param order the order of this collection set link
+	 */
+	public void setOrder(int order);
 
 	/**
 	 * Returns the commentable of this collection set link.

@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import com.sx.icecap.exception.NoSuchSetTypeLinkException;
@@ -48,6 +49,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1339,6 +1341,12 @@ public class SetTypeLinkPersistenceImpl
 		"setTypeLink.dataTypeId = ?";
 
 	public SetTypeLinkPersistenceImpl() {
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("order", "order_");
+
+		setDBColumnNames(dbColumnNames);
+
 		setModelClass(SetTypeLink.class);
 
 		setModelImplClass(SetTypeLinkImpl.class);
@@ -1951,6 +1959,11 @@ public class SetTypeLinkPersistenceImpl
 	}
 
 	@Override
+	public Set<String> getBadColumnNames() {
+		return _badColumnNames;
+	}
+
+	@Override
 	protected EntityCache getEntityCache() {
 		return entityCache;
 	}
@@ -2137,5 +2150,8 @@ public class SetTypeLinkPersistenceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SetTypeLinkPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"order"});
 
 }

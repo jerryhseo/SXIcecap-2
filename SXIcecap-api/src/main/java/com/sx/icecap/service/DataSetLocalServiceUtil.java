@@ -323,6 +323,19 @@ public class DataSetLocalServiceUtil {
 		return getService().getDataSetByUuidAndGroupId(uuid, groupId);
 	}
 
+	public static com.liferay.portal.kernel.json.JSONObject getDataSetInfo(
+		long dataCollectionId, long dataSetId, java.util.Locale locale) {
+
+		return getService().getDataSetInfo(dataCollectionId, dataSetId, locale);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONArray getDataSetListInfo(
+		long groupId, long dataCollectionId, java.util.Locale locale) {
+
+		return getService().getDataSetListInfo(
+			groupId, dataCollectionId, locale);
+	}
+
 	/**
 	 * Returns a range of all the data sets.
 	 *

@@ -34,6 +34,7 @@ public class SetTypeLinkSoap implements Serializable {
 		soapModel.setSetTypeLinkId(model.getSetTypeLinkId());
 		soapModel.setDataSetId(model.getDataSetId());
 		soapModel.setDataTypeId(model.getDataTypeId());
+		soapModel.setOrder(model.getOrder());
 		soapModel.setCommentable(model.isCommentable());
 		soapModel.setVerifiable(model.isVerifiable());
 		soapModel.setFreezable(model.isFreezable());
@@ -120,6 +121,14 @@ public class SetTypeLinkSoap implements Serializable {
 
 	public void setDataTypeId(long dataTypeId) {
 		_dataTypeId = dataTypeId;
+	}
+
+	public int getOrder() {
+		return _order;
+	}
+
+	public void setOrder(int order) {
+		_order = order;
 	}
 
 	public boolean getCommentable() {
@@ -233,6 +242,7 @@ public class SetTypeLinkSoap implements Serializable {
 	private long _setTypeLinkId;
 	private long _dataSetId;
 	private long _dataTypeId;
+	private int _order;
 	private boolean _commentable;
 	private boolean _verifiable;
 	private boolean _freezable;

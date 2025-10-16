@@ -68,23 +68,27 @@ public class CollectionSetLinkModelImpl
 	public static final String TABLE_NAME = "SX_ICECAP_CollectionSetLink";
 
 	public static final Object[][] TABLE_COLUMNS = {
+		{"companyId", Types.BIGINT}, {"groupId", Types.BIGINT},
 		{"collectionSetLinkId", Types.BIGINT},
 		{"dataCollectionId", Types.BIGINT}, {"dataSetId", Types.BIGINT},
-		{"commentable", Types.BOOLEAN}, {"verifiable", Types.BOOLEAN},
-		{"freezable", Types.BOOLEAN}, {"freezed", Types.BOOLEAN},
-		{"freezedUserId", Types.BIGINT}, {"freezedUserName", Types.VARCHAR},
-		{"freezedDate", Types.TIMESTAMP}, {"verified", Types.BOOLEAN},
-		{"verifiedUserId", Types.BIGINT}, {"verifiedUserName", Types.VARCHAR},
-		{"verifiedDate", Types.TIMESTAMP}
+		{"order_", Types.INTEGER}, {"commentable", Types.BOOLEAN},
+		{"verifiable", Types.BOOLEAN}, {"freezable", Types.BOOLEAN},
+		{"freezed", Types.BOOLEAN}, {"freezedUserId", Types.BIGINT},
+		{"freezedUserName", Types.VARCHAR}, {"freezedDate", Types.TIMESTAMP},
+		{"verified", Types.BOOLEAN}, {"verifiedUserId", Types.BIGINT},
+		{"verifiedUserName", Types.VARCHAR}, {"verifiedDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
 		new HashMap<String, Integer>();
 
 	static {
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("collectionSetLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataCollectionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataSetId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("order_", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("commentable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("verifiable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("freezable", Types.BOOLEAN);
@@ -99,7 +103,7 @@ public class CollectionSetLinkModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_CollectionSetLink (collectionSetLinkId LONG not null primary key,dataCollectionId LONG,dataSetId LONG,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null)";
+		"create table SX_ICECAP_CollectionSetLink (companyId LONG,groupId LONG,collectionSetLinkId LONG not null primary key,dataCollectionId LONG,dataSetId LONG,order_ INTEGER,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_CollectionSetLink";
@@ -120,7 +124,9 @@ public class CollectionSetLinkModelImpl
 
 	public static final long DATASETID_COLUMN_BITMASK = 2L;
 
-	public static final long COLLECTIONSETLINKID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
+
+	public static final long COLLECTIONSETLINKID_COLUMN_BITMASK = 8L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -233,6 +239,16 @@ public class CollectionSetLinkModelImpl
 				new LinkedHashMap<String, BiConsumer<CollectionSetLink, ?>>();
 
 		attributeGetterFunctions.put(
+			"companyId", CollectionSetLink::getCompanyId);
+		attributeSetterBiConsumers.put(
+			"companyId",
+			(BiConsumer<CollectionSetLink, Long>)
+				CollectionSetLink::setCompanyId);
+		attributeGetterFunctions.put("groupId", CollectionSetLink::getGroupId);
+		attributeSetterBiConsumers.put(
+			"groupId",
+			(BiConsumer<CollectionSetLink, Long>)CollectionSetLink::setGroupId);
+		attributeGetterFunctions.put(
 			"collectionSetLinkId", CollectionSetLink::getCollectionSetLinkId);
 		attributeSetterBiConsumers.put(
 			"collectionSetLinkId",
@@ -250,6 +266,11 @@ public class CollectionSetLinkModelImpl
 			"dataSetId",
 			(BiConsumer<CollectionSetLink, Long>)
 				CollectionSetLink::setDataSetId);
+		attributeGetterFunctions.put("order", CollectionSetLink::getOrder);
+		attributeSetterBiConsumers.put(
+			"order",
+			(BiConsumer<CollectionSetLink, Integer>)
+				CollectionSetLink::setOrder);
 		attributeGetterFunctions.put(
 			"commentable", CollectionSetLink::getCommentable);
 		attributeSetterBiConsumers.put(
@@ -323,6 +344,38 @@ public class CollectionSetLinkModelImpl
 	}
 
 	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+		if (!_setOriginalGroupId) {
+			_setOriginalGroupId = true;
+
+			_originalGroupId = _groupId;
+		}
+
+		_groupId = groupId;
+	}
+
+	public long getOriginalGroupId() {
+		return _originalGroupId;
+	}
+
+	@Override
 	public long getCollectionSetLinkId() {
 		return _collectionSetLinkId;
 	}
@@ -374,6 +427,16 @@ public class CollectionSetLinkModelImpl
 
 	public long getOriginalDataSetId() {
 		return _originalDataSetId;
+	}
+
+	@Override
+	public int getOrder() {
+		return _order;
+	}
+
+	@Override
+	public void setOrder(int order) {
+		_order = order;
 	}
 
 	@Override
@@ -560,7 +623,7 @@ public class CollectionSetLinkModelImpl
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return ExpandoBridgeFactoryUtil.getExpandoBridge(
-			0, CollectionSetLink.class.getName(), getPrimaryKey());
+			getCompanyId(), CollectionSetLink.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -590,9 +653,12 @@ public class CollectionSetLinkModelImpl
 		CollectionSetLinkImpl collectionSetLinkImpl =
 			new CollectionSetLinkImpl();
 
+		collectionSetLinkImpl.setCompanyId(getCompanyId());
+		collectionSetLinkImpl.setGroupId(getGroupId());
 		collectionSetLinkImpl.setCollectionSetLinkId(getCollectionSetLinkId());
 		collectionSetLinkImpl.setDataCollectionId(getDataCollectionId());
 		collectionSetLinkImpl.setDataSetId(getDataSetId());
+		collectionSetLinkImpl.setOrder(getOrder());
 		collectionSetLinkImpl.setCommentable(isCommentable());
 		collectionSetLinkImpl.setVerifiable(isVerifiable());
 		collectionSetLinkImpl.setFreezable(isFreezable());
@@ -664,6 +730,10 @@ public class CollectionSetLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_originalGroupId = _groupId;
+
+		_setOriginalGroupId = false;
+
 		_originalDataCollectionId = _dataCollectionId;
 
 		_setOriginalDataCollectionId = false;
@@ -680,12 +750,18 @@ public class CollectionSetLinkModelImpl
 		CollectionSetLinkCacheModel collectionSetLinkCacheModel =
 			new CollectionSetLinkCacheModel();
 
+		collectionSetLinkCacheModel.companyId = getCompanyId();
+
+		collectionSetLinkCacheModel.groupId = getGroupId();
+
 		collectionSetLinkCacheModel.collectionSetLinkId =
 			getCollectionSetLinkId();
 
 		collectionSetLinkCacheModel.dataCollectionId = getDataCollectionId();
 
 		collectionSetLinkCacheModel.dataSetId = getDataSetId();
+
+		collectionSetLinkCacheModel.order = getOrder();
 
 		collectionSetLinkCacheModel.commentable = isCommentable();
 
@@ -831,6 +907,10 @@ public class CollectionSetLinkModelImpl
 	private static boolean _entityCacheEnabled;
 	private static boolean _finderCacheEnabled;
 
+	private long _companyId;
+	private long _groupId;
+	private long _originalGroupId;
+	private boolean _setOriginalGroupId;
 	private long _collectionSetLinkId;
 	private long _dataCollectionId;
 	private long _originalDataCollectionId;
@@ -838,6 +918,7 @@ public class CollectionSetLinkModelImpl
 	private long _dataSetId;
 	private long _originalDataSetId;
 	private boolean _setOriginalDataSetId;
+	private int _order;
 	private boolean _commentable;
 	private boolean _verifiable;
 	private boolean _freezable;

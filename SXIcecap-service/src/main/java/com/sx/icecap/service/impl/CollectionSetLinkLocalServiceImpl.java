@@ -96,7 +96,7 @@ public class CollectionSetLinkLocalServiceImpl
 	
 	@Indexable(type = IndexableType.REINDEX)
 	public void removeCollectionSetLinkBySet( long dataSetId ) {
-		collectionSetLinkPersistence.removeByDataSetId(dataSetId);
+		collectionSetLinkPersistence.removeBySetId(dataSetId);
 	}
 	
 	@Indexable(type = IndexableType.REINDEX)
@@ -153,17 +153,17 @@ public class CollectionSetLinkLocalServiceImpl
 		return collectionSetLinkPersistence.countByCollectionId(dataCollectionId);
 	}
 	
-	public List<CollectionSetLink> getCollectionSetLinkListByType( long dataSetId ){
-		return collectionSetLinkPersistence.findByDataSetId(dataSetId);
+	public List<CollectionSetLink> getCollectionSetLinkListBySet( long dataSetId ){
+		return collectionSetLinkPersistence.findBySetId(dataSetId);
 	}
-	public List<CollectionSetLink> getCollectionSetLinkListByType(long dataSetId, int start, int end){
-		return collectionSetLinkPersistence.findByDataSetId(dataSetId, start, end);
+	public List<CollectionSetLink> getCollectionSetLinkListBySet(long dataSetId, int start, int end){
+		return collectionSetLinkPersistence.findBySetId(dataSetId, start, end);
 	}
-	public int countCollectionSetLinkListByType( long dataSetId ){
-		return collectionSetLinkPersistence.countByDataSetId(dataSetId);
+	public int countCollectionSetLinkListBySet( long dataSetId ){
+		return collectionSetLinkPersistence.countBySetId(dataSetId);
 	}
 	
-	public CollectionSetLink getCollectionSetLink(long dataCollectionId, long dataSetId) throws NoSuchCollectionSetLinkException {
-		return collectionSetLinkPersistence.findByCollectionSet(dataCollectionId, dataSetId);
+	public CollectionSetLink getCollectionSetLink(long dataCollectionId, long dataSetId) {
+		return collectionSetLinkPersistence.fetchByCollectionSet(dataCollectionId, dataSetId);
 	}
 }

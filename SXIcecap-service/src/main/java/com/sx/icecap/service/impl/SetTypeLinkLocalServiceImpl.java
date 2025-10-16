@@ -56,6 +56,8 @@ public class SetTypeLinkLocalServiceImpl
 		link.setVerified(false);
 		link.setFreezed(false);
 		
+		setTypeLinkPersistence.update(link);
+		
 		return link;
 	}
 	
@@ -66,12 +68,7 @@ public class SetTypeLinkLocalServiceImpl
 		link.setDataSetId(dataSetId);
 		link.setDataTypeId(dataTypeId);;
 		
-		link.setCommentable(true);
-		link.setVerifiable(true);;
-		link.setFreezable(true);;
-		
-		link.setVerified(false);
-		link.setFreezed(false);
+		setTypeLinkPersistence.update(link);
 		
 		return link;
 	}

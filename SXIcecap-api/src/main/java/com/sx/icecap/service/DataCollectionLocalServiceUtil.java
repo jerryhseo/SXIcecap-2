@@ -75,6 +75,27 @@ public class DataCollectionLocalServiceUtil {
 			descriptionMap, status, sc);
 	}
 
+	public static boolean checkDataCollectionCodeUnique(
+		String dataCollectionCode) {
+
+		return getService().checkDataCollectionCodeUnique(dataCollectionCode);
+	}
+
+	public static boolean checkDataCollectionDuplicated(
+		String dataCollectionCode, String dataCollectionVersion) {
+
+		return getService().checkDataCollectionDuplicated(
+			dataCollectionCode, dataCollectionVersion);
+	}
+
+	public static int countAllDataCollection() {
+		return getService().countAllDataCollection();
+	}
+
+	public static int countDataCollectionByGroupId(long groupId) {
+		return getService().countDataCollectionByGroupId(groupId);
+	}
+
 	/**
 	 * Creates a new data collection with the primary key. Does not add the data collection to the database.
 	 *
@@ -228,6 +249,16 @@ public class DataCollectionLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static List<DataCollection> getAllDataCollection() {
+		return getService().getAllDataCollection();
+	}
+
+	public static List<DataCollection> getAllDataCollection(
+		int start, int end) {
+
+		return getService().getAllDataCollection(start, end);
+	}
+
 	/**
 	 * Returns the data collection with the primary key.
 	 *
@@ -254,6 +285,24 @@ public class DataCollectionLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getDataCollectionByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject
+		getDataCollectionInfo(long dataCollectionId, java.util.Locale locale) {
+
+		return getService().getDataCollectionInfo(dataCollectionId, locale);
+	}
+
+	public static List<DataCollection> getDataCollectionListByGroupId(
+		long groupId) {
+
+		return getService().getDataCollectionListByGroupId(groupId);
+	}
+
+	public static List<DataCollection> getDataCollectionListByGroupId(
+		long groupId, int start, int end) {
+
+		return getService().getDataCollectionListByGroupId(groupId, start, end);
 	}
 
 	/**

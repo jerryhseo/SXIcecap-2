@@ -63,6 +63,31 @@ public class DataCollectionLocalServiceWrapper
 			descriptionMap, status, sc);
 	}
 
+	@Override
+	public boolean checkDataCollectionCodeUnique(String dataCollectionCode) {
+		return _dataCollectionLocalService.checkDataCollectionCodeUnique(
+			dataCollectionCode);
+	}
+
+	@Override
+	public boolean checkDataCollectionDuplicated(
+		String dataCollectionCode, String dataCollectionVersion) {
+
+		return _dataCollectionLocalService.checkDataCollectionDuplicated(
+			dataCollectionCode, dataCollectionVersion);
+	}
+
+	@Override
+	public int countAllDataCollection() {
+		return _dataCollectionLocalService.countAllDataCollection();
+	}
+
+	@Override
+	public int countDataCollectionByGroupId(long groupId) {
+		return _dataCollectionLocalService.countDataCollectionByGroupId(
+			groupId);
+	}
+
 	/**
 	 * Creates a new data collection with the primary key. Does not add the data collection to the database.
 	 *
@@ -246,6 +271,20 @@ public class DataCollectionLocalServiceWrapper
 		return _dataCollectionLocalService.getActionableDynamicQuery();
 	}
 
+	@Override
+	public java.util.List<com.sx.icecap.model.DataCollection>
+		getAllDataCollection() {
+
+		return _dataCollectionLocalService.getAllDataCollection();
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataCollection>
+		getAllDataCollection(int start, int end) {
+
+		return _dataCollectionLocalService.getAllDataCollection(start, end);
+	}
+
 	/**
 	 * Returns the data collection with the primary key.
 	 *
@@ -276,6 +315,30 @@ public class DataCollectionLocalServiceWrapper
 
 		return _dataCollectionLocalService.getDataCollectionByUuidAndGroupId(
 			uuid, groupId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject getDataCollectionInfo(
+		long dataCollectionId, java.util.Locale locale) {
+
+		return _dataCollectionLocalService.getDataCollectionInfo(
+			dataCollectionId, locale);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataCollection>
+		getDataCollectionListByGroupId(long groupId) {
+
+		return _dataCollectionLocalService.getDataCollectionListByGroupId(
+			groupId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataCollection>
+		getDataCollectionListByGroupId(long groupId, int start, int end) {
+
+		return _dataCollectionLocalService.getDataCollectionListByGroupId(
+			groupId, start, end);
 	}
 
 	/**

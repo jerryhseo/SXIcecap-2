@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 
 import com.sx.icecap.exception.NoSuchStructureParamLinkException;
 import com.sx.icecap.model.StructureParamLink;
@@ -46,6 +47,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1122,6 +1124,12 @@ public class StructureParamLinkPersistenceImpl
 		"structureParamLink.parameterId = ?";
 
 	public StructureParamLinkPersistenceImpl() {
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("order", "order_");
+
+		setDBColumnNames(dbColumnNames);
+
 		setModelClass(StructureParamLink.class);
 
 		setModelImplClass(StructureParamLinkImpl.class);
@@ -1700,6 +1708,11 @@ public class StructureParamLinkPersistenceImpl
 	}
 
 	@Override
+	public Set<String> getBadColumnNames() {
+		return _badColumnNames;
+	}
+
+	@Override
 	protected EntityCache getEntityCache() {
 		return entityCache;
 	}
@@ -1880,5 +1893,8 @@ public class StructureParamLinkPersistenceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		StructureParamLinkPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"order"});
 
 }

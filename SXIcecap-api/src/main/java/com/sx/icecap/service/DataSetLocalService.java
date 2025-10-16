@@ -22,6 +22,8 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -277,6 +279,14 @@ public interface DataSetLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DataSet getDataSetByUuidAndGroupId(String uuid, long groupId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONObject getDataSetInfo(
+		long dataCollectionId, long dataSetId, Locale locale);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONArray getDataSetListInfo(
+		long groupId, long dataCollectionId, Locale locale);
 
 	/**
 	 * Returns a range of all the data sets.

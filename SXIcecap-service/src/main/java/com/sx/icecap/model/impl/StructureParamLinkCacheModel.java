@@ -63,7 +63,7 @@ public class StructureParamLinkCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{structureParamLinkId=");
 		sb.append(structureParamLinkId);
@@ -71,6 +71,8 @@ public class StructureParamLinkCacheModel
 		sb.append(dataStructureId);
 		sb.append(", parameterId=");
 		sb.append(parameterId);
+		sb.append(", order=");
+		sb.append(order);
 		sb.append("}");
 
 		return sb.toString();
@@ -84,6 +86,7 @@ public class StructureParamLinkCacheModel
 		structureParamLinkImpl.setStructureParamLinkId(structureParamLinkId);
 		structureParamLinkImpl.setDataStructureId(dataStructureId);
 		structureParamLinkImpl.setParameterId(parameterId);
+		structureParamLinkImpl.setOrder(order);
 
 		structureParamLinkImpl.resetOriginalValues();
 
@@ -97,6 +100,8 @@ public class StructureParamLinkCacheModel
 		dataStructureId = objectInput.readLong();
 
 		parameterId = objectInput.readLong();
+
+		order = objectInput.readInt();
 	}
 
 	@Override
@@ -106,10 +111,13 @@ public class StructureParamLinkCacheModel
 		objectOutput.writeLong(dataStructureId);
 
 		objectOutput.writeLong(parameterId);
+
+		objectOutput.writeInt(order);
 	}
 
 	public long structureParamLinkId;
 	public long dataStructureId;
 	public long parameterId;
+	public int order;
 
 }

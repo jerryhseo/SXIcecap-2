@@ -63,7 +63,7 @@ public class SetTypeLinkCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("{setTypeLinkId=");
 		sb.append(setTypeLinkId);
@@ -71,6 +71,8 @@ public class SetTypeLinkCacheModel
 		sb.append(dataSetId);
 		sb.append(", dataTypeId=");
 		sb.append(dataTypeId);
+		sb.append(", order=");
+		sb.append(order);
 		sb.append(", commentable=");
 		sb.append(commentable);
 		sb.append(", verifiable=");
@@ -105,6 +107,7 @@ public class SetTypeLinkCacheModel
 		setTypeLinkImpl.setSetTypeLinkId(setTypeLinkId);
 		setTypeLinkImpl.setDataSetId(dataSetId);
 		setTypeLinkImpl.setDataTypeId(dataTypeId);
+		setTypeLinkImpl.setOrder(order);
 		setTypeLinkImpl.setCommentable(commentable);
 		setTypeLinkImpl.setVerifiable(verifiable);
 		setTypeLinkImpl.setFreezable(freezable);
@@ -155,6 +158,8 @@ public class SetTypeLinkCacheModel
 
 		dataTypeId = objectInput.readLong();
 
+		order = objectInput.readInt();
+
 		commentable = objectInput.readBoolean();
 
 		verifiable = objectInput.readBoolean();
@@ -181,6 +186,8 @@ public class SetTypeLinkCacheModel
 		objectOutput.writeLong(dataSetId);
 
 		objectOutput.writeLong(dataTypeId);
+
+		objectOutput.writeInt(order);
 
 		objectOutput.writeBoolean(commentable);
 
@@ -218,6 +225,7 @@ public class SetTypeLinkCacheModel
 	public long setTypeLinkId;
 	public long dataSetId;
 	public long dataTypeId;
+	public int order;
 	public boolean commentable;
 	public boolean verifiable;
 	public boolean freezable;

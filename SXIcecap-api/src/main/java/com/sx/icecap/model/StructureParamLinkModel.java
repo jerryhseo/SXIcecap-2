@@ -94,4 +94,18 @@ public interface StructureParamLinkModel extends BaseModel<StructureParamLink> {
 	 */
 	public void setParameterId(long parameterId);
 
+	/**
+	 * Returns the order of this structure param link.
+	 *
+	 * @return the order of this structure param link
+	 */
+	public int getOrder();
+
+	/**
+	 * Sets the order of this structure param link.
+	 *
+	 * @param order the order of this structure param link
+	 */
+	public void setOrder(int order);
+
 }

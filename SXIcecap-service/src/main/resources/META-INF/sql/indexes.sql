@@ -2,8 +2,9 @@ create index IX_5BA50856 on SX_ICECAP_ActionHistory (actionType[$COLUMN_LENGTH:7
 
 create index IX_F9328426 on SX_ICECAP_CollectionSetLink (dataCollectionId, dataSetId);
 create index IX_79A40C5D on SX_ICECAP_CollectionSetLink (dataSetId);
+create index IX_E0B09104 on SX_ICECAP_CollectionSetLink (groupId);
 
-create index IX_8095A0F5 on SX_ICECAP_DataCollection (dataCollectionCode[$COLUMN_LENGTH:75$]);
+create index IX_269113EB on SX_ICECAP_DataCollection (dataCollectionCode[$COLUMN_LENGTH:75$], dataCollectionVersion[$COLUMN_LENGTH:75$]);
 create index IX_9BBEFF44 on SX_ICECAP_DataCollection (groupId, status);
 create index IX_1A863F7E on SX_ICECAP_DataCollection (groupId, userId, status);
 create index IX_E033AEB2 on SX_ICECAP_DataCollection (status);
@@ -11,7 +12,11 @@ create index IX_2843A0EC on SX_ICECAP_DataCollection (userId, status);
 create index IX_79EFA2C0 on SX_ICECAP_DataCollection (uuid_[$COLUMN_LENGTH:75$], companyId);
 create unique index IX_CC81D942 on SX_ICECAP_DataCollection (uuid_[$COLUMN_LENGTH:75$], groupId);
 
-create index IX_5B1DF2A on SX_ICECAP_DataComment (commentType[$COLUMN_LENGTH:75$], commentBase[$COLUMN_LENGTH:75$], commentDataId, paramCode[$COLUMN_LENGTH:75$]);
+create index IX_C3A2B434 on SX_ICECAP_DataComment (commentModel[$COLUMN_LENGTH:75$], commentModelId);
+create index IX_DE91BF76 on SX_ICECAP_DataComment (commentModelId);
+create index IX_F8A02C84 on SX_ICECAP_DataComment (groupId, commentModel[$COLUMN_LENGTH:75$], commentModelId);
+create index IX_BC0503C6 on SX_ICECAP_DataComment (groupId, commentModelId);
+create index IX_6F84F2A3 on SX_ICECAP_DataComment (parentCommentId);
 
 create index IX_352E1E69 on SX_ICECAP_DataSet (dataSetCode[$COLUMN_LENGTH:75$], dataSetVersion[$COLUMN_LENGTH:75$]);
 create index IX_8D1CF5D0 on SX_ICECAP_DataSet (groupId, status);

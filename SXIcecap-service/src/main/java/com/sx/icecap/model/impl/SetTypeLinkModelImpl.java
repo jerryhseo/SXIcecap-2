@@ -69,12 +69,13 @@ public class SetTypeLinkModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"setTypeLinkId", Types.BIGINT}, {"dataSetId", Types.BIGINT},
-		{"dataTypeId", Types.BIGINT}, {"commentable", Types.BOOLEAN},
-		{"verifiable", Types.BOOLEAN}, {"freezable", Types.BOOLEAN},
-		{"freezed", Types.BOOLEAN}, {"freezedUserId", Types.BIGINT},
-		{"freezedUserName", Types.VARCHAR}, {"freezedDate", Types.TIMESTAMP},
-		{"verified", Types.BOOLEAN}, {"verifiedUserId", Types.BIGINT},
-		{"verifiedUserName", Types.VARCHAR}, {"verifiedDate", Types.TIMESTAMP}
+		{"dataTypeId", Types.BIGINT}, {"order_", Types.INTEGER},
+		{"commentable", Types.BOOLEAN}, {"verifiable", Types.BOOLEAN},
+		{"freezable", Types.BOOLEAN}, {"freezed", Types.BOOLEAN},
+		{"freezedUserId", Types.BIGINT}, {"freezedUserName", Types.VARCHAR},
+		{"freezedDate", Types.TIMESTAMP}, {"verified", Types.BOOLEAN},
+		{"verifiedUserId", Types.BIGINT}, {"verifiedUserName", Types.VARCHAR},
+		{"verifiedDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -84,6 +85,7 @@ public class SetTypeLinkModelImpl
 		TABLE_COLUMNS_MAP.put("setTypeLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataSetId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataTypeId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("order_", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("commentable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("verifiable", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("freezable", Types.BOOLEAN);
@@ -98,7 +100,7 @@ public class SetTypeLinkModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_SetTypeLink (setTypeLinkId LONG not null primary key,dataSetId LONG,dataTypeId LONG,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null)";
+		"create table SX_ICECAP_SetTypeLink (setTypeLinkId LONG not null primary key,dataSetId LONG,dataTypeId LONG,order_ INTEGER,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_SetTypeLink";
@@ -241,6 +243,9 @@ public class SetTypeLinkModelImpl
 		attributeSetterBiConsumers.put(
 			"dataTypeId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setDataTypeId);
+		attributeGetterFunctions.put("order", SetTypeLink::getOrder);
+		attributeSetterBiConsumers.put(
+			"order", (BiConsumer<SetTypeLink, Integer>)SetTypeLink::setOrder);
 		attributeGetterFunctions.put(
 			"commentable", SetTypeLink::getCommentable);
 		attributeSetterBiConsumers.put(
@@ -351,6 +356,16 @@ public class SetTypeLinkModelImpl
 
 	public long getOriginalDataTypeId() {
 		return _originalDataTypeId;
+	}
+
+	@Override
+	public int getOrder() {
+		return _order;
+	}
+
+	@Override
+	public void setOrder(int order) {
+		_order = order;
 	}
 
 	@Override
@@ -569,6 +584,7 @@ public class SetTypeLinkModelImpl
 		setTypeLinkImpl.setSetTypeLinkId(getSetTypeLinkId());
 		setTypeLinkImpl.setDataSetId(getDataSetId());
 		setTypeLinkImpl.setDataTypeId(getDataTypeId());
+		setTypeLinkImpl.setOrder(getOrder());
 		setTypeLinkImpl.setCommentable(isCommentable());
 		setTypeLinkImpl.setVerifiable(isVerifiable());
 		setTypeLinkImpl.setFreezable(isFreezable());
@@ -661,6 +677,8 @@ public class SetTypeLinkModelImpl
 		setTypeLinkCacheModel.dataSetId = getDataSetId();
 
 		setTypeLinkCacheModel.dataTypeId = getDataTypeId();
+
+		setTypeLinkCacheModel.order = getOrder();
 
 		setTypeLinkCacheModel.commentable = isCommentable();
 
@@ -812,6 +830,7 @@ public class SetTypeLinkModelImpl
 	private long _dataTypeId;
 	private long _originalDataTypeId;
 	private boolean _setOriginalDataTypeId;
+	private int _order;
 	private boolean _commentable;
 	private boolean _verifiable;
 	private boolean _freezable;

@@ -33,6 +33,7 @@ public class StructureParamLinkSoap implements Serializable {
 		soapModel.setStructureParamLinkId(model.getStructureParamLinkId());
 		soapModel.setDataStructureId(model.getDataStructureId());
 		soapModel.setParameterId(model.getParameterId());
+		soapModel.setOrder(model.getOrder());
 
 		return soapModel;
 	}
@@ -119,8 +120,17 @@ public class StructureParamLinkSoap implements Serializable {
 		_parameterId = parameterId;
 	}
 
+	public int getOrder() {
+		return _order;
+	}
+
+	public void setOrder(int order) {
+		_order = order;
+	}
+
 	private long _structureParamLinkId;
 	private long _dataStructureId;
 	private long _parameterId;
+	private int _order;
 
 }

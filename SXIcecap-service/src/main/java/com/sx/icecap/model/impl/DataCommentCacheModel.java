@@ -63,7 +63,7 @@ public class DataCommentCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("{dataCommentId=");
 		sb.append(dataCommentId);
@@ -79,26 +79,14 @@ public class DataCommentCacheModel
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", commentType=");
-		sb.append(commentType);
-		sb.append(", commentBase=");
-		sb.append(commentBase);
-		sb.append(", commentDataId=");
-		sb.append(commentDataId);
-		sb.append(", paramCode=");
-		sb.append(paramCode);
+		sb.append(", commentModel=");
+		sb.append(commentModel);
+		sb.append(", commentModelId=");
+		sb.append(commentModelId);
 		sb.append(", parentCommentId=");
 		sb.append(parentCommentId);
 		sb.append(", comment=");
 		sb.append(comment);
-		sb.append(", closed=");
-		sb.append(closed);
-		sb.append(", closedUserId=");
-		sb.append(closedUserId);
-		sb.append(", closedUserName=");
-		sb.append(closedUserName);
-		sb.append(", closedDate=");
-		sb.append(closedDate);
 		sb.append("}");
 
 		return sb.toString();
@@ -134,29 +122,14 @@ public class DataCommentCacheModel
 			dataCommentImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		if (commentType == null) {
-			dataCommentImpl.setCommentType("");
+		if (commentModel == null) {
+			dataCommentImpl.setCommentModel("");
 		}
 		else {
-			dataCommentImpl.setCommentType(commentType);
+			dataCommentImpl.setCommentModel(commentModel);
 		}
 
-		if (commentBase == null) {
-			dataCommentImpl.setCommentBase("");
-		}
-		else {
-			dataCommentImpl.setCommentBase(commentBase);
-		}
-
-		dataCommentImpl.setCommentDataId(commentDataId);
-
-		if (paramCode == null) {
-			dataCommentImpl.setParamCode("");
-		}
-		else {
-			dataCommentImpl.setParamCode(paramCode);
-		}
-
+		dataCommentImpl.setCommentModelId(commentModelId);
 		dataCommentImpl.setParentCommentId(parentCommentId);
 
 		if (comment == null) {
@@ -164,23 +137,6 @@ public class DataCommentCacheModel
 		}
 		else {
 			dataCommentImpl.setComment(comment);
-		}
-
-		dataCommentImpl.setClosed(closed);
-		dataCommentImpl.setClosedUserId(closedUserId);
-
-		if (closedUserName == null) {
-			dataCommentImpl.setClosedUserName("");
-		}
-		else {
-			dataCommentImpl.setClosedUserName(closedUserName);
-		}
-
-		if (closedDate == Long.MIN_VALUE) {
-			dataCommentImpl.setClosedDate(null);
-		}
-		else {
-			dataCommentImpl.setClosedDate(new Date(closedDate));
 		}
 
 		dataCommentImpl.resetOriginalValues();
@@ -200,20 +156,12 @@ public class DataCommentCacheModel
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
-		commentType = objectInput.readUTF();
-		commentBase = objectInput.readUTF();
+		commentModel = objectInput.readUTF();
 
-		commentDataId = objectInput.readLong();
-		paramCode = objectInput.readUTF();
+		commentModelId = objectInput.readLong();
 
 		parentCommentId = objectInput.readLong();
 		comment = objectInput.readUTF();
-
-		closed = objectInput.readBoolean();
-
-		closedUserId = objectInput.readLong();
-		closedUserName = objectInput.readUTF();
-		closedDate = objectInput.readLong();
 	}
 
 	@Override
@@ -236,28 +184,14 @@ public class DataCommentCacheModel
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
-		if (commentType == null) {
+		if (commentModel == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(commentType);
+			objectOutput.writeUTF(commentModel);
 		}
 
-		if (commentBase == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(commentBase);
-		}
-
-		objectOutput.writeLong(commentDataId);
-
-		if (paramCode == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(paramCode);
-		}
+		objectOutput.writeLong(commentModelId);
 
 		objectOutput.writeLong(parentCommentId);
 
@@ -267,19 +201,6 @@ public class DataCommentCacheModel
 		else {
 			objectOutput.writeUTF(comment);
 		}
-
-		objectOutput.writeBoolean(closed);
-
-		objectOutput.writeLong(closedUserId);
-
-		if (closedUserName == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(closedUserName);
-		}
-
-		objectOutput.writeLong(closedDate);
 	}
 
 	public long dataCommentId;
@@ -289,15 +210,9 @@ public class DataCommentCacheModel
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
-	public String commentType;
-	public String commentBase;
-	public long commentDataId;
-	public String paramCode;
+	public String commentModel;
+	public long commentModelId;
 	public long parentCommentId;
 	public String comment;
-	public boolean closed;
-	public long closedUserId;
-	public String closedUserName;
-	public long closedDate;
 
 }

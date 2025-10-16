@@ -50,6 +50,22 @@ public class DataCommentLocalServiceWrapper
 		return _dataCommentLocalService.addDataComment(dataComment);
 	}
 
+	@Override
+	public com.sx.icecap.model.DataComment addDataComment(
+			String commentModel, long commentModelId, long parentCommentId,
+			String comment, com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dataCommentLocalService.addDataComment(
+			commentModel, commentModelId, parentCommentId, comment, sc);
+	}
+
+	@Override
+	public int countDataComments(String commentModel, long commentModelId) {
+		return _dataCommentLocalService.countDataComments(
+			commentModel, commentModelId);
+	}
+
 	/**
 	 * Creates a new data comment with the primary key. Does not add the data comment to the database.
 	 *
@@ -227,6 +243,14 @@ public class DataCommentLocalServiceWrapper
 		return _dataCommentLocalService.getDataComment(dataCommentId);
 	}
 
+	@Override
+	public java.util.List<com.sx.icecap.model.DataComment> getDataCommentList(
+		String commentModel, long commentModelId) {
+
+		return _dataCommentLocalService.getDataCommentList(
+			commentModel, commentModelId);
+	}
+
 	/**
 	 * Returns a range of all the data comments.
 	 *
@@ -283,6 +307,32 @@ public class DataCommentLocalServiceWrapper
 		return _dataCommentLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public boolean hasComments(String commentModel, long commentModelId) {
+		return _dataCommentLocalService.hasComments(
+			commentModel, commentModelId);
+	}
+
+	@Override
+	public com.sx.icecap.model.DataComment removeDataComment(long dataCommentId)
+		throws com.sx.icecap.exception.NoSuchDataCommentException {
+
+		return _dataCommentLocalService.removeDataComment(dataCommentId);
+	}
+
+	@Override
+	public void removeDataComment(String commentModel) {
+		_dataCommentLocalService.removeDataComment(commentModel);
+	}
+
+	@Override
+	public void removeDataCommentByModelId(
+		String commentModel, long commentModelId) {
+
+		_dataCommentLocalService.removeDataCommentByModelId(
+			commentModel, commentModelId);
+	}
+
 	/**
 	 * Updates the data comment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -298,6 +348,18 @@ public class DataCommentLocalServiceWrapper
 		com.sx.icecap.model.DataComment dataComment) {
 
 		return _dataCommentLocalService.updateDataComment(dataComment);
+	}
+
+	@Override
+	public com.sx.icecap.model.DataComment updateDataComment(
+			long dataCommentId, String commentModel, long commentModelId,
+			long parentCommentId, String comment,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dataCommentLocalService.updateDataComment(
+			dataCommentId, commentModel, commentModelId, parentCommentId,
+			comment, sc);
 	}
 
 	@Override
