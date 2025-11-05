@@ -62,9 +62,10 @@ public class CollectionSetLinkLocalServiceUtil {
 	}
 
 	public static CollectionSetLink addCollectionSetLink(
-		long dataCollectionId, long dataSetId) {
+		long dataCollectionId, long dataSetId, int order) {
 
-		return getService().addCollectionSetLink(dataCollectionId, dataSetId);
+		return getService().addCollectionSetLink(
+			dataCollectionId, dataSetId, order);
 	}
 
 	public static int countAllCollectionSetLinkList() {
@@ -384,10 +385,11 @@ public class CollectionSetLinkLocalServiceUtil {
 	}
 
 	public static CollectionSetLink updateCollectionSetLink(
-		long collectionSetLinkId, long dataCollectionId, long dataSetId) {
+		long collectionSetLinkId, long dataCollectionId, long dataSetId,
+		int order) {
 
 		return getService().updateCollectionSetLink(
-			collectionSetLinkId, dataCollectionId, dataSetId);
+			collectionSetLinkId, dataCollectionId, dataSetId, order);
 	}
 
 	public static CollectionSetLinkLocalService getService() {

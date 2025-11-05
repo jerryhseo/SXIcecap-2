@@ -73,6 +73,26 @@ public class DataStructureLocalServiceUtil {
 			descriptionMap, structure, status, sc);
 	}
 
+	public static int countAllDataStructures() {
+		return getService().countAllDataStructures();
+	}
+
+	public static int countDataStructuresByG_U(long groupId, long userId) {
+		return getService().countDataStructuresByG_U(groupId, userId);
+	}
+
+	public static int countDataStructuresByGroupId(long groupId) {
+		return getService().countDataStructuresByGroupId(groupId);
+	}
+
+	public static int countDataStructuresByStatus(int status) {
+		return getService().countDataStructuresByStatus(status);
+	}
+
+	public static int countDataStructuresByUserId(long userId) {
+		return getService().countDataStructuresByUserId(userId);
+	}
+
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
@@ -226,8 +246,14 @@ public class DataStructureLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static List<DataStructure> getAllDataStructures() {
-		return getService().getAllDataStructures();
+	public static List<DataStructure> getAllDataStructureList() {
+		return getService().getAllDataStructureList();
+	}
+
+	public static List<DataStructure> getAllDataStructureList(
+		int start, int end) {
+
+		return getService().getAllDataStructureList(start, end);
 	}
 
 	/**
@@ -264,6 +290,53 @@ public class DataStructureLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getDataStructureByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static List<DataStructure> getDataStructureListByG_U(
+		long groupId, long userId) {
+
+		return getService().getDataStructureListByG_U(groupId, userId);
+	}
+
+	public static List<DataStructure> getDataStructureListByG_U(
+		long groupId, long userId, int start, int end) {
+
+		return getService().getDataStructureListByG_U(
+			groupId, userId, start, end);
+	}
+
+	public static List<DataStructure> getDataStructureListByGroupId(
+		long groupId) {
+
+		return getService().getDataStructureListByGroupId(groupId);
+	}
+
+	public static List<DataStructure> getDataStructureListByGroupId(
+		long groupId, int start, int end) {
+
+		return getService().getDataStructureListByGroupId(groupId, start, end);
+	}
+
+	public static List<DataStructure> getDataStructureListByStatus(int status) {
+		return getService().getDataStructureListByStatus(status);
+	}
+
+	public static List<DataStructure> getDataStructureListByStatus(
+		int status, int start, int end) {
+
+		return getService().getDataStructureListByStatus(status, start, end);
+	}
+
+	public static List<DataStructure> getDataStructureListByUserId(
+		long userId) {
+
+		return getService().getDataStructureListByUserId(userId);
+	}
+
+	public static List<DataStructure> getDataStructureListByUserId(
+		long userId, int start, int end) {
+
+		return getService().getDataStructureListByUserId(userId, start, end);
 	}
 
 	/**
@@ -365,6 +438,12 @@ public class DataStructureLocalServiceUtil {
 		throws PortalException {
 
 		getService().removeDataStructures(dataStructureIds);
+	}
+
+	public static void removeDataStructures(String strDataStructureIds)
+		throws PortalException {
+
+		getService().removeDataStructures(strDataStructureIds);
 	}
 
 	/**

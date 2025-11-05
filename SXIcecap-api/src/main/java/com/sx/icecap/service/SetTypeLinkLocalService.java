@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import com.sx.icecap.exception.NoSuchSetTypeLinkException;
 import com.sx.icecap.model.SetTypeLink;
 
 import java.io.Serializable;
@@ -64,7 +63,8 @@ public interface SetTypeLinkLocalService
 	 * Never modify this interface directly. Add custom service methods to <code>com.sx.icecap.service.impl.SetTypeLinkLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the set type link local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link SetTypeLinkLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	@Indexable(type = IndexableType.REINDEX)
-	public SetTypeLink addSetTypeLink(long dataSetId, long dataTypeId);
+	public SetTypeLink addSetTypeLink(
+		long dataSetId, long dataTypeId, int order);
 
 	/**
 	 * Adds the set type link to the database. Also notifies the appropriate model listeners.
@@ -237,8 +237,7 @@ public interface SetTypeLinkLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SetTypeLink getSetTypeLink(long dataSetId, long dataTypeId)
-		throws NoSuchSetTypeLinkException;
+	public SetTypeLink getSetTypeLink(long dataSetId, long dataTypeId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SetTypeLink> getSetTypeLinkListBySet(long dataSetId);
@@ -297,7 +296,7 @@ public interface SetTypeLinkLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public SetTypeLink updateSetTypeLink(
-		long setTypeLinkId, long dataSetId, long dataTypeId);
+		long setTypeLinkId, long dataSetId, long dataTypeId, int order);
 
 	/**
 	 * Updates the set type link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

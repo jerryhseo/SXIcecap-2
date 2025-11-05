@@ -27,6 +27,7 @@ public class SetTypeLinkImpl extends SetTypeLinkBaseImpl {
 		
 		json.put("dataSetId", getDataSetId());
 		json.put("dataTypeId", getDataTypeId());
+		json.put("order", getOrder());
 		
 		json.put("commentable", this.getCommentable());
 		json.put("verifiable", this.getVerifiable());
@@ -39,6 +40,7 @@ public class SetTypeLinkImpl extends SetTypeLinkBaseImpl {
 		json.put("freezedUserId", this.getFreezedUserId());
 		json.put("freezedUserName", this.getFreezedUserName());
 		json.put("freezedDate", this.getFreezedDate());
+		
 		
 		return json;
 	}

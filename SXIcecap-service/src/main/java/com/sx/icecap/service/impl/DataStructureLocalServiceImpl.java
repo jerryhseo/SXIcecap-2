@@ -277,6 +277,17 @@ public class DataStructureLocalServiceImpl
 		}
 	}
 	
+	
+	public void removeDataStructures( String strDataStructureIds) throws PortalException {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray( strDataStructureIds );
+		
+		for( int i=0; i < jsonArray.length(); i++ ) {
+			long dataStructureId = jsonArray.getLong(i);
+			
+			removeDataStructure(dataStructureId);
+		}
+	}
+	
 	public DataStructure updateStructure(long dataStructureId, String structure) throws NoSuchDataStructureException {
 		DataStructure dataStructure = super.dataStructurePersistence.findByPrimaryKey(dataStructureId);
 		
@@ -287,8 +298,54 @@ public class DataStructureLocalServiceImpl
 		return dataStructure;
 	}
 
-	public List<DataStructure> getAllDataStructures(){
+	public List<DataStructure> getAllDataStructureList(){
 		return super.dataStructurePersistence.findAll();
+	}
+	public List<DataStructure> getAllDataStructureList(int start, int end){
+		return super.dataStructurePersistence.findAll(start, end);
+	}
+	public int countAllDataStructures(){
+		return super.dataStructurePersistence.countAll();
+	}
+	
+	public List<DataStructure> getDataStructureListByGroupId(long groupId){
+		return super.dataStructurePersistence.findByGroupId(groupId);
+	}
+	public List<DataStructure> getDataStructureListByGroupId(long groupId, int start, int end){
+		return super.dataStructurePersistence.findByGroupId(groupId, start, end);
+	}
+	public int countDataStructuresByGroupId(long groupId){
+		return super.dataStructurePersistence.countByGroupId(groupId);
+	}
+	
+	public List<DataStructure> getDataStructureListByUserId(long userId){
+		return super.dataStructurePersistence.findByUserId(userId);
+	}
+	public List<DataStructure> getDataStructureListByUserId(long userId, int start, int end){
+		return super.dataStructurePersistence.findByUserId(userId, start, end);
+	}
+	public int countDataStructuresByUserId(long userId){
+		return super.dataStructurePersistence.countByUserId(userId);
+	}
+	
+	public List<DataStructure> getDataStructureListByStatus(int status){
+		return super.dataStructurePersistence.findByStatus(status);
+	}
+	public List<DataStructure> getDataStructureListByStatus(int status, int start, int end){
+		return super.dataStructurePersistence.findByUserId(status, start, end);
+	}
+	public int countDataStructuresByStatus(int status){
+		return super.dataStructurePersistence.countByStatus(status);
+	}
+	
+	public List<DataStructure> getDataStructureListByG_U(long groupId, long userId){
+		return super.dataStructurePersistence.findByG_U(groupId, userId);
+	}
+	public List<DataStructure> getDataStructureListByG_U(long groupId, long userId, int start, int end){
+		return super.dataStructurePersistence.findByG_U(groupId, userId, start, end);
+	}
+	public int countDataStructuresByG_U(long groupId, long userId){
+		return super.dataStructurePersistence.countByG_U(groupId, userId);
 	}
 	
 	public DataStructure getDataStructure(String dataStructureCode, String dataStructureVersion) throws NoSuchDataStructureException {

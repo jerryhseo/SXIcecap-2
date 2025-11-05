@@ -2020,7 +2020,8 @@ public class SetTypeLinkPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, SetTypeLinkImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDataSetId",
 			new String[] {Long.class.getName()},
-			SetTypeLinkModelImpl.DATASETID_COLUMN_BITMASK);
+			SetTypeLinkModelImpl.DATASETID_COLUMN_BITMASK |
+			SetTypeLinkModelImpl.ORDER_COLUMN_BITMASK);
 
 		_finderPathCountByDataSetId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -2039,7 +2040,8 @@ public class SetTypeLinkPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, SetTypeLinkImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDataTypeId",
 			new String[] {Long.class.getName()},
-			SetTypeLinkModelImpl.DATATYPEID_COLUMN_BITMASK);
+			SetTypeLinkModelImpl.DATATYPEID_COLUMN_BITMASK |
+			SetTypeLinkModelImpl.ORDER_COLUMN_BITMASK);
 
 		_finderPathCountByDataTypeId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,

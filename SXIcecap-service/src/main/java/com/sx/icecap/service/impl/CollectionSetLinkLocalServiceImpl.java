@@ -40,13 +40,14 @@ public class CollectionSetLinkLocalServiceImpl
 	extends CollectionSetLinkLocalServiceBaseImpl {
 	
 	@Indexable(type = IndexableType.REINDEX)
-	public CollectionSetLink addCollectionSetLink( long dataCollectionId, long dataSetId ) {
+	public CollectionSetLink addCollectionSetLink( long dataCollectionId, long dataSetId, int order ) {
 		long linkId = counterLocalService.increment();
 		
 		CollectionSetLink link = collectionSetLinkPersistence.create(linkId);
 		
 		link.setDataCollectionId(dataCollectionId);
-		link.setDataSetId(dataSetId);;
+		link.setDataSetId(dataSetId);
+		link.setOrder(order);
 		
 		link.setCommentable(true);
 		link.setVerifiable(true);;
@@ -55,15 +56,19 @@ public class CollectionSetLinkLocalServiceImpl
 		link.setVerified(false);
 		link.setFreezed(false);
 		
+		collectionSetLinkPersistence.update(link);
+		
 		return link;
 	}
 	
 	@Indexable(type = IndexableType.REINDEX)
-	public CollectionSetLink updateCollectionSetLink( long collectionSetLinkId, long dataCollectionId, long dataSetId ) {
+	public CollectionSetLink updateCollectionSetLink( 
+			long collectionSetLinkId, long dataCollectionId, long dataSetId, int order ) {
 		CollectionSetLink link = collectionSetLinkPersistence.fetchByPrimaryKey(collectionSetLinkId);
 		
 		link.setDataCollectionId(dataCollectionId);
-		link.setDataSetId(dataSetId);;
+		link.setDataSetId(dataSetId);
+		link.setOrder(order);
 		
 		link.setCommentable(true);
 		link.setVerifiable(true);;
@@ -72,10 +77,12 @@ public class CollectionSetLinkLocalServiceImpl
 		link.setVerified(false);
 		link.setFreezed(false);
 		
+		collectionSetLinkPersistence.update(link);
+		
 		return link;
 	}
 	
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.DELETE)
 	public CollectionSetLink removeCollectionSetLink( long collectionSetLinkId ) {
 		CollectionSetLink link = null;
 		
@@ -89,12 +96,12 @@ public class CollectionSetLinkLocalServiceImpl
 		return link;
 	}
 	
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.DELETE)
 	public void removeCollectionSetLinkByCollection( long dataCollectionId ) {
 		collectionSetLinkPersistence.removeByCollectionId(dataCollectionId);
 	}
 	
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.DELETE)
 	public void removeCollectionSetLinkBySet( long dataSetId ) {
 		collectionSetLinkPersistence.removeBySetId(dataSetId);
 	}

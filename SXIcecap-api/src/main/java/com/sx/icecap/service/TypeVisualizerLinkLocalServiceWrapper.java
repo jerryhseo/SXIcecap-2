@@ -275,6 +275,14 @@ public class TypeVisualizerLinkLocalServiceWrapper
 	}
 
 	@Override
+	public com.sx.icecap.model.TypeVisualizerLink getTypeVisualizerLink(
+		long dataTypeId, long visualizerId) {
+
+		return _typeVisualizerLinkLocalService.getTypeVisualizerLink(
+			dataTypeId, visualizerId);
+	}
+
+	@Override
 	public java.util.List<com.sx.icecap.model.TypeVisualizerLink>
 		getTypeVisualizerLinkList(long dataTypeId) {
 

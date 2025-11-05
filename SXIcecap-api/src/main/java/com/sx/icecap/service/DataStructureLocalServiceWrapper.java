@@ -64,6 +64,32 @@ public class DataStructureLocalServiceWrapper
 			descriptionMap, structure, status, sc);
 	}
 
+	@Override
+	public int countAllDataStructures() {
+		return _dataStructureLocalService.countAllDataStructures();
+	}
+
+	@Override
+	public int countDataStructuresByG_U(long groupId, long userId) {
+		return _dataStructureLocalService.countDataStructuresByG_U(
+			groupId, userId);
+	}
+
+	@Override
+	public int countDataStructuresByGroupId(long groupId) {
+		return _dataStructureLocalService.countDataStructuresByGroupId(groupId);
+	}
+
+	@Override
+	public int countDataStructuresByStatus(int status) {
+		return _dataStructureLocalService.countDataStructuresByStatus(status);
+	}
+
+	@Override
+	public int countDataStructuresByUserId(long userId) {
+		return _dataStructureLocalService.countDataStructuresByUserId(userId);
+	}
+
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
@@ -246,9 +272,16 @@ public class DataStructureLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.sx.icecap.model.DataStructure>
-		getAllDataStructures() {
+		getAllDataStructureList() {
 
-		return _dataStructureLocalService.getAllDataStructures();
+		return _dataStructureLocalService.getAllDataStructureList();
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getAllDataStructureList(int start, int end) {
+
+		return _dataStructureLocalService.getAllDataStructureList(start, end);
 	}
 
 	/**
@@ -290,6 +323,69 @@ public class DataStructureLocalServiceWrapper
 
 		return _dataStructureLocalService.getDataStructureByUuidAndGroupId(
 			uuid, groupId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getDataStructureListByG_U(long groupId, long userId) {
+
+		return _dataStructureLocalService.getDataStructureListByG_U(
+			groupId, userId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getDataStructureListByG_U(
+			long groupId, long userId, int start, int end) {
+
+		return _dataStructureLocalService.getDataStructureListByG_U(
+			groupId, userId, start, end);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getDataStructureListByGroupId(long groupId) {
+
+		return _dataStructureLocalService.getDataStructureListByGroupId(
+			groupId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getDataStructureListByGroupId(long groupId, int start, int end) {
+
+		return _dataStructureLocalService.getDataStructureListByGroupId(
+			groupId, start, end);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getDataStructureListByStatus(int status) {
+
+		return _dataStructureLocalService.getDataStructureListByStatus(status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getDataStructureListByStatus(int status, int start, int end) {
+
+		return _dataStructureLocalService.getDataStructureListByStatus(
+			status, start, end);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getDataStructureListByUserId(long userId) {
+
+		return _dataStructureLocalService.getDataStructureListByUserId(userId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataStructure>
+		getDataStructureListByUserId(long userId, int start, int end) {
+
+		return _dataStructureLocalService.getDataStructureListByUserId(
+			userId, start, end);
 	}
 
 	/**
@@ -407,6 +503,13 @@ public class DataStructureLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_dataStructureLocalService.removeDataStructures(dataStructureIds);
+	}
+
+	@Override
+	public void removeDataStructures(String strDataStructureIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_dataStructureLocalService.removeDataStructures(strDataStructureIds);
 	}
 
 	/**

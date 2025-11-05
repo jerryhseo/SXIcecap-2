@@ -250,6 +250,12 @@ public class TypeVisualizerLinkLocalServiceUtil {
 		return getService().getTypeVisualizerLink(typeVisualizerLinkId);
 	}
 
+	public static TypeVisualizerLink getTypeVisualizerLink(
+		long dataTypeId, long visualizerId) {
+
+		return getService().getTypeVisualizerLink(dataTypeId, visualizerId);
+	}
+
 	public static List<TypeVisualizerLink> getTypeVisualizerLinkList(
 		long dataTypeId) {
 

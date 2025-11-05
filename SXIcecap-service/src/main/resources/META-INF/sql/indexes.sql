@@ -100,5 +100,5 @@ create index IX_B26331E8 on SX_ICECAP_TypeStructureLink (userId, freezed);
 create index IX_4F416FD1 on SX_ICECAP_TypeStructureLink (userId, verified);
 create index IX_3DD92317 on SX_ICECAP_TypeStructureLink (verified);
 
-create index IX_D217CC29 on SX_ICECAP_TypeVisualizerLink (dataTypeId);
+create index IX_570CBAB6 on SX_ICECAP_TypeVisualizerLink (dataTypeId, visualizerId);
 create index IX_2BC9FC03 on SX_ICECAP_TypeVisualizerLink (visualizerId);

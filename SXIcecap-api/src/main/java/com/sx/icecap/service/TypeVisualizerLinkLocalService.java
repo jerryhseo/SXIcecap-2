@@ -229,6 +229,10 @@ public interface TypeVisualizerLinkLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TypeVisualizerLink getTypeVisualizerLink(
+		long dataTypeId, long visualizerId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TypeVisualizerLink> getTypeVisualizerLinkList(long dataTypeId);
 
 	/**

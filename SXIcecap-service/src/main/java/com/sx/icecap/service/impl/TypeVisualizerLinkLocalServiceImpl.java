@@ -83,4 +83,8 @@ public class TypeVisualizerLinkLocalServiceImpl
 		
 		return links;
 	}
+	
+	public TypeVisualizerLink getTypeVisualizerLink(long dataTypeId, long visualizerId ) {
+		return typeVisualizerLinkPersistence.fetchByDataTypeVisualizer(dataTypeId, visualizerId);
+	}
 }

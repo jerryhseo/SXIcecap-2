@@ -109,10 +109,10 @@ public class CollectionSetLinkModelImpl
 		"drop table SX_ICECAP_CollectionSetLink";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY collectionSetLink.collectionSetLinkId ASC";
+		" ORDER BY collectionSetLink.order ASC";
 
 	public static final String ORDER_BY_SQL =
-		" ORDER BY SX_ICECAP_CollectionSetLink.collectionSetLinkId ASC";
+		" ORDER BY SX_ICECAP_CollectionSetLink.order_ ASC";
 
 	public static final String DATA_SOURCE = "liferayDataSource";
 
@@ -126,7 +126,7 @@ public class CollectionSetLinkModelImpl
 
 	public static final long GROUPID_COLUMN_BITMASK = 4L;
 
-	public static final long COLLECTIONSETLINKID_COLUMN_BITMASK = 8L;
+	public static final long ORDER_COLUMN_BITMASK = 8L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -436,6 +436,8 @@ public class CollectionSetLinkModelImpl
 
 	@Override
 	public void setOrder(int order) {
+		_columnBitmask = -1L;
+
 		_order = order;
 	}
 
@@ -678,17 +680,23 @@ public class CollectionSetLinkModelImpl
 
 	@Override
 	public int compareTo(CollectionSetLink collectionSetLink) {
-		long primaryKey = collectionSetLink.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		if (getOrder() < collectionSetLink.getOrder()) {
+			value = -1;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
+		else if (getOrder() > collectionSetLink.getOrder()) {
+			value = 1;
 		}
 		else {
-			return 0;
+			value = 0;
 		}
+
+		if (value != 0) {
+			return value;
+		}
+
+		return 0;
 	}
 
 	@Override

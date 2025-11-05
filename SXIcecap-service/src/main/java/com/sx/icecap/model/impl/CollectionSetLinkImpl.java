@@ -27,6 +27,7 @@ public class CollectionSetLinkImpl extends CollectionSetLinkBaseImpl {
 		
 		json.put("dataCollectionId", getDataCollectionId());
 		json.put("dataSetId", getDataSetId());
+		json.put("order", getOrder());
 		
 		json.put("commentable", this.getCommentable());
 		json.put("verifiable", this.getVerifiable());

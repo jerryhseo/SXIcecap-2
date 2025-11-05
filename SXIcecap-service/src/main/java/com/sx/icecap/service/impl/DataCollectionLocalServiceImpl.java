@@ -253,7 +253,7 @@ public class DataCollectionLocalServiceImpl
 	public DataCollection removeDataCollection( long dataCollectionId ) throws PortalException {
 		DataCollection dataCollection = super.dataCollectionPersistence.remove(dataCollectionId);
 		
-		dataStructurePersistence.remove(dataCollectionId);
+		collectionSetLinkPersistence.removeByCollectionId(dataCollectionId);
 		
 		super.assetEntryLocalService.deleteEntry(DataCollection.class.getName(), dataCollection.getPrimaryKey());
 
@@ -316,14 +316,10 @@ public class DataCollectionLocalServiceImpl
 				
 				DataSet dataSet = dataSetPersistence.fetchByPrimaryKey(link.getDataSetId());
 				
-				JSONObject jsonDataSet = JSONFactoryUtil.createJSONObject();
+				JSONObject jsonDataSet = dataSet.toJSON(locale);
 				
 				jsonDataSet.put("collectionSeLinktId", link.getCollectionSetLinkId());
-				jsonDataSet.put("dataSetId", dataSet.getDataSetId());
-				jsonDataSet.put("dataSetCode", dataSet.getDataSetCode());
-				jsonDataSet.put("dataSetVersion", dataSet.getDataSetVersion());
-				jsonDataSet.put("displayName", dataSet.getDisplayName());
-				
+				jsonDataSet.put("order", link.getOrder());
 				jsonDataSet.put("verified", link.getVerified());
 				jsonDataSet.put("verifiedUserId", link.getVerifiedUserId());
 				jsonDataSet.put("verifiedUserName", link.getVerifiedUserName());

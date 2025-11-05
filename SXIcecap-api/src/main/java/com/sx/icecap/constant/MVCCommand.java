@@ -32,9 +32,11 @@ public class MVCCommand {
 	public static final String RESOURCE_CHECK_DATATYPE_UNIQUE = "/ajax/DataType/check-datatype-unique";
 	public static final String RESOURCE_CREATE_PORTLET_INSTANCE = "/ajax/workbench/create-portlet-instance";
 	public static final String RESOURCE_DELETE_DATASTRUCTURE = "/ajax/DataStructure/delete-datastructure";
+	public static final String RESOURCE_DELETE_DATASTRUCTURES = "/ajax/DataStructure/delete-datastructures";
 	public static final String RESOURCE_DELETE_DATATYPE = "/ajax/DataType/delete-datatype";
 	public static final String RESOURCE_DELETE_DATATYPES = "/ajax/DataType/delete-datatypes";
 	public static final String RESOURCE_DELETE_DATASETS = "/ajax/DataSet/delete-datasets";
+	public static final String RESOURCE_DELETE_DATACOLLECTIONS = "/ajax/DataCollection/delete-datacollections";
 	public static final String RESOURCE_DELETE_STRUCTURED_DATA_FILE = "/ajax/StructuredData/delete-file";
 	public static final String RESOURCE_DELETE_TEMP_STRUCTURED_DATA = "/ajax/StructuredData/delete-temp-file";
 	public static final String RESOURCE_DELETE_TYPE_STRUCTURE_LINK = "/ajax/DataType/delete-type-structure-link";
@@ -51,6 +53,7 @@ public class MVCCommand {
 	public static final String RESOURCE_SAVE_TYPE_STRUCTURE_LINK = "/ajax/DataType/save-type-structure-link";
 	public static final String RESOURCE_SEARCH_DATACOLLECTIONS = "/ajax/DataCollection/search-datacollections";
 	public static final String RESOURCE_SEARCH_DATASETS = "/ajax/DataSet/search-datasets";
+	public static final String RESOURCE_SEARCH_DATASTRUCTURES = "/ajax/DataStructure/search-datastructures";
 	public static final String RESOURCE_SEARCH_DATATYPES = "/ajax/DataType/search-datatypes";
 	public static final String RESOURCE_SEARCH_STRUCTURED_DATA = "/ajax/StructuredData/search-structured-data";
 	public static final String RESOURCE_UPDATE_DATASTRUCTURE = "/ajax/DataStructure/save-datastructure";

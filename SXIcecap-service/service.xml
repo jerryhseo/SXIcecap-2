@@ -847,6 +847,9 @@
 		<column name="verifiedUserId" type="long"></column>
         <column name="verifiedUserName" type="String"></column>
 		<column name="verifiedDate" type="Date"></column>
+        <order by="asc">
+            <order-column name="order" order-by="asc"></order-column>
+        </order>
 		
 		<finder name="CollectionId" return-type="Collection">
 			<finder-column name="dataCollectionId" ></finder-column>
@@ -880,6 +883,9 @@
 		<column name="verifiedUserId" type="long"></column>
         <column name="verifiedUserName" type="String"></column>
 		<column name="verifiedDate" type="Date"></column>
+        <order by="asc">
+            <order-column name="order"></order-column>
+        </order>
 		
 		<finder name="DataSetId" return-type="Collection">
 			<finder-column name="dataSetId" ></finder-column>
@@ -1004,6 +1010,10 @@
         <finder name="VisualizerId" return-type="Collection">
 			<finder-column name="visualizerId" ></finder-column>
 		</finder>
+        <finder name="DataTypeVisualizer" return-type="TypeVisualizer">
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="visualizerId"></finder-column>
+        </finder>
     </entity>
 
     <exceptions>

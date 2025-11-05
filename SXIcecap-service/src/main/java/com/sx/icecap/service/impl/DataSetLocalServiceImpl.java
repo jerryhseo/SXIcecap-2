@@ -250,9 +250,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 
 	@Indexable(type = IndexableType.DELETE)
 	public DataSet removeDataSet( long dataSetId ) throws PortalException {
-		DataSet dataSet = super.dataSetPersistence.remove(dataSetId);
-		
-		super.dataSetPersistence.remove(dataSetId);
+		DataSet dataSet = dataSetPersistence.remove(dataSetId);
 		
 		collectionSetLinkPersistence.removeBySetId(dataSetId);
 		setTypeLinkPersistence.removeByDataSetId(dataSetId);
@@ -454,26 +452,25 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		if( dataCollectionId > 0 ) {
 			DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey(dataCollectionId);
 			if( Validator.isNotNull(dataCollection) ){
-				dataSetInfo.put("dataCollectionId", dataCollectionId);
-				dataSetInfo.put("dataCollectionCode", dataCollection.getDataCollectionCode());
-				dataSetInfo.put("dataCollectionVersion", dataCollection.getDataCollectionVersion());
-				dataSetInfo.put("dataCollectionLabel", dataCollection.getDisplayName(locale));
+				JSONObject jsonDataCollection = dataCollection.toJSON(locale);
 				
 				CollectionSetLink link = collectionSetLinkPersistence.fetchByCollectionSet(dataCollectionId, dataSetId);
 				if( Validator.isNotNull(link)) {
-					dataSetInfo.put("freezed", link.getFreezed());
-					dataSetInfo.put("freezedUserId", link.getFreezedUserId());
-					dataSetInfo.put("freezedUserName", link.getFreezedUserName());
-					dataSetInfo.put("freezedDate", link.getFreezedDate());
-					dataSetInfo.put("verified", link.getVerified());
-					dataSetInfo.put("verifiedUserId", link.getVerifiedUserId());
-					dataSetInfo.put("verifiedUserName", link.getVerifiedUserName());
-					dataSetInfo.put("verifiedDate", link.getVerifiedDate());
+					jsonDataCollection.put("freezed", link.getFreezed());
+					jsonDataCollection.put("freezedUserId", link.getFreezedUserId());
+					jsonDataCollection.put("freezedUserName", link.getFreezedUserName());
+					jsonDataCollection.put("freezedDate", link.getFreezedDate());
+					jsonDataCollection.put("verified", link.getVerified());
+					jsonDataCollection.put("verifiedUserId", link.getVerifiedUserId());
+					jsonDataCollection.put("verifiedUserName", link.getVerifiedUserName());
+					jsonDataCollection.put("verifiedDate", link.getVerifiedDate());
 					
 					int commentCount = 
 							dataCommentPersistence.countByModelId(DataSet.class.getName(), dataSetId);
-					dataSetInfo.put("commentCount", commentCount);
+					jsonDataCollection.put("commentCount", commentCount);
 				}
+				
+				dataSetInfo.put("dataCollection", jsonDataCollection);
 			}
 		}
 		
@@ -489,9 +486,10 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 			SetTypeLink link = iter.next();
 			
 			DataType dataType = dataTypePersistence.fetchByPrimaryKey(link.getDataTypeId());
-			JSONObject jsonDataType = dataType.toJSON();
+			JSONObject jsonDataType = dataType.toJSON(locale);
 			
 			jsonDataType.put("setTypeLinkId", link.getPrimaryKey());
+			jsonDataType.put("order", link.getOrder());
 			jsonDataType.put("freezed", link.getFreezed());
 			jsonDataType.put("freezedUserId", link.getFreezedUserId());
 			jsonDataType.put("freezedUserName", link.getFreezedUserName());
@@ -508,7 +506,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 			jsonDataTypeList.put(jsonDataType);
 		}
 		
-		dataSetInfo.put("dataTypeList", jsonDataTypeList);
+		dataSetInfo.put("associatedDataTypeList", jsonDataTypeList);
 		
 		return dataSetInfo;
 	}

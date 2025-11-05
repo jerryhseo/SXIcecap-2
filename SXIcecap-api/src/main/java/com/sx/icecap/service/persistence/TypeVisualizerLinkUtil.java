@@ -471,6 +471,80 @@ public class TypeVisualizerLinkUtil {
 	}
 
 	/**
+	 * Returns the type visualizer link where dataTypeId = &#63; and visualizerId = &#63; or throws a <code>NoSuchTypeVisualizerLinkException</code> if it could not be found.
+	 *
+	 * @param dataTypeId the data type ID
+	 * @param visualizerId the visualizer ID
+	 * @return the matching type visualizer link
+	 * @throws NoSuchTypeVisualizerLinkException if a matching type visualizer link could not be found
+	 */
+	public static TypeVisualizerLink findByDataTypeVisualizer(
+			long dataTypeId, long visualizerId)
+		throws com.sx.icecap.exception.NoSuchTypeVisualizerLinkException {
+
+		return getPersistence().findByDataTypeVisualizer(
+			dataTypeId, visualizerId);
+	}
+
+	/**
+	 * Returns the type visualizer link where dataTypeId = &#63; and visualizerId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param dataTypeId the data type ID
+	 * @param visualizerId the visualizer ID
+	 * @return the matching type visualizer link, or <code>null</code> if a matching type visualizer link could not be found
+	 */
+	public static TypeVisualizerLink fetchByDataTypeVisualizer(
+		long dataTypeId, long visualizerId) {
+
+		return getPersistence().fetchByDataTypeVisualizer(
+			dataTypeId, visualizerId);
+	}
+
+	/**
+	 * Returns the type visualizer link where dataTypeId = &#63; and visualizerId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param dataTypeId the data type ID
+	 * @param visualizerId the visualizer ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching type visualizer link, or <code>null</code> if a matching type visualizer link could not be found
+	 */
+	public static TypeVisualizerLink fetchByDataTypeVisualizer(
+		long dataTypeId, long visualizerId, boolean useFinderCache) {
+
+		return getPersistence().fetchByDataTypeVisualizer(
+			dataTypeId, visualizerId, useFinderCache);
+	}
+
+	/**
+	 * Removes the type visualizer link where dataTypeId = &#63; and visualizerId = &#63; from the database.
+	 *
+	 * @param dataTypeId the data type ID
+	 * @param visualizerId the visualizer ID
+	 * @return the type visualizer link that was removed
+	 */
+	public static TypeVisualizerLink removeByDataTypeVisualizer(
+			long dataTypeId, long visualizerId)
+		throws com.sx.icecap.exception.NoSuchTypeVisualizerLinkException {
+
+		return getPersistence().removeByDataTypeVisualizer(
+			dataTypeId, visualizerId);
+	}
+
+	/**
+	 * Returns the number of type visualizer links where dataTypeId = &#63; and visualizerId = &#63;.
+	 *
+	 * @param dataTypeId the data type ID
+	 * @param visualizerId the visualizer ID
+	 * @return the number of matching type visualizer links
+	 */
+	public static int countByDataTypeVisualizer(
+		long dataTypeId, long visualizerId) {
+
+		return getPersistence().countByDataTypeVisualizer(
+			dataTypeId, visualizerId);
+	}
+
+	/**
 	 * Caches the type visualizer link in the entity cache if it is enabled.
 	 *
 	 * @param typeVisualizerLink the type visualizer link

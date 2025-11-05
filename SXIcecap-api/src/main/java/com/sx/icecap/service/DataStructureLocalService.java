@@ -89,6 +89,16 @@ public interface DataStructureLocalService
 			ServiceContext sc)
 		throws PortalException;
 
+	public int countAllDataStructures();
+
+	public int countDataStructuresByG_U(long groupId, long userId);
+
+	public int countDataStructuresByGroupId(long groupId);
+
+	public int countDataStructuresByStatus(int status);
+
+	public int countDataStructuresByUserId(long userId);
+
 	/**
 	 * Creates a new data structure with the primary key. Does not add the data structure to the database.
 	 *
@@ -217,7 +227,10 @@ public interface DataStructureLocalService
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DataStructure> getAllDataStructures();
+	public List<DataStructure> getAllDataStructureList();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataStructure> getAllDataStructureList(int start, int end);
 
 	/**
 	 * Returns the data structure with the primary key.
@@ -247,6 +260,35 @@ public interface DataStructureLocalService
 	public DataStructure getDataStructureByUuidAndGroupId(
 			String uuid, long groupId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataStructure> getDataStructureListByG_U(
+		long groupId, long userId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataStructure> getDataStructureListByG_U(
+		long groupId, long userId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataStructure> getDataStructureListByGroupId(long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataStructure> getDataStructureListByGroupId(
+		long groupId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataStructure> getDataStructureListByStatus(int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataStructure> getDataStructureListByStatus(
+		int status, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataStructure> getDataStructureListByUserId(long userId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataStructure> getDataStructureListByUserId(
+		long userId, int start, int end);
 
 	/**
 	 * Returns a range of all the data structures.
@@ -323,6 +365,9 @@ public interface DataStructureLocalService
 		throws PortalException;
 
 	public void removeDataStructures(long[] dataStructureIds)
+		throws PortalException;
+
+	public void removeDataStructures(String strDataStructureIds)
 		throws PortalException;
 
 	/**

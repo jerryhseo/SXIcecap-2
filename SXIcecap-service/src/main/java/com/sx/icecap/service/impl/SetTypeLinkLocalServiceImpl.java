@@ -41,13 +41,14 @@ public class SetTypeLinkLocalServiceImpl
 	extends SetTypeLinkLocalServiceBaseImpl {
 	
 	@Indexable(type = IndexableType.REINDEX)
-	public SetTypeLink addSetTypeLink( long dataSetId, long dataTypeId ) {
+	public SetTypeLink addSetTypeLink( long dataSetId, long dataTypeId, int order ) {
 		long linkId = super.counterLocalService.increment();
 		
 		SetTypeLink link = setTypeLinkPersistence.create(linkId);
 		
 		link.setDataSetId(dataSetId);
-		link.setDataTypeId(dataTypeId);;
+		link.setDataTypeId(dataTypeId);
+		link.setOrder(order);
 		
 		link.setCommentable(true);
 		link.setVerifiable(true);;
@@ -62,11 +63,12 @@ public class SetTypeLinkLocalServiceImpl
 	}
 	
 	@Indexable(type = IndexableType.REINDEX)
-	public SetTypeLink updateSetTypeLink( long setTypeLinkId, long dataSetId, long dataTypeId ) {
+	public SetTypeLink updateSetTypeLink( long setTypeLinkId, long dataSetId, long dataTypeId, int order ) {
 		SetTypeLink link = setTypeLinkPersistence.fetchByPrimaryKey(setTypeLinkId);
 		
 		link.setDataSetId(dataSetId);
-		link.setDataTypeId(dataTypeId);;
+		link.setDataTypeId(dataTypeId);
+		link.setOrder(order);
 		
 		setTypeLinkPersistence.update(link);
 		
@@ -161,7 +163,7 @@ public class SetTypeLinkLocalServiceImpl
 		return setTypeLinkPersistence.countByDataTypeId(dataTypeId);
 	}
 	
-	public SetTypeLink getSetTypeLink(long dataSetId, long dataTypeId) throws NoSuchSetTypeLinkException {
-		return setTypeLinkPersistence.findBySetType(dataSetId, dataTypeId);
+	public SetTypeLink getSetTypeLink(long dataSetId, long dataTypeId) {
+		return setTypeLinkPersistence.fetchBySetType(dataSetId, dataTypeId);
 	}
 }

@@ -35,9 +35,10 @@ public class SetTypeLinkLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.SetTypeLink addSetTypeLink(
-		long dataSetId, long dataTypeId) {
+		long dataSetId, long dataTypeId, int order) {
 
-		return _setTypeLinkLocalService.addSetTypeLink(dataSetId, dataTypeId);
+		return _setTypeLinkLocalService.addSetTypeLink(
+			dataSetId, dataTypeId, order);
 	}
 
 	/**
@@ -293,8 +294,7 @@ public class SetTypeLinkLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.SetTypeLink getSetTypeLink(
-			long dataSetId, long dataTypeId)
-		throws com.sx.icecap.exception.NoSuchSetTypeLinkException {
+		long dataSetId, long dataTypeId) {
 
 		return _setTypeLinkLocalService.getSetTypeLink(dataSetId, dataTypeId);
 	}
@@ -395,10 +395,10 @@ public class SetTypeLinkLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.SetTypeLink updateSetTypeLink(
-		long setTypeLinkId, long dataSetId, long dataTypeId) {
+		long setTypeLinkId, long dataSetId, long dataTypeId, int order) {
 
 		return _setTypeLinkLocalService.updateSetTypeLink(
-			setTypeLinkId, dataSetId, dataTypeId);
+			setTypeLinkId, dataSetId, dataTypeId, order);
 	}
 
 	/**

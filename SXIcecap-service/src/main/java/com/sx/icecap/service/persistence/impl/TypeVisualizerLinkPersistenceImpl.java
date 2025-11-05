@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import com.sx.icecap.exception.NoSuchTypeVisualizerLinkException;
 import com.sx.icecap.model.TypeVisualizerLink;
@@ -46,6 +47,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1114,6 +1116,257 @@ public class TypeVisualizerLinkPersistenceImpl
 	private static final String _FINDER_COLUMN_VISUALIZERID_VISUALIZERID_2 =
 		"typeVisualizerLink.visualizerId = ?";
 
+	private FinderPath _finderPathFetchByDataTypeVisualizer;
+	private FinderPath _finderPathCountByDataTypeVisualizer;
+
+	/**
+	 * Returns the type visualizer link where dataTypeId = &#63; and visualizerId = &#63; or throws a <code>NoSuchTypeVisualizerLinkException</code> if it could not be found.
+	 *
+	 * @param dataTypeId the data type ID
+	 * @param visualizerId the visualizer ID
+	 * @return the matching type visualizer link
+	 * @throws NoSuchTypeVisualizerLinkException if a matching type visualizer link could not be found
+	 */
+	@Override
+	public TypeVisualizerLink findByDataTypeVisualizer(
+			long dataTypeId, long visualizerId)
+		throws NoSuchTypeVisualizerLinkException {
+
+		TypeVisualizerLink typeVisualizerLink = fetchByDataTypeVisualizer(
+			dataTypeId, visualizerId);
+
+		if (typeVisualizerLink == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("dataTypeId=");
+			sb.append(dataTypeId);
+
+			sb.append(", visualizerId=");
+			sb.append(visualizerId);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchTypeVisualizerLinkException(sb.toString());
+		}
+
+		return typeVisualizerLink;
+	}
+
+	/**
+	 * Returns the type visualizer link where dataTypeId = &#63; and visualizerId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param dataTypeId the data type ID
+	 * @param visualizerId the visualizer ID
+	 * @return the matching type visualizer link, or <code>null</code> if a matching type visualizer link could not be found
+	 */
+	@Override
+	public TypeVisualizerLink fetchByDataTypeVisualizer(
+		long dataTypeId, long visualizerId) {
+
+		return fetchByDataTypeVisualizer(dataTypeId, visualizerId, true);
+	}
+
+	/**
+	 * Returns the type visualizer link where dataTypeId = &#63; and visualizerId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param dataTypeId the data type ID
+	 * @param visualizerId the visualizer ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching type visualizer link, or <code>null</code> if a matching type visualizer link could not be found
+	 */
+	@Override
+	public TypeVisualizerLink fetchByDataTypeVisualizer(
+		long dataTypeId, long visualizerId, boolean useFinderCache) {
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {dataTypeId, visualizerId};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByDataTypeVisualizer, finderArgs, this);
+		}
+
+		if (result instanceof TypeVisualizerLink) {
+			TypeVisualizerLink typeVisualizerLink = (TypeVisualizerLink)result;
+
+			if ((dataTypeId != typeVisualizerLink.getDataTypeId()) ||
+				(visualizerId != typeVisualizerLink.getVisualizerId())) {
+
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_SQL_SELECT_TYPEVISUALIZERLINK_WHERE);
+
+			sb.append(_FINDER_COLUMN_DATATYPEVISUALIZER_DATATYPEID_2);
+
+			sb.append(_FINDER_COLUMN_DATATYPEVISUALIZER_VISUALIZERID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(dataTypeId);
+
+				queryPos.add(visualizerId);
+
+				List<TypeVisualizerLink> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByDataTypeVisualizer, finderArgs,
+							list);
+					}
+				}
+				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {
+									dataTypeId, visualizerId
+								};
+							}
+
+							_log.warn(
+								"TypeVisualizerLinkPersistenceImpl.fetchByDataTypeVisualizer(long, long, boolean) with parameters (" +
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
+					TypeVisualizerLink typeVisualizerLink = list.get(0);
+
+					result = typeVisualizerLink;
+
+					cacheResult(typeVisualizerLink);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByDataTypeVisualizer, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (TypeVisualizerLink)result;
+		}
+	}
+
+	/**
+	 * Removes the type visualizer link where dataTypeId = &#63; and visualizerId = &#63; from the database.
+	 *
+	 * @param dataTypeId the data type ID
+	 * @param visualizerId the visualizer ID
+	 * @return the type visualizer link that was removed
+	 */
+	@Override
+	public TypeVisualizerLink removeByDataTypeVisualizer(
+			long dataTypeId, long visualizerId)
+		throws NoSuchTypeVisualizerLinkException {
+
+		TypeVisualizerLink typeVisualizerLink = findByDataTypeVisualizer(
+			dataTypeId, visualizerId);
+
+		return remove(typeVisualizerLink);
+	}
+
+	/**
+	 * Returns the number of type visualizer links where dataTypeId = &#63; and visualizerId = &#63;.
+	 *
+	 * @param dataTypeId the data type ID
+	 * @param visualizerId the visualizer ID
+	 * @return the number of matching type visualizer links
+	 */
+	@Override
+	public int countByDataTypeVisualizer(long dataTypeId, long visualizerId) {
+		FinderPath finderPath = _finderPathCountByDataTypeVisualizer;
+
+		Object[] finderArgs = new Object[] {dataTypeId, visualizerId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_TYPEVISUALIZERLINK_WHERE);
+
+			sb.append(_FINDER_COLUMN_DATATYPEVISUALIZER_DATATYPEID_2);
+
+			sb.append(_FINDER_COLUMN_DATATYPEVISUALIZER_VISUALIZERID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(dataTypeId);
+
+				queryPos.add(visualizerId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_DATATYPEVISUALIZER_DATATYPEID_2 =
+		"typeVisualizerLink.dataTypeId = ? AND ";
+
+	private static final String
+		_FINDER_COLUMN_DATATYPEVISUALIZER_VISUALIZERID_2 =
+			"typeVisualizerLink.visualizerId = ?";
+
 	public TypeVisualizerLinkPersistenceImpl() {
 		setModelClass(TypeVisualizerLink.class);
 
@@ -1131,6 +1384,14 @@ public class TypeVisualizerLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, TypeVisualizerLinkImpl.class,
 			typeVisualizerLink.getPrimaryKey(), typeVisualizerLink);
+
+		finderCache.putResult(
+			_finderPathFetchByDataTypeVisualizer,
+			new Object[] {
+				typeVisualizerLink.getDataTypeId(),
+				typeVisualizerLink.getVisualizerId()
+			},
+			typeVisualizerLink);
 
 		typeVisualizerLink.resetOriginalValues();
 	}
@@ -1196,6 +1457,9 @@ public class TypeVisualizerLinkPersistenceImpl
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		clearUniqueFindersCache(
+			(TypeVisualizerLinkModelImpl)typeVisualizerLink, true);
 	}
 
 	@Override
@@ -1207,6 +1471,9 @@ public class TypeVisualizerLinkPersistenceImpl
 			entityCache.removeResult(
 				entityCacheEnabled, TypeVisualizerLinkImpl.class,
 				typeVisualizerLink.getPrimaryKey());
+
+			clearUniqueFindersCache(
+				(TypeVisualizerLinkModelImpl)typeVisualizerLink, true);
 		}
 	}
 
@@ -1218,6 +1485,52 @@ public class TypeVisualizerLinkPersistenceImpl
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				entityCacheEnabled, TypeVisualizerLinkImpl.class, primaryKey);
+		}
+	}
+
+	protected void cacheUniqueFindersCache(
+		TypeVisualizerLinkModelImpl typeVisualizerLinkModelImpl) {
+
+		Object[] args = new Object[] {
+			typeVisualizerLinkModelImpl.getDataTypeId(),
+			typeVisualizerLinkModelImpl.getVisualizerId()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByDataTypeVisualizer, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByDataTypeVisualizer, args,
+			typeVisualizerLinkModelImpl, false);
+	}
+
+	protected void clearUniqueFindersCache(
+		TypeVisualizerLinkModelImpl typeVisualizerLinkModelImpl,
+		boolean clearCurrent) {
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+				typeVisualizerLinkModelImpl.getDataTypeId(),
+				typeVisualizerLinkModelImpl.getVisualizerId()
+			};
+
+			finderCache.removeResult(
+				_finderPathCountByDataTypeVisualizer, args);
+			finderCache.removeResult(
+				_finderPathFetchByDataTypeVisualizer, args);
+		}
+
+		if ((typeVisualizerLinkModelImpl.getColumnBitmask() &
+			 _finderPathFetchByDataTypeVisualizer.getColumnBitmask()) != 0) {
+
+			Object[] args = new Object[] {
+				typeVisualizerLinkModelImpl.getOriginalDataTypeId(),
+				typeVisualizerLinkModelImpl.getOriginalVisualizerId()
+			};
+
+			finderCache.removeResult(
+				_finderPathCountByDataTypeVisualizer, args);
+			finderCache.removeResult(
+				_finderPathFetchByDataTypeVisualizer, args);
 		}
 	}
 
@@ -1445,6 +1758,9 @@ public class TypeVisualizerLinkPersistenceImpl
 		entityCache.putResult(
 			entityCacheEnabled, TypeVisualizerLinkImpl.class,
 			typeVisualizerLink.getPrimaryKey(), typeVisualizerLink, false);
+
+		clearUniqueFindersCache(typeVisualizerLinkModelImpl, false);
+		cacheUniqueFindersCache(typeVisualizerLinkModelImpl);
 
 		typeVisualizerLink.resetOriginalValues();
 
@@ -1778,6 +2094,20 @@ public class TypeVisualizerLinkPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByVisualizerId",
 			new String[] {Long.class.getName()});
+
+		_finderPathFetchByDataTypeVisualizer = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled,
+			TypeVisualizerLinkImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByDataTypeVisualizer",
+			new String[] {Long.class.getName(), Long.class.getName()},
+			TypeVisualizerLinkModelImpl.DATATYPEID_COLUMN_BITMASK |
+			TypeVisualizerLinkModelImpl.VISUALIZERID_COLUMN_BITMASK);
+
+		_finderPathCountByDataTypeVisualizer = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByDataTypeVisualizer",
+			new String[] {Long.class.getName(), Long.class.getName()});
 
 		_setTypeVisualizerLinkUtilPersistence(this);
 	}

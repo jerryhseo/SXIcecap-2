@@ -106,10 +106,10 @@ public class SetTypeLinkModelImpl
 		"drop table SX_ICECAP_SetTypeLink";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY setTypeLink.setTypeLinkId ASC";
+		" ORDER BY setTypeLink.order ASC";
 
 	public static final String ORDER_BY_SQL =
-		" ORDER BY SX_ICECAP_SetTypeLink.setTypeLinkId ASC";
+		" ORDER BY SX_ICECAP_SetTypeLink.order_ ASC";
 
 	public static final String DATA_SOURCE = "liferayDataSource";
 
@@ -121,7 +121,7 @@ public class SetTypeLinkModelImpl
 
 	public static final long DATATYPEID_COLUMN_BITMASK = 2L;
 
-	public static final long SETTYPELINKID_COLUMN_BITMASK = 4L;
+	public static final long ORDER_COLUMN_BITMASK = 4L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -365,6 +365,8 @@ public class SetTypeLinkModelImpl
 
 	@Override
 	public void setOrder(int order) {
+		_columnBitmask = -1L;
+
 		_order = order;
 	}
 
@@ -604,17 +606,23 @@ public class SetTypeLinkModelImpl
 
 	@Override
 	public int compareTo(SetTypeLink setTypeLink) {
-		long primaryKey = setTypeLink.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		if (getOrder() < setTypeLink.getOrder()) {
+			value = -1;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
+		else if (getOrder() > setTypeLink.getOrder()) {
+			value = 1;
 		}
 		else {
-			return 0;
+			value = 0;
 		}
+
+		if (value != 0) {
+			return value;
+		}
+
+		return 0;
 	}
 
 	@Override

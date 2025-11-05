@@ -53,10 +53,10 @@ public class CollectionSetLinkLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.CollectionSetLink addCollectionSetLink(
-		long dataCollectionId, long dataSetId) {
+		long dataCollectionId, long dataSetId, int order) {
 
 		return _collectionSetLinkLocalService.addCollectionSetLink(
-			dataCollectionId, dataSetId);
+			dataCollectionId, dataSetId, order);
 	}
 
 	@Override
@@ -434,10 +434,11 @@ public class CollectionSetLinkLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.CollectionSetLink updateCollectionSetLink(
-		long collectionSetLinkId, long dataCollectionId, long dataSetId) {
+		long collectionSetLinkId, long dataCollectionId, long dataSetId,
+		int order) {
 
 		return _collectionSetLinkLocalService.updateCollectionSetLink(
-			collectionSetLinkId, dataCollectionId, dataSetId);
+			collectionSetLinkId, dataCollectionId, dataSetId, order);
 	}
 
 	@Override

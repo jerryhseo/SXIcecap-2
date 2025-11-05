@@ -44,8 +44,10 @@ public class SetTypeLinkLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.sx.icecap.service.impl.SetTypeLinkLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static SetTypeLink addSetTypeLink(long dataSetId, long dataTypeId) {
-		return getService().addSetTypeLink(dataSetId, dataTypeId);
+	public static SetTypeLink addSetTypeLink(
+		long dataSetId, long dataTypeId, int order) {
+
+		return getService().addSetTypeLink(dataSetId, dataTypeId, order);
 	}
 
 	/**
@@ -258,9 +260,7 @@ public class SetTypeLinkLocalServiceUtil {
 		return getService().getSetTypeLink(setTypeLinkId);
 	}
 
-	public static SetTypeLink getSetTypeLink(long dataSetId, long dataTypeId)
-		throws com.sx.icecap.exception.NoSuchSetTypeLinkException {
-
+	public static SetTypeLink getSetTypeLink(long dataSetId, long dataTypeId) {
 		return getService().getSetTypeLink(dataSetId, dataTypeId);
 	}
 
@@ -337,10 +337,10 @@ public class SetTypeLinkLocalServiceUtil {
 	}
 
 	public static SetTypeLink updateSetTypeLink(
-		long setTypeLinkId, long dataSetId, long dataTypeId) {
+		long setTypeLinkId, long dataSetId, long dataTypeId, int order) {
 
 		return getService().updateSetTypeLink(
-			setTypeLinkId, dataSetId, dataTypeId);
+			setTypeLinkId, dataSetId, dataTypeId, order);
 	}
 
 	/**

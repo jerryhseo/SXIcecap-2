@@ -79,7 +79,7 @@ public interface CollectionSetLinkLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public CollectionSetLink addCollectionSetLink(
-		long dataCollectionId, long dataSetId);
+		long dataCollectionId, long dataSetId, int order);
 
 	public int countAllCollectionSetLinkList();
 
@@ -282,13 +282,13 @@ public interface CollectionSetLinkLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.DELETE)
 	public CollectionSetLink removeCollectionSetLink(long collectionSetLinkId);
 
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.DELETE)
 	public void removeCollectionSetLinkByCollection(long dataCollectionId);
 
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.DELETE)
 	public void removeCollectionSetLinkBySet(long dataSetId);
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -317,6 +317,7 @@ public interface CollectionSetLinkLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public CollectionSetLink updateCollectionSetLink(
-		long collectionSetLinkId, long dataCollectionId, long dataSetId);
+		long collectionSetLinkId, long dataCollectionId, long dataSetId,
+		int order);
 
 }

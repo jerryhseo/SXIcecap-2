@@ -26,10 +26,10 @@ public class WebPortletKey {
 	public static final String PARAMETER_VIEWER = "SXParameterViewerPortlet";
 	*/
 	public static final String SXDataStructureBuilderPortlet = "SXDataStructureBuilderPortlet";
+	public static final String SXDataStructureExplorerPortlet = "SXDataStructureExplorerPortlet";
 	public static final String SXStructuredDataEditorPortlet = "SXStructuredDataEditorPortlet";
 	public static final String SXStructuredDataExplorerPortlet = "SXStructuredDataExplorerPortlet";
 	/*
-	public static final String DATASTRUCTURE_EXPLORER = "SXDataStructureExplorerPortlet";
 	public static final String DATASTRUCTURE_VIEWER = "SXDataStructureViewerPortlet";
 	public static final String STRUCTURED_DATA_VIEWER = "SXStructuredDataViewerPortlet";
 	 */

@@ -2600,7 +2600,8 @@ public class CollectionSetLinkPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, CollectionSetLinkImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCollectionId",
 			new String[] {Long.class.getName()},
-			CollectionSetLinkModelImpl.DATACOLLECTIONID_COLUMN_BITMASK);
+			CollectionSetLinkModelImpl.DATACOLLECTIONID_COLUMN_BITMASK |
+			CollectionSetLinkModelImpl.ORDER_COLUMN_BITMASK);
 
 		_finderPathCountByCollectionId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -2631,7 +2632,8 @@ public class CollectionSetLinkPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, CollectionSetLinkImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySetId",
 			new String[] {Long.class.getName()},
-			CollectionSetLinkModelImpl.DATASETID_COLUMN_BITMASK);
+			CollectionSetLinkModelImpl.DATASETID_COLUMN_BITMASK |
+			CollectionSetLinkModelImpl.ORDER_COLUMN_BITMASK);
 
 		_finderPathCountBySetId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -2650,7 +2652,8 @@ public class CollectionSetLinkPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, CollectionSetLinkImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			CollectionSetLinkModelImpl.GROUPID_COLUMN_BITMASK);
+			CollectionSetLinkModelImpl.GROUPID_COLUMN_BITMASK |
+			CollectionSetLinkModelImpl.ORDER_COLUMN_BITMASK);
 
 		_finderPathCountByGroupId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
