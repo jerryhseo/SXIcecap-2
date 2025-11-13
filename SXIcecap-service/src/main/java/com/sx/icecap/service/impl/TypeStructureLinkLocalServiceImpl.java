@@ -16,10 +16,12 @@ package com.sx.icecap.service.impl;
 
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 import com.sx.icecap.exception.NoSuchTypeStructureLinkException;
 import com.sx.icecap.model.TypeStructureLink;
 import com.sx.icecap.service.base.TypeStructureLinkLocalServiceBaseImpl;
@@ -83,9 +85,28 @@ public class TypeStructureLinkLocalServiceImpl
 		link.setGroupId(sc.getScopeGroupId());
 		link.setUserId(sc.getUserId());
 		
-		super.typeStructureLinkPersistence.update(link, sc);
+		super.typeStructureLinkPersistence.update(link);
 		
 		return link;
+	}
+	
+	public TypeStructureLink addTypeDataStructureLink( JSONObject jsonLink, ServiceContext sc) throws PortalException {
+		if( Validator.isNull(jsonLink)) {
+			return null;
+		}
+		
+		return addTypeDataStructureLink(
+				jsonLink.getLong("dataTypeId", 0),
+				jsonLink.getLong("dataStructureId", 0),
+				jsonLink.getBoolean("commentable", false),
+				jsonLink.getBoolean("verifiable", false),
+				jsonLink.getBoolean("freezable", false),
+				jsonLink.getBoolean("freezed", false),
+				jsonLink.getBoolean("verified", false),
+				jsonLink.getBoolean("inputStatus", false),
+				jsonLink.getBoolean("jumpTo", false),
+				sc
+				);
 	}
 	
 	@Indexable(type = IndexableType.REINDEX)

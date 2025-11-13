@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -62,6 +63,10 @@ public interface TypeStructureLinkLocalService
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.sx.icecap.service.impl.TypeStructureLinkLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the type structure link local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link TypeStructureLinkLocalServiceUtil} if injection and service tracking are not available.
 	 */
+	public TypeStructureLink addTypeDataStructureLink(
+			JSONObject jsonLink, ServiceContext sc)
+		throws PortalException;
+
 	@Indexable(type = IndexableType.REINDEX)
 	public TypeStructureLink addTypeDataStructureLink(
 			long dataTypeId, long dataStructureId, boolean commentable,

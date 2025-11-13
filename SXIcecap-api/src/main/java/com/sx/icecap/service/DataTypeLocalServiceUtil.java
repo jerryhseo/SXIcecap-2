@@ -61,6 +61,22 @@ public class DataTypeLocalServiceUtil {
 		return getService().addDataType(dataType);
 	}
 
+	public static com.liferay.portal.kernel.json.JSONObject addDataType(
+			String dataTypeCode, String dataTypeVersion, String extension,
+			Map<java.util.Locale, String> displayNameMap,
+			Map<java.util.Locale, String> descriptionMap,
+			Map<java.util.Locale, String> tooltipMap, int status,
+			com.liferay.portal.kernel.json.JSONObject jsonStructureLink,
+			long[] visualizers,
+			com.liferay.portal.kernel.service.ServiceContext dataTypeSC)
+		throws PortalException {
+
+		return getService().addDataType(
+			dataTypeCode, dataTypeVersion, extension, displayNameMap,
+			descriptionMap, tooltipMap, status, jsonStructureLink, visualizers,
+			dataTypeSC);
+	}
+
 	public static DataType addDataType(
 			String dataTypeCode, String dataTypeVersion, String extension,
 			Map<java.util.Locale, String> displayNameMap,

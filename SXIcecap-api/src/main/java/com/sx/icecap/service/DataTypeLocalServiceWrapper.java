@@ -50,6 +50,23 @@ public class DataTypeLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.portal.kernel.json.JSONObject addDataType(
+			String dataTypeCode, String dataTypeVersion, String extension,
+			java.util.Map<java.util.Locale, String> displayNameMap,
+			java.util.Map<java.util.Locale, String> descriptionMap,
+			java.util.Map<java.util.Locale, String> tooltipMap, int status,
+			com.liferay.portal.kernel.json.JSONObject jsonStructureLink,
+			long[] visualizers,
+			com.liferay.portal.kernel.service.ServiceContext dataTypeSC)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dataTypeLocalService.addDataType(
+			dataTypeCode, dataTypeVersion, extension, displayNameMap,
+			descriptionMap, tooltipMap, status, jsonStructureLink, visualizers,
+			dataTypeSC);
+	}
+
+	@Override
 	public com.sx.icecap.model.DataType addDataType(
 			String dataTypeCode, String dataTypeVersion, String extension,
 			java.util.Map<java.util.Locale, String> displayNameMap,

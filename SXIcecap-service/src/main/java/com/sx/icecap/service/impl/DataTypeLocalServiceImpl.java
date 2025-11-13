@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
@@ -45,12 +46,17 @@ import com.sx.icecap.exception.InvalidDataTypeCodeException;
 import com.sx.icecap.exception.NoSuchDataTypeException;
 import com.sx.icecap.exception.NoSuchTypeStructureLinkException;
 import com.sx.icecap.model.DataType;
+import com.sx.icecap.model.TypeStructureLink;
+import com.sx.icecap.model.TypeVisualizerLink;
 import com.sx.icecap.service.DataStructureLocalService;
+import com.sx.icecap.service.TypeStructureLinkLocalService;
+import com.sx.icecap.service.TypeVisualizerLinkLocalService;
 import com.sx.icecap.service.base.DataTypeLocalServiceBaseImpl;
 import com.sx.icecap.util.comparator.GroupIdComparator;
 import com.sx.icecap.util.comparator.ModifiedDateComparator;
 import com.sx.icecap.util.comparator.UserIdComparator;
 import com.sx.icecap.util.comparator.datatype.DataTypeCodeComparator;
+import com.sx.util.SXLocalizationUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 
@@ -84,14 +90,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 			Map<Locale, String> tooltipMap,
 			int status,
 			ServiceContext sc) throws PortalException {
-		
-		try {
-			if( !_verifyDataTypeCode(dataTypeCode) ) {
-				throw new InvalidDataTypeCodeException(dataTypeCode+" "+dataTypeVersion+" Invalid"); 
-			}
-		} catch( DuplicatedDataTypeCodeException e ) {
-			throw e;
-		}
 		
 		Locale defaultLocale = sc.getThemeDisplay().getLocale();
 		
@@ -175,6 +173,62 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 				sc);
 		
 		return dataType;
+	}
+	
+	public JSONObject addDataType( 
+			String dataTypeCode,
+			String dataTypeVersion,
+			String extension,
+			Map<Locale, String> displayNameMap,
+			Map<Locale, String> descriptionMap,
+			Map<Locale, String> tooltipMap,
+			int status,
+			JSONObject jsonStructureLink,
+			long[] visualizers,
+			ServiceContext dataTypeSC) throws PortalException {
+		
+		JSONObject result = JSONFactoryUtil.createJSONObject();
+		
+		DataType dataType = addDataType(
+				dataTypeCode, 
+				dataTypeVersion, 
+				extension,
+				displayNameMap, 
+				descriptionMap,
+				descriptionMap, 
+				WorkflowConstants.STATUS_APPROVED, 
+				dataTypeSC);
+		
+		result.put("dataTypeId", dataType.getDataTypeId());
+		
+		// Add TypeStructureLink if exits
+		if ( Validator.isNotNull(jsonStructureLink) ) {
+			TypeStructureLink typeStructureLink = _typeStructureLinkLocalService.addTypeDataStructureLink(
+					jsonStructureLink,
+					dataTypeSC);
+			
+			result.put("typeStructureLinkId", typeStructureLink.getPrimaryKey());
+		}
+
+		// Create TypeVisualizerLinks
+		if( visualizers.length > 0 ) {
+			JSONArray typeVisualizerLinks = JSONFactoryUtil.createJSONArray();
+			
+			for( int order=0; order<visualizers.length; order++) {
+				long visualizerId = visualizers[order];
+				
+				TypeVisualizerLink typeVisualizerLink = 
+						_typeVisualizerLinkLocalService.addTypeVisualizerLink(dataType.getDataTypeId(), visualizerId);
+				
+				typeVisualizerLinks.put(typeVisualizerLink.getTypeVisualizerLinkId());
+			}
+			
+			if( typeVisualizerLinks.length() > 0 ) {
+				result.put("typeVisualizerLinks", typeVisualizerLinks);
+			}
+		}
+
+		return result;
 	}
 	
 	@Indexable(type = IndexableType.REINDEX)
@@ -683,4 +737,10 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	
 	@Reference
 	private DataStructureLocalService _dataStructureLocalService;
+	
+	@Reference
+	private TypeStructureLinkLocalService _typeStructureLinkLocalService;
+
+	@Reference
+	private TypeVisualizerLinkLocalService _typeVisualizerLinkLocalService;
 }

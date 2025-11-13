@@ -45,6 +45,14 @@ public class TypeStructureLinkLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.sx.icecap.service.impl.TypeStructureLinkLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static TypeStructureLink addTypeDataStructureLink(
+			com.liferay.portal.kernel.json.JSONObject jsonLink,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws PortalException {
+
+		return getService().addTypeDataStructureLink(jsonLink, sc);
+	}
+
+	public static TypeStructureLink addTypeDataStructureLink(
 			long dataTypeId, long dataStructureId, boolean commentable,
 			boolean verifiable, boolean freezable, boolean verified,
 			boolean freezed, boolean inputStatus, boolean jumpTo,

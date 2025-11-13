@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainerResults;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -84,6 +85,14 @@ public interface DataTypeLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public DataType addDataType(DataType dataType);
+
+	public JSONObject addDataType(
+			String dataTypeCode, String dataTypeVersion, String extension,
+			Map<Locale, String> displayNameMap,
+			Map<Locale, String> descriptionMap, Map<Locale, String> tooltipMap,
+			int status, JSONObject jsonStructureLink, long[] visualizers,
+			ServiceContext dataTypeSC)
+		throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DataType addDataType(

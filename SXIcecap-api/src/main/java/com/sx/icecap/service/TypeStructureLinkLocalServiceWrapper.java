@@ -35,6 +35,16 @@ public class TypeStructureLinkLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.TypeStructureLink addTypeDataStructureLink(
+			com.liferay.portal.kernel.json.JSONObject jsonLink,
+			com.liferay.portal.kernel.service.ServiceContext sc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _typeStructureLinkLocalService.addTypeDataStructureLink(
+			jsonLink, sc);
+	}
+
+	@Override
+	public com.sx.icecap.model.TypeStructureLink addTypeDataStructureLink(
 			long dataTypeId, long dataStructureId, boolean commentable,
 			boolean verifiable, boolean freezable, boolean verified,
 			boolean freezed, boolean inputStatus, boolean jumpTo,
