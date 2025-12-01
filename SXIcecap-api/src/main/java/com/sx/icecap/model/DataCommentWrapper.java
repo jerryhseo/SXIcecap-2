@@ -14,6 +14,7 @@
 
 package com.sx.icecap.model;
 
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
@@ -42,6 +43,7 @@ public class DataCommentWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("uuid", getUuid());
 		attributes.put("dataCommentId", getDataCommentId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("groupId", getGroupId());
@@ -49,8 +51,14 @@ public class DataCommentWrapper
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("status", getStatus());
+		attributes.put("statusByUserId", getStatusByUserId());
+		attributes.put("statusByUserName", getStatusByUserName());
+		attributes.put("statusDate", getStatusDate());
+		attributes.put("lastPublishDate", getLastPublishDate());
 		attributes.put("commentModel", getCommentModel());
-		attributes.put("commentModelId", getCommentModelId());
+		attributes.put("dataId", getDataId());
+		attributes.put("paramCode", getParamCode());
 		attributes.put("parentCommentId", getParentCommentId());
 		attributes.put("comment", getComment());
 
@@ -59,6 +67,12 @@ public class DataCommentWrapper
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		String uuid = (String)attributes.get("uuid");
+
+		if (uuid != null) {
+			setUuid(uuid);
+		}
+
 		Long dataCommentId = (Long)attributes.get("dataCommentId");
 
 		if (dataCommentId != null) {
@@ -101,16 +115,52 @@ public class DataCommentWrapper
 			setModifiedDate(modifiedDate);
 		}
 
+		Integer status = (Integer)attributes.get("status");
+
+		if (status != null) {
+			setStatus(status);
+		}
+
+		Long statusByUserId = (Long)attributes.get("statusByUserId");
+
+		if (statusByUserId != null) {
+			setStatusByUserId(statusByUserId);
+		}
+
+		String statusByUserName = (String)attributes.get("statusByUserName");
+
+		if (statusByUserName != null) {
+			setStatusByUserName(statusByUserName);
+		}
+
+		Date statusDate = (Date)attributes.get("statusDate");
+
+		if (statusDate != null) {
+			setStatusDate(statusDate);
+		}
+
+		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
+
+		if (lastPublishDate != null) {
+			setLastPublishDate(lastPublishDate);
+		}
+
 		String commentModel = (String)attributes.get("commentModel");
 
 		if (commentModel != null) {
 			setCommentModel(commentModel);
 		}
 
-		Long commentModelId = (Long)attributes.get("commentModelId");
+		Long dataId = (Long)attributes.get("dataId");
 
-		if (commentModelId != null) {
-			setCommentModelId(commentModelId);
+		if (dataId != null) {
+			setDataId(dataId);
+		}
+
+		String paramCode = (String)attributes.get("paramCode");
+
+		if (paramCode != null) {
+			setParamCode(paramCode);
 		}
 
 		Long parentCommentId = (Long)attributes.get("parentCommentId");
@@ -147,16 +197,6 @@ public class DataCommentWrapper
 	}
 
 	/**
-	 * Returns the comment model ID of this data comment.
-	 *
-	 * @return the comment model ID of this data comment
-	 */
-	@Override
-	public long getCommentModelId() {
-		return model.getCommentModelId();
-	}
-
-	/**
 	 * Returns the company ID of this data comment.
 	 *
 	 * @return the company ID of this data comment
@@ -187,6 +227,16 @@ public class DataCommentWrapper
 	}
 
 	/**
+	 * Returns the data ID of this data comment.
+	 *
+	 * @return the data ID of this data comment
+	 */
+	@Override
+	public long getDataId() {
+		return model.getDataId();
+	}
+
+	/**
 	 * Returns the group ID of this data comment.
 	 *
 	 * @return the group ID of this data comment
@@ -197,6 +247,16 @@ public class DataCommentWrapper
 	}
 
 	/**
+	 * Returns the last publish date of this data comment.
+	 *
+	 * @return the last publish date of this data comment
+	 */
+	@Override
+	public Date getLastPublishDate() {
+		return model.getLastPublishDate();
+	}
+
+	/**
 	 * Returns the modified date of this data comment.
 	 *
 	 * @return the modified date of this data comment
@@ -204,6 +264,16 @@ public class DataCommentWrapper
 	@Override
 	public Date getModifiedDate() {
 		return model.getModifiedDate();
+	}
+
+	/**
+	 * Returns the param code of this data comment.
+	 *
+	 * @return the param code of this data comment
+	 */
+	@Override
+	public String getParamCode() {
+		return model.getParamCode();
 	}
 
 	/**
@@ -224,6 +294,90 @@ public class DataCommentWrapper
 	@Override
 	public long getPrimaryKey() {
 		return model.getPrimaryKey();
+	}
+
+	/**
+	 * Returns the status of this data comment.
+	 *
+	 * @return the status of this data comment
+	 */
+	@Override
+	public int getStatus() {
+		return model.getStatus();
+	}
+
+	/**
+	 * Returns the status by user ID of this data comment.
+	 *
+	 * @return the status by user ID of this data comment
+	 */
+	@Override
+	public long getStatusByUserId() {
+		return model.getStatusByUserId();
+	}
+
+	/**
+	 * Returns the status by user name of this data comment.
+	 *
+	 * @return the status by user name of this data comment
+	 */
+	@Override
+	public String getStatusByUserName() {
+		return model.getStatusByUserName();
+	}
+
+	/**
+	 * Returns the status by user uuid of this data comment.
+	 *
+	 * @return the status by user uuid of this data comment
+	 */
+	@Override
+	public String getStatusByUserUuid() {
+		return model.getStatusByUserUuid();
+	}
+
+	/**
+	 * Returns the status date of this data comment.
+	 *
+	 * @return the status date of this data comment
+	 */
+	@Override
+	public Date getStatusDate() {
+		return model.getStatusDate();
+	}
+
+	/**
+	 * Returns the trash entry created when this data comment was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this data comment.
+	 *
+	 * @return the trash entry created when this data comment was moved to the Recycle Bin
+	 */
+	@Override
+	public com.liferay.trash.kernel.model.TrashEntry getTrashEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getTrashEntry();
+	}
+
+	/**
+	 * Returns the class primary key of the trash entry for this data comment.
+	 *
+	 * @return the class primary key of the trash entry for this data comment
+	 */
+	@Override
+	public long getTrashEntryClassPK() {
+		return model.getTrashEntryClassPK();
+	}
+
+	/**
+	 * Returns the trash handler for this data comment.
+	 *
+	 * @return the trash handler for this data comment
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
+		return model.getTrashHandler();
 	}
 
 	/**
@@ -256,6 +410,126 @@ public class DataCommentWrapper
 		return model.getUserUuid();
 	}
 
+	/**
+	 * Returns the uuid of this data comment.
+	 *
+	 * @return the uuid of this data comment
+	 */
+	@Override
+	public String getUuid() {
+		return model.getUuid();
+	}
+
+	/**
+	 * Returns <code>true</code> if this data comment is approved.
+	 *
+	 * @return <code>true</code> if this data comment is approved; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isApproved() {
+		return model.isApproved();
+	}
+
+	/**
+	 * Returns <code>true</code> if this data comment is denied.
+	 *
+	 * @return <code>true</code> if this data comment is denied; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDenied() {
+		return model.isDenied();
+	}
+
+	/**
+	 * Returns <code>true</code> if this data comment is a draft.
+	 *
+	 * @return <code>true</code> if this data comment is a draft; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDraft() {
+		return model.isDraft();
+	}
+
+	/**
+	 * Returns <code>true</code> if this data comment is expired.
+	 *
+	 * @return <code>true</code> if this data comment is expired; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isExpired() {
+		return model.isExpired();
+	}
+
+	/**
+	 * Returns <code>true</code> if this data comment is inactive.
+	 *
+	 * @return <code>true</code> if this data comment is inactive; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInactive() {
+		return model.isInactive();
+	}
+
+	/**
+	 * Returns <code>true</code> if this data comment is incomplete.
+	 *
+	 * @return <code>true</code> if this data comment is incomplete; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIncomplete() {
+		return model.isIncomplete();
+	}
+
+	/**
+	 * Returns <code>true</code> if this data comment is in the Recycle Bin.
+	 *
+	 * @return <code>true</code> if this data comment is in the Recycle Bin; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInTrash() {
+		return model.isInTrash();
+	}
+
+	/**
+	 * Returns <code>true</code> if the parent of this data comment is in the Recycle Bin.
+	 *
+	 * @return <code>true</code> if the parent of this data comment is in the Recycle Bin; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInTrashContainer() {
+		return model.isInTrashContainer();
+	}
+
+	@Override
+	public boolean isInTrashExplicitly() {
+		return model.isInTrashExplicitly();
+	}
+
+	@Override
+	public boolean isInTrashImplicitly() {
+		return model.isInTrashImplicitly();
+	}
+
+	/**
+	 * Returns <code>true</code> if this data comment is pending.
+	 *
+	 * @return <code>true</code> if this data comment is pending; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isPending() {
+		return model.isPending();
+	}
+
+	/**
+	 * Returns <code>true</code> if this data comment is scheduled.
+	 *
+	 * @return <code>true</code> if this data comment is scheduled; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isScheduled() {
+		return model.isScheduled();
+	}
+
 	@Override
 	public void persist() {
 		model.persist();
@@ -279,16 +553,6 @@ public class DataCommentWrapper
 	@Override
 	public void setCommentModel(String commentModel) {
 		model.setCommentModel(commentModel);
-	}
-
-	/**
-	 * Sets the comment model ID of this data comment.
-	 *
-	 * @param commentModelId the comment model ID of this data comment
-	 */
-	@Override
-	public void setCommentModelId(long commentModelId) {
-		model.setCommentModelId(commentModelId);
 	}
 
 	/**
@@ -322,6 +586,16 @@ public class DataCommentWrapper
 	}
 
 	/**
+	 * Sets the data ID of this data comment.
+	 *
+	 * @param dataId the data ID of this data comment
+	 */
+	@Override
+	public void setDataId(long dataId) {
+		model.setDataId(dataId);
+	}
+
+	/**
 	 * Sets the group ID of this data comment.
 	 *
 	 * @param groupId the group ID of this data comment
@@ -332,6 +606,16 @@ public class DataCommentWrapper
 	}
 
 	/**
+	 * Sets the last publish date of this data comment.
+	 *
+	 * @param lastPublishDate the last publish date of this data comment
+	 */
+	@Override
+	public void setLastPublishDate(Date lastPublishDate) {
+		model.setLastPublishDate(lastPublishDate);
+	}
+
+	/**
 	 * Sets the modified date of this data comment.
 	 *
 	 * @param modifiedDate the modified date of this data comment
@@ -339,6 +623,16 @@ public class DataCommentWrapper
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		model.setModifiedDate(modifiedDate);
+	}
+
+	/**
+	 * Sets the param code of this data comment.
+	 *
+	 * @param paramCode the param code of this data comment
+	 */
+	@Override
+	public void setParamCode(String paramCode) {
+		model.setParamCode(paramCode);
 	}
 
 	/**
@@ -359,6 +653,56 @@ public class DataCommentWrapper
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	 * Sets the status of this data comment.
+	 *
+	 * @param status the status of this data comment
+	 */
+	@Override
+	public void setStatus(int status) {
+		model.setStatus(status);
+	}
+
+	/**
+	 * Sets the status by user ID of this data comment.
+	 *
+	 * @param statusByUserId the status by user ID of this data comment
+	 */
+	@Override
+	public void setStatusByUserId(long statusByUserId) {
+		model.setStatusByUserId(statusByUserId);
+	}
+
+	/**
+	 * Sets the status by user name of this data comment.
+	 *
+	 * @param statusByUserName the status by user name of this data comment
+	 */
+	@Override
+	public void setStatusByUserName(String statusByUserName) {
+		model.setStatusByUserName(statusByUserName);
+	}
+
+	/**
+	 * Sets the status by user uuid of this data comment.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this data comment
+	 */
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid) {
+		model.setStatusByUserUuid(statusByUserUuid);
+	}
+
+	/**
+	 * Sets the status date of this data comment.
+	 *
+	 * @param statusDate the status date of this data comment
+	 */
+	@Override
+	public void setStatusDate(Date statusDate) {
+		model.setStatusDate(statusDate);
 	}
 
 	/**
@@ -391,9 +735,24 @@ public class DataCommentWrapper
 		model.setUserUuid(userUuid);
 	}
 
+	/**
+	 * Sets the uuid of this data comment.
+	 *
+	 * @param uuid the uuid of this data comment
+	 */
+	@Override
+	public void setUuid(String uuid) {
+		model.setUuid(uuid);
+	}
+
 	@Override
 	public com.liferay.portal.kernel.json.JSONObject toJSON() {
 		return model.toJSON();
+	}
+
+	@Override
+	public StagedModelType getStagedModelType() {
+		return model.getStagedModelType();
 	}
 
 	@Override

@@ -52,18 +52,27 @@ public class DataCommentLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataComment addDataComment(
-			String commentModel, long commentModelId, long parentCommentId,
-			String comment, com.liferay.portal.kernel.service.ServiceContext sc)
+			String commentModel, long dataId, String paramCode,
+			long parentCommentId, String comment, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataCommentLocalService.addDataComment(
-			commentModel, commentModelId, parentCommentId, comment, sc);
+			commentModel, dataId, paramCode, parentCommentId, comment, status,
+			sc);
 	}
 
 	@Override
-	public int countDataComments(String commentModel, long commentModelId) {
-		return _dataCommentLocalService.countDataComments(
-			commentModel, commentModelId);
+	public int countDataComments(String commentModel, long dataId) {
+		return _dataCommentLocalService.countDataComments(commentModel, dataId);
+	}
+
+	@Override
+	public int countDataCommentsByParamCode(
+		String commentModel, long dataId, String paramCode) {
+
+		return _dataCommentLocalService.countDataCommentsByParamCode(
+			commentModel, dataId, paramCode);
 	}
 
 	/**
@@ -222,6 +231,21 @@ public class DataCommentLocalServiceWrapper
 		return _dataCommentLocalService.fetchDataComment(dataCommentId);
 	}
 
+	/**
+	 * Returns the data comment matching the UUID and group.
+	 *
+	 * @param uuid the data comment's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data comment, or <code>null</code> if a matching data comment could not be found
+	 */
+	@Override
+	public com.sx.icecap.model.DataComment fetchDataCommentByUuidAndGroupId(
+		String uuid, long groupId) {
+
+		return _dataCommentLocalService.fetchDataCommentByUuidAndGroupId(
+			uuid, groupId);
+	}
+
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
@@ -243,12 +267,38 @@ public class DataCommentLocalServiceWrapper
 		return _dataCommentLocalService.getDataComment(dataCommentId);
 	}
 
+	/**
+	 * Returns the data comment matching the UUID and group.
+	 *
+	 * @param uuid the data comment's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data comment
+	 * @throws PortalException if a matching data comment could not be found
+	 */
+	@Override
+	public com.sx.icecap.model.DataComment getDataCommentByUuidAndGroupId(
+			String uuid, long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dataCommentLocalService.getDataCommentByUuidAndGroupId(
+			uuid, groupId);
+	}
+
 	@Override
 	public java.util.List<com.sx.icecap.model.DataComment> getDataCommentList(
-		String commentModel, long commentModelId) {
+		String commentModel, long dataId) {
 
 		return _dataCommentLocalService.getDataCommentList(
-			commentModel, commentModelId);
+			commentModel, dataId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.DataComment>
+		getDataCommentListByParamCode(
+			String commentModel, long dataId, String paramCode) {
+
+		return _dataCommentLocalService.getDataCommentListByParamCode(
+			commentModel, dataId, paramCode);
 	}
 
 	/**
@@ -270,6 +320,42 @@ public class DataCommentLocalServiceWrapper
 	}
 
 	/**
+	 * Returns all the data comments matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data comments
+	 * @param companyId the primary key of the company
+	 * @return the matching data comments, or an empty list if no matches were found
+	 */
+	@Override
+	public java.util.List<com.sx.icecap.model.DataComment>
+		getDataCommentsByUuidAndCompanyId(String uuid, long companyId) {
+
+		return _dataCommentLocalService.getDataCommentsByUuidAndCompanyId(
+			uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of data comments matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data comments
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of data comments
+	 * @param end the upper bound of the range of data comments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching data comments, or an empty list if no matches were found
+	 */
+	@Override
+	public java.util.List<com.sx.icecap.model.DataComment>
+		getDataCommentsByUuidAndCompanyId(
+			String uuid, long companyId, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.sx.icecap.model.DataComment> orderByComparator) {
+
+		return _dataCommentLocalService.getDataCommentsByUuidAndCompanyId(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
 	 * Returns the number of data comments.
 	 *
 	 * @return the number of data comments
@@ -277,6 +363,16 @@ public class DataCommentLocalServiceWrapper
 	@Override
 	public int getDataCommentsCount() {
 		return _dataCommentLocalService.getDataCommentsCount();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
+		getExportActionableDynamicQuery(
+			com.liferay.exportimport.kernel.lar.PortletDataContext
+				portletDataContext) {
+
+		return _dataCommentLocalService.getExportActionableDynamicQuery(
+			portletDataContext);
 	}
 
 	@Override
@@ -308,29 +404,31 @@ public class DataCommentLocalServiceWrapper
 	}
 
 	@Override
-	public boolean hasComments(String commentModel, long commentModelId) {
-		return _dataCommentLocalService.hasComments(
-			commentModel, commentModelId);
+	public boolean hasComments(String commentModel, long dataId) {
+		return _dataCommentLocalService.hasComments(commentModel, dataId);
 	}
 
 	@Override
 	public com.sx.icecap.model.DataComment removeDataComment(long dataCommentId)
-		throws com.sx.icecap.exception.NoSuchDataCommentException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataCommentLocalService.removeDataComment(dataCommentId);
 	}
 
 	@Override
-	public void removeDataComment(String commentModel) {
-		_dataCommentLocalService.removeDataComment(commentModel);
+	public void removeDataComments(String commentModel, long dataId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_dataCommentLocalService.removeDataComments(commentModel, dataId);
 	}
 
 	@Override
-	public void removeDataCommentByModelId(
-		String commentModel, long commentModelId) {
+	public void removeDataCommentsByParamCode(
+			String commentModel, long dataId, String paramCode)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
-		_dataCommentLocalService.removeDataCommentByModelId(
-			commentModel, commentModelId);
+		_dataCommentLocalService.removeDataCommentsByParamCode(
+			commentModel, dataId, paramCode);
 	}
 
 	/**
@@ -352,14 +450,14 @@ public class DataCommentLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.DataComment updateDataComment(
-			long dataCommentId, String commentModel, long commentModelId,
-			long parentCommentId, String comment,
+			long dataCommentId, String commentModel, long dataId,
+			String paramCode, long parentCommentId, String comment, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataCommentLocalService.updateDataComment(
-			dataCommentId, commentModel, commentModelId, parentCommentId,
-			comment, sc);
+			dataCommentId, commentModel, dataId, paramCode, parentCommentId,
+			comment, status, sc);
 	}
 
 	@Override

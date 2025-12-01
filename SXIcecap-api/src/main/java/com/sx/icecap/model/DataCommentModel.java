@@ -15,9 +15,12 @@
 package com.sx.icecap.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.model.StagedGroupedModel;
+import com.liferay.portal.kernel.model.TrashedModel;
+import com.liferay.portal.kernel.model.WorkflowedModel;
 
 import java.util.Date;
 
@@ -36,7 +39,8 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface DataCommentModel
-	extends BaseModel<DataComment>, GroupedModel, ShardedModel {
+	extends BaseModel<DataComment>, ShardedModel, StagedGroupedModel,
+			TrashedModel, WorkflowedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -57,6 +61,23 @@ public interface DataCommentModel
 	 * @param primaryKey the primary key of this data comment
 	 */
 	public void setPrimaryKey(long primaryKey);
+
+	/**
+	 * Returns the uuid of this data comment.
+	 *
+	 * @return the uuid of this data comment
+	 */
+	@AutoEscape
+	@Override
+	public String getUuid();
+
+	/**
+	 * Sets the uuid of this data comment.
+	 *
+	 * @param uuid the uuid of this data comment
+	 */
+	@Override
+	public void setUuid(String uuid);
 
 	/**
 	 * Returns the data comment ID of this data comment.
@@ -186,6 +207,103 @@ public interface DataCommentModel
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
+	 * Returns the status of this data comment.
+	 *
+	 * @return the status of this data comment
+	 */
+	@Override
+	public int getStatus();
+
+	/**
+	 * Sets the status of this data comment.
+	 *
+	 * @param status the status of this data comment
+	 */
+	@Override
+	public void setStatus(int status);
+
+	/**
+	 * Returns the status by user ID of this data comment.
+	 *
+	 * @return the status by user ID of this data comment
+	 */
+	@Override
+	public long getStatusByUserId();
+
+	/**
+	 * Sets the status by user ID of this data comment.
+	 *
+	 * @param statusByUserId the status by user ID of this data comment
+	 */
+	@Override
+	public void setStatusByUserId(long statusByUserId);
+
+	/**
+	 * Returns the status by user uuid of this data comment.
+	 *
+	 * @return the status by user uuid of this data comment
+	 */
+	@Override
+	public String getStatusByUserUuid();
+
+	/**
+	 * Sets the status by user uuid of this data comment.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this data comment
+	 */
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid);
+
+	/**
+	 * Returns the status by user name of this data comment.
+	 *
+	 * @return the status by user name of this data comment
+	 */
+	@AutoEscape
+	@Override
+	public String getStatusByUserName();
+
+	/**
+	 * Sets the status by user name of this data comment.
+	 *
+	 * @param statusByUserName the status by user name of this data comment
+	 */
+	@Override
+	public void setStatusByUserName(String statusByUserName);
+
+	/**
+	 * Returns the status date of this data comment.
+	 *
+	 * @return the status date of this data comment
+	 */
+	@Override
+	public Date getStatusDate();
+
+	/**
+	 * Sets the status date of this data comment.
+	 *
+	 * @param statusDate the status date of this data comment
+	 */
+	@Override
+	public void setStatusDate(Date statusDate);
+
+	/**
+	 * Returns the last publish date of this data comment.
+	 *
+	 * @return the last publish date of this data comment
+	 */
+	@Override
+	public Date getLastPublishDate();
+
+	/**
+	 * Sets the last publish date of this data comment.
+	 *
+	 * @param lastPublishDate the last publish date of this data comment
+	 */
+	@Override
+	public void setLastPublishDate(Date lastPublishDate);
+
+	/**
 	 * Returns the comment model of this data comment.
 	 *
 	 * @return the comment model of this data comment
@@ -201,18 +319,33 @@ public interface DataCommentModel
 	public void setCommentModel(String commentModel);
 
 	/**
-	 * Returns the comment model ID of this data comment.
+	 * Returns the data ID of this data comment.
 	 *
-	 * @return the comment model ID of this data comment
+	 * @return the data ID of this data comment
 	 */
-	public long getCommentModelId();
+	public long getDataId();
 
 	/**
-	 * Sets the comment model ID of this data comment.
+	 * Sets the data ID of this data comment.
 	 *
-	 * @param commentModelId the comment model ID of this data comment
+	 * @param dataId the data ID of this data comment
 	 */
-	public void setCommentModelId(long commentModelId);
+	public void setDataId(long dataId);
+
+	/**
+	 * Returns the param code of this data comment.
+	 *
+	 * @return the param code of this data comment
+	 */
+	@AutoEscape
+	public String getParamCode();
+
+	/**
+	 * Sets the param code of this data comment.
+	 *
+	 * @param paramCode the param code of this data comment
+	 */
+	public void setParamCode(String paramCode);
 
 	/**
 	 * Returns the parent comment ID of this data comment.
@@ -242,5 +375,118 @@ public interface DataCommentModel
 	 * @param comment the comment of this data comment
 	 */
 	public void setComment(String comment);
+
+	/**
+	 * Returns the trash entry created when this data comment was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this data comment.
+	 *
+	 * @return the trash entry created when this data comment was moved to the Recycle Bin
+	 */
+	@Override
+	public com.liferay.trash.kernel.model.TrashEntry getTrashEntry()
+		throws PortalException;
+
+	/**
+	 * Returns the class primary key of the trash entry for this data comment.
+	 *
+	 * @return the class primary key of the trash entry for this data comment
+	 */
+	@Override
+	public long getTrashEntryClassPK();
+
+	/**
+	 * Returns the trash handler for this data comment.
+	 *
+	 * @return the trash handler for this data comment
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler();
+
+	/**
+	 * Returns <code>true</code> if this data comment is in the Recycle Bin.
+	 *
+	 * @return <code>true</code> if this data comment is in the Recycle Bin; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInTrash();
+
+	/**
+	 * Returns <code>true</code> if the parent of this data comment is in the Recycle Bin.
+	 *
+	 * @return <code>true</code> if the parent of this data comment is in the Recycle Bin; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInTrashContainer();
+
+	@Override
+	public boolean isInTrashExplicitly();
+
+	@Override
+	public boolean isInTrashImplicitly();
+
+	/**
+	 * Returns <code>true</code> if this data comment is approved.
+	 *
+	 * @return <code>true</code> if this data comment is approved; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isApproved();
+
+	/**
+	 * Returns <code>true</code> if this data comment is denied.
+	 *
+	 * @return <code>true</code> if this data comment is denied; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDenied();
+
+	/**
+	 * Returns <code>true</code> if this data comment is a draft.
+	 *
+	 * @return <code>true</code> if this data comment is a draft; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isDraft();
+
+	/**
+	 * Returns <code>true</code> if this data comment is expired.
+	 *
+	 * @return <code>true</code> if this data comment is expired; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isExpired();
+
+	/**
+	 * Returns <code>true</code> if this data comment is inactive.
+	 *
+	 * @return <code>true</code> if this data comment is inactive; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInactive();
+
+	/**
+	 * Returns <code>true</code> if this data comment is incomplete.
+	 *
+	 * @return <code>true</code> if this data comment is incomplete; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIncomplete();
+
+	/**
+	 * Returns <code>true</code> if this data comment is pending.
+	 *
+	 * @return <code>true</code> if this data comment is pending; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isPending();
+
+	/**
+	 * Returns <code>true</code> if this data comment is scheduled.
+	 *
+	 * @return <code>true</code> if this data comment is scheduled; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isScheduled();
 
 }

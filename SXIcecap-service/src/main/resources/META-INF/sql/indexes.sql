@@ -12,11 +12,16 @@ create index IX_2843A0EC on SX_ICECAP_DataCollection (userId, status);
 create index IX_79EFA2C0 on SX_ICECAP_DataCollection (uuid_[$COLUMN_LENGTH:75$], companyId);
 create unique index IX_CC81D942 on SX_ICECAP_DataCollection (uuid_[$COLUMN_LENGTH:75$], groupId);
 
-create index IX_C3A2B434 on SX_ICECAP_DataComment (commentModel[$COLUMN_LENGTH:75$], commentModelId);
-create index IX_DE91BF76 on SX_ICECAP_DataComment (commentModelId);
-create index IX_F8A02C84 on SX_ICECAP_DataComment (groupId, commentModel[$COLUMN_LENGTH:75$], commentModelId);
-create index IX_BC0503C6 on SX_ICECAP_DataComment (groupId, commentModelId);
+create index IX_F19DC7F6 on SX_ICECAP_DataComment (commentModel[$COLUMN_LENGTH:75$], dataId, paramCode[$COLUMN_LENGTH:75$]);
+create index IX_416CDD74 on SX_ICECAP_DataComment (dataId, paramCode[$COLUMN_LENGTH:75$]);
+create index IX_749B8F8B on SX_ICECAP_DataComment (groupId, commentModel[$COLUMN_LENGTH:75$]);
+create index IX_530C4CB3 on SX_ICECAP_DataComment (groupId, status);
+create index IX_13E2ADED on SX_ICECAP_DataComment (groupId, userId, status);
 create index IX_6F84F2A3 on SX_ICECAP_DataComment (parentCommentId);
+create index IX_3727B863 on SX_ICECAP_DataComment (status);
+create index IX_366F699D on SX_ICECAP_DataComment (userId, status);
+create index IX_AC4C0331 on SX_ICECAP_DataComment (uuid_[$COLUMN_LENGTH:75$], companyId);
+create unique index IX_DAADA1F3 on SX_ICECAP_DataComment (uuid_[$COLUMN_LENGTH:75$], groupId);
 
 create index IX_352E1E69 on SX_ICECAP_DataSet (dataSetCode[$COLUMN_LENGTH:75$], dataSetVersion[$COLUMN_LENGTH:75$]);
 create index IX_8D1CF5D0 on SX_ICECAP_DataSet (groupId, status);

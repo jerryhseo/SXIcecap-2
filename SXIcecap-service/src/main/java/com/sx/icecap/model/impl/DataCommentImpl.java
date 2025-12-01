@@ -30,7 +30,7 @@ public class DataCommentImpl extends DataCommentBaseImpl {
 		json.put("createDate", getCreateDate());
 		json.put("modifiedDate", getModifiedDate());
 		json.put("commentModel", getCommentModel());
-		json.put("commentModelId", getCommentModelId());
+		json.put("dataId", getDataId());
 		json.put("parentCommentId", getParentCommentId());
 		json.put("comment", getComment());
 		

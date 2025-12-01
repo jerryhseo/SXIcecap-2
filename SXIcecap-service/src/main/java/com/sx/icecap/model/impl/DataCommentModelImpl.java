@@ -16,18 +16,25 @@ package com.sx.icecap.model.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import com.sx.icecap.model.DataComment;
 import com.sx.icecap.model.DataCommentModel;
@@ -69,18 +76,22 @@ public class DataCommentModelImpl
 	public static final String TABLE_NAME = "SX_ICECAP_DataComment";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"dataCommentId", Types.BIGINT}, {"companyId", Types.BIGINT},
-		{"groupId", Types.BIGINT}, {"userId", Types.BIGINT},
-		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"modifiedDate", Types.TIMESTAMP}, {"commentModel", Types.VARCHAR},
-		{"commentModelId", Types.BIGINT}, {"parentCommentId", Types.BIGINT},
-		{"comment_", Types.VARCHAR}
+		{"uuid_", Types.VARCHAR}, {"dataCommentId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
+		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
+		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
+		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP},
+		{"lastPublishDate", Types.TIMESTAMP}, {"commentModel", Types.VARCHAR},
+		{"dataId", Types.BIGINT}, {"paramCode", Types.VARCHAR},
+		{"parentCommentId", Types.BIGINT}, {"comment_", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
 		new HashMap<String, Integer>();
 
 	static {
+		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("dataCommentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
@@ -88,14 +99,20 @@ public class DataCommentModelImpl
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("commentModel", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("commentModelId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("dataId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("paramCode", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("parentCommentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("comment_", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataComment (dataCommentId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,commentModel VARCHAR(75) null,commentModelId LONG,parentCommentId LONG,comment_ VARCHAR(75) null)";
+		"create table SX_ICECAP_DataComment (uuid_ VARCHAR(75) null,dataCommentId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,lastPublishDate DATE null,commentModel VARCHAR(75) null,dataId LONG,paramCode VARCHAR(75) null,parentCommentId LONG,comment_ VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_DataComment";
@@ -114,13 +131,21 @@ public class DataCommentModelImpl
 
 	public static final long COMMENTMODEL_COLUMN_BITMASK = 1L;
 
-	public static final long COMMENTMODELID_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 4L;
+	public static final long DATAID_COLUMN_BITMASK = 4L;
 
-	public static final long PARENTCOMMENTID_COLUMN_BITMASK = 8L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
 
-	public static final long DATACOMMENTID_COLUMN_BITMASK = 16L;
+	public static final long PARAMCODE_COLUMN_BITMASK = 16L;
+
+	public static final long STATUS_COLUMN_BITMASK = 32L;
+
+	public static final long USERID_COLUMN_BITMASK = 64L;
+
+	public static final long UUID_COLUMN_BITMASK = 128L;
+
+	public static final long DATACOMMENTID_COLUMN_BITMASK = 256L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -229,6 +254,9 @@ public class DataCommentModelImpl
 		Map<String, BiConsumer<DataComment, ?>> attributeSetterBiConsumers =
 			new LinkedHashMap<String, BiConsumer<DataComment, ?>>();
 
+		attributeGetterFunctions.put("uuid", DataComment::getUuid);
+		attributeSetterBiConsumers.put(
+			"uuid", (BiConsumer<DataComment, String>)DataComment::setUuid);
 		attributeGetterFunctions.put(
 			"dataCommentId", DataComment::getDataCommentId);
 		attributeSetterBiConsumers.put(
@@ -257,16 +285,40 @@ public class DataCommentModelImpl
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			(BiConsumer<DataComment, Date>)DataComment::setModifiedDate);
+		attributeGetterFunctions.put("status", DataComment::getStatus);
+		attributeSetterBiConsumers.put(
+			"status", (BiConsumer<DataComment, Integer>)DataComment::setStatus);
+		attributeGetterFunctions.put(
+			"statusByUserId", DataComment::getStatusByUserId);
+		attributeSetterBiConsumers.put(
+			"statusByUserId",
+			(BiConsumer<DataComment, Long>)DataComment::setStatusByUserId);
+		attributeGetterFunctions.put(
+			"statusByUserName", DataComment::getStatusByUserName);
+		attributeSetterBiConsumers.put(
+			"statusByUserName",
+			(BiConsumer<DataComment, String>)DataComment::setStatusByUserName);
+		attributeGetterFunctions.put("statusDate", DataComment::getStatusDate);
+		attributeSetterBiConsumers.put(
+			"statusDate",
+			(BiConsumer<DataComment, Date>)DataComment::setStatusDate);
+		attributeGetterFunctions.put(
+			"lastPublishDate", DataComment::getLastPublishDate);
+		attributeSetterBiConsumers.put(
+			"lastPublishDate",
+			(BiConsumer<DataComment, Date>)DataComment::setLastPublishDate);
 		attributeGetterFunctions.put(
 			"commentModel", DataComment::getCommentModel);
 		attributeSetterBiConsumers.put(
 			"commentModel",
 			(BiConsumer<DataComment, String>)DataComment::setCommentModel);
-		attributeGetterFunctions.put(
-			"commentModelId", DataComment::getCommentModelId);
+		attributeGetterFunctions.put("dataId", DataComment::getDataId);
 		attributeSetterBiConsumers.put(
-			"commentModelId",
-			(BiConsumer<DataComment, Long>)DataComment::setCommentModelId);
+			"dataId", (BiConsumer<DataComment, Long>)DataComment::setDataId);
+		attributeGetterFunctions.put("paramCode", DataComment::getParamCode);
+		attributeSetterBiConsumers.put(
+			"paramCode",
+			(BiConsumer<DataComment, String>)DataComment::setParamCode);
 		attributeGetterFunctions.put(
 			"parentCommentId", DataComment::getParentCommentId);
 		attributeSetterBiConsumers.put(
@@ -281,6 +333,31 @@ public class DataCommentModelImpl
 			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
+	}
+
+	@Override
+	public String getUuid() {
+		if (_uuid == null) {
+			return "";
+		}
+		else {
+			return _uuid;
+		}
+	}
+
+	@Override
+	public void setUuid(String uuid) {
+		_columnBitmask |= UUID_COLUMN_BITMASK;
+
+		if (_originalUuid == null) {
+			_originalUuid = _uuid;
+		}
+
+		_uuid = uuid;
+	}
+
+	public String getOriginalUuid() {
+		return GetterUtil.getString(_originalUuid);
 	}
 
 	@Override
@@ -300,7 +377,19 @@ public class DataCommentModelImpl
 
 	@Override
 	public void setCompanyId(long companyId) {
+		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
 		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@Override
@@ -332,6 +421,14 @@ public class DataCommentModelImpl
 
 	@Override
 	public void setUserId(long userId) {
+		_columnBitmask |= USERID_COLUMN_BITMASK;
+
+		if (!_setOriginalUserId) {
+			_setOriginalUserId = true;
+
+			_originalUserId = _userId;
+		}
+
 		_userId = userId;
 	}
 
@@ -349,6 +446,10 @@ public class DataCommentModelImpl
 
 	@Override
 	public void setUserUuid(String userUuid) {
+	}
+
+	public long getOriginalUserId() {
+		return _originalUserId;
 	}
 
 	@Override
@@ -393,6 +494,89 @@ public class DataCommentModelImpl
 	}
 
 	@Override
+	public int getStatus() {
+		return _status;
+	}
+
+	@Override
+	public void setStatus(int status) {
+		_columnBitmask |= STATUS_COLUMN_BITMASK;
+
+		if (!_setOriginalStatus) {
+			_setOriginalStatus = true;
+
+			_originalStatus = _status;
+		}
+
+		_status = status;
+	}
+
+	public int getOriginalStatus() {
+		return _originalStatus;
+	}
+
+	@Override
+	public long getStatusByUserId() {
+		return _statusByUserId;
+	}
+
+	@Override
+	public void setStatusByUserId(long statusByUserId) {
+		_statusByUserId = statusByUserId;
+	}
+
+	@Override
+	public String getStatusByUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getStatusByUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setStatusByUserUuid(String statusByUserUuid) {
+	}
+
+	@Override
+	public String getStatusByUserName() {
+		if (_statusByUserName == null) {
+			return "";
+		}
+		else {
+			return _statusByUserName;
+		}
+	}
+
+	@Override
+	public void setStatusByUserName(String statusByUserName) {
+		_statusByUserName = statusByUserName;
+	}
+
+	@Override
+	public Date getStatusDate() {
+		return _statusDate;
+	}
+
+	@Override
+	public void setStatusDate(Date statusDate) {
+		_statusDate = statusDate;
+	}
+
+	@Override
+	public Date getLastPublishDate() {
+		return _lastPublishDate;
+	}
+
+	@Override
+	public void setLastPublishDate(Date lastPublishDate) {
+		_lastPublishDate = lastPublishDate;
+	}
+
+	@Override
 	public String getCommentModel() {
 		if (_commentModel == null) {
 			return "";
@@ -418,25 +602,50 @@ public class DataCommentModelImpl
 	}
 
 	@Override
-	public long getCommentModelId() {
-		return _commentModelId;
+	public long getDataId() {
+		return _dataId;
 	}
 
 	@Override
-	public void setCommentModelId(long commentModelId) {
-		_columnBitmask |= COMMENTMODELID_COLUMN_BITMASK;
+	public void setDataId(long dataId) {
+		_columnBitmask |= DATAID_COLUMN_BITMASK;
 
-		if (!_setOriginalCommentModelId) {
-			_setOriginalCommentModelId = true;
+		if (!_setOriginalDataId) {
+			_setOriginalDataId = true;
 
-			_originalCommentModelId = _commentModelId;
+			_originalDataId = _dataId;
 		}
 
-		_commentModelId = commentModelId;
+		_dataId = dataId;
 	}
 
-	public long getOriginalCommentModelId() {
-		return _originalCommentModelId;
+	public long getOriginalDataId() {
+		return _originalDataId;
+	}
+
+	@Override
+	public String getParamCode() {
+		if (_paramCode == null) {
+			return "";
+		}
+		else {
+			return _paramCode;
+		}
+	}
+
+	@Override
+	public void setParamCode(String paramCode) {
+		_columnBitmask |= PARAMCODE_COLUMN_BITMASK;
+
+		if (_originalParamCode == null) {
+			_originalParamCode = _paramCode;
+		}
+
+		_paramCode = paramCode;
+	}
+
+	public String getOriginalParamCode() {
+		return GetterUtil.getString(_originalParamCode);
 	}
 
 	@Override
@@ -446,19 +655,7 @@ public class DataCommentModelImpl
 
 	@Override
 	public void setParentCommentId(long parentCommentId) {
-		_columnBitmask |= PARENTCOMMENTID_COLUMN_BITMASK;
-
-		if (!_setOriginalParentCommentId) {
-			_setOriginalParentCommentId = true;
-
-			_originalParentCommentId = _parentCommentId;
-		}
-
 		_parentCommentId = parentCommentId;
-	}
-
-	public long getOriginalParentCommentId() {
-		return _originalParentCommentId;
 	}
 
 	@Override
@@ -474,6 +671,237 @@ public class DataCommentModelImpl
 	@Override
 	public void setComment(String comment) {
 		_comment = comment;
+	}
+
+	@Override
+	public StagedModelType getStagedModelType() {
+		return new StagedModelType(
+			PortalUtil.getClassNameId(DataComment.class.getName()));
+	}
+
+	@Override
+	public com.liferay.trash.kernel.model.TrashEntry getTrashEntry()
+		throws PortalException {
+
+		if (!isInTrash()) {
+			return null;
+		}
+
+		com.liferay.trash.kernel.model.TrashEntry trashEntry =
+			com.liferay.trash.kernel.service.TrashEntryLocalServiceUtil.
+				fetchEntry(getModelClassName(), getTrashEntryClassPK());
+
+		if (trashEntry != null) {
+			return trashEntry;
+		}
+
+		com.liferay.portal.kernel.trash.TrashHandler trashHandler =
+			getTrashHandler();
+
+		if (Validator.isNotNull(
+				trashHandler.getContainerModelClassName(getPrimaryKey()))) {
+
+			ContainerModel containerModel = null;
+
+			try {
+				containerModel = trashHandler.getParentContainerModel(this);
+			}
+			catch (NoSuchModelException noSuchModelException) {
+				return null;
+			}
+
+			while (containerModel != null) {
+				if (containerModel instanceof TrashedModel) {
+					TrashedModel trashedModel = (TrashedModel)containerModel;
+
+					return trashedModel.getTrashEntry();
+				}
+
+				trashHandler =
+					com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil.
+						getTrashHandler(
+							trashHandler.getContainerModelClassName(
+								containerModel.getContainerModelId()));
+
+				if (trashHandler == null) {
+					return null;
+				}
+
+				containerModel = trashHandler.getContainerModel(
+					containerModel.getParentContainerModelId());
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public long getTrashEntryClassPK() {
+		return getPrimaryKey();
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement
+	 */
+	@Deprecated
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
+		return com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil.
+			getTrashHandler(getModelClassName());
+	}
+
+	@Override
+	public boolean isInTrash() {
+		if (getStatus() == WorkflowConstants.STATUS_IN_TRASH) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isInTrashContainer() {
+		com.liferay.portal.kernel.trash.TrashHandler trashHandler =
+			getTrashHandler();
+
+		if ((trashHandler == null) ||
+			Validator.isNull(
+				trashHandler.getContainerModelClassName(getPrimaryKey()))) {
+
+			return false;
+		}
+
+		try {
+			ContainerModel containerModel =
+				trashHandler.getParentContainerModel(this);
+
+			if (containerModel == null) {
+				return false;
+			}
+
+			if (containerModel instanceof TrashedModel) {
+				return ((TrashedModel)containerModel).isInTrash();
+			}
+		}
+		catch (Exception exception) {
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean isInTrashExplicitly() {
+		if (!isInTrash()) {
+			return false;
+		}
+
+		com.liferay.trash.kernel.model.TrashEntry trashEntry =
+			com.liferay.trash.kernel.service.TrashEntryLocalServiceUtil.
+				fetchEntry(getModelClassName(), getTrashEntryClassPK());
+
+		if (trashEntry != null) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean isInTrashImplicitly() {
+		if (!isInTrash()) {
+			return false;
+		}
+
+		com.liferay.trash.kernel.model.TrashEntry trashEntry =
+			com.liferay.trash.kernel.service.TrashEntryLocalServiceUtil.
+				fetchEntry(getModelClassName(), getTrashEntryClassPK());
+
+		if (trashEntry != null) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean isApproved() {
+		if (getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isDenied() {
+		if (getStatus() == WorkflowConstants.STATUS_DENIED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isDraft() {
+		if (getStatus() == WorkflowConstants.STATUS_DRAFT) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isExpired() {
+		if (getStatus() == WorkflowConstants.STATUS_EXPIRED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isInactive() {
+		if (getStatus() == WorkflowConstants.STATUS_INACTIVE) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isIncomplete() {
+		if (getStatus() == WorkflowConstants.STATUS_INCOMPLETE) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isPending() {
+		if (getStatus() == WorkflowConstants.STATUS_PENDING) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isScheduled() {
+		if (getStatus() == WorkflowConstants.STATUS_SCHEDULED) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public long getColumnBitmask() {
@@ -512,6 +940,7 @@ public class DataCommentModelImpl
 	public Object clone() {
 		DataCommentImpl dataCommentImpl = new DataCommentImpl();
 
+		dataCommentImpl.setUuid(getUuid());
 		dataCommentImpl.setDataCommentId(getDataCommentId());
 		dataCommentImpl.setCompanyId(getCompanyId());
 		dataCommentImpl.setGroupId(getGroupId());
@@ -519,8 +948,14 @@ public class DataCommentModelImpl
 		dataCommentImpl.setUserName(getUserName());
 		dataCommentImpl.setCreateDate(getCreateDate());
 		dataCommentImpl.setModifiedDate(getModifiedDate());
+		dataCommentImpl.setStatus(getStatus());
+		dataCommentImpl.setStatusByUserId(getStatusByUserId());
+		dataCommentImpl.setStatusByUserName(getStatusByUserName());
+		dataCommentImpl.setStatusDate(getStatusDate());
+		dataCommentImpl.setLastPublishDate(getLastPublishDate());
 		dataCommentImpl.setCommentModel(getCommentModel());
-		dataCommentImpl.setCommentModelId(getCommentModelId());
+		dataCommentImpl.setDataId(getDataId());
+		dataCommentImpl.setParamCode(getParamCode());
 		dataCommentImpl.setParentCommentId(getParentCommentId());
 		dataCommentImpl.setComment(getComment());
 
@@ -583,20 +1018,32 @@ public class DataCommentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_originalUuid = _uuid;
+
+		_originalCompanyId = _companyId;
+
+		_setOriginalCompanyId = false;
+
 		_originalGroupId = _groupId;
 
 		_setOriginalGroupId = false;
 
+		_originalUserId = _userId;
+
+		_setOriginalUserId = false;
+
 		_setModifiedDate = false;
+		_originalStatus = _status;
+
+		_setOriginalStatus = false;
+
 		_originalCommentModel = _commentModel;
 
-		_originalCommentModelId = _commentModelId;
+		_originalDataId = _dataId;
 
-		_setOriginalCommentModelId = false;
+		_setOriginalDataId = false;
 
-		_originalParentCommentId = _parentCommentId;
-
-		_setOriginalParentCommentId = false;
+		_originalParamCode = _paramCode;
 
 		_columnBitmask = 0;
 	}
@@ -605,6 +1052,14 @@ public class DataCommentModelImpl
 	public CacheModel<DataComment> toCacheModel() {
 		DataCommentCacheModel dataCommentCacheModel =
 			new DataCommentCacheModel();
+
+		dataCommentCacheModel.uuid = getUuid();
+
+		String uuid = dataCommentCacheModel.uuid;
+
+		if ((uuid != null) && (uuid.length() == 0)) {
+			dataCommentCacheModel.uuid = null;
+		}
 
 		dataCommentCacheModel.dataCommentId = getDataCommentId();
 
@@ -640,6 +1095,36 @@ public class DataCommentModelImpl
 			dataCommentCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
+		dataCommentCacheModel.status = getStatus();
+
+		dataCommentCacheModel.statusByUserId = getStatusByUserId();
+
+		dataCommentCacheModel.statusByUserName = getStatusByUserName();
+
+		String statusByUserName = dataCommentCacheModel.statusByUserName;
+
+		if ((statusByUserName != null) && (statusByUserName.length() == 0)) {
+			dataCommentCacheModel.statusByUserName = null;
+		}
+
+		Date statusDate = getStatusDate();
+
+		if (statusDate != null) {
+			dataCommentCacheModel.statusDate = statusDate.getTime();
+		}
+		else {
+			dataCommentCacheModel.statusDate = Long.MIN_VALUE;
+		}
+
+		Date lastPublishDate = getLastPublishDate();
+
+		if (lastPublishDate != null) {
+			dataCommentCacheModel.lastPublishDate = lastPublishDate.getTime();
+		}
+		else {
+			dataCommentCacheModel.lastPublishDate = Long.MIN_VALUE;
+		}
+
 		dataCommentCacheModel.commentModel = getCommentModel();
 
 		String commentModel = dataCommentCacheModel.commentModel;
@@ -648,7 +1133,15 @@ public class DataCommentModelImpl
 			dataCommentCacheModel.commentModel = null;
 		}
 
-		dataCommentCacheModel.commentModelId = getCommentModelId();
+		dataCommentCacheModel.dataId = getDataId();
+
+		dataCommentCacheModel.paramCode = getParamCode();
+
+		String paramCode = dataCommentCacheModel.paramCode;
+
+		if ((paramCode != null) && (paramCode.length() == 0)) {
+			dataCommentCacheModel.paramCode = null;
+		}
 
 		dataCommentCacheModel.parentCommentId = getParentCommentId();
 
@@ -755,24 +1248,37 @@ public class DataCommentModelImpl
 	private static boolean _entityCacheEnabled;
 	private static boolean _finderCacheEnabled;
 
+	private String _uuid;
+	private String _originalUuid;
 	private long _dataCommentId;
 	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
 	private long _userId;
+	private long _originalUserId;
+	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
+	private int _status;
+	private int _originalStatus;
+	private boolean _setOriginalStatus;
+	private long _statusByUserId;
+	private String _statusByUserName;
+	private Date _statusDate;
+	private Date _lastPublishDate;
 	private String _commentModel;
 	private String _originalCommentModel;
-	private long _commentModelId;
-	private long _originalCommentModelId;
-	private boolean _setOriginalCommentModelId;
+	private long _dataId;
+	private long _originalDataId;
+	private boolean _setOriginalDataId;
+	private String _paramCode;
+	private String _originalParamCode;
 	private long _parentCommentId;
-	private long _originalParentCommentId;
-	private boolean _setOriginalParentCommentId;
 	private String _comment;
 	private long _columnBitmask;
 	private DataComment _escapedModel;

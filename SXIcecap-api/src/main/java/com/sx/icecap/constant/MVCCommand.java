@@ -27,10 +27,12 @@ public class MVCCommand {
 	public static final String ACTION_DELETE_STRUCTURED_DATA = "/action/StructuredData/delete-structured-data";
 	
 	public static final String RESOURCE_ADD_DATATYPE = "/ajax/DataType/add-datatype";
+	public static final String RESOURCE_ADD_COMMENT = "/ajax/DataComment/add-comment";
 	public static final String RESOURCE_ADD_STRUCTURED_DATA = "/ajax/StructuredData/add";
 	public static final String RESOURCE_CHECK_DATASTRUCTURE_UNIQUE = "/ajax/DataStructure/check-datastructure-unique";
 	public static final String RESOURCE_CHECK_DATATYPE_UNIQUE = "/ajax/DataType/check-datatype-unique";
 	public static final String RESOURCE_CREATE_PORTLET_INSTANCE = "/ajax/workbench/create-portlet-instance";
+	public static final String RESOURCE_DELETE_COMMENT = "/ajax/DataComment/delete-comment";
 	public static final String RESOURCE_DELETE_DATASTRUCTURE = "/ajax/DataStructure/delete-datastructure";
 	public static final String RESOURCE_DELETE_DATASTRUCTURES = "/ajax/DataStructure/delete-datastructures";
 	public static final String RESOURCE_DELETE_DATATYPE = "/ajax/DataType/delete-datatype";

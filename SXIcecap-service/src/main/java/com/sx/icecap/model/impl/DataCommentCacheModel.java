@@ -63,9 +63,11 @@ public class DataCommentCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(23);
+		StringBundler sb = new StringBundler(37);
 
-		sb.append("{dataCommentId=");
+		sb.append("{uuid=");
+		sb.append(uuid);
+		sb.append(", dataCommentId=");
 		sb.append(dataCommentId);
 		sb.append(", companyId=");
 		sb.append(companyId);
@@ -79,10 +81,22 @@ public class DataCommentCacheModel
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
+		sb.append(", status=");
+		sb.append(status);
+		sb.append(", statusByUserId=");
+		sb.append(statusByUserId);
+		sb.append(", statusByUserName=");
+		sb.append(statusByUserName);
+		sb.append(", statusDate=");
+		sb.append(statusDate);
+		sb.append(", lastPublishDate=");
+		sb.append(lastPublishDate);
 		sb.append(", commentModel=");
 		sb.append(commentModel);
-		sb.append(", commentModelId=");
-		sb.append(commentModelId);
+		sb.append(", dataId=");
+		sb.append(dataId);
+		sb.append(", paramCode=");
+		sb.append(paramCode);
 		sb.append(", parentCommentId=");
 		sb.append(parentCommentId);
 		sb.append(", comment=");
@@ -95,6 +109,13 @@ public class DataCommentCacheModel
 	@Override
 	public DataComment toEntityModel() {
 		DataCommentImpl dataCommentImpl = new DataCommentImpl();
+
+		if (uuid == null) {
+			dataCommentImpl.setUuid("");
+		}
+		else {
+			dataCommentImpl.setUuid(uuid);
+		}
 
 		dataCommentImpl.setDataCommentId(dataCommentId);
 		dataCommentImpl.setCompanyId(companyId);
@@ -122,6 +143,30 @@ public class DataCommentCacheModel
 			dataCommentImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
+		dataCommentImpl.setStatus(status);
+		dataCommentImpl.setStatusByUserId(statusByUserId);
+
+		if (statusByUserName == null) {
+			dataCommentImpl.setStatusByUserName("");
+		}
+		else {
+			dataCommentImpl.setStatusByUserName(statusByUserName);
+		}
+
+		if (statusDate == Long.MIN_VALUE) {
+			dataCommentImpl.setStatusDate(null);
+		}
+		else {
+			dataCommentImpl.setStatusDate(new Date(statusDate));
+		}
+
+		if (lastPublishDate == Long.MIN_VALUE) {
+			dataCommentImpl.setLastPublishDate(null);
+		}
+		else {
+			dataCommentImpl.setLastPublishDate(new Date(lastPublishDate));
+		}
+
 		if (commentModel == null) {
 			dataCommentImpl.setCommentModel("");
 		}
@@ -129,7 +174,15 @@ public class DataCommentCacheModel
 			dataCommentImpl.setCommentModel(commentModel);
 		}
 
-		dataCommentImpl.setCommentModelId(commentModelId);
+		dataCommentImpl.setDataId(dataId);
+
+		if (paramCode == null) {
+			dataCommentImpl.setParamCode("");
+		}
+		else {
+			dataCommentImpl.setParamCode(paramCode);
+		}
+
 		dataCommentImpl.setParentCommentId(parentCommentId);
 
 		if (comment == null) {
@@ -146,6 +199,8 @@ public class DataCommentCacheModel
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
+		uuid = objectInput.readUTF();
+
 		dataCommentId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
@@ -156,9 +211,17 @@ public class DataCommentCacheModel
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
+		status = objectInput.readInt();
+
+		statusByUserId = objectInput.readLong();
+		statusByUserName = objectInput.readUTF();
+		statusDate = objectInput.readLong();
+		lastPublishDate = objectInput.readLong();
 		commentModel = objectInput.readUTF();
 
-		commentModelId = objectInput.readLong();
+		dataId = objectInput.readLong();
+		paramCode = objectInput.readUTF();
 
 		parentCommentId = objectInput.readLong();
 		comment = objectInput.readUTF();
@@ -166,6 +229,13 @@ public class DataCommentCacheModel
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+		if (uuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(uuid);
+		}
+
 		objectOutput.writeLong(dataCommentId);
 
 		objectOutput.writeLong(companyId);
@@ -184,6 +254,20 @@ public class DataCommentCacheModel
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
+		objectOutput.writeInt(status);
+
+		objectOutput.writeLong(statusByUserId);
+
+		if (statusByUserName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(statusByUserName);
+		}
+
+		objectOutput.writeLong(statusDate);
+		objectOutput.writeLong(lastPublishDate);
+
 		if (commentModel == null) {
 			objectOutput.writeUTF("");
 		}
@@ -191,7 +275,14 @@ public class DataCommentCacheModel
 			objectOutput.writeUTF(commentModel);
 		}
 
-		objectOutput.writeLong(commentModelId);
+		objectOutput.writeLong(dataId);
+
+		if (paramCode == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(paramCode);
+		}
 
 		objectOutput.writeLong(parentCommentId);
 
@@ -203,6 +294,7 @@ public class DataCommentCacheModel
 		}
 	}
 
+	public String uuid;
 	public long dataCommentId;
 	public long companyId;
 	public long groupId;
@@ -210,8 +302,14 @@ public class DataCommentCacheModel
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
+	public int status;
+	public long statusByUserId;
+	public String statusByUserName;
+	public long statusDate;
+	public long lastPublishDate;
 	public String commentModel;
-	public long commentModelId;
+	public long dataId;
+	public String paramCode;
 	public long parentCommentId;
 	public String comment;
 

@@ -466,7 +466,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 					jsonDataCollection.put("verifiedDate", link.getVerifiedDate());
 					
 					int commentCount = 
-							dataCommentPersistence.countByModelId(DataSet.class.getName(), dataSetId);
+							dataCommentPersistence.countByDataId(DataSet.class.getName(), dataSetId);
 					jsonDataCollection.put("commentCount", commentCount);
 				}
 				
@@ -500,7 +500,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 			jsonDataType.put("verifiedDate", link.getVerifiedDate());
 			
 			int commentCount = 
-					dataCommentPersistence.countByModelId(DataType.class.getName(), dataType.getDataTypeId());
+					dataCommentPersistence.countByDataId(DataSet.class.getName(), dataType.getDataTypeId());
 			jsonDataType.put("commentCount", commentCount);
 			
 			jsonDataTypeList.put(jsonDataType);
@@ -543,7 +543,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 					jsonDataSet.put("verifiedDate", link.getVerifiedDate());
 					
 					int commentCount = 
-							dataCommentPersistence.countByModelId(DataSet.class.getName(), dataSet.getDataSetId());
+							dataCommentPersistence.countByDataId(DataSet.class.getName(), dataSet.getDataSetId());
 					jsonDataSet.put("commentCount", commentCount);
 					
 					jsonDataSetListInfo.put(jsonDataSet);
@@ -560,7 +560,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 				jsonDataSet.put("verified", false);
 				
 				int commentCount = 
-						dataCommentPersistence.countByModelId(DataSet.class.getName(), dataSet.getDataSetId());
+						dataCommentPersistence.countByDataId(DataSet.class.getName(), dataSet.getDataSetId());
 				jsonDataSet.put("commentCount", commentCount);
 				
 				jsonDataSetListInfo.put(jsonDataSet);

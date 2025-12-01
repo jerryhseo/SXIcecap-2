@@ -60,18 +60,25 @@ public class DataCommentLocalServiceUtil {
 	}
 
 	public static DataComment addDataComment(
-			String commentModel, long commentModelId, long parentCommentId,
-			String comment, com.liferay.portal.kernel.service.ServiceContext sc)
+			String commentModel, long dataId, String paramCode,
+			long parentCommentId, String comment, int status,
+			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().addDataComment(
-			commentModel, commentModelId, parentCommentId, comment, sc);
+			commentModel, dataId, paramCode, parentCommentId, comment, status,
+			sc);
 	}
 
-	public static int countDataComments(
-		String commentModel, long commentModelId) {
+	public static int countDataComments(String commentModel, long dataId) {
+		return getService().countDataComments(commentModel, dataId);
+	}
 
-		return getService().countDataComments(commentModel, commentModelId);
+	public static int countDataCommentsByParamCode(
+		String commentModel, long dataId, String paramCode) {
+
+		return getService().countDataCommentsByParamCode(
+			commentModel, dataId, paramCode);
 	}
 
 	/**
@@ -206,6 +213,19 @@ public class DataCommentLocalServiceUtil {
 		return getService().fetchDataComment(dataCommentId);
 	}
 
+	/**
+	 * Returns the data comment matching the UUID and group.
+	 *
+	 * @param uuid the data comment's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data comment, or <code>null</code> if a matching data comment could not be found
+	 */
+	public static DataComment fetchDataCommentByUuidAndGroupId(
+		String uuid, long groupId) {
+
+		return getService().fetchDataCommentByUuidAndGroupId(uuid, groupId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -225,10 +245,32 @@ public class DataCommentLocalServiceUtil {
 		return getService().getDataComment(dataCommentId);
 	}
 
-	public static List<DataComment> getDataCommentList(
-		String commentModel, long commentModelId) {
+	/**
+	 * Returns the data comment matching the UUID and group.
+	 *
+	 * @param uuid the data comment's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data comment
+	 * @throws PortalException if a matching data comment could not be found
+	 */
+	public static DataComment getDataCommentByUuidAndGroupId(
+			String uuid, long groupId)
+		throws PortalException {
 
-		return getService().getDataCommentList(commentModel, commentModelId);
+		return getService().getDataCommentByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static List<DataComment> getDataCommentList(
+		String commentModel, long dataId) {
+
+		return getService().getDataCommentList(commentModel, dataId);
+	}
+
+	public static List<DataComment> getDataCommentListByParamCode(
+		String commentModel, long dataId, String paramCode) {
+
+		return getService().getDataCommentListByParamCode(
+			commentModel, dataId, paramCode);
 	}
 
 	/**
@@ -247,12 +289,51 @@ public class DataCommentLocalServiceUtil {
 	}
 
 	/**
+	 * Returns all the data comments matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data comments
+	 * @param companyId the primary key of the company
+	 * @return the matching data comments, or an empty list if no matches were found
+	 */
+	public static List<DataComment> getDataCommentsByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		return getService().getDataCommentsByUuidAndCompanyId(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of data comments matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data comments
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of data comments
+	 * @param end the upper bound of the range of data comments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching data comments, or an empty list if no matches were found
+	 */
+	public static List<DataComment> getDataCommentsByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DataComment> orderByComparator) {
+
+		return getService().getDataCommentsByUuidAndCompanyId(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
 	 * Returns the number of data comments.
 	 *
 	 * @return the number of data comments
 	 */
 	public static int getDataCommentsCount() {
 		return getService().getDataCommentsCount();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
+		getExportActionableDynamicQuery(
+			com.liferay.exportimport.kernel.lar.PortletDataContext
+				portletDataContext) {
+
+		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	public static
@@ -280,26 +361,28 @@ public class DataCommentLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static boolean hasComments(
-		String commentModel, long commentModelId) {
-
-		return getService().hasComments(commentModel, commentModelId);
+	public static boolean hasComments(String commentModel, long dataId) {
+		return getService().hasComments(commentModel, dataId);
 	}
 
 	public static DataComment removeDataComment(long dataCommentId)
-		throws com.sx.icecap.exception.NoSuchDataCommentException {
+		throws PortalException {
 
 		return getService().removeDataComment(dataCommentId);
 	}
 
-	public static void removeDataComment(String commentModel) {
-		getService().removeDataComment(commentModel);
+	public static void removeDataComments(String commentModel, long dataId)
+		throws PortalException {
+
+		getService().removeDataComments(commentModel, dataId);
 	}
 
-	public static void removeDataCommentByModelId(
-		String commentModel, long commentModelId) {
+	public static void removeDataCommentsByParamCode(
+			String commentModel, long dataId, String paramCode)
+		throws PortalException {
 
-		getService().removeDataCommentByModelId(commentModel, commentModelId);
+		getService().removeDataCommentsByParamCode(
+			commentModel, dataId, paramCode);
 	}
 
 	/**
@@ -317,14 +400,14 @@ public class DataCommentLocalServiceUtil {
 	}
 
 	public static DataComment updateDataComment(
-			long dataCommentId, String commentModel, long commentModelId,
-			long parentCommentId, String comment,
+			long dataCommentId, String commentModel, long dataId,
+			String paramCode, long parentCommentId, String comment, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().updateDataComment(
-			dataCommentId, commentModel, commentModelId, parentCommentId,
-			comment, sc);
+			dataCommentId, commentModel, dataId, paramCode, parentCommentId,
+			comment, status, sc);
 	}
 
 	public static DataCommentLocalService getService() {

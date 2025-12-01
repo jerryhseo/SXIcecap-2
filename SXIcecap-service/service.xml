@@ -746,8 +746,7 @@
         
 	</entity>
 	
-	<entity name="DataComment" local-service="true" uuid="false"
-		remote-service="false">
+	<entity name="DataComment" local-service="true" uuid="true" remote-service="false" trash-enabled="true" uuid-accessor="true">
 		<!-- PK fields -->
 
 		<column name="dataCommentId" primary="true" type="long"></column>
@@ -764,34 +763,76 @@
 		<column name="createDate" type="Date"></column>
 		<column name="modifiedDate" type="Date"></column>
 		
+		
+		<!-- Status fields for workflow -->
+		<column name="status" type="int" />
+		<column name="statusByUserId" type="long" />
+		<column name="statusByUserName" type="String" />
+		<column name="statusDate" type="Date" />
+		
+		<!-- Field for Staging --> 
+		<column name="lastPublishDate" type="Date" />
+		
+		<!--  Descriptive -->
 		<column name="commentModel" type="String"></column>
-		<column name="commentModelId" type="long"></column>
+		<column name="dataId" type="long"></column>
+        <column name="paramCode" type="String"></column>
 		
 		<column name="parentCommentId" type="long"></column>
 		<column name="comment" type="String"></column>
 		
-        <finder return-type="Collection" name="ModelId">
-            <finder-column name="commentModel"></finder-column>
-            <finder-column name="commentModelId"></finder-column>
+		<!--  Findes -->
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+		</finder>
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId"></finder-column>
+		</finder>
+		<finder name="Status" return-type="Collection">
+			<finder-column name="status"></finder-column>
+		</finder>
+		
+		<finder name="G_U" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="userId"></finder-column>
+		</finder>
+		<finder name="G_S" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="status"></finder-column>
+		</finder>
+		<finder name="U_S" return-type="Collection">
+			<finder-column name="userId"></finder-column>
+			<finder-column name="status"></finder-column>
+		</finder>
+		<finder name="G_U_S" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="userId"></finder-column>
+			<finder-column name="status"></finder-column>
+		</finder>
+		
+        <finder return-type="Collection" name="DataId">
+        	<finder-column name="commentModel"></finder-column>
+            <finder-column name="dataId"></finder-column>
+        </finder>
+        <finder return-type="Collection" name="ParamCode">
+        	<finder-column name="commentModel"></finder-column>
+            <finder-column name="dataId"></finder-column>
+            <finder-column name="paramCode"></finder-column>
         </finder>
         <finder name="Model" return-type="Collection">
             <finder-column name="commentModel"></finder-column>
-        </finder>
-        <finder name="ParentComment" return-type="Collection">
-            <finder-column name="parentCommentId"></finder-column>
-        </finder>
-        <finder return-type="Collection" name="ModelId_G">
-            <finder-column name="groupId"></finder-column>
-            <finder-column name="commentModel"></finder-column>
-            <finder-column name="commentModelId"></finder-column>
         </finder>
         <finder name="Model_G" return-type="Collection">
         	<finder-column name="groupId"></finder-column>
             <finder-column name="commentModel"></finder-column>
         </finder>
-        <finder name="GroupId" return-type="Collection">
-            <finder-column name="groupId"></finder-column>
-        </finder>
+        
+        <reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
+		<reference entity="AssetLink" package-path="com.liferay.portlet.asset" />
+		<reference entity="RatingsStats" package-path="com.liferay.portlet.ratings" />
+		<reference entity="TrashEntry" package-path="com.liferay.portlet.trash" />
+		<reference entity="TrashVersion" package-path="com.liferay.portlet.trash" />
+		<reference entity="WorkflowInstanceLink" package-path="com.liferay.portal" />
 	</entity>
 	
 	<entity name="ActionHistory" local-service="true" uuid="false"

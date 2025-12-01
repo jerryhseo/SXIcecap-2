@@ -330,7 +330,7 @@ public class DataCollectionLocalServiceImpl
 				jsonDataSet.put("freezedDate", link.getVerifiedDate());
 				
 				int commentCount = 
-						dataCommentPersistence.countByModelId(DataSet.class.getName(), dataSet.getDataSetId());
+						dataCommentPersistence.countByDataId(DataSet.class.getName(), dataSet.getDataSetId());
 				jsonDataSet.put("commentCount", commentCount);
 				
 				jsonDataSetList.put(jsonDataSet);

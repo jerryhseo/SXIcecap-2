@@ -397,4 +397,65 @@ Mapping 7.2.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7
 			</guest-unsupported>
 		</permissions>
 	</model-resource>
+	
+	<model-resource>
+		<model-name>com.sx.icecap.model.DataComment</model-name>
+		<portlet-ref>
+			<portlet-name>com_sx_icecap_web_portlet_StructuredDataEditorPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_StructuredDataViewerPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataTypeEditorPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataTypeViewerPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataStructureBulderPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataSetEditorPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataSetViewerPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataCollectionEditorPortlet</portlet-name>
+			<portlet-name>com_sx_icecap_web_portlet_DataCollectionViewerPortlet</portlet-name>
+		</portlet-ref>
+		<weight>2</weight>
+		<permissions>
+			<supports>
+				<action-key>ADD</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>REVIEW</action-key>
+				<action-key>VERIFY</action-key>
+				<action-key>FREEZE</action-key>
+				<action-key>COMMENT</action-key>
+				<action-key>APPROVE</action-key>
+				<action-key>ADD_DISCUSSION</action-key>
+				<action-key>DELETE_DISCUSSION</action-key>
+				<action-key>UPDATE_DISCUSSION</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults>
+				<action-key>ADD</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>REVIEW</action-key>
+				<action-key>VERIFY</action-key>
+				<action-key>FREEZE</action-key>
+				<action-key>COMMENT</action-key>
+				<action-key>ADD_DISCUSSION</action-key>
+				<action-key>DELETE_DISCUSSION</action-key>
+				<action-key>UPDATE_DISCUSSION</action-key>
+				<action-key>VIEW</action-key>
+			</site-member-defaults>
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
+			<guest-unsupported>
+				<action-key>ADD</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>REVIEW</action-key>
+				<action-key>VERIFY</action-key>
+				<action-key>FREEZE</action-key>
+				<action-key>COMMENT</action-key>
+				<action-key>APPROVE</action-key>
+				<action-key>PERMISSIONS</action-key>
+			</guest-unsupported>
+		</permissions>
+	</model-resource>
+	
 </resource-action-mapping>

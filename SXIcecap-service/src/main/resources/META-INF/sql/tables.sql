@@ -54,6 +54,7 @@ create table SX_ICECAP_DataCollection (
 );
 
 create table SX_ICECAP_DataComment (
+	uuid_ VARCHAR(75) null,
 	dataCommentId LONG not null primary key,
 	companyId LONG,
 	groupId LONG,
@@ -61,8 +62,14 @@ create table SX_ICECAP_DataComment (
 	userName VARCHAR(75) null,
 	createDate DATE null,
 	modifiedDate DATE null,
+	status INTEGER,
+	statusByUserId LONG,
+	statusByUserName VARCHAR(75) null,
+	statusDate DATE null,
+	lastPublishDate DATE null,
 	commentModel VARCHAR(75) null,
-	commentModelId LONG,
+	dataId LONG,
+	paramCode VARCHAR(75) null,
 	parentCommentId LONG,
 	comment_ VARCHAR(75) null
 );

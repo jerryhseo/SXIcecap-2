@@ -14,8 +14,10 @@
 
 package com.sx.icecap.service;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -31,7 +33,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import com.sx.icecap.exception.NoSuchDataCommentException;
 import com.sx.icecap.model.DataComment;
 
 import java.io.Serializable;
@@ -79,11 +80,14 @@ public interface DataCommentLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DataComment addDataComment(
-			String commentModel, long commentModelId, long parentCommentId,
-			String comment, ServiceContext sc)
+			String commentModel, long dataId, String paramCode,
+			long parentCommentId, String comment, int status, ServiceContext sc)
 		throws PortalException;
 
-	public int countDataComments(String commentModel, long commentModelId);
+	public int countDataComments(String commentModel, long dataId);
+
+	public int countDataCommentsByParamCode(
+		String commentModel, long dataId, String paramCode);
 
 	/**
 	 * Creates a new data comment with the primary key. Does not add the data comment to the database.
@@ -198,6 +202,17 @@ public interface DataCommentLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DataComment fetchDataComment(long dataCommentId);
 
+	/**
+	 * Returns the data comment matching the UUID and group.
+	 *
+	 * @param uuid the data comment's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data comment, or <code>null</code> if a matching data comment could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DataComment fetchDataCommentByUuidAndGroupId(
+		String uuid, long groupId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -212,9 +227,25 @@ public interface DataCommentLocalService
 	public DataComment getDataComment(long dataCommentId)
 		throws PortalException;
 
+	/**
+	 * Returns the data comment matching the UUID and group.
+	 *
+	 * @param uuid the data comment's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching data comment
+	 * @throws PortalException if a matching data comment could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DataComment getDataCommentByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DataComment> getDataCommentList(
-		String commentModel, long commentModelId);
+		String commentModel, long dataId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataComment> getDataCommentListByParamCode(
+		String commentModel, long dataId, String paramCode);
 
 	/**
 	 * Returns a range of all the data comments.
@@ -231,12 +262,42 @@ public interface DataCommentLocalService
 	public List<DataComment> getDataComments(int start, int end);
 
 	/**
+	 * Returns all the data comments matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data comments
+	 * @param companyId the primary key of the company
+	 * @return the matching data comments, or an empty list if no matches were found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataComment> getDataCommentsByUuidAndCompanyId(
+		String uuid, long companyId);
+
+	/**
+	 * Returns a range of data comments matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the data comments
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of data comments
+	 * @param end the upper bound of the range of data comments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching data comments, or an empty list if no matches were found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DataComment> getDataCommentsByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DataComment> orderByComparator);
+
+	/**
 	 * Returns the number of data comments.
 	 *
 	 * @return the number of data comments
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getDataCommentsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		PortletDataContext portletDataContext);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
@@ -257,18 +318,18 @@ public interface DataCommentLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasComments(String commentModel, long commentModelId);
+	public boolean hasComments(String commentModel, long dataId);
 
 	@Indexable(type = IndexableType.DELETE)
 	public DataComment removeDataComment(long dataCommentId)
-		throws NoSuchDataCommentException;
+		throws PortalException;
 
-	@Indexable(type = IndexableType.DELETE)
-	public void removeDataComment(String commentModel);
+	public void removeDataComments(String commentModel, long dataId)
+		throws PortalException;
 
-	@Indexable(type = IndexableType.DELETE)
-	public void removeDataCommentByModelId(
-		String commentModel, long commentModelId);
+	public void removeDataCommentsByParamCode(
+			String commentModel, long dataId, String paramCode)
+		throws PortalException;
 
 	/**
 	 * Updates the data comment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -285,8 +346,9 @@ public interface DataCommentLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DataComment updateDataComment(
-			long dataCommentId, String commentModel, long commentModelId,
-			long parentCommentId, String comment, ServiceContext sc)
+			long dataCommentId, String commentModel, long dataId,
+			String paramCode, long parentCommentId, String comment, int status,
+			ServiceContext sc)
 		throws PortalException;
 
 }

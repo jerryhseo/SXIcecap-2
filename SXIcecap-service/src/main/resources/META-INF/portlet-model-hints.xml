@@ -54,6 +54,7 @@
 		<field localized="true" name="description" type="String" />
 	</model>
 	<model name="com.sx.icecap.model.DataComment">
+		<field name="uuid" type="String" />
 		<field name="dataCommentId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="groupId" type="long" />
@@ -61,8 +62,14 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+		<field name="lastPublishDate" type="Date" />
 		<field name="commentModel" type="String" />
-		<field name="commentModelId" type="long" />
+		<field name="dataId" type="long" />
+		<field name="paramCode" type="String" />
 		<field name="parentCommentId" type="long" />
 		<field name="comment" type="String" />
 	</model>

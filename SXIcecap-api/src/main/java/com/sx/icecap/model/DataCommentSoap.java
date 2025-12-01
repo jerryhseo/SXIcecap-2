@@ -31,6 +31,7 @@ public class DataCommentSoap implements Serializable {
 	public static DataCommentSoap toSoapModel(DataComment model) {
 		DataCommentSoap soapModel = new DataCommentSoap();
 
+		soapModel.setUuid(model.getUuid());
 		soapModel.setDataCommentId(model.getDataCommentId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setGroupId(model.getGroupId());
@@ -38,8 +39,14 @@ public class DataCommentSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
+		soapModel.setStatus(model.getStatus());
+		soapModel.setStatusByUserId(model.getStatusByUserId());
+		soapModel.setStatusByUserName(model.getStatusByUserName());
+		soapModel.setStatusDate(model.getStatusDate());
+		soapModel.setLastPublishDate(model.getLastPublishDate());
 		soapModel.setCommentModel(model.getCommentModel());
-		soapModel.setCommentModelId(model.getCommentModelId());
+		soapModel.setDataId(model.getDataId());
+		soapModel.setParamCode(model.getParamCode());
 		soapModel.setParentCommentId(model.getParentCommentId());
 		soapModel.setComment(model.getComment());
 
@@ -93,6 +100,14 @@ public class DataCommentSoap implements Serializable {
 
 	public void setPrimaryKey(long pk) {
 		setDataCommentId(pk);
+	}
+
+	public String getUuid() {
+		return _uuid;
+	}
+
+	public void setUuid(String uuid) {
+		_uuid = uuid;
 	}
 
 	public long getDataCommentId() {
@@ -151,6 +166,46 @@ public class DataCommentSoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
+	public int getStatus() {
+		return _status;
+	}
+
+	public void setStatus(int status) {
+		_status = status;
+	}
+
+	public long getStatusByUserId() {
+		return _statusByUserId;
+	}
+
+	public void setStatusByUserId(long statusByUserId) {
+		_statusByUserId = statusByUserId;
+	}
+
+	public String getStatusByUserName() {
+		return _statusByUserName;
+	}
+
+	public void setStatusByUserName(String statusByUserName) {
+		_statusByUserName = statusByUserName;
+	}
+
+	public Date getStatusDate() {
+		return _statusDate;
+	}
+
+	public void setStatusDate(Date statusDate) {
+		_statusDate = statusDate;
+	}
+
+	public Date getLastPublishDate() {
+		return _lastPublishDate;
+	}
+
+	public void setLastPublishDate(Date lastPublishDate) {
+		_lastPublishDate = lastPublishDate;
+	}
+
 	public String getCommentModel() {
 		return _commentModel;
 	}
@@ -159,12 +214,20 @@ public class DataCommentSoap implements Serializable {
 		_commentModel = commentModel;
 	}
 
-	public long getCommentModelId() {
-		return _commentModelId;
+	public long getDataId() {
+		return _dataId;
 	}
 
-	public void setCommentModelId(long commentModelId) {
-		_commentModelId = commentModelId;
+	public void setDataId(long dataId) {
+		_dataId = dataId;
+	}
+
+	public String getParamCode() {
+		return _paramCode;
+	}
+
+	public void setParamCode(String paramCode) {
+		_paramCode = paramCode;
 	}
 
 	public long getParentCommentId() {
@@ -183,6 +246,7 @@ public class DataCommentSoap implements Serializable {
 		_comment = comment;
 	}
 
+	private String _uuid;
 	private long _dataCommentId;
 	private long _companyId;
 	private long _groupId;
@@ -190,8 +254,14 @@ public class DataCommentSoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
+	private int _status;
+	private long _statusByUserId;
+	private String _statusByUserName;
+	private Date _statusDate;
+	private Date _lastPublishDate;
 	private String _commentModel;
-	private long _commentModelId;
+	private long _dataId;
+	private String _paramCode;
 	private long _parentCommentId;
 	private String _comment;
 

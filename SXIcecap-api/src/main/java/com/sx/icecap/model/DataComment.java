@@ -36,6 +36,26 @@ public interface DataComment extends DataCommentModel, PersistedModel {
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.sx.icecap.model.impl.DataCommentImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public static final Accessor<DataComment, String> UUID_ACCESSOR =
+		new Accessor<DataComment, String>() {
+
+			@Override
+			public String get(DataComment dataComment) {
+				return dataComment.getUuid();
+			}
+
+			@Override
+			public Class<String> getAttributeClass() {
+				return String.class;
+			}
+
+			@Override
+			public Class<DataComment> getTypeClass() {
+				return DataComment.class;
+			}
+
+		};
+
 	public static final Accessor<DataComment, Long> DATA_COMMENT_ID_ACCESSOR =
 		new Accessor<DataComment, Long>() {
 
