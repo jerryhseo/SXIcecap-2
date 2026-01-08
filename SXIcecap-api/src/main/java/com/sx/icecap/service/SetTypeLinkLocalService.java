@@ -81,6 +81,9 @@ public interface SetTypeLinkLocalService
 
 	public int countAllSetTypeLinkList();
 
+	public int countSetTypeLinkListByCollectionSet_G(
+		long groupId, long collectionId, long dataSetId);
+
 	public int countSetTypeLinkListBySet(long dataSetId);
 
 	public int countSetTypeLinkListByType(long dataTypeId);
@@ -237,7 +240,12 @@ public interface SetTypeLinkLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SetTypeLink getSetTypeLink(long dataSetId, long dataTypeId);
+	public SetTypeLink getSetTypeLink(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SetTypeLink> getSetTypeLinkListByCollectionSet_G(
+		long groupId, long collectionId, long dataSetId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SetTypeLink> getSetTypeLinkListBySet(long dataSetId);
@@ -252,6 +260,10 @@ public interface SetTypeLinkLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SetTypeLink> getSetTypeLinkListByType(
 		long dataTypeId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SetTypeLink> getSetTypeLinkListByType(
+		long groupId, long collectionId, long dataSetId, int start, int end);
 
 	/**
 	 * Returns a range of all the set type links.

@@ -71,10 +71,10 @@ public class ActionHistoryModelImpl
 	public static final Object[][] TABLE_COLUMNS = {
 		{"actionHistoryId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"actionType", Types.VARCHAR}, {"actionBase", Types.VARCHAR},
-		{"actionDataId", Types.BIGINT}, {"paramCode", Types.VARCHAR},
-		{"actionCommand", Types.VARCHAR}, {"prevValue", Types.VARCHAR},
-		{"modifiedValue", Types.VARCHAR}, {"comment_", Types.VARCHAR}
+		{"actionModel", Types.VARCHAR}, {"dataId", Types.BIGINT},
+		{"paramCode", Types.VARCHAR}, {"actionCommand", Types.VARCHAR},
+		{"prevValue", Types.VARCHAR}, {"modifiedValue", Types.VARCHAR},
+		{"comment_", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -85,9 +85,8 @@ public class ActionHistoryModelImpl
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("actionType", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("actionBase", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("actionDataId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("actionModel", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("dataId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("paramCode", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("actionCommand", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("prevValue", Types.VARCHAR);
@@ -96,7 +95,7 @@ public class ActionHistoryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_ActionHistory (actionHistoryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,actionType VARCHAR(75) null,actionBase VARCHAR(75) null,actionDataId LONG,paramCode VARCHAR(75) null,actionCommand VARCHAR(75) null,prevValue VARCHAR(75) null,modifiedValue VARCHAR(75) null,comment_ VARCHAR(75) null)";
+		"create table SX_ICECAP_ActionHistory (actionHistoryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,actionModel VARCHAR(75) null,dataId LONG,paramCode VARCHAR(75) null,actionCommand VARCHAR(75) null,prevValue VARCHAR(75) null,modifiedValue VARCHAR(75) null,comment_ VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_ActionHistory";
@@ -113,15 +112,13 @@ public class ActionHistoryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long ACTIONBASE_COLUMN_BITMASK = 1L;
+	public static final long ACTIONMODEL_COLUMN_BITMASK = 1L;
 
-	public static final long ACTIONDATAID_COLUMN_BITMASK = 2L;
+	public static final long DATAID_COLUMN_BITMASK = 2L;
 
-	public static final long ACTIONTYPE_COLUMN_BITMASK = 4L;
+	public static final long PARAMCODE_COLUMN_BITMASK = 4L;
 
-	public static final long PARAMCODE_COLUMN_BITMASK = 8L;
-
-	public static final long ACTIONHISTORYID_COLUMN_BITMASK = 16L;
+	public static final long ACTIONHISTORYID_COLUMN_BITMASK = 8L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -249,20 +246,14 @@ public class ActionHistoryModelImpl
 			"createDate",
 			(BiConsumer<ActionHistory, Date>)ActionHistory::setCreateDate);
 		attributeGetterFunctions.put(
-			"actionType", ActionHistory::getActionType);
+			"actionModel", ActionHistory::getActionModel);
 		attributeSetterBiConsumers.put(
-			"actionType",
-			(BiConsumer<ActionHistory, String>)ActionHistory::setActionType);
-		attributeGetterFunctions.put(
-			"actionBase", ActionHistory::getActionBase);
+			"actionModel",
+			(BiConsumer<ActionHistory, String>)ActionHistory::setActionModel);
+		attributeGetterFunctions.put("dataId", ActionHistory::getDataId);
 		attributeSetterBiConsumers.put(
-			"actionBase",
-			(BiConsumer<ActionHistory, String>)ActionHistory::setActionBase);
-		attributeGetterFunctions.put(
-			"actionDataId", ActionHistory::getActionDataId);
-		attributeSetterBiConsumers.put(
-			"actionDataId",
-			(BiConsumer<ActionHistory, Long>)ActionHistory::setActionDataId);
+			"dataId",
+			(BiConsumer<ActionHistory, Long>)ActionHistory::setDataId);
 		attributeGetterFunctions.put("paramCode", ActionHistory::getParamCode);
 		attributeSetterBiConsumers.put(
 			"paramCode",
@@ -354,75 +345,50 @@ public class ActionHistoryModelImpl
 	}
 
 	@Override
-	public String getActionType() {
-		if (_actionType == null) {
+	public String getActionModel() {
+		if (_actionModel == null) {
 			return "";
 		}
 		else {
-			return _actionType;
+			return _actionModel;
 		}
 	}
 
 	@Override
-	public void setActionType(String actionType) {
-		_columnBitmask |= ACTIONTYPE_COLUMN_BITMASK;
+	public void setActionModel(String actionModel) {
+		_columnBitmask |= ACTIONMODEL_COLUMN_BITMASK;
 
-		if (_originalActionType == null) {
-			_originalActionType = _actionType;
+		if (_originalActionModel == null) {
+			_originalActionModel = _actionModel;
 		}
 
-		_actionType = actionType;
+		_actionModel = actionModel;
 	}
 
-	public String getOriginalActionType() {
-		return GetterUtil.getString(_originalActionType);
+	public String getOriginalActionModel() {
+		return GetterUtil.getString(_originalActionModel);
 	}
 
 	@Override
-	public String getActionBase() {
-		if (_actionBase == null) {
-			return "";
-		}
-		else {
-			return _actionBase;
-		}
+	public long getDataId() {
+		return _dataId;
 	}
 
 	@Override
-	public void setActionBase(String actionBase) {
-		_columnBitmask |= ACTIONBASE_COLUMN_BITMASK;
+	public void setDataId(long dataId) {
+		_columnBitmask |= DATAID_COLUMN_BITMASK;
 
-		if (_originalActionBase == null) {
-			_originalActionBase = _actionBase;
+		if (!_setOriginalDataId) {
+			_setOriginalDataId = true;
+
+			_originalDataId = _dataId;
 		}
 
-		_actionBase = actionBase;
+		_dataId = dataId;
 	}
 
-	public String getOriginalActionBase() {
-		return GetterUtil.getString(_originalActionBase);
-	}
-
-	@Override
-	public long getActionDataId() {
-		return _actionDataId;
-	}
-
-	@Override
-	public void setActionDataId(long actionDataId) {
-		_columnBitmask |= ACTIONDATAID_COLUMN_BITMASK;
-
-		if (!_setOriginalActionDataId) {
-			_setOriginalActionDataId = true;
-
-			_originalActionDataId = _actionDataId;
-		}
-
-		_actionDataId = actionDataId;
-	}
-
-	public long getOriginalActionDataId() {
-		return _originalActionDataId;
+	public long getOriginalDataId() {
+		return _originalDataId;
 	}
 
 	@Override
@@ -550,9 +516,8 @@ public class ActionHistoryModelImpl
 		actionHistoryImpl.setUserId(getUserId());
 		actionHistoryImpl.setUserName(getUserName());
 		actionHistoryImpl.setCreateDate(getCreateDate());
-		actionHistoryImpl.setActionType(getActionType());
-		actionHistoryImpl.setActionBase(getActionBase());
-		actionHistoryImpl.setActionDataId(getActionDataId());
+		actionHistoryImpl.setActionModel(getActionModel());
+		actionHistoryImpl.setDataId(getDataId());
 		actionHistoryImpl.setParamCode(getParamCode());
 		actionHistoryImpl.setActionCommand(getActionCommand());
 		actionHistoryImpl.setPrevValue(getPrevValue());
@@ -618,13 +583,11 @@ public class ActionHistoryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		_originalActionType = _actionType;
+		_originalActionModel = _actionModel;
 
-		_originalActionBase = _actionBase;
+		_originalDataId = _dataId;
 
-		_originalActionDataId = _actionDataId;
-
-		_setOriginalActionDataId = false;
+		_setOriginalDataId = false;
 
 		_originalParamCode = _paramCode;
 
@@ -657,23 +620,15 @@ public class ActionHistoryModelImpl
 			actionHistoryCacheModel.createDate = Long.MIN_VALUE;
 		}
 
-		actionHistoryCacheModel.actionType = getActionType();
+		actionHistoryCacheModel.actionModel = getActionModel();
 
-		String actionType = actionHistoryCacheModel.actionType;
+		String actionModel = actionHistoryCacheModel.actionModel;
 
-		if ((actionType != null) && (actionType.length() == 0)) {
-			actionHistoryCacheModel.actionType = null;
+		if ((actionModel != null) && (actionModel.length() == 0)) {
+			actionHistoryCacheModel.actionModel = null;
 		}
 
-		actionHistoryCacheModel.actionBase = getActionBase();
-
-		String actionBase = actionHistoryCacheModel.actionBase;
-
-		if ((actionBase != null) && (actionBase.length() == 0)) {
-			actionHistoryCacheModel.actionBase = null;
-		}
-
-		actionHistoryCacheModel.actionDataId = getActionDataId();
+		actionHistoryCacheModel.dataId = getDataId();
 
 		actionHistoryCacheModel.paramCode = getParamCode();
 
@@ -814,13 +769,11 @@ public class ActionHistoryModelImpl
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
-	private String _actionType;
-	private String _originalActionType;
-	private String _actionBase;
-	private String _originalActionBase;
-	private long _actionDataId;
-	private long _originalActionDataId;
-	private boolean _setOriginalActionDataId;
+	private String _actionModel;
+	private String _originalActionModel;
+	private long _dataId;
+	private long _originalDataId;
+	private boolean _setOriginalDataId;
 	private String _paramCode;
 	private String _originalParamCode;
 	private String _actionCommand;

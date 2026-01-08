@@ -195,7 +195,7 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 				extension,
 				displayNameMap, 
 				descriptionMap,
-				descriptionMap, 
+				tooltipMap, 
 				WorkflowConstants.STATUS_APPROVED, 
 				dataTypeSC);
 		

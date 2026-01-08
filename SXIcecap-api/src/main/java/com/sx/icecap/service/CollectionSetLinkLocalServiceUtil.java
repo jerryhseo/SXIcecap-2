@@ -73,14 +73,17 @@ public class CollectionSetLinkLocalServiceUtil {
 	}
 
 	public static int countCollectionSetLinkListByCollection(
-		long dataCollectionId) {
+		long groupId, long dataCollectionId) {
 
 		return getService().countCollectionSetLinkListByCollection(
-			dataCollectionId);
+			groupId, dataCollectionId);
 	}
 
-	public static int countCollectionSetLinkListBySet(long dataSetId) {
-		return getService().countCollectionSetLinkListBySet(dataSetId);
+	public static int countCollectionSetLinkListBySet(
+		long dataCollectionId, long dataSetId) {
+
+		return getService().countCollectionSetLinkListBySet(
+			dataCollectionId, dataSetId);
 	}
 
 	/**
@@ -253,36 +256,38 @@ public class CollectionSetLinkLocalServiceUtil {
 	}
 
 	public static CollectionSetLink getCollectionSetLink(
+		long groupId, long dataCollectionId, long dataSetId) {
+
+		return getService().getCollectionSetLink(
+			groupId, dataCollectionId, dataSetId);
+	}
+
+	public static List<CollectionSetLink> getCollectionSetLinkListByCollection(
+		long groupId, long dataCollectionId) {
+
+		return getService().getCollectionSetLinkListByCollection(
+			groupId, dataCollectionId);
+	}
+
+	public static List<CollectionSetLink> getCollectionSetLinkListByCollection(
+		long groupId, long dataCollectionId, int start, int end) {
+
+		return getService().getCollectionSetLinkListByCollection(
+			groupId, dataCollectionId, start, end);
+	}
+
+	public static List<CollectionSetLink> getCollectionSetLinkListBySet(
 		long dataCollectionId, long dataSetId) {
 
-		return getService().getCollectionSetLink(dataCollectionId, dataSetId);
-	}
-
-	public static List<CollectionSetLink> getCollectionSetLinkListByCollection(
-		long dataCollectionId) {
-
-		return getService().getCollectionSetLinkListByCollection(
-			dataCollectionId);
-	}
-
-	public static List<CollectionSetLink> getCollectionSetLinkListByCollection(
-		long dataCollectionId, int start, int end) {
-
-		return getService().getCollectionSetLinkListByCollection(
-			dataCollectionId, start, end);
+		return getService().getCollectionSetLinkListBySet(
+			dataCollectionId, dataSetId);
 	}
 
 	public static List<CollectionSetLink> getCollectionSetLinkListBySet(
-		long dataSetId) {
-
-		return getService().getCollectionSetLinkListBySet(dataSetId);
-	}
-
-	public static List<CollectionSetLink> getCollectionSetLinkListBySet(
-		long dataSetId, int start, int end) {
+		long dataCollectionId, long dataSetId, int start, int end) {
 
 		return getService().getCollectionSetLinkListBySet(
-			dataSetId, start, end);
+			dataCollectionId, dataSetId, start, end);
 	}
 
 	/**
@@ -343,13 +348,18 @@ public class CollectionSetLinkLocalServiceUtil {
 	}
 
 	public static void removeCollectionSetLinkByCollection(
-		long dataCollectionId) {
+		long groupId, long dataCollectionId) {
 
-		getService().removeCollectionSetLinkByCollection(dataCollectionId);
+		getService().removeCollectionSetLinkByCollection(
+			groupId, dataCollectionId);
 	}
 
-	public static void removeCollectionSetLinkBySet(long dataSetId) {
-		getService().removeCollectionSetLinkBySet(dataSetId);
+	public static void removeCollectionSetLinkBySet(
+			long groupId, long dataCollectionId, long dataSetId)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		getService().removeCollectionSetLinkBySet(
+			groupId, dataCollectionId, dataSetId);
 	}
 
 	public static CollectionSetLink setFreezed(

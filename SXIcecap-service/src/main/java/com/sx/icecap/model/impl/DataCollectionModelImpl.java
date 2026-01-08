@@ -95,7 +95,8 @@ public class DataCollectionModelImpl
 		{"statusByUserId", Types.BIGINT}, {"statusByUserName", Types.VARCHAR},
 		{"statusDate", Types.TIMESTAMP}, {"dataCollectionCode", Types.VARCHAR},
 		{"dataCollectionVersion", Types.VARCHAR},
-		{"displayName", Types.VARCHAR}, {"description", Types.VARCHAR}
+		{"displayName", Types.VARCHAR}, {"description", Types.VARCHAR},
+		{"verified", Types.VARCHAR}, {"freezed", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -119,10 +120,12 @@ public class DataCollectionModelImpl
 		TABLE_COLUMNS_MAP.put("dataCollectionVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("verified", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("freezed", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataCollection (uuid_ VARCHAR(75) null,dataCollectionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionCode VARCHAR(75) null,dataCollectionVersion VARCHAR(75) null,displayName STRING null,description STRING null)";
+		"create table SX_ICECAP_DataCollection (uuid_ VARCHAR(75) null,dataCollectionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionCode VARCHAR(75) null,dataCollectionVersion VARCHAR(75) null,displayName STRING null,description STRING null,verified VARCHAR(75) null,freezed VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_DataCollection";
@@ -193,6 +196,8 @@ public class DataCollectionModelImpl
 		model.setDataCollectionVersion(soapModel.getDataCollectionVersion());
 		model.setDisplayName(soapModel.getDisplayName());
 		model.setDescription(soapModel.getDescription());
+		model.setVerified(soapModel.getVerified());
+		model.setFreezed(soapModel.getFreezed());
 
 		return model;
 	}
@@ -404,6 +409,14 @@ public class DataCollectionModelImpl
 		attributeSetterBiConsumers.put(
 			"description",
 			(BiConsumer<DataCollection, String>)DataCollection::setDescription);
+		attributeGetterFunctions.put("verified", DataCollection::getVerified);
+		attributeSetterBiConsumers.put(
+			"verified",
+			(BiConsumer<DataCollection, String>)DataCollection::setVerified);
+		attributeGetterFunctions.put("freezed", DataCollection::getFreezed);
+		attributeSetterBiConsumers.put(
+			"freezed",
+			(BiConsumer<DataCollection, String>)DataCollection::setFreezed);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -933,6 +946,38 @@ public class DataCollectionModelImpl
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
+	@JSON
+	@Override
+	public String getVerified() {
+		if (_verified == null) {
+			return "";
+		}
+		else {
+			return _verified;
+		}
+	}
+
+	@Override
+	public void setVerified(String verified) {
+		_verified = verified;
+	}
+
+	@JSON
+	@Override
+	public String getFreezed() {
+		if (_freezed == null) {
+			return "";
+		}
+		else {
+			return _freezed;
+		}
+	}
+
+	@Override
+	public void setFreezed(String freezed) {
+		_freezed = freezed;
+	}
+
 	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(
@@ -1307,6 +1352,8 @@ public class DataCollectionModelImpl
 		dataCollectionImpl.setDataCollectionVersion(getDataCollectionVersion());
 		dataCollectionImpl.setDisplayName(getDisplayName());
 		dataCollectionImpl.setDescription(getDescription());
+		dataCollectionImpl.setVerified(getVerified());
+		dataCollectionImpl.setFreezed(getFreezed());
 
 		dataCollectionImpl.resetOriginalValues();
 
@@ -1510,6 +1557,22 @@ public class DataCollectionModelImpl
 			dataCollectionCacheModel.description = null;
 		}
 
+		dataCollectionCacheModel.verified = getVerified();
+
+		String verified = dataCollectionCacheModel.verified;
+
+		if ((verified != null) && (verified.length() == 0)) {
+			dataCollectionCacheModel.verified = null;
+		}
+
+		dataCollectionCacheModel.freezed = getFreezed();
+
+		String freezed = dataCollectionCacheModel.freezed;
+
+		if ((freezed != null) && (freezed.length() == 0)) {
+			dataCollectionCacheModel.freezed = null;
+		}
+
 		return dataCollectionCacheModel;
 	}
 
@@ -1636,6 +1699,8 @@ public class DataCollectionModelImpl
 	private String _displayNameCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _verified;
+	private String _freezed;
 	private long _columnBitmask;
 	private DataCollection _escapedModel;
 

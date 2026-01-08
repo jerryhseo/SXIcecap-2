@@ -68,24 +68,24 @@ public class CollectionSetLinkModelImpl
 	public static final String TABLE_NAME = "SX_ICECAP_CollectionSetLink";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"companyId", Types.BIGINT}, {"groupId", Types.BIGINT},
-		{"collectionSetLinkId", Types.BIGINT},
-		{"dataCollectionId", Types.BIGINT}, {"dataSetId", Types.BIGINT},
-		{"order_", Types.INTEGER}, {"commentable", Types.BOOLEAN},
-		{"verifiable", Types.BOOLEAN}, {"freezable", Types.BOOLEAN},
-		{"freezed", Types.BOOLEAN}, {"freezedUserId", Types.BIGINT},
-		{"freezedUserName", Types.VARCHAR}, {"freezedDate", Types.TIMESTAMP},
-		{"verified", Types.BOOLEAN}, {"verifiedUserId", Types.BIGINT},
-		{"verifiedUserName", Types.VARCHAR}, {"verifiedDate", Types.TIMESTAMP}
+		{"collectionSetLinkId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"groupId", Types.BIGINT}, {"dataCollectionId", Types.BIGINT},
+		{"dataSetId", Types.BIGINT}, {"order_", Types.INTEGER},
+		{"commentable", Types.BOOLEAN}, {"verifiable", Types.BOOLEAN},
+		{"freezable", Types.BOOLEAN}, {"freezed", Types.BOOLEAN},
+		{"freezedUserId", Types.BIGINT}, {"freezedUserName", Types.VARCHAR},
+		{"freezedDate", Types.TIMESTAMP}, {"verified", Types.BOOLEAN},
+		{"verifiedUserId", Types.BIGINT}, {"verifiedUserName", Types.VARCHAR},
+		{"verifiedDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
 		new HashMap<String, Integer>();
 
 	static {
+		TABLE_COLUMNS_MAP.put("collectionSetLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("collectionSetLinkId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataCollectionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataSetId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("order_", Types.INTEGER);
@@ -103,7 +103,7 @@ public class CollectionSetLinkModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_CollectionSetLink (companyId LONG,groupId LONG,collectionSetLinkId LONG not null primary key,dataCollectionId LONG,dataSetId LONG,order_ INTEGER,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null)";
+		"create table SX_ICECAP_CollectionSetLink (collectionSetLinkId LONG not null primary key,companyId LONG,groupId LONG,dataCollectionId LONG,dataSetId LONG,order_ INTEGER,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_CollectionSetLink";
@@ -239,6 +239,12 @@ public class CollectionSetLinkModelImpl
 				new LinkedHashMap<String, BiConsumer<CollectionSetLink, ?>>();
 
 		attributeGetterFunctions.put(
+			"collectionSetLinkId", CollectionSetLink::getCollectionSetLinkId);
+		attributeSetterBiConsumers.put(
+			"collectionSetLinkId",
+			(BiConsumer<CollectionSetLink, Long>)
+				CollectionSetLink::setCollectionSetLinkId);
+		attributeGetterFunctions.put(
 			"companyId", CollectionSetLink::getCompanyId);
 		attributeSetterBiConsumers.put(
 			"companyId",
@@ -248,12 +254,6 @@ public class CollectionSetLinkModelImpl
 		attributeSetterBiConsumers.put(
 			"groupId",
 			(BiConsumer<CollectionSetLink, Long>)CollectionSetLink::setGroupId);
-		attributeGetterFunctions.put(
-			"collectionSetLinkId", CollectionSetLink::getCollectionSetLinkId);
-		attributeSetterBiConsumers.put(
-			"collectionSetLinkId",
-			(BiConsumer<CollectionSetLink, Long>)
-				CollectionSetLink::setCollectionSetLinkId);
 		attributeGetterFunctions.put(
 			"dataCollectionId", CollectionSetLink::getDataCollectionId);
 		attributeSetterBiConsumers.put(
@@ -344,6 +344,16 @@ public class CollectionSetLinkModelImpl
 	}
 
 	@Override
+	public long getCollectionSetLinkId() {
+		return _collectionSetLinkId;
+	}
+
+	@Override
+	public void setCollectionSetLinkId(long collectionSetLinkId) {
+		_collectionSetLinkId = collectionSetLinkId;
+	}
+
+	@Override
 	public long getCompanyId() {
 		return _companyId;
 	}
@@ -373,16 +383,6 @@ public class CollectionSetLinkModelImpl
 
 	public long getOriginalGroupId() {
 		return _originalGroupId;
-	}
-
-	@Override
-	public long getCollectionSetLinkId() {
-		return _collectionSetLinkId;
-	}
-
-	@Override
-	public void setCollectionSetLinkId(long collectionSetLinkId) {
-		_collectionSetLinkId = collectionSetLinkId;
 	}
 
 	@Override
@@ -655,9 +655,9 @@ public class CollectionSetLinkModelImpl
 		CollectionSetLinkImpl collectionSetLinkImpl =
 			new CollectionSetLinkImpl();
 
+		collectionSetLinkImpl.setCollectionSetLinkId(getCollectionSetLinkId());
 		collectionSetLinkImpl.setCompanyId(getCompanyId());
 		collectionSetLinkImpl.setGroupId(getGroupId());
-		collectionSetLinkImpl.setCollectionSetLinkId(getCollectionSetLinkId());
 		collectionSetLinkImpl.setDataCollectionId(getDataCollectionId());
 		collectionSetLinkImpl.setDataSetId(getDataSetId());
 		collectionSetLinkImpl.setOrder(getOrder());
@@ -758,12 +758,12 @@ public class CollectionSetLinkModelImpl
 		CollectionSetLinkCacheModel collectionSetLinkCacheModel =
 			new CollectionSetLinkCacheModel();
 
+		collectionSetLinkCacheModel.collectionSetLinkId =
+			getCollectionSetLinkId();
+
 		collectionSetLinkCacheModel.companyId = getCompanyId();
 
 		collectionSetLinkCacheModel.groupId = getGroupId();
-
-		collectionSetLinkCacheModel.collectionSetLinkId =
-			getCollectionSetLinkId();
 
 		collectionSetLinkCacheModel.dataCollectionId = getDataCollectionId();
 
@@ -915,11 +915,11 @@ public class CollectionSetLinkModelImpl
 	private static boolean _entityCacheEnabled;
 	private static boolean _finderCacheEnabled;
 
+	private long _collectionSetLinkId;
 	private long _companyId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
-	private long _collectionSetLinkId;
 	private long _dataCollectionId;
 	private long _originalDataCollectionId;
 	private boolean _setOriginalDataCollectionId;

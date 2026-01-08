@@ -47,14 +47,13 @@ public class StructuredDataLocalServiceUtil {
 	 */
 	public static StructuredData addStructuredData(
 			long dataCollectionId, long dataSetId, long dataTypeId,
-			boolean multiple, long startIndex, int count, boolean freezed,
-			boolean verified, String data, int status,
-			com.liferay.portal.kernel.service.ServiceContext sc)
+			boolean multiple, long startIndex, int count, String data,
+			int status, com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().addStructuredData(
 			dataCollectionId, dataSetId, dataTypeId, multiple, startIndex,
-			count, freezed, verified, data, status, sc);
+			count, data, status, sc);
 	}
 
 	/**
@@ -187,11 +186,12 @@ public class StructuredDataLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.json.JSONObject
 		createStructuredDataInfo(
-			List<StructuredData> dataList, long dataCollectionId,
-			long dataSetId, long dataTypeId, java.util.Locale locale) {
+			com.liferay.portal.kernel.json.JSONArray dataArray,
+			long dataCollectionId, long dataSetId, long dataTypeId,
+			java.util.Locale locale) {
 
 		return getService().createStructuredDataInfo(
-			dataList, dataCollectionId, dataSetId, dataTypeId, locale);
+			dataArray, dataCollectionId, dataSetId, dataTypeId, locale);
 	}
 
 	/**
@@ -441,15 +441,6 @@ public class StructuredDataLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getStructuredDataByUuidAndGroupId(uuid, groupId);
-	}
-
-	public static com.liferay.portal.kernel.json.JSONObject
-		getStructuredDataList(
-			long dataCollectionId, long dataSetId, long dataTypeId, int start,
-			int end, java.util.Locale locale) {
-
-		return getService().getStructuredDataList(
-			dataCollectionId, dataSetId, dataTypeId, start, end, locale);
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject
@@ -816,13 +807,13 @@ public class StructuredDataLocalServiceUtil {
 	public static StructuredData updateStructuredData(
 			long structuredDataId, long dataCollectionId, long dataSetId,
 			long dataTypeId, boolean multiple, long startIndex, int count,
-			boolean freezed, boolean verified, String data, int status,
+			String data, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().updateStructuredData(
 			structuredDataId, dataCollectionId, dataSetId, dataTypeId, multiple,
-			startIndex, count, freezed, verified, data, status, sc);
+			startIndex, count, data, status, sc);
 	}
 
 	/**

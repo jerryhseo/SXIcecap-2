@@ -63,7 +63,7 @@ public class ActionHistoryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("{actionHistoryId=");
 		sb.append(actionHistoryId);
@@ -73,12 +73,10 @@ public class ActionHistoryCacheModel
 		sb.append(userName);
 		sb.append(", createDate=");
 		sb.append(createDate);
-		sb.append(", actionType=");
-		sb.append(actionType);
-		sb.append(", actionBase=");
-		sb.append(actionBase);
-		sb.append(", actionDataId=");
-		sb.append(actionDataId);
+		sb.append(", actionModel=");
+		sb.append(actionModel);
+		sb.append(", dataId=");
+		sb.append(dataId);
 		sb.append(", paramCode=");
 		sb.append(paramCode);
 		sb.append(", actionCommand=");
@@ -115,21 +113,14 @@ public class ActionHistoryCacheModel
 			actionHistoryImpl.setCreateDate(new Date(createDate));
 		}
 
-		if (actionType == null) {
-			actionHistoryImpl.setActionType("");
+		if (actionModel == null) {
+			actionHistoryImpl.setActionModel("");
 		}
 		else {
-			actionHistoryImpl.setActionType(actionType);
+			actionHistoryImpl.setActionModel(actionModel);
 		}
 
-		if (actionBase == null) {
-			actionHistoryImpl.setActionBase("");
-		}
-		else {
-			actionHistoryImpl.setActionBase(actionBase);
-		}
-
-		actionHistoryImpl.setActionDataId(actionDataId);
+		actionHistoryImpl.setDataId(dataId);
 
 		if (paramCode == null) {
 			actionHistoryImpl.setParamCode("");
@@ -178,10 +169,9 @@ public class ActionHistoryCacheModel
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
-		actionType = objectInput.readUTF();
-		actionBase = objectInput.readUTF();
+		actionModel = objectInput.readUTF();
 
-		actionDataId = objectInput.readLong();
+		dataId = objectInput.readLong();
 		paramCode = objectInput.readUTF();
 		actionCommand = objectInput.readUTF();
 		prevValue = objectInput.readUTF();
@@ -204,21 +194,14 @@ public class ActionHistoryCacheModel
 
 		objectOutput.writeLong(createDate);
 
-		if (actionType == null) {
+		if (actionModel == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(actionType);
+			objectOutput.writeUTF(actionModel);
 		}
 
-		if (actionBase == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(actionBase);
-		}
-
-		objectOutput.writeLong(actionDataId);
+		objectOutput.writeLong(dataId);
 
 		if (paramCode == null) {
 			objectOutput.writeUTF("");
@@ -260,9 +243,8 @@ public class ActionHistoryCacheModel
 	public long userId;
 	public String userName;
 	public long createDate;
-	public String actionType;
-	public String actionBase;
-	public long actionDataId;
+	public String actionModel;
+	public long dataId;
 	public String paramCode;
 	public String actionCommand;
 	public String prevValue;

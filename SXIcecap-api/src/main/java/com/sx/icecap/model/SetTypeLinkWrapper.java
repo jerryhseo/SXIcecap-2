@@ -43,6 +43,9 @@ public class SetTypeLinkWrapper
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("setTypeLinkId", getSetTypeLinkId());
+		attributes.put("companyId", getCompanyId());
+		attributes.put("groupId", getGroupId());
+		attributes.put("dataCollectionId", getDataCollectionId());
 		attributes.put("dataSetId", getDataSetId());
 		attributes.put("dataTypeId", getDataTypeId());
 		attributes.put("order", getOrder());
@@ -67,6 +70,24 @@ public class SetTypeLinkWrapper
 
 		if (setTypeLinkId != null) {
 			setSetTypeLinkId(setTypeLinkId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
+		}
+
+		Long dataCollectionId = (Long)attributes.get("dataCollectionId");
+
+		if (dataCollectionId != null) {
+			setDataCollectionId(dataCollectionId);
 		}
 
 		Long dataSetId = (Long)attributes.get("dataSetId");
@@ -165,6 +186,26 @@ public class SetTypeLinkWrapper
 	}
 
 	/**
+	 * Returns the company ID of this set type link.
+	 *
+	 * @return the company ID of this set type link
+	 */
+	@Override
+	public long getCompanyId() {
+		return model.getCompanyId();
+	}
+
+	/**
+	 * Returns the data collection ID of this set type link.
+	 *
+	 * @return the data collection ID of this set type link
+	 */
+	@Override
+	public long getDataCollectionId() {
+		return model.getDataCollectionId();
+	}
+
+	/**
 	 * Returns the data set ID of this set type link.
 	 *
 	 * @return the data set ID of this set type link
@@ -242,6 +283,16 @@ public class SetTypeLinkWrapper
 	@Override
 	public String getFreezedUserUuid() {
 		return model.getFreezedUserUuid();
+	}
+
+	/**
+	 * Returns the group ID of this set type link.
+	 *
+	 * @return the group ID of this set type link
+	 */
+	@Override
+	public long getGroupId() {
+		return model.getGroupId();
 	}
 
 	/**
@@ -400,6 +451,26 @@ public class SetTypeLinkWrapper
 	}
 
 	/**
+	 * Sets the company ID of this set type link.
+	 *
+	 * @param companyId the company ID of this set type link
+	 */
+	@Override
+	public void setCompanyId(long companyId) {
+		model.setCompanyId(companyId);
+	}
+
+	/**
+	 * Sets the data collection ID of this set type link.
+	 *
+	 * @param dataCollectionId the data collection ID of this set type link
+	 */
+	@Override
+	public void setDataCollectionId(long dataCollectionId) {
+		model.setDataCollectionId(dataCollectionId);
+	}
+
+	/**
 	 * Sets the data set ID of this set type link.
 	 *
 	 * @param dataSetId the data set ID of this set type link
@@ -477,6 +548,16 @@ public class SetTypeLinkWrapper
 	@Override
 	public void setFreezedUserUuid(String freezedUserUuid) {
 		model.setFreezedUserUuid(freezedUserUuid);
+	}
+
+	/**
+	 * Sets the group ID of this set type link.
+	 *
+	 * @param groupId the group ID of this set type link
+	 */
+	@Override
+	public void setGroupId(long groupId) {
+		model.setGroupId(groupId);
 	}
 
 	/**

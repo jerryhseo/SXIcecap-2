@@ -127,48 +127,33 @@ public interface ActionHistoryModel extends BaseModel<ActionHistory> {
 	public void setCreateDate(Date createDate);
 
 	/**
-	 * Returns the action type of this action history.
+	 * Returns the action model of this action history.
 	 *
-	 * @return the action type of this action history
+	 * @return the action model of this action history
 	 */
 	@AutoEscape
-	public String getActionType();
+	public String getActionModel();
 
 	/**
-	 * Sets the action type of this action history.
+	 * Sets the action model of this action history.
 	 *
-	 * @param actionType the action type of this action history
+	 * @param actionModel the action model of this action history
 	 */
-	public void setActionType(String actionType);
+	public void setActionModel(String actionModel);
 
 	/**
-	 * Returns the action base of this action history.
+	 * Returns the data ID of this action history.
 	 *
-	 * @return the action base of this action history
+	 * @return the data ID of this action history
 	 */
-	@AutoEscape
-	public String getActionBase();
+	public long getDataId();
 
 	/**
-	 * Sets the action base of this action history.
+	 * Sets the data ID of this action history.
 	 *
-	 * @param actionBase the action base of this action history
+	 * @param dataId the data ID of this action history
 	 */
-	public void setActionBase(String actionBase);
-
-	/**
-	 * Returns the action data ID of this action history.
-	 *
-	 * @return the action data ID of this action history
-	 */
-	public long getActionDataId();
-
-	/**
-	 * Sets the action data ID of this action history.
-	 *
-	 * @param actionDataId the action data ID of this action history
-	 */
-	public void setActionDataId(long actionDataId);
+	public void setDataId(long dataId);
 
 	/**
 	 * Returns the param code of this action history.

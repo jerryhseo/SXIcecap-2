@@ -131,7 +131,7 @@ public class StructuredDataModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_StructuredData (uuid_ VARCHAR(75) null,structuredDataId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionId LONG,dataSetId LONG,dataTypeId LONG,multiple BOOLEAN,startIndex LONG,count INTEGER,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null,data_ VARCHAR(75) null)";
+		"create table SX_ICECAP_StructuredData (uuid_ VARCHAR(75) null,structuredDataId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionId LONG,dataSetId LONG,dataTypeId LONG,multiple BOOLEAN,startIndex LONG,count INTEGER,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null,data_ TEXT null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_StructuredData";

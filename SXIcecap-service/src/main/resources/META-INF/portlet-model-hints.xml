@@ -6,9 +6,8 @@
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
-		<field name="actionType" type="String" />
-		<field name="actionBase" type="String" />
-		<field name="actionDataId" type="long" />
+		<field name="actionModel" type="String" />
+		<field name="dataId" type="long" />
 		<field name="paramCode" type="String" />
 		<field name="actionCommand" type="String" />
 		<field name="prevValue" type="String" />
@@ -16,9 +15,9 @@
 		<field name="comment" type="String" />
 	</model>
 	<model name="com.sx.icecap.model.CollectionSetLink">
+		<field name="collectionSetLinkId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="groupId" type="long" />
-		<field name="collectionSetLinkId" type="long" />
 		<field name="dataCollectionId" type="long" />
 		<field name="dataSetId" type="long" />
 		<field name="order" type="int" />
@@ -52,6 +51,8 @@
 		<field name="dataCollectionVersion" type="String" />
 		<field localized="true" name="displayName" type="String" />
 		<field localized="true" name="description" type="String" />
+		<field name="verified" type="String" />
+		<field name="freezed" type="String" />
 	</model>
 	<model name="com.sx.icecap.model.DataComment">
 		<field name="uuid" type="String" />
@@ -91,6 +92,8 @@
 		<field name="dataSetVersion" type="String" />
 		<field localized="true" name="displayName" type="String" />
 		<field localized="true" name="description" type="String" />
+		<field name="verified" type="String" />
+		<field name="freezed" type="String" />
 	</model>
 	<model name="com.sx.icecap.model.DataStructure">
 		<field name="uuid" type="String" />
@@ -111,7 +114,7 @@
 		<field localized="true" name="displayName" type="String" />
 		<field localized="true" name="description" type="String" />
 		<field name="structure" type="String">
-			<hint name="max-length">40960</hint>
+			<hint name="max-length">409600</hint>
 		</field>
 	</model>
 	<model name="com.sx.icecap.model.DataType">
@@ -162,6 +165,9 @@
 	</model>
 	<model name="com.sx.icecap.model.SetTypeLink">
 		<field name="setTypeLinkId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="dataCollectionId" type="long" />
 		<field name="dataSetId" type="long" />
 		<field name="dataTypeId" type="long" />
 		<field name="order" type="int" />
@@ -204,7 +210,9 @@
 		<field name="verifiedUserId" type="long" />
 		<field name="verifiedUserName" type="String" />
 		<field name="verifiedDate" type="Date" />
-		<field name="data" type="String" />
+		<field name="data" type="String">
+			<hint name="max-length">40960</hint>
+		</field>
 	</model>
 	<model name="com.sx.icecap.model.StructureParamLink">
 		<field name="structureParamLinkId" type="long" />

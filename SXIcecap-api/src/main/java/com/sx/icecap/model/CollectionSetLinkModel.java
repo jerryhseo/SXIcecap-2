@@ -58,6 +58,20 @@ public interface CollectionSetLinkModel
 	public void setPrimaryKey(long primaryKey);
 
 	/**
+	 * Returns the collection set link ID of this collection set link.
+	 *
+	 * @return the collection set link ID of this collection set link
+	 */
+	public long getCollectionSetLinkId();
+
+	/**
+	 * Sets the collection set link ID of this collection set link.
+	 *
+	 * @param collectionSetLinkId the collection set link ID of this collection set link
+	 */
+	public void setCollectionSetLinkId(long collectionSetLinkId);
+
+	/**
 	 * Returns the company ID of this collection set link.
 	 *
 	 * @return the company ID of this collection set link
@@ -86,20 +100,6 @@ public interface CollectionSetLinkModel
 	 * @param groupId the group ID of this collection set link
 	 */
 	public void setGroupId(long groupId);
-
-	/**
-	 * Returns the collection set link ID of this collection set link.
-	 *
-	 * @return the collection set link ID of this collection set link
-	 */
-	public long getCollectionSetLinkId();
-
-	/**
-	 * Sets the collection set link ID of this collection set link.
-	 *
-	 * @param collectionSetLinkId the collection set link ID of this collection set link
-	 */
-	public void setCollectionSetLinkId(long collectionSetLinkId);
 
 	/**
 	 * Returns the data collection ID of this collection set link.

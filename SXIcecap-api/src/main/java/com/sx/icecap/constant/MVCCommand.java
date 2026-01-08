@@ -39,16 +39,18 @@ public class MVCCommand {
 	public static final String RESOURCE_DELETE_DATATYPES = "/ajax/DataType/delete-datatypes";
 	public static final String RESOURCE_DELETE_DATASETS = "/ajax/DataSet/delete-datasets";
 	public static final String RESOURCE_DELETE_DATACOLLECTIONS = "/ajax/DataCollection/delete-datacollections";
+	public static final String RESOURCE_DELETE_STRUCTURED_DATA = "/ajax/StructuredData/delete-structured-data";
 	public static final String RESOURCE_DELETE_STRUCTURED_DATA_FILE = "/ajax/StructuredData/delete-file";
 	public static final String RESOURCE_DELETE_TEMP_STRUCTURED_DATA = "/ajax/StructuredData/delete-temp-file";
 	public static final String RESOURCE_DELETE_TYPE_STRUCTURE_LINK = "/ajax/DataType/delete-type-structure-link";
+	public static final String RESOURCE_DOWNLOAD_FIELD_ATTACHED_FILE = "/ajax/StructuredData/download-field-attached-file";
 	public static final String RESOURCE_LOAD_AVAILABLE_VISUALIZERS = "/ajax/DataType/load-available-visualizers";
 	public static final String RESOURCE_LOAD_DATACOLLECTION = "/ajax/DataCollection/load-datacollection";
 	public static final String RESOURCE_LOAD_DATASET = "/ajax/DataSet/load-dataset";
 	public static final String RESOURCE_LOAD_DATASTRUCTURE = "/ajax/DataStructure/load-datastructure";
 	public static final String RESOURCE_LOAD_DATATYPE = "/ajax/DataType/load-datatype";
 	public static final String RESOURCE_LOAD_DATATYPES = "/ajax/DataType/load-datatypes";
-	public static final String RESOURCE_LOAD_STRUCTURED_DATA_EDITING= "/ajax/StructuredData/load-editing-data";
+	public static final String RESOURCE_LOAD_STRUCTURED_DATA= "/ajax/StructuredData/load-structured-data";
 	public static final String RESOURCE_SAVE_DATACOLLECTION = "/ajax/DataCollection/save-datacollection";
 	public static final String RESOURCE_SAVE_DATASET = "/ajax/DataSet/save-dataset";
 	public static final String RESOURCE_SAVE_STRUCTURED_DATA = "/ajax/StructuredData/save";
@@ -62,6 +64,9 @@ public class MVCCommand {
 	public static final String RESOURCE_UPDATE_DATATYPE = "/ajax/DataType/update-datatype";
 	public static final String RESOURCE_UPDATE_STRUCTURED_DATA = "/ajax/StructuredData/update";
 	public static final String RESOURCE_UPLOAD_STRUCTURED_DATA_FILE = "/ajax/StructuredData/upload-file";
+	public static final String RESOURCE_VIEW_DATACOLLECTION = "/ajax/DataCollection/view-datacollection";
+	public static final String RESOURCE_VIEW_DATASET = "/ajax/DataSet/view-dataset";
+	public static final String RESOURCE_VIEW_DATATYPE = "/ajax/DataType/view-datatype";
 	public static final String RESOURCE_VISUALIZER_COMMON = "/ajax/visualizer/common-resource";
 
 }

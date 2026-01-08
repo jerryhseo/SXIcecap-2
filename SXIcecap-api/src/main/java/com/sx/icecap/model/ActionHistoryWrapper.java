@@ -46,9 +46,8 @@ public class ActionHistoryWrapper
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
-		attributes.put("actionType", getActionType());
-		attributes.put("actionBase", getActionBase());
-		attributes.put("actionDataId", getActionDataId());
+		attributes.put("actionModel", getActionModel());
+		attributes.put("dataId", getDataId());
 		attributes.put("paramCode", getParamCode());
 		attributes.put("actionCommand", getActionCommand());
 		attributes.put("prevValue", getPrevValue());
@@ -84,22 +83,16 @@ public class ActionHistoryWrapper
 			setCreateDate(createDate);
 		}
 
-		String actionType = (String)attributes.get("actionType");
+		String actionModel = (String)attributes.get("actionModel");
 
-		if (actionType != null) {
-			setActionType(actionType);
+		if (actionModel != null) {
+			setActionModel(actionModel);
 		}
 
-		String actionBase = (String)attributes.get("actionBase");
+		Long dataId = (Long)attributes.get("dataId");
 
-		if (actionBase != null) {
-			setActionBase(actionBase);
-		}
-
-		Long actionDataId = (Long)attributes.get("actionDataId");
-
-		if (actionDataId != null) {
-			setActionDataId(actionDataId);
+		if (dataId != null) {
+			setDataId(dataId);
 		}
 
 		String paramCode = (String)attributes.get("paramCode");
@@ -134,16 +127,6 @@ public class ActionHistoryWrapper
 	}
 
 	/**
-	 * Returns the action base of this action history.
-	 *
-	 * @return the action base of this action history
-	 */
-	@Override
-	public String getActionBase() {
-		return model.getActionBase();
-	}
-
-	/**
 	 * Returns the action command of this action history.
 	 *
 	 * @return the action command of this action history
@@ -151,16 +134,6 @@ public class ActionHistoryWrapper
 	@Override
 	public String getActionCommand() {
 		return model.getActionCommand();
-	}
-
-	/**
-	 * Returns the action data ID of this action history.
-	 *
-	 * @return the action data ID of this action history
-	 */
-	@Override
-	public long getActionDataId() {
-		return model.getActionDataId();
 	}
 
 	/**
@@ -174,13 +147,13 @@ public class ActionHistoryWrapper
 	}
 
 	/**
-	 * Returns the action type of this action history.
+	 * Returns the action model of this action history.
 	 *
-	 * @return the action type of this action history
+	 * @return the action model of this action history
 	 */
 	@Override
-	public String getActionType() {
-		return model.getActionType();
+	public String getActionModel() {
+		return model.getActionModel();
 	}
 
 	/**
@@ -201,6 +174,16 @@ public class ActionHistoryWrapper
 	@Override
 	public Date getCreateDate() {
 		return model.getCreateDate();
+	}
+
+	/**
+	 * Returns the data ID of this action history.
+	 *
+	 * @return the data ID of this action history
+	 */
+	@Override
+	public long getDataId() {
+		return model.getDataId();
 	}
 
 	/**
@@ -279,16 +262,6 @@ public class ActionHistoryWrapper
 	}
 
 	/**
-	 * Sets the action base of this action history.
-	 *
-	 * @param actionBase the action base of this action history
-	 */
-	@Override
-	public void setActionBase(String actionBase) {
-		model.setActionBase(actionBase);
-	}
-
-	/**
 	 * Sets the action command of this action history.
 	 *
 	 * @param actionCommand the action command of this action history
@@ -296,16 +269,6 @@ public class ActionHistoryWrapper
 	@Override
 	public void setActionCommand(String actionCommand) {
 		model.setActionCommand(actionCommand);
-	}
-
-	/**
-	 * Sets the action data ID of this action history.
-	 *
-	 * @param actionDataId the action data ID of this action history
-	 */
-	@Override
-	public void setActionDataId(long actionDataId) {
-		model.setActionDataId(actionDataId);
 	}
 
 	/**
@@ -319,13 +282,13 @@ public class ActionHistoryWrapper
 	}
 
 	/**
-	 * Sets the action type of this action history.
+	 * Sets the action model of this action history.
 	 *
-	 * @param actionType the action type of this action history
+	 * @param actionModel the action model of this action history
 	 */
 	@Override
-	public void setActionType(String actionType) {
-		model.setActionType(actionType);
+	public void setActionModel(String actionModel) {
+		model.setActionModel(actionModel);
 	}
 
 	/**
@@ -346,6 +309,16 @@ public class ActionHistoryWrapper
 	@Override
 	public void setCreateDate(Date createDate) {
 		model.setCreateDate(createDate);
+	}
+
+	/**
+	 * Sets the data ID of this action history.
+	 *
+	 * @param dataId the data ID of this action history
+	 */
+	@Override
+	public void setDataId(long dataId) {
+		model.setDataId(dataId);
 	}
 
 	/**

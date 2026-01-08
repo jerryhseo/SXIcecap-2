@@ -47,6 +47,7 @@ import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.model.StructuredData;
 import com.sx.icecap.model.TypeStructureLink;
+import com.sx.icecap.service.DataTypeLocalService;
 import com.sx.icecap.service.base.StructuredDataLocalServiceBaseImpl;
 import com.sx.util.SXPortalUtil;
 
@@ -80,8 +81,6 @@ public class StructuredDataLocalServiceImpl
 			boolean multiple,
 			long startIndex,
 			int count,
-			boolean freezed,
-			boolean verified,
 			String data,
 			int status,
 			ServiceContext sc) throws PortalException  {
@@ -120,9 +119,9 @@ public class StructuredDataLocalServiceImpl
 		structuredData.setMultiple(multiple);
 		structuredData.setStartIndex(startIndex);
 		structuredData.setCount(count);
-		structuredData.setFreezed(freezed);
-		structuredData.setVerified(verified);
 		structuredData.setData(data);
+		
+		System.out.println("StructuredData: " + data);
 		
 		super.structuredDataPersistence.update(structuredData);
 		
@@ -182,8 +181,6 @@ public class StructuredDataLocalServiceImpl
 			boolean multiple,
 			long startIndex,
 			int count,
-			boolean freezed,
-			boolean verified,
 			String data,
 			int status,
 			ServiceContext sc) throws PortalException {
@@ -196,8 +193,6 @@ public class StructuredDataLocalServiceImpl
 		structuredData.setMultiple(multiple);
 		structuredData.setStartIndex(startIndex);
 		structuredData.setCount(count);
-		structuredData.setFreezed(freezed);
-		structuredData.setVerified(verified);
 		structuredData.setData(data);
 		
 		super.structuredDataPersistence.update(structuredData);
@@ -624,9 +619,36 @@ public class StructuredDataLocalServiceImpl
 			dataList = structuredDataPersistence.findAll();
 		}
 		
+		JSONArray jsonDataArray = _setDataAbstraction(dataList, locale);
 		
-		return createStructuredDataInfo(dataList, dataCollectionId, dataSetId, dataTypeId, locale);
+		return createStructuredDataInfo(jsonDataArray, dataCollectionId, dataSetId, dataTypeId, locale);
 	}
+	
+	private JSONArray _setDataAbstraction(List<StructuredData> dataList, Locale locale){
+		JSONArray dataArray = JSONFactoryUtil.createJSONArray();
+		
+		Iterator<StructuredData> iter = dataList.iterator();
+		while( iter.hasNext() ) {
+			StructuredData data = iter.next();
+			DataType dataType = dataTypePersistence.fetchByPrimaryKey(data.getDataTypeId());
+			
+			JSONObject jsonData = data.toJSON();
+			jsonData.put("dataTypeCode", dataType.getDataTypeCode());
+			jsonData.put("dataTypeVersion", dataType.getDataTypeVersion());
+			jsonData.put("dataTypeLabel", dataType.getDisplayName(locale));
+
+			DataSet dataSet = dataSetPersistence.fetchByPrimaryKey(data.getDataSetId());
+			
+			jsonData.put("dataSetCode", dataSet.getDataSetCode());
+			jsonData.put("dataSetVersion", dataSet.getDataSetVersion());
+			jsonData.put("dataSetLabel", dataSet.getDisplayName(locale));
+			
+			dataArray.put(jsonData);
+		}
+		
+		return dataArray;
+	}
+	
 	public int countStructuredData(long dataCollectionId, long dataSetId, long dataTypeId){
 		int count = 0;;
 		
@@ -648,6 +670,8 @@ public class StructuredDataLocalServiceImpl
 		
 		return count;
 	}
+	
+	/*
 	public JSONObject getStructuredDataList(long dataCollectionId, long dataSetId, long dataTypeId, int start, int end, Locale locale){
 		List<StructuredData> dataList = null;
 		
@@ -669,22 +693,12 @@ public class StructuredDataLocalServiceImpl
 		
 		return createStructuredDataInfo(dataList, dataCollectionId, dataSetId, dataTypeId, locale);
 	}
+	*/
 	
-	public JSONObject createStructuredDataInfo( List<StructuredData> dataList, long dataCollectionId, long dataSetId, long dataTypeId, Locale locale) {
+	public JSONObject createStructuredDataInfo( JSONArray dataArray, long dataCollectionId, long dataSetId, long dataTypeId, Locale locale) {
 		JSONObject jsonList = JSONFactoryUtil.createJSONObject();
 		
-		if( Validator.isNotNull(dataList)) {
-			JSONArray dataArray = JSONFactoryUtil.createJSONArray();
-			
-			Iterator<StructuredData> iter = dataList.iterator();
-			while(iter.hasNext()) {
-				StructuredData structuredData = iter.next();
-				
-				dataArray.put(structuredData.toJSON());
-			}
-			
 			jsonList.put("structuredDataList", dataArray);
-		}
 		
 		DataCollection dataCollection = null;
 		if( dataCollectionId > 0 ) {

@@ -60,6 +60,8 @@ public class DataSetWrapper
 		attributes.put("dataSetVersion", getDataSetVersion());
 		attributes.put("displayName", getDisplayName());
 		attributes.put("description", getDescription());
+		attributes.put("verified", getVerified());
+		attributes.put("freezed", getFreezed());
 
 		return attributes;
 	}
@@ -166,6 +168,18 @@ public class DataSetWrapper
 
 		if (description != null) {
 			setDescription(description);
+		}
+
+		String verified = (String)attributes.get("verified");
+
+		if (verified != null) {
+			setVerified(verified);
+		}
+
+		String freezed = (String)attributes.get("freezed");
+
+		if (freezed != null) {
+			setFreezed(freezed);
 		}
 	}
 
@@ -382,6 +396,16 @@ public class DataSetWrapper
 	}
 
 	/**
+	 * Returns the freezed of this data set.
+	 *
+	 * @return the freezed of this data set
+	 */
+	@Override
+	public String getFreezed() {
+		return model.getFreezed();
+	}
+
+	/**
 	 * Returns the group ID of this data set.
 	 *
 	 * @return the group ID of this data set
@@ -543,6 +567,16 @@ public class DataSetWrapper
 	@Override
 	public String getUuid() {
 		return model.getUuid();
+	}
+
+	/**
+	 * Returns the verified of this data set.
+	 *
+	 * @return the verified of this data set
+	 */
+	@Override
+	public String getVerified() {
+		return model.getVerified();
 	}
 
 	/**
@@ -860,6 +894,16 @@ public class DataSetWrapper
 	}
 
 	/**
+	 * Sets the freezed of this data set.
+	 *
+	 * @param freezed the freezed of this data set
+	 */
+	@Override
+	public void setFreezed(String freezed) {
+		model.setFreezed(freezed);
+	}
+
+	/**
 	 * Sets the group ID of this data set.
 	 *
 	 * @param groupId the group ID of this data set
@@ -987,6 +1031,16 @@ public class DataSetWrapper
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
+	}
+
+	/**
+	 * Sets the verified of this data set.
+	 *
+	 * @param verified the verified of this data set
+	 */
+	@Override
+	public void setVerified(String verified) {
+		model.setVerified(verified);
 	}
 
 	@Override

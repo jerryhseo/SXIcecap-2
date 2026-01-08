@@ -97,13 +97,13 @@ public class CollectionSetLinkLocalServiceImpl
 	}
 	
 	@Indexable(type = IndexableType.DELETE)
-	public void removeCollectionSetLinkByCollection( long dataCollectionId ) {
-		collectionSetLinkPersistence.removeByCollectionId(dataCollectionId);
-	}
+	public void removeCollectionSetLinkByCollection( long groupId, long dataCollectionId ) {
+		collectionSetLinkPersistence.removeByCollection_G(groupId, dataCollectionId);
+ 	}
 	
 	@Indexable(type = IndexableType.DELETE)
-	public void removeCollectionSetLinkBySet( long dataSetId ) {
-		collectionSetLinkPersistence.removeBySetId(dataSetId);
+	public void removeCollectionSetLinkBySet( long groupId, long dataCollectionId, long dataSetId ) throws NoSuchCollectionSetLinkException {
+		collectionSetLinkPersistence.removeByCollectionSet_G(groupId, dataCollectionId, dataSetId);
 	}
 	
 	@Indexable(type = IndexableType.REINDEX)
@@ -150,27 +150,27 @@ public class CollectionSetLinkLocalServiceImpl
 		return collectionSetLinkPersistence.countAll();
 	}
 	
-	public List<CollectionSetLink> getCollectionSetLinkListByCollection( long dataCollectionId ){
-		return collectionSetLinkPersistence.findByCollectionId(dataCollectionId);
+	public List<CollectionSetLink> getCollectionSetLinkListByCollection( long groupId, long dataCollectionId ){
+		return collectionSetLinkPersistence.findByCollection_G(groupId, dataCollectionId);
 	}
-	public List<CollectionSetLink> getCollectionSetLinkListByCollection(long dataCollectionId, int start, int end){
-		return collectionSetLinkPersistence.findByCollectionId(dataCollectionId, start, end);
+	public List<CollectionSetLink> getCollectionSetLinkListByCollection( long groupId, long dataCollectionId, int start, int end){
+		return collectionSetLinkPersistence.findByCollection_G(groupId, dataCollectionId, start, end);
 	}
-	public int countCollectionSetLinkListByCollection( long dataCollectionId ){
-		return collectionSetLinkPersistence.countByCollectionId(dataCollectionId);
-	}
-	
-	public List<CollectionSetLink> getCollectionSetLinkListBySet( long dataSetId ){
-		return collectionSetLinkPersistence.findBySetId(dataSetId);
-	}
-	public List<CollectionSetLink> getCollectionSetLinkListBySet(long dataSetId, int start, int end){
-		return collectionSetLinkPersistence.findBySetId(dataSetId, start, end);
-	}
-	public int countCollectionSetLinkListBySet( long dataSetId ){
-		return collectionSetLinkPersistence.countBySetId(dataSetId);
+	public int countCollectionSetLinkListByCollection(  long groupId, long dataCollectionId ){
+		return collectionSetLinkPersistence.countByCollection_G(groupId, dataCollectionId);
 	}
 	
-	public CollectionSetLink getCollectionSetLink(long dataCollectionId, long dataSetId) {
-		return collectionSetLinkPersistence.fetchByCollectionSet(dataCollectionId, dataSetId);
+	public List<CollectionSetLink> getCollectionSetLinkListBySet( long dataCollectionId, long dataSetId ){
+		return collectionSetLinkPersistence.findByCollectionSet(dataCollectionId, dataSetId);
+	}
+	public List<CollectionSetLink> getCollectionSetLinkListBySet(long dataCollectionId, long dataSetId, int start, int end){
+		return collectionSetLinkPersistence.findByCollectionSet(dataCollectionId, dataSetId, start, end);
+	}
+	public int countCollectionSetLinkListBySet( long dataCollectionId, long dataSetId ){
+		return collectionSetLinkPersistence.countByCollectionSet(dataCollectionId, dataSetId);
+	}
+	
+	public CollectionSetLink getCollectionSetLink(long groupId, long dataCollectionId, long dataSetId) {
+		return collectionSetLinkPersistence.fetchByCollectionSet_G(groupId, dataCollectionId, dataSetId);
 	}
 }

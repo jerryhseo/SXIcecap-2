@@ -65,15 +65,19 @@ public class CollectionSetLinkLocalServiceWrapper
 	}
 
 	@Override
-	public int countCollectionSetLinkListByCollection(long dataCollectionId) {
+	public int countCollectionSetLinkListByCollection(
+		long groupId, long dataCollectionId) {
+
 		return _collectionSetLinkLocalService.
-			countCollectionSetLinkListByCollection(dataCollectionId);
+			countCollectionSetLinkListByCollection(groupId, dataCollectionId);
 	}
 
 	@Override
-	public int countCollectionSetLinkListBySet(long dataSetId) {
+	public int countCollectionSetLinkListBySet(
+		long dataCollectionId, long dataSetId) {
+
 		return _collectionSetLinkLocalService.countCollectionSetLinkListBySet(
-			dataSetId);
+			dataCollectionId, dataSetId);
 	}
 
 	/**
@@ -279,43 +283,46 @@ public class CollectionSetLinkLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.CollectionSetLink getCollectionSetLink(
-		long dataCollectionId, long dataSetId) {
+		long groupId, long dataCollectionId, long dataSetId) {
 
 		return _collectionSetLinkLocalService.getCollectionSetLink(
-			dataCollectionId, dataSetId);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.CollectionSetLink>
-		getCollectionSetLinkListByCollection(long dataCollectionId) {
-
-		return _collectionSetLinkLocalService.
-			getCollectionSetLinkListByCollection(dataCollectionId);
+			groupId, dataCollectionId, dataSetId);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.CollectionSetLink>
 		getCollectionSetLinkListByCollection(
-			long dataCollectionId, int start, int end) {
+			long groupId, long dataCollectionId) {
 
 		return _collectionSetLinkLocalService.
-			getCollectionSetLinkListByCollection(dataCollectionId, start, end);
+			getCollectionSetLinkListByCollection(groupId, dataCollectionId);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.CollectionSetLink>
-		getCollectionSetLinkListBySet(long dataSetId) {
+		getCollectionSetLinkListByCollection(
+			long groupId, long dataCollectionId, int start, int end) {
 
-		return _collectionSetLinkLocalService.getCollectionSetLinkListBySet(
-			dataSetId);
+		return _collectionSetLinkLocalService.
+			getCollectionSetLinkListByCollection(
+				groupId, dataCollectionId, start, end);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.CollectionSetLink>
-		getCollectionSetLinkListBySet(long dataSetId, int start, int end) {
+		getCollectionSetLinkListBySet(long dataCollectionId, long dataSetId) {
 
 		return _collectionSetLinkLocalService.getCollectionSetLinkListBySet(
-			dataSetId, start, end);
+			dataCollectionId, dataSetId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.CollectionSetLink>
+		getCollectionSetLinkListBySet(
+			long dataCollectionId, long dataSetId, int start, int end) {
+
+		return _collectionSetLinkLocalService.getCollectionSetLinkListBySet(
+			dataCollectionId, dataSetId, start, end);
 	}
 
 	/**
@@ -384,14 +391,20 @@ public class CollectionSetLinkLocalServiceWrapper
 	}
 
 	@Override
-	public void removeCollectionSetLinkByCollection(long dataCollectionId) {
+	public void removeCollectionSetLinkByCollection(
+		long groupId, long dataCollectionId) {
+
 		_collectionSetLinkLocalService.removeCollectionSetLinkByCollection(
-			dataCollectionId);
+			groupId, dataCollectionId);
 	}
 
 	@Override
-	public void removeCollectionSetLinkBySet(long dataSetId) {
-		_collectionSetLinkLocalService.removeCollectionSetLinkBySet(dataSetId);
+	public void removeCollectionSetLinkBySet(
+			long groupId, long dataCollectionId, long dataSetId)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		_collectionSetLinkLocalService.removeCollectionSetLinkBySet(
+			groupId, dataCollectionId, dataSetId);
 	}
 
 	@Override

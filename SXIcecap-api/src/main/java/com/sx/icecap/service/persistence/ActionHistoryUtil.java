@@ -121,264 +121,235 @@ public class ActionHistoryUtil {
 	}
 
 	/**
-	 * Returns all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @return the matching action histories
 	 */
-	public static List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId) {
+	public static List<ActionHistory> findByDataId(
+		String actionModel, long dataId) {
 
-		return getPersistence().findByAction(
-			actionType, actionBase, actionDataId);
+		return getPersistence().findByDataId(actionModel, dataId);
 	}
 
 	/**
-	 * Returns a range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns a range of all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
 	 * @return the range of matching action histories
 	 */
-	public static List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId, int start,
-		int end) {
+	public static List<ActionHistory> findByDataId(
+		String actionModel, long dataId, int start, int end) {
 
-		return getPersistence().findByAction(
-			actionType, actionBase, actionDataId, start, end);
+		return getPersistence().findByDataId(actionModel, dataId, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching action histories
 	 */
-	public static List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId, int start,
-		int end, OrderByComparator<ActionHistory> orderByComparator) {
+	public static List<ActionHistory> findByDataId(
+		String actionModel, long dataId, int start, int end,
+		OrderByComparator<ActionHistory> orderByComparator) {
 
-		return getPersistence().findByAction(
-			actionType, actionBase, actionDataId, start, end,
-			orderByComparator);
+		return getPersistence().findByDataId(
+			actionModel, dataId, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching action histories
 	 */
-	public static List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId, int start,
-		int end, OrderByComparator<ActionHistory> orderByComparator,
+	public static List<ActionHistory> findByDataId(
+		String actionModel, long dataId, int start, int end,
+		OrderByComparator<ActionHistory> orderByComparator,
 		boolean useFinderCache) {
 
-		return getPersistence().findByAction(
-			actionType, actionBase, actionDataId, start, end, orderByComparator,
-			useFinderCache);
+		return getPersistence().findByDataId(
+			actionModel, dataId, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
-	public static ActionHistory findByAction_First(
-			String actionType, String actionBase, long actionDataId,
+	public static ActionHistory findByDataId_First(
+			String actionModel, long dataId,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchActionHistoryException {
 
-		return getPersistence().findByAction_First(
-			actionType, actionBase, actionDataId, orderByComparator);
+		return getPersistence().findByDataId_First(
+			actionModel, dataId, orderByComparator);
 	}
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history, or <code>null</code> if a matching action history could not be found
 	 */
-	public static ActionHistory fetchByAction_First(
-		String actionType, String actionBase, long actionDataId,
+	public static ActionHistory fetchByDataId_First(
+		String actionModel, long dataId,
 		OrderByComparator<ActionHistory> orderByComparator) {
 
-		return getPersistence().fetchByAction_First(
-			actionType, actionBase, actionDataId, orderByComparator);
+		return getPersistence().fetchByDataId_First(
+			actionModel, dataId, orderByComparator);
 	}
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
-	public static ActionHistory findByAction_Last(
-			String actionType, String actionBase, long actionDataId,
+	public static ActionHistory findByDataId_Last(
+			String actionModel, long dataId,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchActionHistoryException {
 
-		return getPersistence().findByAction_Last(
-			actionType, actionBase, actionDataId, orderByComparator);
+		return getPersistence().findByDataId_Last(
+			actionModel, dataId, orderByComparator);
 	}
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history, or <code>null</code> if a matching action history could not be found
 	 */
-	public static ActionHistory fetchByAction_Last(
-		String actionType, String actionBase, long actionDataId,
+	public static ActionHistory fetchByDataId_Last(
+		String actionModel, long dataId,
 		OrderByComparator<ActionHistory> orderByComparator) {
 
-		return getPersistence().fetchByAction_Last(
-			actionType, actionBase, actionDataId, orderByComparator);
+		return getPersistence().fetchByDataId_Last(
+			actionModel, dataId, orderByComparator);
 	}
 
 	/**
-	 * Returns the action histories before and after the current action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the action histories before and after the current action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * @param actionHistoryId the primary key of the current action history
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next action history
 	 * @throws NoSuchActionHistoryException if a action history with the primary key could not be found
 	 */
-	public static ActionHistory[] findByAction_PrevAndNext(
-			long actionHistoryId, String actionType, String actionBase,
-			long actionDataId,
+	public static ActionHistory[] findByDataId_PrevAndNext(
+			long actionHistoryId, String actionModel, long dataId,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchActionHistoryException {
 
-		return getPersistence().findByAction_PrevAndNext(
-			actionHistoryId, actionType, actionBase, actionDataId,
-			orderByComparator);
+		return getPersistence().findByDataId_PrevAndNext(
+			actionHistoryId, actionModel, dataId, orderByComparator);
 	}
 
 	/**
-	 * Removes all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; from the database.
+	 * Removes all the action histories where actionModel = &#63; and dataId = &#63; from the database.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 */
-	public static void removeByAction(
-		String actionType, String actionBase, long actionDataId) {
-
-		getPersistence().removeByAction(actionType, actionBase, actionDataId);
+	public static void removeByDataId(String actionModel, long dataId) {
+		getPersistence().removeByDataId(actionModel, dataId);
 	}
 
 	/**
-	 * Returns the number of action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the number of action histories where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @return the number of matching action histories
 	 */
-	public static int countByAction(
-		String actionType, String actionBase, long actionDataId) {
-
-		return getPersistence().countByAction(
-			actionType, actionBase, actionDataId);
+	public static int countByDataId(String actionModel, long dataId) {
+		return getPersistence().countByDataId(actionModel, dataId);
 	}
 
 	/**
-	 * Returns all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @return the matching action histories
 	 */
 	public static List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode) {
+		String actionModel, long dataId, String paramCode) {
 
-		return getPersistence().findByParamCode(
-			actionType, actionBase, actionDataId, paramCode);
+		return getPersistence().findByParamCode(actionModel, dataId, paramCode);
 	}
 
 	/**
-	 * Returns a range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns a range of all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
 	 * @return the range of matching action histories
 	 */
 	public static List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, int start, int end) {
+		String actionModel, long dataId, String paramCode, int start, int end) {
 
 		return getPersistence().findByParamCode(
-			actionType, actionBase, actionDataId, paramCode, start, end);
+			actionModel, dataId, paramCode, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
@@ -386,25 +357,22 @@ public class ActionHistoryUtil {
 	 * @return the ordered range of matching action histories
 	 */
 	public static List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, int start, int end,
+		String actionModel, long dataId, String paramCode, int start, int end,
 		OrderByComparator<ActionHistory> orderByComparator) {
 
 		return getPersistence().findByParamCode(
-			actionType, actionBase, actionDataId, paramCode, start, end,
-			orderByComparator);
+			actionModel, dataId, paramCode, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
@@ -413,148 +381,134 @@ public class ActionHistoryUtil {
 	 * @return the ordered range of matching action histories
 	 */
 	public static List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, int start, int end,
+		String actionModel, long dataId, String paramCode, int start, int end,
 		OrderByComparator<ActionHistory> orderByComparator,
 		boolean useFinderCache) {
 
 		return getPersistence().findByParamCode(
-			actionType, actionBase, actionDataId, paramCode, start, end,
-			orderByComparator, useFinderCache);
+			actionModel, dataId, paramCode, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
 	public static ActionHistory findByParamCode_First(
-			String actionType, String actionBase, long actionDataId,
-			String paramCode,
+			String actionModel, long dataId, String paramCode,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchActionHistoryException {
 
 		return getPersistence().findByParamCode_First(
-			actionType, actionBase, actionDataId, paramCode, orderByComparator);
+			actionModel, dataId, paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history, or <code>null</code> if a matching action history could not be found
 	 */
 	public static ActionHistory fetchByParamCode_First(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, OrderByComparator<ActionHistory> orderByComparator) {
+		String actionModel, long dataId, String paramCode,
+		OrderByComparator<ActionHistory> orderByComparator) {
 
 		return getPersistence().fetchByParamCode_First(
-			actionType, actionBase, actionDataId, paramCode, orderByComparator);
+			actionModel, dataId, paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
 	public static ActionHistory findByParamCode_Last(
-			String actionType, String actionBase, long actionDataId,
-			String paramCode,
+			String actionModel, long dataId, String paramCode,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchActionHistoryException {
 
 		return getPersistence().findByParamCode_Last(
-			actionType, actionBase, actionDataId, paramCode, orderByComparator);
+			actionModel, dataId, paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history, or <code>null</code> if a matching action history could not be found
 	 */
 	public static ActionHistory fetchByParamCode_Last(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, OrderByComparator<ActionHistory> orderByComparator) {
+		String actionModel, long dataId, String paramCode,
+		OrderByComparator<ActionHistory> orderByComparator) {
 
 		return getPersistence().fetchByParamCode_Last(
-			actionType, actionBase, actionDataId, paramCode, orderByComparator);
+			actionModel, dataId, paramCode, orderByComparator);
 	}
 
 	/**
-	 * Returns the action histories before and after the current action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the action histories before and after the current action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param actionHistoryId the primary key of the current action history
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next action history
 	 * @throws NoSuchActionHistoryException if a action history with the primary key could not be found
 	 */
 	public static ActionHistory[] findByParamCode_PrevAndNext(
-			long actionHistoryId, String actionType, String actionBase,
-			long actionDataId, String paramCode,
+			long actionHistoryId, String actionModel, long dataId,
+			String paramCode,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchActionHistoryException {
 
 		return getPersistence().findByParamCode_PrevAndNext(
-			actionHistoryId, actionType, actionBase, actionDataId, paramCode,
-			orderByComparator);
+			actionHistoryId, actionModel, dataId, paramCode, orderByComparator);
 	}
 
 	/**
-	 * Removes all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63; from the database.
+	 * Removes all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63; from the database.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 */
 	public static void removeByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode) {
+		String actionModel, long dataId, String paramCode) {
 
-		getPersistence().removeByParamCode(
-			actionType, actionBase, actionDataId, paramCode);
+		getPersistence().removeByParamCode(actionModel, dataId, paramCode);
 	}
 
 	/**
-	 * Returns the number of action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the number of action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @return the number of matching action histories
 	 */
 	public static int countByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode) {
+		String actionModel, long dataId, String paramCode) {
 
 		return getPersistence().countByParamCode(
-			actionType, actionBase, actionDataId, paramCode);
+			actionModel, dataId, paramCode);
 	}
 
 	/**

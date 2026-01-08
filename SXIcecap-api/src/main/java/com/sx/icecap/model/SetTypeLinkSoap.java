@@ -32,6 +32,9 @@ public class SetTypeLinkSoap implements Serializable {
 		SetTypeLinkSoap soapModel = new SetTypeLinkSoap();
 
 		soapModel.setSetTypeLinkId(model.getSetTypeLinkId());
+		soapModel.setCompanyId(model.getCompanyId());
+		soapModel.setGroupId(model.getGroupId());
+		soapModel.setDataCollectionId(model.getDataCollectionId());
 		soapModel.setDataSetId(model.getDataSetId());
 		soapModel.setDataTypeId(model.getDataTypeId());
 		soapModel.setOrder(model.getOrder());
@@ -105,6 +108,30 @@ public class SetTypeLinkSoap implements Serializable {
 
 	public void setSetTypeLinkId(long setTypeLinkId) {
 		_setTypeLinkId = setTypeLinkId;
+	}
+
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
+	}
+
+	public long getDataCollectionId() {
+		return _dataCollectionId;
+	}
+
+	public void setDataCollectionId(long dataCollectionId) {
+		_dataCollectionId = dataCollectionId;
 	}
 
 	public long getDataSetId() {
@@ -240,6 +267,9 @@ public class SetTypeLinkSoap implements Serializable {
 	}
 
 	private long _setTypeLinkId;
+	private long _companyId;
+	private long _groupId;
+	private long _dataCollectionId;
 	private long _dataSetId;
 	private long _dataTypeId;
 	private int _order;

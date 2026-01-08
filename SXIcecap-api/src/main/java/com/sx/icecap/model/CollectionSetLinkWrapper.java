@@ -42,9 +42,9 @@ public class CollectionSetLinkWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("collectionSetLinkId", getCollectionSetLinkId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("groupId", getGroupId());
-		attributes.put("collectionSetLinkId", getCollectionSetLinkId());
 		attributes.put("dataCollectionId", getDataCollectionId());
 		attributes.put("dataSetId", getDataSetId());
 		attributes.put("order", getOrder());
@@ -65,6 +65,12 @@ public class CollectionSetLinkWrapper
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		Long collectionSetLinkId = (Long)attributes.get("collectionSetLinkId");
+
+		if (collectionSetLinkId != null) {
+			setCollectionSetLinkId(collectionSetLinkId);
+		}
+
 		Long companyId = (Long)attributes.get("companyId");
 
 		if (companyId != null) {
@@ -75,12 +81,6 @@ public class CollectionSetLinkWrapper
 
 		if (groupId != null) {
 			setGroupId(groupId);
-		}
-
-		Long collectionSetLinkId = (Long)attributes.get("collectionSetLinkId");
-
-		if (collectionSetLinkId != null) {
-			setCollectionSetLinkId(collectionSetLinkId);
 		}
 
 		Long dataCollectionId = (Long)attributes.get("dataCollectionId");

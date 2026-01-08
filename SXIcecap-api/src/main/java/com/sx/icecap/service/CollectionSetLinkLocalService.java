@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import com.sx.icecap.exception.NoSuchCollectionSetLinkException;
 import com.sx.icecap.model.CollectionSetLink;
 
 import java.io.Serializable;
@@ -83,9 +84,11 @@ public interface CollectionSetLinkLocalService
 
 	public int countAllCollectionSetLinkList();
 
-	public int countCollectionSetLinkListByCollection(long dataCollectionId);
+	public int countCollectionSetLinkListByCollection(
+		long groupId, long dataCollectionId);
 
-	public int countCollectionSetLinkListBySet(long dataSetId);
+	public int countCollectionSetLinkListBySet(
+		long dataCollectionId, long dataSetId);
 
 	/**
 	 * Creates a new collection set link with the primary key. Does not add the collection set link to the database.
@@ -224,23 +227,23 @@ public interface CollectionSetLinkLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public CollectionSetLink getCollectionSetLink(
+		long groupId, long dataCollectionId, long dataSetId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CollectionSetLink> getCollectionSetLinkListByCollection(
+		long groupId, long dataCollectionId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CollectionSetLink> getCollectionSetLinkListByCollection(
+		long groupId, long dataCollectionId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CollectionSetLink> getCollectionSetLinkListBySet(
 		long dataCollectionId, long dataSetId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<CollectionSetLink> getCollectionSetLinkListByCollection(
-		long dataCollectionId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<CollectionSetLink> getCollectionSetLinkListByCollection(
-		long dataCollectionId, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<CollectionSetLink> getCollectionSetLinkListBySet(
-		long dataSetId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<CollectionSetLink> getCollectionSetLinkListBySet(
-		long dataSetId, int start, int end);
+		long dataCollectionId, long dataSetId, int start, int end);
 
 	/**
 	 * Returns a range of all the collection set links.
@@ -286,10 +289,13 @@ public interface CollectionSetLinkLocalService
 	public CollectionSetLink removeCollectionSetLink(long collectionSetLinkId);
 
 	@Indexable(type = IndexableType.DELETE)
-	public void removeCollectionSetLinkByCollection(long dataCollectionId);
+	public void removeCollectionSetLinkByCollection(
+		long groupId, long dataCollectionId);
 
 	@Indexable(type = IndexableType.DELETE)
-	public void removeCollectionSetLinkBySet(long dataSetId);
+	public void removeCollectionSetLinkBySet(
+			long groupId, long dataCollectionId, long dataSetId)
+		throws NoSuchCollectionSetLinkException;
 
 	@Indexable(type = IndexableType.REINDEX)
 	public CollectionSetLink setFreezed(

@@ -43,219 +43,197 @@ public interface ActionHistoryPersistence
 	 */
 
 	/**
-	 * Returns all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @return the matching action histories
 	 */
-	public java.util.List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId);
+	public java.util.List<ActionHistory> findByDataId(
+		String actionModel, long dataId);
 
 	/**
-	 * Returns a range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns a range of all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
 	 * @return the range of matching action histories
 	 */
-	public java.util.List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId, int start,
-		int end);
+	public java.util.List<ActionHistory> findByDataId(
+		String actionModel, long dataId, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching action histories
 	 */
-	public java.util.List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId, int start,
-		int end,
+	public java.util.List<ActionHistory> findByDataId(
+		String actionModel, long dataId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching action histories
 	 */
-	public java.util.List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId, int start,
-		int end,
+	public java.util.List<ActionHistory> findByDataId(
+		String actionModel, long dataId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
-	public ActionHistory findByAction_First(
-			String actionType, String actionBase, long actionDataId,
+	public ActionHistory findByDataId_First(
+			String actionModel, long dataId,
 			com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 				orderByComparator)
 		throws NoSuchActionHistoryException;
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history, or <code>null</code> if a matching action history could not be found
 	 */
-	public ActionHistory fetchByAction_First(
-		String actionType, String actionBase, long actionDataId,
+	public ActionHistory fetchByDataId_First(
+		String actionModel, long dataId,
 		com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 			orderByComparator);
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
-	public ActionHistory findByAction_Last(
-			String actionType, String actionBase, long actionDataId,
+	public ActionHistory findByDataId_Last(
+			String actionModel, long dataId,
 			com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 				orderByComparator)
 		throws NoSuchActionHistoryException;
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history, or <code>null</code> if a matching action history could not be found
 	 */
-	public ActionHistory fetchByAction_Last(
-		String actionType, String actionBase, long actionDataId,
+	public ActionHistory fetchByDataId_Last(
+		String actionModel, long dataId,
 		com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 			orderByComparator);
 
 	/**
-	 * Returns the action histories before and after the current action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the action histories before and after the current action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * @param actionHistoryId the primary key of the current action history
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next action history
 	 * @throws NoSuchActionHistoryException if a action history with the primary key could not be found
 	 */
-	public ActionHistory[] findByAction_PrevAndNext(
-			long actionHistoryId, String actionType, String actionBase,
-			long actionDataId,
+	public ActionHistory[] findByDataId_PrevAndNext(
+			long actionHistoryId, String actionModel, long dataId,
 			com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 				orderByComparator)
 		throws NoSuchActionHistoryException;
 
 	/**
-	 * Removes all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; from the database.
+	 * Removes all the action histories where actionModel = &#63; and dataId = &#63; from the database.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 */
-	public void removeByAction(
-		String actionType, String actionBase, long actionDataId);
+	public void removeByDataId(String actionModel, long dataId);
 
 	/**
-	 * Returns the number of action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the number of action histories where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @return the number of matching action histories
 	 */
-	public int countByAction(
-		String actionType, String actionBase, long actionDataId);
+	public int countByDataId(String actionModel, long dataId);
 
 	/**
-	 * Returns all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @return the matching action histories
 	 */
 	public java.util.List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode);
+		String actionModel, long dataId, String paramCode);
 
 	/**
-	 * Returns a range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns a range of all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
 	 * @return the range of matching action histories
 	 */
 	public java.util.List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, int start, int end);
+		String actionModel, long dataId, String paramCode, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
@@ -263,21 +241,19 @@ public interface ActionHistoryPersistence
 	 * @return the ordered range of matching action histories
 	 */
 	public java.util.List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, int start, int end,
+		String actionModel, long dataId, String paramCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
@@ -286,123 +262,109 @@ public interface ActionHistoryPersistence
 	 * @return the ordered range of matching action histories
 	 */
 	public java.util.List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, int start, int end,
+		String actionModel, long dataId, String paramCode, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
 	public ActionHistory findByParamCode_First(
-			String actionType, String actionBase, long actionDataId,
-			String paramCode,
+			String actionModel, long dataId, String paramCode,
 			com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 				orderByComparator)
 		throws NoSuchActionHistoryException;
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history, or <code>null</code> if a matching action history could not be found
 	 */
 	public ActionHistory fetchByParamCode_First(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode,
+		String actionModel, long dataId, String paramCode,
 		com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 			orderByComparator);
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
 	public ActionHistory findByParamCode_Last(
-			String actionType, String actionBase, long actionDataId,
-			String paramCode,
+			String actionModel, long dataId, String paramCode,
 			com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 				orderByComparator)
 		throws NoSuchActionHistoryException;
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history, or <code>null</code> if a matching action history could not be found
 	 */
 	public ActionHistory fetchByParamCode_Last(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode,
+		String actionModel, long dataId, String paramCode,
 		com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 			orderByComparator);
 
 	/**
-	 * Returns the action histories before and after the current action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the action histories before and after the current action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param actionHistoryId the primary key of the current action history
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next action history
 	 * @throws NoSuchActionHistoryException if a action history with the primary key could not be found
 	 */
 	public ActionHistory[] findByParamCode_PrevAndNext(
-			long actionHistoryId, String actionType, String actionBase,
-			long actionDataId, String paramCode,
+			long actionHistoryId, String actionModel, long dataId,
+			String paramCode,
 			com.liferay.portal.kernel.util.OrderByComparator<ActionHistory>
 				orderByComparator)
 		throws NoSuchActionHistoryException;
 
 	/**
-	 * Removes all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63; from the database.
+	 * Removes all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63; from the database.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 */
 	public void removeByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode);
+		String actionModel, long dataId, String paramCode);
 
 	/**
-	 * Returns the number of action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the number of action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @return the number of matching action histories
 	 */
 	public int countByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode);
+		String actionModel, long dataId, String paramCode);
 
 	/**
 	 * Caches the action history in the entity cache if it is enabled.

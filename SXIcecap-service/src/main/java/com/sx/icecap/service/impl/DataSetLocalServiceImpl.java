@@ -454,7 +454,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 			if( Validator.isNotNull(dataCollection) ){
 				JSONObject jsonDataCollection = dataCollection.toJSON(locale);
 				
-				CollectionSetLink link = collectionSetLinkPersistence.fetchByCollectionSet(dataCollectionId, dataSetId);
+				CollectionSetLink link = collectionSetLinkPersistence.fetchByCollectionSet_G(dataCollection.getGroupId(), dataCollectionId, dataSetId);
 				if( Validator.isNotNull(link)) {
 					jsonDataCollection.put("freezed", link.getFreezed());
 					jsonDataCollection.put("freezedUserId", link.getFreezedUserId());
@@ -518,7 +518,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		List<DataSet> dataSetList = null;
 		
 		if( dataCollectionId > 0 ) {
-			collectionSetLinks = collectionSetLinkPersistence.findByCollectionId(dataCollectionId);
+			collectionSetLinks = collectionSetLinkPersistence.findByCollection(dataCollectionId);
 		}
 		else {
 			dataSetList = dataSetPersistence.findByGroupId(groupId);

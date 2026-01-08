@@ -26,6 +26,7 @@ public class StructuredDataImpl extends StructuredDataBaseImpl {
 	public JSONObject toJSON() {
 		JSONObject json = JSONFactoryUtil.createJSONObject();
 		
+		json.put("structuredDataId", getStructuredDataId());
 		json.put("userId", getUserId());
 		json.put("createDate", getCreateDate());
 		json.put("modifiedDate", getModifiedDate());

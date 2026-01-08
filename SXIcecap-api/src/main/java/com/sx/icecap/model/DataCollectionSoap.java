@@ -48,6 +48,8 @@ public class DataCollectionSoap implements Serializable {
 		soapModel.setDataCollectionVersion(model.getDataCollectionVersion());
 		soapModel.setDisplayName(model.getDisplayName());
 		soapModel.setDescription(model.getDescription());
+		soapModel.setVerified(model.getVerified());
+		soapModel.setFreezed(model.getFreezed());
 
 		return soapModel;
 	}
@@ -242,6 +244,22 @@ public class DataCollectionSoap implements Serializable {
 		_description = description;
 	}
 
+	public String getVerified() {
+		return _verified;
+	}
+
+	public void setVerified(String verified) {
+		_verified = verified;
+	}
+
+	public String getFreezed() {
+		return _freezed;
+	}
+
+	public void setFreezed(String freezed) {
+		_freezed = freezed;
+	}
+
 	private String _uuid;
 	private long _dataCollectionId;
 	private long _groupId;
@@ -259,5 +277,7 @@ public class DataCollectionSoap implements Serializable {
 	private String _dataCollectionVersion;
 	private String _displayName;
 	private String _description;
+	private String _verified;
+	private String _freezed;
 
 }

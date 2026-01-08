@@ -68,14 +68,15 @@ public class SetTypeLinkModelImpl
 	public static final String TABLE_NAME = "SX_ICECAP_SetTypeLink";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"setTypeLinkId", Types.BIGINT}, {"dataSetId", Types.BIGINT},
-		{"dataTypeId", Types.BIGINT}, {"order_", Types.INTEGER},
-		{"commentable", Types.BOOLEAN}, {"verifiable", Types.BOOLEAN},
-		{"freezable", Types.BOOLEAN}, {"freezed", Types.BOOLEAN},
-		{"freezedUserId", Types.BIGINT}, {"freezedUserName", Types.VARCHAR},
-		{"freezedDate", Types.TIMESTAMP}, {"verified", Types.BOOLEAN},
-		{"verifiedUserId", Types.BIGINT}, {"verifiedUserName", Types.VARCHAR},
-		{"verifiedDate", Types.TIMESTAMP}
+		{"setTypeLinkId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"groupId", Types.BIGINT}, {"dataCollectionId", Types.BIGINT},
+		{"dataSetId", Types.BIGINT}, {"dataTypeId", Types.BIGINT},
+		{"order_", Types.INTEGER}, {"commentable", Types.BOOLEAN},
+		{"verifiable", Types.BOOLEAN}, {"freezable", Types.BOOLEAN},
+		{"freezed", Types.BOOLEAN}, {"freezedUserId", Types.BIGINT},
+		{"freezedUserName", Types.VARCHAR}, {"freezedDate", Types.TIMESTAMP},
+		{"verified", Types.BOOLEAN}, {"verifiedUserId", Types.BIGINT},
+		{"verifiedUserName", Types.VARCHAR}, {"verifiedDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -83,6 +84,9 @@ public class SetTypeLinkModelImpl
 
 	static {
 		TABLE_COLUMNS_MAP.put("setTypeLinkId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("dataCollectionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataSetId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dataTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("order_", Types.INTEGER);
@@ -100,7 +104,7 @@ public class SetTypeLinkModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_SetTypeLink (setTypeLinkId LONG not null primary key,dataSetId LONG,dataTypeId LONG,order_ INTEGER,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null)";
+		"create table SX_ICECAP_SetTypeLink (setTypeLinkId LONG not null primary key,companyId LONG,groupId LONG,dataCollectionId LONG,dataSetId LONG,dataTypeId LONG,order_ INTEGER,commentable BOOLEAN,verifiable BOOLEAN,freezable BOOLEAN,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_SetTypeLink";
@@ -117,11 +121,15 @@ public class SetTypeLinkModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long DATASETID_COLUMN_BITMASK = 1L;
+	public static final long DATACOLLECTIONID_COLUMN_BITMASK = 1L;
 
-	public static final long DATATYPEID_COLUMN_BITMASK = 2L;
+	public static final long DATASETID_COLUMN_BITMASK = 2L;
 
-	public static final long ORDER_COLUMN_BITMASK = 4L;
+	public static final long DATATYPEID_COLUMN_BITMASK = 4L;
+
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
+
+	public static final long ORDER_COLUMN_BITMASK = 16L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -235,6 +243,18 @@ public class SetTypeLinkModelImpl
 		attributeSetterBiConsumers.put(
 			"setTypeLinkId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setSetTypeLinkId);
+		attributeGetterFunctions.put("companyId", SetTypeLink::getCompanyId);
+		attributeSetterBiConsumers.put(
+			"companyId",
+			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setCompanyId);
+		attributeGetterFunctions.put("groupId", SetTypeLink::getGroupId);
+		attributeSetterBiConsumers.put(
+			"groupId", (BiConsumer<SetTypeLink, Long>)SetTypeLink::setGroupId);
+		attributeGetterFunctions.put(
+			"dataCollectionId", SetTypeLink::getDataCollectionId);
+		attributeSetterBiConsumers.put(
+			"dataCollectionId",
+			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setDataCollectionId);
 		attributeGetterFunctions.put("dataSetId", SetTypeLink::getDataSetId);
 		attributeSetterBiConsumers.put(
 			"dataSetId",
@@ -312,6 +332,60 @@ public class SetTypeLinkModelImpl
 	@Override
 	public void setSetTypeLinkId(long setTypeLinkId) {
 		_setTypeLinkId = setTypeLinkId;
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+		if (!_setOriginalGroupId) {
+			_setOriginalGroupId = true;
+
+			_originalGroupId = _groupId;
+		}
+
+		_groupId = groupId;
+	}
+
+	public long getOriginalGroupId() {
+		return _originalGroupId;
+	}
+
+	@Override
+	public long getDataCollectionId() {
+		return _dataCollectionId;
+	}
+
+	@Override
+	public void setDataCollectionId(long dataCollectionId) {
+		_columnBitmask |= DATACOLLECTIONID_COLUMN_BITMASK;
+
+		if (!_setOriginalDataCollectionId) {
+			_setOriginalDataCollectionId = true;
+
+			_originalDataCollectionId = _dataCollectionId;
+		}
+
+		_dataCollectionId = dataCollectionId;
+	}
+
+	public long getOriginalDataCollectionId() {
+		return _originalDataCollectionId;
 	}
 
 	@Override
@@ -554,7 +628,7 @@ public class SetTypeLinkModelImpl
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return ExpandoBridgeFactoryUtil.getExpandoBridge(
-			0, SetTypeLink.class.getName(), getPrimaryKey());
+			getCompanyId(), SetTypeLink.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -584,6 +658,9 @@ public class SetTypeLinkModelImpl
 		SetTypeLinkImpl setTypeLinkImpl = new SetTypeLinkImpl();
 
 		setTypeLinkImpl.setSetTypeLinkId(getSetTypeLinkId());
+		setTypeLinkImpl.setCompanyId(getCompanyId());
+		setTypeLinkImpl.setGroupId(getGroupId());
+		setTypeLinkImpl.setDataCollectionId(getDataCollectionId());
 		setTypeLinkImpl.setDataSetId(getDataSetId());
 		setTypeLinkImpl.setDataTypeId(getDataTypeId());
 		setTypeLinkImpl.setOrder(getOrder());
@@ -664,6 +741,14 @@ public class SetTypeLinkModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_originalGroupId = _groupId;
+
+		_setOriginalGroupId = false;
+
+		_originalDataCollectionId = _dataCollectionId;
+
+		_setOriginalDataCollectionId = false;
+
 		_originalDataSetId = _dataSetId;
 
 		_setOriginalDataSetId = false;
@@ -681,6 +766,12 @@ public class SetTypeLinkModelImpl
 			new SetTypeLinkCacheModel();
 
 		setTypeLinkCacheModel.setTypeLinkId = getSetTypeLinkId();
+
+		setTypeLinkCacheModel.companyId = getCompanyId();
+
+		setTypeLinkCacheModel.groupId = getGroupId();
+
+		setTypeLinkCacheModel.dataCollectionId = getDataCollectionId();
 
 		setTypeLinkCacheModel.dataSetId = getDataSetId();
 
@@ -832,6 +923,13 @@ public class SetTypeLinkModelImpl
 	private static boolean _finderCacheEnabled;
 
 	private long _setTypeLinkId;
+	private long _companyId;
+	private long _groupId;
+	private long _originalGroupId;
+	private boolean _setOriginalGroupId;
+	private long _dataCollectionId;
+	private long _originalDataCollectionId;
+	private boolean _setOriginalDataCollectionId;
 	private long _dataSetId;
 	private long _originalDataSetId;
 	private boolean _setOriginalDataSetId;

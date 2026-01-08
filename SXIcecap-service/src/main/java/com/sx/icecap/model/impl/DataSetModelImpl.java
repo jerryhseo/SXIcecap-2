@@ -91,7 +91,8 @@ public class DataSetModelImpl
 		{"statusByUserId", Types.BIGINT}, {"statusByUserName", Types.VARCHAR},
 		{"statusDate", Types.TIMESTAMP}, {"dataSetCode", Types.VARCHAR},
 		{"dataSetVersion", Types.VARCHAR}, {"displayName", Types.VARCHAR},
-		{"description", Types.VARCHAR}
+		{"description", Types.VARCHAR}, {"verified", Types.VARCHAR},
+		{"freezed", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -115,10 +116,12 @@ public class DataSetModelImpl
 		TABLE_COLUMNS_MAP.put("dataSetVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("verified", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("freezed", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataSet (uuid_ VARCHAR(75) null,dataSetId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataSetCode VARCHAR(75) null,dataSetVersion VARCHAR(75) null,displayName STRING null,description STRING null)";
+		"create table SX_ICECAP_DataSet (uuid_ VARCHAR(75) null,dataSetId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataSetCode VARCHAR(75) null,dataSetVersion VARCHAR(75) null,displayName STRING null,description STRING null,verified VARCHAR(75) null,freezed VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table SX_ICECAP_DataSet";
 
@@ -319,6 +322,12 @@ public class DataSetModelImpl
 		attributeSetterBiConsumers.put(
 			"description",
 			(BiConsumer<DataSet, String>)DataSet::setDescription);
+		attributeGetterFunctions.put("verified", DataSet::getVerified);
+		attributeSetterBiConsumers.put(
+			"verified", (BiConsumer<DataSet, String>)DataSet::setVerified);
+		attributeGetterFunctions.put("freezed", DataSet::getFreezed);
+		attributeSetterBiConsumers.put(
+			"freezed", (BiConsumer<DataSet, String>)DataSet::setFreezed);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -832,6 +841,36 @@ public class DataSetModelImpl
 	}
 
 	@Override
+	public String getVerified() {
+		if (_verified == null) {
+			return "";
+		}
+		else {
+			return _verified;
+		}
+	}
+
+	@Override
+	public void setVerified(String verified) {
+		_verified = verified;
+	}
+
+	@Override
+	public String getFreezed() {
+		if (_freezed == null) {
+			return "";
+		}
+		else {
+			return _freezed;
+		}
+	}
+
+	@Override
+	public void setFreezed(String freezed) {
+		_freezed = freezed;
+	}
+
+	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(
 			PortalUtil.getClassNameId(DataSet.class.getName()));
@@ -1205,6 +1244,8 @@ public class DataSetModelImpl
 		dataSetImpl.setDataSetVersion(getDataSetVersion());
 		dataSetImpl.setDisplayName(getDisplayName());
 		dataSetImpl.setDescription(getDescription());
+		dataSetImpl.setVerified(getVerified());
+		dataSetImpl.setFreezed(getFreezed());
 
 		dataSetImpl.resetOriginalValues();
 
@@ -1400,6 +1441,22 @@ public class DataSetModelImpl
 			dataSetCacheModel.description = null;
 		}
 
+		dataSetCacheModel.verified = getVerified();
+
+		String verified = dataSetCacheModel.verified;
+
+		if ((verified != null) && (verified.length() == 0)) {
+			dataSetCacheModel.verified = null;
+		}
+
+		dataSetCacheModel.freezed = getFreezed();
+
+		String freezed = dataSetCacheModel.freezed;
+
+		if ((freezed != null) && (freezed.length() == 0)) {
+			dataSetCacheModel.freezed = null;
+		}
+
 		return dataSetCacheModel;
 	}
 
@@ -1526,6 +1583,8 @@ public class DataSetModelImpl
 	private String _displayNameCurrentLanguageId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
+	private String _verified;
+	private String _freezed;
 	private long _columnBitmask;
 	private DataSet _escapedModel;
 

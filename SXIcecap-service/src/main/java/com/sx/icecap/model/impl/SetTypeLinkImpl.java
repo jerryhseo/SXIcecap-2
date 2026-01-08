@@ -25,6 +25,8 @@ public class SetTypeLinkImpl extends SetTypeLinkBaseImpl {
 	public JSONObject toJSON() {
 		JSONObject json = JSONFactoryUtil.createJSONObject();
 		
+		json.put("groupId", getGroupId());
+		json.put("dataCollectionId", getDataCollectionId());
 		json.put("dataSetId", getDataSetId());
 		json.put("dataTypeId", getDataTypeId());
 		json.put("order", getOrder());

@@ -8,19 +8,17 @@ import com.liferay.portal.kernel.util.Validator;
 public class WebPortletKey {
 
 	public static final String SXDataWorkbenchPortlet = "SXDataWorkbenchPortlet";
+	public static final String SXCollectionManagementPortlet = "SXCollectionManagementPortlet";
 	public static final String SXDataCollectionExplorerPortlet = "SXDataCollectionExplorerPortlet";
 	public static final String SXDataCollectionEditorPortlet = "SXDataCollectionEditorPortlet";
+	public static final String SXDataCollectionViewerPortlet = "SXDataCollectionViewerPortlet";
 	public static final String SXDataSetExplorerPortlet = "SXDataSetExplorerPortlet";
 	public static final String SXDataSetEditorPortlet = "SXDataSetEditorPortlet";
-	
-	/*
-	public static final String DATACOLLECTION_VIEWER = "SXDataCollectionViewerPortlet";
-	public static final String DATASET_VIEWER = "SXDataSetViewerPortlet";
-	*/
+	public static final String SXDataSetViewerPortlet = "SXDataSetViewerPortlet";
 	public static final String SXDataTypeExplorerPortlet = "SXDataTypeExplorerPortlet";
 	public static final String SXDataTypeEditorPortlet = "SXDataTypeEditorPortlet";
+	public static final String SXDataTypeViewerPortlet = "SXDataTypeViewerPortlet";
 	/*
-	public static final String DATATYPE_VIEWER = "SXDataTypeViewerPortlet";
 	public static final String PARAMETER_EXPLORER = "SXParameterExplorerPortlet";
 	public static final String PARAMETER_EDITOR = "SXParameterEditorPortlet";
 	public static final String PARAMETER_VIEWER = "SXParameterViewerPortlet";

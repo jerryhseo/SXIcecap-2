@@ -60,6 +60,8 @@ public class DataCollectionWrapper
 		attributes.put("dataCollectionVersion", getDataCollectionVersion());
 		attributes.put("displayName", getDisplayName());
 		attributes.put("description", getDescription());
+		attributes.put("verified", getVerified());
+		attributes.put("freezed", getFreezed());
 
 		return attributes;
 	}
@@ -168,6 +170,18 @@ public class DataCollectionWrapper
 
 		if (description != null) {
 			setDescription(description);
+		}
+
+		String verified = (String)attributes.get("verified");
+
+		if (verified != null) {
+			setVerified(verified);
+		}
+
+		String freezed = (String)attributes.get("freezed");
+
+		if (freezed != null) {
+			setFreezed(freezed);
 		}
 	}
 
@@ -384,6 +398,16 @@ public class DataCollectionWrapper
 	}
 
 	/**
+	 * Returns the freezed of this data collection.
+	 *
+	 * @return the freezed of this data collection
+	 */
+	@Override
+	public String getFreezed() {
+		return model.getFreezed();
+	}
+
+	/**
 	 * Returns the group ID of this data collection.
 	 *
 	 * @return the group ID of this data collection
@@ -545,6 +569,16 @@ public class DataCollectionWrapper
 	@Override
 	public String getUuid() {
 		return model.getUuid();
+	}
+
+	/**
+	 * Returns the verified of this data collection.
+	 *
+	 * @return the verified of this data collection
+	 */
+	@Override
+	public String getVerified() {
+		return model.getVerified();
 	}
 
 	/**
@@ -862,6 +896,16 @@ public class DataCollectionWrapper
 	}
 
 	/**
+	 * Sets the freezed of this data collection.
+	 *
+	 * @param freezed the freezed of this data collection
+	 */
+	@Override
+	public void setFreezed(String freezed) {
+		model.setFreezed(freezed);
+	}
+
+	/**
 	 * Sets the group ID of this data collection.
 	 *
 	 * @param groupId the group ID of this data collection
@@ -989,6 +1033,16 @@ public class DataCollectionWrapper
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
+	}
+
+	/**
+	 * Sets the verified of this data collection.
+	 *
+	 * @param verified the verified of this data collection
+	 */
+	@Override
+	public void setVerified(String verified) {
+		model.setVerified(verified);
 	}
 
 	@Override

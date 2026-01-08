@@ -74,8 +74,8 @@ public interface StructuredDataLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public StructuredData addStructuredData(
 			long dataCollectionId, long dataSetId, long dataTypeId,
-			boolean multiple, long startIndex, int count, boolean freezed,
-			boolean verified, String data, int status, ServiceContext sc)
+			boolean multiple, long startIndex, int count, String data,
+			int status, ServiceContext sc)
 		throws PortalException;
 
 	/**
@@ -145,7 +145,7 @@ public interface StructuredDataLocalService
 	public StructuredData createStructuredData(long structuredDataId);
 
 	public JSONObject createStructuredDataInfo(
-		List<StructuredData> dataList, long dataCollectionId, long dataSetId,
+		JSONArray dataArray, long dataCollectionId, long dataSetId,
 		long dataTypeId, Locale locale);
 
 	/**
@@ -338,11 +338,6 @@ public interface StructuredDataLocalService
 	public StructuredData getStructuredDataByUuidAndGroupId(
 			String uuid, long groupId)
 		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public JSONObject getStructuredDataList(
-		long dataCollectionId, long dataSetId, long dataTypeId, int start,
-		int end, Locale locale);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONObject getStructuredDataListWithInfo(
@@ -582,8 +577,7 @@ public interface StructuredDataLocalService
 	public StructuredData updateStructuredData(
 			long structuredDataId, long dataCollectionId, long dataSetId,
 			long dataTypeId, boolean multiple, long startIndex, int count,
-			boolean freezed, boolean verified, String data, int status,
-			ServiceContext sc)
+			String data, int status, ServiceContext sc)
 		throws PortalException;
 
 	/**

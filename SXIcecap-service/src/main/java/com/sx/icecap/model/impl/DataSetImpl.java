@@ -14,8 +14,10 @@
 
 package com.sx.icecap.model.impl;
 
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.Validator;
 import com.sx.icecap.constant.DataSetProperties;
 
 import java.util.Locale;
@@ -61,6 +63,21 @@ public class DataSetImpl extends DataSetBaseImpl {
 		dataSet.put("modifiedDate", this.getModifiedDate());
 		dataSet.put(DataSetProperties.DATASET_CODE, this.getDataSetCode());
 		dataSet.put(DataSetProperties.DATASET_VERSION, this.getDataSetVersion());
+		
+		try {
+			String verified = this.getVerified();
+			if( Validator.isNotNull(verified)) {
+				dataSet.put("verified", JSONFactoryUtil.createJSONObject(verified));
+			}
+			
+			String freezed = this.getFreezed();
+			if( Validator.isNotNull(freezed)) {
+				dataSet.put("freezed", JSONFactoryUtil.createJSONObject(freezed));
+			}
+		}
+		catch (JSONException e) {
+				e.printStackTrace();
+			}
 		
 		return dataSet;
 	}

@@ -31,9 +31,9 @@ public class CollectionSetLinkSoap implements Serializable {
 	public static CollectionSetLinkSoap toSoapModel(CollectionSetLink model) {
 		CollectionSetLinkSoap soapModel = new CollectionSetLinkSoap();
 
+		soapModel.setCollectionSetLinkId(model.getCollectionSetLinkId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setGroupId(model.getGroupId());
-		soapModel.setCollectionSetLinkId(model.getCollectionSetLinkId());
 		soapModel.setDataCollectionId(model.getDataCollectionId());
 		soapModel.setDataSetId(model.getDataSetId());
 		soapModel.setOrder(model.getOrder());
@@ -109,6 +109,14 @@ public class CollectionSetLinkSoap implements Serializable {
 		setCollectionSetLinkId(pk);
 	}
 
+	public long getCollectionSetLinkId() {
+		return _collectionSetLinkId;
+	}
+
+	public void setCollectionSetLinkId(long collectionSetLinkId) {
+		_collectionSetLinkId = collectionSetLinkId;
+	}
+
 	public long getCompanyId() {
 		return _companyId;
 	}
@@ -123,14 +131,6 @@ public class CollectionSetLinkSoap implements Serializable {
 
 	public void setGroupId(long groupId) {
 		_groupId = groupId;
-	}
-
-	public long getCollectionSetLinkId() {
-		return _collectionSetLinkId;
-	}
-
-	public void setCollectionSetLinkId(long collectionSetLinkId) {
-		_collectionSetLinkId = collectionSetLinkId;
 	}
 
 	public long getDataCollectionId() {
@@ -265,9 +265,9 @@ public class CollectionSetLinkSoap implements Serializable {
 		_verifiedDate = verifiedDate;
 	}
 
+	private long _collectionSetLinkId;
 	private long _companyId;
 	private long _groupId;
-	private long _collectionSetLinkId;
 	private long _dataCollectionId;
 	private long _dataSetId;
 	private int _order;

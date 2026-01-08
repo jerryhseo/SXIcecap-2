@@ -95,85 +95,75 @@ public class ActionHistoryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathWithPaginationFindByAction;
-	private FinderPath _finderPathWithoutPaginationFindByAction;
-	private FinderPath _finderPathCountByAction;
+	private FinderPath _finderPathWithPaginationFindByDataId;
+	private FinderPath _finderPathWithoutPaginationFindByDataId;
+	private FinderPath _finderPathCountByDataId;
 
 	/**
-	 * Returns all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @return the matching action histories
 	 */
 	@Override
-	public List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId) {
-
-		return findByAction(
-			actionType, actionBase, actionDataId, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+	public List<ActionHistory> findByDataId(String actionModel, long dataId) {
+		return findByDataId(
+			actionModel, dataId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns a range of all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
 	 * @return the range of matching action histories
 	 */
 	@Override
-	public List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId, int start,
-		int end) {
+	public List<ActionHistory> findByDataId(
+		String actionModel, long dataId, int start, int end) {
 
-		return findByAction(
-			actionType, actionBase, actionDataId, start, end, null);
+		return findByDataId(actionModel, dataId, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching action histories
 	 */
 	@Override
-	public List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId, int start,
-		int end, OrderByComparator<ActionHistory> orderByComparator) {
+	public List<ActionHistory> findByDataId(
+		String actionModel, long dataId, int start, int end,
+		OrderByComparator<ActionHistory> orderByComparator) {
 
-		return findByAction(
-			actionType, actionBase, actionDataId, start, end, orderByComparator,
-			true);
+		return findByDataId(
+			actionModel, dataId, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -181,13 +171,12 @@ public class ActionHistoryPersistenceImpl
 	 * @return the ordered range of matching action histories
 	 */
 	@Override
-	public List<ActionHistory> findByAction(
-		String actionType, String actionBase, long actionDataId, int start,
-		int end, OrderByComparator<ActionHistory> orderByComparator,
+	public List<ActionHistory> findByDataId(
+		String actionModel, long dataId, int start, int end,
+		OrderByComparator<ActionHistory> orderByComparator,
 		boolean useFinderCache) {
 
-		actionType = Objects.toString(actionType, "");
-		actionBase = Objects.toString(actionBase, "");
+		actionModel = Objects.toString(actionModel, "");
 
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -196,17 +185,14 @@ public class ActionHistoryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByAction;
-				finderArgs = new Object[] {
-					actionType, actionBase, actionDataId
-				};
+				finderPath = _finderPathWithoutPaginationFindByDataId;
+				finderArgs = new Object[] {actionModel, dataId};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByAction;
+			finderPath = _finderPathWithPaginationFindByDataId;
 			finderArgs = new Object[] {
-				actionType, actionBase, actionDataId, start, end,
-				orderByComparator
+				actionModel, dataId, start, end, orderByComparator
 			};
 		}
 
@@ -218,9 +204,8 @@ public class ActionHistoryPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (ActionHistory actionHistory : list) {
-					if (!actionType.equals(actionHistory.getActionType()) ||
-						!actionBase.equals(actionHistory.getActionBase()) ||
-						(actionDataId != actionHistory.getActionDataId())) {
+					if (!actionModel.equals(actionHistory.getActionModel()) ||
+						(dataId != actionHistory.getDataId())) {
 
 						list = null;
 
@@ -235,37 +220,26 @@ public class ActionHistoryPersistenceImpl
 
 			if (orderByComparator != null) {
 				sb = new StringBundler(
-					5 + (orderByComparator.getOrderByFields().length * 2));
+					4 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(5);
+				sb = new StringBundler(4);
 			}
 
 			sb.append(_SQL_SELECT_ACTIONHISTORY_WHERE);
 
-			boolean bindActionType = false;
+			boolean bindActionModel = false;
 
-			if (actionType.isEmpty()) {
-				sb.append(_FINDER_COLUMN_ACTION_ACTIONTYPE_3);
+			if (actionModel.isEmpty()) {
+				sb.append(_FINDER_COLUMN_DATAID_ACTIONMODEL_3);
 			}
 			else {
-				bindActionType = true;
+				bindActionModel = true;
 
-				sb.append(_FINDER_COLUMN_ACTION_ACTIONTYPE_2);
+				sb.append(_FINDER_COLUMN_DATAID_ACTIONMODEL_2);
 			}
 
-			boolean bindActionBase = false;
-
-			if (actionBase.isEmpty()) {
-				sb.append(_FINDER_COLUMN_ACTION_ACTIONBASE_3);
-			}
-			else {
-				bindActionBase = true;
-
-				sb.append(_FINDER_COLUMN_ACTION_ACTIONBASE_2);
-			}
-
-			sb.append(_FINDER_COLUMN_ACTION_ACTIONDATAID_2);
+			sb.append(_FINDER_COLUMN_DATAID_DATAID_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
@@ -286,15 +260,11 @@ public class ActionHistoryPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindActionType) {
-					queryPos.add(actionType);
+				if (bindActionModel) {
+					queryPos.add(actionModel);
 				}
 
-				if (bindActionBase) {
-					queryPos.add(actionBase);
-				}
-
-				queryPos.add(actionDataId);
+				queryPos.add(dataId);
 
 				list = (List<ActionHistory>)QueryUtil.list(
 					query, getDialect(), start, end);
@@ -321,40 +291,36 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
 	@Override
-	public ActionHistory findByAction_First(
-			String actionType, String actionBase, long actionDataId,
+	public ActionHistory findByDataId_First(
+			String actionModel, long dataId,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws NoSuchActionHistoryException {
 
-		ActionHistory actionHistory = fetchByAction_First(
-			actionType, actionBase, actionDataId, orderByComparator);
+		ActionHistory actionHistory = fetchByDataId_First(
+			actionModel, dataId, orderByComparator);
 
 		if (actionHistory != null) {
 			return actionHistory;
 		}
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler sb = new StringBundler(6);
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("actionType=");
-		sb.append(actionType);
+		sb.append("actionModel=");
+		sb.append(actionModel);
 
-		sb.append(", actionBase=");
-		sb.append(actionBase);
-
-		sb.append(", actionDataId=");
-		sb.append(actionDataId);
+		sb.append(", dataId=");
+		sb.append(dataId);
 
 		sb.append("}");
 
@@ -362,21 +328,20 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history, or <code>null</code> if a matching action history could not be found
 	 */
 	@Override
-	public ActionHistory fetchByAction_First(
-		String actionType, String actionBase, long actionDataId,
+	public ActionHistory fetchByDataId_First(
+		String actionModel, long dataId,
 		OrderByComparator<ActionHistory> orderByComparator) {
 
-		List<ActionHistory> list = findByAction(
-			actionType, actionBase, actionDataId, 0, 1, orderByComparator);
+		List<ActionHistory> list = findByDataId(
+			actionModel, dataId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -386,40 +351,36 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history
 	 * @throws NoSuchActionHistoryException if a matching action history could not be found
 	 */
 	@Override
-	public ActionHistory findByAction_Last(
-			String actionType, String actionBase, long actionDataId,
+	public ActionHistory findByDataId_Last(
+			String actionModel, long dataId,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws NoSuchActionHistoryException {
 
-		ActionHistory actionHistory = fetchByAction_Last(
-			actionType, actionBase, actionDataId, orderByComparator);
+		ActionHistory actionHistory = fetchByDataId_Last(
+			actionModel, dataId, orderByComparator);
 
 		if (actionHistory != null) {
 			return actionHistory;
 		}
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler sb = new StringBundler(6);
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("actionType=");
-		sb.append(actionType);
+		sb.append("actionModel=");
+		sb.append(actionModel);
 
-		sb.append(", actionBase=");
-		sb.append(actionBase);
-
-		sb.append(", actionDataId=");
-		sb.append(actionDataId);
+		sb.append(", dataId=");
+		sb.append(dataId);
 
 		sb.append("}");
 
@@ -427,28 +388,26 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history, or <code>null</code> if a matching action history could not be found
 	 */
 	@Override
-	public ActionHistory fetchByAction_Last(
-		String actionType, String actionBase, long actionDataId,
+	public ActionHistory fetchByDataId_Last(
+		String actionModel, long dataId,
 		OrderByComparator<ActionHistory> orderByComparator) {
 
-		int count = countByAction(actionType, actionBase, actionDataId);
+		int count = countByDataId(actionModel, dataId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<ActionHistory> list = findByAction(
-			actionType, actionBase, actionDataId, count - 1, count,
-			orderByComparator);
+		List<ActionHistory> list = findByDataId(
+			actionModel, dataId, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -458,25 +417,22 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Returns the action histories before and after the current action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the action histories before and after the current action history in the ordered set where actionModel = &#63; and dataId = &#63;.
 	 *
 	 * @param actionHistoryId the primary key of the current action history
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next action history
 	 * @throws NoSuchActionHistoryException if a action history with the primary key could not be found
 	 */
 	@Override
-	public ActionHistory[] findByAction_PrevAndNext(
-			long actionHistoryId, String actionType, String actionBase,
-			long actionDataId,
+	public ActionHistory[] findByDataId_PrevAndNext(
+			long actionHistoryId, String actionModel, long dataId,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws NoSuchActionHistoryException {
 
-		actionType = Objects.toString(actionType, "");
-		actionBase = Objects.toString(actionBase, "");
+		actionModel = Objects.toString(actionModel, "");
 
 		ActionHistory actionHistory = findByPrimaryKey(actionHistoryId);
 
@@ -487,15 +443,15 @@ public class ActionHistoryPersistenceImpl
 
 			ActionHistory[] array = new ActionHistoryImpl[3];
 
-			array[0] = getByAction_PrevAndNext(
-				session, actionHistory, actionType, actionBase, actionDataId,
-				orderByComparator, true);
+			array[0] = getByDataId_PrevAndNext(
+				session, actionHistory, actionModel, dataId, orderByComparator,
+				true);
 
 			array[1] = actionHistory;
 
-			array[2] = getByAction_PrevAndNext(
-				session, actionHistory, actionType, actionBase, actionDataId,
-				orderByComparator, false);
+			array[2] = getByDataId_PrevAndNext(
+				session, actionHistory, actionModel, dataId, orderByComparator,
+				false);
 
 			return array;
 		}
@@ -507,47 +463,36 @@ public class ActionHistoryPersistenceImpl
 		}
 	}
 
-	protected ActionHistory getByAction_PrevAndNext(
-		Session session, ActionHistory actionHistory, String actionType,
-		String actionBase, long actionDataId,
-		OrderByComparator<ActionHistory> orderByComparator, boolean previous) {
+	protected ActionHistory getByDataId_PrevAndNext(
+		Session session, ActionHistory actionHistory, String actionModel,
+		long dataId, OrderByComparator<ActionHistory> orderByComparator,
+		boolean previous) {
 
 		StringBundler sb = null;
 
 		if (orderByComparator != null) {
 			sb = new StringBundler(
-				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(5);
+			sb = new StringBundler(4);
 		}
 
 		sb.append(_SQL_SELECT_ACTIONHISTORY_WHERE);
 
-		boolean bindActionType = false;
+		boolean bindActionModel = false;
 
-		if (actionType.isEmpty()) {
-			sb.append(_FINDER_COLUMN_ACTION_ACTIONTYPE_3);
+		if (actionModel.isEmpty()) {
+			sb.append(_FINDER_COLUMN_DATAID_ACTIONMODEL_3);
 		}
 		else {
-			bindActionType = true;
+			bindActionModel = true;
 
-			sb.append(_FINDER_COLUMN_ACTION_ACTIONTYPE_2);
+			sb.append(_FINDER_COLUMN_DATAID_ACTIONMODEL_2);
 		}
 
-		boolean bindActionBase = false;
-
-		if (actionBase.isEmpty()) {
-			sb.append(_FINDER_COLUMN_ACTION_ACTIONBASE_3);
-		}
-		else {
-			bindActionBase = true;
-
-			sb.append(_FINDER_COLUMN_ACTION_ACTIONBASE_2);
-		}
-
-		sb.append(_FINDER_COLUMN_ACTION_ACTIONDATAID_2);
+		sb.append(_FINDER_COLUMN_DATAID_DATAID_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields =
@@ -618,15 +563,11 @@ public class ActionHistoryPersistenceImpl
 
 		QueryPos queryPos = QueryPos.getInstance(query);
 
-		if (bindActionType) {
-			queryPos.add(actionType);
+		if (bindActionModel) {
+			queryPos.add(actionModel);
 		}
 
-		if (bindActionBase) {
-			queryPos.add(actionBase);
-		}
-
-		queryPos.add(actionDataId);
+		queryPos.add(dataId);
 
 		if (orderByComparator != null) {
 			for (Object orderByConditionValue :
@@ -648,76 +589,56 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Removes all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; from the database.
+	 * Removes all the action histories where actionModel = &#63; and dataId = &#63; from the database.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 */
 	@Override
-	public void removeByAction(
-		String actionType, String actionBase, long actionDataId) {
-
+	public void removeByDataId(String actionModel, long dataId) {
 		for (ActionHistory actionHistory :
-				findByAction(
-					actionType, actionBase, actionDataId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+				findByDataId(
+					actionModel, dataId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
 
 			remove(actionHistory);
 		}
 	}
 
 	/**
-	 * Returns the number of action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63;.
+	 * Returns the number of action histories where actionModel = &#63; and dataId = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @return the number of matching action histories
 	 */
 	@Override
-	public int countByAction(
-		String actionType, String actionBase, long actionDataId) {
+	public int countByDataId(String actionModel, long dataId) {
+		actionModel = Objects.toString(actionModel, "");
 
-		actionType = Objects.toString(actionType, "");
-		actionBase = Objects.toString(actionBase, "");
+		FinderPath finderPath = _finderPathCountByDataId;
 
-		FinderPath finderPath = _finderPathCountByAction;
-
-		Object[] finderArgs = new Object[] {
-			actionType, actionBase, actionDataId
-		};
+		Object[] finderArgs = new Object[] {actionModel, dataId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler sb = new StringBundler(3);
 
 			sb.append(_SQL_COUNT_ACTIONHISTORY_WHERE);
 
-			boolean bindActionType = false;
+			boolean bindActionModel = false;
 
-			if (actionType.isEmpty()) {
-				sb.append(_FINDER_COLUMN_ACTION_ACTIONTYPE_3);
+			if (actionModel.isEmpty()) {
+				sb.append(_FINDER_COLUMN_DATAID_ACTIONMODEL_3);
 			}
 			else {
-				bindActionType = true;
+				bindActionModel = true;
 
-				sb.append(_FINDER_COLUMN_ACTION_ACTIONTYPE_2);
+				sb.append(_FINDER_COLUMN_DATAID_ACTIONMODEL_2);
 			}
 
-			boolean bindActionBase = false;
-
-			if (actionBase.isEmpty()) {
-				sb.append(_FINDER_COLUMN_ACTION_ACTIONBASE_3);
-			}
-			else {
-				bindActionBase = true;
-
-				sb.append(_FINDER_COLUMN_ACTION_ACTIONBASE_2);
-			}
-
-			sb.append(_FINDER_COLUMN_ACTION_ACTIONDATAID_2);
+			sb.append(_FINDER_COLUMN_DATAID_DATAID_2);
 
 			String sql = sb.toString();
 
@@ -730,15 +651,11 @@ public class ActionHistoryPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindActionType) {
-					queryPos.add(actionType);
+				if (bindActionModel) {
+					queryPos.add(actionModel);
 				}
 
-				if (bindActionBase) {
-					queryPos.add(actionBase);
-				}
-
-				queryPos.add(actionDataId);
+				queryPos.add(dataId);
 
 				count = (Long)query.uniqueResult();
 
@@ -757,54 +674,45 @@ public class ActionHistoryPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_ACTION_ACTIONTYPE_2 =
-		"actionHistory.actionType = ? AND ";
+	private static final String _FINDER_COLUMN_DATAID_ACTIONMODEL_2 =
+		"actionHistory.actionModel = ? AND ";
 
-	private static final String _FINDER_COLUMN_ACTION_ACTIONTYPE_3 =
-		"(actionHistory.actionType IS NULL OR actionHistory.actionType = '') AND ";
+	private static final String _FINDER_COLUMN_DATAID_ACTIONMODEL_3 =
+		"(actionHistory.actionModel IS NULL OR actionHistory.actionModel = '') AND ";
 
-	private static final String _FINDER_COLUMN_ACTION_ACTIONBASE_2 =
-		"actionHistory.actionBase = ? AND ";
-
-	private static final String _FINDER_COLUMN_ACTION_ACTIONBASE_3 =
-		"(actionHistory.actionBase IS NULL OR actionHistory.actionBase = '') AND ";
-
-	private static final String _FINDER_COLUMN_ACTION_ACTIONDATAID_2 =
-		"actionHistory.actionDataId = ?";
+	private static final String _FINDER_COLUMN_DATAID_DATAID_2 =
+		"actionHistory.dataId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByParamCode;
 	private FinderPath _finderPathWithoutPaginationFindByParamCode;
 	private FinderPath _finderPathCountByParamCode;
 
 	/**
-	 * Returns all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @return the matching action histories
 	 */
 	@Override
 	public List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode) {
+		String actionModel, long dataId, String paramCode) {
 
 		return findByParamCode(
-			actionType, actionBase, actionDataId, paramCode, QueryUtil.ALL_POS,
+			actionModel, dataId, paramCode, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns a range of all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
@@ -812,23 +720,21 @@ public class ActionHistoryPersistenceImpl
 	 */
 	@Override
 	public List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, int start, int end) {
+		String actionModel, long dataId, String paramCode, int start, int end) {
 
 		return findByParamCode(
-			actionType, actionBase, actionDataId, paramCode, start, end, null);
+			actionModel, dataId, paramCode, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
@@ -837,25 +743,23 @@ public class ActionHistoryPersistenceImpl
 	 */
 	@Override
 	public List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, int start, int end,
+		String actionModel, long dataId, String paramCode, int start, int end,
 		OrderByComparator<ActionHistory> orderByComparator) {
 
 		return findByParamCode(
-			actionType, actionBase, actionDataId, paramCode, start, end,
-			orderByComparator, true);
+			actionModel, dataId, paramCode, start, end, orderByComparator,
+			true);
 	}
 
 	/**
-	 * Returns an ordered range of all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns an ordered range of all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ActionHistoryModelImpl</code>.
 	 * </p>
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param start the lower bound of the range of action histories
 	 * @param end the upper bound of the range of action histories (not inclusive)
@@ -865,13 +769,11 @@ public class ActionHistoryPersistenceImpl
 	 */
 	@Override
 	public List<ActionHistory> findByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, int start, int end,
+		String actionModel, long dataId, String paramCode, int start, int end,
 		OrderByComparator<ActionHistory> orderByComparator,
 		boolean useFinderCache) {
 
-		actionType = Objects.toString(actionType, "");
-		actionBase = Objects.toString(actionBase, "");
+		actionModel = Objects.toString(actionModel, "");
 		paramCode = Objects.toString(paramCode, "");
 
 		FinderPath finderPath = null;
@@ -882,16 +784,13 @@ public class ActionHistoryPersistenceImpl
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindByParamCode;
-				finderArgs = new Object[] {
-					actionType, actionBase, actionDataId, paramCode
-				};
+				finderArgs = new Object[] {actionModel, dataId, paramCode};
 			}
 		}
 		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByParamCode;
 			finderArgs = new Object[] {
-				actionType, actionBase, actionDataId, paramCode, start, end,
-				orderByComparator
+				actionModel, dataId, paramCode, start, end, orderByComparator
 			};
 		}
 
@@ -903,9 +802,8 @@ public class ActionHistoryPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (ActionHistory actionHistory : list) {
-					if (!actionType.equals(actionHistory.getActionType()) ||
-						!actionBase.equals(actionHistory.getActionBase()) ||
-						(actionDataId != actionHistory.getActionDataId()) ||
+					if (!actionModel.equals(actionHistory.getActionModel()) ||
+						(dataId != actionHistory.getDataId()) ||
 						!paramCode.equals(actionHistory.getParamCode())) {
 
 						list = null;
@@ -921,37 +819,26 @@ public class ActionHistoryPersistenceImpl
 
 			if (orderByComparator != null) {
 				sb = new StringBundler(
-					6 + (orderByComparator.getOrderByFields().length * 2));
+					5 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				sb = new StringBundler(6);
+				sb = new StringBundler(5);
 			}
 
 			sb.append(_SQL_SELECT_ACTIONHISTORY_WHERE);
 
-			boolean bindActionType = false;
+			boolean bindActionModel = false;
 
-			if (actionType.isEmpty()) {
-				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONTYPE_3);
+			if (actionModel.isEmpty()) {
+				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONMODEL_3);
 			}
 			else {
-				bindActionType = true;
+				bindActionModel = true;
 
-				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONTYPE_2);
+				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONMODEL_2);
 			}
 
-			boolean bindActionBase = false;
-
-			if (actionBase.isEmpty()) {
-				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONBASE_3);
-			}
-			else {
-				bindActionBase = true;
-
-				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONBASE_2);
-			}
-
-			sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONDATAID_2);
+			sb.append(_FINDER_COLUMN_PARAMCODE_DATAID_2);
 
 			boolean bindParamCode = false;
 
@@ -983,15 +870,11 @@ public class ActionHistoryPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindActionType) {
-					queryPos.add(actionType);
+				if (bindActionModel) {
+					queryPos.add(actionModel);
 				}
 
-				if (bindActionBase) {
-					queryPos.add(actionBase);
-				}
-
-				queryPos.add(actionDataId);
+				queryPos.add(dataId);
 
 				if (bindParamCode) {
 					queryPos.add(paramCode);
@@ -1022,11 +905,10 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history
@@ -1034,30 +916,26 @@ public class ActionHistoryPersistenceImpl
 	 */
 	@Override
 	public ActionHistory findByParamCode_First(
-			String actionType, String actionBase, long actionDataId,
-			String paramCode,
+			String actionModel, long dataId, String paramCode,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws NoSuchActionHistoryException {
 
 		ActionHistory actionHistory = fetchByParamCode_First(
-			actionType, actionBase, actionDataId, paramCode, orderByComparator);
+			actionModel, dataId, paramCode, orderByComparator);
 
 		if (actionHistory != null) {
 			return actionHistory;
 		}
 
-		StringBundler sb = new StringBundler(10);
+		StringBundler sb = new StringBundler(8);
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("actionType=");
-		sb.append(actionType);
+		sb.append("actionModel=");
+		sb.append(actionModel);
 
-		sb.append(", actionBase=");
-		sb.append(actionBase);
-
-		sb.append(", actionDataId=");
-		sb.append(actionDataId);
+		sb.append(", dataId=");
+		sb.append(dataId);
 
 		sb.append(", paramCode=");
 		sb.append(paramCode);
@@ -1068,23 +946,21 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Returns the first action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the first action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching action history, or <code>null</code> if a matching action history could not be found
 	 */
 	@Override
 	public ActionHistory fetchByParamCode_First(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, OrderByComparator<ActionHistory> orderByComparator) {
+		String actionModel, long dataId, String paramCode,
+		OrderByComparator<ActionHistory> orderByComparator) {
 
 		List<ActionHistory> list = findByParamCode(
-			actionType, actionBase, actionDataId, paramCode, 0, 1,
-			orderByComparator);
+			actionModel, dataId, paramCode, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1094,11 +970,10 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history
@@ -1106,30 +981,26 @@ public class ActionHistoryPersistenceImpl
 	 */
 	@Override
 	public ActionHistory findByParamCode_Last(
-			String actionType, String actionBase, long actionDataId,
-			String paramCode,
+			String actionModel, long dataId, String paramCode,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws NoSuchActionHistoryException {
 
 		ActionHistory actionHistory = fetchByParamCode_Last(
-			actionType, actionBase, actionDataId, paramCode, orderByComparator);
+			actionModel, dataId, paramCode, orderByComparator);
 
 		if (actionHistory != null) {
 			return actionHistory;
 		}
 
-		StringBundler sb = new StringBundler(10);
+		StringBundler sb = new StringBundler(8);
 
 		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		sb.append("actionType=");
-		sb.append(actionType);
+		sb.append("actionModel=");
+		sb.append(actionModel);
 
-		sb.append(", actionBase=");
-		sb.append(actionBase);
-
-		sb.append(", actionDataId=");
-		sb.append(actionDataId);
+		sb.append(", dataId=");
+		sb.append(dataId);
 
 		sb.append(", paramCode=");
 		sb.append(paramCode);
@@ -1140,29 +1011,27 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Returns the last action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the last action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching action history, or <code>null</code> if a matching action history could not be found
 	 */
 	@Override
 	public ActionHistory fetchByParamCode_Last(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode, OrderByComparator<ActionHistory> orderByComparator) {
+		String actionModel, long dataId, String paramCode,
+		OrderByComparator<ActionHistory> orderByComparator) {
 
-		int count = countByParamCode(
-			actionType, actionBase, actionDataId, paramCode);
+		int count = countByParamCode(actionModel, dataId, paramCode);
 
 		if (count == 0) {
 			return null;
 		}
 
 		List<ActionHistory> list = findByParamCode(
-			actionType, actionBase, actionDataId, paramCode, count - 1, count,
+			actionModel, dataId, paramCode, count - 1, count,
 			orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -1173,12 +1042,11 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Returns the action histories before and after the current action history in the ordered set where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the action histories before and after the current action history in the ordered set where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
 	 * @param actionHistoryId the primary key of the current action history
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next action history
@@ -1186,13 +1054,12 @@ public class ActionHistoryPersistenceImpl
 	 */
 	@Override
 	public ActionHistory[] findByParamCode_PrevAndNext(
-			long actionHistoryId, String actionType, String actionBase,
-			long actionDataId, String paramCode,
+			long actionHistoryId, String actionModel, long dataId,
+			String paramCode,
 			OrderByComparator<ActionHistory> orderByComparator)
 		throws NoSuchActionHistoryException {
 
-		actionType = Objects.toString(actionType, "");
-		actionBase = Objects.toString(actionBase, "");
+		actionModel = Objects.toString(actionModel, "");
 		paramCode = Objects.toString(paramCode, "");
 
 		ActionHistory actionHistory = findByPrimaryKey(actionHistoryId);
@@ -1205,14 +1072,14 @@ public class ActionHistoryPersistenceImpl
 			ActionHistory[] array = new ActionHistoryImpl[3];
 
 			array[0] = getByParamCode_PrevAndNext(
-				session, actionHistory, actionType, actionBase, actionDataId,
-				paramCode, orderByComparator, true);
+				session, actionHistory, actionModel, dataId, paramCode,
+				orderByComparator, true);
 
 			array[1] = actionHistory;
 
 			array[2] = getByParamCode_PrevAndNext(
-				session, actionHistory, actionType, actionBase, actionDataId,
-				paramCode, orderByComparator, false);
+				session, actionHistory, actionModel, dataId, paramCode,
+				orderByComparator, false);
 
 			return array;
 		}
@@ -1225,46 +1092,35 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	protected ActionHistory getByParamCode_PrevAndNext(
-		Session session, ActionHistory actionHistory, String actionType,
-		String actionBase, long actionDataId, String paramCode,
+		Session session, ActionHistory actionHistory, String actionModel,
+		long dataId, String paramCode,
 		OrderByComparator<ActionHistory> orderByComparator, boolean previous) {
 
 		StringBundler sb = null;
 
 		if (orderByComparator != null) {
 			sb = new StringBundler(
-				7 + (orderByComparator.getOrderByConditionFields().length * 3) +
+				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			sb = new StringBundler(6);
+			sb = new StringBundler(5);
 		}
 
 		sb.append(_SQL_SELECT_ACTIONHISTORY_WHERE);
 
-		boolean bindActionType = false;
+		boolean bindActionModel = false;
 
-		if (actionType.isEmpty()) {
-			sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONTYPE_3);
+		if (actionModel.isEmpty()) {
+			sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONMODEL_3);
 		}
 		else {
-			bindActionType = true;
+			bindActionModel = true;
 
-			sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONTYPE_2);
+			sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONMODEL_2);
 		}
 
-		boolean bindActionBase = false;
-
-		if (actionBase.isEmpty()) {
-			sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONBASE_3);
-		}
-		else {
-			bindActionBase = true;
-
-			sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONBASE_2);
-		}
-
-		sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONDATAID_2);
+		sb.append(_FINDER_COLUMN_PARAMCODE_DATAID_2);
 
 		boolean bindParamCode = false;
 
@@ -1346,15 +1202,11 @@ public class ActionHistoryPersistenceImpl
 
 		QueryPos queryPos = QueryPos.getInstance(query);
 
-		if (bindActionType) {
-			queryPos.add(actionType);
+		if (bindActionModel) {
+			queryPos.add(actionModel);
 		}
 
-		if (bindActionBase) {
-			queryPos.add(actionBase);
-		}
-
-		queryPos.add(actionDataId);
+		queryPos.add(dataId);
 
 		if (bindParamCode) {
 			queryPos.add(paramCode);
@@ -1380,81 +1232,63 @@ public class ActionHistoryPersistenceImpl
 	}
 
 	/**
-	 * Removes all the action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63; from the database.
+	 * Removes all the action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63; from the database.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 */
 	@Override
 	public void removeByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode) {
+		String actionModel, long dataId, String paramCode) {
 
 		for (ActionHistory actionHistory :
 				findByParamCode(
-					actionType, actionBase, actionDataId, paramCode,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					actionModel, dataId, paramCode, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null)) {
 
 			remove(actionHistory);
 		}
 	}
 
 	/**
-	 * Returns the number of action histories where actionType = &#63; and actionBase = &#63; and actionDataId = &#63; and paramCode = &#63;.
+	 * Returns the number of action histories where actionModel = &#63; and dataId = &#63; and paramCode = &#63;.
 	 *
-	 * @param actionType the action type
-	 * @param actionBase the action base
-	 * @param actionDataId the action data ID
+	 * @param actionModel the action model
+	 * @param dataId the data ID
 	 * @param paramCode the param code
 	 * @return the number of matching action histories
 	 */
 	@Override
 	public int countByParamCode(
-		String actionType, String actionBase, long actionDataId,
-		String paramCode) {
+		String actionModel, long dataId, String paramCode) {
 
-		actionType = Objects.toString(actionType, "");
-		actionBase = Objects.toString(actionBase, "");
+		actionModel = Objects.toString(actionModel, "");
 		paramCode = Objects.toString(paramCode, "");
 
 		FinderPath finderPath = _finderPathCountByParamCode;
 
-		Object[] finderArgs = new Object[] {
-			actionType, actionBase, actionDataId, paramCode
-		};
+		Object[] finderArgs = new Object[] {actionModel, dataId, paramCode};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler sb = new StringBundler(5);
+			StringBundler sb = new StringBundler(4);
 
 			sb.append(_SQL_COUNT_ACTIONHISTORY_WHERE);
 
-			boolean bindActionType = false;
+			boolean bindActionModel = false;
 
-			if (actionType.isEmpty()) {
-				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONTYPE_3);
+			if (actionModel.isEmpty()) {
+				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONMODEL_3);
 			}
 			else {
-				bindActionType = true;
+				bindActionModel = true;
 
-				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONTYPE_2);
+				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONMODEL_2);
 			}
 
-			boolean bindActionBase = false;
-
-			if (actionBase.isEmpty()) {
-				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONBASE_3);
-			}
-			else {
-				bindActionBase = true;
-
-				sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONBASE_2);
-			}
-
-			sb.append(_FINDER_COLUMN_PARAMCODE_ACTIONDATAID_2);
+			sb.append(_FINDER_COLUMN_PARAMCODE_DATAID_2);
 
 			boolean bindParamCode = false;
 
@@ -1478,15 +1312,11 @@ public class ActionHistoryPersistenceImpl
 
 				QueryPos queryPos = QueryPos.getInstance(query);
 
-				if (bindActionType) {
-					queryPos.add(actionType);
+				if (bindActionModel) {
+					queryPos.add(actionModel);
 				}
 
-				if (bindActionBase) {
-					queryPos.add(actionBase);
-				}
-
-				queryPos.add(actionDataId);
+				queryPos.add(dataId);
 
 				if (bindParamCode) {
 					queryPos.add(paramCode);
@@ -1509,20 +1339,14 @@ public class ActionHistoryPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_PARAMCODE_ACTIONTYPE_2 =
-		"actionHistory.actionType = ? AND ";
+	private static final String _FINDER_COLUMN_PARAMCODE_ACTIONMODEL_2 =
+		"actionHistory.actionModel = ? AND ";
 
-	private static final String _FINDER_COLUMN_PARAMCODE_ACTIONTYPE_3 =
-		"(actionHistory.actionType IS NULL OR actionHistory.actionType = '') AND ";
+	private static final String _FINDER_COLUMN_PARAMCODE_ACTIONMODEL_3 =
+		"(actionHistory.actionModel IS NULL OR actionHistory.actionModel = '') AND ";
 
-	private static final String _FINDER_COLUMN_PARAMCODE_ACTIONBASE_2 =
-		"actionHistory.actionBase = ? AND ";
-
-	private static final String _FINDER_COLUMN_PARAMCODE_ACTIONBASE_3 =
-		"(actionHistory.actionBase IS NULL OR actionHistory.actionBase = '') AND ";
-
-	private static final String _FINDER_COLUMN_PARAMCODE_ACTIONDATAID_2 =
-		"actionHistory.actionDataId = ? AND ";
+	private static final String _FINDER_COLUMN_PARAMCODE_DATAID_2 =
+		"actionHistory.dataId = ? AND ";
 
 	private static final String _FINDER_COLUMN_PARAMCODE_PARAMCODE_2 =
 		"actionHistory.paramCode = ?";
@@ -1809,19 +1633,17 @@ public class ActionHistoryPersistenceImpl
 		}
 		else if (isNew) {
 			Object[] args = new Object[] {
-				actionHistoryModelImpl.getActionType(),
-				actionHistoryModelImpl.getActionBase(),
-				actionHistoryModelImpl.getActionDataId()
+				actionHistoryModelImpl.getActionModel(),
+				actionHistoryModelImpl.getDataId()
 			};
 
-			finderCache.removeResult(_finderPathCountByAction, args);
+			finderCache.removeResult(_finderPathCountByDataId, args);
 			finderCache.removeResult(
-				_finderPathWithoutPaginationFindByAction, args);
+				_finderPathWithoutPaginationFindByDataId, args);
 
 			args = new Object[] {
-				actionHistoryModelImpl.getActionType(),
-				actionHistoryModelImpl.getActionBase(),
-				actionHistoryModelImpl.getActionDataId(),
+				actionHistoryModelImpl.getActionModel(),
+				actionHistoryModelImpl.getDataId(),
 				actionHistoryModelImpl.getParamCode()
 			};
 
@@ -1835,28 +1657,26 @@ public class ActionHistoryPersistenceImpl
 		}
 		else {
 			if ((actionHistoryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByAction.getColumnBitmask()) !=
+				 _finderPathWithoutPaginationFindByDataId.getColumnBitmask()) !=
 					 0) {
 
 				Object[] args = new Object[] {
-					actionHistoryModelImpl.getOriginalActionType(),
-					actionHistoryModelImpl.getOriginalActionBase(),
-					actionHistoryModelImpl.getOriginalActionDataId()
+					actionHistoryModelImpl.getOriginalActionModel(),
+					actionHistoryModelImpl.getOriginalDataId()
 				};
 
-				finderCache.removeResult(_finderPathCountByAction, args);
+				finderCache.removeResult(_finderPathCountByDataId, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByAction, args);
+					_finderPathWithoutPaginationFindByDataId, args);
 
 				args = new Object[] {
-					actionHistoryModelImpl.getActionType(),
-					actionHistoryModelImpl.getActionBase(),
-					actionHistoryModelImpl.getActionDataId()
+					actionHistoryModelImpl.getActionModel(),
+					actionHistoryModelImpl.getDataId()
 				};
 
-				finderCache.removeResult(_finderPathCountByAction, args);
+				finderCache.removeResult(_finderPathCountByDataId, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByAction, args);
+					_finderPathWithoutPaginationFindByDataId, args);
 			}
 
 			if ((actionHistoryModelImpl.getColumnBitmask() &
@@ -1864,9 +1684,8 @@ public class ActionHistoryPersistenceImpl
 					 getColumnBitmask()) != 0) {
 
 				Object[] args = new Object[] {
-					actionHistoryModelImpl.getOriginalActionType(),
-					actionHistoryModelImpl.getOriginalActionBase(),
-					actionHistoryModelImpl.getOriginalActionDataId(),
+					actionHistoryModelImpl.getOriginalActionModel(),
+					actionHistoryModelImpl.getOriginalDataId(),
 					actionHistoryModelImpl.getOriginalParamCode()
 				};
 
@@ -1875,9 +1694,8 @@ public class ActionHistoryPersistenceImpl
 					_finderPathWithoutPaginationFindByParamCode, args);
 
 				args = new Object[] {
-					actionHistoryModelImpl.getActionType(),
-					actionHistoryModelImpl.getActionBase(),
-					actionHistoryModelImpl.getActionDataId(),
+					actionHistoryModelImpl.getActionModel(),
+					actionHistoryModelImpl.getDataId(),
 					actionHistoryModelImpl.getParamCode()
 				};
 
@@ -2183,62 +2001,53 @@ public class ActionHistoryPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_finderPathWithPaginationFindByAction = new FinderPath(
+		_finderPathWithPaginationFindByDataId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, ActionHistoryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAction",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDataId",
 			new String[] {
-				String.class.getName(), String.class.getName(),
-				Long.class.getName(), Integer.class.getName(),
-				Integer.class.getName(), OrderByComparator.class.getName()
+				String.class.getName(), Long.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByAction = new FinderPath(
+		_finderPathWithoutPaginationFindByDataId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, ActionHistoryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAction",
-			new String[] {
-				String.class.getName(), String.class.getName(),
-				Long.class.getName()
-			},
-			ActionHistoryModelImpl.ACTIONTYPE_COLUMN_BITMASK |
-			ActionHistoryModelImpl.ACTIONBASE_COLUMN_BITMASK |
-			ActionHistoryModelImpl.ACTIONDATAID_COLUMN_BITMASK);
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDataId",
+			new String[] {String.class.getName(), Long.class.getName()},
+			ActionHistoryModelImpl.ACTIONMODEL_COLUMN_BITMASK |
+			ActionHistoryModelImpl.DATAID_COLUMN_BITMASK);
 
-		_finderPathCountByAction = new FinderPath(
+		_finderPathCountByDataId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAction",
-			new String[] {
-				String.class.getName(), String.class.getName(),
-				Long.class.getName()
-			});
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDataId",
+			new String[] {String.class.getName(), Long.class.getName()});
 
 		_finderPathWithPaginationFindByParamCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, ActionHistoryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByParamCode",
 			new String[] {
-				String.class.getName(), String.class.getName(),
-				Long.class.getName(), String.class.getName(),
-				Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
+				String.class.getName(), Long.class.getName(),
+				String.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
 		_finderPathWithoutPaginationFindByParamCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, ActionHistoryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByParamCode",
 			new String[] {
-				String.class.getName(), String.class.getName(),
-				Long.class.getName(), String.class.getName()
+				String.class.getName(), Long.class.getName(),
+				String.class.getName()
 			},
-			ActionHistoryModelImpl.ACTIONTYPE_COLUMN_BITMASK |
-			ActionHistoryModelImpl.ACTIONBASE_COLUMN_BITMASK |
-			ActionHistoryModelImpl.ACTIONDATAID_COLUMN_BITMASK |
+			ActionHistoryModelImpl.ACTIONMODEL_COLUMN_BITMASK |
+			ActionHistoryModelImpl.DATAID_COLUMN_BITMASK |
 			ActionHistoryModelImpl.PARAMCODE_COLUMN_BITMASK);
 
 		_finderPathCountByParamCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByParamCode",
 			new String[] {
-				String.class.getName(), String.class.getName(),
-				Long.class.getName(), String.class.getName()
+				String.class.getName(), Long.class.getName(),
+				String.class.getName()
 			});
 
 		_setActionHistoryUtilPersistence(this);

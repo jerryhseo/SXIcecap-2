@@ -540,6 +540,36 @@ public interface DataSetModel
 		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
+	 * Returns the verified of this data set.
+	 *
+	 * @return the verified of this data set
+	 */
+	@AutoEscape
+	public String getVerified();
+
+	/**
+	 * Sets the verified of this data set.
+	 *
+	 * @param verified the verified of this data set
+	 */
+	public void setVerified(String verified);
+
+	/**
+	 * Returns the freezed of this data set.
+	 *
+	 * @return the freezed of this data set
+	 */
+	@AutoEscape
+	public String getFreezed();
+
+	/**
+	 * Sets the freezed of this data set.
+	 *
+	 * @param freezed the freezed of this data set
+	 */
+	public void setFreezed(String freezed);
+
+	/**
 	 * Returns the trash entry created when this data set was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this data set.
 	 *
 	 * @return the trash entry created when this data set was moved to the Recycle Bin

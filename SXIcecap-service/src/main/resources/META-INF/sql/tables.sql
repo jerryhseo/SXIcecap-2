@@ -3,9 +3,8 @@ create table SX_ICECAP_ActionHistory (
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
-	actionType VARCHAR(75) null,
-	actionBase VARCHAR(75) null,
-	actionDataId LONG,
+	actionModel VARCHAR(75) null,
+	dataId LONG,
 	paramCode VARCHAR(75) null,
 	actionCommand VARCHAR(75) null,
 	prevValue VARCHAR(75) null,
@@ -14,9 +13,9 @@ create table SX_ICECAP_ActionHistory (
 );
 
 create table SX_ICECAP_CollectionSetLink (
+	collectionSetLinkId LONG not null primary key,
 	companyId LONG,
 	groupId LONG,
-	collectionSetLinkId LONG not null primary key,
 	dataCollectionId LONG,
 	dataSetId LONG,
 	order_ INTEGER,
@@ -50,7 +49,9 @@ create table SX_ICECAP_DataCollection (
 	dataCollectionCode VARCHAR(75) null,
 	dataCollectionVersion VARCHAR(75) null,
 	displayName STRING null,
-	description STRING null
+	description STRING null,
+	verified VARCHAR(75) null,
+	freezed VARCHAR(75) null
 );
 
 create table SX_ICECAP_DataComment (
@@ -91,7 +92,9 @@ create table SX_ICECAP_DataSet (
 	dataSetCode VARCHAR(75) null,
 	dataSetVersion VARCHAR(75) null,
 	displayName STRING null,
-	description STRING null
+	description STRING null,
+	verified VARCHAR(75) null,
+	freezed VARCHAR(75) null
 );
 
 create table SX_ICECAP_DataStructure (
@@ -165,6 +168,9 @@ create table SX_ICECAP_Parameter (
 
 create table SX_ICECAP_SetTypeLink (
 	setTypeLinkId LONG not null primary key,
+	companyId LONG,
+	groupId LONG,
+	dataCollectionId LONG,
 	dataSetId LONG,
 	dataTypeId LONG,
 	order_ INTEGER,
@@ -215,7 +221,7 @@ create table SX_ICECAP_StructuredData (
 	verifiedUserId LONG,
 	verifiedUserName VARCHAR(75) null,
 	verifiedDate DATE null,
-	data_ VARCHAR(75) null
+	data_ TEXT null
 );
 
 create table SX_ICECAP_TypeStructureLink (

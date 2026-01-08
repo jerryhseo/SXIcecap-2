@@ -123,15 +123,183 @@ public class CollectionSetLinkUtil {
 	}
 
 	/**
+	 * Returns all the collection set links where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the matching collection set links
+	 */
+	public static List<CollectionSetLink> findByGroupId(long groupId) {
+		return getPersistence().findByGroupId(groupId);
+	}
+
+	/**
+	 * Returns a range of all the collection set links where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @return the range of matching collection set links
+	 */
+	public static List<CollectionSetLink> findByGroupId(
+		long groupId, int start, int end) {
+
+		return getPersistence().findByGroupId(groupId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the collection set links where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching collection set links
+	 */
+	public static List<CollectionSetLink> findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		return getPersistence().findByGroupId(
+			groupId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the collection set links where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching collection set links
+	 */
+	public static List<CollectionSetLink> findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CollectionSetLink> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink findByGroupId_First(
+			long groupId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return getPersistence().findByGroupId_First(groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink fetchByGroupId_First(
+		long groupId, OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		return getPersistence().fetchByGroupId_First(
+			groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink findByGroupId_Last(
+			long groupId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return getPersistence().findByGroupId_Last(groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink fetchByGroupId_Last(
+		long groupId, OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		return getPersistence().fetchByGroupId_Last(groupId, orderByComparator);
+	}
+
+	/**
+	 * Returns the collection set links before and after the current collection set link in the ordered set where groupId = &#63;.
+	 *
+	 * @param collectionSetLinkId the primary key of the current collection set link
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next collection set link
+	 * @throws NoSuchCollectionSetLinkException if a collection set link with the primary key could not be found
+	 */
+	public static CollectionSetLink[] findByGroupId_PrevAndNext(
+			long collectionSetLinkId, long groupId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return getPersistence().findByGroupId_PrevAndNext(
+			collectionSetLinkId, groupId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the collection set links where groupId = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 */
+	public static void removeByGroupId(long groupId) {
+		getPersistence().removeByGroupId(groupId);
+	}
+
+	/**
+	 * Returns the number of collection set links where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the number of matching collection set links
+	 */
+	public static int countByGroupId(long groupId) {
+		return getPersistence().countByGroupId(groupId);
+	}
+
+	/**
 	 * Returns all the collection set links where dataCollectionId = &#63;.
 	 *
 	 * @param dataCollectionId the data collection ID
 	 * @return the matching collection set links
 	 */
-	public static List<CollectionSetLink> findByCollectionId(
+	public static List<CollectionSetLink> findByCollection(
 		long dataCollectionId) {
 
-		return getPersistence().findByCollectionId(dataCollectionId);
+		return getPersistence().findByCollection(dataCollectionId);
 	}
 
 	/**
@@ -146,11 +314,10 @@ public class CollectionSetLinkUtil {
 	 * @param end the upper bound of the range of collection set links (not inclusive)
 	 * @return the range of matching collection set links
 	 */
-	public static List<CollectionSetLink> findByCollectionId(
+	public static List<CollectionSetLink> findByCollection(
 		long dataCollectionId, int start, int end) {
 
-		return getPersistence().findByCollectionId(
-			dataCollectionId, start, end);
+		return getPersistence().findByCollection(dataCollectionId, start, end);
 	}
 
 	/**
@@ -166,11 +333,11 @@ public class CollectionSetLinkUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching collection set links
 	 */
-	public static List<CollectionSetLink> findByCollectionId(
+	public static List<CollectionSetLink> findByCollection(
 		long dataCollectionId, int start, int end,
 		OrderByComparator<CollectionSetLink> orderByComparator) {
 
-		return getPersistence().findByCollectionId(
+		return getPersistence().findByCollection(
 			dataCollectionId, start, end, orderByComparator);
 	}
 
@@ -188,12 +355,12 @@ public class CollectionSetLinkUtil {
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching collection set links
 	 */
-	public static List<CollectionSetLink> findByCollectionId(
+	public static List<CollectionSetLink> findByCollection(
 		long dataCollectionId, int start, int end,
 		OrderByComparator<CollectionSetLink> orderByComparator,
 		boolean useFinderCache) {
 
-		return getPersistence().findByCollectionId(
+		return getPersistence().findByCollection(
 			dataCollectionId, start, end, orderByComparator, useFinderCache);
 	}
 
@@ -205,12 +372,12 @@ public class CollectionSetLinkUtil {
 	 * @return the first matching collection set link
 	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
 	 */
-	public static CollectionSetLink findByCollectionId_First(
+	public static CollectionSetLink findByCollection_First(
 			long dataCollectionId,
 			OrderByComparator<CollectionSetLink> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
 
-		return getPersistence().findByCollectionId_First(
+		return getPersistence().findByCollection_First(
 			dataCollectionId, orderByComparator);
 	}
 
@@ -221,11 +388,11 @@ public class CollectionSetLinkUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching collection set link, or <code>null</code> if a matching collection set link could not be found
 	 */
-	public static CollectionSetLink fetchByCollectionId_First(
+	public static CollectionSetLink fetchByCollection_First(
 		long dataCollectionId,
 		OrderByComparator<CollectionSetLink> orderByComparator) {
 
-		return getPersistence().fetchByCollectionId_First(
+		return getPersistence().fetchByCollection_First(
 			dataCollectionId, orderByComparator);
 	}
 
@@ -237,12 +404,12 @@ public class CollectionSetLinkUtil {
 	 * @return the last matching collection set link
 	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
 	 */
-	public static CollectionSetLink findByCollectionId_Last(
+	public static CollectionSetLink findByCollection_Last(
 			long dataCollectionId,
 			OrderByComparator<CollectionSetLink> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
 
-		return getPersistence().findByCollectionId_Last(
+		return getPersistence().findByCollection_Last(
 			dataCollectionId, orderByComparator);
 	}
 
@@ -253,11 +420,11 @@ public class CollectionSetLinkUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching collection set link, or <code>null</code> if a matching collection set link could not be found
 	 */
-	public static CollectionSetLink fetchByCollectionId_Last(
+	public static CollectionSetLink fetchByCollection_Last(
 		long dataCollectionId,
 		OrderByComparator<CollectionSetLink> orderByComparator) {
 
-		return getPersistence().fetchByCollectionId_Last(
+		return getPersistence().fetchByCollection_Last(
 			dataCollectionId, orderByComparator);
 	}
 
@@ -270,12 +437,12 @@ public class CollectionSetLinkUtil {
 	 * @return the previous, current, and next collection set link
 	 * @throws NoSuchCollectionSetLinkException if a collection set link with the primary key could not be found
 	 */
-	public static CollectionSetLink[] findByCollectionId_PrevAndNext(
+	public static CollectionSetLink[] findByCollection_PrevAndNext(
 			long collectionSetLinkId, long dataCollectionId,
 			OrderByComparator<CollectionSetLink> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
 
-		return getPersistence().findByCollectionId_PrevAndNext(
+		return getPersistence().findByCollection_PrevAndNext(
 			collectionSetLinkId, dataCollectionId, orderByComparator);
 	}
 
@@ -284,8 +451,8 @@ public class CollectionSetLinkUtil {
 	 *
 	 * @param dataCollectionId the data collection ID
 	 */
-	public static void removeByCollectionId(long dataCollectionId) {
-		getPersistence().removeByCollectionId(dataCollectionId);
+	public static void removeByCollection(long dataCollectionId) {
+		getPersistence().removeByCollection(dataCollectionId);
 	}
 
 	/**
@@ -294,68 +461,379 @@ public class CollectionSetLinkUtil {
 	 * @param dataCollectionId the data collection ID
 	 * @return the number of matching collection set links
 	 */
-	public static int countByCollectionId(long dataCollectionId) {
-		return getPersistence().countByCollectionId(dataCollectionId);
+	public static int countByCollection(long dataCollectionId) {
+		return getPersistence().countByCollection(dataCollectionId);
 	}
 
 	/**
-	 * Returns the collection set link where dataCollectionId = &#63; and dataSetId = &#63; or throws a <code>NoSuchCollectionSetLinkException</code> if it could not be found.
+	 * Returns all the collection set links where groupId = &#63; and dataCollectionId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @return the matching collection set links
+	 */
+	public static List<CollectionSetLink> findByCollection_G(
+		long groupId, long dataCollectionId) {
+
+		return getPersistence().findByCollection_G(groupId, dataCollectionId);
+	}
+
+	/**
+	 * Returns a range of all the collection set links where groupId = &#63; and dataCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @return the range of matching collection set links
+	 */
+	public static List<CollectionSetLink> findByCollection_G(
+		long groupId, long dataCollectionId, int start, int end) {
+
+		return getPersistence().findByCollection_G(
+			groupId, dataCollectionId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the collection set links where groupId = &#63; and dataCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching collection set links
+	 */
+	public static List<CollectionSetLink> findByCollection_G(
+		long groupId, long dataCollectionId, int start, int end,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		return getPersistence().findByCollection_G(
+			groupId, dataCollectionId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the collection set links where groupId = &#63; and dataCollectionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching collection set links
+	 */
+	public static List<CollectionSetLink> findByCollection_G(
+		long groupId, long dataCollectionId, int start, int end,
+		OrderByComparator<CollectionSetLink> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCollection_G(
+			groupId, dataCollectionId, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first collection set link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink findByCollection_G_First(
+			long groupId, long dataCollectionId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return getPersistence().findByCollection_G_First(
+			groupId, dataCollectionId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first collection set link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink fetchByCollection_G_First(
+		long groupId, long dataCollectionId,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		return getPersistence().fetchByCollection_G_First(
+			groupId, dataCollectionId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last collection set link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink findByCollection_G_Last(
+			long groupId, long dataCollectionId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return getPersistence().findByCollection_G_Last(
+			groupId, dataCollectionId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last collection set link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink fetchByCollection_G_Last(
+		long groupId, long dataCollectionId,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		return getPersistence().fetchByCollection_G_Last(
+			groupId, dataCollectionId, orderByComparator);
+	}
+
+	/**
+	 * Returns the collection set links before and after the current collection set link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
+	 *
+	 * @param collectionSetLinkId the primary key of the current collection set link
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next collection set link
+	 * @throws NoSuchCollectionSetLinkException if a collection set link with the primary key could not be found
+	 */
+	public static CollectionSetLink[] findByCollection_G_PrevAndNext(
+			long collectionSetLinkId, long groupId, long dataCollectionId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return getPersistence().findByCollection_G_PrevAndNext(
+			collectionSetLinkId, groupId, dataCollectionId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the collection set links where groupId = &#63; and dataCollectionId = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 */
+	public static void removeByCollection_G(
+		long groupId, long dataCollectionId) {
+
+		getPersistence().removeByCollection_G(groupId, dataCollectionId);
+	}
+
+	/**
+	 * Returns the number of collection set links where groupId = &#63; and dataCollectionId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @return the number of matching collection set links
+	 */
+	public static int countByCollection_G(long groupId, long dataCollectionId) {
+		return getPersistence().countByCollection_G(groupId, dataCollectionId);
+	}
+
+	/**
+	 * Returns all the collection set links where dataCollectionId = &#63; and dataSetId = &#63;.
 	 *
 	 * @param dataCollectionId the data collection ID
 	 * @param dataSetId the data set ID
-	 * @return the matching collection set link
-	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 * @return the matching collection set links
 	 */
-	public static CollectionSetLink findByCollectionSet(
-			long dataCollectionId, long dataSetId)
-		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+	public static List<CollectionSetLink> findByCollectionSet(
+		long dataCollectionId, long dataSetId) {
 
 		return getPersistence().findByCollectionSet(
 			dataCollectionId, dataSetId);
 	}
 
 	/**
-	 * Returns the collection set link where dataCollectionId = &#63; and dataSetId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns a range of all the collection set links where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
 	 *
 	 * @param dataCollectionId the data collection ID
 	 * @param dataSetId the data set ID
-	 * @return the matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @return the range of matching collection set links
 	 */
-	public static CollectionSetLink fetchByCollectionSet(
-		long dataCollectionId, long dataSetId) {
+	public static List<CollectionSetLink> findByCollectionSet(
+		long dataCollectionId, long dataSetId, int start, int end) {
 
-		return getPersistence().fetchByCollectionSet(
-			dataCollectionId, dataSetId);
+		return getPersistence().findByCollectionSet(
+			dataCollectionId, dataSetId, start, end);
 	}
 
 	/**
-	 * Returns the collection set link where dataCollectionId = &#63; and dataSetId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns an ordered range of all the collection set links where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
 	 *
 	 * @param dataCollectionId the data collection ID
 	 * @param dataSetId the data set ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching collection set links
+	 */
+	public static List<CollectionSetLink> findByCollectionSet(
+		long dataCollectionId, long dataSetId, int start, int end,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		return getPersistence().findByCollectionSet(
+			dataCollectionId, dataSetId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the collection set links where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param start the lower bound of the range of collection set links
+	 * @param end the upper bound of the range of collection set links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 * @return the ordered range of matching collection set links
 	 */
-	public static CollectionSetLink fetchByCollectionSet(
-		long dataCollectionId, long dataSetId, boolean useFinderCache) {
+	public static List<CollectionSetLink> findByCollectionSet(
+		long dataCollectionId, long dataSetId, int start, int end,
+		OrderByComparator<CollectionSetLink> orderByComparator,
+		boolean useFinderCache) {
 
-		return getPersistence().fetchByCollectionSet(
-			dataCollectionId, dataSetId, useFinderCache);
+		return getPersistence().findByCollectionSet(
+			dataCollectionId, dataSetId, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
-	 * Removes the collection set link where dataCollectionId = &#63; and dataSetId = &#63; from the database.
+	 * Returns the first collection set link in the ordered set where dataCollectionId = &#63; and dataSetId = &#63;.
 	 *
 	 * @param dataCollectionId the data collection ID
 	 * @param dataSetId the data set ID
-	 * @return the collection set link that was removed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
 	 */
-	public static CollectionSetLink removeByCollectionSet(
-			long dataCollectionId, long dataSetId)
+	public static CollectionSetLink findByCollectionSet_First(
+			long dataCollectionId, long dataSetId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
 
-		return getPersistence().removeByCollectionSet(
-			dataCollectionId, dataSetId);
+		return getPersistence().findByCollectionSet_First(
+			dataCollectionId, dataSetId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first collection set link in the ordered set where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink fetchByCollectionSet_First(
+		long dataCollectionId, long dataSetId,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_First(
+			dataCollectionId, dataSetId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last collection set link in the ordered set where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink findByCollectionSet_Last(
+			long dataCollectionId, long dataSetId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return getPersistence().findByCollectionSet_Last(
+			dataCollectionId, dataSetId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last collection set link in the ordered set where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink fetchByCollectionSet_Last(
+		long dataCollectionId, long dataSetId,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
+
+		return getPersistence().fetchByCollectionSet_Last(
+			dataCollectionId, dataSetId, orderByComparator);
+	}
+
+	/**
+	 * Returns the collection set links before and after the current collection set link in the ordered set where dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param collectionSetLinkId the primary key of the current collection set link
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next collection set link
+	 * @throws NoSuchCollectionSetLinkException if a collection set link with the primary key could not be found
+	 */
+	public static CollectionSetLink[] findByCollectionSet_PrevAndNext(
+			long collectionSetLinkId, long dataCollectionId, long dataSetId,
+			OrderByComparator<CollectionSetLink> orderByComparator)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return getPersistence().findByCollectionSet_PrevAndNext(
+			collectionSetLinkId, dataCollectionId, dataSetId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the collection set links where dataCollectionId = &#63; and dataSetId = &#63; from the database.
+	 *
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 */
+	public static void removeByCollectionSet(
+		long dataCollectionId, long dataSetId) {
+
+		getPersistence().removeByCollectionSet(dataCollectionId, dataSetId);
 	}
 
 	/**
@@ -370,6 +848,86 @@ public class CollectionSetLinkUtil {
 
 		return getPersistence().countByCollectionSet(
 			dataCollectionId, dataSetId);
+	}
+
+	/**
+	 * Returns the collection set link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; or throws a <code>NoSuchCollectionSetLinkException</code> if it could not be found.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the matching collection set link
+	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink findByCollectionSet_G(
+			long groupId, long dataCollectionId, long dataSetId)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return getPersistence().findByCollectionSet_G(
+			groupId, dataCollectionId, dataSetId);
+	}
+
+	/**
+	 * Returns the collection set link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink fetchByCollectionSet_G(
+		long groupId, long dataCollectionId, long dataSetId) {
+
+		return getPersistence().fetchByCollectionSet_G(
+			groupId, dataCollectionId, dataSetId);
+	}
+
+	/**
+	 * Returns the collection set link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching collection set link, or <code>null</code> if a matching collection set link could not be found
+	 */
+	public static CollectionSetLink fetchByCollectionSet_G(
+		long groupId, long dataCollectionId, long dataSetId,
+		boolean useFinderCache) {
+
+		return getPersistence().fetchByCollectionSet_G(
+			groupId, dataCollectionId, dataSetId, useFinderCache);
+	}
+
+	/**
+	 * Removes the collection set link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the collection set link that was removed
+	 */
+	public static CollectionSetLink removeByCollectionSet_G(
+			long groupId, long dataCollectionId, long dataSetId)
+		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
+
+		return getPersistence().removeByCollectionSet_G(
+			groupId, dataCollectionId, dataSetId);
+	}
+
+	/**
+	 * Returns the number of collection set links where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @return the number of matching collection set links
+	 */
+	public static int countByCollectionSet_G(
+		long groupId, long dataCollectionId, long dataSetId) {
+
+		return getPersistence().countByCollectionSet_G(
+			groupId, dataCollectionId, dataSetId);
 	}
 
 	/**
@@ -543,171 +1101,189 @@ public class CollectionSetLinkUtil {
 	}
 
 	/**
-	 * Returns all the collection set links where groupId = &#63;.
+	 * Returns all the collection set links where groupId = &#63; and dataSetId = &#63;.
 	 *
 	 * @param groupId the group ID
+	 * @param dataSetId the data set ID
 	 * @return the matching collection set links
 	 */
-	public static List<CollectionSetLink> findByGroupId(long groupId) {
-		return getPersistence().findByGroupId(groupId);
+	public static List<CollectionSetLink> findBySetId_G(
+		long groupId, long dataSetId) {
+
+		return getPersistence().findBySetId_G(groupId, dataSetId);
 	}
 
 	/**
-	 * Returns a range of all the collection set links where groupId = &#63;.
+	 * Returns a range of all the collection set links where groupId = &#63; and dataSetId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupId the group ID
+	 * @param dataSetId the data set ID
 	 * @param start the lower bound of the range of collection set links
 	 * @param end the upper bound of the range of collection set links (not inclusive)
 	 * @return the range of matching collection set links
 	 */
-	public static List<CollectionSetLink> findByGroupId(
-		long groupId, int start, int end) {
+	public static List<CollectionSetLink> findBySetId_G(
+		long groupId, long dataSetId, int start, int end) {
 
-		return getPersistence().findByGroupId(groupId, start, end);
+		return getPersistence().findBySetId_G(groupId, dataSetId, start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the collection set links where groupId = &#63;.
+	 * Returns an ordered range of all the collection set links where groupId = &#63; and dataSetId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupId the group ID
+	 * @param dataSetId the data set ID
 	 * @param start the lower bound of the range of collection set links
 	 * @param end the upper bound of the range of collection set links (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching collection set links
 	 */
-	public static List<CollectionSetLink> findByGroupId(
-		long groupId, int start, int end,
+	public static List<CollectionSetLink> findBySetId_G(
+		long groupId, long dataSetId, int start, int end,
 		OrderByComparator<CollectionSetLink> orderByComparator) {
 
-		return getPersistence().findByGroupId(
-			groupId, start, end, orderByComparator);
+		return getPersistence().findBySetId_G(
+			groupId, dataSetId, start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the collection set links where groupId = &#63;.
+	 * Returns an ordered range of all the collection set links where groupId = &#63; and dataSetId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollectionSetLinkModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupId the group ID
+	 * @param dataSetId the data set ID
 	 * @param start the lower bound of the range of collection set links
 	 * @param end the upper bound of the range of collection set links (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching collection set links
 	 */
-	public static List<CollectionSetLink> findByGroupId(
-		long groupId, int start, int end,
+	public static List<CollectionSetLink> findBySetId_G(
+		long groupId, long dataSetId, int start, int end,
 		OrderByComparator<CollectionSetLink> orderByComparator,
 		boolean useFinderCache) {
 
-		return getPersistence().findByGroupId(
-			groupId, start, end, orderByComparator, useFinderCache);
+		return getPersistence().findBySetId_G(
+			groupId, dataSetId, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	 * Returns the first collection set link in the ordered set where groupId = &#63;.
+	 * Returns the first collection set link in the ordered set where groupId = &#63; and dataSetId = &#63;.
 	 *
 	 * @param groupId the group ID
+	 * @param dataSetId the data set ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching collection set link
 	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
 	 */
-	public static CollectionSetLink findByGroupId_First(
-			long groupId,
+	public static CollectionSetLink findBySetId_G_First(
+			long groupId, long dataSetId,
 			OrderByComparator<CollectionSetLink> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
 
-		return getPersistence().findByGroupId_First(groupId, orderByComparator);
+		return getPersistence().findBySetId_G_First(
+			groupId, dataSetId, orderByComparator);
 	}
 
 	/**
-	 * Returns the first collection set link in the ordered set where groupId = &#63;.
+	 * Returns the first collection set link in the ordered set where groupId = &#63; and dataSetId = &#63;.
 	 *
 	 * @param groupId the group ID
+	 * @param dataSetId the data set ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching collection set link, or <code>null</code> if a matching collection set link could not be found
 	 */
-	public static CollectionSetLink fetchByGroupId_First(
-		long groupId, OrderByComparator<CollectionSetLink> orderByComparator) {
+	public static CollectionSetLink fetchBySetId_G_First(
+		long groupId, long dataSetId,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
 
-		return getPersistence().fetchByGroupId_First(
-			groupId, orderByComparator);
+		return getPersistence().fetchBySetId_G_First(
+			groupId, dataSetId, orderByComparator);
 	}
 
 	/**
-	 * Returns the last collection set link in the ordered set where groupId = &#63;.
+	 * Returns the last collection set link in the ordered set where groupId = &#63; and dataSetId = &#63;.
 	 *
 	 * @param groupId the group ID
+	 * @param dataSetId the data set ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching collection set link
 	 * @throws NoSuchCollectionSetLinkException if a matching collection set link could not be found
 	 */
-	public static CollectionSetLink findByGroupId_Last(
-			long groupId,
+	public static CollectionSetLink findBySetId_G_Last(
+			long groupId, long dataSetId,
 			OrderByComparator<CollectionSetLink> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
 
-		return getPersistence().findByGroupId_Last(groupId, orderByComparator);
+		return getPersistence().findBySetId_G_Last(
+			groupId, dataSetId, orderByComparator);
 	}
 
 	/**
-	 * Returns the last collection set link in the ordered set where groupId = &#63;.
+	 * Returns the last collection set link in the ordered set where groupId = &#63; and dataSetId = &#63;.
 	 *
 	 * @param groupId the group ID
+	 * @param dataSetId the data set ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching collection set link, or <code>null</code> if a matching collection set link could not be found
 	 */
-	public static CollectionSetLink fetchByGroupId_Last(
-		long groupId, OrderByComparator<CollectionSetLink> orderByComparator) {
+	public static CollectionSetLink fetchBySetId_G_Last(
+		long groupId, long dataSetId,
+		OrderByComparator<CollectionSetLink> orderByComparator) {
 
-		return getPersistence().fetchByGroupId_Last(groupId, orderByComparator);
+		return getPersistence().fetchBySetId_G_Last(
+			groupId, dataSetId, orderByComparator);
 	}
 
 	/**
-	 * Returns the collection set links before and after the current collection set link in the ordered set where groupId = &#63;.
+	 * Returns the collection set links before and after the current collection set link in the ordered set where groupId = &#63; and dataSetId = &#63;.
 	 *
 	 * @param collectionSetLinkId the primary key of the current collection set link
 	 * @param groupId the group ID
+	 * @param dataSetId the data set ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next collection set link
 	 * @throws NoSuchCollectionSetLinkException if a collection set link with the primary key could not be found
 	 */
-	public static CollectionSetLink[] findByGroupId_PrevAndNext(
-			long collectionSetLinkId, long groupId,
+	public static CollectionSetLink[] findBySetId_G_PrevAndNext(
+			long collectionSetLinkId, long groupId, long dataSetId,
 			OrderByComparator<CollectionSetLink> orderByComparator)
 		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
 
-		return getPersistence().findByGroupId_PrevAndNext(
-			collectionSetLinkId, groupId, orderByComparator);
+		return getPersistence().findBySetId_G_PrevAndNext(
+			collectionSetLinkId, groupId, dataSetId, orderByComparator);
 	}
 
 	/**
-	 * Removes all the collection set links where groupId = &#63; from the database.
+	 * Removes all the collection set links where groupId = &#63; and dataSetId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
+	 * @param dataSetId the data set ID
 	 */
-	public static void removeByGroupId(long groupId) {
-		getPersistence().removeByGroupId(groupId);
+	public static void removeBySetId_G(long groupId, long dataSetId) {
+		getPersistence().removeBySetId_G(groupId, dataSetId);
 	}
 
 	/**
-	 * Returns the number of collection set links where groupId = &#63;.
+	 * Returns the number of collection set links where groupId = &#63; and dataSetId = &#63;.
 	 *
 	 * @param groupId the group ID
+	 * @param dataSetId the data set ID
 	 * @return the number of matching collection set links
 	 */
-	public static int countByGroupId(long groupId) {
-		return getPersistence().countByGroupId(groupId);
+	public static int countBySetId_G(long groupId, long dataSetId) {
+		return getPersistence().countBySetId_G(groupId, dataSetId);
 	}
 
 	/**

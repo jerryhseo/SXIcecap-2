@@ -61,7 +61,7 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -97,6 +97,10 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 		sb.append(displayName);
 		sb.append(", description=");
 		sb.append(description);
+		sb.append(", verified=");
+		sb.append(verified);
+		sb.append(", freezed=");
+		sb.append(freezed);
 		sb.append("}");
 
 		return sb.toString();
@@ -191,6 +195,20 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 			dataSetImpl.setDescription(description);
 		}
 
+		if (verified == null) {
+			dataSetImpl.setVerified("");
+		}
+		else {
+			dataSetImpl.setVerified(verified);
+		}
+
+		if (freezed == null) {
+			dataSetImpl.setFreezed("");
+		}
+		else {
+			dataSetImpl.setFreezed(freezed);
+		}
+
 		dataSetImpl.resetOriginalValues();
 
 		return dataSetImpl;
@@ -221,6 +239,8 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 		dataSetVersion = objectInput.readUTF();
 		displayName = objectInput.readUTF();
 		description = objectInput.readUTF();
+		verified = objectInput.readUTF();
+		freezed = objectInput.readUTF();
 	}
 
 	@Override
@@ -291,6 +311,20 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 		else {
 			objectOutput.writeUTF(description);
 		}
+
+		if (verified == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(verified);
+		}
+
+		if (freezed == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(freezed);
+		}
 	}
 
 	public String uuid;
@@ -310,5 +344,7 @@ public class DataSetCacheModel implements CacheModel<DataSet>, Externalizable {
 	public String dataSetVersion;
 	public String displayName;
 	public String description;
+	public String verified;
+	public String freezed;
 
 }

@@ -28,7 +28,8 @@ public class ActionHistoryImpl extends ActionHistoryBaseImpl {
 		json.put("userId", getUserId());
 		json.put("userName", getUserName());
 		json.put("createDate", getCreateDate());
-		json.put("actionDataId", getActionDataId());
+		json.put("actionModel", getActionModel());
+		json.put("dataId", getDataId());
 		json.put("paramCode", getParamCode());
 		json.put("prevValue", getPrevValue());
 		json.put("modifiedValue", getModifiedValue());

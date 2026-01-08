@@ -63,7 +63,7 @@ public class DataCollectionCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -99,6 +99,10 @@ public class DataCollectionCacheModel
 		sb.append(displayName);
 		sb.append(", description=");
 		sb.append(description);
+		sb.append(", verified=");
+		sb.append(verified);
+		sb.append(", freezed=");
+		sb.append(freezed);
 		sb.append("}");
 
 		return sb.toString();
@@ -193,6 +197,20 @@ public class DataCollectionCacheModel
 			dataCollectionImpl.setDescription(description);
 		}
 
+		if (verified == null) {
+			dataCollectionImpl.setVerified("");
+		}
+		else {
+			dataCollectionImpl.setVerified(verified);
+		}
+
+		if (freezed == null) {
+			dataCollectionImpl.setFreezed("");
+		}
+		else {
+			dataCollectionImpl.setFreezed(freezed);
+		}
+
 		dataCollectionImpl.resetOriginalValues();
 
 		return dataCollectionImpl;
@@ -223,6 +241,8 @@ public class DataCollectionCacheModel
 		dataCollectionVersion = objectInput.readUTF();
 		displayName = objectInput.readUTF();
 		description = objectInput.readUTF();
+		verified = objectInput.readUTF();
+		freezed = objectInput.readUTF();
 	}
 
 	@Override
@@ -293,6 +313,20 @@ public class DataCollectionCacheModel
 		else {
 			objectOutput.writeUTF(description);
 		}
+
+		if (verified == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(verified);
+		}
+
+		if (freezed == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(freezed);
+		}
 	}
 
 	public String uuid;
@@ -312,5 +346,7 @@ public class DataCollectionCacheModel
 	public String dataCollectionVersion;
 	public String displayName;
 	public String description;
+	public String verified;
+	public String freezed;
 
 }

@@ -67,12 +67,12 @@ public class CollectionSetLinkCacheModel
 	public String toString() {
 		StringBundler sb = new StringBundler(35);
 
-		sb.append("{companyId=");
+		sb.append("{collectionSetLinkId=");
+		sb.append(collectionSetLinkId);
+		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", groupId=");
 		sb.append(groupId);
-		sb.append(", collectionSetLinkId=");
-		sb.append(collectionSetLinkId);
 		sb.append(", dataCollectionId=");
 		sb.append(dataCollectionId);
 		sb.append(", dataSetId=");
@@ -111,9 +111,9 @@ public class CollectionSetLinkCacheModel
 		CollectionSetLinkImpl collectionSetLinkImpl =
 			new CollectionSetLinkImpl();
 
+		collectionSetLinkImpl.setCollectionSetLinkId(collectionSetLinkId);
 		collectionSetLinkImpl.setCompanyId(companyId);
 		collectionSetLinkImpl.setGroupId(groupId);
-		collectionSetLinkImpl.setCollectionSetLinkId(collectionSetLinkId);
 		collectionSetLinkImpl.setDataCollectionId(dataCollectionId);
 		collectionSetLinkImpl.setDataSetId(dataSetId);
 		collectionSetLinkImpl.setOrder(order);
@@ -161,11 +161,11 @@ public class CollectionSetLinkCacheModel
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
+		collectionSetLinkId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
-
-		collectionSetLinkId = objectInput.readLong();
 
 		dataCollectionId = objectInput.readLong();
 
@@ -194,11 +194,11 @@ public class CollectionSetLinkCacheModel
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+		objectOutput.writeLong(collectionSetLinkId);
+
 		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(groupId);
-
-		objectOutput.writeLong(collectionSetLinkId);
 
 		objectOutput.writeLong(dataCollectionId);
 
@@ -239,9 +239,9 @@ public class CollectionSetLinkCacheModel
 		objectOutput.writeLong(verifiedDate);
 	}
 
+	public long collectionSetLinkId;
 	public long companyId;
 	public long groupId;
-	public long collectionSetLinkId;
 	public long dataCollectionId;
 	public long dataSetId;
 	public int order;

@@ -14,8 +14,10 @@
 
 package com.sx.icecap.model.impl;
 
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.Validator;
 import com.sx.icecap.constant.DataCollectionProperties;
 
 import java.util.Locale;
@@ -61,6 +63,20 @@ public class DataCollectionImpl extends DataCollectionBaseImpl {
 		dataCollection.put("modifiedDate", this.getModifiedDate());
 		dataCollection.put(DataCollectionProperties.DATA_COLLECTION_CODE, this.getDataCollectionCode());
 		dataCollection.put(DataCollectionProperties.DATA_COLLECTION_VERSION, this.getDataCollectionVersion());
+		
+		try {
+			String verified = this.getVerified();
+			if( Validator.isNotNull(verified)) {
+				dataCollection.put("verified", JSONFactoryUtil.createJSONObject(verified));
+			}
+			
+			String freezed = this.getFreezed();
+			if( Validator.isNotNull(freezed)) {
+				dataCollection.put("freezed", JSONFactoryUtil.createJSONObject(freezed));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		
 		return dataCollection;
 	}

@@ -16,6 +16,7 @@ package com.sx.icecap.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ShardedModel;
 
 import java.util.Date;
 
@@ -33,7 +34,7 @@ import org.osgi.annotation.versioning.ProviderType;
  * @generated
  */
 @ProviderType
-public interface SetTypeLinkModel extends BaseModel<SetTypeLink> {
+public interface SetTypeLinkModel extends BaseModel<SetTypeLink>, ShardedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -68,6 +69,50 @@ public interface SetTypeLinkModel extends BaseModel<SetTypeLink> {
 	 * @param setTypeLinkId the set type link ID of this set type link
 	 */
 	public void setSetTypeLinkId(long setTypeLinkId);
+
+	/**
+	 * Returns the company ID of this set type link.
+	 *
+	 * @return the company ID of this set type link
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this set type link.
+	 *
+	 * @param companyId the company ID of this set type link
+	 */
+	@Override
+	public void setCompanyId(long companyId);
+
+	/**
+	 * Returns the group ID of this set type link.
+	 *
+	 * @return the group ID of this set type link
+	 */
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this set type link.
+	 *
+	 * @param groupId the group ID of this set type link
+	 */
+	public void setGroupId(long groupId);
+
+	/**
+	 * Returns the data collection ID of this set type link.
+	 *
+	 * @return the data collection ID of this set type link
+	 */
+	public long getDataCollectionId();
+
+	/**
+	 * Sets the data collection ID of this set type link.
+	 *
+	 * @param dataCollectionId the data collection ID of this set type link
+	 */
+	public void setDataCollectionId(long dataCollectionId);
 
 	/**
 	 * Returns the data set ID of this set type link.

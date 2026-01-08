@@ -25,6 +25,7 @@ public class CollectionSetLinkImpl extends CollectionSetLinkBaseImpl {
 	public JSONObject toJSON() {
 		JSONObject json = JSONFactoryUtil.createJSONObject();
 		
+		json.put("groupId", getGroupId());
 		json.put("dataCollectionId", getDataCollectionId());
 		json.put("dataSetId", getDataSetId());
 		json.put("order", getOrder());

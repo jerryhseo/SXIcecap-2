@@ -253,7 +253,7 @@ public class DataCollectionLocalServiceImpl
 	public DataCollection removeDataCollection( long dataCollectionId ) throws PortalException {
 		DataCollection dataCollection = super.dataCollectionPersistence.remove(dataCollectionId);
 		
-		collectionSetLinkPersistence.removeByCollectionId(dataCollectionId);
+		collectionSetLinkPersistence.removeByCollection(dataCollectionId);
 		
 		super.assetEntryLocalService.deleteEntry(DataCollection.class.getName(), dataCollection.getPrimaryKey());
 
@@ -305,7 +305,7 @@ public class DataCollectionLocalServiceImpl
 		}
 		
 		List<CollectionSetLink> collectionSetLinkList = 
-				collectionSetLinkPersistence.findByCollectionId(dataCollectionId);
+				collectionSetLinkPersistence.findByCollection(dataCollectionId);
 		
 		if( Validator.isNotNull(collectionSetLinkList)) {
 			JSONArray jsonDataSetList = JSONFactoryUtil.createJSONArray();

@@ -63,10 +63,16 @@ public class SetTypeLinkCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(31);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{setTypeLinkId=");
 		sb.append(setTypeLinkId);
+		sb.append(", companyId=");
+		sb.append(companyId);
+		sb.append(", groupId=");
+		sb.append(groupId);
+		sb.append(", dataCollectionId=");
+		sb.append(dataCollectionId);
 		sb.append(", dataSetId=");
 		sb.append(dataSetId);
 		sb.append(", dataTypeId=");
@@ -105,6 +111,9 @@ public class SetTypeLinkCacheModel
 		SetTypeLinkImpl setTypeLinkImpl = new SetTypeLinkImpl();
 
 		setTypeLinkImpl.setSetTypeLinkId(setTypeLinkId);
+		setTypeLinkImpl.setCompanyId(companyId);
+		setTypeLinkImpl.setGroupId(groupId);
+		setTypeLinkImpl.setDataCollectionId(dataCollectionId);
 		setTypeLinkImpl.setDataSetId(dataSetId);
 		setTypeLinkImpl.setDataTypeId(dataTypeId);
 		setTypeLinkImpl.setOrder(order);
@@ -154,6 +163,12 @@ public class SetTypeLinkCacheModel
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		setTypeLinkId = objectInput.readLong();
 
+		companyId = objectInput.readLong();
+
+		groupId = objectInput.readLong();
+
+		dataCollectionId = objectInput.readLong();
+
 		dataSetId = objectInput.readLong();
 
 		dataTypeId = objectInput.readLong();
@@ -182,6 +197,12 @@ public class SetTypeLinkCacheModel
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(setTypeLinkId);
+
+		objectOutput.writeLong(companyId);
+
+		objectOutput.writeLong(groupId);
+
+		objectOutput.writeLong(dataCollectionId);
 
 		objectOutput.writeLong(dataSetId);
 
@@ -223,6 +244,9 @@ public class SetTypeLinkCacheModel
 	}
 
 	public long setTypeLinkId;
+	public long companyId;
+	public long groupId;
+	public long dataCollectionId;
 	public long dataSetId;
 	public long dataTypeId;
 	public int order;

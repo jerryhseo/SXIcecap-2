@@ -540,6 +540,36 @@ public interface DataCollectionModel
 		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
+	 * Returns the verified of this data collection.
+	 *
+	 * @return the verified of this data collection
+	 */
+	@AutoEscape
+	public String getVerified();
+
+	/**
+	 * Sets the verified of this data collection.
+	 *
+	 * @param verified the verified of this data collection
+	 */
+	public void setVerified(String verified);
+
+	/**
+	 * Returns the freezed of this data collection.
+	 *
+	 * @return the freezed of this data collection
+	 */
+	@AutoEscape
+	public String getFreezed();
+
+	/**
+	 * Sets the freezed of this data collection.
+	 *
+	 * @param freezed the freezed of this data collection
+	 */
+	public void setFreezed(String freezed);
+
+	/**
 	 * Returns the trash entry created when this data collection was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this data collection.
 	 *
 	 * @return the trash entry created when this data collection was moved to the Recycle Bin
