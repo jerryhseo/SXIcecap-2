@@ -35,10 +35,11 @@ public class SetTypeLinkLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.SetTypeLink addSetTypeLink(
-		long dataSetId, long dataTypeId, int order) {
+		long dataCollectionId, long dataSetId, long dataTypeId, int order,
+		com.liferay.portal.kernel.service.ServiceContext sc) {
 
 		return _setTypeLinkLocalService.addSetTypeLink(
-			dataSetId, dataTypeId, order);
+			dataCollectionId, dataSetId, dataTypeId, order, sc);
 	}
 
 	/**
@@ -393,13 +394,34 @@ public class SetTypeLinkLocalServiceWrapper
 	}
 
 	@Override
-	public void removeSetTypeLinkBySet(long dataSetId) {
-		_setTypeLinkLocalService.removeSetTypeLinkBySet(dataSetId);
+	public void removeSetTypeLinksByCollection(
+		long groupId, long dataCollectionId) {
+
+		_setTypeLinkLocalService.removeSetTypeLinksByCollection(
+			groupId, dataCollectionId);
 	}
 
 	@Override
-	public void removeSetTypeLinkByType(long dataTypeId) {
-		_setTypeLinkLocalService.removeSetTypeLinkByType(dataTypeId);
+	public void removeSetTypeLinksByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId) {
+
+		_setTypeLinkLocalService.removeSetTypeLinksByCollectionSet(
+			groupId, dataCollectionId, dataSetId);
+	}
+
+	@Override
+	public void removeSetTypeLinksBySet(long dataSetId) {
+		_setTypeLinkLocalService.removeSetTypeLinksBySet(dataSetId);
+	}
+
+	@Override
+	public void removeSetTypeLinksBySet_G(long groupId, long dataSetId) {
+		_setTypeLinkLocalService.removeSetTypeLinksBySet_G(groupId, dataSetId);
+	}
+
+	@Override
+	public void removeSetTypeLinksByType(long dataTypeId) {
+		_setTypeLinkLocalService.removeSetTypeLinksByType(dataTypeId);
 	}
 
 	@Override
@@ -423,10 +445,11 @@ public class SetTypeLinkLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.SetTypeLink updateSetTypeLink(
-		long setTypeLinkId, long dataSetId, long dataTypeId, int order) {
+		long setTypeLinkId, long dataCollectionId, long dataSetId,
+		long dataTypeId, int order) {
 
 		return _setTypeLinkLocalService.updateSetTypeLink(
-			setTypeLinkId, dataSetId, dataTypeId, order);
+			setTypeLinkId, dataCollectionId, dataSetId, dataTypeId, order);
 	}
 
 	/**

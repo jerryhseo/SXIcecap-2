@@ -41,11 +41,14 @@ public class SetTypeLinkLocalServiceImpl
 	extends SetTypeLinkLocalServiceBaseImpl {
 	
 	@Indexable(type = IndexableType.REINDEX)
-	public SetTypeLink addSetTypeLink( long dataSetId, long dataTypeId, int order ) {
+	public SetTypeLink addSetTypeLink( long dataCollectionId, long dataSetId, long dataTypeId, int order, ServiceContext sc ) {
 		long linkId = super.counterLocalService.increment();
 		
 		SetTypeLink link = setTypeLinkPersistence.create(linkId);
-		
+
+		link.setCompanyId(sc.getCompanyId());
+		link.setGroupId(sc.getScopeGroupId());
+		link.setDataCollectionId(dataCollectionId);
 		link.setDataSetId(dataSetId);
 		link.setDataTypeId(dataTypeId);
 		link.setOrder(order);
@@ -63,9 +66,10 @@ public class SetTypeLinkLocalServiceImpl
 	}
 	
 	@Indexable(type = IndexableType.REINDEX)
-	public SetTypeLink updateSetTypeLink( long setTypeLinkId, long dataSetId, long dataTypeId, int order ) {
+	public SetTypeLink updateSetTypeLink( long setTypeLinkId, long dataCollectionId, long dataSetId, long dataTypeId, int order ) {
 		SetTypeLink link = setTypeLinkPersistence.fetchByPrimaryKey(setTypeLinkId);
 		
+		link.setDataCollectionId(dataCollectionId);
 		link.setDataSetId(dataSetId);
 		link.setDataTypeId(dataTypeId);
 		link.setOrder(order);
@@ -75,7 +79,7 @@ public class SetTypeLinkLocalServiceImpl
 		return link;
 	}
 	
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.DELETE)
 	public SetTypeLink removeSetTypeLink( long setTypeLinkId ) {
 		SetTypeLink link = null;
 		
@@ -89,13 +93,28 @@ public class SetTypeLinkLocalServiceImpl
 		return link;
 	}
 	
-	@Indexable(type = IndexableType.REINDEX)
-	public void removeSetTypeLinkBySet( long dataSetId ) {
+	@Indexable(type = IndexableType.DELETE)
+	public void removeSetTypeLinksByCollectionSet( long groupId, long dataCollectionId, long dataSetId ) {
+		setTypeLinkPersistence.removeByCollectionSet_G(groupId, dataCollectionId, dataSetId);
+	}
+	
+	@Indexable(type = IndexableType.DELETE)
+	public void removeSetTypeLinksByCollection( long groupId, long dataCollectionId ) {
+		setTypeLinkPersistence.removeByCollection_G(groupId, dataCollectionId);;
+	}
+	
+	@Indexable(type = IndexableType.DELETE)
+	public void removeSetTypeLinksBySet( long dataSetId ) {
 		setTypeLinkPersistence.removeByDataSetId(dataSetId);
 	}
 	
-	@Indexable(type = IndexableType.REINDEX)
-	public void removeSetTypeLinkByType( long dataTypeId ) {
+	@Indexable(type = IndexableType.DELETE)
+	public void removeSetTypeLinksBySet_G( long groupId, long dataSetId ) {
+		setTypeLinkPersistence.removeBySet_G(groupId, dataSetId);
+	}
+	
+	@Indexable(type = IndexableType.DELETE)
+	public void removeSetTypeLinksByType( long dataTypeId ) {
 		setTypeLinkPersistence.removeByDataTypeId(dataTypeId);
 	}
 	

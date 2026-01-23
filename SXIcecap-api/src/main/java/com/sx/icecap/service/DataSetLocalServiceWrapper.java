@@ -363,10 +363,11 @@ public class DataSetLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.json.JSONObject getDataSetInfo(
-		long dataCollectionId, long dataSetId, java.util.Locale locale) {
+		long groupId, long dataCollectionId, long dataSetId,
+		java.util.Locale locale) {
 
 		return _dataSetLocalService.getDataSetInfo(
-			dataCollectionId, dataSetId, locale);
+			groupId, dataCollectionId, dataSetId, locale);
 	}
 
 	@Override
@@ -655,6 +656,15 @@ public class DataSetLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dataSetLocalService.removeDataSet(dataSetId);
+	}
+
+	@Override
+	public void removeDataSets(
+			long groupId, long dataCollectionId, long[] dataSetIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_dataSetLocalService.removeDataSets(
+			groupId, dataCollectionId, dataSetIds);
 	}
 
 	@Override

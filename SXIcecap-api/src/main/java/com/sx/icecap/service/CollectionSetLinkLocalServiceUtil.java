@@ -62,10 +62,11 @@ public class CollectionSetLinkLocalServiceUtil {
 	}
 
 	public static CollectionSetLink addCollectionSetLink(
-		long dataCollectionId, long dataSetId, int order) {
+		long dataCollectionId, long dataSetId, int order,
+		com.liferay.portal.kernel.service.ServiceContext sc) {
 
 		return getService().addCollectionSetLink(
-			dataCollectionId, dataSetId, order);
+			dataCollectionId, dataSetId, order, sc);
 	}
 
 	public static int countAllCollectionSetLinkList() {
@@ -360,6 +361,13 @@ public class CollectionSetLinkLocalServiceUtil {
 
 		getService().removeCollectionSetLinkBySet(
 			groupId, dataCollectionId, dataSetId);
+	}
+
+	public static void removeCollectionSetLinksByCollection(
+		long groupId, long dataCollectionId) {
+
+		getService().removeCollectionSetLinksByCollection(
+			groupId, dataCollectionId);
 	}
 
 	public static CollectionSetLink setFreezed(

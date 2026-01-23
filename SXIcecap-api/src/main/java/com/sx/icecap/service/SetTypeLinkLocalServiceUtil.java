@@ -45,9 +45,11 @@ public class SetTypeLinkLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.sx.icecap.service.impl.SetTypeLinkLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static SetTypeLink addSetTypeLink(
-		long dataSetId, long dataTypeId, int order) {
+		long dataCollectionId, long dataSetId, long dataTypeId, int order,
+		com.liferay.portal.kernel.service.ServiceContext sc) {
 
-		return getService().addSetTypeLink(dataSetId, dataTypeId, order);
+		return getService().addSetTypeLink(
+			dataCollectionId, dataSetId, dataTypeId, order, sc);
 	}
 
 	/**
@@ -336,12 +338,29 @@ public class SetTypeLinkLocalServiceUtil {
 		return getService().removeSetTypeLink(setTypeLinkId);
 	}
 
-	public static void removeSetTypeLinkBySet(long dataSetId) {
-		getService().removeSetTypeLinkBySet(dataSetId);
+	public static void removeSetTypeLinksByCollection(
+		long groupId, long dataCollectionId) {
+
+		getService().removeSetTypeLinksByCollection(groupId, dataCollectionId);
 	}
 
-	public static void removeSetTypeLinkByType(long dataTypeId) {
-		getService().removeSetTypeLinkByType(dataTypeId);
+	public static void removeSetTypeLinksByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId) {
+
+		getService().removeSetTypeLinksByCollectionSet(
+			groupId, dataCollectionId, dataSetId);
+	}
+
+	public static void removeSetTypeLinksBySet(long dataSetId) {
+		getService().removeSetTypeLinksBySet(dataSetId);
+	}
+
+	public static void removeSetTypeLinksBySet_G(long groupId, long dataSetId) {
+		getService().removeSetTypeLinksBySet_G(groupId, dataSetId);
+	}
+
+	public static void removeSetTypeLinksByType(long dataTypeId) {
+		getService().removeSetTypeLinksByType(dataTypeId);
 	}
 
 	public static SetTypeLink setFreezed(
@@ -361,10 +380,11 @@ public class SetTypeLinkLocalServiceUtil {
 	}
 
 	public static SetTypeLink updateSetTypeLink(
-		long setTypeLinkId, long dataSetId, long dataTypeId, int order) {
+		long setTypeLinkId, long dataCollectionId, long dataSetId,
+		long dataTypeId, int order) {
 
 		return getService().updateSetTypeLink(
-			setTypeLinkId, dataSetId, dataTypeId, order);
+			setTypeLinkId, dataCollectionId, dataSetId, dataTypeId, order);
 	}
 
 	/**

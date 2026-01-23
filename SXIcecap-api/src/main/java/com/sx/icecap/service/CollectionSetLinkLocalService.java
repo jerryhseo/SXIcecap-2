@@ -80,7 +80,7 @@ public interface CollectionSetLinkLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public CollectionSetLink addCollectionSetLink(
-		long dataCollectionId, long dataSetId, int order);
+		long dataCollectionId, long dataSetId, int order, ServiceContext sc);
 
 	public int countAllCollectionSetLinkList();
 
@@ -296,6 +296,10 @@ public interface CollectionSetLinkLocalService
 	public void removeCollectionSetLinkBySet(
 			long groupId, long dataCollectionId, long dataSetId)
 		throws NoSuchCollectionSetLinkException;
+
+	@Indexable(type = IndexableType.DELETE)
+	public void removeCollectionSetLinksByCollection(
+		long groupId, long dataCollectionId);
 
 	@Indexable(type = IndexableType.REINDEX)
 	public CollectionSetLink setFreezed(

@@ -64,7 +64,8 @@ public interface SetTypeLinkLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public SetTypeLink addSetTypeLink(
-		long dataSetId, long dataTypeId, int order);
+		long dataCollectionId, long dataSetId, long dataTypeId, int order,
+		ServiceContext sc);
 
 	/**
 	 * Adds the set type link to the database. Also notifies the appropriate model listeners.
@@ -287,14 +288,25 @@ public interface SetTypeLinkLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getSetTypeLinksCount();
 
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.DELETE)
 	public SetTypeLink removeSetTypeLink(long setTypeLinkId);
 
-	@Indexable(type = IndexableType.REINDEX)
-	public void removeSetTypeLinkBySet(long dataSetId);
+	@Indexable(type = IndexableType.DELETE)
+	public void removeSetTypeLinksByCollection(
+		long groupId, long dataCollectionId);
 
-	@Indexable(type = IndexableType.REINDEX)
-	public void removeSetTypeLinkByType(long dataTypeId);
+	@Indexable(type = IndexableType.DELETE)
+	public void removeSetTypeLinksByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId);
+
+	@Indexable(type = IndexableType.DELETE)
+	public void removeSetTypeLinksBySet(long dataSetId);
+
+	@Indexable(type = IndexableType.DELETE)
+	public void removeSetTypeLinksBySet_G(long groupId, long dataSetId);
+
+	@Indexable(type = IndexableType.DELETE)
+	public void removeSetTypeLinksByType(long dataTypeId);
 
 	@Indexable(type = IndexableType.REINDEX)
 	public SetTypeLink setFreezed(
@@ -308,7 +320,8 @@ public interface SetTypeLinkLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public SetTypeLink updateSetTypeLink(
-		long setTypeLinkId, long dataSetId, long dataTypeId, int order);
+		long setTypeLinkId, long dataCollectionId, long dataSetId,
+		long dataTypeId, int order);
 
 	/**
 	 * Updates the set type link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

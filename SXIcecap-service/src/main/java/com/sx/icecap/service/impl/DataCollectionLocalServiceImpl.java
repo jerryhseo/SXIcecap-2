@@ -31,9 +31,12 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.sx.icecap.exception.DuplicatedDataCollectionCodeException;
 import com.sx.icecap.exception.DuplicatedDataTypeCodeException;
+import com.sx.icecap.exception.NoSuchDataCollectionException;
 import com.sx.icecap.model.CollectionSetLink;
 import com.sx.icecap.model.DataCollection;
 import com.sx.icecap.model.DataSet;
+import com.sx.icecap.service.CollectionSetLinkLocalService;
+import com.sx.icecap.service.SetTypeLinkLocalService;
 import com.sx.icecap.service.base.DataCollectionLocalServiceBaseImpl;
 
 import java.util.ArrayList;
@@ -44,6 +47,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -270,9 +274,13 @@ public class DataCollectionLocalServiceImpl
 		return dataCollection;
 	}
 	
-	public void removeDataCollections( long[] dataCollectionIds ) throws PortalException {
+	@Indexable(type = IndexableType.DELETE)
+	public void removeDataCollections( long groupId, long[] dataCollectionIds ) throws PortalException {
 		for( long dataCollectionId : dataCollectionIds ) {
 			this.removeDataCollection(dataCollectionId);
+			
+			_collectionSetLinkLocalService.removeCollectionSetLinksByCollection(groupId, dataCollectionId);
+			_setTypeLinkLocalService.removeSetTypeLinksByCollection(groupId, dataCollectionId);
 		}
 	}
 	
@@ -342,6 +350,26 @@ public class DataCollectionLocalServiceImpl
 		return collectionInfo;
 	}
 	
+	public JSONArray getAssociatedDataSets(long dataCollectionId) {
+		JSONArray dataSets = JSONFactoryUtil.createJSONArray();
+		
+		DataCollection dataCollection;
+		try {
+			dataCollection = dataCollectionPersistence.findByPrimaryKey(dataCollectionId);
+			
+			List<CollectionSetLink> collectionSetLinkList = 
+					collectionSetLinkPersistence.findByCollection_G(dataCollection.getDataCollectionId(), dataCollectionId);
+			
+			
+		} catch (NoSuchDataCollectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return dataSets;
+	}
+	
 	public boolean checkDataCollectionCodeUnique( String dataCollectionCode ) {
 		// Check uniqueness of the dataCollectionCode
 		if( super.dataTypePersistence.countByCode(dataCollectionCode) > 0 ) {
@@ -360,4 +388,10 @@ public class DataCollectionLocalServiceImpl
 		
 		return false;
 	}
+	
+	@Reference
+	CollectionSetLinkLocalService _collectionSetLinkLocalService;
+	
+	@Reference
+	SetTypeLinkLocalService _setTypeLinkLocalService;
 }

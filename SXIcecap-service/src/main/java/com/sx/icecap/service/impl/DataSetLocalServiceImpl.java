@@ -36,6 +36,7 @@ import com.sx.icecap.model.DataCollection;
 import com.sx.icecap.model.DataSet;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.model.SetTypeLink;
+import com.sx.icecap.service.SetTypeLinkLocalService;
 import com.sx.icecap.service.base.DataSetLocalServiceBaseImpl;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -270,6 +272,16 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		return dataSet;
 	}
 	
+	@Indexable(type = IndexableType.DELETE)
+	public void removeDataSets( long groupId, long dataCollectionId, long[] dataSetIds) throws PortalException {
+		for(int i=0; i < dataSetIds.length; i++) {
+			long dataSetId = dataSetIds[i];
+			
+			this.removeDataSet(dataSetId);
+			
+			_setTypeLinkLocalService.removeSetTypeLinksByCollectionSet(groupId, dataCollectionId, dataSetId);
+		}
+	}
 	
 	public void removeDataSets( long[] dataSetIds ) throws PortalException {
 		for( long dataSetId : dataSetIds ) {
@@ -446,7 +458,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		return super.dataSetPersistence.countByCode(dataSetCode);
 	}
 	
-	public JSONObject getDataSetInfo( long dataCollectionId,  long dataSetId, Locale locale) {
+	public JSONObject getDataSetInfo( long groupId, long dataCollectionId,  long dataSetId, Locale locale) {
 		JSONObject dataSetInfo = JSONFactoryUtil.createJSONObject();
 		
 		if( dataCollectionId > 0 ) {
@@ -478,7 +490,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		
 		dataSetInfo.put("dataSet", dataSet.toJSON());
 		
-		List<SetTypeLink> setTypeLinkList = setTypeLinkPersistence.findByDataSetId(dataSetId);
+		List<SetTypeLink> setTypeLinkList = setTypeLinkPersistence.findByCollectionSet_G(groupId, dataCollectionId, dataSetId);
 		Iterator<SetTypeLink> iter = setTypeLinkList.iterator();
 		
 		JSONArray jsonDataTypeList = JSONFactoryUtil.createJSONArray();
@@ -569,4 +581,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		
 		return jsonDataSetListInfo;
 	}
+	
+	@Reference
+	SetTypeLinkLocalService _setTypeLinkLocalService;
 }

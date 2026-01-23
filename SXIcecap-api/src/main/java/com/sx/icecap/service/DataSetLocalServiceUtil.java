@@ -324,9 +324,11 @@ public class DataSetLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject getDataSetInfo(
-		long dataCollectionId, long dataSetId, java.util.Locale locale) {
+		long groupId, long dataCollectionId, long dataSetId,
+		java.util.Locale locale) {
 
-		return getService().getDataSetInfo(dataCollectionId, dataSetId, locale);
+		return getService().getDataSetInfo(
+			groupId, dataCollectionId, dataSetId, locale);
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray getDataSetListInfo(
@@ -552,6 +554,13 @@ public class DataSetLocalServiceUtil {
 
 	public static DataSet removeDataSet(long dataSetId) throws PortalException {
 		return getService().removeDataSet(dataSetId);
+	}
+
+	public static void removeDataSets(
+			long groupId, long dataCollectionId, long[] dataSetIds)
+		throws PortalException {
+
+		getService().removeDataSets(groupId, dataCollectionId, dataSetIds);
 	}
 
 	public static void removeDataSets(long[] dataSetIds)

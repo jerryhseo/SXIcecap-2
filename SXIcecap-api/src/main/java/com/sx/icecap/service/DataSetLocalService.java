@@ -282,7 +282,7 @@ public interface DataSetLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONObject getDataSetInfo(
-		long dataCollectionId, long dataSetId, Locale locale);
+		long groupId, long dataCollectionId, long dataSetId, Locale locale);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONArray getDataSetListInfo(
@@ -440,6 +440,11 @@ public interface DataSetLocalService
 
 	@Indexable(type = IndexableType.DELETE)
 	public DataSet removeDataSet(long dataSetId) throws PortalException;
+
+	@Indexable(type = IndexableType.DELETE)
+	public void removeDataSets(
+			long groupId, long dataCollectionId, long[] dataSetIds)
+		throws PortalException;
 
 	public void removeDataSets(long[] dataSetIds) throws PortalException;
 

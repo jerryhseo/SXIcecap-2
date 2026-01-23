@@ -40,10 +40,13 @@ public class CollectionSetLinkLocalServiceImpl
 	extends CollectionSetLinkLocalServiceBaseImpl {
 	
 	@Indexable(type = IndexableType.REINDEX)
-	public CollectionSetLink addCollectionSetLink( long dataCollectionId, long dataSetId, int order ) {
+	public CollectionSetLink addCollectionSetLink( long dataCollectionId, long dataSetId, int order, ServiceContext sc ) {
 		long linkId = counterLocalService.increment();
 		
 		CollectionSetLink link = collectionSetLinkPersistence.create(linkId);
+		
+		link.setCompanyId(sc.getCompanyId());
+		link.setGroupId(sc.getScopeGroupId());
 		
 		link.setDataCollectionId(dataCollectionId);
 		link.setDataSetId(dataSetId);
@@ -63,7 +66,7 @@ public class CollectionSetLinkLocalServiceImpl
 	
 	@Indexable(type = IndexableType.REINDEX)
 	public CollectionSetLink updateCollectionSetLink( 
-			long collectionSetLinkId, long dataCollectionId, long dataSetId, int order ) {
+			long collectionSetLinkId, long dataCollectionId, long dataSetId, int order) {
 		CollectionSetLink link = collectionSetLinkPersistence.fetchByPrimaryKey(collectionSetLinkId);
 		
 		link.setDataCollectionId(dataCollectionId);
@@ -76,6 +79,7 @@ public class CollectionSetLinkLocalServiceImpl
 		
 		link.setVerified(false);
 		link.setFreezed(false);
+		
 		
 		collectionSetLinkPersistence.update(link);
 		
@@ -104,6 +108,11 @@ public class CollectionSetLinkLocalServiceImpl
 	@Indexable(type = IndexableType.DELETE)
 	public void removeCollectionSetLinkBySet( long groupId, long dataCollectionId, long dataSetId ) throws NoSuchCollectionSetLinkException {
 		collectionSetLinkPersistence.removeByCollectionSet_G(groupId, dataCollectionId, dataSetId);
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	public void removeCollectionSetLinksByCollection( long groupId, long dataCollectionId) {
+		collectionSetLinkPersistence.removeByCollection_G(groupId, dataCollectionId);
 	}
 	
 	@Indexable(type = IndexableType.REINDEX)
@@ -173,4 +182,5 @@ public class CollectionSetLinkLocalServiceImpl
 	public CollectionSetLink getCollectionSetLink(long groupId, long dataCollectionId, long dataSetId) {
 		return collectionSetLinkPersistence.fetchByCollectionSet_G(groupId, dataCollectionId, dataSetId);
 	}
+	
 }

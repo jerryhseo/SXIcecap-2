@@ -285,6 +285,14 @@ public class DataCollectionLocalServiceWrapper
 		return _dataCollectionLocalService.getAllDataCollection(start, end);
 	}
 
+	@Override
+	public com.liferay.portal.kernel.json.JSONArray getAssociatedDataSets(
+		long dataCollectionId) {
+
+		return _dataCollectionLocalService.getAssociatedDataSets(
+			dataCollectionId);
+	}
+
 	/**
 	 * Returns the data collection with the primary key.
 	 *
@@ -453,10 +461,11 @@ public class DataCollectionLocalServiceWrapper
 	}
 
 	@Override
-	public void removeDataCollections(long[] dataCollectionIds)
+	public void removeDataCollections(long groupId, long[] dataCollectionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		_dataCollectionLocalService.removeDataCollections(dataCollectionIds);
+		_dataCollectionLocalService.removeDataCollections(
+			groupId, dataCollectionIds);
 	}
 
 	/**

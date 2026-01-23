@@ -53,10 +53,11 @@ public class CollectionSetLinkLocalServiceWrapper
 
 	@Override
 	public com.sx.icecap.model.CollectionSetLink addCollectionSetLink(
-		long dataCollectionId, long dataSetId, int order) {
+		long dataCollectionId, long dataSetId, int order,
+		com.liferay.portal.kernel.service.ServiceContext sc) {
 
 		return _collectionSetLinkLocalService.addCollectionSetLink(
-			dataCollectionId, dataSetId, order);
+			dataCollectionId, dataSetId, order, sc);
 	}
 
 	@Override
@@ -405,6 +406,14 @@ public class CollectionSetLinkLocalServiceWrapper
 
 		_collectionSetLinkLocalService.removeCollectionSetLinkBySet(
 			groupId, dataCollectionId, dataSetId);
+	}
+
+	@Override
+	public void removeCollectionSetLinksByCollection(
+		long groupId, long dataCollectionId) {
+
+		_collectionSetLinkLocalService.removeCollectionSetLinksByCollection(
+			groupId, dataCollectionId);
 	}
 
 	@Override

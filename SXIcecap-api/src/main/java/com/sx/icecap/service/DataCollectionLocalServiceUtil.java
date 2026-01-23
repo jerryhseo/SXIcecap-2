@@ -259,6 +259,12 @@ public class DataCollectionLocalServiceUtil {
 		return getService().getAllDataCollection(start, end);
 	}
 
+	public static com.liferay.portal.kernel.json.JSONArray
+		getAssociatedDataSets(long dataCollectionId) {
+
+		return getService().getAssociatedDataSets(dataCollectionId);
+	}
+
 	/**
 	 * Returns the data collection with the primary key.
 	 *
@@ -400,10 +406,11 @@ public class DataCollectionLocalServiceUtil {
 		return getService().removeDataCollection(dataCollectionId);
 	}
 
-	public static void removeDataCollections(long[] dataCollectionIds)
+	public static void removeDataCollections(
+			long groupId, long[] dataCollectionIds)
 		throws PortalException {
 
-		getService().removeDataCollections(dataCollectionIds);
+		getService().removeDataCollections(groupId, dataCollectionIds);
 	}
 
 	/**
