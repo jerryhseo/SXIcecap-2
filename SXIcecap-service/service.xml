@@ -458,8 +458,16 @@
  		<finder name="GroupId" return-type="Collection">
 			<finder-column name="groupId"></finder-column>
 		</finder>
+ 		<finder name="GroupId_S" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="status"></finder-column>
+		</finder>
 		<finder name="UserId" return-type="Collection">
 			<finder-column name="userId"></finder-column>
+		</finder>
+		<finder name="UserId_S" return-type="Collection">
+			<finder-column name="userId"></finder-column>
+			<finder-column name="status"></finder-column>
 		</finder>
 		<finder name="Status" return-type="Collection">
 			<finder-column name="status"></finder-column>
@@ -468,14 +476,6 @@
 		<finder name="G_U" return-type="Collection">
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="G_S" return-type="Collection">
-			<finder-column name="groupId"></finder-column>
-			<finder-column name="status"></finder-column>
-		</finder>
-		<finder name="U_S" return-type="Collection">
-			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
 		</finder>
 		<finder name="G_U_S" return-type="Collection">
 			<finder-column name="groupId"></finder-column>
@@ -486,169 +486,169 @@
         <finder name="DataCollectionId" return-type="Collection">
             <finder-column name="dataCollectionId"></finder-column>
         </finder>
-        <finder name="DataCollectionId_G" return-type="Collection">
+        <finder name="DataCollectionId_S" return-type="Collection">
             <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
+        <finder name="DataCollectionId_G" return-type="Collection">
 			<finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+		</finder>
+        <finder name="DataCollectionId_G_S" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		<finder name="DataCollectionId_U" return-type="Collection">
-            <finder-column name="dataCollectionId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="DataCollectionId_S" return-type="Collection">
             <finder-column name="dataCollectionId"></finder-column>
-			<finder-column name="status"></finder-column>
+		</finder>
+		<finder name="DataCollectionId_U_S" return-type="Collection">
+			<finder-column name="userId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		
 		<finder name="DataCollectionId_G_U" return-type="Collection">
-            <finder-column name="dataCollectionId"></finder-column>
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="DataCollectionId_G_S" return-type="Collection">
             <finder-column name="dataCollectionId"></finder-column>
-			<finder-column name="groupId"></finder-column>
-			<finder-column name="status"></finder-column>
-		</finder>
-		<finder name="DataCollectionId_U_S" return-type="Collection">
-            <finder-column name="dataCollectionId"></finder-column>
-			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
 		</finder>
 		<finder name="DataCollectionId_G_U_S" return-type="Collection">
-            <finder-column name="dataCollectionId"></finder-column>
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
         
         <finder name="DataSetId" return-type="Collection">
             <finder-column name="dataSetId"></finder-column>
         </finder>
-        <finder name="DataSetId_G" return-type="Collection">
+        <finder name="DataSetId_S" return-type="Collection">
             <finder-column name="dataSetId"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
+        <finder name="DataSetId_G" return-type="Collection">
 			<finder-column name="groupId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+		</finder>
+        <finder name="DataSetId_G_S" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		<finder name="DataSetId_U" return-type="Collection">
-            <finder-column name="dataSetId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="DataSetId_S" return-type="Collection">
             <finder-column name="dataSetId"></finder-column>
-			<finder-column name="status"></finder-column>
+		</finder>
+		<finder name="DataSetId_U_S" return-type="Collection">
+			<finder-column name="userId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		
 		<finder name="DataSetId_G_U" return-type="Collection">
-            <finder-column name="dataSetId"></finder-column>
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="DataSetId_G_S" return-type="Collection">
             <finder-column name="dataSetId"></finder-column>
-			<finder-column name="groupId"></finder-column>
-			<finder-column name="status"></finder-column>
-		</finder>
-		<finder name="DataSetId_U_S" return-type="Collection">
-            <finder-column name="dataSetId"></finder-column>
-			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
 		</finder>
 		<finder name="DataSetId_G_U_S" return-type="Collection">
-            <finder-column name="dataSetId"></finder-column>
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
         
         <finder name="CollectionSet" return-type="Collection">
             <finder-column name="dataCollectionId"></finder-column>
             <finder-column name="dataSetId"></finder-column>
         </finder>
+        <finder name="CollectionSet_S" return-type="Collection">
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
         <finder name="CollectionSet_G" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
         	<finder-column name="dataCollectionId"></finder-column>
             <finder-column name="dataSetId"></finder-column>
+		</finder>
+        <finder name="CollectionSet_G_S" return-type="Collection">
 			<finder-column name="groupId"></finder-column>
+        	<finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		<finder name="CollectionSet_U" return-type="Collection">
-			<finder-column name="dataCollectionId"></finder-column>
-            <finder-column name="dataSetId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="CollectionSet_S" return-type="Collection">
 			<finder-column name="dataCollectionId"></finder-column>
             <finder-column name="dataSetId"></finder-column>
-			<finder-column name="status"></finder-column>
+		</finder>
+		<finder name="CollectionSet_U_S" return-type="Collection">
+			<finder-column name="userId"></finder-column>
+			<finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		
 		<finder name="CollectionSet_G_U" return-type="Collection">
-			<finder-column name="dataCollectionId"></finder-column>
-            <finder-column name="dataSetId"></finder-column>
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="CollectionSet_G_S" return-type="Collection">
 			<finder-column name="dataCollectionId"></finder-column>
             <finder-column name="dataSetId"></finder-column>
-			<finder-column name="groupId"></finder-column>
-			<finder-column name="status"></finder-column>
-		</finder>
-		<finder name="CollectionSet_U_S" return-type="Collection">
-			<finder-column name="dataCollectionId"></finder-column>
-            <finder-column name="dataSetId"></finder-column>
-			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
 		</finder>
 		<finder name="CollectionSet_G_U_S" return-type="Collection">
-			<finder-column name="dataCollectionId"></finder-column>
-            <finder-column name="dataSetId"></finder-column>
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
+			<finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
         
         <finder name="SetType" return-type="Collection">
             <finder-column name="dataSetId"></finder-column>
             <finder-column name="dataTypeId"></finder-column>
         </finder>
-        <finder name="SetType_G" return-type="Collection">
+        <finder name="SetType_S" return-type="Collection">
             <finder-column name="dataSetId"></finder-column>
             <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
+        <finder name="SetType_G" return-type="Collection">
 			<finder-column name="groupId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+		</finder>
+        <finder name="SetType_G_S" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		<finder name="SetType_U" return-type="Collection">
-            <finder-column name="dataSetId"></finder-column>
-            <finder-column name="dataTypeId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="SetType_S" return-type="Collection">
             <finder-column name="dataSetId"></finder-column>
             <finder-column name="dataTypeId"></finder-column>
-			<finder-column name="status"></finder-column>
+		</finder>
+		<finder name="SetType_U_S" return-type="Collection">
+			<finder-column name="userId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		
 		<finder name="SetType_G_U" return-type="Collection">
-            <finder-column name="dataSetId"></finder-column>
-            <finder-column name="dataTypeId"></finder-column>
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="SetType_G_S" return-type="Collection">
             <finder-column name="dataSetId"></finder-column>
             <finder-column name="dataTypeId"></finder-column>
-			<finder-column name="groupId"></finder-column>
-			<finder-column name="status"></finder-column>
-		</finder>
-		<finder name="SetType_U_S" return-type="Collection">
-            <finder-column name="dataSetId"></finder-column>
-            <finder-column name="dataTypeId"></finder-column>
-			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
 		</finder>
 		<finder name="SetType_G_U_S" return-type="Collection">
-            <finder-column name="dataSetId"></finder-column>
-            <finder-column name="dataTypeId"></finder-column>
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
         
         <finder name="CollectionSetType" return-type="Collection">
@@ -656,91 +656,91 @@
             <finder-column name="dataSetId"></finder-column>
             <finder-column name="dataTypeId"></finder-column>
         </finder>
+        <finder name="CollectionSetType_S" return-type="Collection">
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
         <finder name="CollectionSetType_G" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
         	<finder-column name="dataCollectionId"></finder-column>
             <finder-column name="dataSetId"></finder-column>
             <finder-column name="dataTypeId"></finder-column>
+		</finder>
+        <finder name="CollectionSetType_G_S" return-type="Collection">
 			<finder-column name="groupId"></finder-column>
+        	<finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		<finder name="CollectionSetType_U" return-type="Collection">
-			<finder-column name="dataCollectionId"></finder-column>
-            <finder-column name="dataSetId"></finder-column>
-            <finder-column name="dataTypeId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="CollectionSetType_S" return-type="Collection">
 			<finder-column name="dataCollectionId"></finder-column>
             <finder-column name="dataSetId"></finder-column>
             <finder-column name="dataTypeId"></finder-column>
-			<finder-column name="status"></finder-column>
+		</finder>
+		<finder name="CollectionSetType_U_S" return-type="Collection">
+			<finder-column name="userId"></finder-column>
+			<finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		
 		<finder name="CollectionSetType_G_U" return-type="Collection">
-			<finder-column name="dataCollectionId"></finder-column>
-            <finder-column name="dataSetId"></finder-column>
-            <finder-column name="dataTypeId"></finder-column>
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="CollectionSetType_G_S" return-type="Collection">
 			<finder-column name="dataCollectionId"></finder-column>
             <finder-column name="dataSetId"></finder-column>
             <finder-column name="dataTypeId"></finder-column>
-			<finder-column name="groupId"></finder-column>
-			<finder-column name="status"></finder-column>
-		</finder>
-		<finder name="CollectionSetType_U_S" return-type="Collection">
-			<finder-column name="dataCollectionId"></finder-column>
-            <finder-column name="dataSetId"></finder-column>
-            <finder-column name="dataTypeId"></finder-column>
-			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
 		</finder>
 		<finder name="CollectionSetType_G_U_S" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="userId"></finder-column>
 			<finder-column name="dataCollectionId"></finder-column>
             <finder-column name="dataSetId"></finder-column>
             <finder-column name="dataTypeId"></finder-column>
-			<finder-column name="groupId"></finder-column>
-			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 
         <finder name="DataTypeId" return-type="Collection">
             <finder-column name="dataTypeId"></finder-column>
         </finder>
- 		<finder name="DataTypeId_G" return-type="Collection">
+        <finder name="DataTypeId_S" return-type="Collection">
             <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
+ 		<finder name="DataTypeId_G" return-type="Collection">
 			<finder-column name="groupId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+		</finder>
+ 		<finder name="DataTypeId_G_S" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		<finder name="DataTypeId_U" return-type="Collection">
-            <finder-column name="dataTypeId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="DataTypeId_S" return-type="Collection">
             <finder-column name="dataTypeId"></finder-column>
-			<finder-column name="status"></finder-column>
+		</finder>
+		<finder name="DataTypeId_U_S" return-type="Collection">
+			<finder-column name="userId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
 		
 		<finder name="DataTypeId_G_U" return-type="Collection">
-            <finder-column name="dataTypeId"></finder-column>
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-		</finder>
-		<finder name="DataTypeId_G_S" return-type="Collection">
             <finder-column name="dataTypeId"></finder-column>
-			<finder-column name="groupId"></finder-column>
-			<finder-column name="status"></finder-column>
-		</finder>
-		<finder name="DataTypeId_U_S" return-type="Collection">
-            <finder-column name="dataTypeId"></finder-column>
-			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
 		</finder>
 		<finder name="DataTypeId_G_U_S" return-type="Collection">
-            <finder-column name="dataTypeId"></finder-column>
 			<finder-column name="groupId"></finder-column>
 			<finder-column name="userId"></finder-column>
-			<finder-column name="status"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="status"></finder-column>
 		</finder>
         
         <reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />

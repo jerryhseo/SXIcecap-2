@@ -85,12 +85,6 @@ public class StructuredDataLocalServiceWrapper
 	}
 
 	@Override
-	public int countApprovedStructuredDatas(long groupId) {
-		return _structuredDataLocalService.countApprovedStructuredDatas(
-			groupId);
-	}
-
-	@Override
 	public int countStructuredData(
 		long dataCollectionId, long dataSetId, long dataTypeId) {
 
@@ -99,31 +93,76 @@ public class StructuredDataLocalServiceWrapper
 	}
 
 	@Override
-	public int countStructuredDatasByDataTypeId(long groupId) {
-		return _structuredDataLocalService.countStructuredDatasByDataTypeId(
-			groupId);
+	public int countStructuredDataByCollection(
+		long groupId, long dataCollectionId, int status) {
+
+		return _structuredDataLocalService.countStructuredDataByCollection(
+			groupId, dataCollectionId, status);
 	}
 
 	@Override
-	public int countStructuredDatasByDataTypeId_G(
+	public int countStructuredDataByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int status) {
+
+		return _structuredDataLocalService.countStructuredDataByCollectionSet(
+			groupId, dataCollectionId, dataSetId, status);
+	}
+
+	@Override
+	public int countStructuredDatas(long groupId, int status) {
+		return _structuredDataLocalService.countStructuredDatas(
+			groupId, status);
+	}
+
+	@Override
+	public int countStructuredDatasByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int status) {
+
+		return _structuredDataLocalService.countStructuredDatasByCollectionSet(
+			groupId, dataCollectionId, dataSetId, status);
+	}
+
+	@Override
+	public int countStructuredDatasByCollectionSetType(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		int status) {
+
+		return _structuredDataLocalService.
+			countStructuredDatasByCollectionSetType(
+				groupId, dataCollectionId, dataSetId, dataTypeId, status);
+	}
+
+	@Override
+	public int countStructuredDatasByDataCollectionId(
 		long dataTypeId, long groupId) {
 
-		return _structuredDataLocalService.countStructuredDatasByDataTypeId_G(
-			dataTypeId, groupId);
+		return _structuredDataLocalService.
+			countStructuredDatasByDataCollectionId(dataTypeId, groupId);
 	}
 
 	@Override
-	public int countStructuredDatasByDataTypeId_G_S(
-		long dataTypeId, long groupId, int status) {
+	public int countStructuredDatasByDataCollectionId(
+		long groupId, long dataCollectionId, int status) {
 
-		return _structuredDataLocalService.countStructuredDatasByDataTypeId_G_S(
-			dataTypeId, groupId, status);
+		return _structuredDataLocalService.
+			countStructuredDatasByDataCollectionId(
+				groupId, dataCollectionId, status);
 	}
 
 	@Override
-	public int countStructuredDatasByDataTypeId_S(long dataTypeId, int status) {
-		return _structuredDataLocalService.countStructuredDatasByDataTypeId_S(
-			dataTypeId, status);
+	public int countStructuredDatasByDataSetId(
+		long groupId, long dataSetId, int status) {
+
+		return _structuredDataLocalService.countStructuredDatasByDataSetId(
+			groupId, dataSetId, status);
+	}
+
+	@Override
+	public int countStructuredDatasByDataTypeId(
+		long groupId, long dataTypeId, int status) {
+
+		return _structuredDataLocalService.countStructuredDatasByDataTypeId(
+			groupId, dataTypeId, status);
 	}
 
 	@Override
@@ -135,20 +174,6 @@ public class StructuredDataLocalServiceWrapper
 	}
 
 	@Override
-	public int countStructuredDatasByDataTypeId_U_S(
-		long dataTypeId, long userId, int status) {
-
-		return _structuredDataLocalService.countStructuredDatasByDataTypeId_U_S(
-			dataTypeId, userId, status);
-	}
-
-	@Override
-	public int countStructuredDatasByG_S(long groupId, int status) {
-		return _structuredDataLocalService.countStructuredDatasByG_S(
-			groupId, status);
-	}
-
-	@Override
 	public int countStructuredDatasByG_U_S(
 		long groupId, long userId, int status) {
 
@@ -157,18 +182,17 @@ public class StructuredDataLocalServiceWrapper
 	}
 
 	@Override
-	public int countStructuredDatasByG_U_SDataTypeId_(
-		long dataTypeId, long groupId, long userId, int status) {
-
-		return _structuredDataLocalService.
-			countStructuredDatasByG_U_SDataTypeId_(
-				dataTypeId, groupId, userId, status);
+	public int countStructuredDatasByGroupId(long groupId, int status) {
+		return _structuredDataLocalService.countStructuredDatasByGroupId(
+			groupId, status);
 	}
 
 	@Override
-	public int countStructuredDatasByGroupId(long groupId) {
-		return _structuredDataLocalService.countStructuredDatasByGroupId(
-			groupId);
+	public int countStructuredDatasBySetType(
+		long groupId, long dataSetId, long dataTypeId, int status) {
+
+		return _structuredDataLocalService.countStructuredDatasBySetType(
+			groupId, dataSetId, dataTypeId, status);
 	}
 
 	@Override
@@ -177,14 +201,14 @@ public class StructuredDataLocalServiceWrapper
 	}
 
 	@Override
-	public int countStructuredDatasByU_S(long userId, int status) {
-		return _structuredDataLocalService.countStructuredDatasByU_S(
-			userId, status);
+	public int countStructuredDatasByUserId(long userId) {
+		return _structuredDataLocalService.countStructuredDatasByUserId(userId);
 	}
 
 	@Override
-	public int countStructuredDatasByUserId(long userId) {
-		return _structuredDataLocalService.countStructuredDatasByUserId(userId);
+	public int countStructuredDatasByUserId(long userId, int status) {
+		return _structuredDataLocalService.countStructuredDatasByUserId(
+			userId, status);
 	}
 
 	/**
@@ -406,32 +430,6 @@ public class StructuredDataLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getApprovedStructuredDatas(long groupId) {
-
-		return _structuredDataLocalService.getApprovedStructuredDatas(groupId);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getApprovedStructuredDatas(long groupId, int start, int end) {
-
-		return _structuredDataLocalService.getApprovedStructuredDatas(
-			groupId, start, end);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getApprovedStructuredDatas(
-			long groupId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.sx.icecap.model.StructuredData> comparator) {
-
-		return _structuredDataLocalService.getApprovedStructuredDatas(
-			groupId, start, end, comparator);
-	}
-
-	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
 		getExportActionableDynamicQuery(
 			com.liferay.exportimport.kernel.lar.PortletDataContext
@@ -495,6 +493,68 @@ public class StructuredDataLocalServiceWrapper
 		return _structuredDataLocalService.getStructuredData(structuredDataId);
 	}
 
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDataByCollection(
+			long groupId, long dataCollectionId, int status) {
+
+		return _structuredDataLocalService.getStructuredDataByCollection(
+			groupId, dataCollectionId, status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDataByCollection(
+			long groupId, long dataCollectionId, int start, int end,
+			int status) {
+
+		return _structuredDataLocalService.getStructuredDataByCollection(
+			groupId, dataCollectionId, start, end, status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDataByCollection(
+			long groupId, long dataCollectionId, int start, int end, int status,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.sx.icecap.model.StructuredData> comparator) {
+
+		return _structuredDataLocalService.getStructuredDataByCollection(
+			groupId, dataCollectionId, start, end, status, comparator);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDataByCollectionSet(
+			long groupId, long dataCollectionId, long dataSetId, int status) {
+
+		return _structuredDataLocalService.getStructuredDataByCollectionSet(
+			groupId, dataCollectionId, dataSetId, status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDataByCollectionSet(
+			long groupId, long dataCollectionId, long dataSetId, int start,
+			int end, int status) {
+
+		return _structuredDataLocalService.getStructuredDataByCollectionSet(
+			groupId, dataCollectionId, dataSetId, start, end, status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDataByCollectionSet(
+			long groupId, long dataCollectionId, long dataSetId, int start,
+			int end, int status,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.sx.icecap.model.StructuredData> comparator) {
+
+		return _structuredDataLocalService.getStructuredDataByCollectionSet(
+			groupId, dataCollectionId, dataSetId, start, end, status,
+			comparator);
+	}
+
 	/**
 	 * Returns the structured data matching the UUID and group.
 	 *
@@ -542,145 +602,213 @@ public class StructuredDataLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId(long dataTypeId) {
+		getStructuredDatas(long groupId, int status) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId(
-			dataTypeId);
+		return _structuredDataLocalService.getStructuredDatas(groupId, status);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId(long dataTypeId, int start, int end) {
+		getStructuredDatas(long groupId, int start, int end, int status) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId(
-			dataTypeId, start, end);
+		return _structuredDataLocalService.getStructuredDatas(
+			groupId, start, end, status);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId(
-			long dataTypeId, int start, int end,
+		getStructuredDatas(
+			long groupId, int start, int end, int status,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.sx.icecap.model.StructuredData> comparator) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId(
-			dataTypeId, start, end, comparator);
+		return _structuredDataLocalService.getStructuredDatas(
+			groupId, start, end, status, comparator);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_G(long dataTypeId, long groupId) {
+		getStructuredDatasByCollectionId(long groupId, long dataTypeId) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_G(
-			dataTypeId, groupId);
+		return _structuredDataLocalService.getStructuredDatasByCollectionId(
+			groupId, dataTypeId);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_G(
+		getStructuredDatasByCollectionId(
 			long dataTypeId, long groupId, int start, int end) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_G(
+		return _structuredDataLocalService.getStructuredDatasByCollectionId(
 			dataTypeId, groupId, start, end);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_G(
+		getStructuredDatasByCollectionId(
 			long dataTypeId, long groupId, int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.sx.icecap.model.StructuredData> comparator) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_G(
+		return _structuredDataLocalService.getStructuredDatasByCollectionId(
 			dataTypeId, groupId, start, end, comparator);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_G_S(
-			long dataTypeId, long groupId, int status) {
+		getStructuredDatasByCollectionSet(
+			long groupId, long dataCollectionId, long dataSetId, int status) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_G_S(
-			dataTypeId, groupId, status);
+		return _structuredDataLocalService.getStructuredDatasByCollectionSet(
+			groupId, dataCollectionId, dataSetId, status);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_G_S(
-			long dataTypeId, long groupId, int status, int start, int end) {
+		getStructuredDatasByCollectionSet(
+			long groupId, long dataCollectionId, long dataSetId, int start,
+			int end, int status) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_G_S(
-			dataTypeId, groupId, status, start, end);
+		return _structuredDataLocalService.getStructuredDatasByCollectionSet(
+			groupId, dataCollectionId, dataSetId, start, end, status);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_G_S(
-			long dataTypeId, long groupId, int status, int start, int end,
+		getStructuredDatasByCollectionSet(
+			long groupId, long dataCollectionId, long dataSetId, int start,
+			int end, int status,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.sx.icecap.model.StructuredData> comparator) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_G_S(
-			dataTypeId, groupId, status, start, end, comparator);
+		return _structuredDataLocalService.getStructuredDatasByCollectionSet(
+			groupId, dataCollectionId, dataSetId, start, end, status,
+			comparator);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_G_U_S(
-			long dataTypeId, long groupId, long userId, int status) {
+		getStructuredDatasByCollectionSetType(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId, int status) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_G_U_S(
-			dataTypeId, groupId, userId, status);
+		return _structuredDataLocalService.
+			getStructuredDatasByCollectionSetType(
+				groupId, dataCollectionId, dataSetId, dataTypeId, status);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_G_U_S(
-			long dataTypeId, long groupId, long userId, int status, int start,
-			int end) {
+		getStructuredDatasByCollectionSetType(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId, int start, int end, int status) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_G_U_S(
-			dataTypeId, groupId, userId, status, start, end);
+		return _structuredDataLocalService.
+			getStructuredDatasByCollectionSetType(
+				groupId, dataCollectionId, dataSetId, dataTypeId, start, end,
+				status);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_G_U_S(
-			long dataTypeId, long groupId, long userId, int status, int start,
-			int end,
+		getStructuredDatasByCollectionSetType(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId, int start, int end, int status,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.sx.icecap.model.StructuredData> comparator) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_G_U_S(
-			dataTypeId, groupId, userId, status, start, end, comparator);
+		return _structuredDataLocalService.
+			getStructuredDatasByCollectionSetType(
+				groupId, dataCollectionId, dataSetId, dataTypeId, start, end,
+				status, comparator);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_S(long dataTypeId, int status) {
+		getStructuredDatasByDataCollectionId(
+			long groupId, long dataCollectionId, int status) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_S(
-			dataTypeId, status);
+		return _structuredDataLocalService.getStructuredDatasByDataCollectionId(
+			groupId, dataCollectionId, status);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_S(
-			long dataTypeId, int status, int start, int end) {
+		getStructuredDatasByDataCollectionId(
+			long groupId, long dataCollectionId, int start, int end,
+			int status) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_S(
-			dataTypeId, status, start, end);
+		return _structuredDataLocalService.getStructuredDatasByDataCollectionId(
+			groupId, dataCollectionId, start, end, status);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_S(
-			long dataTypeId, int status, int start, int end,
+		getStructuredDatasByDataCollectionId(
+			long groupId, long dataCollectionId, int start, int end, int status,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.sx.icecap.model.StructuredData> comparator) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_S(
-			dataTypeId, status, start, end, comparator);
+		return _structuredDataLocalService.getStructuredDatasByDataCollectionId(
+			groupId, dataCollectionId, start, end, status, comparator);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasByDataSetId(
+			long groupId, long dataSetId, int status) {
+
+		return _structuredDataLocalService.getStructuredDatasByDataSetId(
+			groupId, dataSetId, status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasByDataSetId(
+			long groupId, long dataSetId, int start, int end, int status) {
+
+		return _structuredDataLocalService.getStructuredDatasByDataSetId(
+			groupId, dataSetId, start, end, status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasByDataSetId(
+			long groupId, long dataSetId, int start, int end, int status,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.sx.icecap.model.StructuredData> comparator) {
+
+		return _structuredDataLocalService.getStructuredDatasByDataSetId(
+			groupId, dataSetId, start, end, status, comparator);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasByDataTypeId(
+			long groupId, long dataTypeId, int status) {
+
+		return _structuredDataLocalService.getStructuredDatasByDataTypeId(
+			groupId, dataTypeId, status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasByDataTypeId(
+			long groupId, long dataTypeId, int status, int start, int end) {
+
+		return _structuredDataLocalService.getStructuredDatasByDataTypeId(
+			groupId, dataTypeId, status, start, end);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasByDataTypeId(
+			long groupId, long dataTypeId, int status, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.sx.icecap.model.StructuredData> comparator) {
+
+		return _structuredDataLocalService.getStructuredDatasByDataTypeId(
+			groupId, dataTypeId, status, start, end, comparator);
 	}
 
 	@Override
@@ -713,65 +841,9 @@ public class StructuredDataLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_U_S(
-			long dataTypeId, long userId, int status) {
+		getStructuredDatasByG_U(long groupId, long userId, int status) {
 
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_U_S(
-			dataTypeId, userId, status);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_U_S(
-			long dataTypeId, long userId, int status, int start, int end) {
-
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_U_S(
-			dataTypeId, userId, status, start, end);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByDataTypeId_U_S(
-			long dataTypeId, long userId, int status, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.sx.icecap.model.StructuredData> comparator) {
-
-		return _structuredDataLocalService.getStructuredDatasByDataTypeId_U_S(
-			dataTypeId, userId, status, start, end, comparator);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByG_S(long groupId, int status) {
-
-		return _structuredDataLocalService.getStructuredDatasByG_S(
-			groupId, status);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByG_S(long groupId, int status, int start, int end) {
-
-		return _structuredDataLocalService.getStructuredDatasByG_S(
-			groupId, status, start, end);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByG_S(
-			long groupId, int status, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.sx.icecap.model.StructuredData> comparator) {
-
-		return _structuredDataLocalService.getStructuredDatasByG_S(
-			groupId, status, start, end, comparator);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByG_U_S(long groupId, long userId, int status) {
-
-		return _structuredDataLocalService.getStructuredDatasByG_U_S(
+		return _structuredDataLocalService.getStructuredDatasByG_U(
 			groupId, userId, status);
 	}
 
@@ -797,28 +869,61 @@ public class StructuredDataLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByGroupId(long groupId) {
-
-		return _structuredDataLocalService.getStructuredDatasByGroupId(groupId);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByGroupId(long groupId, int start, int end) {
+		getStructuredDatasByGroupId(long groupId, int status) {
 
 		return _structuredDataLocalService.getStructuredDatasByGroupId(
-			groupId, start, end);
+			groupId, status);
 	}
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
 		getStructuredDatasByGroupId(
-			long groupId, int start, int end,
+			long groupId, int start, int end, int status) {
+
+		return _structuredDataLocalService.getStructuredDatasByGroupId(
+			groupId, start, end, status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasByGroupId(
+			long groupId, int start, int end, int status,
 			com.liferay.portal.kernel.util.OrderByComparator
 				<com.sx.icecap.model.StructuredData> comparator) {
 
 		return _structuredDataLocalService.getStructuredDatasByGroupId(
-			groupId, start, end, comparator);
+			groupId, start, end, status, comparator);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasBySetType(
+			long groupId, long dataSetId, long dataTypeId, int status) {
+
+		return _structuredDataLocalService.getStructuredDatasBySetType(
+			groupId, dataSetId, dataTypeId, status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasBySetType(
+			long groupId, long dataSetId, long dataTypeId, int start, int end,
+			int status) {
+
+		return _structuredDataLocalService.getStructuredDatasBySetType(
+			groupId, dataSetId, dataTypeId, start, end, status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasBySetType(
+			long groupId, long dataSetId, long dataTypeId, int start, int end,
+			int status,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.sx.icecap.model.StructuredData> comparator) {
+
+		return _structuredDataLocalService.getStructuredDatasBySetType(
+			groupId, dataSetId, dataTypeId, start, end, status, comparator);
 	}
 
 	@Override
@@ -849,36 +954,17 @@ public class StructuredDataLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByU_S(long userId, int status) {
-
-		return _structuredDataLocalService.getStructuredDatasByU_S(
-			userId, status);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByU_S(long userId, int status, int start, int end) {
-
-		return _structuredDataLocalService.getStructuredDatasByU_S(
-			userId, status, start, end);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
-		getStructuredDatasByU_S(
-			long userId, int status, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.sx.icecap.model.StructuredData> comparator) {
-
-		return _structuredDataLocalService.getStructuredDatasByU_S(
-			userId, status, start, end, comparator);
-	}
-
-	@Override
-	public java.util.List<com.sx.icecap.model.StructuredData>
 		getStructuredDatasByUserId(long userId) {
 
 		return _structuredDataLocalService.getStructuredDatasByUserId(userId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasByUserId(long userId, int status) {
+
+		return _structuredDataLocalService.getStructuredDatasByUserId(
+			userId, status);
 	}
 
 	@Override
@@ -887,6 +973,26 @@ public class StructuredDataLocalServiceWrapper
 
 		return _structuredDataLocalService.getStructuredDatasByUserId(
 			userId, start, end);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasByUserId(
+			long userId, int start, int end, int status) {
+
+		return _structuredDataLocalService.getStructuredDatasByUserId(
+			userId, start, end, status);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.StructuredData>
+		getStructuredDatasByUserId(
+			long userId, int start, int end, int status,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.sx.icecap.model.StructuredData> comparator) {
+
+		return _structuredDataLocalService.getStructuredDatasByUserId(
+			userId, start, end, status, comparator);
 	}
 
 	@Override

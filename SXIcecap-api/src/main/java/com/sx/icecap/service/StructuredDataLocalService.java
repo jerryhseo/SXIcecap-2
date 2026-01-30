@@ -99,41 +99,51 @@ public interface StructuredDataLocalService
 
 	public int countAllStructuredDatas();
 
-	public int countApprovedStructuredDatas(long groupId);
-
 	public int countStructuredData(
 		long dataCollectionId, long dataSetId, long dataTypeId);
 
-	public int countStructuredDatasByDataTypeId(long groupId);
+	public int countStructuredDataByCollection(
+		long groupId, long dataCollectionId, int status);
 
-	public int countStructuredDatasByDataTypeId_G(
+	public int countStructuredDataByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int status);
+
+	public int countStructuredDatas(long groupId, int status);
+
+	public int countStructuredDatasByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int status);
+
+	public int countStructuredDatasByCollectionSetType(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		int status);
+
+	public int countStructuredDatasByDataCollectionId(
 		long dataTypeId, long groupId);
 
-	public int countStructuredDatasByDataTypeId_G_S(
-		long dataTypeId, long groupId, int status);
+	public int countStructuredDatasByDataCollectionId(
+		long groupId, long dataCollectionId, int status);
 
-	public int countStructuredDatasByDataTypeId_S(long dataTypeId, int status);
+	public int countStructuredDatasByDataSetId(
+		long groupId, long dataSetId, int status);
+
+	public int countStructuredDatasByDataTypeId(
+		long groupId, long dataTypeId, int status);
 
 	public int countStructuredDatasByDataTypeId_U(long dataTypeId, long userId);
-
-	public int countStructuredDatasByDataTypeId_U_S(
-		long dataTypeId, long userId, int status);
-
-	public int countStructuredDatasByG_S(long groupId, int status);
 
 	public int countStructuredDatasByG_U_S(
 		long groupId, long userId, int status);
 
-	public int countStructuredDatasByG_U_SDataTypeId_(
-		long dataTypeId, long groupId, long userId, int status);
+	public int countStructuredDatasByGroupId(long groupId, int status);
 
-	public int countStructuredDatasByGroupId(long groupId);
+	public int countStructuredDatasBySetType(
+		long groupId, long dataSetId, long dataTypeId, int status);
 
 	public int countStructuredDatasByStatus(int status);
 
-	public int countStructuredDatasByU_S(long userId, int status);
-
 	public int countStructuredDatasByUserId(long userId);
+
+	public int countStructuredDatasByUserId(long userId, int status);
 
 	/**
 	 * Creates a new structured data with the primary key. Does not add the structured data to the database.
@@ -277,18 +287,6 @@ public interface StructuredDataLocalService
 		int start, int end, OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getApprovedStructuredDatas(long groupId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getApprovedStructuredDatas(
-		long groupId, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getApprovedStructuredDatas(
-		long groupId, int start, int end,
-		OrderByComparator<StructuredData> comparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		PortletDataContext portletDataContext);
 
@@ -326,6 +324,33 @@ public interface StructuredDataLocalService
 	public StructuredData getStructuredData(long structuredDataId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDataByCollection(
+		long groupId, long dataCollectionId, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDataByCollection(
+		long groupId, long dataCollectionId, int start, int end, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDataByCollection(
+		long groupId, long dataCollectionId, int start, int end, int status,
+		OrderByComparator<StructuredData> comparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDataByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDataByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int start, int end,
+		int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDataByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int start, int end,
+		int status, OrderByComparator<StructuredData> comparator);
+
 	/**
 	 * Returns the structured data matching the UUID and group.
 	 *
@@ -358,68 +383,97 @@ public interface StructuredDataLocalService
 	public List<StructuredData> getStructuredDatas(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId(long dataTypeId);
+	public List<StructuredData> getStructuredDatas(long groupId, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId(
-		long dataTypeId, int start, int end);
+	public List<StructuredData> getStructuredDatas(
+		long groupId, int start, int end, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId(
-		long dataTypeId, int start, int end,
+	public List<StructuredData> getStructuredDatas(
+		long groupId, int start, int end, int status,
 		OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_G(
-		long dataTypeId, long groupId);
+	public List<StructuredData> getStructuredDatasByCollectionId(
+		long groupId, long dataTypeId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_G(
+	public List<StructuredData> getStructuredDatasByCollectionId(
 		long dataTypeId, long groupId, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_G(
+	public List<StructuredData> getStructuredDatasByCollectionId(
 		long dataTypeId, long groupId, int start, int end,
 		OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_S(
-		long dataTypeId, long groupId, int status);
+	public List<StructuredData> getStructuredDatasByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_S(
-		long dataTypeId, long groupId, int status, int start, int end);
+	public List<StructuredData> getStructuredDatasByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int start, int end,
+		int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_S(
-		long dataTypeId, long groupId, int status, int start, int end,
+	public List<StructuredData> getStructuredDatasByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int start, int end,
+		int status, OrderByComparator<StructuredData> comparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasByCollectionSetType(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasByCollectionSetType(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		int start, int end, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasByCollectionSetType(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		int start, int end, int status,
 		OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_U_S(
-		long dataTypeId, long groupId, long userId, int status);
+	public List<StructuredData> getStructuredDatasByDataCollectionId(
+		long groupId, long dataCollectionId, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_U_S(
-		long dataTypeId, long groupId, long userId, int status, int start,
-		int end);
+	public List<StructuredData> getStructuredDatasByDataCollectionId(
+		long groupId, long dataCollectionId, int start, int end, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_U_S(
-		long dataTypeId, long groupId, long userId, int status, int start,
-		int end, OrderByComparator<StructuredData> comparator);
+	public List<StructuredData> getStructuredDatasByDataCollectionId(
+		long groupId, long dataCollectionId, int start, int end, int status,
+		OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_S(
-		long dataTypeId, int status);
+	public List<StructuredData> getStructuredDatasByDataSetId(
+		long groupId, long dataSetId, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_S(
-		long dataTypeId, int status, int start, int end);
+	public List<StructuredData> getStructuredDatasByDataSetId(
+		long groupId, long dataSetId, int start, int end, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_S(
-		long dataTypeId, int status, int start, int end,
+	public List<StructuredData> getStructuredDatasByDataSetId(
+		long groupId, long dataSetId, int start, int end, int status,
+		OrderByComparator<StructuredData> comparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasByDataTypeId(
+		long groupId, long dataTypeId, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasByDataTypeId(
+		long groupId, long dataTypeId, int status, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasByDataTypeId(
+		long groupId, long dataTypeId, int status, int start, int end,
 		OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -436,33 +490,7 @@ public interface StructuredDataLocalService
 		OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_U_S(
-		long dataTypeId, long userId, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_U_S(
-		long dataTypeId, long userId, int status, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByDataTypeId_U_S(
-		long dataTypeId, long userId, int status, int start, int end,
-		OrderByComparator<StructuredData> comparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByG_S(
-		long groupId, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByG_S(
-		long groupId, int status, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByG_S(
-		long groupId, int status, int start, int end,
-		OrderByComparator<StructuredData> comparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByG_U_S(
+	public List<StructuredData> getStructuredDatasByG_U(
 		long groupId, long userId, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -475,16 +503,31 @@ public interface StructuredDataLocalService
 		OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByGroupId(long groupId);
+	public List<StructuredData> getStructuredDatasByGroupId(
+		long groupId, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<StructuredData> getStructuredDatasByGroupId(
-		long groupId, int start, int end);
+		long groupId, int start, int end, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<StructuredData> getStructuredDatasByGroupId(
-		long groupId, int start, int end,
+		long groupId, int start, int end, int status,
 		OrderByComparator<StructuredData> comparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasBySetType(
+		long groupId, long dataSetId, long dataTypeId, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasBySetType(
+		long groupId, long dataSetId, long dataTypeId, int start, int end,
+		int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasBySetType(
+		long groupId, long dataSetId, long dataTypeId, int start, int end,
+		int status, OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<StructuredData> getStructuredDatasByStatus(int status);
@@ -499,24 +542,24 @@ public interface StructuredDataLocalService
 		OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByU_S(
-		long userId, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByU_S(
-		long userId, int status, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<StructuredData> getStructuredDatasByU_S(
-		long userId, int status, int start, int end,
-		OrderByComparator<StructuredData> comparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<StructuredData> getStructuredDatasByUserId(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<StructuredData> getStructuredDatasByUserId(
+		long userId, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasByUserId(
 		long userId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasByUserId(
+		long userId, int start, int end, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<StructuredData> getStructuredDatasByUserId(
+		long userId, int start, int end, int status,
+		OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<StructuredData> getStructuredDatasByUserId(

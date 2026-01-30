@@ -327,42 +327,94 @@ public class StructuredDataLocalServiceImpl
 	public int countAllStructuredDatas() {
 		return super.structuredDataPersistence.countAll();
 	}
-	public List<StructuredData> getStructuredDatasByDataTypeId( long dataTypeId ){
-		return super.structuredDataPersistence.findByDataTypeId(dataTypeId);
-	}
-	public List<StructuredData> getStructuredDatasByDataTypeId( long dataTypeId, int start, int end ){
-		return super.structuredDataPersistence.findByDataTypeId(dataTypeId, start, end);
-	}
-	public List<StructuredData> getStructuredDatasByDataTypeId( long dataTypeId, int start, int end,  OrderByComparator<StructuredData> comparator ){
-		return super.structuredDataPersistence.findByDataTypeId(dataTypeId, start, end, comparator);
-	}
-	public int countStructuredDatasByDataTypeId( long groupId ) {
-		return super.structuredDataPersistence.countByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
-	}
-
 	
-	public List<StructuredData> getStructuredDatasByGroupId( long groupId ){
-		return super.structuredDataPersistence.findByGroupId(groupId);
+	public List<StructuredData> getStructuredDataByCollection(long groupId,  long dataCollectionId,  int status){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByDataCollectionId_G(groupId, dataCollectionId);
+		else
+			return structuredDataPersistence.findByDataCollectionId_G_S(groupId, dataCollectionId, status);
 	}
-	public List<StructuredData>  getStructuredDatasByGroupId( long groupId, int start, int end ){
-		return super.structuredDataPersistence.findByGroupId(groupId, start, end);
+	public List<StructuredData> getStructuredDataByCollection(long groupId,  long dataCollectionId, int start, int end, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByDataCollectionId_G(groupId, dataCollectionId, start, end);
+		else
+			return structuredDataPersistence.findByDataCollectionId_G_S(groupId, dataCollectionId, start, end, status);
 	}
-	public List<StructuredData>  getStructuredDatasByGroupId( long groupId, int start, int end, OrderByComparator<StructuredData> comparator ){
-		return super.structuredDataPersistence.findByGroupId(groupId, start, end, comparator);
+	public List<StructuredData> getStructuredDataByCollection(long groupId,  long dataCollectionId,  int start, int end, int status, OrderByComparator<StructuredData> comparator){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByDataCollectionId_G(groupId, dataCollectionId, start, end, comparator);
+		else
+			return structuredDataPersistence.findByDataCollectionId_G_S(groupId, dataCollectionId, start, end,status,  comparator);
 	}
-	public int countStructuredDatasByGroupId(long groupId) {
-		return super.structuredDataPersistence.countByGroupId(groupId);
+	public int countStructuredDataByCollection(long groupId,  long dataCollectionId,int status){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.countByDataCollectionId_G(groupId, dataCollectionId);
+		else
+			return structuredDataPersistence.countByDataCollectionId_G_S(groupId, dataCollectionId, status);
 	}
-	public List<StructuredData> getStructuredDatasByDataTypeId_G( long dataTypeId, long groupId ){
-		return super.structuredDataPersistence.findByDataTypeId_G(dataTypeId, groupId);
+	
+	public List<StructuredData> getStructuredDataByCollectionSet(long groupId,  long dataCollectionId,  long dataSetId, int status){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByCollectionSet_G(groupId, dataCollectionId, dataSetId);
+		else
+			return structuredDataPersistence.findByCollectionSet_G_S(groupId, dataCollectionId, dataSetId, status);
 	}
-	public List<StructuredData>  getStructuredDatasByDataTypeId_G(long dataTypeId,  long groupId, int start, int end ){
+	public List<StructuredData> getStructuredDataByCollectionSet(long groupId,  long dataCollectionId,  long dataSetId, int start, int end, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByCollectionSet_G(groupId, dataCollectionId, dataSetId, start, end);
+		else
+			return structuredDataPersistence.findByCollectionSet_G_S(groupId, dataCollectionId, dataSetId, start, end, status);
+	}
+	public List<StructuredData> getStructuredDataByCollectionSet(long groupId,  long dataCollectionId,  long dataSetId,  int start, int end, int status, OrderByComparator<StructuredData> comparator){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByCollectionSet_G(groupId, dataCollectionId, dataSetId, start, end, comparator);
+		else
+			return structuredDataPersistence.findByCollectionSet_G_S(groupId, dataCollectionId, dataSetId, start, end, status, comparator);
+	}
+	public int countStructuredDataByCollectionSet(long groupId,  long dataCollectionId,  long dataSetId,int status){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.countByCollectionSet_G(groupId, dataCollectionId, dataSetId);
+		else
+			return structuredDataPersistence.countByCollectionSet_G_S(groupId, dataCollectionId, dataSetId, status);
+	}
+	
+
+	public List<StructuredData> getStructuredDatasByGroupId( long groupId, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByGroupId(groupId);
+		else
+			return super.structuredDataPersistence.findByGroupId_S(groupId, status);
+	}
+	public List<StructuredData>  getStructuredDatasByGroupId( long groupId, int start, int end, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByGroupId(groupId, start, end);
+		else
+		return super.structuredDataPersistence.findByGroupId_S(groupId, start, end, status);
+	}
+	public List<StructuredData>  getStructuredDatasByGroupId( long groupId, int start, int end, int status, OrderByComparator<StructuredData> comparator ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByGroupId(groupId, start, end, comparator);
+		else
+			return super.structuredDataPersistence.findByGroupId_S(groupId, start, end, status, comparator);
+	}
+	public int countStructuredDatasByGroupId(long groupId, int status) {
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.countByGroupId(groupId);
+		else
+		return super.structuredDataPersistence.countByGroupId_S(groupId, status);
+	}
+	
+	
+	public List<StructuredData> getStructuredDatasByCollectionId( long groupId,  long dataTypeId ){
+		return super.structuredDataPersistence.findByDataCollectionId_G(dataTypeId, groupId);
+	}
+	public List<StructuredData>  getStructuredDatasByCollectionId(long dataTypeId,  long groupId, int start, int end ){
 		return super.structuredDataPersistence.findByDataTypeId_G(dataTypeId, groupId, start, end);
 	}
-	public List<StructuredData>  getStructuredDatasByDataTypeId_G( long dataTypeId, long groupId, int start, int end, OrderByComparator<StructuredData> comparator ){
+	public List<StructuredData>  getStructuredDatasByCollectionId( long dataTypeId, long groupId, int start, int end, OrderByComparator<StructuredData> comparator ){
 		return super.structuredDataPersistence.findByDataTypeId_G( dataTypeId, groupId, start, end, comparator);
 	}
-	public int countStructuredDatasByDataTypeId_G( long dataTypeId, long groupId) {
+	public int countStructuredDatasByDataCollectionId( long dataTypeId, long groupId) {
 		return super.structuredDataPersistence.countByDataTypeId_G(dataTypeId, groupId);
 	}
 
@@ -415,130 +467,82 @@ public class StructuredDataLocalServiceImpl
 		else
 			return super.structuredDataPersistence.countByStatus(status);
 	}
-	public List<StructuredData> getStructuredDatasByDataTypeId_S( long dataTypeId, int status ){
+	public List<StructuredData> getStructuredDatasByDataTypeId( long groupId, long dataTypeId, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId(dataTypeId);
+			return super.structuredDataPersistence.findByDataTypeId_G(groupId, dataTypeId);
 		else
-			return super.structuredDataPersistence.findByDataTypeId_S(dataTypeId, status);
+			return super.structuredDataPersistence.findByDataTypeId_G_S(groupId, dataTypeId, status);
 	}
-	public List<StructuredData>  getStructuredDatasByDataTypeId_S( long dataTypeId, int status, int start, int end ){
+	public List<StructuredData>  getStructuredDatasByDataTypeId( long groupId, long dataTypeId, int status, int start, int end ){
 		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId(dataTypeId, start, end);
+			return super.structuredDataPersistence.findByDataTypeId_G(groupId, dataTypeId, start, end);
 		else
-			return super.structuredDataPersistence.findByDataTypeId_S(dataTypeId, status, start, end);
+			return super.structuredDataPersistence.findByDataTypeId_G_S(groupId, dataTypeId, start, end, status);
 	}
-	public List<StructuredData>  getStructuredDatasByDataTypeId_S( long dataTypeId, int status, int start, int end, OrderByComparator<StructuredData> comparator ){
+	public List<StructuredData>  getStructuredDatasByDataTypeId( long groupId, long dataTypeId, int status, int start, int end, OrderByComparator<StructuredData> comparator ){
 		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId(dataTypeId, start, end, comparator);
+			return super.structuredDataPersistence.findByDataTypeId_G(groupId, dataTypeId, start, end, comparator);
 		else
-			return super.structuredDataPersistence.findByDataTypeId_S(dataTypeId, status, start, end, comparator);
+			return super.structuredDataPersistence.findByDataTypeId_G_S(groupId, dataTypeId, start, end, status, comparator);
 	}
-	public int countStructuredDatasByDataTypeId_S( long dataTypeId, int status) {
+	public int countStructuredDatasByDataTypeId( long groupId, long dataTypeId, int status) {
 		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.countByDataTypeId(dataTypeId);
+			return super.structuredDataPersistence.countByDataTypeId_G(groupId, dataTypeId);
 		else
-			return super.structuredDataPersistence.countByDataTypeId_S(dataTypeId, status);
+			return super.structuredDataPersistence.countByDataTypeId_G_S(groupId, dataTypeId, status);
 	}
 	
-	public List<StructuredData> getStructuredDatasByG_S( long groupId, int status ){
+	public List<StructuredData> getStructuredDatas( long groupId, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
 			return super.structuredDataPersistence.findByGroupId(groupId);
 		else
-			return super.structuredDataPersistence.findByG_S(groupId, status);
+			return super.structuredDataPersistence.findByGroupId_S(groupId, status);
 	}
-	public List<StructuredData> getStructuredDatasByG_S( long groupId, int status, int start, int end ){
+	public List<StructuredData> getStructuredDatas( long groupId, int start, int end, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
 			return super.structuredDataPersistence.findByGroupId(groupId, start, end);
 		else
-			return super.structuredDataPersistence.findByG_S(groupId, status, start, end);
+			return super.structuredDataPersistence.findByGroupId_S(groupId, start, end, status);
 	}
-	public List<StructuredData> getStructuredDatasByG_S( long groupId, int status, int start, int end, OrderByComparator<StructuredData> comparator ){
+	public List<StructuredData> getStructuredDatas( long groupId, int start, int end, int status, OrderByComparator<StructuredData> comparator ){
 		if( status == WorkflowConstants.STATUS_ANY )
 			return super.structuredDataPersistence.findByGroupId(groupId, start, end, comparator);
 		else
-			return super.structuredDataPersistence.findByG_S(groupId, status, start, end, comparator);
+			return super.structuredDataPersistence.findByGroupId_S(groupId, start, end, status, comparator);
 	}
-	public int countStructuredDatasByG_S( long groupId, int status ){
+	public int countStructuredDatas( long groupId, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
 			return super.structuredDataPersistence.countByGroupId(groupId);
 		else
-			return super.structuredDataPersistence.countByG_S(groupId, status);
-	}
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_S( long dataTypeId, long groupId, int status ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId_G(dataTypeId, groupId);
-		else
-			return super.structuredDataPersistence.findByDataTypeId_G_S(dataTypeId, groupId, status);
-	}
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_S( long dataTypeId, long groupId, int status, int start, int end ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId_G(dataTypeId, groupId, start, end);
-		else
-			return super.structuredDataPersistence.findByDataTypeId_G_S(dataTypeId, groupId, status, start, end);
-	}
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_S( long dataTypeId, long groupId, int status, int start, int end, OrderByComparator<StructuredData> comparator ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId_G(dataTypeId, groupId, start, end, comparator);
-		else
-			return super.structuredDataPersistence.findByDataTypeId_G_S(dataTypeId, groupId, status, start, end, comparator);
-	}
-	public int countStructuredDatasByDataTypeId_G_S( long dataTypeId, long groupId, int status ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.countByDataTypeId_G(dataTypeId, groupId);
-		else
-			return super.structuredDataPersistence.countByDataTypeId_G_S(dataTypeId, groupId, status);
+			return super.structuredDataPersistence.countByGroupId_S(groupId, status);
 	}
 	
-	public List<StructuredData> getStructuredDatasByU_S( long userId, int status ){
+	public List<StructuredData> getStructuredDatasByUserId( long userId, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
 			return super.structuredDataPersistence.findByUserId(userId);
 		else
-			return super.structuredDataPersistence.findByU_S(userId, status);
+			return super.structuredDataPersistence.findByUserId_S(userId, status);
 	}
-	public List<StructuredData> getStructuredDatasByU_S( long userId, int status, int start, int end ){
+	public List<StructuredData> getStructuredDatasByUserId( long userId, int start, int end, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
 			return super.structuredDataPersistence.findByUserId(userId, start, end);
 		else
-			return super.structuredDataPersistence.findByU_S(userId, status, start, end);
+			return super.structuredDataPersistence.findByUserId_S(userId, start, end, status);
 	}
-	public List<StructuredData> getStructuredDatasByU_S( long userId, int status, int start, int end, OrderByComparator<StructuredData> comparator ){
+	public List<StructuredData> getStructuredDatasByUserId( long userId, int start, int end, int status, OrderByComparator<StructuredData> comparator ){
 		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByUserId(userId, start, end, comparator);
+			return super.structuredDataPersistence.findByUserId(userId, start, end);
 		else
-			return super.structuredDataPersistence.findByU_S(userId, status, start, end, comparator);
+			return super.structuredDataPersistence.findByUserId_S(userId, start, end, status, comparator);
 	}
-	public int countStructuredDatasByU_S( long userId, int status ){
+	public int countStructuredDatasByUserId( long userId, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
 			return super.structuredDataPersistence.countByUserId(userId);
 		else
-			return super.structuredDataPersistence.countByU_S(userId, status);
-	}
-	public List<StructuredData> getStructuredDatasByDataTypeId_U_S( long dataTypeId, long userId, int status ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId_U(dataTypeId, userId);
-		else
-			return super.structuredDataPersistence.findByDataTypeId_U_S(dataTypeId, userId, status);
-	}
-	public List<StructuredData> getStructuredDatasByDataTypeId_U_S( long dataTypeId, long userId, int status, int start, int end ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId_U(dataTypeId, userId, start, end);
-		else
-			return super.structuredDataPersistence.findByDataTypeId_U_S(dataTypeId, userId, status, start, end);
-	}
-	public List<StructuredData> getStructuredDatasByDataTypeId_U_S( long dataTypeId, long userId, int status, int start, int end, OrderByComparator<StructuredData> comparator ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId_U(dataTypeId, userId, start, end, comparator);
-		else
-			return super.structuredDataPersistence.findByDataTypeId_U_S(dataTypeId, userId, status, start, end, comparator);
-	}
-	public int countStructuredDatasByDataTypeId_U_S( long dataTypeId, long userId, int status ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.countByDataTypeId_U(dataTypeId, userId);
-		else
-			return super.structuredDataPersistence.countByDataTypeId_U_S(dataTypeId, userId, status);
+			return super.structuredDataPersistence.countByUserId_S(userId, status);
 	}
 	
-	public List<StructuredData> getStructuredDatasByG_U_S( long groupId, long userId, int status ){
+	public List<StructuredData> getStructuredDatasByG_U( long groupId, long userId, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
 			return super.structuredDataPersistence.findByG_U(groupId, userId);
 		else
@@ -562,42 +566,130 @@ public class StructuredDataLocalServiceImpl
 		else
 			return super.structuredDataPersistence.countByG_U_S(groupId, userId, status);
 	}
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_U_S( long dataTypeId, long groupId, long userId, int status ){
+	
+	public List<StructuredData> getStructuredDatasByDataCollectionId( long groupId, long dataCollectionId, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId_G_U(dataTypeId, groupId, userId);
+			return super.structuredDataPersistence.findByDataCollectionId_G(groupId, dataCollectionId);
 		else
-			return super.structuredDataPersistence.findByDataTypeId_G_U_S(dataTypeId, groupId, userId, status);
+			return super.structuredDataPersistence.findByDataCollectionId_G_S(groupId, dataCollectionId, status);
 	}
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_U_S( long dataTypeId, long groupId, long userId, int status, int start, int end ){
+	public List<StructuredData> getStructuredDatasByDataCollectionId( long groupId, long dataCollectionId, int start, int end, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId_G_U(dataTypeId, groupId, userId, start, end);
+			return super.structuredDataPersistence.findByDataCollectionId_G(groupId, dataCollectionId, start, end);
 		else
-			return super.structuredDataPersistence.findByDataTypeId_G_U_S(dataTypeId, groupId, userId, status, start, end);
+			return super.structuredDataPersistence.findByDataCollectionId_G_S(groupId, dataCollectionId, start, end, status);
 	}
-	public List<StructuredData> getStructuredDatasByDataTypeId_G_U_S( long dataTypeId, long groupId, long userId, int status, int start, int end, OrderByComparator<StructuredData> comparator ){
+	public List<StructuredData> getStructuredDatasByDataCollectionId( long groupId, long dataCollectionId, int start, int end, int status, OrderByComparator<StructuredData> comparator ){
 		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.findByDataTypeId_G_U(dataTypeId, groupId, userId, start, end, comparator);
+			return super.structuredDataPersistence.findByDataCollectionId_G(groupId, dataCollectionId, start, end, comparator);
 		else
-			return super.structuredDataPersistence.findByDataTypeId_G_U_S(dataTypeId, groupId, userId, status, start, end, comparator);
+			return super.structuredDataPersistence.findByDataCollectionId_G_S(groupId, dataCollectionId, start, end, status, comparator);
 	}
-	public int countStructuredDatasByG_U_SDataTypeId_( long dataTypeId, long groupId, long userId, int status ){
+	public int countStructuredDatasByDataCollectionId( long groupId, long dataCollectionId, int status ){
 		if( status == WorkflowConstants.STATUS_ANY )
-			return super.structuredDataPersistence.countByDataTypeId_G_U(dataTypeId, groupId, userId);
+			return super.structuredDataPersistence.countByDataCollectionId_G(groupId, dataCollectionId);
 		else
-			return super.structuredDataPersistence.countByDataTypeId_G_U_S(dataTypeId, groupId, userId, status);
+			return super.structuredDataPersistence.countByDataCollectionId_G_S(groupId, dataCollectionId, status);
 	}
 	
-	public List<StructuredData> getApprovedStructuredDatas( long groupId ){
-		return super.structuredDataPersistence.findByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
+	public List<StructuredData> getStructuredDatasByCollectionSet( long groupId, long dataCollectionId, long dataSetId, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByCollectionSet_G(groupId, dataCollectionId, dataSetId);
+		else
+			return super.structuredDataPersistence.findByCollectionSet_G_S(groupId, dataCollectionId, dataSetId, status);
 	}
-	public List<StructuredData> getApprovedStructuredDatas( long groupId, int start, int end ){
-		return super.structuredDataPersistence.findByG_S(groupId, WorkflowConstants.STATUS_APPROVED, start, end);
+	public List<StructuredData> getStructuredDatasByCollectionSet( long groupId, long dataCollectionId, long dataSetId, int start, int end, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByCollectionSet_G(groupId, dataCollectionId, dataSetId, start, end);
+		else
+			return super.structuredDataPersistence.findByCollectionSet_G_S(groupId, dataCollectionId, dataSetId, start, end, status);
 	}
-	public List<StructuredData> getApprovedStructuredDatas( long groupId, int start, int end, OrderByComparator<StructuredData> comparator ){
-		return super.structuredDataPersistence.findByG_S(groupId, WorkflowConstants.STATUS_APPROVED, start, end, comparator);
+	public List<StructuredData> getStructuredDatasByCollectionSet( long groupId, long dataCollectionId, long dataSetId, int start, int end, int status, OrderByComparator<StructuredData> comparator ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByCollectionSet_G(groupId, dataCollectionId, dataSetId, start, end, comparator);
+		else
+			return super.structuredDataPersistence.findByCollectionSet_G_S(groupId, dataCollectionId, dataSetId, start, end, status, comparator);
 	}
-	public int countApprovedStructuredDatas( long groupId ) {
-		return super.structuredDataPersistence.countByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
+	public int countStructuredDatasByCollectionSet( long groupId, long dataCollectionId, long dataSetId, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.countByCollectionSet_G(groupId, dataCollectionId, dataSetId);
+		else
+			return super.structuredDataPersistence.countByCollectionSet_G_S(groupId, dataCollectionId, dataSetId, status);
+	}
+	
+	public List<StructuredData> getStructuredDatasBySetType( long groupId, long dataSetId, long dataTypeId, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findBySetType_G(groupId, dataSetId, dataTypeId);
+		else
+			return super.structuredDataPersistence.findBySetType_G_S(groupId, dataSetId, dataTypeId, status);
+	}
+	public List<StructuredData> getStructuredDatasBySetType( long groupId, long dataSetId, long dataTypeId, int start, int end, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findBySetType_G(groupId, dataSetId, dataTypeId, start, end);
+		else
+			return super.structuredDataPersistence.findBySetType_G_S(groupId, dataSetId, dataTypeId, start, end, status);
+	}
+	public List<StructuredData> getStructuredDatasBySetType( long groupId, long dataSetId, long dataTypeId, int start, int end, int status, OrderByComparator<StructuredData> comparator ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findBySetType_G(groupId, dataSetId, dataTypeId, start, end, comparator);
+		else
+			return super.structuredDataPersistence.findBySetType_G_S(groupId, dataSetId, dataTypeId, start, end, status, comparator);
+	}
+	public int countStructuredDatasBySetType( long groupId, long dataSetId, long dataTypeId, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.countBySetType_G(groupId, dataSetId, dataTypeId);
+		else
+			return super.structuredDataPersistence.countBySetType_G_S(groupId, dataSetId, dataTypeId, status);
+	}
+	
+	public List<StructuredData> getStructuredDatasByDataSetId( long groupId, long dataSetId, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByDataSetId_G(groupId, dataSetId);
+		else
+			return super.structuredDataPersistence.findByDataSetId_G_S(groupId, dataSetId, status);
+	}
+	public List<StructuredData> getStructuredDatasByDataSetId( long groupId, long dataSetId, int start, int end, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByDataSetId_G(groupId, dataSetId, start, end);
+		else
+			return super.structuredDataPersistence.findByDataSetId_G_S(groupId, dataSetId, start, end, status);
+	}
+	public List<StructuredData> getStructuredDatasByDataSetId( long groupId, long dataSetId, int start, int end, int status, OrderByComparator<StructuredData> comparator ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByDataSetId_G(groupId, dataSetId, start, end, comparator);
+		else
+			return super.structuredDataPersistence.findByDataSetId_G_S(groupId, dataSetId, start, end, status, comparator);
+	}
+	public int countStructuredDatasByDataSetId( long groupId, long dataSetId, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.countByDataSetId_G(groupId, dataSetId);
+		else
+			return super.structuredDataPersistence.countByDataSetId_G_S(groupId, dataSetId, status);
+	}
+	
+	public List<StructuredData> getStructuredDatasByCollectionSetType( long groupId, long dataCollectionId, long dataSetId, long dataTypeId, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByCollectionSetType_G(groupId, dataCollectionId, dataSetId, dataTypeId);
+		else
+			return super.structuredDataPersistence.findByCollectionSetType_G_S(groupId, dataCollectionId, dataSetId, dataTypeId, status);
+	}
+	public List<StructuredData> getStructuredDatasByCollectionSetType( long groupId, long dataCollectionId, long dataSetId, long dataTypeId, int start, int end, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByCollectionSetType_G(groupId, dataCollectionId, dataSetId, dataTypeId, start, end);
+		else
+			return super.structuredDataPersistence.findByCollectionSetType_G_S(groupId, dataCollectionId, dataSetId, dataTypeId, start, end, status);
+	}
+	public List<StructuredData> getStructuredDatasByCollectionSetType( long groupId, long dataCollectionId, long dataSetId, long dataTypeId, int start, int end, int status, OrderByComparator<StructuredData> comparator ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.findByCollectionSetType_G(groupId, dataCollectionId, dataSetId, dataTypeId, start, end, comparator);
+		else
+			return super.structuredDataPersistence.findByCollectionSetType_G_S(groupId, dataCollectionId, dataSetId, dataTypeId, start, end, status, comparator);
+	}
+	public int countStructuredDatasByCollectionSetType( long groupId, long dataCollectionId, long dataSetId, long dataTypeId, int status ){
+		if( status == WorkflowConstants.STATUS_ANY )
+			return super.structuredDataPersistence.countByCollectionSetType_G(groupId, dataCollectionId, dataSetId, dataTypeId);
+		else
+			return super.structuredDataPersistence.countByCollectionSetType_G_S(groupId, dataCollectionId, dataSetId, dataTypeId, status);
 	}
 	
 	public JSONObject getStructuredDataListWithInfo(long dataCollectionId, long dataSetId, long dataTypeId, Locale locale){

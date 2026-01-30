@@ -90,10 +90,6 @@ public class StructuredDataLocalServiceUtil {
 		return getService().countAllStructuredDatas();
 	}
 
-	public static int countApprovedStructuredDatas(long groupId) {
-		return getService().countApprovedStructuredDatas(groupId);
-	}
-
 	public static int countStructuredData(
 		long dataCollectionId, long dataSetId, long dataTypeId) {
 
@@ -101,29 +97,65 @@ public class StructuredDataLocalServiceUtil {
 			dataCollectionId, dataSetId, dataTypeId);
 	}
 
-	public static int countStructuredDatasByDataTypeId(long groupId) {
-		return getService().countStructuredDatasByDataTypeId(groupId);
+	public static int countStructuredDataByCollection(
+		long groupId, long dataCollectionId, int status) {
+
+		return getService().countStructuredDataByCollection(
+			groupId, dataCollectionId, status);
 	}
 
-	public static int countStructuredDatasByDataTypeId_G(
+	public static int countStructuredDataByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int status) {
+
+		return getService().countStructuredDataByCollectionSet(
+			groupId, dataCollectionId, dataSetId, status);
+	}
+
+	public static int countStructuredDatas(long groupId, int status) {
+		return getService().countStructuredDatas(groupId, status);
+	}
+
+	public static int countStructuredDatasByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int status) {
+
+		return getService().countStructuredDatasByCollectionSet(
+			groupId, dataCollectionId, dataSetId, status);
+	}
+
+	public static int countStructuredDatasByCollectionSetType(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		int status) {
+
+		return getService().countStructuredDatasByCollectionSetType(
+			groupId, dataCollectionId, dataSetId, dataTypeId, status);
+	}
+
+	public static int countStructuredDatasByDataCollectionId(
 		long dataTypeId, long groupId) {
 
-		return getService().countStructuredDatasByDataTypeId_G(
+		return getService().countStructuredDatasByDataCollectionId(
 			dataTypeId, groupId);
 	}
 
-	public static int countStructuredDatasByDataTypeId_G_S(
-		long dataTypeId, long groupId, int status) {
+	public static int countStructuredDatasByDataCollectionId(
+		long groupId, long dataCollectionId, int status) {
 
-		return getService().countStructuredDatasByDataTypeId_G_S(
-			dataTypeId, groupId, status);
+		return getService().countStructuredDatasByDataCollectionId(
+			groupId, dataCollectionId, status);
 	}
 
-	public static int countStructuredDatasByDataTypeId_S(
-		long dataTypeId, int status) {
+	public static int countStructuredDatasByDataSetId(
+		long groupId, long dataSetId, int status) {
 
-		return getService().countStructuredDatasByDataTypeId_S(
-			dataTypeId, status);
+		return getService().countStructuredDatasByDataSetId(
+			groupId, dataSetId, status);
+	}
+
+	public static int countStructuredDatasByDataTypeId(
+		long groupId, long dataTypeId, int status) {
+
+		return getService().countStructuredDatasByDataTypeId(
+			groupId, dataTypeId, status);
 	}
 
 	public static int countStructuredDatasByDataTypeId_U(
@@ -133,17 +165,6 @@ public class StructuredDataLocalServiceUtil {
 			dataTypeId, userId);
 	}
 
-	public static int countStructuredDatasByDataTypeId_U_S(
-		long dataTypeId, long userId, int status) {
-
-		return getService().countStructuredDatasByDataTypeId_U_S(
-			dataTypeId, userId, status);
-	}
-
-	public static int countStructuredDatasByG_S(long groupId, int status) {
-		return getService().countStructuredDatasByG_S(groupId, status);
-	}
-
 	public static int countStructuredDatasByG_U_S(
 		long groupId, long userId, int status) {
 
@@ -151,27 +172,27 @@ public class StructuredDataLocalServiceUtil {
 			groupId, userId, status);
 	}
 
-	public static int countStructuredDatasByG_U_SDataTypeId_(
-		long dataTypeId, long groupId, long userId, int status) {
-
-		return getService().countStructuredDatasByG_U_SDataTypeId_(
-			dataTypeId, groupId, userId, status);
+	public static int countStructuredDatasByGroupId(long groupId, int status) {
+		return getService().countStructuredDatasByGroupId(groupId, status);
 	}
 
-	public static int countStructuredDatasByGroupId(long groupId) {
-		return getService().countStructuredDatasByGroupId(groupId);
+	public static int countStructuredDatasBySetType(
+		long groupId, long dataSetId, long dataTypeId, int status) {
+
+		return getService().countStructuredDatasBySetType(
+			groupId, dataSetId, dataTypeId, status);
 	}
 
 	public static int countStructuredDatasByStatus(int status) {
 		return getService().countStructuredDatasByStatus(status);
 	}
 
-	public static int countStructuredDatasByU_S(long userId, int status) {
-		return getService().countStructuredDatasByU_S(userId, status);
-	}
-
 	public static int countStructuredDatasByUserId(long userId) {
 		return getService().countStructuredDatasByUserId(userId);
+	}
+
+	public static int countStructuredDatasByUserId(long userId, int status) {
+		return getService().countStructuredDatasByUserId(userId, status);
 	}
 
 	/**
@@ -353,26 +374,6 @@ public class StructuredDataLocalServiceUtil {
 		return getService().getAllStructuredDatas(start, end, comparator);
 	}
 
-	public static List<StructuredData> getApprovedStructuredDatas(
-		long groupId) {
-
-		return getService().getApprovedStructuredDatas(groupId);
-	}
-
-	public static List<StructuredData> getApprovedStructuredDatas(
-		long groupId, int start, int end) {
-
-		return getService().getApprovedStructuredDatas(groupId, start, end);
-	}
-
-	public static List<StructuredData> getApprovedStructuredDatas(
-		long groupId, int start, int end,
-		OrderByComparator<StructuredData> comparator) {
-
-		return getService().getApprovedStructuredDatas(
-			groupId, start, end, comparator);
-	}
-
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
 		getExportActionableDynamicQuery(
 			com.liferay.exportimport.kernel.lar.PortletDataContext
@@ -428,6 +429,52 @@ public class StructuredDataLocalServiceUtil {
 		return getService().getStructuredData(structuredDataId);
 	}
 
+	public static List<StructuredData> getStructuredDataByCollection(
+		long groupId, long dataCollectionId, int status) {
+
+		return getService().getStructuredDataByCollection(
+			groupId, dataCollectionId, status);
+	}
+
+	public static List<StructuredData> getStructuredDataByCollection(
+		long groupId, long dataCollectionId, int start, int end, int status) {
+
+		return getService().getStructuredDataByCollection(
+			groupId, dataCollectionId, start, end, status);
+	}
+
+	public static List<StructuredData> getStructuredDataByCollection(
+		long groupId, long dataCollectionId, int start, int end, int status,
+		OrderByComparator<StructuredData> comparator) {
+
+		return getService().getStructuredDataByCollection(
+			groupId, dataCollectionId, start, end, status, comparator);
+	}
+
+	public static List<StructuredData> getStructuredDataByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int status) {
+
+		return getService().getStructuredDataByCollectionSet(
+			groupId, dataCollectionId, dataSetId, status);
+	}
+
+	public static List<StructuredData> getStructuredDataByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int start, int end,
+		int status) {
+
+		return getService().getStructuredDataByCollectionSet(
+			groupId, dataCollectionId, dataSetId, start, end, status);
+	}
+
+	public static List<StructuredData> getStructuredDataByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int start, int end,
+		int status, OrderByComparator<StructuredData> comparator) {
+
+		return getService().getStructuredDataByCollectionSet(
+			groupId, dataCollectionId, dataSetId, start, end, status,
+			comparator);
+	}
+
 	/**
 	 * Returns the structured data matching the UUID and group.
 	 *
@@ -467,114 +514,163 @@ public class StructuredDataLocalServiceUtil {
 		return getService().getStructuredDatas(start, end);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId(
-		long dataTypeId) {
+	public static List<StructuredData> getStructuredDatas(
+		long groupId, int status) {
 
-		return getService().getStructuredDatasByDataTypeId(dataTypeId);
+		return getService().getStructuredDatas(groupId, status);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId(
-		long dataTypeId, int start, int end) {
+	public static List<StructuredData> getStructuredDatas(
+		long groupId, int start, int end, int status) {
 
-		return getService().getStructuredDatasByDataTypeId(
-			dataTypeId, start, end);
+		return getService().getStructuredDatas(groupId, start, end, status);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId(
-		long dataTypeId, int start, int end,
+	public static List<StructuredData> getStructuredDatas(
+		long groupId, int start, int end, int status,
 		OrderByComparator<StructuredData> comparator) {
 
-		return getService().getStructuredDatasByDataTypeId(
-			dataTypeId, start, end, comparator);
+		return getService().getStructuredDatas(
+			groupId, start, end, status, comparator);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId_G(
-		long dataTypeId, long groupId) {
+	public static List<StructuredData> getStructuredDatasByCollectionId(
+		long groupId, long dataTypeId) {
 
-		return getService().getStructuredDatasByDataTypeId_G(
-			dataTypeId, groupId);
+		return getService().getStructuredDatasByCollectionId(
+			groupId, dataTypeId);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId_G(
+	public static List<StructuredData> getStructuredDatasByCollectionId(
 		long dataTypeId, long groupId, int start, int end) {
 
-		return getService().getStructuredDatasByDataTypeId_G(
+		return getService().getStructuredDatasByCollectionId(
 			dataTypeId, groupId, start, end);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId_G(
+	public static List<StructuredData> getStructuredDatasByCollectionId(
 		long dataTypeId, long groupId, int start, int end,
 		OrderByComparator<StructuredData> comparator) {
 
-		return getService().getStructuredDatasByDataTypeId_G(
+		return getService().getStructuredDatasByCollectionId(
 			dataTypeId, groupId, start, end, comparator);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId_G_S(
-		long dataTypeId, long groupId, int status) {
+	public static List<StructuredData> getStructuredDatasByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int status) {
 
-		return getService().getStructuredDatasByDataTypeId_G_S(
-			dataTypeId, groupId, status);
+		return getService().getStructuredDatasByCollectionSet(
+			groupId, dataCollectionId, dataSetId, status);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId_G_S(
-		long dataTypeId, long groupId, int status, int start, int end) {
+	public static List<StructuredData> getStructuredDatasByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int start, int end,
+		int status) {
 
-		return getService().getStructuredDatasByDataTypeId_G_S(
-			dataTypeId, groupId, status, start, end);
+		return getService().getStructuredDatasByCollectionSet(
+			groupId, dataCollectionId, dataSetId, start, end, status);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId_G_S(
-		long dataTypeId, long groupId, int status, int start, int end,
+	public static List<StructuredData> getStructuredDatasByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, int start, int end,
+		int status, OrderByComparator<StructuredData> comparator) {
+
+		return getService().getStructuredDatasByCollectionSet(
+			groupId, dataCollectionId, dataSetId, start, end, status,
+			comparator);
+	}
+
+	public static List<StructuredData> getStructuredDatasByCollectionSetType(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		int status) {
+
+		return getService().getStructuredDatasByCollectionSetType(
+			groupId, dataCollectionId, dataSetId, dataTypeId, status);
+	}
+
+	public static List<StructuredData> getStructuredDatasByCollectionSetType(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		int start, int end, int status) {
+
+		return getService().getStructuredDatasByCollectionSetType(
+			groupId, dataCollectionId, dataSetId, dataTypeId, start, end,
+			status);
+	}
+
+	public static List<StructuredData> getStructuredDatasByCollectionSetType(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		int start, int end, int status,
 		OrderByComparator<StructuredData> comparator) {
 
-		return getService().getStructuredDatasByDataTypeId_G_S(
-			dataTypeId, groupId, status, start, end, comparator);
+		return getService().getStructuredDatasByCollectionSetType(
+			groupId, dataCollectionId, dataSetId, dataTypeId, start, end,
+			status, comparator);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId_G_U_S(
-		long dataTypeId, long groupId, long userId, int status) {
+	public static List<StructuredData> getStructuredDatasByDataCollectionId(
+		long groupId, long dataCollectionId, int status) {
 
-		return getService().getStructuredDatasByDataTypeId_G_U_S(
-			dataTypeId, groupId, userId, status);
+		return getService().getStructuredDatasByDataCollectionId(
+			groupId, dataCollectionId, status);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId_G_U_S(
-		long dataTypeId, long groupId, long userId, int status, int start,
-		int end) {
+	public static List<StructuredData> getStructuredDatasByDataCollectionId(
+		long groupId, long dataCollectionId, int start, int end, int status) {
 
-		return getService().getStructuredDatasByDataTypeId_G_U_S(
-			dataTypeId, groupId, userId, status, start, end);
+		return getService().getStructuredDatasByDataCollectionId(
+			groupId, dataCollectionId, start, end, status);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId_G_U_S(
-		long dataTypeId, long groupId, long userId, int status, int start,
-		int end, OrderByComparator<StructuredData> comparator) {
-
-		return getService().getStructuredDatasByDataTypeId_G_U_S(
-			dataTypeId, groupId, userId, status, start, end, comparator);
-	}
-
-	public static List<StructuredData> getStructuredDatasByDataTypeId_S(
-		long dataTypeId, int status) {
-
-		return getService().getStructuredDatasByDataTypeId_S(
-			dataTypeId, status);
-	}
-
-	public static List<StructuredData> getStructuredDatasByDataTypeId_S(
-		long dataTypeId, int status, int start, int end) {
-
-		return getService().getStructuredDatasByDataTypeId_S(
-			dataTypeId, status, start, end);
-	}
-
-	public static List<StructuredData> getStructuredDatasByDataTypeId_S(
-		long dataTypeId, int status, int start, int end,
+	public static List<StructuredData> getStructuredDatasByDataCollectionId(
+		long groupId, long dataCollectionId, int start, int end, int status,
 		OrderByComparator<StructuredData> comparator) {
 
-		return getService().getStructuredDatasByDataTypeId_S(
-			dataTypeId, status, start, end, comparator);
+		return getService().getStructuredDatasByDataCollectionId(
+			groupId, dataCollectionId, start, end, status, comparator);
+	}
+
+	public static List<StructuredData> getStructuredDatasByDataSetId(
+		long groupId, long dataSetId, int status) {
+
+		return getService().getStructuredDatasByDataSetId(
+			groupId, dataSetId, status);
+	}
+
+	public static List<StructuredData> getStructuredDatasByDataSetId(
+		long groupId, long dataSetId, int start, int end, int status) {
+
+		return getService().getStructuredDatasByDataSetId(
+			groupId, dataSetId, start, end, status);
+	}
+
+	public static List<StructuredData> getStructuredDatasByDataSetId(
+		long groupId, long dataSetId, int start, int end, int status,
+		OrderByComparator<StructuredData> comparator) {
+
+		return getService().getStructuredDatasByDataSetId(
+			groupId, dataSetId, start, end, status, comparator);
+	}
+
+	public static List<StructuredData> getStructuredDatasByDataTypeId(
+		long groupId, long dataTypeId, int status) {
+
+		return getService().getStructuredDatasByDataTypeId(
+			groupId, dataTypeId, status);
+	}
+
+	public static List<StructuredData> getStructuredDatasByDataTypeId(
+		long groupId, long dataTypeId, int status, int start, int end) {
+
+		return getService().getStructuredDatasByDataTypeId(
+			groupId, dataTypeId, status, start, end);
+	}
+
+	public static List<StructuredData> getStructuredDatasByDataTypeId(
+		long groupId, long dataTypeId, int status, int start, int end,
+		OrderByComparator<StructuredData> comparator) {
+
+		return getService().getStructuredDatasByDataTypeId(
+			groupId, dataTypeId, status, start, end, comparator);
 	}
 
 	public static List<StructuredData> getStructuredDatasByDataTypeId_U(
@@ -599,53 +695,10 @@ public class StructuredDataLocalServiceUtil {
 			dataTypeId, userId, start, end, comparator);
 	}
 
-	public static List<StructuredData> getStructuredDatasByDataTypeId_U_S(
-		long dataTypeId, long userId, int status) {
-
-		return getService().getStructuredDatasByDataTypeId_U_S(
-			dataTypeId, userId, status);
-	}
-
-	public static List<StructuredData> getStructuredDatasByDataTypeId_U_S(
-		long dataTypeId, long userId, int status, int start, int end) {
-
-		return getService().getStructuredDatasByDataTypeId_U_S(
-			dataTypeId, userId, status, start, end);
-	}
-
-	public static List<StructuredData> getStructuredDatasByDataTypeId_U_S(
-		long dataTypeId, long userId, int status, int start, int end,
-		OrderByComparator<StructuredData> comparator) {
-
-		return getService().getStructuredDatasByDataTypeId_U_S(
-			dataTypeId, userId, status, start, end, comparator);
-	}
-
-	public static List<StructuredData> getStructuredDatasByG_S(
-		long groupId, int status) {
-
-		return getService().getStructuredDatasByG_S(groupId, status);
-	}
-
-	public static List<StructuredData> getStructuredDatasByG_S(
-		long groupId, int status, int start, int end) {
-
-		return getService().getStructuredDatasByG_S(
-			groupId, status, start, end);
-	}
-
-	public static List<StructuredData> getStructuredDatasByG_S(
-		long groupId, int status, int start, int end,
-		OrderByComparator<StructuredData> comparator) {
-
-		return getService().getStructuredDatasByG_S(
-			groupId, status, start, end, comparator);
-	}
-
-	public static List<StructuredData> getStructuredDatasByG_U_S(
+	public static List<StructuredData> getStructuredDatasByG_U(
 		long groupId, long userId, int status) {
 
-		return getService().getStructuredDatasByG_U_S(groupId, userId, status);
+		return getService().getStructuredDatasByG_U(groupId, userId, status);
 	}
 
 	public static List<StructuredData> getStructuredDatasByG_U_S(
@@ -664,23 +717,47 @@ public class StructuredDataLocalServiceUtil {
 	}
 
 	public static List<StructuredData> getStructuredDatasByGroupId(
-		long groupId) {
+		long groupId, int status) {
 
-		return getService().getStructuredDatasByGroupId(groupId);
+		return getService().getStructuredDatasByGroupId(groupId, status);
 	}
 
 	public static List<StructuredData> getStructuredDatasByGroupId(
-		long groupId, int start, int end) {
+		long groupId, int start, int end, int status) {
 
-		return getService().getStructuredDatasByGroupId(groupId, start, end);
+		return getService().getStructuredDatasByGroupId(
+			groupId, start, end, status);
 	}
 
 	public static List<StructuredData> getStructuredDatasByGroupId(
-		long groupId, int start, int end,
+		long groupId, int start, int end, int status,
 		OrderByComparator<StructuredData> comparator) {
 
 		return getService().getStructuredDatasByGroupId(
-			groupId, start, end, comparator);
+			groupId, start, end, status, comparator);
+	}
+
+	public static List<StructuredData> getStructuredDatasBySetType(
+		long groupId, long dataSetId, long dataTypeId, int status) {
+
+		return getService().getStructuredDatasBySetType(
+			groupId, dataSetId, dataTypeId, status);
+	}
+
+	public static List<StructuredData> getStructuredDatasBySetType(
+		long groupId, long dataSetId, long dataTypeId, int start, int end,
+		int status) {
+
+		return getService().getStructuredDatasBySetType(
+			groupId, dataSetId, dataTypeId, start, end, status);
+	}
+
+	public static List<StructuredData> getStructuredDatasBySetType(
+		long groupId, long dataSetId, long dataTypeId, int start, int end,
+		int status, OrderByComparator<StructuredData> comparator) {
+
+		return getService().getStructuredDatasBySetType(
+			groupId, dataSetId, dataTypeId, start, end, status, comparator);
 	}
 
 	public static List<StructuredData> getStructuredDatasByStatus(int status) {
@@ -701,34 +778,35 @@ public class StructuredDataLocalServiceUtil {
 			status, start, end, comparator);
 	}
 
-	public static List<StructuredData> getStructuredDatasByU_S(
-		long userId, int status) {
-
-		return getService().getStructuredDatasByU_S(userId, status);
-	}
-
-	public static List<StructuredData> getStructuredDatasByU_S(
-		long userId, int status, int start, int end) {
-
-		return getService().getStructuredDatasByU_S(userId, status, start, end);
-	}
-
-	public static List<StructuredData> getStructuredDatasByU_S(
-		long userId, int status, int start, int end,
-		OrderByComparator<StructuredData> comparator) {
-
-		return getService().getStructuredDatasByU_S(
-			userId, status, start, end, comparator);
-	}
-
 	public static List<StructuredData> getStructuredDatasByUserId(long userId) {
 		return getService().getStructuredDatasByUserId(userId);
+	}
+
+	public static List<StructuredData> getStructuredDatasByUserId(
+		long userId, int status) {
+
+		return getService().getStructuredDatasByUserId(userId, status);
 	}
 
 	public static List<StructuredData> getStructuredDatasByUserId(
 		long userId, int start, int end) {
 
 		return getService().getStructuredDatasByUserId(userId, start, end);
+	}
+
+	public static List<StructuredData> getStructuredDatasByUserId(
+		long userId, int start, int end, int status) {
+
+		return getService().getStructuredDatasByUserId(
+			userId, start, end, status);
+	}
+
+	public static List<StructuredData> getStructuredDatasByUserId(
+		long userId, int start, int end, int status,
+		OrderByComparator<StructuredData> comparator) {
+
+		return getService().getStructuredDatasByUserId(
+			userId, start, end, status, comparator);
 	}
 
 	public static List<StructuredData> getStructuredDatasByUserId(
