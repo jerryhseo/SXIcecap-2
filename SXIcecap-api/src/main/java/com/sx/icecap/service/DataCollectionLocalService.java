@@ -89,10 +89,10 @@ public interface DataCollectionLocalService
 			Map<Locale, String> descriptionMap, int status, ServiceContext sc)
 		throws PortalException;
 
-	public boolean checkDataCollectionCodeUnique(String dataCollectionCode);
-
-	public boolean checkDataCollectionDuplicated(
+	public boolean checkDuplicated(
 		String dataCollectionCode, String dataCollectionVersion);
+
+	public boolean checkUniqueCode(String dataCollectionCode);
 
 	public int countAllDataCollection();
 

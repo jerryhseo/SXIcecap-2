@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
@@ -131,10 +132,10 @@ public class DataCollectionModelImpl
 		"drop table SX_ICECAP_DataCollection";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY dataCollection.dataCollectionId ASC";
+		" ORDER BY dataCollection.modifiedDate DESC";
 
 	public static final String ORDER_BY_SQL =
-		" ORDER BY SX_ICECAP_DataCollection.dataCollectionId ASC";
+		" ORDER BY SX_ICECAP_DataCollection.modifiedDate DESC";
 
 	public static final String DATA_SOURCE = "liferayDataSource";
 
@@ -156,7 +157,7 @@ public class DataCollectionModelImpl
 
 	public static final long UUID_COLUMN_BITMASK = 64L;
 
-	public static final long DATACOLLECTIONID_COLUMN_BITMASK = 128L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 128L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -586,6 +587,8 @@ public class DataCollectionModelImpl
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
+
+		_columnBitmask = -1L;
 
 		_modifiedDate = modifiedDate;
 	}
@@ -1362,17 +1365,18 @@ public class DataCollectionModelImpl
 
 	@Override
 	public int compareTo(DataCollection dataCollection) {
-		long primaryKey = dataCollection.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		value = DateUtil.compareTo(
+			getModifiedDate(), dataCollection.getModifiedDate());
+
+		value = value * -1;
+
+		if (value != 0) {
+			return value;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
-		}
-		else {
-			return 0;
-		}
+
+		return 0;
 	}
 
 	@Override

@@ -90,6 +90,8 @@ public interface DataSetLocalService
 			Map<Locale, String> descriptionMap, int status, ServiceContext sc)
 		throws PortalException;
 
+	public boolean checkDuplicated(String dataSetCode, String dataSetVersion);
+
 	public int countAllDataSets();
 
 	public int countApprovedDataSets(long groupId);

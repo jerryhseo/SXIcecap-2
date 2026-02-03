@@ -8674,7 +8674,8 @@ public class DataCollectionPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, DataCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
 			new String[] {String.class.getName()},
-			DataCollectionModelImpl.UUID_COLUMN_BITMASK);
+			DataCollectionModelImpl.UUID_COLUMN_BITMASK |
+			DataCollectionModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
 
 		_finderPathCountByUuid = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8707,7 +8708,8 @@ public class DataCollectionPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			DataCollectionModelImpl.UUID_COLUMN_BITMASK |
-			DataCollectionModelImpl.COMPANYID_COLUMN_BITMASK);
+			DataCollectionModelImpl.COMPANYID_COLUMN_BITMASK |
+			DataCollectionModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
 
 		_finderPathCountByUuid_C = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8726,7 +8728,8 @@ public class DataCollectionPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, DataCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
 			new String[] {Long.class.getName()},
-			DataCollectionModelImpl.GROUPID_COLUMN_BITMASK);
+			DataCollectionModelImpl.GROUPID_COLUMN_BITMASK |
+			DataCollectionModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
 
 		_finderPathCountByGroupId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8745,7 +8748,8 @@ public class DataCollectionPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, DataCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
 			new String[] {Long.class.getName()},
-			DataCollectionModelImpl.USERID_COLUMN_BITMASK);
+			DataCollectionModelImpl.USERID_COLUMN_BITMASK |
+			DataCollectionModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
 
 		_finderPathCountByUserId = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8764,7 +8768,8 @@ public class DataCollectionPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, DataCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByStatus",
 			new String[] {Integer.class.getName()},
-			DataCollectionModelImpl.STATUS_COLUMN_BITMASK);
+			DataCollectionModelImpl.STATUS_COLUMN_BITMASK |
+			DataCollectionModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
 
 		_finderPathCountByStatus = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8785,7 +8790,8 @@ public class DataCollectionPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_U",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			DataCollectionModelImpl.GROUPID_COLUMN_BITMASK |
-			DataCollectionModelImpl.USERID_COLUMN_BITMASK);
+			DataCollectionModelImpl.USERID_COLUMN_BITMASK |
+			DataCollectionModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
 
 		_finderPathCountByG_U = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8806,7 +8812,8 @@ public class DataCollectionPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			DataCollectionModelImpl.GROUPID_COLUMN_BITMASK |
-			DataCollectionModelImpl.STATUS_COLUMN_BITMASK);
+			DataCollectionModelImpl.STATUS_COLUMN_BITMASK |
+			DataCollectionModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
 
 		_finderPathCountByG_S = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8827,7 +8834,8 @@ public class DataCollectionPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			DataCollectionModelImpl.USERID_COLUMN_BITMASK |
-			DataCollectionModelImpl.STATUS_COLUMN_BITMASK);
+			DataCollectionModelImpl.STATUS_COLUMN_BITMASK |
+			DataCollectionModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
 
 		_finderPathCountByU_S = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8852,7 +8860,8 @@ public class DataCollectionPersistenceImpl
 			},
 			DataCollectionModelImpl.GROUPID_COLUMN_BITMASK |
 			DataCollectionModelImpl.USERID_COLUMN_BITMASK |
-			DataCollectionModelImpl.STATUS_COLUMN_BITMASK);
+			DataCollectionModelImpl.STATUS_COLUMN_BITMASK |
+			DataCollectionModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
 
 		_finderPathCountByG_U_S = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -8874,7 +8883,8 @@ public class DataCollectionPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, DataCollectionImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCode",
 			new String[] {String.class.getName()},
-			DataCollectionModelImpl.DATACOLLECTIONCODE_COLUMN_BITMASK);
+			DataCollectionModelImpl.DATACOLLECTIONCODE_COLUMN_BITMASK |
+			DataCollectionModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
 
 		_finderPathCountByCode = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,

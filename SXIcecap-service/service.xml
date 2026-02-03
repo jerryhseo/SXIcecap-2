@@ -123,6 +123,11 @@
 		<column name="verified" type="String" ></column>
 		<column name="freezed" type="String" ></column>
 		
+		<!--  Order -->
+		 <order by="desc">
+            <order-column name="modifiedDate" order-by="desc"></order-column>
+        </order>
+        
 		<!-- Finders -->
 		
 		<finder name="GroupId" return-type="Collection">

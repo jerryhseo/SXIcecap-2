@@ -64,17 +64,16 @@ public class DataCollectionLocalServiceWrapper
 	}
 
 	@Override
-	public boolean checkDataCollectionCodeUnique(String dataCollectionCode) {
-		return _dataCollectionLocalService.checkDataCollectionCodeUnique(
-			dataCollectionCode);
+	public boolean checkDuplicated(
+		String dataCollectionCode, String dataCollectionVersion) {
+
+		return _dataCollectionLocalService.checkDuplicated(
+			dataCollectionCode, dataCollectionVersion);
 	}
 
 	@Override
-	public boolean checkDataCollectionDuplicated(
-		String dataCollectionCode, String dataCollectionVersion) {
-
-		return _dataCollectionLocalService.checkDataCollectionDuplicated(
-			dataCollectionCode, dataCollectionVersion);
+	public boolean checkUniqueCode(String dataCollectionCode) {
+		return _dataCollectionLocalService.checkUniqueCode(dataCollectionCode);
 	}
 
 	@Override

@@ -61,6 +61,12 @@ public class DataSetLocalServiceWrapper
 	}
 
 	@Override
+	public boolean checkDuplicated(String dataSetCode, String dataSetVersion) {
+		return _dataSetLocalService.checkDuplicated(
+			dataSetCode, dataSetVersion);
+	}
+
+	@Override
 	public int countAllDataSets() {
 		return _dataSetLocalService.countAllDataSets();
 	}

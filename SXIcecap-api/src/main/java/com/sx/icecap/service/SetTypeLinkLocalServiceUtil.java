@@ -70,6 +70,13 @@ public class SetTypeLinkLocalServiceUtil {
 		return getService().countAllSetTypeLinkList();
 	}
 
+	public static int countSetTypeLinkListByCollectionSet(
+		long groupId, long collectionId, long dataSetId) {
+
+		return getService().countSetTypeLinkListByCollectionSet(
+			groupId, collectionId, dataSetId);
+	}
+
 	public static int countSetTypeLinkListByCollectionSet_G(
 		long groupId, long collectionId, long dataSetId) {
 
@@ -276,11 +283,18 @@ public class SetTypeLinkLocalServiceUtil {
 			groupId, dataCollectionId, dataSetId, dataTypeId);
 	}
 
-	public static List<SetTypeLink> getSetTypeLinkListByCollectionSet_G(
+	public static List<SetTypeLink> getSetTypeLinkListByCollectionSet(
 		long groupId, long collectionId, long dataSetId) {
 
-		return getService().getSetTypeLinkListByCollectionSet_G(
+		return getService().getSetTypeLinkListByCollectionSet(
 			groupId, collectionId, dataSetId);
+	}
+
+	public static List<SetTypeLink> getSetTypeLinkListByCollectionSet(
+		long groupId, long collectionId, long dataSetId, int start, int end) {
+
+		return getService().getSetTypeLinkListByCollectionSet(
+			groupId, collectionId, dataSetId, start, end);
 	}
 
 	public static List<SetTypeLink> getSetTypeLinkListBySet(long dataSetId) {

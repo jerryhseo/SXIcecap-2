@@ -73,6 +73,12 @@ public class DataSetLocalServiceUtil {
 			sc);
 	}
 
+	public static boolean checkDuplicated(
+		String dataSetCode, String dataSetVersion) {
+
+		return getService().checkDuplicated(dataSetCode, dataSetVersion);
+	}
+
 	public static int countAllDataSets() {
 		return getService().countAllDataSets();
 	}

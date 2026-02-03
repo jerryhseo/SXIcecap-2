@@ -370,23 +370,13 @@ public class DataCollectionLocalServiceImpl
 		return dataSets;
 	}
 	
-	public boolean checkDataCollectionCodeUnique( String dataCollectionCode ) {
+	public boolean checkUniqueCode( String dataCollectionCode ) {
 		// Check uniqueness of the dataCollectionCode
-		if( super.dataTypePersistence.countByCode(dataCollectionCode) > 0 ) {
-			return false;
-		}
-		
-		return true;
+		return dataCollectionPersistence.countByCode(dataCollectionCode) == 0;
 	}
 	
-	public boolean checkDataCollectionDuplicated( String dataCollectionCode, String dataCollectionVersion) {
-		DataCollection dataCollection = dataCollectionPersistence.fetchByCodeVersion(dataCollectionCode, dataCollectionVersion);
-		
-		if( Validator.isNotNull(dataCollection)) {
-			return true;
-		}
-		
-		return false;
+	public boolean checkDuplicated( String dataCollectionCode, String dataCollectionVersion) {
+		return dataCollectionPersistence.countByCodeVersion(dataCollectionCode, dataCollectionVersion) > 0;
 	}
 	
 	@Reference

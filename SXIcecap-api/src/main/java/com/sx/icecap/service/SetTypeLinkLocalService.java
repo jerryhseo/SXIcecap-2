@@ -82,6 +82,9 @@ public interface SetTypeLinkLocalService
 
 	public int countAllSetTypeLinkList();
 
+	public int countSetTypeLinkListByCollectionSet(
+		long groupId, long collectionId, long dataSetId);
+
 	public int countSetTypeLinkListByCollectionSet_G(
 		long groupId, long collectionId, long dataSetId);
 
@@ -245,8 +248,12 @@ public interface SetTypeLinkLocalService
 		long groupId, long dataCollectionId, long dataSetId, long dataTypeId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SetTypeLink> getSetTypeLinkListByCollectionSet_G(
+	public List<SetTypeLink> getSetTypeLinkListByCollectionSet(
 		long groupId, long collectionId, long dataSetId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SetTypeLink> getSetTypeLinkListByCollectionSet(
+		long groupId, long collectionId, long dataSetId, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SetTypeLink> getSetTypeLinkListBySet(long dataSetId);

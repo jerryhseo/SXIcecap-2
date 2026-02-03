@@ -75,17 +75,15 @@ public class DataCollectionLocalServiceUtil {
 			descriptionMap, status, sc);
 	}
 
-	public static boolean checkDataCollectionCodeUnique(
-		String dataCollectionCode) {
-
-		return getService().checkDataCollectionCodeUnique(dataCollectionCode);
-	}
-
-	public static boolean checkDataCollectionDuplicated(
+	public static boolean checkDuplicated(
 		String dataCollectionCode, String dataCollectionVersion) {
 
-		return getService().checkDataCollectionDuplicated(
+		return getService().checkDuplicated(
 			dataCollectionCode, dataCollectionVersion);
+	}
+
+	public static boolean checkUniqueCode(String dataCollectionCode) {
+		return getService().checkUniqueCode(dataCollectionCode);
 	}
 
 	public static int countAllDataCollection() {

@@ -582,6 +582,10 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		return jsonDataSetListInfo;
 	}
 	
+	public boolean checkDuplicated( String dataSetCode, String dataSetVersion ) {
+		return dataSetPersistence.countByCodeVersion(dataSetCode, dataSetVersion) > 0;
+	}
+	
 	@Reference
 	SetTypeLinkLocalService _setTypeLinkLocalService;
 }
