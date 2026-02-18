@@ -61,7 +61,7 @@ public class StructuredDataWrapper
 		attributes.put("multiple", isMultiple());
 		attributes.put("startIndex", getStartIndex());
 		attributes.put("count", getCount());
-		attributes.put("freezed", isFreezed());
+		attributes.put("freezed", getFreezed());
 		attributes.put("freezedUserId", getFreezedUserId());
 		attributes.put("freezedUserName", getFreezedUserName());
 		attributes.put("freezedDate", getFreezedDate());
@@ -184,7 +184,7 @@ public class StructuredDataWrapper
 			setCount(count);
 		}
 
-		Boolean freezed = (Boolean)attributes.get("freezed");
+		String freezed = (String)attributes.get("freezed");
 
 		if (freezed != null) {
 			setFreezed(freezed);
@@ -315,7 +315,7 @@ public class StructuredDataWrapper
 	 * @return the freezed of this structured data
 	 */
 	@Override
-	public boolean getFreezed() {
+	public String getFreezed() {
 		return model.getFreezed();
 	}
 
@@ -634,16 +634,6 @@ public class StructuredDataWrapper
 	}
 
 	/**
-	 * Returns <code>true</code> if this structured data is freezed.
-	 *
-	 * @return <code>true</code> if this structured data is freezed; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isFreezed() {
-		return model.isFreezed();
-	}
-
-	/**
 	 * Returns <code>true</code> if this structured data is inactive.
 	 *
 	 * @return <code>true</code> if this structured data is inactive; <code>false</code> otherwise
@@ -809,12 +799,12 @@ public class StructuredDataWrapper
 	}
 
 	/**
-	 * Sets whether this structured data is freezed.
+	 * Sets the freezed of this structured data.
 	 *
 	 * @param freezed the freezed of this structured data
 	 */
 	@Override
-	public void setFreezed(boolean freezed) {
+	public void setFreezed(String freezed) {
 		model.setFreezed(freezed);
 	}
 

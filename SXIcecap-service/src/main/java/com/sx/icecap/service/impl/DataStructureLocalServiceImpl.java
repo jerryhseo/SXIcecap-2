@@ -18,9 +18,7 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
@@ -31,11 +29,9 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.sx.icecap.exception.NoSuchDataStructureException;
 import com.sx.icecap.model.DataStructure;
-import com.sx.icecap.model.Parameter;
 import com.sx.icecap.service.base.DataStructureLocalServiceBaseImpl;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -361,5 +357,9 @@ public class DataStructureLocalServiceImpl
 		}
 		
 		return super.dataStructurePersistence.findByCodeVersion(dataStructureCode, dataStructureVersion);
+	}
+	
+	public boolean checkDuplicated( String dataStructureCode, String dataStructureVersion ) {
+		return dataStructurePersistence.countByCodeVersion(dataStructureCode, dataStructureVersion) > 0;
 	}
 }

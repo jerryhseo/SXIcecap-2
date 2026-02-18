@@ -92,7 +92,9 @@ public class DataTypeModelImpl
 		{"statusDate", Types.TIMESTAMP}, {"dataTypeCode", Types.VARCHAR},
 		{"dataTypeVersion", Types.VARCHAR}, {"displayName", Types.VARCHAR},
 		{"extension", Types.VARCHAR}, {"sampleFileId", Types.BIGINT},
-		{"description", Types.VARCHAR}, {"tooltip", Types.VARCHAR}
+		{"description", Types.VARCHAR}, {"inputStatus", Types.BOOLEAN},
+		{"jumpTo", Types.BOOLEAN}, {"verified", Types.VARCHAR},
+		{"freezed", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -118,11 +120,14 @@ public class DataTypeModelImpl
 		TABLE_COLUMNS_MAP.put("extension", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("sampleFileId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("tooltip", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("inputStatus", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("jumpTo", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("verified", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("freezed", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_DataType (uuid_ VARCHAR(75) null,dataTypeId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataTypeCode VARCHAR(75) null,dataTypeVersion VARCHAR(75) null,displayName STRING null,extension VARCHAR(75) null,sampleFileId LONG,description STRING null,tooltip STRING null)";
+		"create table SX_ICECAP_DataType (uuid_ VARCHAR(75) null,dataTypeId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataTypeCode VARCHAR(75) null,dataTypeVersion VARCHAR(75) null,displayName STRING null,extension VARCHAR(75) null,sampleFileId LONG,description STRING null,inputStatus BOOLEAN,jumpTo BOOLEAN,verified VARCHAR(75) null,freezed VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table SX_ICECAP_DataType";
 
@@ -330,9 +335,19 @@ public class DataTypeModelImpl
 		attributeSetterBiConsumers.put(
 			"description",
 			(BiConsumer<DataType, String>)DataType::setDescription);
-		attributeGetterFunctions.put("tooltip", DataType::getTooltip);
+		attributeGetterFunctions.put("inputStatus", DataType::getInputStatus);
 		attributeSetterBiConsumers.put(
-			"tooltip", (BiConsumer<DataType, String>)DataType::setTooltip);
+			"inputStatus",
+			(BiConsumer<DataType, Boolean>)DataType::setInputStatus);
+		attributeGetterFunctions.put("jumpTo", DataType::getJumpTo);
+		attributeSetterBiConsumers.put(
+			"jumpTo", (BiConsumer<DataType, Boolean>)DataType::setJumpTo);
+		attributeGetterFunctions.put("verified", DataType::getVerified);
+		attributeSetterBiConsumers.put(
+			"verified", (BiConsumer<DataType, String>)DataType::setVerified);
+		attributeGetterFunctions.put("freezed", DataType::getFreezed);
+		attributeSetterBiConsumers.put(
+			"freezed", (BiConsumer<DataType, String>)DataType::setFreezed);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -871,110 +886,63 @@ public class DataTypeModelImpl
 	}
 
 	@Override
-	public String getTooltip() {
-		if (_tooltip == null) {
+	public boolean getInputStatus() {
+		return _inputStatus;
+	}
+
+	@Override
+	public boolean isInputStatus() {
+		return _inputStatus;
+	}
+
+	@Override
+	public void setInputStatus(boolean inputStatus) {
+		_inputStatus = inputStatus;
+	}
+
+	@Override
+	public boolean getJumpTo() {
+		return _jumpTo;
+	}
+
+	@Override
+	public boolean isJumpTo() {
+		return _jumpTo;
+	}
+
+	@Override
+	public void setJumpTo(boolean jumpTo) {
+		_jumpTo = jumpTo;
+	}
+
+	@Override
+	public String getVerified() {
+		if (_verified == null) {
 			return "";
 		}
 		else {
-			return _tooltip;
+			return _verified;
 		}
 	}
 
 	@Override
-	public String getTooltip(Locale locale) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getTooltip(languageId);
+	public void setVerified(String verified) {
+		_verified = verified;
 	}
 
 	@Override
-	public String getTooltip(Locale locale, boolean useDefault) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getTooltip(languageId, useDefault);
-	}
-
-	@Override
-	public String getTooltip(String languageId) {
-		return LocalizationUtil.getLocalization(getTooltip(), languageId);
-	}
-
-	@Override
-	public String getTooltip(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(
-			getTooltip(), languageId, useDefault);
-	}
-
-	@Override
-	public String getTooltipCurrentLanguageId() {
-		return _tooltipCurrentLanguageId;
-	}
-
-	@JSON
-	@Override
-	public String getTooltipCurrentValue() {
-		Locale locale = getLocale(_tooltipCurrentLanguageId);
-
-		return getTooltip(locale);
-	}
-
-	@Override
-	public Map<Locale, String> getTooltipMap() {
-		return LocalizationUtil.getLocalizationMap(getTooltip());
-	}
-
-	@Override
-	public void setTooltip(String tooltip) {
-		_tooltip = tooltip;
-	}
-
-	@Override
-	public void setTooltip(String tooltip, Locale locale) {
-		setTooltip(tooltip, locale, LocaleUtil.getSiteDefault());
-	}
-
-	@Override
-	public void setTooltip(
-		String tooltip, Locale locale, Locale defaultLocale) {
-
-		String languageId = LocaleUtil.toLanguageId(locale);
-		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
-
-		if (Validator.isNotNull(tooltip)) {
-			setTooltip(
-				LocalizationUtil.updateLocalization(
-					getTooltip(), "Tooltip", tooltip, languageId,
-					defaultLanguageId));
+	public String getFreezed() {
+		if (_freezed == null) {
+			return "";
 		}
 		else {
-			setTooltip(
-				LocalizationUtil.removeLocalization(
-					getTooltip(), "Tooltip", languageId));
+			return _freezed;
 		}
 	}
 
 	@Override
-	public void setTooltipCurrentLanguageId(String languageId) {
-		_tooltipCurrentLanguageId = languageId;
-	}
-
-	@Override
-	public void setTooltipMap(Map<Locale, String> tooltipMap) {
-		setTooltipMap(tooltipMap, LocaleUtil.getSiteDefault());
-	}
-
-	@Override
-	public void setTooltipMap(
-		Map<Locale, String> tooltipMap, Locale defaultLocale) {
-
-		if (tooltipMap == null) {
-			return;
-		}
-
-		setTooltip(
-			LocalizationUtil.updateLocalization(
-				tooltipMap, getTooltip(), "Tooltip",
-				LocaleUtil.toLanguageId(defaultLocale)));
+	public void setFreezed(String freezed) {
+		_freezed = freezed;
 	}
 
 	@Override
@@ -1251,17 +1219,6 @@ public class DataTypeModelImpl
 			}
 		}
 
-		Map<Locale, String> tooltipMap = getTooltipMap();
-
-		for (Map.Entry<Locale, String> entry : tooltipMap.entrySet()) {
-			Locale locale = entry.getKey();
-			String value = entry.getValue();
-
-			if (Validator.isNotNull(value)) {
-				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
-			}
-		}
-
 		return availableLanguageIds.toArray(
 			new String[availableLanguageIds.size()]);
 	}
@@ -1324,15 +1281,6 @@ public class DataTypeModelImpl
 			setDescription(
 				getDescription(defaultLocale), defaultLocale, defaultLocale);
 		}
-
-		String tooltip = getTooltip(defaultLocale);
-
-		if (Validator.isNull(tooltip)) {
-			setTooltip(getTooltip(modelDefaultLanguageId), defaultLocale);
-		}
-		else {
-			setTooltip(getTooltip(defaultLocale), defaultLocale, defaultLocale);
-		}
 	}
 
 	@Override
@@ -1373,7 +1321,10 @@ public class DataTypeModelImpl
 		dataTypeImpl.setExtension(getExtension());
 		dataTypeImpl.setSampleFileId(getSampleFileId());
 		dataTypeImpl.setDescription(getDescription());
-		dataTypeImpl.setTooltip(getTooltip());
+		dataTypeImpl.setInputStatus(isInputStatus());
+		dataTypeImpl.setJumpTo(isJumpTo());
+		dataTypeImpl.setVerified(getVerified());
+		dataTypeImpl.setFreezed(getFreezed());
 
 		dataTypeImpl.resetOriginalValues();
 
@@ -1579,12 +1530,24 @@ public class DataTypeModelImpl
 			dataTypeCacheModel.description = null;
 		}
 
-		dataTypeCacheModel.tooltip = getTooltip();
+		dataTypeCacheModel.inputStatus = isInputStatus();
 
-		String tooltip = dataTypeCacheModel.tooltip;
+		dataTypeCacheModel.jumpTo = isJumpTo();
 
-		if ((tooltip != null) && (tooltip.length() == 0)) {
-			dataTypeCacheModel.tooltip = null;
+		dataTypeCacheModel.verified = getVerified();
+
+		String verified = dataTypeCacheModel.verified;
+
+		if ((verified != null) && (verified.length() == 0)) {
+			dataTypeCacheModel.verified = null;
+		}
+
+		dataTypeCacheModel.freezed = getFreezed();
+
+		String freezed = dataTypeCacheModel.freezed;
+
+		if ((freezed != null) && (freezed.length() == 0)) {
+			dataTypeCacheModel.freezed = null;
 		}
 
 		return dataTypeCacheModel;
@@ -1715,8 +1678,10 @@ public class DataTypeModelImpl
 	private long _sampleFileId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
-	private String _tooltip;
-	private String _tooltipCurrentLanguageId;
+	private boolean _inputStatus;
+	private boolean _jumpTo;
+	private String _verified;
+	private String _freezed;
 	private long _columnBitmask;
 	private DataType _escapedModel;
 

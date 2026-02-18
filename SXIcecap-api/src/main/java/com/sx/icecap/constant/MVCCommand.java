@@ -43,7 +43,6 @@ public class MVCCommand {
 	public static final String RESOURCE_DELETE_STRUCTURED_DATA = "/ajax/StructuredData/delete-structured-data";
 	public static final String RESOURCE_DELETE_STRUCTURED_DATA_FILE = "/ajax/StructuredData/delete-file";
 	public static final String RESOURCE_DELETE_TEMP_STRUCTURED_DATA = "/ajax/StructuredData/delete-temp-file";
-	public static final String RESOURCE_DELETE_TYPE_STRUCTURE_LINK = "/ajax/DataType/delete-type-structure-link";
 	public static final String RESOURCE_DOWNLOAD_FIELD_ATTACHED_FILE = "/ajax/StructuredData/download-field-attached-file";
 	public static final String RESOURCE_LOAD_ASSOCIATED_DATASETS = "/ajax/DataCollection/load-associated-datasets";
 	public static final String RESOURCE_LOAD_ASSOCIATED_DATATYPES = "/ajax/DataSet/load-associated-datatypes";
@@ -52,13 +51,12 @@ public class MVCCommand {
 	public static final String RESOURCE_LOAD_DATASET = "/ajax/DataSet/load-dataset";
 	public static final String RESOURCE_LOAD_DATASTRUCTURE = "/ajax/DataStructure/load-datastructure";
 	public static final String RESOURCE_LOAD_DATATYPE = "/ajax/DataType/load-datatype";
-	public static final String RESOURCE_LOAD_DATATYPES = "/ajax/DataType/load-datatypes";
 	public static final String RESOURCE_LOAD_STRUCTURED_DATA= "/ajax/StructuredData/load-structured-data";
 	public static final String RESOURCE_OPEN_REFERENCE__FILE= "/ajax/DataStructure/open-reference-file";
 	public static final String RESOURCE_SAVE_DATACOLLECTION = "/ajax/DataCollection/save-datacollection";
 	public static final String RESOURCE_SAVE_DATASET = "/ajax/DataSet/save-dataset";
+	public static final String RESOURCE_SAVE_DATATYPE = "/ajax/DataType/save-datatype";
 	public static final String RESOURCE_SAVE_STRUCTURED_DATA = "/ajax/StructuredData/save";
-	public static final String RESOURCE_SAVE_TYPE_STRUCTURE_LINK = "/ajax/DataType/save-type-structure-link";
 	public static final String RESOURCE_SEARCH_DATACOLLECTIONS = "/ajax/DataCollection/search-datacollections";
 	public static final String RESOURCE_SEARCH_DATASETS = "/ajax/DataSet/search-datasets";
 	public static final String RESOURCE_SEARCH_DATASTRUCTURES = "/ajax/DataStructure/search-datastructures";

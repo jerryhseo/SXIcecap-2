@@ -62,7 +62,10 @@ public class DataTypeWrapper
 		attributes.put("extension", getExtension());
 		attributes.put("sampleFileId", getSampleFileId());
 		attributes.put("description", getDescription());
-		attributes.put("tooltip", getTooltip());
+		attributes.put("inputStatus", isInputStatus());
+		attributes.put("jumpTo", isJumpTo());
+		attributes.put("verified", getVerified());
+		attributes.put("freezed", getFreezed());
 
 		return attributes;
 	}
@@ -183,10 +186,28 @@ public class DataTypeWrapper
 			setDescription(description);
 		}
 
-		String tooltip = (String)attributes.get("tooltip");
+		Boolean inputStatus = (Boolean)attributes.get("inputStatus");
 
-		if (tooltip != null) {
-			setTooltip(tooltip);
+		if (inputStatus != null) {
+			setInputStatus(inputStatus);
+		}
+
+		Boolean jumpTo = (Boolean)attributes.get("jumpTo");
+
+		if (jumpTo != null) {
+			setJumpTo(jumpTo);
+		}
+
+		String verified = (String)attributes.get("verified");
+
+		if (verified != null) {
+			setVerified(verified);
+		}
+
+		String freezed = (String)attributes.get("freezed");
+
+		if (freezed != null) {
+			setFreezed(freezed);
 		}
 	}
 
@@ -413,6 +434,16 @@ public class DataTypeWrapper
 	}
 
 	/**
+	 * Returns the freezed of this data type.
+	 *
+	 * @return the freezed of this data type
+	 */
+	@Override
+	public String getFreezed() {
+		return model.getFreezed();
+	}
+
+	/**
 	 * Returns the group ID of this data type.
 	 *
 	 * @return the group ID of this data type
@@ -420,6 +451,26 @@ public class DataTypeWrapper
 	@Override
 	public long getGroupId() {
 		return model.getGroupId();
+	}
+
+	/**
+	 * Returns the input status of this data type.
+	 *
+	 * @return the input status of this data type
+	 */
+	@Override
+	public boolean getInputStatus() {
+		return model.getInputStatus();
+	}
+
+	/**
+	 * Returns the jump to of this data type.
+	 *
+	 * @return the jump to of this data type
+	 */
+	@Override
+	public boolean getJumpTo() {
+		return model.getJumpTo();
 	}
 
 	/**
@@ -513,82 +564,6 @@ public class DataTypeWrapper
 	}
 
 	/**
-	 * Returns the tooltip of this data type.
-	 *
-	 * @return the tooltip of this data type
-	 */
-	@Override
-	public String getTooltip() {
-		return model.getTooltip();
-	}
-
-	/**
-	 * Returns the localized tooltip of this data type in the language. Uses the default language if no localization exists for the requested language.
-	 *
-	 * @param locale the locale of the language
-	 * @return the localized tooltip of this data type
-	 */
-	@Override
-	public String getTooltip(java.util.Locale locale) {
-		return model.getTooltip(locale);
-	}
-
-	/**
-	 * Returns the localized tooltip of this data type in the language, optionally using the default language if no localization exists for the requested language.
-	 *
-	 * @param locale the local of the language
-	 * @param useDefault whether to use the default language if no localization exists for the requested language
-	 * @return the localized tooltip of this data type. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	 */
-	@Override
-	public String getTooltip(java.util.Locale locale, boolean useDefault) {
-		return model.getTooltip(locale, useDefault);
-	}
-
-	/**
-	 * Returns the localized tooltip of this data type in the language. Uses the default language if no localization exists for the requested language.
-	 *
-	 * @param languageId the ID of the language
-	 * @return the localized tooltip of this data type
-	 */
-	@Override
-	public String getTooltip(String languageId) {
-		return model.getTooltip(languageId);
-	}
-
-	/**
-	 * Returns the localized tooltip of this data type in the language, optionally using the default language if no localization exists for the requested language.
-	 *
-	 * @param languageId the ID of the language
-	 * @param useDefault whether to use the default language if no localization exists for the requested language
-	 * @return the localized tooltip of this data type
-	 */
-	@Override
-	public String getTooltip(String languageId, boolean useDefault) {
-		return model.getTooltip(languageId, useDefault);
-	}
-
-	@Override
-	public String getTooltipCurrentLanguageId() {
-		return model.getTooltipCurrentLanguageId();
-	}
-
-	@Override
-	public String getTooltipCurrentValue() {
-		return model.getTooltipCurrentValue();
-	}
-
-	/**
-	 * Returns a map of the locales and localized tooltips of this data type.
-	 *
-	 * @return the locales and localized tooltips of this data type
-	 */
-	@Override
-	public Map<java.util.Locale, String> getTooltipMap() {
-		return model.getTooltipMap();
-	}
-
-	/**
 	 * Returns the trash entry created when this data type was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this data type.
 	 *
 	 * @return the trash entry created when this data type was moved to the Recycle Bin
@@ -663,6 +638,16 @@ public class DataTypeWrapper
 	}
 
 	/**
+	 * Returns the verified of this data type.
+	 *
+	 * @return the verified of this data type
+	 */
+	@Override
+	public String getVerified() {
+		return model.getVerified();
+	}
+
+	/**
 	 * Returns <code>true</code> if this data type is approved.
 	 *
 	 * @return <code>true</code> if this data type is approved; <code>false</code> otherwise
@@ -723,6 +708,16 @@ public class DataTypeWrapper
 	}
 
 	/**
+	 * Returns <code>true</code> if this data type is input status.
+	 *
+	 * @return <code>true</code> if this data type is input status; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isInputStatus() {
+		return model.isInputStatus();
+	}
+
+	/**
 	 * Returns <code>true</code> if this data type is in the Recycle Bin.
 	 *
 	 * @return <code>true</code> if this data type is in the Recycle Bin; <code>false</code> otherwise
@@ -750,6 +745,16 @@ public class DataTypeWrapper
 	@Override
 	public boolean isInTrashImplicitly() {
 		return model.isInTrashImplicitly();
+	}
+
+	/**
+	 * Returns <code>true</code> if this data type is jump to.
+	 *
+	 * @return <code>true</code> if this data type is jump to; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isJumpTo() {
+		return model.isJumpTo();
 	}
 
 	/**
@@ -987,6 +992,16 @@ public class DataTypeWrapper
 	}
 
 	/**
+	 * Sets the freezed of this data type.
+	 *
+	 * @param freezed the freezed of this data type
+	 */
+	@Override
+	public void setFreezed(String freezed) {
+		model.setFreezed(freezed);
+	}
+
+	/**
 	 * Sets the group ID of this data type.
 	 *
 	 * @param groupId the group ID of this data type
@@ -994,6 +1009,26 @@ public class DataTypeWrapper
 	@Override
 	public void setGroupId(long groupId) {
 		model.setGroupId(groupId);
+	}
+
+	/**
+	 * Sets whether this data type is input status.
+	 *
+	 * @param inputStatus the input status of this data type
+	 */
+	@Override
+	public void setInputStatus(boolean inputStatus) {
+		model.setInputStatus(inputStatus);
+	}
+
+	/**
+	 * Sets whether this data type is jump to.
+	 *
+	 * @param jumpTo the jump to of this data type
+	 */
+	@Override
+	public void setJumpTo(boolean jumpTo) {
+		model.setJumpTo(jumpTo);
 	}
 
 	/**
@@ -1087,71 +1122,6 @@ public class DataTypeWrapper
 	}
 
 	/**
-	 * Sets the tooltip of this data type.
-	 *
-	 * @param tooltip the tooltip of this data type
-	 */
-	@Override
-	public void setTooltip(String tooltip) {
-		model.setTooltip(tooltip);
-	}
-
-	/**
-	 * Sets the localized tooltip of this data type in the language.
-	 *
-	 * @param tooltip the localized tooltip of this data type
-	 * @param locale the locale of the language
-	 */
-	@Override
-	public void setTooltip(String tooltip, java.util.Locale locale) {
-		model.setTooltip(tooltip, locale);
-	}
-
-	/**
-	 * Sets the localized tooltip of this data type in the language, and sets the default locale.
-	 *
-	 * @param tooltip the localized tooltip of this data type
-	 * @param locale the locale of the language
-	 * @param defaultLocale the default locale
-	 */
-	@Override
-	public void setTooltip(
-		String tooltip, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
-
-		model.setTooltip(tooltip, locale, defaultLocale);
-	}
-
-	@Override
-	public void setTooltipCurrentLanguageId(String languageId) {
-		model.setTooltipCurrentLanguageId(languageId);
-	}
-
-	/**
-	 * Sets the localized tooltips of this data type from the map of locales and localized tooltips.
-	 *
-	 * @param tooltipMap the locales and localized tooltips of this data type
-	 */
-	@Override
-	public void setTooltipMap(Map<java.util.Locale, String> tooltipMap) {
-		model.setTooltipMap(tooltipMap);
-	}
-
-	/**
-	 * Sets the localized tooltips of this data type from the map of locales and localized tooltips, and sets the default locale.
-	 *
-	 * @param tooltipMap the locales and localized tooltips of this data type
-	 * @param defaultLocale the default locale
-	 */
-	@Override
-	public void setTooltipMap(
-		Map<java.util.Locale, String> tooltipMap,
-		java.util.Locale defaultLocale) {
-
-		model.setTooltipMap(tooltipMap, defaultLocale);
-	}
-
-	/**
 	 * Sets the user ID of this data type.
 	 *
 	 * @param userId the user ID of this data type
@@ -1189,6 +1159,16 @@ public class DataTypeWrapper
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
+	}
+
+	/**
+	 * Sets the verified of this data type.
+	 *
+	 * @param verified the verified of this data type
+	 */
+	@Override
+	public void setVerified(String verified) {
+		model.setVerified(verified);
 	}
 
 	@Override

@@ -2112,47 +2112,50 @@ public class SetTypeLinkPersistenceImpl
 	private FinderPath _finderPathCountByCollection_G;
 
 	/**
-	 * Returns all the set type links where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns all the set type links where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @return the matching set type links
 	 */
 	@Override
-	public List<SetTypeLink> findByCollection_G(long groupId, long dataTypeId) {
+	public List<SetTypeLink> findByCollection_G(
+		long groupId, long dataCollectionId) {
+
 		return findByCollection_G(
-			groupId, dataTypeId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			groupId, dataCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
 	}
 
 	/**
-	 * Returns a range of all the set type links where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns a range of all the set type links where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SetTypeLinkModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param start the lower bound of the range of set type links
 	 * @param end the upper bound of the range of set type links (not inclusive)
 	 * @return the range of matching set type links
 	 */
 	@Override
 	public List<SetTypeLink> findByCollection_G(
-		long groupId, long dataTypeId, int start, int end) {
+		long groupId, long dataCollectionId, int start, int end) {
 
-		return findByCollection_G(groupId, dataTypeId, start, end, null);
+		return findByCollection_G(groupId, dataCollectionId, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the set type links where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns an ordered range of all the set type links where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SetTypeLinkModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param start the lower bound of the range of set type links
 	 * @param end the upper bound of the range of set type links (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -2160,22 +2163,22 @@ public class SetTypeLinkPersistenceImpl
 	 */
 	@Override
 	public List<SetTypeLink> findByCollection_G(
-		long groupId, long dataTypeId, int start, int end,
+		long groupId, long dataCollectionId, int start, int end,
 		OrderByComparator<SetTypeLink> orderByComparator) {
 
 		return findByCollection_G(
-			groupId, dataTypeId, start, end, orderByComparator, true);
+			groupId, dataCollectionId, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the set type links where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns an ordered range of all the set type links where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SetTypeLinkModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param start the lower bound of the range of set type links
 	 * @param end the upper bound of the range of set type links (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -2184,7 +2187,7 @@ public class SetTypeLinkPersistenceImpl
 	 */
 	@Override
 	public List<SetTypeLink> findByCollection_G(
-		long groupId, long dataTypeId, int start, int end,
+		long groupId, long dataCollectionId, int start, int end,
 		OrderByComparator<SetTypeLink> orderByComparator,
 		boolean useFinderCache) {
 
@@ -2196,13 +2199,13 @@ public class SetTypeLinkPersistenceImpl
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindByCollection_G;
-				finderArgs = new Object[] {groupId, dataTypeId};
+				finderArgs = new Object[] {groupId, dataCollectionId};
 			}
 		}
 		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByCollection_G;
 			finderArgs = new Object[] {
-				groupId, dataTypeId, start, end, orderByComparator
+				groupId, dataCollectionId, start, end, orderByComparator
 			};
 		}
 
@@ -2215,7 +2218,8 @@ public class SetTypeLinkPersistenceImpl
 			if ((list != null) && !list.isEmpty()) {
 				for (SetTypeLink setTypeLink : list) {
 					if ((groupId != setTypeLink.getGroupId()) ||
-						(dataTypeId != setTypeLink.getDataTypeId())) {
+						(dataCollectionId !=
+							setTypeLink.getDataCollectionId())) {
 
 						list = null;
 
@@ -2240,7 +2244,7 @@ public class SetTypeLinkPersistenceImpl
 
 			sb.append(_FINDER_COLUMN_COLLECTION_G_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_COLLECTION_G_DATATYPEID_2);
+			sb.append(_FINDER_COLUMN_COLLECTION_G_DATACOLLECTIONID_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
@@ -2263,7 +2267,7 @@ public class SetTypeLinkPersistenceImpl
 
 				queryPos.add(groupId);
 
-				queryPos.add(dataTypeId);
+				queryPos.add(dataCollectionId);
 
 				list = (List<SetTypeLink>)QueryUtil.list(
 					query, getDialect(), start, end);
@@ -2290,22 +2294,22 @@ public class SetTypeLinkPersistenceImpl
 	}
 
 	/**
-	 * Returns the first set type link in the ordered set where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the first set type link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching set type link
 	 * @throws NoSuchSetTypeLinkException if a matching set type link could not be found
 	 */
 	@Override
 	public SetTypeLink findByCollection_G_First(
-			long groupId, long dataTypeId,
+			long groupId, long dataCollectionId,
 			OrderByComparator<SetTypeLink> orderByComparator)
 		throws NoSuchSetTypeLinkException {
 
 		SetTypeLink setTypeLink = fetchByCollection_G_First(
-			groupId, dataTypeId, orderByComparator);
+			groupId, dataCollectionId, orderByComparator);
 
 		if (setTypeLink != null) {
 			return setTypeLink;
@@ -2318,8 +2322,8 @@ public class SetTypeLinkPersistenceImpl
 		sb.append("groupId=");
 		sb.append(groupId);
 
-		sb.append(", dataTypeId=");
-		sb.append(dataTypeId);
+		sb.append(", dataCollectionId=");
+		sb.append(dataCollectionId);
 
 		sb.append("}");
 
@@ -2327,20 +2331,20 @@ public class SetTypeLinkPersistenceImpl
 	}
 
 	/**
-	 * Returns the first set type link in the ordered set where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the first set type link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching set type link, or <code>null</code> if a matching set type link could not be found
 	 */
 	@Override
 	public SetTypeLink fetchByCollection_G_First(
-		long groupId, long dataTypeId,
+		long groupId, long dataCollectionId,
 		OrderByComparator<SetTypeLink> orderByComparator) {
 
 		List<SetTypeLink> list = findByCollection_G(
-			groupId, dataTypeId, 0, 1, orderByComparator);
+			groupId, dataCollectionId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -2350,22 +2354,22 @@ public class SetTypeLinkPersistenceImpl
 	}
 
 	/**
-	 * Returns the last set type link in the ordered set where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the last set type link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching set type link
 	 * @throws NoSuchSetTypeLinkException if a matching set type link could not be found
 	 */
 	@Override
 	public SetTypeLink findByCollection_G_Last(
-			long groupId, long dataTypeId,
+			long groupId, long dataCollectionId,
 			OrderByComparator<SetTypeLink> orderByComparator)
 		throws NoSuchSetTypeLinkException {
 
 		SetTypeLink setTypeLink = fetchByCollection_G_Last(
-			groupId, dataTypeId, orderByComparator);
+			groupId, dataCollectionId, orderByComparator);
 
 		if (setTypeLink != null) {
 			return setTypeLink;
@@ -2378,8 +2382,8 @@ public class SetTypeLinkPersistenceImpl
 		sb.append("groupId=");
 		sb.append(groupId);
 
-		sb.append(", dataTypeId=");
-		sb.append(dataTypeId);
+		sb.append(", dataCollectionId=");
+		sb.append(dataCollectionId);
 
 		sb.append("}");
 
@@ -2387,26 +2391,26 @@ public class SetTypeLinkPersistenceImpl
 	}
 
 	/**
-	 * Returns the last set type link in the ordered set where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the last set type link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching set type link, or <code>null</code> if a matching set type link could not be found
 	 */
 	@Override
 	public SetTypeLink fetchByCollection_G_Last(
-		long groupId, long dataTypeId,
+		long groupId, long dataCollectionId,
 		OrderByComparator<SetTypeLink> orderByComparator) {
 
-		int count = countByCollection_G(groupId, dataTypeId);
+		int count = countByCollection_G(groupId, dataCollectionId);
 
 		if (count == 0) {
 			return null;
 		}
 
 		List<SetTypeLink> list = findByCollection_G(
-			groupId, dataTypeId, count - 1, count, orderByComparator);
+			groupId, dataCollectionId, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -2416,18 +2420,18 @@ public class SetTypeLinkPersistenceImpl
 	}
 
 	/**
-	 * Returns the set type links before and after the current set type link in the ordered set where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the set type links before and after the current set type link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param setTypeLinkId the primary key of the current set type link
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next set type link
 	 * @throws NoSuchSetTypeLinkException if a set type link with the primary key could not be found
 	 */
 	@Override
 	public SetTypeLink[] findByCollection_G_PrevAndNext(
-			long setTypeLinkId, long groupId, long dataTypeId,
+			long setTypeLinkId, long groupId, long dataCollectionId,
 			OrderByComparator<SetTypeLink> orderByComparator)
 		throws NoSuchSetTypeLinkException {
 
@@ -2441,14 +2445,14 @@ public class SetTypeLinkPersistenceImpl
 			SetTypeLink[] array = new SetTypeLinkImpl[3];
 
 			array[0] = getByCollection_G_PrevAndNext(
-				session, setTypeLink, groupId, dataTypeId, orderByComparator,
-				true);
+				session, setTypeLink, groupId, dataCollectionId,
+				orderByComparator, true);
 
 			array[1] = setTypeLink;
 
 			array[2] = getByCollection_G_PrevAndNext(
-				session, setTypeLink, groupId, dataTypeId, orderByComparator,
-				false);
+				session, setTypeLink, groupId, dataCollectionId,
+				orderByComparator, false);
 
 			return array;
 		}
@@ -2461,8 +2465,9 @@ public class SetTypeLinkPersistenceImpl
 	}
 
 	protected SetTypeLink getByCollection_G_PrevAndNext(
-		Session session, SetTypeLink setTypeLink, long groupId, long dataTypeId,
-		OrderByComparator<SetTypeLink> orderByComparator, boolean previous) {
+		Session session, SetTypeLink setTypeLink, long groupId,
+		long dataCollectionId, OrderByComparator<SetTypeLink> orderByComparator,
+		boolean previous) {
 
 		StringBundler sb = null;
 
@@ -2479,7 +2484,7 @@ public class SetTypeLinkPersistenceImpl
 
 		sb.append(_FINDER_COLUMN_COLLECTION_G_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_COLLECTION_G_DATATYPEID_2);
+		sb.append(_FINDER_COLUMN_COLLECTION_G_DATACOLLECTIONID_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields =
@@ -2552,7 +2557,7 @@ public class SetTypeLinkPersistenceImpl
 
 		queryPos.add(groupId);
 
-		queryPos.add(dataTypeId);
+		queryPos.add(dataCollectionId);
 
 		if (orderByComparator != null) {
 			for (Object orderByConditionValue :
@@ -2573,34 +2578,34 @@ public class SetTypeLinkPersistenceImpl
 	}
 
 	/**
-	 * Removes all the set type links where groupId = &#63; and dataTypeId = &#63; from the database.
+	 * Removes all the set type links where groupId = &#63; and dataCollectionId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 */
 	@Override
-	public void removeByCollection_G(long groupId, long dataTypeId) {
+	public void removeByCollection_G(long groupId, long dataCollectionId) {
 		for (SetTypeLink setTypeLink :
 				findByCollection_G(
-					groupId, dataTypeId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					groupId, dataCollectionId, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null)) {
 
 			remove(setTypeLink);
 		}
 	}
 
 	/**
-	 * Returns the number of set type links where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the number of set type links where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @return the number of matching set type links
 	 */
 	@Override
-	public int countByCollection_G(long groupId, long dataTypeId) {
+	public int countByCollection_G(long groupId, long dataCollectionId) {
 		FinderPath finderPath = _finderPathCountByCollection_G;
 
-		Object[] finderArgs = new Object[] {groupId, dataTypeId};
+		Object[] finderArgs = new Object[] {groupId, dataCollectionId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -2611,7 +2616,7 @@ public class SetTypeLinkPersistenceImpl
 
 			sb.append(_FINDER_COLUMN_COLLECTION_G_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_COLLECTION_G_DATATYPEID_2);
+			sb.append(_FINDER_COLUMN_COLLECTION_G_DATACOLLECTIONID_2);
 
 			String sql = sb.toString();
 
@@ -2626,7 +2631,7 @@ public class SetTypeLinkPersistenceImpl
 
 				queryPos.add(groupId);
 
-				queryPos.add(dataTypeId);
+				queryPos.add(dataCollectionId);
 
 				count = (Long)query.uniqueResult();
 
@@ -2648,8 +2653,8 @@ public class SetTypeLinkPersistenceImpl
 	private static final String _FINDER_COLUMN_COLLECTION_G_GROUPID_2 =
 		"setTypeLink.groupId = ? AND ";
 
-	private static final String _FINDER_COLUMN_COLLECTION_G_DATATYPEID_2 =
-		"setTypeLink.dataTypeId = ?";
+	private static final String _FINDER_COLUMN_COLLECTION_G_DATACOLLECTIONID_2 =
+		"setTypeLink.dataCollectionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindBySet_G;
 	private FinderPath _finderPathWithoutPaginationFindBySet_G;
@@ -4885,23 +4890,23 @@ public class SetTypeLinkPersistenceImpl
 	private FinderPath _finderPathCountByCollectionSetType_G;
 
 	/**
-	 * Returns the set type link where groupId = &#63; and dataSetId = &#63; and dataCollectionId = &#63; and dataTypeId = &#63; or throws a <code>NoSuchSetTypeLinkException</code> if it could not be found.
+	 * Returns the set type link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; or throws a <code>NoSuchSetTypeLinkException</code> if it could not be found.
 	 *
 	 * @param groupId the group ID
-	 * @param dataSetId the data set ID
 	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
 	 * @param dataTypeId the data type ID
 	 * @return the matching set type link
 	 * @throws NoSuchSetTypeLinkException if a matching set type link could not be found
 	 */
 	@Override
 	public SetTypeLink findByCollectionSetType_G(
-			long groupId, long dataSetId, long dataCollectionId,
+			long groupId, long dataCollectionId, long dataSetId,
 			long dataTypeId)
 		throws NoSuchSetTypeLinkException {
 
 		SetTypeLink setTypeLink = fetchByCollectionSetType_G(
-			groupId, dataSetId, dataCollectionId, dataTypeId);
+			groupId, dataCollectionId, dataSetId, dataTypeId);
 
 		if (setTypeLink == null) {
 			StringBundler sb = new StringBundler(10);
@@ -4911,11 +4916,11 @@ public class SetTypeLinkPersistenceImpl
 			sb.append("groupId=");
 			sb.append(groupId);
 
-			sb.append(", dataSetId=");
-			sb.append(dataSetId);
-
 			sb.append(", dataCollectionId=");
 			sb.append(dataCollectionId);
+
+			sb.append(", dataSetId=");
+			sb.append(dataSetId);
 
 			sb.append(", dataTypeId=");
 			sb.append(dataTypeId);
@@ -4933,42 +4938,42 @@ public class SetTypeLinkPersistenceImpl
 	}
 
 	/**
-	 * Returns the set type link where groupId = &#63; and dataSetId = &#63; and dataCollectionId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the set type link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
 	 * @param groupId the group ID
-	 * @param dataSetId the data set ID
 	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
 	 * @param dataTypeId the data type ID
 	 * @return the matching set type link, or <code>null</code> if a matching set type link could not be found
 	 */
 	@Override
 	public SetTypeLink fetchByCollectionSetType_G(
-		long groupId, long dataSetId, long dataCollectionId, long dataTypeId) {
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId) {
 
 		return fetchByCollectionSetType_G(
-			groupId, dataSetId, dataCollectionId, dataTypeId, true);
+			groupId, dataCollectionId, dataSetId, dataTypeId, true);
 	}
 
 	/**
-	 * Returns the set type link where groupId = &#63; and dataSetId = &#63; and dataCollectionId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the set type link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param groupId the group ID
-	 * @param dataSetId the data set ID
 	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
 	 * @param dataTypeId the data type ID
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching set type link, or <code>null</code> if a matching set type link could not be found
 	 */
 	@Override
 	public SetTypeLink fetchByCollectionSetType_G(
-		long groupId, long dataSetId, long dataCollectionId, long dataTypeId,
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
 		boolean useFinderCache) {
 
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
 			finderArgs = new Object[] {
-				groupId, dataSetId, dataCollectionId, dataTypeId
+				groupId, dataCollectionId, dataSetId, dataTypeId
 			};
 		}
 
@@ -4983,8 +4988,8 @@ public class SetTypeLinkPersistenceImpl
 			SetTypeLink setTypeLink = (SetTypeLink)result;
 
 			if ((groupId != setTypeLink.getGroupId()) ||
-				(dataSetId != setTypeLink.getDataSetId()) ||
 				(dataCollectionId != setTypeLink.getDataCollectionId()) ||
+				(dataSetId != setTypeLink.getDataSetId()) ||
 				(dataTypeId != setTypeLink.getDataTypeId())) {
 
 				result = null;
@@ -4998,9 +5003,9 @@ public class SetTypeLinkPersistenceImpl
 
 			sb.append(_FINDER_COLUMN_COLLECTIONSETTYPE_G_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_COLLECTIONSETTYPE_G_DATASETID_2);
-
 			sb.append(_FINDER_COLUMN_COLLECTIONSETTYPE_G_DATACOLLECTIONID_2);
+
+			sb.append(_FINDER_COLUMN_COLLECTIONSETTYPE_G_DATASETID_2);
 
 			sb.append(_FINDER_COLUMN_COLLECTIONSETTYPE_G_DATATYPEID_2);
 
@@ -5017,9 +5022,9 @@ public class SetTypeLinkPersistenceImpl
 
 				queryPos.add(groupId);
 
-				queryPos.add(dataSetId);
-
 				queryPos.add(dataCollectionId);
+
+				queryPos.add(dataSetId);
 
 				queryPos.add(dataTypeId);
 
@@ -5039,7 +5044,7 @@ public class SetTypeLinkPersistenceImpl
 						if (_log.isWarnEnabled()) {
 							if (!useFinderCache) {
 								finderArgs = new Object[] {
-									groupId, dataSetId, dataCollectionId,
+									groupId, dataCollectionId, dataSetId,
 									dataTypeId
 								};
 							}
@@ -5080,43 +5085,43 @@ public class SetTypeLinkPersistenceImpl
 	}
 
 	/**
-	 * Removes the set type link where groupId = &#63; and dataSetId = &#63; and dataCollectionId = &#63; and dataTypeId = &#63; from the database.
+	 * Removes the set type link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
-	 * @param dataSetId the data set ID
 	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
 	 * @param dataTypeId the data type ID
 	 * @return the set type link that was removed
 	 */
 	@Override
 	public SetTypeLink removeByCollectionSetType_G(
-			long groupId, long dataSetId, long dataCollectionId,
+			long groupId, long dataCollectionId, long dataSetId,
 			long dataTypeId)
 		throws NoSuchSetTypeLinkException {
 
 		SetTypeLink setTypeLink = findByCollectionSetType_G(
-			groupId, dataSetId, dataCollectionId, dataTypeId);
+			groupId, dataCollectionId, dataSetId, dataTypeId);
 
 		return remove(setTypeLink);
 	}
 
 	/**
-	 * Returns the number of set type links where groupId = &#63; and dataSetId = &#63; and dataCollectionId = &#63; and dataTypeId = &#63;.
+	 * Returns the number of set type links where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataSetId the data set ID
 	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
 	 * @param dataTypeId the data type ID
 	 * @return the number of matching set type links
 	 */
 	@Override
 	public int countByCollectionSetType_G(
-		long groupId, long dataSetId, long dataCollectionId, long dataTypeId) {
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId) {
 
 		FinderPath finderPath = _finderPathCountByCollectionSetType_G;
 
 		Object[] finderArgs = new Object[] {
-			groupId, dataSetId, dataCollectionId, dataTypeId
+			groupId, dataCollectionId, dataSetId, dataTypeId
 		};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
@@ -5128,9 +5133,9 @@ public class SetTypeLinkPersistenceImpl
 
 			sb.append(_FINDER_COLUMN_COLLECTIONSETTYPE_G_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_COLLECTIONSETTYPE_G_DATASETID_2);
-
 			sb.append(_FINDER_COLUMN_COLLECTIONSETTYPE_G_DATACOLLECTIONID_2);
+
+			sb.append(_FINDER_COLUMN_COLLECTIONSETTYPE_G_DATASETID_2);
 
 			sb.append(_FINDER_COLUMN_COLLECTIONSETTYPE_G_DATATYPEID_2);
 
@@ -5147,9 +5152,9 @@ public class SetTypeLinkPersistenceImpl
 
 				queryPos.add(groupId);
 
-				queryPos.add(dataSetId);
-
 				queryPos.add(dataCollectionId);
+
+				queryPos.add(dataSetId);
 
 				queryPos.add(dataTypeId);
 
@@ -5173,12 +5178,12 @@ public class SetTypeLinkPersistenceImpl
 	private static final String _FINDER_COLUMN_COLLECTIONSETTYPE_G_GROUPID_2 =
 		"setTypeLink.groupId = ? AND ";
 
-	private static final String _FINDER_COLUMN_COLLECTIONSETTYPE_G_DATASETID_2 =
-		"setTypeLink.dataSetId = ? AND ";
-
 	private static final String
 		_FINDER_COLUMN_COLLECTIONSETTYPE_G_DATACOLLECTIONID_2 =
 			"setTypeLink.dataCollectionId = ? AND ";
+
+	private static final String _FINDER_COLUMN_COLLECTIONSETTYPE_G_DATASETID_2 =
+		"setTypeLink.dataSetId = ? AND ";
 
 	private static final String
 		_FINDER_COLUMN_COLLECTIONSETTYPE_G_DATATYPEID_2 =
@@ -5211,8 +5216,8 @@ public class SetTypeLinkPersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByCollectionSetType_G,
 			new Object[] {
-				setTypeLink.getGroupId(), setTypeLink.getDataSetId(),
-				setTypeLink.getDataCollectionId(), setTypeLink.getDataTypeId()
+				setTypeLink.getGroupId(), setTypeLink.getDataCollectionId(),
+				setTypeLink.getDataSetId(), setTypeLink.getDataTypeId()
 			},
 			setTypeLink);
 
@@ -5313,8 +5318,8 @@ public class SetTypeLinkPersistenceImpl
 
 		Object[] args = new Object[] {
 			setTypeLinkModelImpl.getGroupId(),
-			setTypeLinkModelImpl.getDataSetId(),
 			setTypeLinkModelImpl.getDataCollectionId(),
+			setTypeLinkModelImpl.getDataSetId(),
 			setTypeLinkModelImpl.getDataTypeId()
 		};
 
@@ -5332,8 +5337,8 @@ public class SetTypeLinkPersistenceImpl
 		if (clearCurrent) {
 			Object[] args = new Object[] {
 				setTypeLinkModelImpl.getGroupId(),
-				setTypeLinkModelImpl.getDataSetId(),
 				setTypeLinkModelImpl.getDataCollectionId(),
+				setTypeLinkModelImpl.getDataSetId(),
 				setTypeLinkModelImpl.getDataTypeId()
 			};
 
@@ -5348,8 +5353,8 @@ public class SetTypeLinkPersistenceImpl
 
 			Object[] args = new Object[] {
 				setTypeLinkModelImpl.getOriginalGroupId(),
-				setTypeLinkModelImpl.getOriginalDataSetId(),
 				setTypeLinkModelImpl.getOriginalDataCollectionId(),
+				setTypeLinkModelImpl.getOriginalDataSetId(),
 				setTypeLinkModelImpl.getOriginalDataTypeId()
 			};
 
@@ -5539,7 +5544,7 @@ public class SetTypeLinkPersistenceImpl
 
 			args = new Object[] {
 				setTypeLinkModelImpl.getGroupId(),
-				setTypeLinkModelImpl.getDataTypeId()
+				setTypeLinkModelImpl.getDataCollectionId()
 			};
 
 			finderCache.removeResult(_finderPathCountByCollection_G, args);
@@ -5674,7 +5679,7 @@ public class SetTypeLinkPersistenceImpl
 
 				Object[] args = new Object[] {
 					setTypeLinkModelImpl.getOriginalGroupId(),
-					setTypeLinkModelImpl.getOriginalDataTypeId()
+					setTypeLinkModelImpl.getOriginalDataCollectionId()
 				};
 
 				finderCache.removeResult(_finderPathCountByCollection_G, args);
@@ -5683,7 +5688,7 @@ public class SetTypeLinkPersistenceImpl
 
 				args = new Object[] {
 					setTypeLinkModelImpl.getGroupId(),
-					setTypeLinkModelImpl.getDataTypeId()
+					setTypeLinkModelImpl.getDataCollectionId()
 				};
 
 				finderCache.removeResult(_finderPathCountByCollection_G, args);
@@ -6180,7 +6185,7 @@ public class SetTypeLinkPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCollection_G",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			SetTypeLinkModelImpl.GROUPID_COLUMN_BITMASK |
-			SetTypeLinkModelImpl.DATATYPEID_COLUMN_BITMASK |
+			SetTypeLinkModelImpl.DATACOLLECTIONID_COLUMN_BITMASK |
 			SetTypeLinkModelImpl.ORDER_COLUMN_BITMASK);
 
 		_finderPathCountByCollection_G = new FinderPath(
@@ -6289,8 +6294,8 @@ public class SetTypeLinkPersistenceImpl
 				Long.class.getName(), Long.class.getName()
 			},
 			SetTypeLinkModelImpl.GROUPID_COLUMN_BITMASK |
-			SetTypeLinkModelImpl.DATASETID_COLUMN_BITMASK |
 			SetTypeLinkModelImpl.DATACOLLECTIONID_COLUMN_BITMASK |
+			SetTypeLinkModelImpl.DATASETID_COLUMN_BITMASK |
 			SetTypeLinkModelImpl.DATATYPEID_COLUMN_BITMASK);
 
 		_finderPathCountByCollectionSetType_G = new FinderPath(

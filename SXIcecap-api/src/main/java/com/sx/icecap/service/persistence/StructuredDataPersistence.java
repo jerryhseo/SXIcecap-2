@@ -11916,6 +11916,3382 @@ public interface StructuredDataPersistence
 		long groupId, long userId, long dataTypeId, int status);
 
 	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_F(
+		long groupId, long dataCollectionId, String freezed);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_F(
+		long groupId, long dataCollectionId, String freezed, int start,
+		int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_F(
+		long groupId, long dataCollectionId, String freezed, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_F(
+		long groupId, long dataCollectionId, String freezed, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionId_G_F_First(
+			long groupId, long dataCollectionId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionId_G_F_First(
+		long groupId, long dataCollectionId, String freezed,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionId_G_F_Last(
+			long groupId, long dataCollectionId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionId_G_F_Last(
+		long groupId, long dataCollectionId, String freezed,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionId_G_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_F(
+		long groupId, long dataCollectionId, String freezed);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_F(
+		long groupId, long dataCollectionId, String freezed, int start,
+		int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_F(
+		long groupId, long dataCollectionId, String freezed, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionId_G_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 */
+	public void removeByCollectionId_G_F(
+		long groupId, long dataCollectionId, String freezed);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionId_G_F(
+		long groupId, long dataCollectionId, String freezed);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionId_G_F(
+		long groupId, long dataCollectionId, String freezed);
+
+	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_S_F(
+		long groupId, long dataCollectionId, String freezed, int status);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_S_F(
+		long groupId, long dataCollectionId, String freezed, int status,
+		int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_S_F(
+		long groupId, long dataCollectionId, String freezed, int status,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_S_F(
+		long groupId, long dataCollectionId, String freezed, int status,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionId_G_S_F_First(
+			long groupId, long dataCollectionId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionId_G_S_F_First(
+		long groupId, long dataCollectionId, String freezed, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionId_G_S_F_Last(
+			long groupId, long dataCollectionId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionId_G_S_F_Last(
+		long groupId, long dataCollectionId, String freezed, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionId_G_S_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_S_F(
+		long groupId, long dataCollectionId, String freezed, int status);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_S_F(
+		long groupId, long dataCollectionId, String freezed, int status,
+		int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_S_F(
+		long groupId, long dataCollectionId, String freezed, int status,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionId_G_S_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 */
+	public void removeByCollectionId_G_S_F(
+		long groupId, long dataCollectionId, String freezed, int status);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionId_G_S_F(
+		long groupId, long dataCollectionId, String freezed, int status);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionId_G_S_F(
+		long groupId, long dataCollectionId, String freezed, int status);
+
+	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSet_G_F_First(
+			long groupId, long dataCollectionId, long dataSetId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSet_G_F_First(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSet_G_F_Last(
+			long groupId, long dataCollectionId, long dataSetId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSet_G_F_Last(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionSet_G_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionSet_G_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 */
+	public void removeByCollectionSet_G_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionSet_G_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionSet_G_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed);
+
+	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSet_G_S_F_First(
+			long groupId, long dataCollectionId, long dataSetId, String freezed,
+			int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSet_G_S_F_First(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSet_G_S_F_Last(
+			long groupId, long dataCollectionId, long dataSetId, String freezed,
+			int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSet_G_S_F_Last(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionSet_G_S_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionSet_G_S_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 */
+	public void removeByCollectionSet_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionSet_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionSet_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status);
+
+	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSetType_G_F_First(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSetType_G_F_First(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSetType_G_F_Last(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSetType_G_F_Last(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionSetType_G_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, long dataTypeId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionSetType_G_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, long dataTypeId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 */
+	public void removeByCollectionSetType_G_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionSetType_G_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionSetType_G_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed);
+
+	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSetType_G_S_F_First(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSetType_G_S_F_First(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSetType_G_S_F_Last(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSetType_G_S_F_Last(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionSetType_G_S_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, long dataTypeId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionSetType_G_S_F_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, long dataTypeId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 */
+	public void removeByCollectionSetType_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionSetType_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionSetType_G_S_F(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status);
+
+	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_V(
+		long groupId, long dataCollectionId, boolean verified);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_V(
+		long groupId, long dataCollectionId, boolean verified, int start,
+		int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_V(
+		long groupId, long dataCollectionId, boolean verified, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_V(
+		long groupId, long dataCollectionId, boolean verified, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionId_G_V_First(
+			long groupId, long dataCollectionId, boolean verified,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionId_G_V_First(
+		long groupId, long dataCollectionId, boolean verified,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionId_G_V_Last(
+			long groupId, long dataCollectionId, boolean verified,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionId_G_V_Last(
+		long groupId, long dataCollectionId, boolean verified,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionId_G_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			boolean verified,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_V(
+		long groupId, long dataCollectionId, boolean verified);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_V(
+		long groupId, long dataCollectionId, boolean verified, int start,
+		int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_V(
+		long groupId, long dataCollectionId, boolean verified, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionId_G_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			boolean verified,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and verified = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 */
+	public void removeByCollectionId_G_V(
+		long groupId, long dataCollectionId, boolean verified);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionId_G_V(
+		long groupId, long dataCollectionId, boolean verified);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and verified = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param verified the verified
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionId_G_V(
+		long groupId, long dataCollectionId, boolean verified);
+
+	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionId_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionId_G_S_V_First(
+			long groupId, long dataCollectionId, long dataSetId,
+			boolean verified, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionId_G_S_V_First(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionId_G_S_V_Last(
+			long groupId, long dataCollectionId, long dataSetId,
+			boolean verified, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionId_G_S_V_Last(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionId_G_S_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, boolean verified, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionId_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionId_G_S_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, boolean verified, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 */
+	public void removeByCollectionId_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionId_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and verified = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param verified the verified
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionId_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, boolean verified,
+		int status);
+
+	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSet_G_V_First(
+			long groupId, long dataCollectionId, long dataSetId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSet_G_V_First(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSet_G_V_Last(
+			long groupId, long dataCollectionId, long dataSetId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSet_G_V_Last(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionSet_G_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionSet_G_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 */
+	public void removeByCollectionSet_G_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionSet_G_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionSet_G_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed);
+
+	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSet_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSet_G_S_V_First(
+			long groupId, long dataCollectionId, long dataSetId, String freezed,
+			int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSet_G_S_V_First(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSet_G_S_V_Last(
+			long groupId, long dataCollectionId, long dataSetId, String freezed,
+			int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSet_G_S_V_Last(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionSet_G_S_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSet_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionSet_G_S_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 */
+	public void removeByCollectionSet_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionSet_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionSet_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, String freezed,
+		int status);
+
+	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSetType_G_V_First(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSetType_G_V_First(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSetType_G_V_Last(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSetType_G_V_Last(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionSetType_G_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, long dataTypeId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionSetType_G_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, long dataTypeId, String freezed,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 */
+	public void removeByCollectionSetType_G_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionSetType_G_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionSetType_G_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed);
+
+	/**
+	 * Returns all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status);
+
+	/**
+	 * Returns a range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching structured datas
+	 */
+	public java.util.List<StructuredData> findByCollectionSetType_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSetType_G_S_V_First(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the first structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSetType_G_S_V_First(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data
+	 * @throws NoSuchStructuredDataException if a matching structured data could not be found
+	 */
+	public StructuredData findByCollectionSetType_G_S_V_Last(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns the last structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching structured data, or <code>null</code> if a matching structured data could not be found
+	 */
+	public StructuredData fetchByCollectionSetType_G_S_V_Last(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] findByCollectionSetType_G_S_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, long dataTypeId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Returns all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status);
+
+	/**
+	 * Returns a range of all the structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @return the range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the structured datas that the user has permissions to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StructuredDataModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param start the lower bound of the range of structured datas
+	 * @param end the upper bound of the range of structured datas (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching structured datas that the user has permission to view
+	 */
+	public java.util.List<StructuredData> filterFindByCollectionSetType_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+			orderByComparator);
+
+	/**
+	 * Returns the structured datas before and after the current structured data in the ordered set of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param structuredDataId the primary key of the current structured data
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next structured data
+	 * @throws NoSuchStructuredDataException if a structured data with the primary key could not be found
+	 */
+	public StructuredData[] filterFindByCollectionSetType_G_S_V_PrevAndNext(
+			long structuredDataId, long groupId, long dataCollectionId,
+			long dataSetId, long dataTypeId, String freezed, int status,
+			com.liferay.portal.kernel.util.OrderByComparator<StructuredData>
+				orderByComparator)
+		throws NoSuchStructuredDataException;
+
+	/**
+	 * Removes all the structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 */
+	public void removeByCollectionSetType_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status);
+
+	/**
+	 * Returns the number of structured datas where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the number of matching structured datas
+	 */
+	public int countByCollectionSetType_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status);
+
+	/**
+	 * Returns the number of structured datas that the user has permission to view where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; and freezed = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
+	 * @param dataTypeId the data type ID
+	 * @param freezed the freezed
+	 * @param status the status
+	 * @return the number of matching structured datas that the user has permission to view
+	 */
+	public int filterCountByCollectionSetType_G_S_V(
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
+		String freezed, int status);
+
+	/**
 	 * Caches the structured data in the entity cache if it is enabled.
 	 *
 	 * @param structuredData the structured data

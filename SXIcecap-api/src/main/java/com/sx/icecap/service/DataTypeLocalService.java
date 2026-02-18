@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import com.sx.icecap.exception.NoSuchDataTypeException;
 import com.sx.icecap.model.DataType;
 
 import java.io.Serializable;
@@ -86,23 +85,16 @@ public interface DataTypeLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public DataType addDataType(DataType dataType);
 
-	public JSONObject addDataType(
-			String dataTypeCode, String dataTypeVersion, String extension,
-			Map<Locale, String> displayNameMap,
-			Map<Locale, String> descriptionMap, Map<Locale, String> tooltipMap,
-			int status, JSONObject jsonStructureLink, long[] visualizers,
-			ServiceContext dataTypeSC)
-		throws PortalException;
-
 	@Indexable(type = IndexableType.REINDEX)
 	public DataType addDataType(
 			String dataTypeCode, String dataTypeVersion, String extension,
 			Map<Locale, String> displayNameMap,
-			Map<Locale, String> descriptionMap, Map<Locale, String> tooltipMap,
-			int status, ServiceContext sc)
+			Map<Locale, String> descriptionMap, int status, ServiceContext sc)
 		throws PortalException;
 
 	public boolean checkDataTypeCodeUnique(String paramCode);
+
+	public boolean checkDuplicated(String dataTypeCode, String dataTypeVersion);
 
 	public int countAllDataTypes();
 
@@ -280,6 +272,12 @@ public interface DataTypeLocalService
 			String paramVersion, ServiceContext sc, boolean createWhenNoExist)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public String getDataStructure(long dataTypeId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONObject getDataStructureJSON(long dataTypeId);
+
 	/**
 	 * Returns the data type with the primary key.
 	 *
@@ -291,8 +289,7 @@ public interface DataTypeLocalService
 	public DataType getDataType(long dataTypeId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DataType getDataType(String dataTypeCode, String dataTypeVersion)
-		throws NoSuchDataTypeException;
+	public DataType getDataType(String dataTypeCode, String dataTypeVersion);
 
 	/**
 	 * Returns the data type matching the UUID and group.
@@ -450,8 +447,7 @@ public interface DataTypeLocalService
 		String orderCol, String orderType);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public String getDisplayName(long dataTypeId, Locale locale)
-		throws NoSuchDataTypeException;
+	public String getDisplayName(long dataTypeId, Locale locale);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONArray getDLFolderFiles(long repositoryId, long folderId);
@@ -487,10 +483,20 @@ public interface DataTypeLocalService
 	public OrderByComparator<DataType> getSortOrderComparator(
 		String orderByCol, String orderByType);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasDataStructure(long dataTypeId);
+
+	public void importDataStructure(long dataTypeId, long dataStructureId);
+
 	@Indexable(type = IndexableType.DELETE)
 	public DataType removeDataType(long dataTypeId) throws PortalException;
 
 	public void removeDataTypes(long[] dataTypeIds) throws PortalException;
+
+	public JSONArray removeDataTypes(String[] dataTypeIds)
+		throws PortalException;
+
+	public void setDataTypeStructure(long dataTypeId, String dataStructure);
 
 	/**
 	 * Updates the data type in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -509,8 +515,7 @@ public interface DataTypeLocalService
 	public DataType updateDataType(
 			long dataTypeId, String dataTypeCode, String dataTypeVersion,
 			String extension, Map<Locale, String> displayNameMap,
-			Map<Locale, String> descriptionMap, Map<Locale, String> tooltipMap,
-			int status, ServiceContext sc)
+			Map<Locale, String> descriptionMap, int status, ServiceContext sc)
 		throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)

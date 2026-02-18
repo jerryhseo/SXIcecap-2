@@ -90,7 +90,7 @@ public class StructuredDataModelImpl
 		{"dataCollectionId", Types.BIGINT}, {"dataSetId", Types.BIGINT},
 		{"dataTypeId", Types.BIGINT}, {"multiple", Types.BOOLEAN},
 		{"startIndex", Types.BIGINT}, {"count", Types.INTEGER},
-		{"freezed", Types.BOOLEAN}, {"freezedUserId", Types.BIGINT},
+		{"freezed", Types.VARCHAR}, {"freezedUserId", Types.BIGINT},
 		{"freezedUserName", Types.VARCHAR}, {"freezedDate", Types.TIMESTAMP},
 		{"verified", Types.BOOLEAN}, {"verifiedUserId", Types.BIGINT},
 		{"verifiedUserName", Types.VARCHAR}, {"verifiedDate", Types.TIMESTAMP},
@@ -119,7 +119,7 @@ public class StructuredDataModelImpl
 		TABLE_COLUMNS_MAP.put("multiple", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("startIndex", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("count", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("freezed", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("freezed", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("freezedUserId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("freezedUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("freezedDate", Types.TIMESTAMP);
@@ -131,7 +131,7 @@ public class StructuredDataModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SX_ICECAP_StructuredData (uuid_ VARCHAR(75) null,structuredDataId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionId LONG,dataSetId LONG,dataTypeId LONG,multiple BOOLEAN,startIndex LONG,count INTEGER,freezed BOOLEAN,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null,data_ TEXT null)";
+		"create table SX_ICECAP_StructuredData (uuid_ VARCHAR(75) null,structuredDataId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,dataCollectionId LONG,dataSetId LONG,dataTypeId LONG,multiple BOOLEAN,startIndex LONG,count INTEGER,freezed VARCHAR(75) null,freezedUserId LONG,freezedUserName VARCHAR(75) null,freezedDate DATE null,verified BOOLEAN,verifiedUserId LONG,verifiedUserName VARCHAR(75) null,verifiedDate DATE null,data_ TEXT null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SX_ICECAP_StructuredData";
@@ -156,15 +156,19 @@ public class StructuredDataModelImpl
 
 	public static final long DATATYPEID_COLUMN_BITMASK = 8L;
 
-	public static final long GROUPID_COLUMN_BITMASK = 16L;
+	public static final long FREEZED_COLUMN_BITMASK = 16L;
 
-	public static final long STATUS_COLUMN_BITMASK = 32L;
+	public static final long GROUPID_COLUMN_BITMASK = 32L;
 
-	public static final long USERID_COLUMN_BITMASK = 64L;
+	public static final long STATUS_COLUMN_BITMASK = 64L;
 
-	public static final long UUID_COLUMN_BITMASK = 128L;
+	public static final long USERID_COLUMN_BITMASK = 128L;
 
-	public static final long STRUCTUREDDATAID_COLUMN_BITMASK = 256L;
+	public static final long UUID_COLUMN_BITMASK = 256L;
+
+	public static final long VERIFIED_COLUMN_BITMASK = 512L;
+
+	public static final long STRUCTUREDDATAID_COLUMN_BITMASK = 1024L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -205,7 +209,7 @@ public class StructuredDataModelImpl
 		model.setMultiple(soapModel.isMultiple());
 		model.setStartIndex(soapModel.getStartIndex());
 		model.setCount(soapModel.getCount());
-		model.setFreezed(soapModel.isFreezed());
+		model.setFreezed(soapModel.getFreezed());
 		model.setFreezedUserId(soapModel.getFreezedUserId());
 		model.setFreezedUserName(soapModel.getFreezedUserName());
 		model.setFreezedDate(soapModel.getFreezedDate());
@@ -428,7 +432,7 @@ public class StructuredDataModelImpl
 		attributeGetterFunctions.put("freezed", StructuredData::getFreezed);
 		attributeSetterBiConsumers.put(
 			"freezed",
-			(BiConsumer<StructuredData, Boolean>)StructuredData::setFreezed);
+			(BiConsumer<StructuredData, String>)StructuredData::setFreezed);
 		attributeGetterFunctions.put(
 			"freezedUserId", StructuredData::getFreezedUserId);
 		attributeSetterBiConsumers.put(
@@ -830,19 +834,28 @@ public class StructuredDataModelImpl
 
 	@JSON
 	@Override
-	public boolean getFreezed() {
-		return _freezed;
+	public String getFreezed() {
+		if (_freezed == null) {
+			return "";
+		}
+		else {
+			return _freezed;
+		}
 	}
 
-	@JSON
 	@Override
-	public boolean isFreezed() {
-		return _freezed;
-	}
+	public void setFreezed(String freezed) {
+		_columnBitmask |= FREEZED_COLUMN_BITMASK;
 
-	@Override
-	public void setFreezed(boolean freezed) {
+		if (_originalFreezed == null) {
+			_originalFreezed = _freezed;
+		}
+
 		_freezed = freezed;
+	}
+
+	public String getOriginalFreezed() {
+		return GetterUtil.getString(_originalFreezed);
 	}
 
 	@JSON
@@ -913,7 +926,19 @@ public class StructuredDataModelImpl
 
 	@Override
 	public void setVerified(boolean verified) {
+		_columnBitmask |= VERIFIED_COLUMN_BITMASK;
+
+		if (!_setOriginalVerified) {
+			_setOriginalVerified = true;
+
+			_originalVerified = _verified;
+		}
+
 		_verified = verified;
+	}
+
+	public boolean getOriginalVerified() {
+		return _originalVerified;
 	}
 
 	@JSON
@@ -1271,7 +1296,7 @@ public class StructuredDataModelImpl
 		structuredDataImpl.setMultiple(isMultiple());
 		structuredDataImpl.setStartIndex(getStartIndex());
 		structuredDataImpl.setCount(getCount());
-		structuredDataImpl.setFreezed(isFreezed());
+		structuredDataImpl.setFreezed(getFreezed());
 		structuredDataImpl.setFreezedUserId(getFreezedUserId());
 		structuredDataImpl.setFreezedUserName(getFreezedUserName());
 		structuredDataImpl.setFreezedDate(getFreezedDate());
@@ -1371,6 +1396,12 @@ public class StructuredDataModelImpl
 
 		_setOriginalDataTypeId = false;
 
+		_originalFreezed = _freezed;
+
+		_originalVerified = _verified;
+
+		_setOriginalVerified = false;
+
 		_columnBitmask = 0;
 	}
 
@@ -1454,7 +1485,13 @@ public class StructuredDataModelImpl
 
 		structuredDataCacheModel.count = getCount();
 
-		structuredDataCacheModel.freezed = isFreezed();
+		structuredDataCacheModel.freezed = getFreezed();
+
+		String freezed = structuredDataCacheModel.freezed;
+
+		if ((freezed != null) && (freezed.length() == 0)) {
+			structuredDataCacheModel.freezed = null;
+		}
 
 		structuredDataCacheModel.freezedUserId = getFreezedUserId();
 
@@ -1633,11 +1670,14 @@ public class StructuredDataModelImpl
 	private boolean _multiple;
 	private long _startIndex;
 	private int _count;
-	private boolean _freezed;
+	private String _freezed;
+	private String _originalFreezed;
 	private long _freezedUserId;
 	private String _freezedUserName;
 	private Date _freezedDate;
 	private boolean _verified;
+	private boolean _originalVerified;
+	private boolean _setOriginalVerified;
 	private long _verifiedUserId;
 	private String _verifiedUserName;
 	private Date _verifiedDate;

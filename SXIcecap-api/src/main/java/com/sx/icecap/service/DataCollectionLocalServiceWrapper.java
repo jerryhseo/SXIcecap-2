@@ -284,14 +284,6 @@ public class DataCollectionLocalServiceWrapper
 		return _dataCollectionLocalService.getAllDataCollection(start, end);
 	}
 
-	@Override
-	public com.liferay.portal.kernel.json.JSONArray getAssociatedDataSets(
-		long dataCollectionId) {
-
-		return _dataCollectionLocalService.getAssociatedDataSets(
-			dataCollectionId);
-	}
-
 	/**
 	 * Returns the data collection with the primary key.
 	 *

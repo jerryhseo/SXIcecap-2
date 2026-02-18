@@ -18,20 +18,20 @@ import com.liferay.portal.kernel.exception.NoSuchModelException;
 /**
  * @author Brian Wing Shun Chan
  */
-public class NoSuchTypeStructureLinkException extends NoSuchModelException {
+public class NoSuchDataTypeStructureException extends NoSuchModelException {
 
-	public NoSuchTypeStructureLinkException() {
+	public NoSuchDataTypeStructureException() {
 	}
 
-	public NoSuchTypeStructureLinkException(String msg) {
+	public NoSuchDataTypeStructureException(String msg) {
 		super(msg);
 	}
 
-	public NoSuchTypeStructureLinkException(String msg, Throwable throwable) {
+	public NoSuchDataTypeStructureException(String msg, Throwable throwable) {
 		super(msg, throwable);
 	}
 
-	public NoSuchTypeStructureLinkException(Throwable throwable) {
+	public NoSuchDataTypeStructureException(Throwable throwable) {
 		super(throwable);
 	}
 

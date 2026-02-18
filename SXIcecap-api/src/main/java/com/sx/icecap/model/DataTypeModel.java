@@ -569,104 +569,76 @@ public interface DataTypeModel
 		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
-	 * Returns the tooltip of this data type.
+	 * Returns the input status of this data type.
 	 *
-	 * @return the tooltip of this data type
+	 * @return the input status of this data type
 	 */
-	public String getTooltip();
+	public boolean getInputStatus();
 
 	/**
-	 * Returns the localized tooltip of this data type in the language. Uses the default language if no localization exists for the requested language.
+	 * Returns <code>true</code> if this data type is input status.
 	 *
-	 * @param locale the locale of the language
-	 * @return the localized tooltip of this data type
+	 * @return <code>true</code> if this data type is input status; <code>false</code> otherwise
+	 */
+	public boolean isInputStatus();
+
+	/**
+	 * Sets whether this data type is input status.
+	 *
+	 * @param inputStatus the input status of this data type
+	 */
+	public void setInputStatus(boolean inputStatus);
+
+	/**
+	 * Returns the jump to of this data type.
+	 *
+	 * @return the jump to of this data type
+	 */
+	public boolean getJumpTo();
+
+	/**
+	 * Returns <code>true</code> if this data type is jump to.
+	 *
+	 * @return <code>true</code> if this data type is jump to; <code>false</code> otherwise
+	 */
+	public boolean isJumpTo();
+
+	/**
+	 * Sets whether this data type is jump to.
+	 *
+	 * @param jumpTo the jump to of this data type
+	 */
+	public void setJumpTo(boolean jumpTo);
+
+	/**
+	 * Returns the verified of this data type.
+	 *
+	 * @return the verified of this data type
 	 */
 	@AutoEscape
-	public String getTooltip(Locale locale);
+	public String getVerified();
 
 	/**
-	 * Returns the localized tooltip of this data type in the language, optionally using the default language if no localization exists for the requested language.
+	 * Sets the verified of this data type.
 	 *
-	 * @param locale the local of the language
-	 * @param useDefault whether to use the default language if no localization exists for the requested language
-	 * @return the localized tooltip of this data type. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 * @param verified the verified of this data type
+	 */
+	public void setVerified(String verified);
+
+	/**
+	 * Returns the freezed of this data type.
+	 *
+	 * @return the freezed of this data type
 	 */
 	@AutoEscape
-	public String getTooltip(Locale locale, boolean useDefault);
+	public String getFreezed();
 
 	/**
-	 * Returns the localized tooltip of this data type in the language. Uses the default language if no localization exists for the requested language.
+	 * Sets the freezed of this data type.
 	 *
-	 * @param languageId the ID of the language
-	 * @return the localized tooltip of this data type
+	 * @param freezed the freezed of this data type
 	 */
-	@AutoEscape
-	public String getTooltip(String languageId);
-
-	/**
-	 * Returns the localized tooltip of this data type in the language, optionally using the default language if no localization exists for the requested language.
-	 *
-	 * @param languageId the ID of the language
-	 * @param useDefault whether to use the default language if no localization exists for the requested language
-	 * @return the localized tooltip of this data type
-	 */
-	@AutoEscape
-	public String getTooltip(String languageId, boolean useDefault);
-
-	@AutoEscape
-	public String getTooltipCurrentLanguageId();
-
-	@AutoEscape
-	public String getTooltipCurrentValue();
-
-	/**
-	 * Returns a map of the locales and localized tooltips of this data type.
-	 *
-	 * @return the locales and localized tooltips of this data type
-	 */
-	public Map<Locale, String> getTooltipMap();
-
-	/**
-	 * Sets the tooltip of this data type.
-	 *
-	 * @param tooltip the tooltip of this data type
-	 */
-	public void setTooltip(String tooltip);
-
-	/**
-	 * Sets the localized tooltip of this data type in the language.
-	 *
-	 * @param tooltip the localized tooltip of this data type
-	 * @param locale the locale of the language
-	 */
-	public void setTooltip(String tooltip, Locale locale);
-
-	/**
-	 * Sets the localized tooltip of this data type in the language, and sets the default locale.
-	 *
-	 * @param tooltip the localized tooltip of this data type
-	 * @param locale the locale of the language
-	 * @param defaultLocale the default locale
-	 */
-	public void setTooltip(String tooltip, Locale locale, Locale defaultLocale);
-
-	public void setTooltipCurrentLanguageId(String languageId);
-
-	/**
-	 * Sets the localized tooltips of this data type from the map of locales and localized tooltips.
-	 *
-	 * @param tooltipMap the locales and localized tooltips of this data type
-	 */
-	public void setTooltipMap(Map<Locale, String> tooltipMap);
-
-	/**
-	 * Sets the localized tooltips of this data type from the map of locales and localized tooltips, and sets the default locale.
-	 *
-	 * @param tooltipMap the locales and localized tooltips of this data type
-	 * @param defaultLocale the default locale
-	 */
-	public void setTooltipMap(
-		Map<Locale, String> tooltipMap, Locale defaultLocale);
+	public void setFreezed(String freezed);
 
 	/**
 	 * Returns the trash entry created when this data type was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this data type.

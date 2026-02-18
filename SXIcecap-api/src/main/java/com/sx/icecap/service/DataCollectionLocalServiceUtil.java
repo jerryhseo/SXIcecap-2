@@ -257,12 +257,6 @@ public class DataCollectionLocalServiceUtil {
 		return getService().getAllDataCollection(start, end);
 	}
 
-	public static com.liferay.portal.kernel.json.JSONArray
-		getAssociatedDataSets(long dataCollectionId) {
-
-		return getService().getAssociatedDataSets(dataCollectionId);
-	}
-
 	/**
 	 * Returns the data collection with the primary key.
 	 *

@@ -21,28 +21,28 @@ import com.liferay.portal.kernel.util.Accessor;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * The extended model interface for the TypeStructureLink service. Represents a row in the &quot;SX_ICECAP_TypeStructureLink&quot; database table, with each column mapped to a property of this class.
+ * The extended model interface for the DataTypeStructure service. Represents a row in the &quot;SX_ICECAP_DataTypeStructure&quot; database table, with each column mapped to a property of this class.
  *
  * @author Brian Wing Shun Chan
- * @see TypeStructureLinkModel
+ * @see DataTypeStructureModel
  * @generated
  */
-@ImplementationClassName("com.sx.icecap.model.impl.TypeStructureLinkImpl")
+@ImplementationClassName("com.sx.icecap.model.impl.DataTypeStructureImpl")
 @ProviderType
-public interface TypeStructureLink
-	extends PersistedModel, TypeStructureLinkModel {
+public interface DataTypeStructure
+	extends DataTypeStructureModel, PersistedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.sx.icecap.model.impl.TypeStructureLinkImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.sx.icecap.model.impl.DataTypeStructureImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<TypeStructureLink, Long>
-		DATA_TYPE_ID_ACCESSOR = new Accessor<TypeStructureLink, Long>() {
+	public static final Accessor<DataTypeStructure, Long>
+		DATA_TYPE_ID_ACCESSOR = new Accessor<DataTypeStructure, Long>() {
 
 			@Override
-			public Long get(TypeStructureLink typeStructureLink) {
-				return typeStructureLink.getDataTypeId();
+			public Long get(DataTypeStructure dataTypeStructure) {
+				return dataTypeStructure.getDataTypeId();
 			}
 
 			@Override
@@ -51,12 +51,10 @@ public interface TypeStructureLink
 			}
 
 			@Override
-			public Class<TypeStructureLink> getTypeClass() {
-				return TypeStructureLink.class;
+			public Class<DataTypeStructure> getTypeClass() {
+				return DataTypeStructure.class;
 			}
 
 		};
-
-	public com.liferay.portal.kernel.json.JSONObject toJSON();
 
 }

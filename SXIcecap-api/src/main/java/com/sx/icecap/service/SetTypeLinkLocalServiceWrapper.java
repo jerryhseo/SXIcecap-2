@@ -65,6 +65,14 @@ public class SetTypeLinkLocalServiceWrapper
 	}
 
 	@Override
+	public int countSetTypeLinkListByCollection(
+		long groupId, long dataCollectionId) {
+
+		return _setTypeLinkLocalService.countSetTypeLinkListByCollection(
+			groupId, dataCollectionId);
+	}
+
+	@Override
 	public int countSetTypeLinkListByCollectionSet(
 		long groupId, long collectionId, long dataSetId) {
 
@@ -315,6 +323,23 @@ public class SetTypeLinkLocalServiceWrapper
 
 		return _setTypeLinkLocalService.getSetTypeLink(
 			groupId, dataCollectionId, dataSetId, dataTypeId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.SetTypeLink>
+		getSetTypeLinkListByCollection(long groupId, long dataCollectionId) {
+
+		return _setTypeLinkLocalService.getSetTypeLinkListByCollection(
+			groupId, dataCollectionId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.SetTypeLink>
+		getSetTypeLinkListByCollection(
+			long groupId, long dataCollectionId, int start, int end) {
+
+		return _setTypeLinkLocalService.getSetTypeLinkListByCollection(
+			groupId, dataCollectionId, start, end);
 	}
 
 	@Override

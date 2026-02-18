@@ -59,7 +59,7 @@ create unique index IX_93F6A5C7 on SX_ICECAP_Parameter (uuid_[$COLUMN_LENGTH:75$
 create index IX_587A7195 on SX_ICECAP_SetTypeLink (dataCollectionId);
 create index IX_2CA2D578 on SX_ICECAP_SetTypeLink (dataSetId, dataTypeId);
 create index IX_26BAA3B1 on SX_ICECAP_SetTypeLink (dataTypeId);
-create index IX_770CE9A0 on SX_ICECAP_SetTypeLink (groupId, dataCollectionId, dataSetId);
+create index IX_3C6A3E93 on SX_ICECAP_SetTypeLink (groupId, dataCollectionId, dataSetId, dataTypeId);
 create index IX_52F95DE1 on SX_ICECAP_SetTypeLink (groupId, dataSetId, dataCollectionId, dataTypeId);
 create index IX_2658619F on SX_ICECAP_SetTypeLink (groupId, dataTypeId);
 
@@ -94,9 +94,14 @@ create index IX_6E43F39E on SX_ICECAP_StructuredData (dataTypeId, groupId, statu
 create index IX_82E639D8 on SX_ICECAP_StructuredData (dataTypeId, groupId, userId, status);
 create index IX_F0EB8D18 on SX_ICECAP_StructuredData (dataTypeId, status);
 create index IX_F35AF8BA on SX_ICECAP_StructuredData (dataTypeId, userId, status, dataCollectionId, dataSetId);
+create index IX_E392C2AF on SX_ICECAP_StructuredData (groupId, dataCollectionId, dataSetId, dataTypeId, freezed[$COLUMN_LENGTH:75$], status);
 create index IX_C3F7D3A on SX_ICECAP_StructuredData (groupId, dataCollectionId, dataSetId, dataTypeId, status);
+create index IX_DB8B49C2 on SX_ICECAP_StructuredData (groupId, dataCollectionId, dataSetId, freezed[$COLUMN_LENGTH:75$], status);
 create index IX_B04624C7 on SX_ICECAP_StructuredData (groupId, dataCollectionId, dataSetId, status);
+create index IX_16A12B43 on SX_ICECAP_StructuredData (groupId, dataCollectionId, dataSetId, verified, status);
+create index IX_CA1E9C61 on SX_ICECAP_StructuredData (groupId, dataCollectionId, freezed[$COLUMN_LENGTH:75$], status);
 create index IX_9C909348 on SX_ICECAP_StructuredData (groupId, dataCollectionId, status);
+create index IX_6D986B9E on SX_ICECAP_StructuredData (groupId, dataCollectionId, verified);
 create index IX_16B1ACB1 on SX_ICECAP_StructuredData (groupId, dataSetId, dataTypeId, status);
 create index IX_86A28EBE on SX_ICECAP_StructuredData (groupId, dataSetId, status);
 create index IX_4B8C0724 on SX_ICECAP_StructuredData (groupId, dataTypeId, status);
@@ -126,19 +131,6 @@ create index IX_544B37 on SX_ICECAP_StructuredData (userId, status, dataSetId, d
 create index IX_F0794F52 on SX_ICECAP_StructuredData (userId, status, dataTypeId);
 create index IX_9A33B1F3 on SX_ICECAP_StructuredData (uuid_[$COLUMN_LENGTH:75$], companyId);
 create unique index IX_B0D61935 on SX_ICECAP_StructuredData (uuid_[$COLUMN_LENGTH:75$], groupId);
-
-create index IX_D471D059 on SX_ICECAP_TypeStructureLink (dataStructureId);
-create index IX_7804FDE2 on SX_ICECAP_TypeStructureLink (freezed);
-create index IX_B7D35205 on SX_ICECAP_TypeStructureLink (groupId, dataStructureId);
-create index IX_B5A8EB8E on SX_ICECAP_TypeStructureLink (groupId, freezed);
-create index IX_3D41B40B on SX_ICECAP_TypeStructureLink (groupId, userId, dataStructureId);
-create index IX_95C4B394 on SX_ICECAP_TypeStructureLink (groupId, userId, freezed);
-create index IX_D81023A5 on SX_ICECAP_TypeStructureLink (groupId, userId, verified);
-create index IX_B4B2EAEB on SX_ICECAP_TypeStructureLink (groupId, verified);
-create index IX_30F69E5F on SX_ICECAP_TypeStructureLink (userId, dataStructureId);
-create index IX_B26331E8 on SX_ICECAP_TypeStructureLink (userId, freezed);
-create index IX_4F416FD1 on SX_ICECAP_TypeStructureLink (userId, verified);
-create index IX_3DD92317 on SX_ICECAP_TypeStructureLink (verified);
 
 create index IX_570CBAB6 on SX_ICECAP_TypeVisualizerLink (dataTypeId, visualizerId);
 create index IX_2BC9FC03 on SX_ICECAP_TypeVisualizerLink (visualizerId);

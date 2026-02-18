@@ -20,4 +20,5 @@ public class WebKey {
 	public static final String DATATYPE_LIST = "dataTypeList";	
 	public static final String DATATYPE_COUNT = "dataTypeCount";	
 	public static final String LOAD_TYPE = "loadType";	
+	public static final String TITLE_BAR = "titleBar";	
 }

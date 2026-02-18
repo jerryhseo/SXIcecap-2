@@ -162,6 +162,16 @@ public class SetTypeLinkLocalServiceImpl
 		return setTypeLinkPersistence.countAll();
 	}
 	
+	public List<SetTypeLink> getSetTypeLinkListByCollection( long groupId, long dataCollectionId ){
+		return setTypeLinkPersistence.findByCollection_G(groupId, dataCollectionId);
+	}
+	public List<SetTypeLink> getSetTypeLinkListByCollection(long groupId, long dataCollectionId, int start, int end){
+		return setTypeLinkPersistence.findByCollection_G(groupId, dataCollectionId, start, end);
+	}
+	public int countSetTypeLinkListByCollection( long groupId, long dataCollectionId ){
+		return setTypeLinkPersistence.countByCollection_G(groupId, dataCollectionId);
+	}
+	
 	public List<SetTypeLink> getSetTypeLinkListBySet( long dataSetId ){
 		return setTypeLinkPersistence.findByDataSetId(dataSetId);
 	}

@@ -14,8 +14,10 @@
 
 package com.sx.icecap.model.impl;
 
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Locale;
 import java.util.Map;
@@ -35,9 +37,6 @@ public class DataTypeImpl extends DataTypeBaseImpl {
 		localizedObj = _mapToJSON( this.getDescriptionMap() );
 		dataType.put("description", localizedObj);
 		
-		localizedObj = _mapToJSON( this.getTooltipMap() );
-		dataType.put("tooltip", localizedObj);
-		
 		return dataType;
 	}
 	
@@ -46,7 +45,6 @@ public class DataTypeImpl extends DataTypeBaseImpl {
 		
 		dataType.put("displayName", this.getDisplayName(locale));
 		dataType.put("description", this.getDescription(locale));
-		dataType.put("tooltip", this.getTooltip(locale));
 		
 		return dataType;
 	}
@@ -66,6 +64,20 @@ public class DataTypeImpl extends DataTypeBaseImpl {
 		dataType.put("dataTypeCode", this.getDataTypeCode());
 		dataType.put("dataTypeVersion", this.getDataTypeVersion());
 		dataType.put("extension", this.getExtension());
+
+		try {
+			String verified = this.getVerified();
+			if( Validator.isNotNull(verified)) {
+				dataType.put("verified", JSONFactoryUtil.createJSONObject(verified));
+			}
+			
+			String freezed = this.getFreezed();
+			if( Validator.isNotNull(freezed)) {
+				dataType.put("freezed", JSONFactoryUtil.createJSONObject(freezed));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		
 		return dataType;
 	}

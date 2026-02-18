@@ -65,6 +65,14 @@ public class DataStructureLocalServiceWrapper
 	}
 
 	@Override
+	public boolean checkDuplicated(
+		String dataStructureCode, String dataStructureVersion) {
+
+		return _dataStructureLocalService.checkDuplicated(
+			dataStructureCode, dataStructureVersion);
+	}
+
+	@Override
 	public int countAllDataStructures() {
 		return _dataStructureLocalService.countAllDataStructures();
 	}

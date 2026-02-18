@@ -73,6 +73,13 @@ public class DataStructureLocalServiceUtil {
 			descriptionMap, structure, status, sc);
 	}
 
+	public static boolean checkDuplicated(
+		String dataStructureCode, String dataStructureVersion) {
+
+		return getService().checkDuplicated(
+			dataStructureCode, dataStructureVersion);
+	}
+
 	public static int countAllDataStructures() {
 		return getService().countAllDataStructures();
 	}

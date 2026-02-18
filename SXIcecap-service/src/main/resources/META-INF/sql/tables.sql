@@ -138,7 +138,15 @@ create table SX_ICECAP_DataType (
 	extension VARCHAR(75) null,
 	sampleFileId LONG,
 	description STRING null,
-	tooltip STRING null
+	inputStatus BOOLEAN,
+	jumpTo BOOLEAN,
+	verified VARCHAR(75) null,
+	freezed VARCHAR(75) null
+);
+
+create table SX_ICECAP_DataTypeStructure (
+	dataTypeId LONG not null primary key,
+	structure TEXT null
 );
 
 create table SX_ICECAP_Parameter (
@@ -213,7 +221,7 @@ create table SX_ICECAP_StructuredData (
 	multiple BOOLEAN,
 	startIndex LONG,
 	count INTEGER,
-	freezed BOOLEAN,
+	freezed VARCHAR(75) null,
 	freezedUserId LONG,
 	freezedUserName VARCHAR(75) null,
 	freezedDate DATE null,
@@ -222,26 +230,6 @@ create table SX_ICECAP_StructuredData (
 	verifiedUserName VARCHAR(75) null,
 	verifiedDate DATE null,
 	data_ TEXT null
-);
-
-create table SX_ICECAP_TypeStructureLink (
-	dataTypeId LONG not null primary key,
-	userId LONG,
-	groupId LONG,
-	dataStructureId LONG,
-	commentable BOOLEAN,
-	verifiable BOOLEAN,
-	freezable BOOLEAN,
-	freezed BOOLEAN,
-	freezedUserId LONG,
-	freezedUserName VARCHAR(75) null,
-	freezedDate DATE null,
-	verified BOOLEAN,
-	verifiedUserId LONG,
-	verifiedUserName VARCHAR(75) null,
-	verifiedDate DATE null,
-	inputStatus BOOLEAN,
-	jumpTo BOOLEAN
 );
 
 create table SX_ICECAP_TypeVisualizerLink (

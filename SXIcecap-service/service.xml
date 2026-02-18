@@ -287,9 +287,12 @@
 		<column name="extension" type="String"></column>
 		<column name="sampleFileId" type="long"></column>
 		<column name="description" type="String" localized="true"></column>
-		<column name="tooltip" type="String" localized="true"></column>
 		
 		<!-- Finders -->
+        <column name="inputStatus" type="boolean"></column>
+        <column name="jumpTo" type="boolean"></column>
+        <column name="verified" type="String"></column>
+        <column name="freezed" type="String"></column>
 		
 		<finder name="GroupId" return-type="Collection">
 			<finder-column name="groupId"></finder-column>
@@ -448,7 +451,7 @@
         <column name="multiple" type="boolean"></column>
         <column name="startIndex" type="long"></column>
         <column name="count" type="int"></column>
-        <column name="freezed" type="boolean"></column>
+        <column name="freezed" type="String"></column>
         <column name="freezedUserId" type="long"></column>
         <column name="freezedUserName" type="String"></column>
         <column name="freezedDate" type="Date"></column>
@@ -747,6 +750,86 @@
             <finder-column name="dataTypeId"></finder-column>
             <finder-column name="status"></finder-column>
 		</finder>
+		
+        <finder name="CollectionId_G_F" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+        </finder>
+        <finder name="CollectionId_G_S_F" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
+        <finder name="CollectionSet_G_F" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+        </finder>
+        <finder name="CollectionSet_G_S_F" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
+        <finder name="CollectionSetType_G_F" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+        </finder>
+        <finder name="CollectionSetType_G_S_F" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
+        <finder name="CollectionId_G_V" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="verified"></finder-column>
+        </finder>
+        <finder name="CollectionId_G_S_V" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="verified"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
+		<finder name="CollectionSet_G_V" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+        </finder>
+        <finder name="CollectionSet_G_S_V" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
+        <finder name="CollectionSetType_G_V" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+        </finder>
+        <finder name="CollectionSetType_G_S_V" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
+            <finder-column name="dataSetId"></finder-column>
+            <finder-column name="dataTypeId"></finder-column>
+            <finder-column name="freezed"></finder-column>
+            <finder-column name="status"></finder-column>
+        </finder>
         
         <reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
 		<reference entity="AssetLink" package-path="com.liferay.portlet.asset" />
@@ -911,9 +994,11 @@
 		<column name="verifiedUserId" type="long"></column>
         <column name="verifiedUserName" type="String"></column>
 		<column name="verifiedDate" type="Date"></column>
+		
         <order by="asc">
             <order-column name="order" order-by="asc"></order-column>
         </order>
+        
         <finder name="GroupId" return-type="Collection">
             <finder-column name="groupId"></finder-column>
         </finder>
@@ -983,7 +1068,7 @@
 		</finder>
         <finder name="Collection_G" return-type="Collection">
 			<finder-column name="groupId" ></finder-column>
-			<finder-column name="dataTypeId" ></finder-column>
+			<finder-column name="dataCollectionId" ></finder-column>
 		</finder>
         <finder name="Set_G" return-type="Collection">
 			<finder-column name="groupId" ></finder-column>
@@ -1005,95 +1090,17 @@
         </finder>
         <finder name="CollectionSetType_G" return-type="SetTypeLink">
         	<finder-column name="groupId" ></finder-column>
+            <finder-column name="dataCollectionId"></finder-column>
             <finder-column name="dataSetId"></finder-column>
-            <finder-column name="dataCollectionId" ></finder-column>
             <finder-column name="dataTypeId"></finder-column>
         </finder>
 	</entity>
 
-	<entity name="TypeStructureLink" local-service="true" uuid="false"
+	<entity name="DataTypeStructure" local-service="true" uuid="false"
 		remote-service="false">
 		<column name="dataTypeId" primary="true" type="long"></column>
 		
-		<column name="userId"  type="long"></column>
-		<column name="groupId"  type="long"></column>
-		
-		<column name="dataStructureId" type="long"></column>
-		<column name="commentable" type="boolean"></column>
-		<column name="verifiable" type="boolean"></column>
-		<column name="freezable" type="boolean"></column>
-		<column name="freezed" type="boolean"></column>
-		<column name="freezedUserId" type="long"></column>
-        <column name="freezedUserName" type="String"></column>
-		<column name="freezedDate" type="Date"></column>
-		<column name="verified" type="boolean"></column>
-		<column name="verifiedUserId" type="long"></column>
-        <column name="verifiedUserName" type="String"></column>
-		<column name="verifiedDate" type="Date"></column>
-        <column name="inputStatus" type="boolean"></column>
-        <column name="jumpTo" type="boolean"></column>
-		
-        <finder name="UserId" return-type="Collection">
-            <finder-column name="userId"></finder-column>
-        </finder>
-        <finder name="GroupId" return-type="Collection">
-            <finder-column name="groupId"></finder-column>
-        </finder>
-        <finder name="G_U" return-type="Collection">
-            <finder-column name="groupId"></finder-column>
-            <finder-column name="userId"></finder-column>
-        </finder>
-        
-        <finder name="DataStructureId" return-type="TypeStructureLink">
-			<finder-column name="dataStructureId" ></finder-column>
-		</finder>
-        <finder name="DataStructureId_G" return-type="TypeStructureLink">
-            <finder-column name="groupId"></finder-column>
-			<finder-column name="dataStructureId" ></finder-column>
-		</finder>
-        <finder name="DataStructureId_U" return-type="TypeStructureLink">
-            <finder-column name="userId"></finder-column>
-			<finder-column name="dataStructureId" ></finder-column>
-		</finder>
-        <finder name="DataStructureId_G_U" return-type="TypeStructureLink">
-            <finder-column name="groupId"></finder-column>
-            <finder-column name="userId"></finder-column>
-			<finder-column name="dataStructureId" ></finder-column>
-		</finder>
-		
-        <finder name="Verified" return-type="Collection">
-            <finder-column name="verified"></finder-column>
-        </finder>
-        <finder name="Verified_G" return-type="Collection">
-            <finder-column name="groupId"></finder-column>
-            <finder-column name="verified"></finder-column>
-        </finder>
-        <finder name="Verified_U" return-type="Collection">
-            <finder-column name="userId"></finder-column>
-            <finder-column name="verified"></finder-column>
-        </finder>
-        <finder name="Verified_G_U" return-type="Collection">
-            <finder-column name="groupId"></finder-column>
-            <finder-column name="userId"></finder-column>
-            <finder-column name="verified"></finder-column>
-        </finder>
-		
-        <finder name="Freezed" return-type="Collection">
-            <finder-column name="freezed"></finder-column>
-        </finder>
-         <finder name="Freezed_G" return-type="Collection">
-            <finder-column name="groupId"></finder-column>
-            <finder-column name="freezed"></finder-column>
-        </finder>
-        <finder name="Freezed_U" return-type="Collection">
-            <finder-column name="userId"></finder-column>
-            <finder-column name="freezed"></finder-column>
-        </finder>
-        <finder name="Freezed_G_U" return-type="Collection">
-            <finder-column name="groupId"></finder-column>
-            <finder-column name="userId"></finder-column>
-            <finder-column name="freezed"></finder-column>
-        </finder>
+		<column name="structure"  type="String"></column>
 	</entity>
 	
 	<entity name="StructureParamLink" local-service="true" uuid="false"

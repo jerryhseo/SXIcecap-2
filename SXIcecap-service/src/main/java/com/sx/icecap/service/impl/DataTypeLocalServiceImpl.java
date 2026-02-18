@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainerResults;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -33,7 +34,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
@@ -41,22 +41,17 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.sx.constant.StationXConstants;
 import com.sx.icecap.constant.DataTypeProperties;
-import com.sx.icecap.exception.DuplicatedDataTypeCodeException;
-import com.sx.icecap.exception.InvalidDataTypeCodeException;
-import com.sx.icecap.exception.NoSuchDataTypeException;
-import com.sx.icecap.exception.NoSuchTypeStructureLinkException;
+import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.model.DataType;
-import com.sx.icecap.model.TypeStructureLink;
-import com.sx.icecap.model.TypeVisualizerLink;
+import com.sx.icecap.model.DataTypeStructure;
 import com.sx.icecap.service.DataStructureLocalService;
-import com.sx.icecap.service.TypeStructureLinkLocalService;
+import com.sx.icecap.service.DataTypeStructureLocalService;
 import com.sx.icecap.service.TypeVisualizerLinkLocalService;
 import com.sx.icecap.service.base.DataTypeLocalServiceBaseImpl;
 import com.sx.icecap.util.comparator.GroupIdComparator;
 import com.sx.icecap.util.comparator.ModifiedDateComparator;
 import com.sx.icecap.util.comparator.UserIdComparator;
 import com.sx.icecap.util.comparator.datatype.DataTypeCodeComparator;
-import com.sx.util.SXLocalizationUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 
@@ -87,7 +82,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 			String extension,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
-			Map<Locale, String> tooltipMap,
 			int status,
 			ServiceContext sc) throws PortalException {
 		
@@ -101,7 +95,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		dataType.setExtension(extension);
 		dataType.setDisplayNameMap(displayNameMap, defaultLocale);
 		dataType.setDescriptionMap(descriptionMap, defaultLocale);
-		dataType.setTooltipMap(tooltipMap, defaultLocale);
 		
 		Date now = new Date();
 		User user = super.userLocalService.getUser(sc.getUserId());
@@ -175,62 +168,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		return dataType;
 	}
 	
-	public JSONObject addDataType( 
-			String dataTypeCode,
-			String dataTypeVersion,
-			String extension,
-			Map<Locale, String> displayNameMap,
-			Map<Locale, String> descriptionMap,
-			Map<Locale, String> tooltipMap,
-			int status,
-			JSONObject jsonStructureLink,
-			long[] visualizers,
-			ServiceContext dataTypeSC) throws PortalException {
-		
-		JSONObject result = JSONFactoryUtil.createJSONObject();
-		
-		DataType dataType = addDataType(
-				dataTypeCode, 
-				dataTypeVersion, 
-				extension,
-				displayNameMap, 
-				descriptionMap,
-				tooltipMap, 
-				WorkflowConstants.STATUS_APPROVED, 
-				dataTypeSC);
-		
-		result.put("dataTypeId", dataType.getDataTypeId());
-		
-		// Add TypeStructureLink if exits
-		if ( Validator.isNotNull(jsonStructureLink) ) {
-			TypeStructureLink typeStructureLink = _typeStructureLinkLocalService.addTypeDataStructureLink(
-					jsonStructureLink,
-					dataTypeSC);
-			
-			result.put("typeStructureLinkId", typeStructureLink.getPrimaryKey());
-		}
-
-		// Create TypeVisualizerLinks
-		if( visualizers.length > 0 ) {
-			JSONArray typeVisualizerLinks = JSONFactoryUtil.createJSONArray();
-			
-			for( int order=0; order<visualizers.length; order++) {
-				long visualizerId = visualizers[order];
-				
-				TypeVisualizerLink typeVisualizerLink = 
-						_typeVisualizerLinkLocalService.addTypeVisualizerLink(dataType.getDataTypeId(), visualizerId);
-				
-				typeVisualizerLinks.put(typeVisualizerLink.getTypeVisualizerLinkId());
-			}
-			
-			if( typeVisualizerLinks.length() > 0 ) {
-				result.put("typeVisualizerLinks", typeVisualizerLinks);
-			}
-		}
-
-		return result;
-	}
-	
 	@Indexable(type = IndexableType.REINDEX)
 	public DataType updateDataType(
 			long dataTypeId, 
@@ -239,7 +176,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 			String extension,
 			Map<Locale, String> displayNameMap,
 			Map<Locale, String> descriptionMap,
-			Map<Locale, String> tooltipMap,
 			int status,
 			ServiceContext sc) throws PortalException {
 		DataType dataType = super.dataTypePersistence.findByPrimaryKey(dataTypeId);
@@ -249,7 +185,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		dataType.setExtension(extension);
 		dataType.setDisplayNameMap(displayNameMap, sc.getLocale());
 		dataType.setDescriptionMap(descriptionMap, sc.getLocale());
-		dataType.setTooltipMap(tooltipMap, sc.getLocale());
 		
 		dataType.setUserId(sc.getUserId());
 		dataType.setGroupId(sc.getScopeGroupId());
@@ -342,10 +277,8 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	public DataType removeDataType( long dataTypeId ) throws PortalException {
 		DataType dataType = super.dataTypePersistence.remove(dataTypeId);
 		
-		try {
-			typeStructureLinkPersistence.remove(dataTypeId);
-		} catch( NoSuchTypeStructureLinkException e) {
-			System.out.println("No link info to delete for " + dataTypeId);
+		if( hasDataStructure(dataTypeId) ) {
+			dataTypeStructurePersistence.remove(dataTypeId);
 		}
 		
 		super.assetEntryLocalService.deleteEntry(DataType.class.getName(), dataType.getPrimaryKey());
@@ -369,12 +302,38 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		}
 	}
 	
+	public JSONArray removeDataTypes( String[] dataTypeIds ) throws PortalException {
+		JSONArray errorObject = JSONFactoryUtil.createJSONArray();
+		
+		for( String dataTypeId : dataTypeIds ) {
+			try {
+				this.removeDataType(Long.parseLong(dataTypeId));
+			} catch ( NumberFormatException e ) {
+				errorObject.put(dataTypeId);
+			}
+		}
+		
+		return errorObject;
+	}
+	
+	public void importDataStructure( long dataTypeId, long dataStructureId ) {
+		DataStructure dataStructure = dataStructurePersistence.fetchByPrimaryKey(dataStructureId);
+		
+		if( Validator.isNotNull(dataStructure) ) {
+			_dataTypeStructureLocalService.updateDataTypeStructure(dataTypeId, dataStructure.getStructure());
+		}
+	}
+	
 	public boolean checkDataTypeCodeUnique(String paramCode) {
 		int result = super.dataTypePersistence.countByCode(paramCode);
 		
 		System.out.println("countByCode: " + result);
 		
 		return result < 1;
+	}
+	
+	public void setDataTypeStructure( long dataTypeId, String dataStructure ) {
+		_dataTypeStructureLocalService.updateDataTypeStructure(dataTypeId, dataStructure);
 	}
 	
 	public List<DataType> getDataTypes( 
@@ -588,14 +547,14 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		return super.dataTypePersistence.countByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
 	}
 	
-	public String getDisplayName( long dataTypeId, Locale locale ) throws NoSuchDataTypeException {
-		DataType dataType = super.dataTypePersistence.findByPrimaryKey(dataTypeId);
+	public String getDisplayName( long dataTypeId, Locale locale ) {
+		DataType dataType = super.dataTypePersistence.fetchByPrimaryKey(dataTypeId);
 		
 		return dataType.getDisplayName(locale);
 	}
 
-	public DataType getDataType(String dataTypeCode, String dataTypeVersion ) throws NoSuchDataTypeException {
-		DataType dataType = super.dataTypePersistence.findByCodeVersion(dataTypeCode, dataTypeVersion);
+	public DataType getDataType(String dataTypeCode, String dataTypeVersion ) {
+		DataType dataType = super.dataTypePersistence.fetchByCodeVersion(dataTypeCode, dataTypeVersion);
 		
 		return dataType;
 	}
@@ -629,6 +588,39 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		}
 
 		return orderByComparator;
+	}
+	
+	public String getDataStructure(
+			long dataTypeId) {
+		DataTypeStructure structure = dataTypeStructurePersistence.fetchByPrimaryKey(dataTypeId);
+		
+		return structure.getStructure();
+	}
+	
+	public JSONObject getDataStructureJSON(
+			long dataTypeId) {
+		
+		DataTypeStructure structure = dataTypeStructurePersistence.fetchByPrimaryKey(dataTypeId);
+		
+		try {
+			String strStructure = structure.getStructure();
+			if( Validator.isNull(strStructure) || strStructure.isEmpty() ) {
+				return null;
+			}
+			
+			JSONObject json = JSONFactoryUtil.createJSONObject(structure.getStructure());
+			
+			System.out.println("JSONDataTypeStructure: " + json.toString(4));
+			return JSONFactoryUtil.createJSONObject(structure.getStructure());
+		} catch( JSONException e ) {
+			return null;
+		}
+	}
+	
+	public boolean hasDataStructure( long dataTypeId ) {
+		DataTypeStructure dataStructure = dataTypeStructurePersistence.fetchByPrimaryKey(dataTypeId);
+		
+		return Validator.isNotNull(dataStructure);
 	}
 	
 	public final long getDataFileFolderId(
@@ -726,21 +718,18 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 
 		return new SearchContainerResults<AssetEntry>(assetEntries, total);
 	}
-	private boolean _verifyDataTypeCode( String dataTypeCode ) throws DuplicatedDataTypeCodeException {
+	
+	public boolean checkDuplicated( String dataTypeCode, String dataTypeVersion ) {
 		// Check uniqueness of the dataTypeCode
-		if( super.dataTypePersistence.countByCode(dataTypeCode) > 0 ) {
-			throw new DuplicatedDataTypeCodeException( dataTypeCode + " exists already." );
-		}
-		
-		return true;
+		return dataTypePersistence.countByCodeVersion(dataTypeCode, dataTypeVersion) > 0;
 	}
 	
 	@Reference
 	private DataStructureLocalService _dataStructureLocalService;
 	
 	@Reference
-	private TypeStructureLinkLocalService _typeStructureLinkLocalService;
-
+	private DataTypeStructureLocalService _dataTypeStructureLocalService;
+	
 	@Reference
 	private TypeVisualizerLinkLocalService _typeVisualizerLinkLocalService;
 }

@@ -615,59 +615,59 @@ public interface SetTypeLinkPersistence extends BasePersistence<SetTypeLink> {
 	public int countByDataTypeId(long dataTypeId);
 
 	/**
-	 * Returns all the set type links where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns all the set type links where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @return the matching set type links
 	 */
 	public java.util.List<SetTypeLink> findByCollection_G(
-		long groupId, long dataTypeId);
+		long groupId, long dataCollectionId);
 
 	/**
-	 * Returns a range of all the set type links where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns a range of all the set type links where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SetTypeLinkModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param start the lower bound of the range of set type links
 	 * @param end the upper bound of the range of set type links (not inclusive)
 	 * @return the range of matching set type links
 	 */
 	public java.util.List<SetTypeLink> findByCollection_G(
-		long groupId, long dataTypeId, int start, int end);
+		long groupId, long dataCollectionId, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the set type links where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns an ordered range of all the set type links where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SetTypeLinkModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param start the lower bound of the range of set type links
 	 * @param end the upper bound of the range of set type links (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching set type links
 	 */
 	public java.util.List<SetTypeLink> findByCollection_G(
-		long groupId, long dataTypeId, int start, int end,
+		long groupId, long dataCollectionId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<SetTypeLink>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the set type links where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns an ordered range of all the set type links where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SetTypeLinkModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param start the lower bound of the range of set type links
 	 * @param end the upper bound of the range of set type links (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -675,99 +675,99 @@ public interface SetTypeLinkPersistence extends BasePersistence<SetTypeLink> {
 	 * @return the ordered range of matching set type links
 	 */
 	public java.util.List<SetTypeLink> findByCollection_G(
-		long groupId, long dataTypeId, int start, int end,
+		long groupId, long dataCollectionId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<SetTypeLink>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first set type link in the ordered set where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the first set type link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching set type link
 	 * @throws NoSuchSetTypeLinkException if a matching set type link could not be found
 	 */
 	public SetTypeLink findByCollection_G_First(
-			long groupId, long dataTypeId,
+			long groupId, long dataCollectionId,
 			com.liferay.portal.kernel.util.OrderByComparator<SetTypeLink>
 				orderByComparator)
 		throws NoSuchSetTypeLinkException;
 
 	/**
-	 * Returns the first set type link in the ordered set where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the first set type link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching set type link, or <code>null</code> if a matching set type link could not be found
 	 */
 	public SetTypeLink fetchByCollection_G_First(
-		long groupId, long dataTypeId,
+		long groupId, long dataCollectionId,
 		com.liferay.portal.kernel.util.OrderByComparator<SetTypeLink>
 			orderByComparator);
 
 	/**
-	 * Returns the last set type link in the ordered set where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the last set type link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching set type link
 	 * @throws NoSuchSetTypeLinkException if a matching set type link could not be found
 	 */
 	public SetTypeLink findByCollection_G_Last(
-			long groupId, long dataTypeId,
+			long groupId, long dataCollectionId,
 			com.liferay.portal.kernel.util.OrderByComparator<SetTypeLink>
 				orderByComparator)
 		throws NoSuchSetTypeLinkException;
 
 	/**
-	 * Returns the last set type link in the ordered set where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the last set type link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching set type link, or <code>null</code> if a matching set type link could not be found
 	 */
 	public SetTypeLink fetchByCollection_G_Last(
-		long groupId, long dataTypeId,
+		long groupId, long dataCollectionId,
 		com.liferay.portal.kernel.util.OrderByComparator<SetTypeLink>
 			orderByComparator);
 
 	/**
-	 * Returns the set type links before and after the current set type link in the ordered set where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the set type links before and after the current set type link in the ordered set where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param setTypeLinkId the primary key of the current set type link
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next set type link
 	 * @throws NoSuchSetTypeLinkException if a set type link with the primary key could not be found
 	 */
 	public SetTypeLink[] findByCollection_G_PrevAndNext(
-			long setTypeLinkId, long groupId, long dataTypeId,
+			long setTypeLinkId, long groupId, long dataCollectionId,
 			com.liferay.portal.kernel.util.OrderByComparator<SetTypeLink>
 				orderByComparator)
 		throws NoSuchSetTypeLinkException;
 
 	/**
-	 * Removes all the set type links where groupId = &#63; and dataTypeId = &#63; from the database.
+	 * Removes all the set type links where groupId = &#63; and dataCollectionId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 */
-	public void removeByCollection_G(long groupId, long dataTypeId);
+	public void removeByCollection_G(long groupId, long dataCollectionId);
 
 	/**
-	 * Returns the number of set type links where groupId = &#63; and dataTypeId = &#63;.
+	 * Returns the number of set type links where groupId = &#63; and dataCollectionId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataTypeId the data type ID
+	 * @param dataCollectionId the data collection ID
 	 * @return the number of matching set type links
 	 */
-	public int countByCollection_G(long groupId, long dataTypeId);
+	public int countByCollection_G(long groupId, long dataCollectionId);
 
 	/**
 	 * Returns all the set type links where groupId = &#63; and dataSetId = &#63;.
@@ -1405,71 +1405,71 @@ public interface SetTypeLinkPersistence extends BasePersistence<SetTypeLink> {
 	public int countBySetType(long dataSetId, long dataTypeId);
 
 	/**
-	 * Returns the set type link where groupId = &#63; and dataSetId = &#63; and dataCollectionId = &#63; and dataTypeId = &#63; or throws a <code>NoSuchSetTypeLinkException</code> if it could not be found.
+	 * Returns the set type link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; or throws a <code>NoSuchSetTypeLinkException</code> if it could not be found.
 	 *
 	 * @param groupId the group ID
-	 * @param dataSetId the data set ID
 	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
 	 * @param dataTypeId the data type ID
 	 * @return the matching set type link
 	 * @throws NoSuchSetTypeLinkException if a matching set type link could not be found
 	 */
 	public SetTypeLink findByCollectionSetType_G(
-			long groupId, long dataSetId, long dataCollectionId,
+			long groupId, long dataCollectionId, long dataSetId,
 			long dataTypeId)
 		throws NoSuchSetTypeLinkException;
 
 	/**
-	 * Returns the set type link where groupId = &#63; and dataSetId = &#63; and dataCollectionId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the set type link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
 	 * @param groupId the group ID
-	 * @param dataSetId the data set ID
 	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
 	 * @param dataTypeId the data type ID
 	 * @return the matching set type link, or <code>null</code> if a matching set type link could not be found
 	 */
 	public SetTypeLink fetchByCollectionSetType_G(
-		long groupId, long dataSetId, long dataCollectionId, long dataTypeId);
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId);
 
 	/**
-	 * Returns the set type link where groupId = &#63; and dataSetId = &#63; and dataCollectionId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the set type link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param groupId the group ID
-	 * @param dataSetId the data set ID
 	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
 	 * @param dataTypeId the data type ID
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching set type link, or <code>null</code> if a matching set type link could not be found
 	 */
 	public SetTypeLink fetchByCollectionSetType_G(
-		long groupId, long dataSetId, long dataCollectionId, long dataTypeId,
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId,
 		boolean useFinderCache);
 
 	/**
-	 * Removes the set type link where groupId = &#63; and dataSetId = &#63; and dataCollectionId = &#63; and dataTypeId = &#63; from the database.
+	 * Removes the set type link where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
-	 * @param dataSetId the data set ID
 	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
 	 * @param dataTypeId the data type ID
 	 * @return the set type link that was removed
 	 */
 	public SetTypeLink removeByCollectionSetType_G(
-			long groupId, long dataSetId, long dataCollectionId,
+			long groupId, long dataCollectionId, long dataSetId,
 			long dataTypeId)
 		throws NoSuchSetTypeLinkException;
 
 	/**
-	 * Returns the number of set type links where groupId = &#63; and dataSetId = &#63; and dataCollectionId = &#63; and dataTypeId = &#63;.
+	 * Returns the number of set type links where groupId = &#63; and dataCollectionId = &#63; and dataSetId = &#63; and dataTypeId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param dataSetId the data set ID
 	 * @param dataCollectionId the data collection ID
+	 * @param dataSetId the data set ID
 	 * @param dataTypeId the data type ID
 	 * @return the number of matching set type links
 	 */
 	public int countByCollectionSetType_G(
-		long groupId, long dataSetId, long dataCollectionId, long dataTypeId);
+		long groupId, long dataCollectionId, long dataSetId, long dataTypeId);
 
 	/**
 	 * Caches the set type link in the entity cache if it is enabled.

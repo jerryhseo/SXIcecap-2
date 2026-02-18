@@ -29,9 +29,6 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
-import com.sx.icecap.exception.DuplicatedDataCollectionCodeException;
-import com.sx.icecap.exception.DuplicatedDataTypeCodeException;
-import com.sx.icecap.exception.NoSuchDataCollectionException;
 import com.sx.icecap.model.CollectionSetLink;
 import com.sx.icecap.model.DataCollection;
 import com.sx.icecap.model.DataSet;
@@ -39,7 +36,6 @@ import com.sx.icecap.service.CollectionSetLinkLocalService;
 import com.sx.icecap.service.SetTypeLinkLocalService;
 import com.sx.icecap.service.base.DataCollectionLocalServiceBaseImpl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -348,26 +344,6 @@ public class DataCollectionLocalServiceImpl
 		}
 		
 		return collectionInfo;
-	}
-	
-	public JSONArray getAssociatedDataSets(long dataCollectionId) {
-		JSONArray dataSets = JSONFactoryUtil.createJSONArray();
-		
-		DataCollection dataCollection;
-		try {
-			dataCollection = dataCollectionPersistence.findByPrimaryKey(dataCollectionId);
-			
-			List<CollectionSetLink> collectionSetLinkList = 
-					collectionSetLinkPersistence.findByCollection_G(dataCollection.getDataCollectionId(), dataCollectionId);
-			
-			
-		} catch (NoSuchDataCollectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		return dataSets;
 	}
 	
 	public boolean checkUniqueCode( String dataCollectionCode ) {

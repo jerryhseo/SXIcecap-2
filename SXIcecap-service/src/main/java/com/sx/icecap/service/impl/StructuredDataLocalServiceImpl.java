@@ -37,25 +37,16 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
-import com.sx.icecap.constant.ActionHistoryTypes;
-import com.sx.icecap.constant.DataCommentTypes;
-import com.sx.icecap.constant.DataStructureProperties;
 import com.sx.icecap.model.DataCollection;
-import com.sx.icecap.model.DataComment;
 import com.sx.icecap.model.DataSet;
-import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.model.StructuredData;
-import com.sx.icecap.model.TypeStructureLink;
-import com.sx.icecap.service.DataTypeLocalService;
 import com.sx.icecap.service.base.StructuredDataLocalServiceBaseImpl;
-import com.sx.util.SXPortalUtil;
 
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -824,7 +815,6 @@ public class StructuredDataLocalServiceImpl
 			Locale locale) throws JSONException {
 		
 		JSONObject dataInfo = JSONFactoryUtil.createJSONObject();
-		DataStructure dataStructure = null;
 
 		if( structuredDataId > 0 ) {
 			StructuredData structuredData = structuredDataPersistence.fetchByPrimaryKey(structuredDataId);
@@ -864,23 +854,6 @@ public class StructuredDataLocalServiceImpl
 					jsonDataTypeInfo.put("displayName", dataType.getDisplayName(locale));
 					
 					dataInfo.put("dataType", jsonDataTypeInfo);
-					
-					TypeStructureLink typeStructureLink = typeStructureLinkPersistence.fetchByPrimaryKey(dataType.getPrimaryKey());
-					if( Validator.isNotNull(typeStructureLink)) {
-						dataInfo.put("typeStructureLink", typeStructureLink.toJSON());
-
-						dataStructure = dataStructurePersistence.fetchByPrimaryKey(typeStructureLink.getDataStructureId());
-						
-						if( Validator.isNull(dataStructure)) {
-							dataStructure = dataStructurePersistence.fetchByPrimaryKey(typeStructureLink.getDataStructureId());
-							
-							if(Validator.isNotNull(dataStructure)) {
-								JSONObject jsonStructure =  JSONFactoryUtil.createJSONObject(dataStructure.getStructure());
-								
-								dataInfo.put("dataStructure", jsonStructure);
-							}
-						}
-					}
 				}
 			}
 		}

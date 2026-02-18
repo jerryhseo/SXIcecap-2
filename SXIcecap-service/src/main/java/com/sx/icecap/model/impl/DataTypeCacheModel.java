@@ -62,7 +62,7 @@ public class DataTypeCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(41);
+		StringBundler sb = new StringBundler(47);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -102,8 +102,14 @@ public class DataTypeCacheModel
 		sb.append(sampleFileId);
 		sb.append(", description=");
 		sb.append(description);
-		sb.append(", tooltip=");
-		sb.append(tooltip);
+		sb.append(", inputStatus=");
+		sb.append(inputStatus);
+		sb.append(", jumpTo=");
+		sb.append(jumpTo);
+		sb.append(", verified=");
+		sb.append(verified);
+		sb.append(", freezed=");
+		sb.append(freezed);
 		sb.append("}");
 
 		return sb.toString();
@@ -207,11 +213,21 @@ public class DataTypeCacheModel
 			dataTypeImpl.setDescription(description);
 		}
 
-		if (tooltip == null) {
-			dataTypeImpl.setTooltip("");
+		dataTypeImpl.setInputStatus(inputStatus);
+		dataTypeImpl.setJumpTo(jumpTo);
+
+		if (verified == null) {
+			dataTypeImpl.setVerified("");
 		}
 		else {
-			dataTypeImpl.setTooltip(tooltip);
+			dataTypeImpl.setVerified(verified);
+		}
+
+		if (freezed == null) {
+			dataTypeImpl.setFreezed("");
+		}
+		else {
+			dataTypeImpl.setFreezed(freezed);
 		}
 
 		dataTypeImpl.resetOriginalValues();
@@ -247,7 +263,12 @@ public class DataTypeCacheModel
 
 		sampleFileId = objectInput.readLong();
 		description = objectInput.readUTF();
-		tooltip = objectInput.readUTF();
+
+		inputStatus = objectInput.readBoolean();
+
+		jumpTo = objectInput.readBoolean();
+		verified = objectInput.readUTF();
+		freezed = objectInput.readUTF();
 	}
 
 	@Override
@@ -328,11 +349,22 @@ public class DataTypeCacheModel
 			objectOutput.writeUTF(description);
 		}
 
-		if (tooltip == null) {
+		objectOutput.writeBoolean(inputStatus);
+
+		objectOutput.writeBoolean(jumpTo);
+
+		if (verified == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(tooltip);
+			objectOutput.writeUTF(verified);
+		}
+
+		if (freezed == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(freezed);
 		}
 	}
 
@@ -355,6 +387,9 @@ public class DataTypeCacheModel
 	public String extension;
 	public long sampleFileId;
 	public String description;
-	public String tooltip;
+	public boolean inputStatus;
+	public boolean jumpTo;
+	public String verified;
+	public String freezed;
 
 }

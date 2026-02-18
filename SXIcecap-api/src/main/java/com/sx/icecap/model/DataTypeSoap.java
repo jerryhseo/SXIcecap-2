@@ -50,7 +50,10 @@ public class DataTypeSoap implements Serializable {
 		soapModel.setExtension(model.getExtension());
 		soapModel.setSampleFileId(model.getSampleFileId());
 		soapModel.setDescription(model.getDescription());
-		soapModel.setTooltip(model.getTooltip());
+		soapModel.setInputStatus(model.isInputStatus());
+		soapModel.setJumpTo(model.isJumpTo());
+		soapModel.setVerified(model.getVerified());
+		soapModel.setFreezed(model.getFreezed());
 
 		return soapModel;
 	}
@@ -256,12 +259,44 @@ public class DataTypeSoap implements Serializable {
 		_description = description;
 	}
 
-	public String getTooltip() {
-		return _tooltip;
+	public boolean getInputStatus() {
+		return _inputStatus;
 	}
 
-	public void setTooltip(String tooltip) {
-		_tooltip = tooltip;
+	public boolean isInputStatus() {
+		return _inputStatus;
+	}
+
+	public void setInputStatus(boolean inputStatus) {
+		_inputStatus = inputStatus;
+	}
+
+	public boolean getJumpTo() {
+		return _jumpTo;
+	}
+
+	public boolean isJumpTo() {
+		return _jumpTo;
+	}
+
+	public void setJumpTo(boolean jumpTo) {
+		_jumpTo = jumpTo;
+	}
+
+	public String getVerified() {
+		return _verified;
+	}
+
+	public void setVerified(String verified) {
+		_verified = verified;
+	}
+
+	public String getFreezed() {
+		return _freezed;
+	}
+
+	public void setFreezed(String freezed) {
+		_freezed = freezed;
 	}
 
 	private String _uuid;
@@ -283,6 +318,9 @@ public class DataTypeSoap implements Serializable {
 	private String _extension;
 	private long _sampleFileId;
 	private String _description;
-	private String _tooltip;
+	private boolean _inputStatus;
+	private boolean _jumpTo;
+	private String _verified;
+	private String _freezed;
 
 }

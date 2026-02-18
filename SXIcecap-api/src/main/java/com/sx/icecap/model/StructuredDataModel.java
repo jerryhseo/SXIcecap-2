@@ -384,21 +384,15 @@ public interface StructuredDataModel
 	 *
 	 * @return the freezed of this structured data
 	 */
-	public boolean getFreezed();
+	@AutoEscape
+	public String getFreezed();
 
 	/**
-	 * Returns <code>true</code> if this structured data is freezed.
-	 *
-	 * @return <code>true</code> if this structured data is freezed; <code>false</code> otherwise
-	 */
-	public boolean isFreezed();
-
-	/**
-	 * Sets whether this structured data is freezed.
+	 * Sets the freezed of this structured data.
 	 *
 	 * @param freezed the freezed of this structured data
 	 */
-	public void setFreezed(boolean freezed);
+	public void setFreezed(String freezed);
 
 	/**
 	 * Returns the freezed user ID of this structured data.

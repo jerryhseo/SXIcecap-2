@@ -61,37 +61,26 @@ public class DataTypeLocalServiceUtil {
 		return getService().addDataType(dataType);
 	}
 
-	public static com.liferay.portal.kernel.json.JSONObject addDataType(
-			String dataTypeCode, String dataTypeVersion, String extension,
-			Map<java.util.Locale, String> displayNameMap,
-			Map<java.util.Locale, String> descriptionMap,
-			Map<java.util.Locale, String> tooltipMap, int status,
-			com.liferay.portal.kernel.json.JSONObject jsonStructureLink,
-			long[] visualizers,
-			com.liferay.portal.kernel.service.ServiceContext dataTypeSC)
-		throws PortalException {
-
-		return getService().addDataType(
-			dataTypeCode, dataTypeVersion, extension, displayNameMap,
-			descriptionMap, tooltipMap, status, jsonStructureLink, visualizers,
-			dataTypeSC);
-	}
-
 	public static DataType addDataType(
 			String dataTypeCode, String dataTypeVersion, String extension,
 			Map<java.util.Locale, String> displayNameMap,
-			Map<java.util.Locale, String> descriptionMap,
-			Map<java.util.Locale, String> tooltipMap, int status,
+			Map<java.util.Locale, String> descriptionMap, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().addDataType(
 			dataTypeCode, dataTypeVersion, extension, displayNameMap,
-			descriptionMap, tooltipMap, status, sc);
+			descriptionMap, status, sc);
 	}
 
 	public static boolean checkDataTypeCodeUnique(String paramCode) {
 		return getService().checkDataTypeCodeUnique(paramCode);
+	}
+
+	public static boolean checkDuplicated(
+		String dataTypeCode, String dataTypeVersion) {
+
+		return getService().checkDuplicated(dataTypeCode, dataTypeVersion);
 	}
 
 	public static int countAllDataTypes() {
@@ -336,6 +325,16 @@ public class DataTypeLocalServiceUtil {
 			paramCode, paramVersion, sc, createWhenNoExist);
 	}
 
+	public static String getDataStructure(long dataTypeId) {
+		return getService().getDataStructure(dataTypeId);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject
+		getDataStructureJSON(long dataTypeId) {
+
+		return getService().getDataStructureJSON(dataTypeId);
+	}
+
 	/**
 	 * Returns the data type with the primary key.
 	 *
@@ -348,8 +347,7 @@ public class DataTypeLocalServiceUtil {
 	}
 
 	public static DataType getDataType(
-			String dataTypeCode, String dataTypeVersion)
-		throws com.sx.icecap.exception.NoSuchDataTypeException {
+		String dataTypeCode, String dataTypeVersion) {
 
 		return getService().getDataType(dataTypeCode, dataTypeVersion);
 	}
@@ -574,8 +572,7 @@ public class DataTypeLocalServiceUtil {
 	}
 
 	public static String getDisplayName(
-			long dataTypeId, java.util.Locale locale)
-		throws com.sx.icecap.exception.NoSuchDataTypeException {
+		long dataTypeId, java.util.Locale locale) {
 
 		return getService().getDisplayName(dataTypeId, locale);
 	}
@@ -634,6 +631,16 @@ public class DataTypeLocalServiceUtil {
 		return getService().getSortOrderComparator(orderByCol, orderByType);
 	}
 
+	public static boolean hasDataStructure(long dataTypeId) {
+		return getService().hasDataStructure(dataTypeId);
+	}
+
+	public static void importDataStructure(
+		long dataTypeId, long dataStructureId) {
+
+		getService().importDataStructure(dataTypeId, dataStructureId);
+	}
+
 	public static DataType removeDataType(long dataTypeId)
 		throws PortalException {
 
@@ -644,6 +651,19 @@ public class DataTypeLocalServiceUtil {
 		throws PortalException {
 
 		getService().removeDataTypes(dataTypeIds);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONArray removeDataTypes(
+			String[] dataTypeIds)
+		throws PortalException {
+
+		return getService().removeDataTypes(dataTypeIds);
+	}
+
+	public static void setDataTypeStructure(
+		long dataTypeId, String dataStructure) {
+
+		getService().setDataTypeStructure(dataTypeId, dataStructure);
 	}
 
 	/**
@@ -663,14 +683,13 @@ public class DataTypeLocalServiceUtil {
 	public static DataType updateDataType(
 			long dataTypeId, String dataTypeCode, String dataTypeVersion,
 			String extension, Map<java.util.Locale, String> displayNameMap,
-			Map<java.util.Locale, String> descriptionMap,
-			Map<java.util.Locale, String> tooltipMap, int status,
+			Map<java.util.Locale, String> descriptionMap, int status,
 			com.liferay.portal.kernel.service.ServiceContext sc)
 		throws PortalException {
 
 		return getService().updateDataType(
 			dataTypeId, dataTypeCode, dataTypeVersion, extension,
-			displayNameMap, descriptionMap, tooltipMap, status, sc);
+			displayNameMap, descriptionMap, status, sc);
 	}
 
 	public static DataType updateStatus(

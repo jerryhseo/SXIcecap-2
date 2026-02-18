@@ -184,7 +184,14 @@ public class StructuredDataCacheModel
 		structuredDataImpl.setMultiple(multiple);
 		structuredDataImpl.setStartIndex(startIndex);
 		structuredDataImpl.setCount(count);
-		structuredDataImpl.setFreezed(freezed);
+
+		if (freezed == null) {
+			structuredDataImpl.setFreezed("");
+		}
+		else {
+			structuredDataImpl.setFreezed(freezed);
+		}
+
 		structuredDataImpl.setFreezedUserId(freezedUserId);
 
 		if (freezedUserName == null) {
@@ -262,8 +269,7 @@ public class StructuredDataCacheModel
 		startIndex = objectInput.readLong();
 
 		count = objectInput.readInt();
-
-		freezed = objectInput.readBoolean();
+		freezed = objectInput.readUTF();
 
 		freezedUserId = objectInput.readLong();
 		freezedUserName = objectInput.readUTF();
@@ -329,7 +335,12 @@ public class StructuredDataCacheModel
 
 		objectOutput.writeInt(count);
 
-		objectOutput.writeBoolean(freezed);
+		if (freezed == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(freezed);
+		}
 
 		objectOutput.writeLong(freezedUserId);
 
@@ -381,7 +392,7 @@ public class StructuredDataCacheModel
 	public boolean multiple;
 	public long startIndex;
 	public int count;
-	public boolean freezed;
+	public String freezed;
 	public long freezedUserId;
 	public String freezedUserName;
 	public long freezedDate;

@@ -89,6 +89,9 @@ public interface DataStructureLocalService
 			ServiceContext sc)
 		throws PortalException;
 
+	public boolean checkDuplicated(
+		String dataStructureCode, String dataStructureVersion);
+
 	public int countAllDataStructures();
 
 	public int countDataStructuresByG_U(long groupId, long userId);

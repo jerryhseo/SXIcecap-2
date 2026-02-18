@@ -49,7 +49,7 @@ public class StructuredDataSoap implements Serializable {
 		soapModel.setMultiple(model.isMultiple());
 		soapModel.setStartIndex(model.getStartIndex());
 		soapModel.setCount(model.getCount());
-		soapModel.setFreezed(model.isFreezed());
+		soapModel.setFreezed(model.getFreezed());
 		soapModel.setFreezedUserId(model.getFreezedUserId());
 		soapModel.setFreezedUserName(model.getFreezedUserName());
 		soapModel.setFreezedDate(model.getFreezedDate());
@@ -264,15 +264,11 @@ public class StructuredDataSoap implements Serializable {
 		_count = count;
 	}
 
-	public boolean getFreezed() {
+	public String getFreezed() {
 		return _freezed;
 	}
 
-	public boolean isFreezed() {
-		return _freezed;
-	}
-
-	public void setFreezed(boolean freezed) {
+	public void setFreezed(String freezed) {
 		_freezed = freezed;
 	}
 
@@ -362,7 +358,7 @@ public class StructuredDataSoap implements Serializable {
 	private boolean _multiple;
 	private long _startIndex;
 	private int _count;
-	private boolean _freezed;
+	private String _freezed;
 	private long _freezedUserId;
 	private String _freezedUserName;
 	private Date _freezedDate;
