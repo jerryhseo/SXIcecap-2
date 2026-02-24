@@ -248,9 +248,7 @@ public class DataStructureLocalServiceImpl
 	
 	@Indexable(type = IndexableType.DELETE)
 	public DataStructure removeDataStructure( long dataStructureId ) throws PortalException {
-		DataStructure dataStructure = super.dataStructurePersistence.remove(dataStructureId);
-		
-		dataStructurePersistence.remove(dataStructureId);
+		DataStructure dataStructure = dataStructurePersistence.remove(dataStructureId);
 		
 		super.assetEntryLocalService.deleteEntry(DataStructure.class.getName(), dataStructure.getPrimaryKey());
 
@@ -274,8 +272,8 @@ public class DataStructureLocalServiceImpl
 	}
 	
 	
-	public void removeDataStructures( String strDataStructureIds) throws PortalException {
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray( strDataStructureIds );
+	public void removeDataStructures( String jsonDataStructureIds) throws PortalException {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray( jsonDataStructureIds );
 		
 		for( int i=0; i < jsonArray.length(); i++ ) {
 			long dataStructureId = jsonArray.getLong(i);

@@ -370,7 +370,7 @@ public interface DataStructureLocalService
 	public void removeDataStructures(long[] dataStructureIds)
 		throws PortalException;
 
-	public void removeDataStructures(String strDataStructureIds)
+	public void removeDataStructures(String jsonDataStructureIds)
 		throws PortalException;
 
 	/**

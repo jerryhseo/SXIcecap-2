@@ -447,10 +447,10 @@ public class DataStructureLocalServiceUtil {
 		getService().removeDataStructures(dataStructureIds);
 	}
 
-	public static void removeDataStructures(String strDataStructureIds)
+	public static void removeDataStructures(String jsonDataStructureIds)
 		throws PortalException {
 
-		getService().removeDataStructures(strDataStructureIds);
+		getService().removeDataStructures(jsonDataStructureIds);
 	}
 
 	/**

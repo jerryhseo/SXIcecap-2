@@ -276,6 +276,7 @@ public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
 		for(int i=0; i < dataSetIds.length; i++) {
 			long dataSetId = dataSetIds[i];
 			
+			
 			this.removeDataSet(dataSetId);
 			
 			_setTypeLinkLocalService.removeSetTypeLinksByCollectionSet(groupId, dataCollectionId, dataSetId);

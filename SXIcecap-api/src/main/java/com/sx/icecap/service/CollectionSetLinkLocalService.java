@@ -289,11 +289,7 @@ public interface CollectionSetLinkLocalService
 	public CollectionSetLink removeCollectionSetLink(long collectionSetLinkId);
 
 	@Indexable(type = IndexableType.DELETE)
-	public void removeCollectionSetLinkByCollection(
-		long groupId, long dataCollectionId);
-
-	@Indexable(type = IndexableType.DELETE)
-	public void removeCollectionSetLinkBySet(
+	public void removeCollectionSetLinkByCollectionSet(
 			long groupId, long dataCollectionId, long dataSetId)
 		throws NoSuchCollectionSetLinkException;
 

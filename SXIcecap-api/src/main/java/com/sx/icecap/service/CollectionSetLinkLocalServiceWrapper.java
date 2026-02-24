@@ -392,19 +392,11 @@ public class CollectionSetLinkLocalServiceWrapper
 	}
 
 	@Override
-	public void removeCollectionSetLinkByCollection(
-		long groupId, long dataCollectionId) {
-
-		_collectionSetLinkLocalService.removeCollectionSetLinkByCollection(
-			groupId, dataCollectionId);
-	}
-
-	@Override
-	public void removeCollectionSetLinkBySet(
+	public void removeCollectionSetLinkByCollectionSet(
 			long groupId, long dataCollectionId, long dataSetId)
 		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
 
-		_collectionSetLinkLocalService.removeCollectionSetLinkBySet(
+		_collectionSetLinkLocalService.removeCollectionSetLinkByCollectionSet(
 			groupId, dataCollectionId, dataSetId);
 	}
 

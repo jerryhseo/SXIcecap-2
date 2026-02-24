@@ -17,7 +17,6 @@ package com.sx.icecap.model.impl;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.sx.icecap.constant.DataStructureProperties;
 
 import java.util.Locale;
 import java.util.Map;
@@ -38,11 +37,12 @@ public class DataStructureImpl extends DataStructureBaseImpl {
 
 		JSONObject localizedObj = null;
 		
-		localizedObj = _mapToJSON(  this.getDisplayNameMap() );
-		dataStructure.put(DataStructureProperties.DISPLAY_NAME, localizedObj);
+		localizedObj = _mapToJSON( this.getDisplayNameMap());
+		
+		dataStructure.put("displayName", localizedObj);
 		
 		localizedObj = _mapToJSON( this.getDescriptionMap() );
-		dataStructure.put(DataStructureProperties.DESCRIPTION, localizedObj);
+		dataStructure.put("description", localizedObj);
 		
 		return dataStructure;
 	}
@@ -55,8 +55,10 @@ public class DataStructureImpl extends DataStructureBaseImpl {
 			dataStructure = JSONFactoryUtil.createJSONObject();
 		}
 		
-		dataStructure.put(DataStructureProperties.DISPLAY_NAME, this.getDisplayName(locale));
-		dataStructure.put(DataStructureProperties.DESCRIPTION, this.getDescription(locale));
+		_setUnlocalizedJSON( dataStructure );
+		
+		dataStructure.put("displayName", this.getDisplayName(locale));
+		dataStructure.put("description", this.getDescription(locale));
 		
 		return dataStructure;
 	}
@@ -71,12 +73,12 @@ public class DataStructureImpl extends DataStructureBaseImpl {
 		dataStructure.put("createDate", this.getCreateDate());
 		dataStructure.put("modifiedDate", this.getModifiedDate());
 		
-		dataStructure.put(DataStructureProperties.DATA_STRUCTURE_CODE, this.getDataStructureCode());
-		dataStructure.put(DataStructureProperties.DATA_STRUCTURE_VERSION, this.getDataStructureVersion());
+		dataStructure.put("dataStructureCode", this.getDataStructureCode());
+		dataStructure.put("dataStructureVersion", this.getDataStructureVersion());
 		
 		try {
 			dataStructure.put(
-					DataStructureProperties.STRUCTURE, 
+					"structure", 
 					JSONFactoryUtil.createJSONObject(this.getStructure())
 			);
 		} catch (JSONException e) {

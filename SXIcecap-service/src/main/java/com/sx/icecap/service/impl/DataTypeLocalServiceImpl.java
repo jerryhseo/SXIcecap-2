@@ -602,6 +602,10 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		
 		DataTypeStructure structure = dataTypeStructurePersistence.fetchByPrimaryKey(dataTypeId);
 		
+		if( Validator.isNull(structure) ) {
+			return null;
+		}
+		
 		try {
 			String strStructure = structure.getStructure();
 			if( Validator.isNull(strStructure) || strStructure.isEmpty() ) {

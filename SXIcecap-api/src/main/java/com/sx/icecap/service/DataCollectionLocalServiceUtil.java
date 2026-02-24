@@ -398,6 +398,13 @@ public class DataCollectionLocalServiceUtil {
 		return getService().removeDataCollection(dataCollectionId);
 	}
 
+	public static DataCollection removeDataCollection(
+			long groupId, long dataCollectionId)
+		throws PortalException {
+
+		return getService().removeDataCollection(groupId, dataCollectionId);
+	}
+
 	public static void removeDataCollections(
 			long groupId, long[] dataCollectionIds)
 		throws PortalException {

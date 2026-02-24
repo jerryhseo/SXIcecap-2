@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.sx.icecap.model.CollectionSetLink;
 import com.sx.icecap.model.DataCollection;
 import com.sx.icecap.model.DataSet;
+import com.sx.icecap.model.SetTypeLink;
 import com.sx.icecap.service.CollectionSetLinkLocalService;
 import com.sx.icecap.service.SetTypeLinkLocalService;
 import com.sx.icecap.service.base.DataCollectionLocalServiceBaseImpl;
@@ -271,12 +272,30 @@ public class DataCollectionLocalServiceImpl
 	}
 	
 	@Indexable(type = IndexableType.DELETE)
+	public DataCollection removeDataCollection( long groupId, long dataCollectionId ) throws PortalException {
+		DataCollection dataCollection = super.dataCollectionPersistence.remove(dataCollectionId);
+		
+		_collectionSetLinkLocalService.removeCollectionSetLinksByCollection(groupId, dataCollectionId);
+		
+		super.assetEntryLocalService.deleteEntry(DataCollection.class.getName(), dataCollection.getPrimaryKey());
+		
+		super.resourceLocalService.deleteResource(
+				dataCollection.getCompanyId(), 
+				DataCollection.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL, 
+				dataCollection.getPrimaryKey());
+		
+		super.workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks(
+				dataCollection.getCompanyId(), dataCollection.getGroupId(),
+				DataCollection.class.getName(), dataCollection.getDataCollectionId());
+		
+		return dataCollection;
+	}
+	
+	@Indexable(type = IndexableType.DELETE)
 	public void removeDataCollections( long groupId, long[] dataCollectionIds ) throws PortalException {
 		for( long dataCollectionId : dataCollectionIds ) {
-			this.removeDataCollection(dataCollectionId);
-			
-			_collectionSetLinkLocalService.removeCollectionSetLinksByCollection(groupId, dataCollectionId);
-			_setTypeLinkLocalService.removeSetTypeLinksByCollection(groupId, dataCollectionId);
+			removeDataCollection(dataCollectionId);
 		}
 	}
 	

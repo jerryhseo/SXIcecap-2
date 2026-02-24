@@ -514,10 +514,10 @@ public class DataStructureLocalServiceWrapper
 	}
 
 	@Override
-	public void removeDataStructures(String strDataStructureIds)
+	public void removeDataStructures(String jsonDataStructureIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		_dataStructureLocalService.removeDataStructures(strDataStructureIds);
+		_dataStructureLocalService.removeDataStructures(jsonDataStructureIds);
 	}
 
 	/**

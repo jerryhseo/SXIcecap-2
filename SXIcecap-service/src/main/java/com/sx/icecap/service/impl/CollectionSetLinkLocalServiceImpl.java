@@ -22,12 +22,14 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.sx.icecap.exception.NoSuchCollectionSetLinkException;
 import com.sx.icecap.model.CollectionSetLink;
+import com.sx.icecap.service.SetTypeLinkLocalService;
 import com.sx.icecap.service.base.CollectionSetLinkLocalServiceBaseImpl;
 
 import java.util.Date;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -101,18 +103,15 @@ public class CollectionSetLinkLocalServiceImpl
 	}
 	
 	@Indexable(type = IndexableType.DELETE)
-	public void removeCollectionSetLinkByCollection( long groupId, long dataCollectionId ) {
-		collectionSetLinkPersistence.removeByCollection_G(groupId, dataCollectionId);
- 	}
-	
-	@Indexable(type = IndexableType.DELETE)
-	public void removeCollectionSetLinkBySet( long groupId, long dataCollectionId, long dataSetId ) throws NoSuchCollectionSetLinkException {
+	public void removeCollectionSetLinkByCollectionSet( long groupId, long dataCollectionId, long dataSetId ) throws NoSuchCollectionSetLinkException {
 		collectionSetLinkPersistence.removeByCollectionSet_G(groupId, dataCollectionId, dataSetId);
+		_setTypeLocalService.removeSetTypeLinksByCollectionSet(groupId, dataCollectionId, dataSetId);
 	}
 
 	@Indexable(type = IndexableType.DELETE)
 	public void removeCollectionSetLinksByCollection( long groupId, long dataCollectionId) {
 		collectionSetLinkPersistence.removeByCollection_G(groupId, dataCollectionId);
+		_setTypeLocalService.removeSetTypeLinksByCollection( groupId, dataCollectionId );
 	}
 	
 	@Indexable(type = IndexableType.REINDEX)
@@ -146,7 +145,6 @@ public class CollectionSetLinkLocalServiceImpl
 		
 		return link;
 	}
-
 	
 	// search functions from here
 	public List<CollectionSetLink> getAllCollectionSetLinkList(){
@@ -183,4 +181,6 @@ public class CollectionSetLinkLocalServiceImpl
 		return collectionSetLinkPersistence.fetchByCollectionSet_G(groupId, dataCollectionId, dataSetId);
 	}
 	
+	@Reference
+	SetTypeLinkLocalService _setTypeLocalService;
 }

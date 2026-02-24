@@ -452,6 +452,15 @@ public class DataCollectionLocalServiceWrapper
 	}
 
 	@Override
+	public com.sx.icecap.model.DataCollection removeDataCollection(
+			long groupId, long dataCollectionId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _dataCollectionLocalService.removeDataCollection(
+			groupId, dataCollectionId);
+	}
+
+	@Override
 	public void removeDataCollections(long groupId, long[] dataCollectionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 

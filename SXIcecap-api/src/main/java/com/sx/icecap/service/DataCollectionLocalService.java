@@ -340,6 +340,11 @@ public interface DataCollectionLocalService
 		throws PortalException;
 
 	@Indexable(type = IndexableType.DELETE)
+	public DataCollection removeDataCollection(
+			long groupId, long dataCollectionId)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.DELETE)
 	public void removeDataCollections(long groupId, long[] dataCollectionIds)
 		throws PortalException;
 

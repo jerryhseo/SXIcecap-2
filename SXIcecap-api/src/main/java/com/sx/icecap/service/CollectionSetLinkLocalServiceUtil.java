@@ -348,18 +348,11 @@ public class CollectionSetLinkLocalServiceUtil {
 		return getService().removeCollectionSetLink(collectionSetLinkId);
 	}
 
-	public static void removeCollectionSetLinkByCollection(
-		long groupId, long dataCollectionId) {
-
-		getService().removeCollectionSetLinkByCollection(
-			groupId, dataCollectionId);
-	}
-
-	public static void removeCollectionSetLinkBySet(
+	public static void removeCollectionSetLinkByCollectionSet(
 			long groupId, long dataCollectionId, long dataSetId)
 		throws com.sx.icecap.exception.NoSuchCollectionSetLinkException {
 
-		getService().removeCollectionSetLinkBySet(
+		getService().removeCollectionSetLinkByCollectionSet(
 			groupId, dataCollectionId, dataSetId);
 	}
 
