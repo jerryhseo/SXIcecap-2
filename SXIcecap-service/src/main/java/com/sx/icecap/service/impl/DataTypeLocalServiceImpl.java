@@ -46,6 +46,7 @@ import com.sx.icecap.model.DataType;
 import com.sx.icecap.model.DataTypeStructure;
 import com.sx.icecap.service.DataStructureLocalService;
 import com.sx.icecap.service.DataTypeStructureLocalService;
+import com.sx.icecap.service.SetTypeLinkLocalService;
 import com.sx.icecap.service.TypeVisualizerLinkLocalService;
 import com.sx.icecap.service.base.DataTypeLocalServiceBaseImpl;
 import com.sx.icecap.util.comparator.GroupIdComparator;
@@ -280,6 +281,8 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 		if( hasDataStructure(dataTypeId) ) {
 			dataTypeStructurePersistence.remove(dataTypeId);
 		}
+		
+		_setTypeLinkLocalService.removeSetTypeLinksByType(dataTypeId);
 		
 		super.assetEntryLocalService.deleteEntry(DataType.class.getName(), dataType.getPrimaryKey());
 
@@ -733,6 +736,9 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 	
 	@Reference
 	private DataTypeStructureLocalService _dataTypeStructureLocalService;
+	
+	@Reference
+	private SetTypeLinkLocalService _setTypeLinkLocalService;
 	
 	@Reference
 	private TypeVisualizerLinkLocalService _typeVisualizerLinkLocalService;
