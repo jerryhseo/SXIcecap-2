@@ -34,6 +34,8 @@ import com.sx.icecap.model.StructuredData;
 
 import java.io.Serializable;
 
+import java.nio.file.Path;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -597,8 +599,17 @@ public interface StructuredDataLocalService
 		throws JSONException;
 
 	@Indexable(type = IndexableType.DELETE)
+	public StructuredData removeStructuredData(long structuredDataId)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.DELETE)
 	public StructuredData removeStructuredData(
 			long structuredDataId, long dataFileFolderId)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.DELETE)
+	public StructuredData removeStructuredData(
+			long structuredDataId, Path dataFolderPath)
 		throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)

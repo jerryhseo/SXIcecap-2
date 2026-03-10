@@ -857,12 +857,26 @@ public class StructuredDataLocalServiceUtil {
 		return getService().getStructuredDataWithInfo(structuredDataId, locale);
 	}
 
+	public static StructuredData removeStructuredData(long structuredDataId)
+		throws PortalException {
+
+		return getService().removeStructuredData(structuredDataId);
+	}
+
 	public static StructuredData removeStructuredData(
 			long structuredDataId, long dataFileFolderId)
 		throws PortalException {
 
 		return getService().removeStructuredData(
 			structuredDataId, dataFileFolderId);
+	}
+
+	public static StructuredData removeStructuredData(
+			long structuredDataId, java.nio.file.Path dataFolderPath)
+		throws PortalException {
+
+		return getService().removeStructuredData(
+			structuredDataId, dataFolderPath);
 	}
 
 	public static StructuredData updateStatus(
