@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -316,111 +307,117 @@ public class DataCollectionModelImpl
 
 	private static final Map<String, Function<DataCollection, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<DataCollection, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<DataCollection, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<DataCollection, Object>>();
+
+		attributeGetterFunctions.put("uuid", DataCollection::getUuid);
+		attributeGetterFunctions.put(
+			"dataCollectionId", DataCollection::getDataCollectionId);
+		attributeGetterFunctions.put("groupId", DataCollection::getGroupId);
+		attributeGetterFunctions.put("companyId", DataCollection::getCompanyId);
+		attributeGetterFunctions.put("userId", DataCollection::getUserId);
+		attributeGetterFunctions.put("userName", DataCollection::getUserName);
+		attributeGetterFunctions.put(
+			"createDate", DataCollection::getCreateDate);
+		attributeGetterFunctions.put(
+			"modifiedDate", DataCollection::getModifiedDate);
+		attributeGetterFunctions.put(
+			"lastPublishDate", DataCollection::getLastPublishDate);
+		attributeGetterFunctions.put("status", DataCollection::getStatus);
+		attributeGetterFunctions.put(
+			"statusByUserId", DataCollection::getStatusByUserId);
+		attributeGetterFunctions.put(
+			"statusByUserName", DataCollection::getStatusByUserName);
+		attributeGetterFunctions.put(
+			"statusDate", DataCollection::getStatusDate);
+		attributeGetterFunctions.put(
+			"dataCollectionCode", DataCollection::getDataCollectionCode);
+		attributeGetterFunctions.put(
+			"dataCollectionVersion", DataCollection::getDataCollectionVersion);
+		attributeGetterFunctions.put(
+			"displayName", DataCollection::getDisplayName);
+		attributeGetterFunctions.put(
+			"description", DataCollection::getDescription);
+		attributeGetterFunctions.put("verified", DataCollection::getVerified);
+		attributeGetterFunctions.put("freezed", DataCollection::getFreezed);
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<DataCollection, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
 		Map<String, BiConsumer<DataCollection, ?>> attributeSetterBiConsumers =
 			new LinkedHashMap<String, BiConsumer<DataCollection, ?>>();
 
-		attributeGetterFunctions.put("uuid", DataCollection::getUuid);
 		attributeSetterBiConsumers.put(
 			"uuid",
 			(BiConsumer<DataCollection, String>)DataCollection::setUuid);
-		attributeGetterFunctions.put(
-			"dataCollectionId", DataCollection::getDataCollectionId);
 		attributeSetterBiConsumers.put(
 			"dataCollectionId",
 			(BiConsumer<DataCollection, Long>)
 				DataCollection::setDataCollectionId);
-		attributeGetterFunctions.put("groupId", DataCollection::getGroupId);
 		attributeSetterBiConsumers.put(
 			"groupId",
 			(BiConsumer<DataCollection, Long>)DataCollection::setGroupId);
-		attributeGetterFunctions.put("companyId", DataCollection::getCompanyId);
 		attributeSetterBiConsumers.put(
 			"companyId",
 			(BiConsumer<DataCollection, Long>)DataCollection::setCompanyId);
-		attributeGetterFunctions.put("userId", DataCollection::getUserId);
 		attributeSetterBiConsumers.put(
 			"userId",
 			(BiConsumer<DataCollection, Long>)DataCollection::setUserId);
-		attributeGetterFunctions.put("userName", DataCollection::getUserName);
 		attributeSetterBiConsumers.put(
 			"userName",
 			(BiConsumer<DataCollection, String>)DataCollection::setUserName);
-		attributeGetterFunctions.put(
-			"createDate", DataCollection::getCreateDate);
 		attributeSetterBiConsumers.put(
 			"createDate",
 			(BiConsumer<DataCollection, Date>)DataCollection::setCreateDate);
-		attributeGetterFunctions.put(
-			"modifiedDate", DataCollection::getModifiedDate);
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			(BiConsumer<DataCollection, Date>)DataCollection::setModifiedDate);
-		attributeGetterFunctions.put(
-			"lastPublishDate", DataCollection::getLastPublishDate);
 		attributeSetterBiConsumers.put(
 			"lastPublishDate",
 			(BiConsumer<DataCollection, Date>)
 				DataCollection::setLastPublishDate);
-		attributeGetterFunctions.put("status", DataCollection::getStatus);
 		attributeSetterBiConsumers.put(
 			"status",
 			(BiConsumer<DataCollection, Integer>)DataCollection::setStatus);
-		attributeGetterFunctions.put(
-			"statusByUserId", DataCollection::getStatusByUserId);
 		attributeSetterBiConsumers.put(
 			"statusByUserId",
 			(BiConsumer<DataCollection, Long>)
 				DataCollection::setStatusByUserId);
-		attributeGetterFunctions.put(
-			"statusByUserName", DataCollection::getStatusByUserName);
 		attributeSetterBiConsumers.put(
 			"statusByUserName",
 			(BiConsumer<DataCollection, String>)
 				DataCollection::setStatusByUserName);
-		attributeGetterFunctions.put(
-			"statusDate", DataCollection::getStatusDate);
 		attributeSetterBiConsumers.put(
 			"statusDate",
 			(BiConsumer<DataCollection, Date>)DataCollection::setStatusDate);
-		attributeGetterFunctions.put(
-			"dataCollectionCode", DataCollection::getDataCollectionCode);
 		attributeSetterBiConsumers.put(
 			"dataCollectionCode",
 			(BiConsumer<DataCollection, String>)
 				DataCollection::setDataCollectionCode);
-		attributeGetterFunctions.put(
-			"dataCollectionVersion", DataCollection::getDataCollectionVersion);
 		attributeSetterBiConsumers.put(
 			"dataCollectionVersion",
 			(BiConsumer<DataCollection, String>)
 				DataCollection::setDataCollectionVersion);
-		attributeGetterFunctions.put(
-			"displayName", DataCollection::getDisplayName);
 		attributeSetterBiConsumers.put(
 			"displayName",
 			(BiConsumer<DataCollection, String>)DataCollection::setDisplayName);
-		attributeGetterFunctions.put(
-			"description", DataCollection::getDescription);
 		attributeSetterBiConsumers.put(
 			"description",
 			(BiConsumer<DataCollection, String>)DataCollection::setDescription);
-		attributeGetterFunctions.put("verified", DataCollection::getVerified);
 		attributeSetterBiConsumers.put(
 			"verified",
 			(BiConsumer<DataCollection, String>)DataCollection::setVerified);
-		attributeGetterFunctions.put("freezed", DataCollection::getFreezed);
 		attributeSetterBiConsumers.put(
 			"freezed",
 			(BiConsumer<DataCollection, String>)DataCollection::setFreezed);
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

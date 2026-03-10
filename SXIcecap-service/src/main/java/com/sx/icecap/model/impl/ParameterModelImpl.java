@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -316,103 +307,109 @@ public class ParameterModelImpl
 
 	private static final Map<String, Function<Parameter, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<Parameter, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<Parameter, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<Parameter, Object>>();
-		Map<String, BiConsumer<Parameter, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<Parameter, ?>>();
 
 		attributeGetterFunctions.put("uuid", Parameter::getUuid);
-		attributeSetterBiConsumers.put(
-			"uuid", (BiConsumer<Parameter, String>)Parameter::setUuid);
 		attributeGetterFunctions.put("parameterId", Parameter::getParameterId);
-		attributeSetterBiConsumers.put(
-			"parameterId",
-			(BiConsumer<Parameter, Long>)Parameter::setParameterId);
 		attributeGetterFunctions.put("companyId", Parameter::getCompanyId);
-		attributeSetterBiConsumers.put(
-			"companyId", (BiConsumer<Parameter, Long>)Parameter::setCompanyId);
 		attributeGetterFunctions.put("groupId", Parameter::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId", (BiConsumer<Parameter, Long>)Parameter::setGroupId);
 		attributeGetterFunctions.put("userId", Parameter::getUserId);
-		attributeSetterBiConsumers.put(
-			"userId", (BiConsumer<Parameter, Long>)Parameter::setUserId);
 		attributeGetterFunctions.put("userName", Parameter::getUserName);
-		attributeSetterBiConsumers.put(
-			"userName", (BiConsumer<Parameter, String>)Parameter::setUserName);
 		attributeGetterFunctions.put("createDate", Parameter::getCreateDate);
-		attributeSetterBiConsumers.put(
-			"createDate",
-			(BiConsumer<Parameter, Date>)Parameter::setCreateDate);
 		attributeGetterFunctions.put(
 			"modifiedDate", Parameter::getModifiedDate);
-		attributeSetterBiConsumers.put(
-			"modifiedDate",
-			(BiConsumer<Parameter, Date>)Parameter::setModifiedDate);
 		attributeGetterFunctions.put("status", Parameter::getStatus);
-		attributeSetterBiConsumers.put(
-			"status", (BiConsumer<Parameter, Integer>)Parameter::setStatus);
 		attributeGetterFunctions.put(
 			"statusByUserId", Parameter::getStatusByUserId);
-		attributeSetterBiConsumers.put(
-			"statusByUserId",
-			(BiConsumer<Parameter, Long>)Parameter::setStatusByUserId);
 		attributeGetterFunctions.put(
 			"statusByUserName", Parameter::getStatusByUserName);
-		attributeSetterBiConsumers.put(
-			"statusByUserName",
-			(BiConsumer<Parameter, String>)Parameter::setStatusByUserName);
 		attributeGetterFunctions.put("statusDate", Parameter::getStatusDate);
-		attributeSetterBiConsumers.put(
-			"statusDate",
-			(BiConsumer<Parameter, Date>)Parameter::setStatusDate);
 		attributeGetterFunctions.put(
 			"lastPublishDate", Parameter::getLastPublishDate);
-		attributeSetterBiConsumers.put(
-			"lastPublishDate",
-			(BiConsumer<Parameter, Date>)Parameter::setLastPublishDate);
 		attributeGetterFunctions.put("paramCode", Parameter::getParamCode);
-		attributeSetterBiConsumers.put(
-			"paramCode",
-			(BiConsumer<Parameter, String>)Parameter::setParamCode);
 		attributeGetterFunctions.put(
 			"paramVersion", Parameter::getParamVersion);
-		attributeSetterBiConsumers.put(
-			"paramVersion",
-			(BiConsumer<Parameter, String>)Parameter::setParamVersion);
 		attributeGetterFunctions.put("paramType", Parameter::getParamType);
-		attributeSetterBiConsumers.put(
-			"paramType",
-			(BiConsumer<Parameter, String>)Parameter::setParamType);
 		attributeGetterFunctions.put("displayName", Parameter::getDisplayName);
-		attributeSetterBiConsumers.put(
-			"displayName",
-			(BiConsumer<Parameter, String>)Parameter::setDisplayName);
 		attributeGetterFunctions.put("definition", Parameter::getDefinition);
-		attributeSetterBiConsumers.put(
-			"definition",
-			(BiConsumer<Parameter, String>)Parameter::setDefinition);
 		attributeGetterFunctions.put("tooltip", Parameter::getTooltip);
-		attributeSetterBiConsumers.put(
-			"tooltip", (BiConsumer<Parameter, String>)Parameter::setTooltip);
 		attributeGetterFunctions.put("synonyms", Parameter::getSynonyms);
-		attributeSetterBiConsumers.put(
-			"synonyms", (BiConsumer<Parameter, String>)Parameter::setSynonyms);
 		attributeGetterFunctions.put(
 			"typeProperties", Parameter::getTypeProperties);
-		attributeSetterBiConsumers.put(
-			"typeProperties",
-			(BiConsumer<Parameter, String>)Parameter::setTypeProperties);
 		attributeGetterFunctions.put("standard", Parameter::getStandard);
-		attributeSetterBiConsumers.put(
-			"standard", (BiConsumer<Parameter, Boolean>)Parameter::setStandard);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<Parameter, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<Parameter, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<Parameter, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"uuid", (BiConsumer<Parameter, String>)Parameter::setUuid);
+		attributeSetterBiConsumers.put(
+			"parameterId",
+			(BiConsumer<Parameter, Long>)Parameter::setParameterId);
+		attributeSetterBiConsumers.put(
+			"companyId", (BiConsumer<Parameter, Long>)Parameter::setCompanyId);
+		attributeSetterBiConsumers.put(
+			"groupId", (BiConsumer<Parameter, Long>)Parameter::setGroupId);
+		attributeSetterBiConsumers.put(
+			"userId", (BiConsumer<Parameter, Long>)Parameter::setUserId);
+		attributeSetterBiConsumers.put(
+			"userName", (BiConsumer<Parameter, String>)Parameter::setUserName);
+		attributeSetterBiConsumers.put(
+			"createDate",
+			(BiConsumer<Parameter, Date>)Parameter::setCreateDate);
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			(BiConsumer<Parameter, Date>)Parameter::setModifiedDate);
+		attributeSetterBiConsumers.put(
+			"status", (BiConsumer<Parameter, Integer>)Parameter::setStatus);
+		attributeSetterBiConsumers.put(
+			"statusByUserId",
+			(BiConsumer<Parameter, Long>)Parameter::setStatusByUserId);
+		attributeSetterBiConsumers.put(
+			"statusByUserName",
+			(BiConsumer<Parameter, String>)Parameter::setStatusByUserName);
+		attributeSetterBiConsumers.put(
+			"statusDate",
+			(BiConsumer<Parameter, Date>)Parameter::setStatusDate);
+		attributeSetterBiConsumers.put(
+			"lastPublishDate",
+			(BiConsumer<Parameter, Date>)Parameter::setLastPublishDate);
+		attributeSetterBiConsumers.put(
+			"paramCode",
+			(BiConsumer<Parameter, String>)Parameter::setParamCode);
+		attributeSetterBiConsumers.put(
+			"paramVersion",
+			(BiConsumer<Parameter, String>)Parameter::setParamVersion);
+		attributeSetterBiConsumers.put(
+			"paramType",
+			(BiConsumer<Parameter, String>)Parameter::setParamType);
+		attributeSetterBiConsumers.put(
+			"displayName",
+			(BiConsumer<Parameter, String>)Parameter::setDisplayName);
+		attributeSetterBiConsumers.put(
+			"definition",
+			(BiConsumer<Parameter, String>)Parameter::setDefinition);
+		attributeSetterBiConsumers.put(
+			"tooltip", (BiConsumer<Parameter, String>)Parameter::setTooltip);
+		attributeSetterBiConsumers.put(
+			"synonyms", (BiConsumer<Parameter, String>)Parameter::setSynonyms);
+		attributeSetterBiConsumers.put(
+			"typeProperties",
+			(BiConsumer<Parameter, String>)Parameter::setTypeProperties);
+		attributeSetterBiConsumers.put(
+			"standard", (BiConsumer<Parameter, Boolean>)Parameter::setStandard);
+
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

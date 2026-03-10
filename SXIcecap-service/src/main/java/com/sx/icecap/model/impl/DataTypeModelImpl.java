@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -256,101 +247,107 @@ public class DataTypeModelImpl
 
 	private static final Map<String, Function<DataType, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<DataType, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<DataType, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<DataType, Object>>();
-		Map<String, BiConsumer<DataType, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<DataType, ?>>();
 
 		attributeGetterFunctions.put("uuid", DataType::getUuid);
-		attributeSetterBiConsumers.put(
-			"uuid", (BiConsumer<DataType, String>)DataType::setUuid);
 		attributeGetterFunctions.put("dataTypeId", DataType::getDataTypeId);
-		attributeSetterBiConsumers.put(
-			"dataTypeId", (BiConsumer<DataType, Long>)DataType::setDataTypeId);
 		attributeGetterFunctions.put("companyId", DataType::getCompanyId);
-		attributeSetterBiConsumers.put(
-			"companyId", (BiConsumer<DataType, Long>)DataType::setCompanyId);
 		attributeGetterFunctions.put("groupId", DataType::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId", (BiConsumer<DataType, Long>)DataType::setGroupId);
 		attributeGetterFunctions.put("userId", DataType::getUserId);
-		attributeSetterBiConsumers.put(
-			"userId", (BiConsumer<DataType, Long>)DataType::setUserId);
 		attributeGetterFunctions.put("userName", DataType::getUserName);
-		attributeSetterBiConsumers.put(
-			"userName", (BiConsumer<DataType, String>)DataType::setUserName);
 		attributeGetterFunctions.put("createDate", DataType::getCreateDate);
-		attributeSetterBiConsumers.put(
-			"createDate", (BiConsumer<DataType, Date>)DataType::setCreateDate);
 		attributeGetterFunctions.put("modifiedDate", DataType::getModifiedDate);
-		attributeSetterBiConsumers.put(
-			"modifiedDate",
-			(BiConsumer<DataType, Date>)DataType::setModifiedDate);
 		attributeGetterFunctions.put(
 			"lastPublishDate", DataType::getLastPublishDate);
-		attributeSetterBiConsumers.put(
-			"lastPublishDate",
-			(BiConsumer<DataType, Date>)DataType::setLastPublishDate);
 		attributeGetterFunctions.put("status", DataType::getStatus);
-		attributeSetterBiConsumers.put(
-			"status", (BiConsumer<DataType, Integer>)DataType::setStatus);
 		attributeGetterFunctions.put(
 			"statusByUserId", DataType::getStatusByUserId);
-		attributeSetterBiConsumers.put(
-			"statusByUserId",
-			(BiConsumer<DataType, Long>)DataType::setStatusByUserId);
 		attributeGetterFunctions.put(
 			"statusByUserName", DataType::getStatusByUserName);
-		attributeSetterBiConsumers.put(
-			"statusByUserName",
-			(BiConsumer<DataType, String>)DataType::setStatusByUserName);
 		attributeGetterFunctions.put("statusDate", DataType::getStatusDate);
-		attributeSetterBiConsumers.put(
-			"statusDate", (BiConsumer<DataType, Date>)DataType::setStatusDate);
 		attributeGetterFunctions.put("dataTypeCode", DataType::getDataTypeCode);
-		attributeSetterBiConsumers.put(
-			"dataTypeCode",
-			(BiConsumer<DataType, String>)DataType::setDataTypeCode);
 		attributeGetterFunctions.put(
 			"dataTypeVersion", DataType::getDataTypeVersion);
-		attributeSetterBiConsumers.put(
-			"dataTypeVersion",
-			(BiConsumer<DataType, String>)DataType::setDataTypeVersion);
 		attributeGetterFunctions.put("displayName", DataType::getDisplayName);
-		attributeSetterBiConsumers.put(
-			"displayName",
-			(BiConsumer<DataType, String>)DataType::setDisplayName);
 		attributeGetterFunctions.put("extension", DataType::getExtension);
-		attributeSetterBiConsumers.put(
-			"extension", (BiConsumer<DataType, String>)DataType::setExtension);
 		attributeGetterFunctions.put("sampleFileId", DataType::getSampleFileId);
-		attributeSetterBiConsumers.put(
-			"sampleFileId",
-			(BiConsumer<DataType, Long>)DataType::setSampleFileId);
 		attributeGetterFunctions.put("description", DataType::getDescription);
-		attributeSetterBiConsumers.put(
-			"description",
-			(BiConsumer<DataType, String>)DataType::setDescription);
 		attributeGetterFunctions.put("inputStatus", DataType::getInputStatus);
-		attributeSetterBiConsumers.put(
-			"inputStatus",
-			(BiConsumer<DataType, Boolean>)DataType::setInputStatus);
 		attributeGetterFunctions.put("jumpTo", DataType::getJumpTo);
-		attributeSetterBiConsumers.put(
-			"jumpTo", (BiConsumer<DataType, Boolean>)DataType::setJumpTo);
 		attributeGetterFunctions.put("verified", DataType::getVerified);
-		attributeSetterBiConsumers.put(
-			"verified", (BiConsumer<DataType, String>)DataType::setVerified);
 		attributeGetterFunctions.put("freezed", DataType::getFreezed);
-		attributeSetterBiConsumers.put(
-			"freezed", (BiConsumer<DataType, String>)DataType::setFreezed);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<DataType, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<DataType, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<DataType, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"uuid", (BiConsumer<DataType, String>)DataType::setUuid);
+		attributeSetterBiConsumers.put(
+			"dataTypeId", (BiConsumer<DataType, Long>)DataType::setDataTypeId);
+		attributeSetterBiConsumers.put(
+			"companyId", (BiConsumer<DataType, Long>)DataType::setCompanyId);
+		attributeSetterBiConsumers.put(
+			"groupId", (BiConsumer<DataType, Long>)DataType::setGroupId);
+		attributeSetterBiConsumers.put(
+			"userId", (BiConsumer<DataType, Long>)DataType::setUserId);
+		attributeSetterBiConsumers.put(
+			"userName", (BiConsumer<DataType, String>)DataType::setUserName);
+		attributeSetterBiConsumers.put(
+			"createDate", (BiConsumer<DataType, Date>)DataType::setCreateDate);
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			(BiConsumer<DataType, Date>)DataType::setModifiedDate);
+		attributeSetterBiConsumers.put(
+			"lastPublishDate",
+			(BiConsumer<DataType, Date>)DataType::setLastPublishDate);
+		attributeSetterBiConsumers.put(
+			"status", (BiConsumer<DataType, Integer>)DataType::setStatus);
+		attributeSetterBiConsumers.put(
+			"statusByUserId",
+			(BiConsumer<DataType, Long>)DataType::setStatusByUserId);
+		attributeSetterBiConsumers.put(
+			"statusByUserName",
+			(BiConsumer<DataType, String>)DataType::setStatusByUserName);
+		attributeSetterBiConsumers.put(
+			"statusDate", (BiConsumer<DataType, Date>)DataType::setStatusDate);
+		attributeSetterBiConsumers.put(
+			"dataTypeCode",
+			(BiConsumer<DataType, String>)DataType::setDataTypeCode);
+		attributeSetterBiConsumers.put(
+			"dataTypeVersion",
+			(BiConsumer<DataType, String>)DataType::setDataTypeVersion);
+		attributeSetterBiConsumers.put(
+			"displayName",
+			(BiConsumer<DataType, String>)DataType::setDisplayName);
+		attributeSetterBiConsumers.put(
+			"extension", (BiConsumer<DataType, String>)DataType::setExtension);
+		attributeSetterBiConsumers.put(
+			"sampleFileId",
+			(BiConsumer<DataType, Long>)DataType::setSampleFileId);
+		attributeSetterBiConsumers.put(
+			"description",
+			(BiConsumer<DataType, String>)DataType::setDescription);
+		attributeSetterBiConsumers.put(
+			"inputStatus",
+			(BiConsumer<DataType, Boolean>)DataType::setInputStatus);
+		attributeSetterBiConsumers.put(
+			"jumpTo", (BiConsumer<DataType, Boolean>)DataType::setJumpTo);
+		attributeSetterBiConsumers.put(
+			"verified", (BiConsumer<DataType, String>)DataType::setVerified);
+		attributeSetterBiConsumers.put(
+			"freezed", (BiConsumer<DataType, String>)DataType::setFreezed);
+
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

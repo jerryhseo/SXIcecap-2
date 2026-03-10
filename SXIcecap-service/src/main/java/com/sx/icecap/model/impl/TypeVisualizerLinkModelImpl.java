@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -249,40 +240,46 @@ public class TypeVisualizerLinkModelImpl
 
 	private static final Map<String, Function<TypeVisualizerLink, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TypeVisualizerLink, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TypeVisualizerLink, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<TypeVisualizerLink, Object>>();
-		Map<String, BiConsumer<TypeVisualizerLink, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<TypeVisualizerLink, ?>>();
 
 		attributeGetterFunctions.put(
 			"typeVisualizerLinkId",
 			TypeVisualizerLink::getTypeVisualizerLinkId);
+		attributeGetterFunctions.put(
+			"dataTypeId", TypeVisualizerLink::getDataTypeId);
+		attributeGetterFunctions.put(
+			"visualizerId", TypeVisualizerLink::getVisualizerId);
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TypeVisualizerLink, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TypeVisualizerLink, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<TypeVisualizerLink, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"typeVisualizerLinkId",
 			(BiConsumer<TypeVisualizerLink, Long>)
 				TypeVisualizerLink::setTypeVisualizerLinkId);
-		attributeGetterFunctions.put(
-			"dataTypeId", TypeVisualizerLink::getDataTypeId);
 		attributeSetterBiConsumers.put(
 			"dataTypeId",
 			(BiConsumer<TypeVisualizerLink, Long>)
 				TypeVisualizerLink::setDataTypeId);
-		attributeGetterFunctions.put(
-			"visualizerId", TypeVisualizerLink::getVisualizerId);
 		attributeSetterBiConsumers.put(
 			"visualizerId",
 			(BiConsumer<TypeVisualizerLink, Long>)
 				TypeVisualizerLink::setVisualizerId);
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

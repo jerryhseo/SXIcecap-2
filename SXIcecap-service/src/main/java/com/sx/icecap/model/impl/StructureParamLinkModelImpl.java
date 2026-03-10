@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -203,45 +194,51 @@ public class StructureParamLinkModelImpl
 
 	private static final Map<String, Function<StructureParamLink, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<StructureParamLink, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<StructureParamLink, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<StructureParamLink, Object>>();
-		Map<String, BiConsumer<StructureParamLink, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<StructureParamLink, ?>>();
 
 		attributeGetterFunctions.put(
 			"structureParamLinkId",
 			StructureParamLink::getStructureParamLinkId);
+		attributeGetterFunctions.put(
+			"dataStructureId", StructureParamLink::getDataStructureId);
+		attributeGetterFunctions.put(
+			"parameterId", StructureParamLink::getParameterId);
+		attributeGetterFunctions.put("order", StructureParamLink::getOrder);
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<StructureParamLink, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<StructureParamLink, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<StructureParamLink, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"structureParamLinkId",
 			(BiConsumer<StructureParamLink, Long>)
 				StructureParamLink::setStructureParamLinkId);
-		attributeGetterFunctions.put(
-			"dataStructureId", StructureParamLink::getDataStructureId);
 		attributeSetterBiConsumers.put(
 			"dataStructureId",
 			(BiConsumer<StructureParamLink, Long>)
 				StructureParamLink::setDataStructureId);
-		attributeGetterFunctions.put(
-			"parameterId", StructureParamLink::getParameterId);
 		attributeSetterBiConsumers.put(
 			"parameterId",
 			(BiConsumer<StructureParamLink, Long>)
 				StructureParamLink::setParameterId);
-		attributeGetterFunctions.put("order", StructureParamLink::getOrder);
 		attributeSetterBiConsumers.put(
 			"order",
 			(BiConsumer<StructureParamLink, Integer>)
 				StructureParamLink::setOrder);
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

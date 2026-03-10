@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -192,33 +183,39 @@ public class DataTypeStructureModelImpl
 
 	private static final Map<String, Function<DataTypeStructure, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<DataTypeStructure, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<DataTypeStructure, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<DataTypeStructure, Object>>();
+
+		attributeGetterFunctions.put(
+			"dataTypeId", DataTypeStructure::getDataTypeId);
+		attributeGetterFunctions.put(
+			"structure", DataTypeStructure::getStructure);
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<DataTypeStructure, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
 		Map<String, BiConsumer<DataTypeStructure, ?>>
 			attributeSetterBiConsumers =
 				new LinkedHashMap<String, BiConsumer<DataTypeStructure, ?>>();
 
-		attributeGetterFunctions.put(
-			"dataTypeId", DataTypeStructure::getDataTypeId);
 		attributeSetterBiConsumers.put(
 			"dataTypeId",
 			(BiConsumer<DataTypeStructure, Long>)
 				DataTypeStructure::setDataTypeId);
-		attributeGetterFunctions.put(
-			"structure", DataTypeStructure::getStructure);
 		attributeSetterBiConsumers.put(
 			"structure",
 			(BiConsumer<DataTypeStructure, String>)
 				DataTypeStructure::setStructure);
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

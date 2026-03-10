@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -245,92 +236,98 @@ public class DataCommentModelImpl
 
 	private static final Map<String, Function<DataComment, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<DataComment, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<DataComment, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<DataComment, Object>>();
+
+		attributeGetterFunctions.put("uuid", DataComment::getUuid);
+		attributeGetterFunctions.put(
+			"dataCommentId", DataComment::getDataCommentId);
+		attributeGetterFunctions.put("companyId", DataComment::getCompanyId);
+		attributeGetterFunctions.put("groupId", DataComment::getGroupId);
+		attributeGetterFunctions.put("userId", DataComment::getUserId);
+		attributeGetterFunctions.put("userName", DataComment::getUserName);
+		attributeGetterFunctions.put("createDate", DataComment::getCreateDate);
+		attributeGetterFunctions.put(
+			"modifiedDate", DataComment::getModifiedDate);
+		attributeGetterFunctions.put("status", DataComment::getStatus);
+		attributeGetterFunctions.put(
+			"statusByUserId", DataComment::getStatusByUserId);
+		attributeGetterFunctions.put(
+			"statusByUserName", DataComment::getStatusByUserName);
+		attributeGetterFunctions.put("statusDate", DataComment::getStatusDate);
+		attributeGetterFunctions.put(
+			"lastPublishDate", DataComment::getLastPublishDate);
+		attributeGetterFunctions.put(
+			"commentModel", DataComment::getCommentModel);
+		attributeGetterFunctions.put("dataId", DataComment::getDataId);
+		attributeGetterFunctions.put("paramCode", DataComment::getParamCode);
+		attributeGetterFunctions.put(
+			"parentCommentId", DataComment::getParentCommentId);
+		attributeGetterFunctions.put("comment", DataComment::getComment);
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<DataComment, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
 		Map<String, BiConsumer<DataComment, ?>> attributeSetterBiConsumers =
 			new LinkedHashMap<String, BiConsumer<DataComment, ?>>();
 
-		attributeGetterFunctions.put("uuid", DataComment::getUuid);
 		attributeSetterBiConsumers.put(
 			"uuid", (BiConsumer<DataComment, String>)DataComment::setUuid);
-		attributeGetterFunctions.put(
-			"dataCommentId", DataComment::getDataCommentId);
 		attributeSetterBiConsumers.put(
 			"dataCommentId",
 			(BiConsumer<DataComment, Long>)DataComment::setDataCommentId);
-		attributeGetterFunctions.put("companyId", DataComment::getCompanyId);
 		attributeSetterBiConsumers.put(
 			"companyId",
 			(BiConsumer<DataComment, Long>)DataComment::setCompanyId);
-		attributeGetterFunctions.put("groupId", DataComment::getGroupId);
 		attributeSetterBiConsumers.put(
 			"groupId", (BiConsumer<DataComment, Long>)DataComment::setGroupId);
-		attributeGetterFunctions.put("userId", DataComment::getUserId);
 		attributeSetterBiConsumers.put(
 			"userId", (BiConsumer<DataComment, Long>)DataComment::setUserId);
-		attributeGetterFunctions.put("userName", DataComment::getUserName);
 		attributeSetterBiConsumers.put(
 			"userName",
 			(BiConsumer<DataComment, String>)DataComment::setUserName);
-		attributeGetterFunctions.put("createDate", DataComment::getCreateDate);
 		attributeSetterBiConsumers.put(
 			"createDate",
 			(BiConsumer<DataComment, Date>)DataComment::setCreateDate);
-		attributeGetterFunctions.put(
-			"modifiedDate", DataComment::getModifiedDate);
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			(BiConsumer<DataComment, Date>)DataComment::setModifiedDate);
-		attributeGetterFunctions.put("status", DataComment::getStatus);
 		attributeSetterBiConsumers.put(
 			"status", (BiConsumer<DataComment, Integer>)DataComment::setStatus);
-		attributeGetterFunctions.put(
-			"statusByUserId", DataComment::getStatusByUserId);
 		attributeSetterBiConsumers.put(
 			"statusByUserId",
 			(BiConsumer<DataComment, Long>)DataComment::setStatusByUserId);
-		attributeGetterFunctions.put(
-			"statusByUserName", DataComment::getStatusByUserName);
 		attributeSetterBiConsumers.put(
 			"statusByUserName",
 			(BiConsumer<DataComment, String>)DataComment::setStatusByUserName);
-		attributeGetterFunctions.put("statusDate", DataComment::getStatusDate);
 		attributeSetterBiConsumers.put(
 			"statusDate",
 			(BiConsumer<DataComment, Date>)DataComment::setStatusDate);
-		attributeGetterFunctions.put(
-			"lastPublishDate", DataComment::getLastPublishDate);
 		attributeSetterBiConsumers.put(
 			"lastPublishDate",
 			(BiConsumer<DataComment, Date>)DataComment::setLastPublishDate);
-		attributeGetterFunctions.put(
-			"commentModel", DataComment::getCommentModel);
 		attributeSetterBiConsumers.put(
 			"commentModel",
 			(BiConsumer<DataComment, String>)DataComment::setCommentModel);
-		attributeGetterFunctions.put("dataId", DataComment::getDataId);
 		attributeSetterBiConsumers.put(
 			"dataId", (BiConsumer<DataComment, Long>)DataComment::setDataId);
-		attributeGetterFunctions.put("paramCode", DataComment::getParamCode);
 		attributeSetterBiConsumers.put(
 			"paramCode",
 			(BiConsumer<DataComment, String>)DataComment::setParamCode);
-		attributeGetterFunctions.put(
-			"parentCommentId", DataComment::getParentCommentId);
 		attributeSetterBiConsumers.put(
 			"parentCommentId",
 			(BiConsumer<DataComment, Long>)DataComment::setParentCommentId);
-		attributeGetterFunctions.put("comment", DataComment::getComment);
 		attributeSetterBiConsumers.put(
 			"comment",
 			(BiConsumer<DataComment, String>)DataComment::setComment);
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

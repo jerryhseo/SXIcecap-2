@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -250,103 +241,109 @@ public class DataStructureModelImpl
 
 	private static final Map<String, Function<DataStructure, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<DataStructure, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<DataStructure, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<DataStructure, Object>>();
+
+		attributeGetterFunctions.put("uuid", DataStructure::getUuid);
+		attributeGetterFunctions.put("companyId", DataStructure::getCompanyId);
+		attributeGetterFunctions.put("groupId", DataStructure::getGroupId);
+		attributeGetterFunctions.put("userId", DataStructure::getUserId);
+		attributeGetterFunctions.put("userName", DataStructure::getUserName);
+		attributeGetterFunctions.put(
+			"createDate", DataStructure::getCreateDate);
+		attributeGetterFunctions.put(
+			"modifiedDate", DataStructure::getModifiedDate);
+		attributeGetterFunctions.put(
+			"lastPublishDate", DataStructure::getLastPublishDate);
+		attributeGetterFunctions.put("status", DataStructure::getStatus);
+		attributeGetterFunctions.put(
+			"statusByUserId", DataStructure::getStatusByUserId);
+		attributeGetterFunctions.put(
+			"statusByUserName", DataStructure::getStatusByUserName);
+		attributeGetterFunctions.put(
+			"statusDate", DataStructure::getStatusDate);
+		attributeGetterFunctions.put(
+			"dataStructureId", DataStructure::getDataStructureId);
+		attributeGetterFunctions.put(
+			"dataStructureCode", DataStructure::getDataStructureCode);
+		attributeGetterFunctions.put(
+			"dataStructureVersion", DataStructure::getDataStructureVersion);
+		attributeGetterFunctions.put(
+			"displayName", DataStructure::getDisplayName);
+		attributeGetterFunctions.put(
+			"description", DataStructure::getDescription);
+		attributeGetterFunctions.put("structure", DataStructure::getStructure);
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<DataStructure, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
 		Map<String, BiConsumer<DataStructure, ?>> attributeSetterBiConsumers =
 			new LinkedHashMap<String, BiConsumer<DataStructure, ?>>();
 
-		attributeGetterFunctions.put("uuid", DataStructure::getUuid);
 		attributeSetterBiConsumers.put(
 			"uuid", (BiConsumer<DataStructure, String>)DataStructure::setUuid);
-		attributeGetterFunctions.put("companyId", DataStructure::getCompanyId);
 		attributeSetterBiConsumers.put(
 			"companyId",
 			(BiConsumer<DataStructure, Long>)DataStructure::setCompanyId);
-		attributeGetterFunctions.put("groupId", DataStructure::getGroupId);
 		attributeSetterBiConsumers.put(
 			"groupId",
 			(BiConsumer<DataStructure, Long>)DataStructure::setGroupId);
-		attributeGetterFunctions.put("userId", DataStructure::getUserId);
 		attributeSetterBiConsumers.put(
 			"userId",
 			(BiConsumer<DataStructure, Long>)DataStructure::setUserId);
-		attributeGetterFunctions.put("userName", DataStructure::getUserName);
 		attributeSetterBiConsumers.put(
 			"userName",
 			(BiConsumer<DataStructure, String>)DataStructure::setUserName);
-		attributeGetterFunctions.put(
-			"createDate", DataStructure::getCreateDate);
 		attributeSetterBiConsumers.put(
 			"createDate",
 			(BiConsumer<DataStructure, Date>)DataStructure::setCreateDate);
-		attributeGetterFunctions.put(
-			"modifiedDate", DataStructure::getModifiedDate);
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			(BiConsumer<DataStructure, Date>)DataStructure::setModifiedDate);
-		attributeGetterFunctions.put(
-			"lastPublishDate", DataStructure::getLastPublishDate);
 		attributeSetterBiConsumers.put(
 			"lastPublishDate",
 			(BiConsumer<DataStructure, Date>)DataStructure::setLastPublishDate);
-		attributeGetterFunctions.put("status", DataStructure::getStatus);
 		attributeSetterBiConsumers.put(
 			"status",
 			(BiConsumer<DataStructure, Integer>)DataStructure::setStatus);
-		attributeGetterFunctions.put(
-			"statusByUserId", DataStructure::getStatusByUserId);
 		attributeSetterBiConsumers.put(
 			"statusByUserId",
 			(BiConsumer<DataStructure, Long>)DataStructure::setStatusByUserId);
-		attributeGetterFunctions.put(
-			"statusByUserName", DataStructure::getStatusByUserName);
 		attributeSetterBiConsumers.put(
 			"statusByUserName",
 			(BiConsumer<DataStructure, String>)
 				DataStructure::setStatusByUserName);
-		attributeGetterFunctions.put(
-			"statusDate", DataStructure::getStatusDate);
 		attributeSetterBiConsumers.put(
 			"statusDate",
 			(BiConsumer<DataStructure, Date>)DataStructure::setStatusDate);
-		attributeGetterFunctions.put(
-			"dataStructureId", DataStructure::getDataStructureId);
 		attributeSetterBiConsumers.put(
 			"dataStructureId",
 			(BiConsumer<DataStructure, Long>)DataStructure::setDataStructureId);
-		attributeGetterFunctions.put(
-			"dataStructureCode", DataStructure::getDataStructureCode);
 		attributeSetterBiConsumers.put(
 			"dataStructureCode",
 			(BiConsumer<DataStructure, String>)
 				DataStructure::setDataStructureCode);
-		attributeGetterFunctions.put(
-			"dataStructureVersion", DataStructure::getDataStructureVersion);
 		attributeSetterBiConsumers.put(
 			"dataStructureVersion",
 			(BiConsumer<DataStructure, String>)
 				DataStructure::setDataStructureVersion);
-		attributeGetterFunctions.put(
-			"displayName", DataStructure::getDisplayName);
 		attributeSetterBiConsumers.put(
 			"displayName",
 			(BiConsumer<DataStructure, String>)DataStructure::setDisplayName);
-		attributeGetterFunctions.put(
-			"description", DataStructure::getDescription);
 		attributeSetterBiConsumers.put(
 			"description",
 			(BiConsumer<DataStructure, String>)DataStructure::setDescription);
-		attributeGetterFunctions.put("structure", DataStructure::getStructure);
 		attributeSetterBiConsumers.put(
 			"structure",
 			(BiConsumer<DataStructure, String>)DataStructure::setStructure);
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

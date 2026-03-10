@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -218,67 +209,73 @@ public class ActionHistoryModelImpl
 
 	private static final Map<String, Function<ActionHistory, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ActionHistory, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ActionHistory, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<ActionHistory, Object>>();
-		Map<String, BiConsumer<ActionHistory, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<ActionHistory, ?>>();
 
 		attributeGetterFunctions.put(
 			"actionHistoryId", ActionHistory::getActionHistoryId);
+		attributeGetterFunctions.put("userId", ActionHistory::getUserId);
+		attributeGetterFunctions.put("userName", ActionHistory::getUserName);
+		attributeGetterFunctions.put(
+			"createDate", ActionHistory::getCreateDate);
+		attributeGetterFunctions.put(
+			"actionModel", ActionHistory::getActionModel);
+		attributeGetterFunctions.put("dataId", ActionHistory::getDataId);
+		attributeGetterFunctions.put("paramCode", ActionHistory::getParamCode);
+		attributeGetterFunctions.put(
+			"actionCommand", ActionHistory::getActionCommand);
+		attributeGetterFunctions.put("prevValue", ActionHistory::getPrevValue);
+		attributeGetterFunctions.put(
+			"modifiedValue", ActionHistory::getModifiedValue);
+		attributeGetterFunctions.put("comment", ActionHistory::getComment);
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ActionHistory, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ActionHistory, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<ActionHistory, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"actionHistoryId",
 			(BiConsumer<ActionHistory, Long>)ActionHistory::setActionHistoryId);
-		attributeGetterFunctions.put("userId", ActionHistory::getUserId);
 		attributeSetterBiConsumers.put(
 			"userId",
 			(BiConsumer<ActionHistory, Long>)ActionHistory::setUserId);
-		attributeGetterFunctions.put("userName", ActionHistory::getUserName);
 		attributeSetterBiConsumers.put(
 			"userName",
 			(BiConsumer<ActionHistory, String>)ActionHistory::setUserName);
-		attributeGetterFunctions.put(
-			"createDate", ActionHistory::getCreateDate);
 		attributeSetterBiConsumers.put(
 			"createDate",
 			(BiConsumer<ActionHistory, Date>)ActionHistory::setCreateDate);
-		attributeGetterFunctions.put(
-			"actionModel", ActionHistory::getActionModel);
 		attributeSetterBiConsumers.put(
 			"actionModel",
 			(BiConsumer<ActionHistory, String>)ActionHistory::setActionModel);
-		attributeGetterFunctions.put("dataId", ActionHistory::getDataId);
 		attributeSetterBiConsumers.put(
 			"dataId",
 			(BiConsumer<ActionHistory, Long>)ActionHistory::setDataId);
-		attributeGetterFunctions.put("paramCode", ActionHistory::getParamCode);
 		attributeSetterBiConsumers.put(
 			"paramCode",
 			(BiConsumer<ActionHistory, String>)ActionHistory::setParamCode);
-		attributeGetterFunctions.put(
-			"actionCommand", ActionHistory::getActionCommand);
 		attributeSetterBiConsumers.put(
 			"actionCommand",
 			(BiConsumer<ActionHistory, String>)ActionHistory::setActionCommand);
-		attributeGetterFunctions.put("prevValue", ActionHistory::getPrevValue);
 		attributeSetterBiConsumers.put(
 			"prevValue",
 			(BiConsumer<ActionHistory, String>)ActionHistory::setPrevValue);
-		attributeGetterFunctions.put(
-			"modifiedValue", ActionHistory::getModifiedValue);
 		attributeSetterBiConsumers.put(
 			"modifiedValue",
 			(BiConsumer<ActionHistory, String>)ActionHistory::setModifiedValue);
-		attributeGetterFunctions.put("comment", ActionHistory::getComment);
 		attributeSetterBiConsumers.put(
 			"comment",
 			(BiConsumer<ActionHistory, String>)ActionHistory::setComment);
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

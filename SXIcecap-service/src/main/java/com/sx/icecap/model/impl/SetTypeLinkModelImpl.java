@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -229,97 +220,103 @@ public class SetTypeLinkModelImpl
 
 	private static final Map<String, Function<SetTypeLink, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<SetTypeLink, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<SetTypeLink, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<SetTypeLink, Object>>();
-		Map<String, BiConsumer<SetTypeLink, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<SetTypeLink, ?>>();
 
 		attributeGetterFunctions.put(
 			"setTypeLinkId", SetTypeLink::getSetTypeLinkId);
+		attributeGetterFunctions.put("companyId", SetTypeLink::getCompanyId);
+		attributeGetterFunctions.put("groupId", SetTypeLink::getGroupId);
+		attributeGetterFunctions.put(
+			"dataCollectionId", SetTypeLink::getDataCollectionId);
+		attributeGetterFunctions.put("dataSetId", SetTypeLink::getDataSetId);
+		attributeGetterFunctions.put("dataTypeId", SetTypeLink::getDataTypeId);
+		attributeGetterFunctions.put("order", SetTypeLink::getOrder);
+		attributeGetterFunctions.put(
+			"commentable", SetTypeLink::getCommentable);
+		attributeGetterFunctions.put("verifiable", SetTypeLink::getVerifiable);
+		attributeGetterFunctions.put("freezable", SetTypeLink::getFreezable);
+		attributeGetterFunctions.put("freezed", SetTypeLink::getFreezed);
+		attributeGetterFunctions.put(
+			"freezedUserId", SetTypeLink::getFreezedUserId);
+		attributeGetterFunctions.put(
+			"freezedUserName", SetTypeLink::getFreezedUserName);
+		attributeGetterFunctions.put(
+			"freezedDate", SetTypeLink::getFreezedDate);
+		attributeGetterFunctions.put("verified", SetTypeLink::getVerified);
+		attributeGetterFunctions.put(
+			"verifiedUserId", SetTypeLink::getVerifiedUserId);
+		attributeGetterFunctions.put(
+			"verifiedUserName", SetTypeLink::getVerifiedUserName);
+		attributeGetterFunctions.put(
+			"verifiedDate", SetTypeLink::getVerifiedDate);
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<SetTypeLink, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<SetTypeLink, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<SetTypeLink, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"setTypeLinkId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setSetTypeLinkId);
-		attributeGetterFunctions.put("companyId", SetTypeLink::getCompanyId);
 		attributeSetterBiConsumers.put(
 			"companyId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setCompanyId);
-		attributeGetterFunctions.put("groupId", SetTypeLink::getGroupId);
 		attributeSetterBiConsumers.put(
 			"groupId", (BiConsumer<SetTypeLink, Long>)SetTypeLink::setGroupId);
-		attributeGetterFunctions.put(
-			"dataCollectionId", SetTypeLink::getDataCollectionId);
 		attributeSetterBiConsumers.put(
 			"dataCollectionId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setDataCollectionId);
-		attributeGetterFunctions.put("dataSetId", SetTypeLink::getDataSetId);
 		attributeSetterBiConsumers.put(
 			"dataSetId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setDataSetId);
-		attributeGetterFunctions.put("dataTypeId", SetTypeLink::getDataTypeId);
 		attributeSetterBiConsumers.put(
 			"dataTypeId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setDataTypeId);
-		attributeGetterFunctions.put("order", SetTypeLink::getOrder);
 		attributeSetterBiConsumers.put(
 			"order", (BiConsumer<SetTypeLink, Integer>)SetTypeLink::setOrder);
-		attributeGetterFunctions.put(
-			"commentable", SetTypeLink::getCommentable);
 		attributeSetterBiConsumers.put(
 			"commentable",
 			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setCommentable);
-		attributeGetterFunctions.put("verifiable", SetTypeLink::getVerifiable);
 		attributeSetterBiConsumers.put(
 			"verifiable",
 			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setVerifiable);
-		attributeGetterFunctions.put("freezable", SetTypeLink::getFreezable);
 		attributeSetterBiConsumers.put(
 			"freezable",
 			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setFreezable);
-		attributeGetterFunctions.put("freezed", SetTypeLink::getFreezed);
 		attributeSetterBiConsumers.put(
 			"freezed",
 			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setFreezed);
-		attributeGetterFunctions.put(
-			"freezedUserId", SetTypeLink::getFreezedUserId);
 		attributeSetterBiConsumers.put(
 			"freezedUserId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setFreezedUserId);
-		attributeGetterFunctions.put(
-			"freezedUserName", SetTypeLink::getFreezedUserName);
 		attributeSetterBiConsumers.put(
 			"freezedUserName",
 			(BiConsumer<SetTypeLink, String>)SetTypeLink::setFreezedUserName);
-		attributeGetterFunctions.put(
-			"freezedDate", SetTypeLink::getFreezedDate);
 		attributeSetterBiConsumers.put(
 			"freezedDate",
 			(BiConsumer<SetTypeLink, Date>)SetTypeLink::setFreezedDate);
-		attributeGetterFunctions.put("verified", SetTypeLink::getVerified);
 		attributeSetterBiConsumers.put(
 			"verified",
 			(BiConsumer<SetTypeLink, Boolean>)SetTypeLink::setVerified);
-		attributeGetterFunctions.put(
-			"verifiedUserId", SetTypeLink::getVerifiedUserId);
 		attributeSetterBiConsumers.put(
 			"verifiedUserId",
 			(BiConsumer<SetTypeLink, Long>)SetTypeLink::setVerifiedUserId);
-		attributeGetterFunctions.put(
-			"verifiedUserName", SetTypeLink::getVerifiedUserName);
 		attributeSetterBiConsumers.put(
 			"verifiedUserName",
 			(BiConsumer<SetTypeLink, String>)SetTypeLink::setVerifiedUserName);
-		attributeGetterFunctions.put(
-			"verifiedDate", SetTypeLink::getVerifiedDate);
 		attributeSetterBiConsumers.put(
 			"verifiedDate",
 			(BiConsumer<SetTypeLink, Date>)SetTypeLink::setVerifiedDate);
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

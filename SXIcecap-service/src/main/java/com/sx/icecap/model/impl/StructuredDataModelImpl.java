@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -335,148 +326,154 @@ public class StructuredDataModelImpl
 
 	private static final Map<String, Function<StructuredData, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<StructuredData, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<StructuredData, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<StructuredData, Object>>();
+
+		attributeGetterFunctions.put("uuid", StructuredData::getUuid);
+		attributeGetterFunctions.put(
+			"structuredDataId", StructuredData::getStructuredDataId);
+		attributeGetterFunctions.put("groupId", StructuredData::getGroupId);
+		attributeGetterFunctions.put("companyId", StructuredData::getCompanyId);
+		attributeGetterFunctions.put("userId", StructuredData::getUserId);
+		attributeGetterFunctions.put("userName", StructuredData::getUserName);
+		attributeGetterFunctions.put(
+			"createDate", StructuredData::getCreateDate);
+		attributeGetterFunctions.put(
+			"modifiedDate", StructuredData::getModifiedDate);
+		attributeGetterFunctions.put("status", StructuredData::getStatus);
+		attributeGetterFunctions.put(
+			"statusByUserId", StructuredData::getStatusByUserId);
+		attributeGetterFunctions.put(
+			"statusByUserName", StructuredData::getStatusByUserName);
+		attributeGetterFunctions.put(
+			"statusDate", StructuredData::getStatusDate);
+		attributeGetterFunctions.put(
+			"dataCollectionId", StructuredData::getDataCollectionId);
+		attributeGetterFunctions.put("dataSetId", StructuredData::getDataSetId);
+		attributeGetterFunctions.put(
+			"dataTypeId", StructuredData::getDataTypeId);
+		attributeGetterFunctions.put("multiple", StructuredData::getMultiple);
+		attributeGetterFunctions.put(
+			"startIndex", StructuredData::getStartIndex);
+		attributeGetterFunctions.put("count", StructuredData::getCount);
+		attributeGetterFunctions.put("freezed", StructuredData::getFreezed);
+		attributeGetterFunctions.put(
+			"freezedUserId", StructuredData::getFreezedUserId);
+		attributeGetterFunctions.put(
+			"freezedUserName", StructuredData::getFreezedUserName);
+		attributeGetterFunctions.put(
+			"freezedDate", StructuredData::getFreezedDate);
+		attributeGetterFunctions.put("verified", StructuredData::getVerified);
+		attributeGetterFunctions.put(
+			"verifiedUserId", StructuredData::getVerifiedUserId);
+		attributeGetterFunctions.put(
+			"verifiedUserName", StructuredData::getVerifiedUserName);
+		attributeGetterFunctions.put(
+			"verifiedDate", StructuredData::getVerifiedDate);
+		attributeGetterFunctions.put("data", StructuredData::getData);
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<StructuredData, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
 		Map<String, BiConsumer<StructuredData, ?>> attributeSetterBiConsumers =
 			new LinkedHashMap<String, BiConsumer<StructuredData, ?>>();
 
-		attributeGetterFunctions.put("uuid", StructuredData::getUuid);
 		attributeSetterBiConsumers.put(
 			"uuid",
 			(BiConsumer<StructuredData, String>)StructuredData::setUuid);
-		attributeGetterFunctions.put(
-			"structuredDataId", StructuredData::getStructuredDataId);
 		attributeSetterBiConsumers.put(
 			"structuredDataId",
 			(BiConsumer<StructuredData, Long>)
 				StructuredData::setStructuredDataId);
-		attributeGetterFunctions.put("groupId", StructuredData::getGroupId);
 		attributeSetterBiConsumers.put(
 			"groupId",
 			(BiConsumer<StructuredData, Long>)StructuredData::setGroupId);
-		attributeGetterFunctions.put("companyId", StructuredData::getCompanyId);
 		attributeSetterBiConsumers.put(
 			"companyId",
 			(BiConsumer<StructuredData, Long>)StructuredData::setCompanyId);
-		attributeGetterFunctions.put("userId", StructuredData::getUserId);
 		attributeSetterBiConsumers.put(
 			"userId",
 			(BiConsumer<StructuredData, Long>)StructuredData::setUserId);
-		attributeGetterFunctions.put("userName", StructuredData::getUserName);
 		attributeSetterBiConsumers.put(
 			"userName",
 			(BiConsumer<StructuredData, String>)StructuredData::setUserName);
-		attributeGetterFunctions.put(
-			"createDate", StructuredData::getCreateDate);
 		attributeSetterBiConsumers.put(
 			"createDate",
 			(BiConsumer<StructuredData, Date>)StructuredData::setCreateDate);
-		attributeGetterFunctions.put(
-			"modifiedDate", StructuredData::getModifiedDate);
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			(BiConsumer<StructuredData, Date>)StructuredData::setModifiedDate);
-		attributeGetterFunctions.put("status", StructuredData::getStatus);
 		attributeSetterBiConsumers.put(
 			"status",
 			(BiConsumer<StructuredData, Integer>)StructuredData::setStatus);
-		attributeGetterFunctions.put(
-			"statusByUserId", StructuredData::getStatusByUserId);
 		attributeSetterBiConsumers.put(
 			"statusByUserId",
 			(BiConsumer<StructuredData, Long>)
 				StructuredData::setStatusByUserId);
-		attributeGetterFunctions.put(
-			"statusByUserName", StructuredData::getStatusByUserName);
 		attributeSetterBiConsumers.put(
 			"statusByUserName",
 			(BiConsumer<StructuredData, String>)
 				StructuredData::setStatusByUserName);
-		attributeGetterFunctions.put(
-			"statusDate", StructuredData::getStatusDate);
 		attributeSetterBiConsumers.put(
 			"statusDate",
 			(BiConsumer<StructuredData, Date>)StructuredData::setStatusDate);
-		attributeGetterFunctions.put(
-			"dataCollectionId", StructuredData::getDataCollectionId);
 		attributeSetterBiConsumers.put(
 			"dataCollectionId",
 			(BiConsumer<StructuredData, Long>)
 				StructuredData::setDataCollectionId);
-		attributeGetterFunctions.put("dataSetId", StructuredData::getDataSetId);
 		attributeSetterBiConsumers.put(
 			"dataSetId",
 			(BiConsumer<StructuredData, Long>)StructuredData::setDataSetId);
-		attributeGetterFunctions.put(
-			"dataTypeId", StructuredData::getDataTypeId);
 		attributeSetterBiConsumers.put(
 			"dataTypeId",
 			(BiConsumer<StructuredData, Long>)StructuredData::setDataTypeId);
-		attributeGetterFunctions.put("multiple", StructuredData::getMultiple);
 		attributeSetterBiConsumers.put(
 			"multiple",
 			(BiConsumer<StructuredData, Boolean>)StructuredData::setMultiple);
-		attributeGetterFunctions.put(
-			"startIndex", StructuredData::getStartIndex);
 		attributeSetterBiConsumers.put(
 			"startIndex",
 			(BiConsumer<StructuredData, Long>)StructuredData::setStartIndex);
-		attributeGetterFunctions.put("count", StructuredData::getCount);
 		attributeSetterBiConsumers.put(
 			"count",
 			(BiConsumer<StructuredData, Integer>)StructuredData::setCount);
-		attributeGetterFunctions.put("freezed", StructuredData::getFreezed);
 		attributeSetterBiConsumers.put(
 			"freezed",
 			(BiConsumer<StructuredData, String>)StructuredData::setFreezed);
-		attributeGetterFunctions.put(
-			"freezedUserId", StructuredData::getFreezedUserId);
 		attributeSetterBiConsumers.put(
 			"freezedUserId",
 			(BiConsumer<StructuredData, Long>)StructuredData::setFreezedUserId);
-		attributeGetterFunctions.put(
-			"freezedUserName", StructuredData::getFreezedUserName);
 		attributeSetterBiConsumers.put(
 			"freezedUserName",
 			(BiConsumer<StructuredData, String>)
 				StructuredData::setFreezedUserName);
-		attributeGetterFunctions.put(
-			"freezedDate", StructuredData::getFreezedDate);
 		attributeSetterBiConsumers.put(
 			"freezedDate",
 			(BiConsumer<StructuredData, Date>)StructuredData::setFreezedDate);
-		attributeGetterFunctions.put("verified", StructuredData::getVerified);
 		attributeSetterBiConsumers.put(
 			"verified",
 			(BiConsumer<StructuredData, Boolean>)StructuredData::setVerified);
-		attributeGetterFunctions.put(
-			"verifiedUserId", StructuredData::getVerifiedUserId);
 		attributeSetterBiConsumers.put(
 			"verifiedUserId",
 			(BiConsumer<StructuredData, Long>)
 				StructuredData::setVerifiedUserId);
-		attributeGetterFunctions.put(
-			"verifiedUserName", StructuredData::getVerifiedUserName);
 		attributeSetterBiConsumers.put(
 			"verifiedUserName",
 			(BiConsumer<StructuredData, String>)
 				StructuredData::setVerifiedUserName);
-		attributeGetterFunctions.put(
-			"verifiedDate", StructuredData::getVerifiedDate);
 		attributeSetterBiConsumers.put(
 			"verifiedDate",
 			(BiConsumer<StructuredData, Date>)StructuredData::setVerifiedDate);
-		attributeGetterFunctions.put("data", StructuredData::getData);
 		attributeSetterBiConsumers.put(
 			"data",
 			(BiConsumer<StructuredData, String>)StructuredData::setData);
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

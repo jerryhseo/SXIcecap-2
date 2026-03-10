@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sx.icecap.model.impl;
@@ -226,119 +217,125 @@ public class CollectionSetLinkModelImpl
 
 	private static final Map<String, Function<CollectionSetLink, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<CollectionSetLink, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<CollectionSetLink, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<CollectionSetLink, Object>>();
+
+		attributeGetterFunctions.put(
+			"collectionSetLinkId", CollectionSetLink::getCollectionSetLinkId);
+		attributeGetterFunctions.put(
+			"companyId", CollectionSetLink::getCompanyId);
+		attributeGetterFunctions.put("groupId", CollectionSetLink::getGroupId);
+		attributeGetterFunctions.put(
+			"dataCollectionId", CollectionSetLink::getDataCollectionId);
+		attributeGetterFunctions.put(
+			"dataSetId", CollectionSetLink::getDataSetId);
+		attributeGetterFunctions.put("order", CollectionSetLink::getOrder);
+		attributeGetterFunctions.put(
+			"commentable", CollectionSetLink::getCommentable);
+		attributeGetterFunctions.put(
+			"verifiable", CollectionSetLink::getVerifiable);
+		attributeGetterFunctions.put(
+			"freezable", CollectionSetLink::getFreezable);
+		attributeGetterFunctions.put("freezed", CollectionSetLink::getFreezed);
+		attributeGetterFunctions.put(
+			"freezedUserId", CollectionSetLink::getFreezedUserId);
+		attributeGetterFunctions.put(
+			"freezedUserName", CollectionSetLink::getFreezedUserName);
+		attributeGetterFunctions.put(
+			"freezedDate", CollectionSetLink::getFreezedDate);
+		attributeGetterFunctions.put(
+			"verified", CollectionSetLink::getVerified);
+		attributeGetterFunctions.put(
+			"verifiedUserId", CollectionSetLink::getVerifiedUserId);
+		attributeGetterFunctions.put(
+			"verifiedUserName", CollectionSetLink::getVerifiedUserName);
+		attributeGetterFunctions.put(
+			"verifiedDate", CollectionSetLink::getVerifiedDate);
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<CollectionSetLink, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
 		Map<String, BiConsumer<CollectionSetLink, ?>>
 			attributeSetterBiConsumers =
 				new LinkedHashMap<String, BiConsumer<CollectionSetLink, ?>>();
 
-		attributeGetterFunctions.put(
-			"collectionSetLinkId", CollectionSetLink::getCollectionSetLinkId);
 		attributeSetterBiConsumers.put(
 			"collectionSetLinkId",
 			(BiConsumer<CollectionSetLink, Long>)
 				CollectionSetLink::setCollectionSetLinkId);
-		attributeGetterFunctions.put(
-			"companyId", CollectionSetLink::getCompanyId);
 		attributeSetterBiConsumers.put(
 			"companyId",
 			(BiConsumer<CollectionSetLink, Long>)
 				CollectionSetLink::setCompanyId);
-		attributeGetterFunctions.put("groupId", CollectionSetLink::getGroupId);
 		attributeSetterBiConsumers.put(
 			"groupId",
 			(BiConsumer<CollectionSetLink, Long>)CollectionSetLink::setGroupId);
-		attributeGetterFunctions.put(
-			"dataCollectionId", CollectionSetLink::getDataCollectionId);
 		attributeSetterBiConsumers.put(
 			"dataCollectionId",
 			(BiConsumer<CollectionSetLink, Long>)
 				CollectionSetLink::setDataCollectionId);
-		attributeGetterFunctions.put(
-			"dataSetId", CollectionSetLink::getDataSetId);
 		attributeSetterBiConsumers.put(
 			"dataSetId",
 			(BiConsumer<CollectionSetLink, Long>)
 				CollectionSetLink::setDataSetId);
-		attributeGetterFunctions.put("order", CollectionSetLink::getOrder);
 		attributeSetterBiConsumers.put(
 			"order",
 			(BiConsumer<CollectionSetLink, Integer>)
 				CollectionSetLink::setOrder);
-		attributeGetterFunctions.put(
-			"commentable", CollectionSetLink::getCommentable);
 		attributeSetterBiConsumers.put(
 			"commentable",
 			(BiConsumer<CollectionSetLink, Boolean>)
 				CollectionSetLink::setCommentable);
-		attributeGetterFunctions.put(
-			"verifiable", CollectionSetLink::getVerifiable);
 		attributeSetterBiConsumers.put(
 			"verifiable",
 			(BiConsumer<CollectionSetLink, Boolean>)
 				CollectionSetLink::setVerifiable);
-		attributeGetterFunctions.put(
-			"freezable", CollectionSetLink::getFreezable);
 		attributeSetterBiConsumers.put(
 			"freezable",
 			(BiConsumer<CollectionSetLink, Boolean>)
 				CollectionSetLink::setFreezable);
-		attributeGetterFunctions.put("freezed", CollectionSetLink::getFreezed);
 		attributeSetterBiConsumers.put(
 			"freezed",
 			(BiConsumer<CollectionSetLink, Boolean>)
 				CollectionSetLink::setFreezed);
-		attributeGetterFunctions.put(
-			"freezedUserId", CollectionSetLink::getFreezedUserId);
 		attributeSetterBiConsumers.put(
 			"freezedUserId",
 			(BiConsumer<CollectionSetLink, Long>)
 				CollectionSetLink::setFreezedUserId);
-		attributeGetterFunctions.put(
-			"freezedUserName", CollectionSetLink::getFreezedUserName);
 		attributeSetterBiConsumers.put(
 			"freezedUserName",
 			(BiConsumer<CollectionSetLink, String>)
 				CollectionSetLink::setFreezedUserName);
-		attributeGetterFunctions.put(
-			"freezedDate", CollectionSetLink::getFreezedDate);
 		attributeSetterBiConsumers.put(
 			"freezedDate",
 			(BiConsumer<CollectionSetLink, Date>)
 				CollectionSetLink::setFreezedDate);
-		attributeGetterFunctions.put(
-			"verified", CollectionSetLink::getVerified);
 		attributeSetterBiConsumers.put(
 			"verified",
 			(BiConsumer<CollectionSetLink, Boolean>)
 				CollectionSetLink::setVerified);
-		attributeGetterFunctions.put(
-			"verifiedUserId", CollectionSetLink::getVerifiedUserId);
 		attributeSetterBiConsumers.put(
 			"verifiedUserId",
 			(BiConsumer<CollectionSetLink, Long>)
 				CollectionSetLink::setVerifiedUserId);
-		attributeGetterFunctions.put(
-			"verifiedUserName", CollectionSetLink::getVerifiedUserName);
 		attributeSetterBiConsumers.put(
 			"verifiedUserName",
 			(BiConsumer<CollectionSetLink, String>)
 				CollectionSetLink::setVerifiedUserName);
-		attributeGetterFunctions.put(
-			"verifiedDate", CollectionSetLink::getVerifiedDate);
 		attributeSetterBiConsumers.put(
 			"verifiedDate",
 			(BiConsumer<CollectionSetLink, Date>)
 				CollectionSetLink::setVerifiedDate);
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}
