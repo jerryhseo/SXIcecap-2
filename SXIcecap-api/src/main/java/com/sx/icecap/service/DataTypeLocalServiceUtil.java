@@ -321,7 +321,8 @@ public class DataTypeLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject
-		getDataStructureJSON(long dataTypeId) {
+			getDataStructureJSON(long dataTypeId)
+		throws com.liferay.portal.kernel.json.JSONException {
 
 		return getService().getDataStructureJSON(dataTypeId);
 	}
@@ -568,6 +569,7 @@ public class DataTypeLocalServiceUtil {
 		return getService().getDisplayName(dataTypeId, locale);
 	}
 
+	@Deprecated
 	public static com.liferay.portal.kernel.json.JSONArray getDLFolderFiles(
 		long repositoryId, long folderId) {
 
@@ -580,6 +582,12 @@ public class DataTypeLocalServiceUtil {
 				portletDataContext) {
 
 		return getService().getExportActionableDynamicQuery(portletDataContext);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONArray getFileFields(
+		long dataTypeId) {
+
+		return getService().getFileFields(dataTypeId);
 	}
 
 	public static
@@ -596,6 +604,33 @@ public class DataTypeLocalServiceUtil {
 	 */
 	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static List<String> getParamCodeList(
+		com.liferay.portal.kernel.json.JSONArray fields, String[] paramTypes) {
+
+		return getService().getParamCodeList(fields, paramTypes);
+	}
+
+	public static List<String> getParamCodeList(
+		com.liferay.portal.kernel.json.JSONObject dataStructure,
+		String[] paramTypes) {
+
+		return getService().getParamCodeList(dataStructure, paramTypes);
+	}
+
+	public static List<String> getParamCodeList(
+			long dataTypeId, String[] paramTypes)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return getService().getParamCodeList(dataTypeId, paramTypes);
+	}
+
+	public static List<String> getParamCodeList(
+			String strDataStructure, String[] paramTypes)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return getService().getParamCodeList(strDataStructure, paramTypes);
 	}
 
 	/**

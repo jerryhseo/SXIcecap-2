@@ -421,6 +421,14 @@ public class StructuredDataLocalServiceWrapper
 	}
 
 	@Override
+	public java.nio.file.Path getDataFileFolder(
+		long companyId, long groupId, long structuredDataId) {
+
+		return _structuredDataLocalService.getDataFileFolder(
+			companyId, groupId, structuredDataId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
 		getExportActionableDynamicQuery(
 			com.liferay.exportimport.kernel.lar.PortletDataContext
@@ -458,6 +466,7 @@ public class StructuredDataLocalServiceWrapper
 		return _structuredDataLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Deprecated
 	@Override
 	public com.liferay.portal.kernel.dao.search.SearchContainerResults
 		<com.liferay.asset.kernel.model.AssetEntry> getSearchContainerResults(

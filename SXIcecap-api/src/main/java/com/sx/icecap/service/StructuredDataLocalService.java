@@ -280,6 +280,10 @@ public interface StructuredDataLocalService
 		int start, int end, OrderByComparator<StructuredData> comparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Path getDataFileFolder(
+		long companyId, long groupId, long structuredDataId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		PortletDataContext portletDataContext);
 
@@ -301,6 +305,7 @@ public interface StructuredDataLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SearchContainerResults<AssetEntry> getSearchContainerResults(
 			SearchContainer<StructuredData> searchContainer)

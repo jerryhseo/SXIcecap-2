@@ -362,7 +362,8 @@ public class DataTypeLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.json.JSONObject getDataStructureJSON(
-		long dataTypeId) {
+			long dataTypeId)
+		throws com.liferay.portal.kernel.json.JSONException {
 
 		return _dataTypeLocalService.getDataStructureJSON(dataTypeId);
 	}
@@ -671,6 +672,7 @@ public class DataTypeLocalServiceWrapper
 		return _dataTypeLocalService.getDisplayName(dataTypeId, locale);
 	}
 
+	@Deprecated
 	@Override
 	public com.liferay.portal.kernel.json.JSONArray getDLFolderFiles(
 		long repositoryId, long folderId) {
@@ -689,6 +691,13 @@ public class DataTypeLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.portal.kernel.json.JSONArray getFileFields(
+		long dataTypeId) {
+
+		return _dataTypeLocalService.getFileFields(dataTypeId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 		getIndexableActionableDynamicQuery() {
 
@@ -703,6 +712,39 @@ public class DataTypeLocalServiceWrapper
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _dataTypeLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.util.List<String> getParamCodeList(
+		com.liferay.portal.kernel.json.JSONArray fields, String[] paramTypes) {
+
+		return _dataTypeLocalService.getParamCodeList(fields, paramTypes);
+	}
+
+	@Override
+	public java.util.List<String> getParamCodeList(
+		com.liferay.portal.kernel.json.JSONObject dataStructure,
+		String[] paramTypes) {
+
+		return _dataTypeLocalService.getParamCodeList(
+			dataStructure, paramTypes);
+	}
+
+	@Override
+	public java.util.List<String> getParamCodeList(
+			long dataTypeId, String[] paramTypes)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return _dataTypeLocalService.getParamCodeList(dataTypeId, paramTypes);
+	}
+
+	@Override
+	public java.util.List<String> getParamCodeList(
+			String strDataStructure, String[] paramTypes)
+		throws com.liferay.portal.kernel.json.JSONException {
+
+		return _dataTypeLocalService.getParamCodeList(
+			strDataStructure, paramTypes);
 	}
 
 	/**

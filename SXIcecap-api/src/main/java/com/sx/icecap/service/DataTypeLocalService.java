@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainerResults;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
@@ -267,7 +268,8 @@ public interface DataTypeLocalService
 	public String getDataStructure(long dataTypeId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public JSONObject getDataStructureJSON(long dataTypeId);
+	public JSONObject getDataStructureJSON(long dataTypeId)
+		throws JSONException;
 
 	/**
 	 * Returns the data type with the primary key.
@@ -440,12 +442,16 @@ public interface DataTypeLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public String getDisplayName(long dataTypeId, Locale locale);
 
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONArray getDLFolderFiles(long repositoryId, long folderId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		PortletDataContext portletDataContext);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONArray getFileFields(long dataTypeId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
@@ -456,6 +462,22 @@ public interface DataTypeLocalService
 	 * @return the OSGi service identifier
 	 */
 	public String getOSGiServiceIdentifier();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<String> getParamCodeList(JSONArray fields, String[] paramTypes);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<String> getParamCodeList(
+		JSONObject dataStructure, String[] paramTypes);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<String> getParamCodeList(long dataTypeId, String[] paramTypes)
+		throws JSONException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<String> getParamCodeList(
+			String strDataStructure, String[] paramTypes)
+		throws JSONException;
 
 	/**
 	 * @throws PortalException
