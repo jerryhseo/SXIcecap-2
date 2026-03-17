@@ -656,7 +656,6 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 
 		JSONObject json = JSONFactoryUtil.createJSONObject ( structure.getStructure () );
 
-		System.out.println ( "JSONDataTypeStructure: " + json.toString ( 4 ) );
 		return json;
 	}
 
