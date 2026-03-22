@@ -354,6 +354,17 @@ public class CollectionSetLinkLocalServiceUtil {
 			groupId, dataCollectionId);
 	}
 
+	public static void removeCollectionSetLinksByDataSet(long dataSetId) {
+		getService().removeCollectionSetLinksByDataSet(dataSetId);
+	}
+
+	public static List<CollectionSetLink> reorderLinkedDataSets(
+		long groupId, long dataCollectionId, int startOrder) {
+
+		return getService().reorderLinkedDataSets(
+			groupId, dataCollectionId, startOrder);
+	}
+
 	public static CollectionSetLink setFreezed(
 			long collectionSetLinkId, boolean freezed,
 			com.liferay.portal.kernel.service.ServiceContext sc)

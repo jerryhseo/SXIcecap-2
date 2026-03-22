@@ -400,6 +400,21 @@ public class CollectionSetLinkLocalServiceWrapper
 	}
 
 	@Override
+	public void removeCollectionSetLinksByDataSet(long dataSetId) {
+		_collectionSetLinkLocalService.removeCollectionSetLinksByDataSet(
+			dataSetId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.CollectionSetLink>
+		reorderLinkedDataSets(
+			long groupId, long dataCollectionId, int startOrder) {
+
+		return _collectionSetLinkLocalService.reorderLinkedDataSets(
+			groupId, dataCollectionId, startOrder);
+	}
+
+	@Override
 	public com.sx.icecap.model.CollectionSetLink setFreezed(
 			long collectionSetLinkId, boolean freezed,
 			com.liferay.portal.kernel.service.ServiceContext sc)

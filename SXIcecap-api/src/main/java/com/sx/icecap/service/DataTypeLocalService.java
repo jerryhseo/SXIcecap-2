@@ -456,6 +456,21 @@ public interface DataTypeLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONArray getLinkedDataTypeList(long groupId, Locale locale);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONArray getLinkedDataTypeListByCollection(
+		long groupId, long dataCollectionId, Locale locale);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONArray getLinkedDataTypeListByCollectionSet(
+		long groupId, long dataCollectionId, long dataSetId, Locale locale);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONArray getLinkedDataTypeListByDataSet(
+		long groupId, long dataSetId, Locale locale);
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

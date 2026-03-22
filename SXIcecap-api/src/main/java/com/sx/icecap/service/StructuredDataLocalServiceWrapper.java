@@ -1089,6 +1089,34 @@ public class StructuredDataLocalServiceWrapper
 	}
 
 	@Override
+	public void removeStructuredDataByCollection(
+			long groupId, long dataCollectionId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_structuredDataLocalService.removeStructuredDataByCollection(
+			groupId, dataCollectionId);
+	}
+
+	@Override
+	public void removeStructuredDataByCollectionSet(
+			long groupId, long dataCollectionId, long dataSetId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_structuredDataLocalService.removeStructuredDataByCollectionSet(
+			groupId, dataCollectionId, dataSetId);
+	}
+
+	@Override
+	public void removeStructuredDataByCollectionSetType(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_structuredDataLocalService.removeStructuredDataByCollectionSetType(
+			groupId, dataCollectionId, dataSetId, dataTypeId);
+	}
+
+	@Override
 	public com.sx.icecap.model.StructuredData updateStatus(
 			long userId, long structuredDataId, Integer status,
 			com.liferay.portal.kernel.service.ServiceContext sc)

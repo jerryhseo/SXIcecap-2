@@ -887,6 +887,31 @@ public class StructuredDataLocalServiceUtil {
 			structuredDataId, dataFolderPath);
 	}
 
+	public static void removeStructuredDataByCollection(
+			long groupId, long dataCollectionId)
+		throws PortalException {
+
+		getService().removeStructuredDataByCollection(
+			groupId, dataCollectionId);
+	}
+
+	public static void removeStructuredDataByCollectionSet(
+			long groupId, long dataCollectionId, long dataSetId)
+		throws PortalException {
+
+		getService().removeStructuredDataByCollectionSet(
+			groupId, dataCollectionId, dataSetId);
+	}
+
+	public static void removeStructuredDataByCollectionSetType(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId)
+		throws PortalException {
+
+		getService().removeStructuredDataByCollectionSetType(
+			groupId, dataCollectionId, dataSetId, dataTypeId);
+	}
+
 	public static StructuredData updateStatus(
 			long userId, long structuredDataId, Integer status,
 			com.liferay.portal.kernel.service.ServiceContext sc)

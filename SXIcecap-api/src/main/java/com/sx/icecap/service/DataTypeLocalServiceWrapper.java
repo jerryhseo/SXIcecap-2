@@ -704,6 +704,41 @@ public class DataTypeLocalServiceWrapper
 		return _dataTypeLocalService.getIndexableActionableDynamicQuery();
 	}
 
+	@Override
+	public com.liferay.portal.kernel.json.JSONArray getLinkedDataTypeList(
+		long groupId, java.util.Locale locale) {
+
+		return _dataTypeLocalService.getLinkedDataTypeList(groupId, locale);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONArray
+		getLinkedDataTypeListByCollection(
+			long groupId, long dataCollectionId, java.util.Locale locale) {
+
+		return _dataTypeLocalService.getLinkedDataTypeListByCollection(
+			groupId, dataCollectionId, locale);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONArray
+		getLinkedDataTypeListByCollectionSet(
+			long groupId, long dataCollectionId, long dataSetId,
+			java.util.Locale locale) {
+
+		return _dataTypeLocalService.getLinkedDataTypeListByCollectionSet(
+			groupId, dataCollectionId, dataSetId, locale);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONArray
+		getLinkedDataTypeListByDataSet(
+			long groupId, long dataSetId, java.util.Locale locale) {
+
+		return _dataTypeLocalService.getLinkedDataTypeListByDataSet(
+			groupId, dataSetId, locale);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

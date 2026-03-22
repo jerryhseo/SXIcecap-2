@@ -377,16 +377,29 @@ public class SetTypeLinkLocalServiceUtil {
 			groupId, dataCollectionId, dataSetId);
 	}
 
+	/**
+	 * Removes DataSet-DataType links of a company
+	 */
 	public static void removeSetTypeLinksBySet(long dataSetId) {
 		getService().removeSetTypeLinksBySet(dataSetId);
 	}
 
-	public static void removeSetTypeLinksBySet_G(long groupId, long dataSetId) {
-		getService().removeSetTypeLinksBySet_G(groupId, dataSetId);
+	/**
+	 * Removes DataSet-DataType links in a group
+	 */
+	public static void removeSetTypeLinksBySet(long groupId, long dataSetId) {
+		getService().removeSetTypeLinksBySet(groupId, dataSetId);
 	}
 
 	public static void removeSetTypeLinksByType(long dataTypeId) {
 		getService().removeSetTypeLinksByType(dataTypeId);
+	}
+
+	public static List<SetTypeLink> reorderLinkedDataTypes(
+		long groupId, long dataCollectionId, long dataSetId, int startOrder) {
+
+		return getService().reorderLinkedDataTypes(
+			groupId, dataCollectionId, dataSetId, startOrder);
 	}
 
 	public static SetTypeLink setFreezed(

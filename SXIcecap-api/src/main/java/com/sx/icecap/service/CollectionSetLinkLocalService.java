@@ -279,14 +279,17 @@ public interface CollectionSetLinkLocalService
 	@Indexable(type = IndexableType.DELETE)
 	public CollectionSetLink removeCollectionSetLink(long collectionSetLinkId);
 
-	@Indexable(type = IndexableType.DELETE)
 	public void removeCollectionSetLinkByCollectionSet(
 			long groupId, long dataCollectionId, long dataSetId)
 		throws NoSuchCollectionSetLinkException;
 
-	@Indexable(type = IndexableType.DELETE)
 	public void removeCollectionSetLinksByCollection(
 		long groupId, long dataCollectionId);
+
+	public void removeCollectionSetLinksByDataSet(long dataSetId);
+
+	public List<CollectionSetLink> reorderLinkedDataSets(
+		long groupId, long dataCollectionId, int startOrder);
 
 	@Indexable(type = IndexableType.REINDEX)
 	public CollectionSetLink setFreezed(

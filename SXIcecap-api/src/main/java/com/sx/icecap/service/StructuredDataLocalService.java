@@ -617,6 +617,22 @@ public interface StructuredDataLocalService
 			long structuredDataId, Path dataFolderPath)
 		throws PortalException;
 
+	@Indexable(type = IndexableType.DELETE)
+	public void removeStructuredDataByCollection(
+			long groupId, long dataCollectionId)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.DELETE)
+	public void removeStructuredDataByCollectionSet(
+			long groupId, long dataCollectionId, long dataSetId)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.DELETE)
+	public void removeStructuredDataByCollectionSetType(
+			long groupId, long dataCollectionId, long dataSetId,
+			long dataTypeId)
+		throws PortalException;
+
 	@Indexable(type = IndexableType.REINDEX)
 	public StructuredData updateStatus(
 			long userId, long structuredDataId, Integer status,

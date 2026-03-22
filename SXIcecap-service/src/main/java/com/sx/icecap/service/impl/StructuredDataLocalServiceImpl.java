@@ -328,6 +328,54 @@ public class StructuredDataLocalServiceImpl extends StructuredDataLocalServiceBa
 	@Indexable(
 				type = IndexableType.DELETE
 	)
+	public void removeStructuredDataByCollection ( long groupId, long dataCollectionId ) throws PortalException {
+		List<StructuredData> dataList =
+					structuredDataPersistence.findByDataCollectionId_G ( groupId, dataCollectionId );
+
+		Iterator<StructuredData> dataIter = dataList.iterator ();
+		while ( dataIter.hasNext () ) {
+			StructuredData data = dataIter.next ();
+
+			removeStructuredData ( data.getStructuredDataId () );
+		}
+	}
+
+	@Indexable(
+				type = IndexableType.DELETE
+	)
+	public void removeStructuredDataByCollectionSet ( long groupId, long dataCollectionId, long dataSetId )
+				throws PortalException {
+		List<StructuredData> dataList =
+					structuredDataPersistence.findByCollectionSet_G ( groupId, dataCollectionId, dataSetId );
+
+		Iterator<StructuredData> dataIter = dataList.iterator ();
+		while ( dataIter.hasNext () ) {
+			StructuredData data = dataIter.next ();
+
+			removeStructuredData ( data.getStructuredDataId () );
+		}
+	}
+
+	@Indexable(
+				type = IndexableType.DELETE
+	)
+	public void removeStructuredDataByCollectionSetType (
+				long groupId, long dataCollectionId, long dataSetId, long dataTypeId
+	) throws PortalException {
+		List<StructuredData> dataList = structuredDataPersistence
+					.findByCollectionSetType_G ( groupId, dataCollectionId, dataSetId, dataTypeId );
+
+		Iterator<StructuredData> dataIter = dataList.iterator ();
+		while ( dataIter.hasNext () ) {
+			StructuredData data = dataIter.next ();
+
+			removeStructuredData ( data.getStructuredDataId () );
+		}
+	}
+
+	@Indexable(
+				type = IndexableType.DELETE
+	)
 	public StructuredData removeStructuredData ( long structuredDataId, Path dataFolderPath ) throws PortalException {
 		StructuredData structuredData = structuredDataPersistence.remove ( structuredDataId );
 

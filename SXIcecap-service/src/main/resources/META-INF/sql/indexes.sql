@@ -23,6 +23,7 @@ create index IX_AC4C0331 on SX_ICECAP_DataComment (uuid_[$COLUMN_LENGTH:75$], co
 create unique index IX_DAADA1F3 on SX_ICECAP_DataComment (uuid_[$COLUMN_LENGTH:75$], groupId);
 
 create index IX_352E1E69 on SX_ICECAP_DataSet (dataSetCode[$COLUMN_LENGTH:75$], dataSetVersion[$COLUMN_LENGTH:75$]);
+create index IX_D3568759 on SX_ICECAP_DataSet (groupId, dataSetId);
 create index IX_8D1CF5D0 on SX_ICECAP_DataSet (groupId, status);
 create index IX_36FAEA0A on SX_ICECAP_DataSet (groupId, userId, status);
 create index IX_2C67EAA6 on SX_ICECAP_DataSet (status);

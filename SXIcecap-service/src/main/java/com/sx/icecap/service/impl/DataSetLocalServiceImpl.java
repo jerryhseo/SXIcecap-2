@@ -1,15 +1,13 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * This library is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation; either version
+ * 2.1 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  */
 
 package com.sx.icecap.service.impl;
@@ -31,20 +29,21 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.sx.icecap.exception.NoSuchDataSetException;
+import com.sx.icecap.exception.NoSuchDataTypeException;
 import com.sx.icecap.model.CollectionSetLink;
 import com.sx.icecap.model.DataCollection;
 import com.sx.icecap.model.DataSet;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.model.SetTypeLink;
+import com.sx.icecap.service.CollectionSetLinkLocalService;
 import com.sx.icecap.service.SetTypeLinkLocalService;
+import com.sx.icecap.service.StructuredDataLocalService;
 import com.sx.icecap.service.base.DataSetLocalServiceBaseImpl;
-
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -52,540 +51,615 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  */
 @Component(
-	property = "model.class.name=com.sx.icecap.model.DataSet",
-	service = AopService.class
+			property = "model.class.name=com.sx.icecap.model.DataSet", service = AopService.class
 )
 public class DataSetLocalServiceImpl extends DataSetLocalServiceBaseImpl {
-	
-	@Indexable(type = IndexableType.REINDEX)
-	public DataSet addDataSet(
-		String dataSetCode,
-		String dataSetVersion,
-		Map<Locale, String> displayNameMap,
-		Map<Locale, String> descriptionMap,
-		int status,
-		ServiceContext sc ) throws PortalException {
-	
-		long dataSetId = super.counterLocalService.increment();
-		DataSet dataSet = super.dataSetLocalService.createDataSet(dataSetId);
-		
-		dataSet.setDataSetCode(dataSetCode);
-		dataSet.setDataSetVersion(dataSetVersion);
-		dataSet.setDisplayNameMap(displayNameMap, sc.getLocale());
-		dataSet.setDescriptionMap(descriptionMap, sc.getLocale());
-		
-		Date now = new Date();
-		User user = super.userLocalService.getUser(sc.getUserId());
-		dataSet.setCompanyId(sc.getCompanyId());
-		dataSet.setGroupId(sc.getScopeGroupId());
-		dataSet.setUserId(user.getUserId());
-		dataSet.setUserName(user.getFullName());
-		dataSet.setCreateDate(now);
-		dataSet.setModifiedDate(now);
-		
-		if( status > WorkflowConstants.STATUS_ANY ) {
-			dataSet.setStatus(status);
+
+	@Indexable(
+				type = IndexableType.REINDEX
+	)
+	public DataSet addDataSet (
+				String dataSetCode, String dataSetVersion, Map<Locale, String> displayNameMap,
+				Map<Locale, String> descriptionMap, int status, ServiceContext sc
+	) throws PortalException {
+
+		long dataSetId = super.counterLocalService.increment ();
+		DataSet dataSet = super.dataSetLocalService.createDataSet ( dataSetId );
+
+		dataSet.setDataSetCode ( dataSetCode );
+		dataSet.setDataSetVersion ( dataSetVersion );
+		dataSet.setDisplayNameMap ( displayNameMap, sc.getLocale () );
+		dataSet.setDescriptionMap ( descriptionMap, sc.getLocale () );
+
+		Date now = new Date ();
+		User user = super.userLocalService.getUser ( sc.getUserId () );
+		dataSet.setCompanyId ( sc.getCompanyId () );
+		dataSet.setGroupId ( sc.getScopeGroupId () );
+		dataSet.setUserId ( user.getUserId () );
+		dataSet.setUserName ( user.getFullName () );
+		dataSet.setCreateDate ( now );
+		dataSet.setModifiedDate ( now );
+
+		if ( status > WorkflowConstants.STATUS_ANY ) {
+			dataSet.setStatus ( status );
+		} else {
+			dataSet.setStatus ( WorkflowConstants.STATUS_DRAFT );
 		}
-		else {
-			dataSet.setStatus(WorkflowConstants.STATUS_DRAFT);
-		}
-		dataSet.setStatusByUserId(sc.getUserId());
-		dataSet.setStatusByUserName(user.getFullName());
-		dataSet.setStatusDate(sc.getModifiedDate(null));
-		
-		dataSet.setExpandoBridgeAttributes(sc);
-		
-		super.dataSetPersistence.update(dataSet, sc);
-	//		System.out.println("Add Finished....");
-		
-		super.resourceLocalService.addResources(
-				dataSet.getCompanyId(), 
-				dataSet.getGroupId(), 
-				dataSet.getUserId(), 
-				DataSet.class.getName(), 
-				dataSet.getPrimaryKey(), 
-				false, 
-				true, 
-				true);
-	//		System.out.println("Resource Finished....");
-		
-		super.assetEntryLocalService.updateEntry(
-			dataSet.getUserId(), 
-			dataSet.getGroupId(), 
-			dataSet.getCreateDate(), 
-			dataSet.getModifiedDate(),
-			DataSet.class.getName(), 
-			dataSet.getPrimaryKey(), 
-			dataSet.getUuid(), 
-			0,
-			sc.getAssetCategoryIds(), 
-			sc.getAssetTagNames(), 
-			true,
-			true, 
-			null, 
-			null, 
-			dataSet.getCreateDate(),
-			null, 
-			ContentTypes.TEXT_HTML_UTF8, 
-			dataSet.getDataSetCode(),
-			null, 
-			null, 
-			null, 
-			null,
-			0, 0, null);
-		
-		WorkflowHandlerRegistryUtil.startWorkflowInstance(
-				dataSet.getCompanyId(), 
-				dataSet.getGroupId(), 
-				dataSet.getUserId(), 
-				DataSet.class.getName(), 
-				dataSet.getPrimaryKey(), 
-				dataSet, 
-				sc);
-		
+		dataSet.setStatusByUserId ( sc.getUserId () );
+		dataSet.setStatusByUserName ( user.getFullName () );
+		dataSet.setStatusDate ( sc.getModifiedDate ( null ) );
+
+		dataSet.setExpandoBridgeAttributes ( sc );
+
+		super.dataSetPersistence.update ( dataSet, sc );
+		// System.out.println("Add Finished....");
+
+		super.resourceLocalService.addResources (
+					dataSet.getCompanyId (),
+					dataSet.getGroupId (),
+					dataSet.getUserId (),
+					DataSet.class.getName (),
+					dataSet.getPrimaryKey (),
+					false,
+					true,
+					true
+		);
+		// System.out.println("Resource Finished....");
+
+		super.assetEntryLocalService.updateEntry (
+					dataSet.getUserId (),
+					dataSet.getGroupId (),
+					dataSet.getCreateDate (),
+					dataSet.getModifiedDate (),
+					DataSet.class.getName (),
+					dataSet.getPrimaryKey (),
+					dataSet.getUuid (),
+					0,
+					sc.getAssetCategoryIds (),
+					sc.getAssetTagNames (),
+					true,
+					true,
+					null,
+					null,
+					dataSet.getCreateDate (),
+					null,
+					ContentTypes.TEXT_HTML_UTF8,
+					dataSet.getDataSetCode (),
+					null,
+					null,
+					null,
+					null,
+					0,
+					0,
+					null
+		);
+
+		WorkflowHandlerRegistryUtil.startWorkflowInstance (
+					dataSet.getCompanyId (),
+					dataSet.getGroupId (),
+					dataSet.getUserId (),
+					DataSet.class.getName (),
+					dataSet.getPrimaryKey (),
+					dataSet,
+					sc
+		);
+
 		return dataSet;
 	}
-	
-	@Indexable(type = IndexableType.REINDEX)
-	public DataSet updateDataSet(
-			long dataSetId, 
-			String dataSetCode, 
-			String dataSetVersion,
-			Map<Locale, String> displayNameMap,
-			Map<Locale, String> descriptionMap,
-			int status,
-			ServiceContext sc) throws PortalException {
-		DataSet dataSet = super.dataSetPersistence.findByPrimaryKey(dataSetId);
-		
-		dataSet.setDataSetCode(dataSetCode);
-		dataSet.setDataSetVersion(dataSetVersion);
-		dataSet.setDisplayNameMap(displayNameMap, sc.getLocale());
-		dataSet.setDescriptionMap(descriptionMap, sc.getLocale());
-		
-		dataSet.setUserId(sc.getUserId());
-		dataSet.setGroupId(sc.getScopeGroupId());
-		dataSet.setModifiedDate(new Date() );
-	
+
+	@Indexable(
+				type = IndexableType.REINDEX
+	)
+	public DataSet updateDataSet (
+				long dataSetId, String dataSetCode, String dataSetVersion, Map<Locale, String> displayNameMap,
+				Map<Locale, String> descriptionMap, int status, ServiceContext sc
+	) throws PortalException {
+		DataSet dataSet = super.dataSetPersistence.findByPrimaryKey ( dataSetId );
+
+		dataSet.setDataSetCode ( dataSetCode );
+		dataSet.setDataSetVersion ( dataSetVersion );
+		dataSet.setDisplayNameMap ( displayNameMap, sc.getLocale () );
+		dataSet.setDescriptionMap ( descriptionMap, sc.getLocale () );
+
+		dataSet.setUserId ( sc.getUserId () );
+		dataSet.setGroupId ( sc.getScopeGroupId () );
+		dataSet.setModifiedDate ( new Date () );
+
 		boolean statusChanged = false;
-		if( status > WorkflowConstants.STATUS_ANY && status != dataSet.getStatus()) {
-			User user = super.userLocalService.getUser(sc.getUserId());
-			dataSet.setStatus(status);
-			dataSet.setStatusByUserId(user.getUserId());
-			dataSet.setStatusByUserName(user.getFullName());
-			dataSet.setStatusDate(new Date());
+		if ( status > WorkflowConstants.STATUS_ANY && status != dataSet.getStatus () ) {
+			User user = super.userLocalService.getUser ( sc.getUserId () );
+			dataSet.setStatus ( status );
+			dataSet.setStatusByUserId ( user.getUserId () );
+			dataSet.setStatusByUserName ( user.getFullName () );
+			dataSet.setStatusDate ( new Date () );
 			statusChanged = true;
 		}
-		
-		dataSet.setExpandoBridgeAttributes(sc);
-		
-		super.dataSetPersistence.update(dataSet, sc);
-		
-		super.resourceLocalService.updateResources(
-				dataSet.getCompanyId(),
-				dataSet.getGroupId(), 
-				DataSet.class.getName(), 
-				dataSet.getPrimaryKey(),
-				sc.getModelPermissions());
-		
-		super.assetEntryLocalService.updateEntry(
-				dataSet.getUserId(), 
-				dataSet.getGroupId(), 
-				dataSet.getCreateDate(), 
-				dataSet.getModifiedDate(),
-				DataSet.class.getName(), 
-				dataSet.getPrimaryKey(), 
-				dataSet.getUuid(), 
-				0,
-				sc.getAssetCategoryIds(), 
-				sc.getAssetTagNames(), 
-				true,
-				true, 
-				null, 
-				null, 
-				dataSet.getCreateDate(),
-				null, 
-				ContentTypes.TEXT_HTML_UTF8, 
-				dataSet.getDataSetCode(),
-				null, 
-				null,
-				null, 
-				null,
-				0, 0, null);
-		
-		if( statusChanged ) {
-			if (status == WorkflowConstants.STATUS_APPROVED) {
-				super.assetEntryLocalService.updateVisible(DataSet.class.getName(), dataSetId, true);
+
+		dataSet.setExpandoBridgeAttributes ( sc );
+
+		super.dataSetPersistence.update ( dataSet, sc );
+
+		super.resourceLocalService.updateResources (
+					dataSet.getCompanyId (),
+					dataSet.getGroupId (),
+					DataSet.class.getName (),
+					dataSet.getPrimaryKey (),
+					sc.getModelPermissions ()
+		);
+
+		super.assetEntryLocalService.updateEntry (
+					dataSet.getUserId (),
+					dataSet.getGroupId (),
+					dataSet.getCreateDate (),
+					dataSet.getModifiedDate (),
+					DataSet.class.getName (),
+					dataSet.getPrimaryKey (),
+					dataSet.getUuid (),
+					0,
+					sc.getAssetCategoryIds (),
+					sc.getAssetTagNames (),
+					true,
+					true,
+					null,
+					null,
+					dataSet.getCreateDate (),
+					null,
+					ContentTypes.TEXT_HTML_UTF8,
+					dataSet.getDataSetCode (),
+					null,
+					null,
+					null,
+					null,
+					0,
+					0,
+					null
+		);
+
+		if ( statusChanged ) {
+			if ( status == WorkflowConstants.STATUS_APPROVED ) {
+				super.assetEntryLocalService.updateVisible ( DataSet.class.getName (), dataSetId, true );
 			} else {
-				super.assetEntryLocalService.updateVisible(DataSet.class.getName(), dataSetId, false);
+				super.assetEntryLocalService.updateVisible ( DataSet.class.getName (), dataSetId, false );
 			}
 		}
-		
+
 		return dataSet;
 	}
-	
-	@Indexable(type = IndexableType.REINDEX)
-	public DataSet updateStatus(
-			long userId, 
-			long dataSetId, 
-			Integer status,
-			ServiceContext sc) throws PortalException, SystemException {
-	
-		User user = userLocalService.getUser(userId);
-		DataSet dataSet = super.dataSetPersistence.findByPrimaryKey(dataSetId);
-	
-		dataSet.setStatus(status);
-		dataSet.setStatusByUserId(userId);
-		dataSet.setStatusByUserName(user.getFullName());
-		dataSet.setStatusDate(new Date());
-	
-		super.dataSetPersistence.update(dataSet, sc);
-		
-		if (status == WorkflowConstants.STATUS_APPROVED) {
-			super.assetEntryLocalService.updateVisible(DataSet.class.getName(), dataSetId, true);
+
+	@Indexable(
+				type = IndexableType.REINDEX
+	)
+	public DataSet updateStatus ( long userId, long dataSetId, Integer status, ServiceContext sc )
+				throws PortalException, SystemException {
+
+		User user = userLocalService.getUser ( userId );
+		DataSet dataSet = super.dataSetPersistence.findByPrimaryKey ( dataSetId );
+
+		dataSet.setStatus ( status );
+		dataSet.setStatusByUserId ( userId );
+		dataSet.setStatusByUserName ( user.getFullName () );
+		dataSet.setStatusDate ( new Date () );
+
+		super.dataSetPersistence.update ( dataSet, sc );
+
+		if ( status == WorkflowConstants.STATUS_APPROVED ) {
+			super.assetEntryLocalService.updateVisible ( DataSet.class.getName (), dataSetId, true );
 		} else {
-			super.assetEntryLocalService.updateVisible(DataSet.class.getName(), dataSetId, false);
+			super.assetEntryLocalService.updateVisible ( DataSet.class.getName (), dataSetId, false );
 		}
-	
+
 		return dataSet;
 	}
 
-	@Indexable(type = IndexableType.DELETE)
-	public DataSet removeDataSet( long dataSetId ) throws PortalException {
-		DataSet dataSet = dataSetPersistence.remove(dataSetId);
-		
-		collectionSetLinkPersistence.removeBySetId(dataSetId);
-		setTypeLinkPersistence.removeByDataSetId(dataSetId);
-		
-		super.assetEntryLocalService.deleteEntry(DataSet.class.getName(), dataSet.getPrimaryKey());
-	
-		super.resourceLocalService.deleteResource(
-				dataSet.getCompanyId(), 
-				DataSet.class.getName(),
-				ResourceConstants.SCOPE_INDIVIDUAL, 
-				dataSet.getPrimaryKey());
-		
-		super.workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks(
-			    dataSet.getCompanyId(), dataSet.getGroupId(),
-			    DataSet.class.getName(), dataSet.getDataSetId());
-		
+	@Indexable(
+				type = IndexableType.DELETE
+	)
+	public DataSet removeDataSet ( long dataSetId ) throws PortalException {
+		DataSet dataSet = dataSetPersistence.remove ( dataSetId );
+
+		_collectionSetLinkLocalService.removeCollectionSetLinksByDataSet ( dataSetId );
+		_setTypeLinkLocalService.removeSetTypeLinksBySet ( dataSetId );
+
+		super.assetEntryLocalService.deleteEntry ( DataSet.class.getName (), dataSet.getPrimaryKey () );
+
+		super.resourceLocalService.deleteResource (
+					dataSet.getCompanyId (),
+					DataSet.class.getName (),
+					ResourceConstants.SCOPE_INDIVIDUAL,
+					dataSet.getPrimaryKey ()
+		);
+
+		super.workflowInstanceLinkLocalService.deleteWorkflowInstanceLinks (
+					dataSet.getCompanyId (),
+					dataSet.getGroupId (),
+					DataSet.class.getName (),
+					dataSet.getDataSetId ()
+		);
+
 		return dataSet;
 	}
-	
-	@Indexable(type = IndexableType.DELETE)
-	public void removeDataSets( long groupId, long dataCollectionId, long[] dataSetIds) throws PortalException {
-		for(int i=0; i < dataSetIds.length; i++) {
+
+	@Indexable(
+				type = IndexableType.DELETE
+	)
+	public void removeDataSets ( long groupId, long dataCollectionId, long[] dataSetIds ) throws PortalException {
+		for ( int i = 0; i < dataSetIds.length; i++ ) {
 			long dataSetId = dataSetIds[i];
-			
-			
-			this.removeDataSet(dataSetId);
-			
-			_setTypeLinkLocalService.removeSetTypeLinksByCollectionSet(groupId, dataCollectionId, dataSetId);
+
+			this.removeDataSet ( dataSetId );
+
+			_setTypeLinkLocalService.removeSetTypeLinksByCollectionSet ( groupId, dataCollectionId, dataSetId );
 		}
 	}
-	
-	public void removeDataSets( long[] dataSetIds ) throws PortalException {
-		for( long dataSetId : dataSetIds ) {
-			this.removeDataSet(dataSetId);
+
+	public void removeDataSets ( long[] dataSetIds ) throws PortalException {
+		for ( long dataSetId : dataSetIds ) {
+			this.removeDataSet ( dataSetId );
 		}
 	}
-	
-	public List<DataSet> getAllDataSets(){
-		return super.dataSetPersistence.findAll();
-	}
-	public List<DataSet> getAllDataSets( int start, int end ){
-		return super.dataSetPersistence.findAll(start, end);
-	}
-	public List<DataSet> getAllDataSets( int start, int end, OrderByComparator<DataSet> comparator){
-		return super.dataSetPersistence.findAll(start, end, comparator);
-	}
-	public int countAllDataSets() {
-		return super.dataSetPersistence.countAll();
+
+	public List<DataSet> getAllDataSets () {
+		return super.dataSetPersistence.findAll ();
 	}
 
-	public List<DataSet> getDataSetsByGroupId( long groupId ){
-		return super.dataSetPersistence.findByGroupId(groupId);
-	}
-	public List<DataSet>  getDataSetsByGroupId( long groupId, int start, int end ){
-		return super.dataSetPersistence.findByGroupId(groupId, start, end);
-	}
-	public List<DataSet>  getDataSetsByGroupId( long groupId, int start, int end, OrderByComparator<DataSet> comparator ){
-		return super.dataSetPersistence.findByGroupId(groupId, start, end, comparator);
-	}
-	public int countDataSetsByGroupId(long groupId) {
-		return super.dataSetPersistence.countByGroupId(groupId);
+	public List<DataSet> getAllDataSets ( int start, int end ) {
+		return super.dataSetPersistence.findAll ( start, end );
 	}
 
-	public List<DataSet> getDataSetsByUserId( long userId ){
-		return super.dataSetPersistence.findByUserId(userId);
-	}
-	public List<DataSet>  getDataSetsByUserId( long userId, int start, int end ){
-		return super.dataSetPersistence.findByUserId(userId, start, end);
-	}
-	public List<DataSet>  getDataSetsByUserId( long userId, int start, int end, OrderByComparator<DataSet> comparator ){
-		return super.dataSetPersistence.findByUserId(userId, start, end, comparator);
-	}
-	public int countDataSetsByUserId(long userId) {
-		return super.dataSetPersistence.countByUserId(userId);
+	public List<DataSet> getAllDataSets ( int start, int end, OrderByComparator<DataSet> comparator ) {
+		return super.dataSetPersistence.findAll ( start, end, comparator );
 	}
 
-	public List<DataSet> getDataSetsByStatus( int status ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findAll();
-		else
-			return super.dataSetPersistence.findByStatus(status);
-	}
-	public List<DataSet>  getDataSetsByStatus( int status, int start, int end ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findAll(start, end);
-		else
-			return super.dataSetPersistence.findByStatus(status, start, end);
-	}
-	public List<DataSet>  getDataSetsByStatus( int status, int start, int end, OrderByComparator<DataSet> comparator ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findAll(start, end, comparator);
-		else
-			return super.dataSetPersistence.findByStatus(status, start, end, comparator);
-	}
-	public int countDataSetsByStatus(int status) {
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.countAll();
-		else
-			return super.dataSetPersistence.countByStatus(status);
+	public int countAllDataSets () {
+		return super.dataSetPersistence.countAll ();
 	}
 
-	public List<DataSet> getDataSetsByG_S( long groupId, int status ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findByGroupId(groupId);
+	public List<DataSet> getDataSetsByGroupId ( long groupId ) {
+		return super.dataSetPersistence.findByGroupId ( groupId );
+	}
+
+	public List<DataSet> getDataSetsByGroupId ( long groupId, int start, int end ) {
+		return super.dataSetPersistence.findByGroupId ( groupId, start, end );
+	}
+
+	public List<DataSet> getDataSetsByGroupId (
+				long groupId, int start, int end, OrderByComparator<DataSet> comparator
+	) {
+		return super.dataSetPersistence.findByGroupId ( groupId, start, end, comparator );
+	}
+
+	public int countDataSetsByGroupId ( long groupId ) {
+		return super.dataSetPersistence.countByGroupId ( groupId );
+	}
+
+	public List<DataSet> getDataSetsByUserId ( long userId ) {
+		return super.dataSetPersistence.findByUserId ( userId );
+	}
+
+	public List<DataSet> getDataSetsByUserId ( long userId, int start, int end ) {
+		return super.dataSetPersistence.findByUserId ( userId, start, end );
+	}
+
+	public List<DataSet> getDataSetsByUserId (
+				long userId, int start, int end, OrderByComparator<DataSet> comparator
+	) {
+		return super.dataSetPersistence.findByUserId ( userId, start, end, comparator );
+	}
+
+	public int countDataSetsByUserId ( long userId ) {
+		return super.dataSetPersistence.countByUserId ( userId );
+	}
+
+	public List<DataSet> getDataSetsByStatus ( int status ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findAll ();
 		else
-			return super.dataSetPersistence.findByG_S(groupId, status);
+			return super.dataSetPersistence.findByStatus ( status );
 	}
-	public List<DataSet> getDataSetsByG_S( long groupId, int status, int start, int end ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findByGroupId(groupId, start, end);
+
+	public List<DataSet> getDataSetsByStatus ( int status, int start, int end ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findAll ( start, end );
 		else
-			return super.dataSetPersistence.findByG_S(groupId, status, start, end);
+			return super.dataSetPersistence.findByStatus ( status, start, end );
 	}
-	public List<DataSet> getDataSetsByG_S( long groupId, int status, int start, int end, OrderByComparator<DataSet> comparator ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findByGroupId(groupId, start, end, comparator);
+
+	public List<DataSet> getDataSetsByStatus ( int status, int start, int end, OrderByComparator<DataSet> comparator ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findAll ( start, end, comparator );
 		else
-			return super.dataSetPersistence.findByG_S(groupId, status, start, end, comparator);
+			return super.dataSetPersistence.findByStatus ( status, start, end, comparator );
 	}
-	public int countDataSetsByG_S( long groupId, int status ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.countByGroupId(groupId);
+
+	public int countDataSetsByStatus ( int status ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.countAll ();
 		else
-			return super.dataSetPersistence.countByG_S(groupId, status);
+			return super.dataSetPersistence.countByStatus ( status );
 	}
-	
-	public List<DataSet> getDataSetsByU_S( long userId, int status ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findByUserId(userId);
+
+	public List<DataSet> getDataSetsByG_S ( long groupId, int status ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findByGroupId ( groupId );
 		else
-			return super.dataSetPersistence.findByU_S(userId, status);
+			return super.dataSetPersistence.findByG_S ( groupId, status );
 	}
-	public List<DataSet> getDataSetsByU_S( long userId, int status, int start, int end ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findByUserId(userId, start, end);
+
+	public List<DataSet> getDataSetsByG_S ( long groupId, int status, int start, int end ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findByGroupId ( groupId, start, end );
 		else
-			return super.dataSetPersistence.findByU_S(userId, status, start, end);
+			return super.dataSetPersistence.findByG_S ( groupId, status, start, end );
 	}
-	public List<DataSet> getDataSetsByU_S( long userId, int status, int start, int end, OrderByComparator<DataSet> comparator ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findByUserId(userId, start, end, comparator);
+
+	public List<DataSet> getDataSetsByG_S (
+				long groupId, int status, int start, int end, OrderByComparator<DataSet> comparator
+	) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findByGroupId ( groupId, start, end, comparator );
 		else
-			return super.dataSetPersistence.findByU_S(userId, status, start, end, comparator);
+			return super.dataSetPersistence.findByG_S ( groupId, status, start, end, comparator );
 	}
-	public int countDataSetsByU_S( long userId, int status ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.countByUserId(userId);
+
+	public int countDataSetsByG_S ( long groupId, int status ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.countByGroupId ( groupId );
 		else
-			return super.dataSetPersistence.countByU_S(userId, status);
+			return super.dataSetPersistence.countByG_S ( groupId, status );
 	}
-	
-	public List<DataSet> getDataSetsByG_U_S( long groupId, long userId, int status ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findByG_U(groupId, userId);
+
+	public List<DataSet> getDataSetsByU_S ( long userId, int status ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findByUserId ( userId );
 		else
-			return super.dataSetPersistence.findByG_U_S(groupId, userId, status);
+			return super.dataSetPersistence.findByU_S ( userId, status );
 	}
-	public List<DataSet> getDataSetsByG_U_S( long groupId, long userId, int status, int start, int end ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findByG_U(groupId, userId, start, end);
+
+	public List<DataSet> getDataSetsByU_S ( long userId, int status, int start, int end ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findByUserId ( userId, start, end );
 		else
-			return super.dataSetPersistence.findByG_U_S(groupId, userId, status, start, end);
+			return super.dataSetPersistence.findByU_S ( userId, status, start, end );
 	}
-	public List<DataSet> getDataSetsByG_U_S( long groupId, long userId, int status, int start, int end, OrderByComparator<DataSet> comparator ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.findByG_U(groupId, userId, start, end, comparator);
+
+	public List<DataSet> getDataSetsByU_S (
+				long userId, int status, int start, int end, OrderByComparator<DataSet> comparator
+	) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findByUserId ( userId, start, end, comparator );
 		else
-			return super.dataSetPersistence.findByG_U_S(groupId, userId, status, start, end, comparator);
+			return super.dataSetPersistence.findByU_S ( userId, status, start, end, comparator );
 	}
-	public int countDataSetsByG_U_S( long groupId, long userId, int status ){
-		if( status == WorkflowConstants.STATUS_ANY )
-			return super.dataSetPersistence.countByG_U(groupId, userId);
+
+	public int countDataSetsByU_S ( long userId, int status ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.countByUserId ( userId );
 		else
-			return super.dataSetPersistence.countByG_U_S(groupId, userId, status);
+			return super.dataSetPersistence.countByU_S ( userId, status );
 	}
-	
-	public List<DataSet> getApprovedDataSets( long groupId ){
-		return super.dataSetPersistence.findByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
+
+	public List<DataSet> getDataSetsByG_U_S ( long groupId, long userId, int status ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findByG_U ( groupId, userId );
+		else
+			return super.dataSetPersistence.findByG_U_S ( groupId, userId, status );
 	}
-	public List<DataSet> getApprovedDataSets( long groupId, int start, int end ){
-		return super.dataSetPersistence.findByG_S(groupId, WorkflowConstants.STATUS_APPROVED, start, end);
+
+	public List<DataSet> getDataSetsByG_U_S ( long groupId, long userId, int status, int start, int end ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findByG_U ( groupId, userId, start, end );
+		else
+			return super.dataSetPersistence.findByG_U_S ( groupId, userId, status, start, end );
 	}
-	public List<DataSet> getApprovedDataSets( long groupId, int start, int end, OrderByComparator<DataSet> comparator ){
-		return super.dataSetPersistence.findByG_S(groupId, WorkflowConstants.STATUS_APPROVED, start, end, comparator);
+
+	public List<DataSet> getDataSetsByG_U_S (
+				long groupId, long userId, int status, int start, int end, OrderByComparator<DataSet> comparator
+	) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.findByG_U ( groupId, userId, start, end, comparator );
+		else
+			return super.dataSetPersistence.findByG_U_S ( groupId, userId, status, start, end, comparator );
 	}
-	public int countApprovedDataSets( long groupId ) {
-		return super.dataSetPersistence.countByG_S(groupId, WorkflowConstants.STATUS_APPROVED);
+
+	public int countDataSetsByG_U_S ( long groupId, long userId, int status ) {
+		if ( status == WorkflowConstants.STATUS_ANY )
+			return super.dataSetPersistence.countByG_U ( groupId, userId );
+		else
+			return super.dataSetPersistence.countByG_U_S ( groupId, userId, status );
 	}
-	
-	public DataSet getDataSet( String dataSetCode, String dataSetVersion ) throws NoSuchDataSetException {
-		return super.dataSetPersistence.findByCodeVersion(dataSetCode, dataSetVersion);
+
+	public List<DataSet> getApprovedDataSets ( long groupId ) {
+		return super.dataSetPersistence.findByG_S ( groupId, WorkflowConstants.STATUS_APPROVED );
 	}
-	
-	public List<DataSet> getDataSetsByCode( String dataSetCode ){
-		return super.dataSetPersistence.findByCode(dataSetCode);
+
+	public List<DataSet> getApprovedDataSets ( long groupId, int start, int end ) {
+		return super.dataSetPersistence.findByG_S ( groupId, WorkflowConstants.STATUS_APPROVED, start, end );
 	}
-	public List<DataSet> getDataSetsByCode( String dataSetCode, int start, int end ){
-		return super.dataSetPersistence.findByCode(dataSetCode, start, end);
+
+	public List<DataSet> getApprovedDataSets (
+				long groupId, int start, int end, OrderByComparator<DataSet> comparator
+	) {
+		return super.dataSetPersistence
+					.findByG_S ( groupId, WorkflowConstants.STATUS_APPROVED, start, end, comparator );
 	}
-	public List<DataSet> getDataSetsByCode( String dataSetCode, int start, int end, OrderByComparator<DataSet> comparator ){
-		return super.dataSetPersistence.findByCode(dataSetCode, start, end, comparator);
+
+	public int countApprovedDataSets ( long groupId ) {
+		return super.dataSetPersistence.countByG_S ( groupId, WorkflowConstants.STATUS_APPROVED );
 	}
-	public int countDataSetsByCode( String dataSetCode ){
-		return super.dataSetPersistence.countByCode(dataSetCode);
+
+	public DataSet getDataSet ( String dataSetCode, String dataSetVersion ) throws NoSuchDataSetException {
+		return super.dataSetPersistence.findByCodeVersion ( dataSetCode, dataSetVersion );
 	}
-	
-	public JSONObject getDataSetInfo( long groupId, long dataCollectionId,  long dataSetId, Locale locale) {
-		JSONObject dataSetInfo = JSONFactoryUtil.createJSONObject();
-		
-		if( dataCollectionId > 0 ) {
-			DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey(dataCollectionId);
-			if( Validator.isNotNull(dataCollection) ){
-				JSONObject jsonDataCollection = dataCollection.toJSON(locale);
-				
-				CollectionSetLink link = collectionSetLinkPersistence.fetchByCollectionSet_G(dataCollection.getGroupId(), dataCollectionId, dataSetId);
-				if( Validator.isNotNull(link)) {
-					jsonDataCollection.put("freezed", link.getFreezed());
-					jsonDataCollection.put("freezedUserId", link.getFreezedUserId());
-					jsonDataCollection.put("freezedUserName", link.getFreezedUserName());
-					jsonDataCollection.put("freezedDate", link.getFreezedDate());
-					jsonDataCollection.put("verified", link.getVerified());
-					jsonDataCollection.put("verifiedUserId", link.getVerifiedUserId());
-					jsonDataCollection.put("verifiedUserName", link.getVerifiedUserName());
-					jsonDataCollection.put("verifiedDate", link.getVerifiedDate());
-					
-					int commentCount = 
-							dataCommentPersistence.countByDataId(DataSet.class.getName(), dataSetId);
-					jsonDataCollection.put("commentCount", commentCount);
+
+	public List<DataSet> getDataSetsByCode ( String dataSetCode ) {
+		return super.dataSetPersistence.findByCode ( dataSetCode );
+	}
+
+	public List<DataSet> getDataSetsByCode ( String dataSetCode, int start, int end ) {
+		return super.dataSetPersistence.findByCode ( dataSetCode, start, end );
+	}
+
+	public List<DataSet> getDataSetsByCode (
+				String dataSetCode, int start, int end, OrderByComparator<DataSet> comparator
+	) {
+		return super.dataSetPersistence.findByCode ( dataSetCode, start, end, comparator );
+	}
+
+	public int countDataSetsByCode ( String dataSetCode ) {
+		return super.dataSetPersistence.countByCode ( dataSetCode );
+	}
+
+	public JSONObject getDataSetInfo ( long groupId, long dataCollectionId, long dataSetId, Locale locale ) {
+		JSONObject dataSetInfo = JSONFactoryUtil.createJSONObject ();
+
+		if ( dataCollectionId > 0 ) {
+			DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey ( dataCollectionId );
+			if ( Validator.isNotNull ( dataCollection ) ) {
+				JSONObject jsonDataCollection = dataCollection.toJSON ( locale );
+
+				CollectionSetLink link = collectionSetLinkPersistence
+							.fetchByCollectionSet_G ( dataCollection.getGroupId (), dataCollectionId, dataSetId );
+				if ( Validator.isNotNull ( link ) ) {
+					jsonDataCollection.put ( "freezed", link.getFreezed () );
+					jsonDataCollection.put ( "freezedUserId", link.getFreezedUserId () );
+					jsonDataCollection.put ( "freezedUserName", link.getFreezedUserName () );
+					jsonDataCollection.put ( "freezedDate", link.getFreezedDate () );
+					jsonDataCollection.put ( "verified", link.getVerified () );
+					jsonDataCollection.put ( "verifiedUserId", link.getVerifiedUserId () );
+					jsonDataCollection.put ( "verifiedUserName", link.getVerifiedUserName () );
+					jsonDataCollection.put ( "verifiedDate", link.getVerifiedDate () );
+
+					int commentCount = dataCommentPersistence.countByDataId ( DataSet.class.getName (), dataSetId );
+					jsonDataCollection.put ( "commentCount", commentCount );
 				}
-				
-				dataSetInfo.put("dataCollection", jsonDataCollection);
+
+				dataSetInfo.put ( "dataCollection", jsonDataCollection );
 			}
 		}
-		
-		DataSet dataSet = dataSetPersistence.fetchByPrimaryKey(dataSetId);
-		
-		dataSetInfo.put("dataSet", dataSet.toJSON());
-		
-		List<SetTypeLink> setTypeLinkList = setTypeLinkPersistence.findByCollectionSet_G(groupId, dataCollectionId, dataSetId);
-		Iterator<SetTypeLink> iter = setTypeLinkList.iterator();
-		
-		JSONArray jsonDataTypeList = JSONFactoryUtil.createJSONArray();
-		while(iter.hasNext()) {
-			SetTypeLink link = iter.next();
-			
-			DataType dataType = dataTypePersistence.fetchByPrimaryKey(link.getDataTypeId());
-			JSONObject jsonDataType = dataType.toJSON(locale);
-			
-			jsonDataType.put("setTypeLinkId", link.getPrimaryKey());
-			jsonDataType.put("order", link.getOrder());
-			jsonDataType.put("freezed", link.getFreezed());
-			jsonDataType.put("freezedUserId", link.getFreezedUserId());
-			jsonDataType.put("freezedUserName", link.getFreezedUserName());
-			jsonDataType.put("freezedDate", link.getFreezedDate());
-			jsonDataType.put("verified", link.getVerified());
-			jsonDataType.put("verifiedUserId", link.getVerifiedUserId());
-			jsonDataType.put("verifiedUserName", link.getVerifiedUserName());
-			jsonDataType.put("verifiedDate", link.getVerifiedDate());
-			
-			int commentCount = 
-					dataCommentPersistence.countByDataId(DataSet.class.getName(), dataType.getDataTypeId());
-			jsonDataType.put("commentCount", commentCount);
-			
-			jsonDataTypeList.put(jsonDataType);
+
+		DataSet dataSet = dataSetPersistence.fetchByPrimaryKey ( dataSetId );
+
+		dataSetInfo.put ( "dataSet", dataSet.toJSON () );
+
+		List<SetTypeLink> setTypeLinkList =
+					setTypeLinkPersistence.findByCollectionSet_G ( groupId, dataCollectionId, dataSetId );
+		Iterator<SetTypeLink> iter = setTypeLinkList.iterator ();
+
+		JSONArray jsonDataTypeList = JSONFactoryUtil.createJSONArray ();
+		while ( iter.hasNext () ) {
+			SetTypeLink link = iter.next ();
+
+			DataType dataType = dataTypePersistence.fetchByPrimaryKey ( link.getDataTypeId () );
+			JSONObject jsonDataType = dataType.toJSON ( locale );
+
+			jsonDataType.put ( "setTypeLinkId", link.getPrimaryKey () );
+			jsonDataType.put ( "order", link.getOrder () );
+			jsonDataType.put ( "freezed", link.getFreezed () );
+			jsonDataType.put ( "freezedUserId", link.getFreezedUserId () );
+			jsonDataType.put ( "freezedUserName", link.getFreezedUserName () );
+			jsonDataType.put ( "freezedDate", link.getFreezedDate () );
+			jsonDataType.put ( "verified", link.getVerified () );
+			jsonDataType.put ( "verifiedUserId", link.getVerifiedUserId () );
+			jsonDataType.put ( "verifiedUserName", link.getVerifiedUserName () );
+			jsonDataType.put ( "verifiedDate", link.getVerifiedDate () );
+
+			int commentCount =
+						dataCommentPersistence.countByDataId ( DataSet.class.getName (), dataType.getDataTypeId () );
+			jsonDataType.put ( "commentCount", commentCount );
+
+			jsonDataTypeList.put ( jsonDataType );
 		}
-		
-		dataSetInfo.put("associatedDataTypeList", jsonDataTypeList);
-		
+
+		dataSetInfo.put ( "associatedDataTypeList", jsonDataTypeList );
+
 		return dataSetInfo;
 	}
-	
-	public JSONArray  getDataSetListInfo( long groupId, long dataCollectionId, Locale locale) {
-		JSONArray jsonDataSetListInfo = JSONFactoryUtil.createJSONArray();
-		
-		List<CollectionSetLink> collectionSetLinks = null;
-		List<DataSet> dataSetList = null;
-		
-		if( dataCollectionId > 0 ) {
-			collectionSetLinks = collectionSetLinkPersistence.findByCollection(dataCollectionId);
-		}
-		else {
-			dataSetList = dataSetPersistence.findByGroupId(groupId);
-		}
-			
-		if( Validator.isNotNull(collectionSetLinks) ) {
-			Iterator<CollectionSetLink> iter = collectionSetLinks.iterator();
-			while( iter.hasNext() ) {
-				CollectionSetLink link = iter.next();
-				
-				DataSet dataSet = dataSetPersistence.fetchByPrimaryKey(link.getDataSetId());
-				if( Validator.isNotNull(dataSet) ) {
-					JSONObject jsonDataSet = dataSet.toJSON();
-					
-					jsonDataSet.put("freezed", link.getFreezed());
-					jsonDataSet.put("freezedUserId", link.getFreezedUserId());
-					jsonDataSet.put("freezedUserName", link.getFreezedUserName());
-					jsonDataSet.put("freezedDate", link.getFreezedDate());
-					jsonDataSet.put("verified", link.getVerified());
-					jsonDataSet.put("verifiedUserId", link.getVerifiedUserId());
-					jsonDataSet.put("verifiedUserName", link.getVerifiedUserName());
-					jsonDataSet.put("verifiedDate", link.getVerifiedDate());
-					
-					int commentCount = 
-							dataCommentPersistence.countByDataId(DataSet.class.getName(), dataSet.getDataSetId());
-					jsonDataSet.put("commentCount", commentCount);
-					
-					jsonDataSetListInfo.put(jsonDataSet);
+
+	public JSONArray getDataSetListInfo ( long groupId, long dataCollectionId, Locale locale ) {
+		JSONArray jsonDataSetListInfo = JSONFactoryUtil.createJSONArray ();
+
+		if ( dataCollectionId > 0 ) {
+			List<CollectionSetLink> collectionSetLinks =
+						collectionSetLinkPersistence.findByCollection ( dataCollectionId );
+			Iterator<CollectionSetLink> iter = collectionSetLinks.iterator ();
+			while ( iter.hasNext () ) {
+				CollectionSetLink link = iter.next ();
+
+				DataSet dataSet = dataSetPersistence.fetchByPrimaryKey ( link.getDataSetId () );
+				if ( Validator.isNotNull ( dataSet ) ) {
+					JSONObject jsonDataSet = dataSet.toJSON ();
+
+					jsonDataSet.put ( "freezed", link.getFreezed () );
+					jsonDataSet.put ( "freezedUserId", link.getFreezedUserId () );
+					jsonDataSet.put ( "freezedUserName", link.getFreezedUserName () );
+					jsonDataSet.put ( "freezedDate", link.getFreezedDate () );
+					jsonDataSet.put ( "verified", link.getVerified () );
+					jsonDataSet.put ( "verifiedUserId", link.getVerifiedUserId () );
+					jsonDataSet.put ( "verifiedUserName", link.getVerifiedUserName () );
+					jsonDataSet.put ( "verifiedDate", link.getVerifiedDate () );
+
+					int commentCount = dataCommentPersistence
+								.countByDataId ( DataSet.class.getName (), dataSet.getDataSetId () );
+					jsonDataSet.put ( "commentCount", commentCount );
+
+					jsonDataSetListInfo.put ( jsonDataSet );
 				}
 			}
-		}
-		else if( Validator.isNotNull(dataSetList)) {
-			Iterator<DataSet> iter = dataSetList.iterator();
-			while( iter.hasNext() ) {
-				DataSet dataSet = iter.next();
-				
-				JSONObject jsonDataSet = dataSet.toJSON();
-				jsonDataSet.put("freezed", false);
-				jsonDataSet.put("verified", false);
-				
-				int commentCount = 
-						dataCommentPersistence.countByDataId(DataSet.class.getName(), dataSet.getDataSetId());
-				jsonDataSet.put("commentCount", commentCount);
-				
-				jsonDataSetListInfo.put(jsonDataSet);
+		} else {
+			List<DataSet> dataSetList = dataSetPersistence.findByGroupId ( groupId );
+			Iterator<DataSet> iter = dataSetList.iterator ();
+			while ( iter.hasNext () ) {
+				DataSet dataSet = iter.next ();
+
+				JSONObject jsonDataSet = dataSet.toJSON ();
+				jsonDataSet.put ( "freezed", false );
+				jsonDataSet.put ( "verified", false );
+
+				int commentCount =
+							dataCommentPersistence.countByDataId ( DataSet.class.getName (), dataSet.getDataSetId () );
+				jsonDataSet.put ( "commentCount", commentCount );
+
+				jsonDataSetListInfo.put ( jsonDataSet );
 			}
 		}
-		
+
 		return jsonDataSetListInfo;
 	}
-	
-	public boolean checkDuplicated( String dataSetCode, String dataSetVersion ) {
-		return dataSetPersistence.countByCodeVersion(dataSetCode, dataSetVersion) > 0;
+
+	public JSONArray getLinkedDataTypeList ( long groupId, long dataCollectionId, long dataSetId, Locale locale )
+				throws NoSuchDataTypeException {
+		JSONArray linkedDataTypeList = JSONFactoryUtil.createJSONArray ();
+
+		List<SetTypeLink> setTypeLinkList =
+					_setTypeLinkLocalService.getSetTypeLinkListByCollectionSet ( groupId, dataCollectionId, dataSetId );
+		Iterator<SetTypeLink> setTypeLinkListIter = setTypeLinkList.iterator ();
+		while ( setTypeLinkListIter.hasNext () ) {
+			SetTypeLink setTypeLink = setTypeLinkListIter.next ();
+
+			DataType dataType = dataTypePersistence.fetchByPrimaryKey ( setTypeLink.getDataTypeId () );
+
+			if ( Validator.isNotNull ( dataType ) ) {
+				JSONObject jsonDataType = dataType.toJSON ( locale );
+				jsonDataType.put ( "linkId", setTypeLink.getSetTypeLinkId () );
+				linkedDataTypeList.put ( jsonDataType );
+			} else {
+				throw new NoSuchDataTypeException ();
+			}
+		}
+
+		return linkedDataTypeList;
 	}
-	
+
+	public boolean checkDuplicated ( String dataSetCode, String dataSetVersion ) {
+		return dataSetPersistence.countByCodeVersion ( dataSetCode, dataSetVersion ) > 0;
+	}
+
+	@Reference
+	CollectionSetLinkLocalService _collectionSetLinkLocalService;
+
 	@Reference
 	SetTypeLinkLocalService _setTypeLinkLocalService;
+
+	@Reference
+	StructuredDataLocalService _structuredDataLocalService;
 }

@@ -443,19 +443,35 @@ public class SetTypeLinkLocalServiceWrapper
 			groupId, dataCollectionId, dataSetId);
 	}
 
+	/**
+	 * Removes DataSet-DataType links of a company
+	 */
 	@Override
 	public void removeSetTypeLinksBySet(long dataSetId) {
 		_setTypeLinkLocalService.removeSetTypeLinksBySet(dataSetId);
 	}
 
+	/**
+	 * Removes DataSet-DataType links in a group
+	 */
 	@Override
-	public void removeSetTypeLinksBySet_G(long groupId, long dataSetId) {
-		_setTypeLinkLocalService.removeSetTypeLinksBySet_G(groupId, dataSetId);
+	public void removeSetTypeLinksBySet(long groupId, long dataSetId) {
+		_setTypeLinkLocalService.removeSetTypeLinksBySet(groupId, dataSetId);
 	}
 
 	@Override
 	public void removeSetTypeLinksByType(long dataTypeId) {
 		_setTypeLinkLocalService.removeSetTypeLinksByType(dataTypeId);
+	}
+
+	@Override
+	public java.util.List<com.sx.icecap.model.SetTypeLink>
+		reorderLinkedDataTypes(
+			long groupId, long dataCollectionId, long dataSetId,
+			int startOrder) {
+
+		return _setTypeLinkLocalService.reorderLinkedDataTypes(
+			groupId, dataCollectionId, dataSetId, startOrder);
 	}
 
 	@Override

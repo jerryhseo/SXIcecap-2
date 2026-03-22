@@ -1,15 +1,13 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * This library is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation; either version
+ * 2.1 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  */
 
 package com.sx.icecap.service.impl;
@@ -23,193 +21,257 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.sx.icecap.exception.NoSuchSetTypeLinkException;
 import com.sx.icecap.model.SetTypeLink;
 import com.sx.icecap.service.base.SetTypeLinkLocalServiceBaseImpl;
-import com.sx.icecap.service.persistence.SetTypeLinkPersistence;
-
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-
 import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Brian Wing Shun Chan
  */
 @Component(
-	property = "model.class.name=com.sx.icecap.model.SetTypeLink",
-	service = AopService.class
+			property = "model.class.name=com.sx.icecap.model.SetTypeLink", service = AopService.class
 )
-public class SetTypeLinkLocalServiceImpl
-	extends SetTypeLinkLocalServiceBaseImpl {
-	
-	@Indexable(type = IndexableType.REINDEX)
-	public SetTypeLink addSetTypeLink( long dataCollectionId, long dataSetId, long dataTypeId, int order, ServiceContext sc ) {
-		long linkId = super.counterLocalService.increment();
-		
-		SetTypeLink link = setTypeLinkPersistence.create(linkId);
+public class SetTypeLinkLocalServiceImpl extends SetTypeLinkLocalServiceBaseImpl {
 
-		link.setCompanyId(sc.getCompanyId());
-		link.setGroupId(sc.getScopeGroupId());
-		link.setDataCollectionId(dataCollectionId);
-		link.setDataSetId(dataSetId);
-		link.setDataTypeId(dataTypeId);
-		link.setOrder(order);
-		
-		link.setCommentable(true);
-		link.setVerifiable(true);;
-		link.setFreezable(true);;
-		
-		link.setVerified(false);
-		link.setFreezed(false);
-		
-		setTypeLinkPersistence.update(link);
-		
+	@Indexable(
+				type = IndexableType.REINDEX
+	)
+	public SetTypeLink addSetTypeLink (
+				long dataCollectionId, long dataSetId, long dataTypeId, int order, ServiceContext sc
+	) {
+		long linkId = super.counterLocalService.increment ();
+
+		SetTypeLink link = setTypeLinkPersistence.create ( linkId );
+
+		link.setCompanyId ( sc.getCompanyId () );
+		link.setGroupId ( sc.getScopeGroupId () );
+		link.setDataCollectionId ( dataCollectionId );
+		link.setDataSetId ( dataSetId );
+		link.setDataTypeId ( dataTypeId );
+		link.setOrder ( order );
+
+		link.setCommentable ( true );
+		link.setVerifiable ( true );;
+		link.setFreezable ( true );;
+
+		link.setVerified ( false );
+		link.setFreezed ( false );
+
+		setTypeLinkPersistence.update ( link );
+
 		return link;
 	}
-	
-	@Indexable(type = IndexableType.REINDEX)
-	public SetTypeLink updateSetTypeLink( long setTypeLinkId, long dataCollectionId, long dataSetId, long dataTypeId, int order ) {
-		SetTypeLink link = setTypeLinkPersistence.fetchByPrimaryKey(setTypeLinkId);
-		
-		link.setDataCollectionId(dataCollectionId);
-		link.setDataSetId(dataSetId);
-		link.setDataTypeId(dataTypeId);
-		link.setOrder(order);
-		
-		setTypeLinkPersistence.update(link);
-		
+
+	@Indexable(
+				type = IndexableType.REINDEX
+	)
+	public SetTypeLink updateSetTypeLink (
+				long setTypeLinkId, long dataCollectionId, long dataSetId, long dataTypeId, int order
+	) {
+		SetTypeLink link = setTypeLinkPersistence.fetchByPrimaryKey ( setTypeLinkId );
+
+		link.setDataCollectionId ( dataCollectionId );
+		link.setDataSetId ( dataSetId );
+		link.setDataTypeId ( dataTypeId );
+		link.setOrder ( order );
+
+		setTypeLinkPersistence.update ( link );
+
 		return link;
 	}
-	
-	@Indexable(type = IndexableType.DELETE)
-	public SetTypeLink removeSetTypeLink( long setTypeLinkId ) {
+
+	@Indexable(
+				type = IndexableType.DELETE
+	)
+	public SetTypeLink removeSetTypeLink ( long setTypeLinkId ) {
 		SetTypeLink link = null;
-		
+
 		try {
-			link = setTypeLinkPersistence.remove(setTypeLinkId);
-		} catch (NoSuchSetTypeLinkException e) {
+			link = setTypeLinkPersistence.remove ( setTypeLinkId );
+		} catch ( NoSuchSetTypeLinkException e ) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace ();
 		}
-		
-		return link;
-	}
-	
-	@Indexable(type = IndexableType.DELETE)
-	public void removeSetTypeLinksByCollectionSet( long groupId, long dataCollectionId, long dataSetId ) {
-		setTypeLinkPersistence.removeByCollectionSet_G(groupId, dataCollectionId, dataSetId);
-	}
-	
-	@Indexable(type = IndexableType.DELETE)
-	public void removeSetTypeLinksByCollection( long groupId, long dataCollectionId ) {
-		setTypeLinkPersistence.removeByCollection_G(groupId, dataCollectionId);;
-	}
-	
-	@Indexable(type = IndexableType.DELETE)
-	public void removeSetTypeLinksBySet( long dataSetId ) {
-		setTypeLinkPersistence.removeByDataSetId(dataSetId);
-	}
-	
-	@Indexable(type = IndexableType.DELETE)
-	public void removeSetTypeLinksBySet_G( long groupId, long dataSetId ) {
-		setTypeLinkPersistence.removeBySet_G(groupId, dataSetId);
-	}
-	
-	@Indexable(type = IndexableType.DELETE)
-	public void removeSetTypeLinksByType( long dataTypeId ) {
-		setTypeLinkPersistence.removeByDataTypeId(dataTypeId);
-	}
-	
-	@Indexable(type = IndexableType.REINDEX)
-	public SetTypeLink setVerified(long setTypeLinkId, boolean verified, ServiceContext sc) throws PortalException {
-		SetTypeLink link = setTypeLinkPersistence.findByPrimaryKey(setTypeLinkId);
-		
-		User user = userLocalService.getUser(sc.getUserId());
-		
-		link.setVerified(verified);
-		link.setVerifiedDate(new Date());
-		link.setVerifiedUserId(user.getUserId());;
-		link.setVerifiedUserName(user.getFullName());;
-		
-		setTypeLinkPersistence.update(link);
-		
-		return link;
-	}
-	
-	@Indexable(type = IndexableType.REINDEX)
-	public SetTypeLink setFreezed(long setTypeLinkId, boolean freezed, ServiceContext sc) throws PortalException {
-		SetTypeLink link = setTypeLinkPersistence.findByPrimaryKey(setTypeLinkId);
-		
-		User user = userLocalService.getUser(sc.getUserId());
-		
-		link.setFreezed(freezed);
-		link.setFreezedDate(new Date());
-		link.setFreezedUserId(user.getUserId());;
-		link.setFreezedUserName(user.getFullName());;
-		
-		setTypeLinkPersistence.update(link);
-		
+
 		return link;
 	}
 
-	
+	@Indexable(
+				type = IndexableType.DELETE
+	)
+	public void removeSetTypeLinksByCollectionSet ( long groupId, long dataCollectionId, long dataSetId ) {
+		setTypeLinkPersistence.removeByCollectionSet_G ( groupId, dataCollectionId, dataSetId );
+	}
+
+	@Indexable(
+				type = IndexableType.DELETE
+	)
+	public void removeSetTypeLinksByCollection ( long groupId, long dataCollectionId ) {
+		setTypeLinkPersistence.removeByCollection_G ( groupId, dataCollectionId );;
+	}
+
+	/**
+	 * Removes DataSet-DataType links of a company
+	 */
+	@Indexable(
+				type = IndexableType.DELETE
+	)
+	public void removeSetTypeLinksBySet ( long dataSetId ) {
+		setTypeLinkPersistence.removeByDataSetId ( dataSetId );
+	}
+
+	/**
+	 * Removes DataSet-DataType links in a group
+	 */
+	@Indexable(
+				type = IndexableType.DELETE
+	)
+	public void removeSetTypeLinksBySet ( long groupId, long dataSetId ) {
+		setTypeLinkPersistence.removeBySet_G ( groupId, dataSetId );
+	}
+
+	@Indexable(
+				type = IndexableType.DELETE
+	)
+	public void removeSetTypeLinksByType ( long dataTypeId ) {
+		setTypeLinkPersistence.removeByDataTypeId ( dataTypeId );
+	}
+
+	@Indexable(
+				type = IndexableType.REINDEX
+	)
+	public SetTypeLink setVerified ( long setTypeLinkId, boolean verified, ServiceContext sc ) throws PortalException {
+		SetTypeLink link = setTypeLinkPersistence.findByPrimaryKey ( setTypeLinkId );
+
+		User user = userLocalService.getUser ( sc.getUserId () );
+
+		link.setVerified ( verified );
+		link.setVerifiedDate ( new Date () );
+		link.setVerifiedUserId ( user.getUserId () );;
+		link.setVerifiedUserName ( user.getFullName () );;
+
+		setTypeLinkPersistence.update ( link );
+
+		return link;
+	}
+
+	@Indexable(
+				type = IndexableType.REINDEX
+	)
+	public SetTypeLink setFreezed ( long setTypeLinkId, boolean freezed, ServiceContext sc ) throws PortalException {
+		SetTypeLink link = setTypeLinkPersistence.findByPrimaryKey ( setTypeLinkId );
+
+		User user = userLocalService.getUser ( sc.getUserId () );
+
+		link.setFreezed ( freezed );
+		link.setFreezedDate ( new Date () );
+		link.setFreezedUserId ( user.getUserId () );;
+		link.setFreezedUserName ( user.getFullName () );;
+
+		setTypeLinkPersistence.update ( link );
+
+		return link;
+	}
+
 	// search functions from here
-	public List<SetTypeLink> getAllSetTypeLinkList(){
-		return setTypeLinkPersistence.findAll();
+	public List<SetTypeLink> getAllSetTypeLinkList () {
+		return setTypeLinkPersistence.findAll ();
 	}
-	public List<SetTypeLink> getAllSetTypeLinkList(int start, int end){
-		return setTypeLinkPersistence.findAll( start, end );
+
+	public List<SetTypeLink> getAllSetTypeLinkList ( int start, int end ) {
+		return setTypeLinkPersistence.findAll ( start, end );
 	}
-	public int countAllSetTypeLinkList(){
-		return setTypeLinkPersistence.countAll();
+
+	public int countAllSetTypeLinkList () {
+		return setTypeLinkPersistence.countAll ();
 	}
-	
-	public List<SetTypeLink> getSetTypeLinkListByCollection( long groupId, long dataCollectionId ){
-		return setTypeLinkPersistence.findByCollection_G(groupId, dataCollectionId);
+
+	public List<SetTypeLink> getSetTypeLinkListByCollection ( long groupId, long dataCollectionId ) {
+		return setTypeLinkPersistence.findByCollection_G ( groupId, dataCollectionId );
 	}
-	public List<SetTypeLink> getSetTypeLinkListByCollection(long groupId, long dataCollectionId, int start, int end){
-		return setTypeLinkPersistence.findByCollection_G(groupId, dataCollectionId, start, end);
+
+	public List<SetTypeLink> getSetTypeLinkListByCollection (
+				long groupId, long dataCollectionId, int start, int end
+	) {
+		return setTypeLinkPersistence.findByCollection_G ( groupId, dataCollectionId, start, end );
 	}
-	public int countSetTypeLinkListByCollection( long groupId, long dataCollectionId ){
-		return setTypeLinkPersistence.countByCollection_G(groupId, dataCollectionId);
+
+	public int countSetTypeLinkListByCollection ( long groupId, long dataCollectionId ) {
+		return setTypeLinkPersistence.countByCollection_G ( groupId, dataCollectionId );
 	}
-	
-	public List<SetTypeLink> getSetTypeLinkListBySet( long dataSetId ){
-		return setTypeLinkPersistence.findByDataSetId(dataSetId);
+
+	public List<SetTypeLink> getSetTypeLinkListBySet ( long dataSetId ) {
+		return setTypeLinkPersistence.findByDataSetId ( dataSetId );
 	}
-	public List<SetTypeLink> getSetTypeLinkListBySet(long dataSetId, int start, int end){
-		return setTypeLinkPersistence.findByDataSetId(dataSetId, start, end);
+
+	public List<SetTypeLink> getSetTypeLinkListBySet ( long dataSetId, int start, int end ) {
+		return setTypeLinkPersistence.findByDataSetId ( dataSetId, start, end );
 	}
-	public int countSetTypeLinkListBySet( long dataSetId ){
-		return setTypeLinkPersistence.countByDataSetId(dataSetId);
+
+	public int countSetTypeLinkListBySet ( long dataSetId ) {
+		return setTypeLinkPersistence.countByDataSetId ( dataSetId );
 	}
-	
-	public List<SetTypeLink> getSetTypeLinkListByType( long dataTypeId ){
-		return setTypeLinkPersistence.findByDataTypeId(dataTypeId);
+
+	public List<SetTypeLink> getSetTypeLinkListByType ( long dataTypeId ) {
+		return setTypeLinkPersistence.findByDataTypeId ( dataTypeId );
 	}
-	public List<SetTypeLink> getSetTypeLinkListByType(long dataTypeId, int start, int end){
-		return setTypeLinkPersistence.findByDataTypeId(dataTypeId, start, end);
+
+	public List<SetTypeLink> getSetTypeLinkListByType ( long dataTypeId, int start, int end ) {
+		return setTypeLinkPersistence.findByDataTypeId ( dataTypeId, start, end );
 	}
-	public int countSetTypeLinkListByType( long dataTypeId ){
-		return setTypeLinkPersistence.countByDataTypeId(dataTypeId);
+
+	public int countSetTypeLinkListByType ( long dataTypeId ) {
+		return setTypeLinkPersistence.countByDataTypeId ( dataTypeId );
 	}
-	
-	public List<SetTypeLink> getSetTypeLinkListByCollectionSet( long groupId, long collectionId, long dataSetId ){
-		return setTypeLinkPersistence.findByCollectionSet_G(groupId, collectionId, dataSetId);
+
+	public List<SetTypeLink> getSetTypeLinkListByCollectionSet ( long groupId, long collectionId, long dataSetId ) {
+		return setTypeLinkPersistence.findByCollectionSet_G ( groupId, collectionId, dataSetId );
 	}
-	public List<SetTypeLink> getSetTypeLinkListByCollectionSet( long groupId, long collectionId, long dataSetId, int start, int end){
-		return setTypeLinkPersistence.findByCollectionSet_G( groupId, collectionId, dataSetId, start, end);
+
+	public List<SetTypeLink> getSetTypeLinkListByCollectionSet (
+				long groupId, long collectionId, long dataSetId, int start, int end
+	) {
+		return setTypeLinkPersistence.findByCollectionSet_G ( groupId, collectionId, dataSetId, start, end );
 	}
-	public int countSetTypeLinkListByCollectionSet( long groupId, long collectionId, long dataSetId ){
-		return setTypeLinkPersistence.countByCollectionSet_G( groupId, collectionId, dataSetId );
+
+	public int countSetTypeLinkListByCollectionSet ( long groupId, long collectionId, long dataSetId ) {
+		return setTypeLinkPersistence.countByCollectionSet_G ( groupId, collectionId, dataSetId );
 	}
-	
-	public List<SetTypeLink> getSetTypeLinkListByType( long groupId, long collectionId, long dataSetId , int start, int end){
-		return setTypeLinkPersistence.findByCollectionSet_G(groupId, collectionId, dataSetId, start, end);
+
+	public List<SetTypeLink> getSetTypeLinkListByType (
+				long groupId, long collectionId, long dataSetId, int start, int end
+	) {
+		return setTypeLinkPersistence.findByCollectionSet_G ( groupId, collectionId, dataSetId, start, end );
 	}
-	public int countSetTypeLinkListByCollectionSet_G( long groupId, long collectionId, long dataSetId ){
-		return setTypeLinkPersistence.countByCollectionSet_G(groupId, collectionId, dataSetId);
+
+	public int countSetTypeLinkListByCollectionSet_G ( long groupId, long collectionId, long dataSetId ) {
+		return setTypeLinkPersistence.countByCollectionSet_G ( groupId, collectionId, dataSetId );
 	}
-	
-	public SetTypeLink getSetTypeLink(long groupId, long dataCollectionId, long dataSetId, long dataTypeId) {
-		return setTypeLinkPersistence.fetchByCollectionSetType_G(groupId, dataCollectionId, dataSetId, dataTypeId);
+
+	public SetTypeLink getSetTypeLink ( long groupId, long dataCollectionId, long dataSetId, long dataTypeId ) {
+		return setTypeLinkPersistence.fetchByCollectionSetType_G ( groupId, dataCollectionId, dataSetId, dataTypeId );
+	}
+
+	public List<SetTypeLink> reorderLinkedDataTypes (
+				long groupId, long dataCollectionId, long dataSetId, int startOrder
+	) {
+		List<SetTypeLink> setTypeLinkList =
+					setTypeLinkPersistence.findByCollectionSet_G ( groupId, dataCollectionId, dataSetId );
+		Iterator<SetTypeLink> linkListIter = setTypeLinkList.iterator ();
+		int order = startOrder;
+		while ( linkListIter.hasNext () ) {
+			SetTypeLink link = linkListIter.next ();
+			System.out.println (
+						"Prev SetTypeLink order update: " + link.getOrder () + ", " + link.getDataCollectionId () + ", "
+									+ link.getDataSetId () + ", " + link.getDataTypeId () + ", " + order
+			);
+			link.setOrder ( order );
+			order++;
+
+			setTypeLinkPersistence.update ( link );
+		}
+
+		return setTypeLinkList;
 	}
 }

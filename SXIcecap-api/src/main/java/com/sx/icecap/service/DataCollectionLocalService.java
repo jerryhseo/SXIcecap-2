@@ -335,6 +335,9 @@ public interface DataCollectionLocalService
 			long groupId, long dataCollectionId)
 		throws PortalException;
 
+	public void removeDataCollectionData(long groupId, long dataCollectionId)
+		throws PortalException;
+
 	@Indexable(type = IndexableType.DELETE)
 	public void removeDataCollections(long groupId, long[] dataCollectionIds)
 		throws PortalException;

@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import com.sx.icecap.exception.NoSuchDataSetException;
+import com.sx.icecap.exception.NoSuchDataTypeException;
 import com.sx.icecap.model.DataSet;
 
 import java.io.Serializable;
@@ -415,6 +416,11 @@ public interface DataSetLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONArray getLinkedDataTypeList(
+			long groupId, long dataCollectionId, long dataSetId, Locale locale)
+		throws NoSuchDataTypeException;
 
 	/**
 	 * Returns the OSGi service identifier.

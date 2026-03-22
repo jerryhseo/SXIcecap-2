@@ -41,9 +41,12 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.sx.constant.StationXConstants;
 import com.sx.icecap.constant.DataTypeProperties;
+import com.sx.icecap.model.DataCollection;
+import com.sx.icecap.model.DataSet;
 import com.sx.icecap.model.DataStructure;
 import com.sx.icecap.model.DataType;
 import com.sx.icecap.model.DataTypeStructure;
+import com.sx.icecap.model.SetTypeLink;
 import com.sx.icecap.service.DataStructureLocalService;
 import com.sx.icecap.service.DataTypeStructureLocalService;
 import com.sx.icecap.service.SetTypeLinkLocalService;
@@ -55,6 +58,7 @@ import com.sx.icecap.util.comparator.UserIdComparator;
 import com.sx.icecap.util.comparator.datatype.DataTypeCodeComparator;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -575,6 +579,103 @@ public class DataTypeLocalServiceImpl extends DataTypeLocalServiceBaseImpl {
 			return super.dataTypePersistence.countByG_U ( groupId, userId );
 		else
 			return super.dataTypePersistence.countByG_U_S ( groupId, userId, status );
+	}
+
+	public JSONArray getLinkedDataTypeList ( long groupId, Locale locale ) {
+		JSONArray dataTypeList = JSONFactoryUtil.createJSONArray ();
+
+		List<SetTypeLink> setTypeLinkList = setTypeLinkPersistence.findByGroupId ( groupId );
+		Iterator<SetTypeLink> listIter = setTypeLinkList.iterator ();
+		while ( listIter.hasNext () ) {
+			SetTypeLink link = listIter.next ();
+
+			DataType dataType = dataTypePersistence.fetchByPrimaryKey ( link.getDataTypeId () );
+			DataSet dataSet = dataSetPersistence.fetchByPrimaryKey ( link.getDataSetId () );
+			DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey ( link.getDataCollectionId () );
+
+			JSONObject jsonDataType = dataType.toJSON ( locale );
+			jsonDataType.put ( "dataCollection", dataCollection.toJSON ( locale ) );
+			jsonDataType.put ( "dataSet", dataSet.toJSON ( locale ) );
+
+			jsonDataType.put ( "hasStructure", hasDataStructure ( dataType.getDataTypeId () ) );
+
+			dataTypeList.put ( jsonDataType );
+		}
+
+		return dataTypeList;
+	}
+
+	public JSONArray getLinkedDataTypeListByCollection ( long groupId, long dataCollectionId, Locale locale ) {
+		JSONArray dataTypeList = JSONFactoryUtil.createJSONArray ();
+
+		List<SetTypeLink> setTypeLinkList = setTypeLinkPersistence.findByCollection_G ( groupId, dataCollectionId );
+		Iterator<SetTypeLink> listIter = setTypeLinkList.iterator ();
+		while ( listIter.hasNext () ) {
+			SetTypeLink link = listIter.next ();
+
+			DataType dataType = dataTypePersistence.fetchByPrimaryKey ( link.getDataTypeId () );
+			DataSet dataSet = dataSetPersistence.fetchByPrimaryKey ( link.getDataSetId () );
+			DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey ( link.getDataCollectionId () );
+
+			JSONObject jsonDataType = dataType.toJSON ( locale );
+			jsonDataType.put ( "dataCollection", dataCollection.toJSON ( locale ) );
+			jsonDataType.put ( "dataSet", dataSet.toJSON ( locale ) );
+
+			jsonDataType.put ( "hasStructure", hasDataStructure ( dataType.getDataTypeId () ) );
+
+			dataTypeList.put ( jsonDataType );
+		}
+
+		return dataTypeList;
+	}
+
+	public JSONArray getLinkedDataTypeListByDataSet ( long groupId, long dataSetId, Locale locale ) {
+		JSONArray dataTypeList = JSONFactoryUtil.createJSONArray ();
+
+		List<SetTypeLink> setTypeLinkList = setTypeLinkPersistence.findBySet_G ( groupId, dataSetId );
+		Iterator<SetTypeLink> listIter = setTypeLinkList.iterator ();
+		while ( listIter.hasNext () ) {
+			SetTypeLink link = listIter.next ();
+
+			DataType dataType = dataTypePersistence.fetchByPrimaryKey ( link.getDataTypeId () );
+			DataSet dataSet = dataSetPersistence.fetchByPrimaryKey ( link.getDataSetId () );
+			DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey ( link.getDataCollectionId () );
+
+			JSONObject jsonDataType = dataType.toJSON ( locale );
+			jsonDataType.put ( "dataCollection", dataCollection.toJSON ( locale ) );
+			jsonDataType.put ( "dataSet", dataSet.toJSON ( locale ) );
+
+			jsonDataType.put ( "hasStructure", hasDataStructure ( dataType.getDataTypeId () ) );
+
+			dataTypeList.put ( jsonDataType );
+		}
+
+		return dataTypeList;
+	}
+
+	public JSONArray getLinkedDataTypeListByCollectionSet (
+				long groupId, long dataCollectionId, long dataSetId, Locale locale
+	) {
+		JSONArray dataTypeList = JSONFactoryUtil.createJSONArray ();
+
+		List<SetTypeLink> setTypeLinkList =
+					setTypeLinkPersistence.findByCollectionSet_G ( groupId, dataCollectionId, dataSetId );
+		Iterator<SetTypeLink> listIter = setTypeLinkList.iterator ();
+		while ( listIter.hasNext () ) {
+			SetTypeLink link = listIter.next ();
+
+			DataType dataType = dataTypePersistence.fetchByPrimaryKey ( link.getDataTypeId () );
+			DataSet dataSet = dataSetPersistence.fetchByPrimaryKey ( link.getDataSetId () );
+			DataCollection dataCollection = dataCollectionPersistence.fetchByPrimaryKey ( link.getDataCollectionId () );
+
+			JSONObject jsonDataType = dataType.toJSON ( locale );
+			jsonDataType.put ( "dataCollection", dataCollection.toJSON ( locale ) );
+			jsonDataType.put ( "dataSet", dataSet.toJSON ( locale ) );
+
+			dataTypeList.put ( jsonDataType );
+		}
+
+		return dataTypeList;
 	}
 
 	public List<DataType> getApprovedDataTypes ( long groupId ) {

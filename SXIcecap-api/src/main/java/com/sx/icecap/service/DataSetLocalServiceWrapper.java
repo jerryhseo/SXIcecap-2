@@ -627,6 +627,16 @@ public class DataSetLocalServiceWrapper
 		return _dataSetLocalService.getIndexableActionableDynamicQuery();
 	}
 
+	@Override
+	public com.liferay.portal.kernel.json.JSONArray getLinkedDataTypeList(
+			long groupId, long dataCollectionId, long dataSetId,
+			java.util.Locale locale)
+		throws com.sx.icecap.exception.NoSuchDataTypeException {
+
+		return _dataSetLocalService.getLinkedDataTypeList(
+			groupId, dataCollectionId, dataSetId, locale);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

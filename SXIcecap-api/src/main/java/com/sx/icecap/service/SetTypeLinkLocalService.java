@@ -308,14 +308,23 @@ public interface SetTypeLinkLocalService
 	public void removeSetTypeLinksByCollectionSet(
 		long groupId, long dataCollectionId, long dataSetId);
 
+	/**
+	 * Removes DataSet-DataType links of a company
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public void removeSetTypeLinksBySet(long dataSetId);
 
+	/**
+	 * Removes DataSet-DataType links in a group
+	 */
 	@Indexable(type = IndexableType.DELETE)
-	public void removeSetTypeLinksBySet_G(long groupId, long dataSetId);
+	public void removeSetTypeLinksBySet(long groupId, long dataSetId);
 
 	@Indexable(type = IndexableType.DELETE)
 	public void removeSetTypeLinksByType(long dataTypeId);
+
+	public List<SetTypeLink> reorderLinkedDataTypes(
+		long groupId, long dataCollectionId, long dataSetId, int startOrder);
 
 	@Indexable(type = IndexableType.REINDEX)
 	public SetTypeLink setFreezed(
